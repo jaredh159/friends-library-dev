@@ -2,7 +2,8 @@
   "name": "@friends-library/lulu",
   "version": "1.0.0",
   "description": "things related to printing books through Lulu API",
-  "main": "dist/index.js",
+  "main": "src/index.ts",
+  "repository": "github:friends-library-dev/lulu",
   "author": "Jared Henderson <jared@netrivet.com>",
   "license": "MIT",
   "sideEffects": false,
@@ -10,11 +11,29 @@
     "./dist/client.js": false
   },
   "scripts": {
-    "test": "cd ../.. && yarn jest packages/lulu",
-    "compile": "cd ../../ && yarn compile lulu"
+    "test": "npx jest .",
+    "ts:check": "npx tsc --noEmit -p .",
+    "lint": "npx eslint '**/*.{ts,tsx,js}'",
+    "lint:fix": "npm run lint -- --fix",
+    "format": "npx prettier \"**/*.{ts,tsx,js}\" --write",
+    "format:check": "npx prettier \"**/*.{ts,tsx,js}\" --check"
   },
   "dependencies": {
     "client-oauth2": "^4.3.0",
     "node-fetch": "^2.6.0"
+  },
+  "devDependencies": {
+    "@friends-library/types": "1.0.0",
+    "@friends-library/eslint-plugin": "1.0.2",
+    "@typescript-eslint/eslint-plugin": "^4.2.0",
+    "@typescript-eslint/parser": "^4.2.0",
+    "eslint": "^7.9.0",
+    "eslint-config-prettier": "^6.12.0",
+    "eslint-plugin-no-only-tests": "^2.4.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "jest": ">=25.0.0",
+    "prettier": "^2.1.2",
+    "ts-jest": ">=25.0.0",
+    "typescript": ">=3.9.5"
   }
 }
