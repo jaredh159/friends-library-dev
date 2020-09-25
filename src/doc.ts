@@ -10,7 +10,7 @@ import {
   Notes,
   PrintSize,
   PrintSizeVariant,
-} from './types';
+} from '.';
 
 export interface DocPrecursor {
   lang: Lang;

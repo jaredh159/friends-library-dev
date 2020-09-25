@@ -1,10 +1,17 @@
 {
   "name": "@friends-library/types",
   "version": "1.0.0",
-  "main": "./dist/types.js",
-  "types": "./dist/types.d.ts",
+  "main": "./src/index.ts",
   "license": "MIT",
+  "sideEffects": false,
   "scripts": {
-    "compile": "cd ../../ && yarn compile types"
+    "ts:check": "npx tsc --noEmit -p .",
+    "format": "npx prettier \"**/*.{ts,tsx,js}\" --write",
+    "format:check": "npx prettier \"**/*.{ts,tsx,js}\" --check"
+  },
+  "devDependencies": {
+    "prettier": "^2.1.2",
+    "ts-jest": ">=25.0.0",
+    "typescript": ">=3.9.5"
   }
 }
