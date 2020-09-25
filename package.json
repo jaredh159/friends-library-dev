@@ -4,6 +4,7 @@
   "author": "Jared Henderson <jared@netrivet.com>",
   "license": "MIT",
   "main": "src/index.ts",
+  "repository": "github:friends-library-dev/adoc-utils",
   "sideEffects": false,
   "scripts": {
     "test": "npx jest .",
