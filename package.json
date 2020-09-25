@@ -5,11 +5,17 @@
   "main": "dist/index.js",
   "author": "jared@netrivet.com",
   "license": "MIT",
-  "browser": {
-    "./dist/index.js": false
+  "sideEffects": false,
+  "devDependencies": {
+    "jest": ">=25.0.0",
+    "prettier": "^2.1.2",
+    "ts-jest": ">=25.0.0",
+    "typescript": ">=3.9.5"
   },
   "scripts": {
-    "compile": "cd ../../ && yarn compile hilkiah",
-    "test": "cd ../../ && yarn jest packages/hilkiah"
+    "test": "npx jest .",
+    "ts:check": "npx tsc --noEmit -p .",
+    "format": "npx prettier \"**/*.{ts,tsx,js}\" --write",
+    "format:check": "npx prettier \"**/*.{ts,tsx,js}\" --check"
   }
 }

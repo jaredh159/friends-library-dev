@@ -1,11 +1,6 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "declaration": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "composite": true
-  },
-  "include": ["./src"],
-  "files": ["./src/books.json"]
+    "esModuleInterop": true,
+    "resolveJsonModule": true
+  }
 }
