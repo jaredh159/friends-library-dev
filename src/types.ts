@@ -1,4 +1,4 @@
-import { ShippingLevel } from "@friends-library/types";
+import { ShippingLevel } from '@friends-library/types';
 
 export namespace LuluAPI {
   export interface ShippingAddress {

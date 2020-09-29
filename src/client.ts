@@ -1,6 +1,6 @@
-import fetch from "node-fetch";
-import ClientOAuth2 from "client-oauth2";
-import { LuluAPI } from "./types";
+import fetch from 'node-fetch';
+import ClientOAuth2 from 'client-oauth2';
+import { LuluAPI } from './types';
 
 export default class LuluClient {
   clientKey: string;
@@ -8,51 +8,45 @@ export default class LuluClient {
   endpoint: string;
   accessToken?: string;
 
-  constructor(config: {
-    clientKey: string;
-    clientSecret: string;
-    sandbox: boolean;
-  }) {
+  constructor(config: { clientKey: string; clientSecret: string; sandbox: boolean }) {
     this.clientKey = config.clientKey;
     this.clientSecret = config.clientSecret;
     this.endpoint = `https://api.${config.sandbox ? `sandbox.` : ``}lulu.com`;
   }
 
   public async listPrintJobs(
-    ids?: number[]
+    ids?: number[],
   ): Promise<[LuluAPI.ListPrintJobsResponse, number]> {
     const route = `print-jobs/${ids ? `?id=${ids.join(`&id=`)}` : ``}`;
     return this.get<LuluAPI.ListPrintJobsResponse>(route);
   }
 
   public async createPrintJob(
-    payload: LuluAPI.CreatePrintJobPayload
+    payload: LuluAPI.CreatePrintJobPayload,
   ): Promise<[LuluAPI.PrintJob, number]> {
     return this.post<LuluAPI.PrintJob>(`print-jobs/`, payload);
   }
 
   public async printJobCosts(
-    payload: LuluAPI.PrintJobCostsPayload
+    payload: LuluAPI.PrintJobCostsPayload,
   ): Promise<[LuluAPI.PrintJobCostsResponse, number]> {
     return this.post<LuluAPI.PrintJobCostsResponse>(
       `print-job-cost-calculations/`,
-      payload
+      payload,
     );
   }
 
   public async printJobStatus(
-    printJobId: number
+    printJobId: number,
   ): Promise<[LuluAPI.PrintJobStatusResponse, number]> {
-    return this.get<LuluAPI.PrintJobStatusResponse>(
-      `print-jobs/${printJobId}/status/`
-    );
+    return this.get<LuluAPI.PrintJobStatusResponse>(`print-jobs/${printJobId}/status/`);
   }
 
   private async get<T>(route: string): Promise<[T, number]> {
     !this.accessToken && (await this.auth());
     const res = await fetch(`${this.endpoint}/${route}`, {
       headers: {
-        "Cache-Control": `no-cache`,
+        'Cache-Control': `no-cache`,
         Authorization: `Bearer ${this.accessToken}`,
       },
     });
@@ -62,14 +56,14 @@ export default class LuluClient {
 
   private async post<T>(
     route: string,
-    payload: Record<string, any>
+    payload: Record<string, any>,
   ): Promise<[T, number]> {
     !this.accessToken && (await this.auth());
     const res = await fetch(`${this.endpoint}/${route}`, {
       method: `POST`,
       headers: {
-        "Cache-Control": `no-cache`,
-        "Content-Type": `application/json`,
+        'Cache-Control': `no-cache`,
+        'Content-Type': `application/json`,
         Authorization: `Bearer ${this.accessToken}`,
       },
       body: JSON.stringify(payload),

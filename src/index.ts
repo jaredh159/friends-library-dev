@@ -1,6 +1,6 @@
-import { PrintSize, PrintSizeDetails, PageData } from "@friends-library/types";
-import LuluClient from "./client";
-import { LuluAPI } from "./types";
+import { PrintSize, PrintSizeDetails, PageData } from '@friends-library/types';
+import LuluClient from './client';
+import { LuluAPI } from './types';
 
 export { LuluClient, LuluAPI };
 
@@ -22,7 +22,7 @@ export function price(size: PrintSize, pages: number[]): number {
 
 export function bookDims(
   size: PrintSize,
-  numPages: number
+  numPages: number,
 ): { width: number; height: number; depth: number } {
   return {
     ...sizes[size].dims,
@@ -108,8 +108,8 @@ export function getPrintSizeDetails(id: string): PrintSizeDetails {
 }
 
 export function choosePrintSize(
-  singlePages: PageData["single"],
-  splitPages: PageData["split"]
+  singlePages: PageData['single'],
+  splitPages: PageData['split'],
 ): [PrintSize, boolean] {
   if (splitPages) {
     const numVols = splitPages.m.length;
@@ -117,7 +117,7 @@ export function choosePrintSize(
       s: Infinity,
       m: splitPages.m.reduce(add) / numVols,
       xl: splitPages.xl.reduce(add) / numVols,
-      "xl--condensed": splitPages[`xl--condensed`].reduce(add) / numVols,
+      'xl--condensed': splitPages[`xl--condensed`].reduce(add) / numVols,
     };
     return choosePrintSize(average, undefined);
   }
