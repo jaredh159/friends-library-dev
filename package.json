@@ -9,8 +9,8 @@
   "license": "MIT",
   "sideEffects": false,
   "files": [
-    "./src",
-    "./dist"
+    "./src/",
+    "./dist/"
   ],
   "scripts": {
     "test": "fldev test",
