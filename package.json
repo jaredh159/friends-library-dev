@@ -9,6 +9,7 @@
   "license": "MIT",
   "sideEffects": false,
   "files": [
+    "./src",
     "./dist"
   ],
   "scripts": {
