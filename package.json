@@ -8,10 +8,6 @@
   "author": "jared@netrivet.com",
   "license": "MIT",
   "sideEffects": false,
-  "files": [
-    "./src/",
-    "./dist/"
-  ],
   "scripts": {
     "test": "fldev test",
     "test:watch": "fldev test:watch",
