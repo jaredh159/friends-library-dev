@@ -1,5 +1,14 @@
 {
   "compilerOptions": {
-    "esModuleInterop": true
-  }
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "declaration": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "target": "ESNext",
+    "module": "CommonJS",
+    "incremental": true,
+    "lib": ["ESNext"]
+  },
+  "exclude": ["**/__tests__/*", "./dist"]
 }

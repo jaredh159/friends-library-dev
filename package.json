@@ -2,28 +2,28 @@
   "name": "@friends-library/lulu",
   "version": "1.0.0",
   "description": "things related to printing books through Lulu API",
-  "main": "src/index.ts",
+  "main": "./dist/index.js",
+  "browser": "./src/index.ts",
   "repository": "github:friends-library-dev/lulu",
   "author": "Jared Henderson <jared@netrivet.com>",
   "license": "MIT",
   "sideEffects": false,
-  "browser": {
-    "./dist/client.js": false
-  },
   "scripts": {
     "test": "fldev test",
     "test:watch": "fldev test:watch",
     "lint": "fldev lint",
     "lint:fix": "fldev lint:fix",
     "ts:check": "fldev ts:check",
-    "format": "fldev format"
+    "format": "fldev format",
+    "compile": "fldev ts:compile",
+    "prepublishOnly": "npm run compile"
   },
   "dependencies": {
     "client-oauth2": "^4.3.0",
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {
-    "@friends-library/dev": "4.0.1",
+    "@friends-library/dev": "4.0.7",
     "@friends-library/types": "1.0.0",
     "@types/jest": "^26.0.14"
   }
