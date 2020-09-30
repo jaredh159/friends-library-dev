@@ -1,6 +1,6 @@
 {
   "name": "@friends-library/lulu",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "things related to printing books through Lulu API",
   "main": "./dist/index.js",
   "browser": "./src/index.ts",
