@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "author": "Jared Henderson <jared@netrivet.com>",
   "license": "MIT",
-  "main": "src/index.ts",
+  "main": "./dist/index.js",
+  "browser": "./src/index.ts",
   "repository": "github:friends-library-dev/adoc-utils",
   "sideEffects": false,
   "scripts": {
@@ -12,14 +13,16 @@
     "lint": "fldev lint",
     "lint:fix": "fldev lint:fix",
     "ts:check": "fldev ts:check",
-    "format": "fldev format"
+    "format": "fldev format",
+    "compile": "fldev ts:compile",
+    "prepublishOnly": "npm run compile"
   },
   "dependencies": {
     "@friends-library/hilkiah": "1.0.0",
     "@friends-library/types": "1.0.0"
   },
   "devDependencies": {
-    "@friends-library/dev": "4.0.1",
+    "@friends-library/dev": "4.0.7",
     "strip-indent": "^3.0.0"
   }
 }
