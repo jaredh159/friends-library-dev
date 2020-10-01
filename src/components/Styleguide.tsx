@@ -1,16 +1,12 @@
 import * as React from 'react';
-import styled from 'styled-components';
-import { hot } from 'react-hot-loader';
 import Sidebar from './Sidebar';
 import Content from './Content';
 
-const StyledApp = styled.div``;
-
-const App: React.FC<{}> = () => (
-  <StyledApp>
+const App: React.FC = () => (
+  <div>
     <Sidebar />
     <Content />
-  </StyledApp>
+  </div>
 );
 
-export default hot(module)(App);
+export default App;

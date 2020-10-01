@@ -2,39 +2,36 @@
   "name": "@friends-library/styleguide",
   "version": "1.0.0",
   "description": "Friends Library document styleguide",
-  "main": "src/index.js",
+  "repository": "github:friends-library-dev/styleguide",
   "author": "Jared Henderson <jared@netrivet.com>",
+  "private": true,
   "license": "MIT",
   "scripts": {
-    "compile": "cd ../../ && yarn compile styleguide",
-    "start": "yarn compile && yarn webpack-dev-server --mode development --watch --hot & yarn watch:frags",
-    "watch:frags": "yarn build:frags --watch",
-    "build:frags": "yarn ts-node ./src/build-frags.ts",
-    "build": "yarn compile && yarn build:frags && webpack --mode production --display=minimal"
+    "start": "npm run watch:frags & parcel ./src/index.html",
+    "build:frags": "fldev tsnode ./src/build-frags.ts",
+    "watch:frags": "npm run build:frags -- --watch",
+    "build": "npm run build:frags && parcel build ./src/index.html",
+    "test": "true",
+    "lint": "fldev lint",
+    "lint:fix": "fldev lint:fix",
+    "ts:check": "fldev ts:check",
+    "format": "fldev format"
   },
   "dependencies": {
-    "@friends-library/adoc-convert": "1.0.0",
-    "@friends-library/doc-css": "1.0.0",
-    "@friends-library/doc-html": "1.0.0",
-    "@friends-library/types": "1.0.0",
-    "chalk": "^2.4.1",
-    "chokidar": "^2.0.4",
-    "fs-extra": "^7.0.1",
-    "glob": "^7.1.4",
-    "lodash": "^4.17.11",
+    "@friends-library/adoc-convert": "1.1.1",
+    "@friends-library/doc-css": "1.1.0",
+    "@friends-library/doc-html": "1.1.0",
+    "@friends-library/types": "1.1.0",
     "react": "16.10.1",
     "react-dom": "16.10.1",
-    "react-hot-loader": "^4.3.11",
-    "styled-components": "^4.0.2",
-    "ts-node": "^8.1.0",
-    "webpack": "^4.22.0"
+    "styled-components": "^4.0.2"
   },
   "devDependencies": {
-    "@types/react-hot-loader": "^4.1.0",
+    "@friends-library/dev": "^4.0.8",
     "@types/styled-components": "4.1.8",
-    "html-webpack-plugin": "^3.2.0",
-    "ts-loader": "^5.3.3",
-    "webpack-cli": "^3.2.3",
-    "webpack-dev-server": "^3.1.10"
+    "chokidar": "^3.4.2",
+    "glob": "^7.1.6",
+    "lodash": "^4.17.20",
+    "parcel": "^1.12.4"
   }
 }

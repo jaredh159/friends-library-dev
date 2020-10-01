@@ -1,18 +1,10 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    // 👇 became necessary for `yarn start` on upgrade to TS 3.5, maybe remove later?
-    "tsBuildInfoFile": "./tsconfig.tsbuildinfo",
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
     "outDir": "./dist",
     "rootDir": "./src",
-    "moduleResolution": "node",
     "jsx": "react"
-  },
-  "include": ["./src"],
-  "references": [
-    { "path": "../adoc-convert" },
-    { "path": "../doc-html" },
-    { "path": "../doc-css" },
-    { "path": "../types" }
-  ]
+  }
 }
