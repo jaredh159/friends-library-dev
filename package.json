@@ -1,6 +1,6 @@
 {
   "name": "@friends-library/doc-css",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "css for document consumables",
   "main": "./dist/index.js",
   "browser": "./src/index.ts",
