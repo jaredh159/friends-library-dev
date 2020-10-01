@@ -21,7 +21,7 @@
     "@friends-library/types": "1.0.0"
   },
   "devDependencies": {
-    "@friends-library/dev": "4.0.5",
+    "@friends-library/dev": "4.0.7",
     "@types/node": "^14.11.2"
   }
 }
