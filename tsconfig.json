@@ -2,6 +2,7 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "moduleResolution": "node",
+    "skipLibCheck": true,
     "resolveJsonModule": true,
     "declaration": true,
     "outDir": "./dist",
