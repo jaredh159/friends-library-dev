@@ -2,7 +2,8 @@
   "name": "@friends-library/env",
   "version": "1.0.0",
   "description": "flp env helpers",
-  "main": "src/index.ts",
+  "main": "./dist/index.js",
+  "browser": false,
   "author": "Jared Henderson <jared@netrivet.com>",
   "license": "MIT",
   "repository": "github:friends-library-dev/env",
@@ -12,7 +13,8 @@
     "lint": "fldev lint",
     "lint:fix": "fldev lint:fix",
     "ts:check": "fldev ts:check",
-    "format": "fldev format"
+    "format": "fldev format",
+    "compile": "fldev ts:compile"
   },
   "dependencies": {
     "dotenv": "^6.2.0"
