@@ -17,11 +17,11 @@
     "prepublishOnly": "npm run compile"
   },
   "dependencies": {
-    "@friends-library/lulu": "^1.1.0",
-    "@friends-library/types": "^1.1.0"
+    "@friends-library/lulu": "^1.1.1",
+    "@friends-library/types": "^1.1.1"
   },
   "devDependencies": {
-    "@friends-library/dev": "^4.0.7",
+    "@friends-library/dev": "^4.0.8",
     "@types/node": "^14.11.2"
   }
 }
