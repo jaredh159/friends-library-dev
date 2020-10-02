@@ -18,10 +18,10 @@
     "format": "fldev format"
   },
   "dependencies": {
-    "@friends-library/adoc-convert": "1.1.1",
-    "@friends-library/doc-css": "1.1.0",
-    "@friends-library/doc-html": "1.1.0",
-    "@friends-library/types": "1.1.0",
+    "@friends-library/adoc-convert": "^1.1.2",
+    "@friends-library/doc-css": "^1.1.1",
+    "@friends-library/doc-html": "^1.1.1",
+    "@friends-library/types": "^1.1.1",
     "react": "16.10.1",
     "react-dom": "16.10.1",
     "styled-components": "^4.0.2"
