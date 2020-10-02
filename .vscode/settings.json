@@ -1,9 +1,0 @@
-{
-  "files.exclude": {
-    "node_modules/": true,
-    "dist/": true,
-    ".cache/": true,
-    "package-lock.json": true,
-    "jest.config.js": true
-  }
-}
