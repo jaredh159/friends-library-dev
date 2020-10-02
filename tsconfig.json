@@ -9,7 +9,7 @@
     "target": "ESNext",
     "module": "CommonJS",
     "incremental": true,
-    "lib": ["esnext"]
+    "lib": ["ESNext"]
   },
   "exclude": ["**/__tests__/*", "./dist"]
 }
