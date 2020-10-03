@@ -1,0 +1,37 @@
+{
+  "name": "@friends-library/storybook-web",
+  "version": "1.0.0",
+  "description": "storybook for web components",
+  "repository": "github:friends-library-dev/storybook-web",
+  "author": "Jared Henderson <jared@netrivet.com>",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "test": "true",
+    "lint": "fldev lint",
+    "lint:fix": "fldev lint:fix",
+    "prets:check": "test -f ./src/stories/books.ts || npm run create-books-ts",
+    "ts:check": "fldev ts:check",
+    "format": "fldev format",
+    "start": "start-storybook -p 6006 --ci",
+    "build": "build-storybook --loglevel error --quiet",
+    "prestart": "npm run create-books-ts",
+    "prebuild": "npm run create-books-ts",
+    "create-books-ts": "node ./.storybook/create-books.js"
+  },
+  "dependencies": {
+    "@babel/core": "^7.11.6",
+    "@friends-library/cover-component": "^1.0.0",
+    "@friends-library/dev": "^4.1.6",
+    "@friends-library/friends": "^1.1.1",
+    "@friends-library/types": "^1.1.1",
+    "@storybook/addon-actions": "^6.0.25",
+    "@storybook/addon-essentials": "^6.0.25",
+    "@storybook/addon-links": "^6.0.25",
+    "@storybook/react": "^6.0.25",
+    "babel-loader": "^8.1.0",
+    "react-is": "^16.13.1",
+    "ts-loader": "^8.0.4",
+    "x-syntax": "^1.0.0"
+  }
+}
