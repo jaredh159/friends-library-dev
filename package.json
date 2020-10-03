@@ -7,7 +7,9 @@
   "author": "Jared Henderson <jared@netrivet.com>",
   "license": "MIT",
   "repository": "github:friends-library-dev/env",
-  "sideEffects": false,
+  "sideEffects": [
+    "./dist/load.js"
+  ],
   "scripts": {
     "test": "true",
     "lint": "fldev lint",
