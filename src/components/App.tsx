@@ -42,6 +42,7 @@ interface State {
   customCss: Record<string, string>;
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export default class App extends React.Component<{}, State> {
   public state: State = {
     friendIndex: 0,
