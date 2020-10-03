@@ -1,16 +1,17 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "jsx": "react",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
     "declaration": true,
+    "skipLibCheck": true,
     "outDir": "./dist",
     "rootDir": "./src",
-    "composite": true
+    "target": "ES2019",
+    "module": "CommonJS",
+    "jsx": "react",
+    "incremental": true,
+    "lib": ["ESNext", "DOM"]
   },
-  "include": ["./src"],
-  "references": [
-    { "path": "../adoc-utils" },
-    { "path": "../types" },
-    { "path": "../lulu" }
-  ]
+  "exclude": ["**/__tests__/*", "./dist"]
 }

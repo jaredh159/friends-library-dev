@@ -2,23 +2,36 @@
   "name": "@friends-library/cover-component",
   "version": "1.0.0",
   "description": "paperback cover react component",
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
   "author": "Jared Henderson <jared@netrivet.com>",
+  "repository": "github:friends-library-dev/cover-component",
   "license": "MIT",
   "sideEffects": false,
   "browser": {
-    "./dist/Logo.js": "./dist/Logo.web.js",
-    "./dist/LogoIcon.js": "./dist/LogoIcon.web.js",
-    "./dist/LogoSpanish.js": "./dist/LogoSpanish.web.js"
+    "./dist/index.js": "./src/index.ts",
+    "./src/Logo.ts": "./src/Logo.web.ts",
+    "./src/LogoIcon.ts": "./src/LogoIcon.web.ts",
+    "./src/LogoSpanish.ts": "./src/LogoSpanish.web.ts",
+    "./dist/Logo.js": "./src/Logo.web.ts",
+    "./dist/LogoIcon.js": "./src/LogoIcon.web.ts",
+    "./dist/LogoSpanish.js": "./src/LogoSpanish.web.ts"
   },
   "scripts": {
-    "compile": "cd ../../ && yarn compile cover-component",
-    "test": "cd ../../ && yarn jest packages/cover-component"
+    "test": "fldev test",
+    "test:watch": "fldev test:watch",
+    "lint": "fldev lint",
+    "lint:fix": "fldev lint:fix",
+    "ts:check": "fldev ts:check",
+    "format": "fldev format",
+    "compile": "fldev ts:compile",
+    "prepublishOnly": "npm run compile"
   },
   "dependencies": {
-    "@friends-library/adoc-utils": "1.0.0",
-    "@friends-library/lulu": "1.0.0",
-    "@friends-library/types": "1.0.0",
+    "@friends-library/adoc-utils": "^1.1.1",
+    "@friends-library/dev": "^4.1.5",
+    "@friends-library/lulu": "^1.1.1",
+    "@friends-library/types": "^1.1.1",
+    "classnames": "^2.2.6",
     "react": "16.10.1",
     "react-contenteditable": "^3.3.2",
     "roman-numerals": "^0.3.2"
