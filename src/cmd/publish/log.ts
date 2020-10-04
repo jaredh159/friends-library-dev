@@ -1,5 +1,5 @@
 import prettyMilliseconds from 'pretty-ms';
-import { log, c } from '@friends-library/cli-utils/color';
+import { log, c } from 'x-chalk';
 import { DocPrecursor } from '@friends-library/types';
 
 let updateStart: number;

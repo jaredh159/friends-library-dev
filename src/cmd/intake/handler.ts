@@ -1,5 +1,5 @@
 import { query, hydrate } from '@friends-library/dpc-fs';
-import { c, log } from '@friends-library/cli-utils/color';
+import { c, log } from 'x-chalk';
 
 export default function handler(): void {
   let err = false;

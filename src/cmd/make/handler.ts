@@ -1,7 +1,7 @@
 import { execSync } from 'child_process';
 import { Arguments } from 'yargs';
 import { sync as glob } from 'glob';
-import { log, red } from '@friends-library/cli-utils/color';
+import { log, red } from 'x-chalk';
 import * as manifest from '@friends-library/doc-manifests';
 import * as artifacts from '@friends-library/doc-artifacts';
 import { hydrate, query as dpcQuery, FsDocPrecursor } from '@friends-library/dpc-fs';

@@ -4,10 +4,11 @@ import { execSync } from 'child_process';
 import uuid from 'uuid/v4';
 import env from '@friends-library/env';
 import * as cloud from '@friends-library/cloud';
-import { c, log, red, green, yellow } from '@friends-library/cli-utils/color';
+import { c, log, red, green, yellow } from 'x-chalk';
+import { isDefined } from 'x-ts-utils';
 import { getAllFriends, Audio, Friend } from '@friends-library/friends';
 import * as docMeta from '@friends-library/document-meta';
-import { isDefined, AudioQuality } from '@friends-library/types';
+import { AudioQuality } from '@friends-library/types';
 import Client from './SoundCloudClient';
 
 interface Argv {

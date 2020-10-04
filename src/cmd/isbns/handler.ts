@@ -1,9 +1,8 @@
 import fs from 'fs';
 import { spawn, execSync } from 'child_process';
-import { c, log, red } from '@friends-library/cli-utils/color';
+import { c, log, red } from 'x-chalk';
 import { ISBN } from '@friends-library/types';
-import { getAllFriends } from '@friends-library/friends';
-import isbns from './isbns.json';
+import { getAllFriends, isbns } from '@friends-library/friends';
 
 const flags = [`next`, `makeImages`, `makeCsv`] as const;
 

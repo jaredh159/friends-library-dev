@@ -3,7 +3,7 @@ import { spawnSync } from 'child_process';
 import path from 'path';
 import convertHandler from '../handler';
 
-jest.mock(`@friends-library/cli-utils/color`);
+jest.mock(`x-chalk`);
 
 describe(`convertHandler()`, () => {
   it(`converts a docbook file to asciidoc`, () => {

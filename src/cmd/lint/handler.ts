@@ -3,7 +3,7 @@ import { langFromPath } from '../../lint/path';
 import lintFixPath from '../../lint/lint-fix-path';
 import lintPath from '../../lint/lint-path';
 import { printLints } from '../../lint/display';
-import { red, green, cyan } from '@friends-library/cli-utils/color';
+import { red, green, cyan } from 'x-chalk';
 
 interface LintCommandOptions {
   path: string;

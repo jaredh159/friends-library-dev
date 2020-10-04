@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 import parsePdf from 'pdf-parse';
 import { choosePrintSize } from '@friends-library/lulu';
-import { log, c, red } from '@friends-library/cli-utils/color';
+import { log, c, red } from 'x-chalk';
 import * as artifacts from '@friends-library/doc-artifacts';
 import {
   PageData,

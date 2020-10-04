@@ -3,7 +3,7 @@ import uuid from 'uuid/v4';
 import { spawnSync } from 'child_process';
 import { sync as glob } from 'glob';
 import { deleteNamespaceDir, dirs } from '@friends-library/doc-artifacts';
-import { red, green } from '@friends-library/cli-utils/color';
+import { red, green } from 'x-chalk';
 import { query as dpcQuery, FsDocPrecursor, hydrate } from '@friends-library/dpc-fs';
 import { Asciidoc } from '@friends-library/types';
 import { ensureDockerImage } from '../../docker';

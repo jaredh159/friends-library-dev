@@ -1,5 +1,5 @@
 import { spawnSync } from 'child_process';
-import { red, magenta } from '@friends-library/cli-utils/color';
+import { red, magenta } from 'x-chalk';
 
 export function ensureDockerImage(tag: string, dir: string): void {
   const opts = { cwd: dir };

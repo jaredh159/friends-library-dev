@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { sync as glob } from 'glob';
-import { red } from '@friends-library/cli-utils/color';
+import { red } from 'x-chalk';
 import { query as dpcQuery } from '@friends-library/dpc-fs';
 
 export default async function handler({ pattern }: { pattern: string }): Promise<void> {

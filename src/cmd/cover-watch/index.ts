@@ -1,7 +1,8 @@
 import fs from 'fs';
 import { CommandBuilder } from 'yargs';
 import { execSync } from 'child_process';
-import { green, magenta } from '@friends-library/cli-utils/color';
+import { green, magenta } from 'x-chalk';
+import env from '@friends-library/env';
 import { paperbackCoverFromProps } from '@friends-library/doc-manifests';
 import * as artifacts from '@friends-library/doc-artifacts';
 
@@ -10,10 +11,11 @@ export const command = `cover:watch`;
 export const describe = `watch for cover jobs`;
 
 export async function handler({ exec }: { exec: boolean }): Promise<void> {
-  const path = `${process.cwd()}/packages/cover-web-app/listen/cover.json`;
+  const { DEV_APPS_PATH } = env.require(`DEV_APPS_PATH`);
+  const path = `${DEV_APPS_PATH}/cover-web-app/listen/cover.json`;
 
   if (exec) {
-    const props = JSON.parse(fs.readFileSync(path, `UTF-8`));
+    const props = JSON.parse(fs.readFileSync(path, `utf8`));
     fs.unlinkSync(path);
     artifacts.deleteNamespaceDir(`fl-cover-watch`);
     const [coverManifest] = paperbackCoverFromProps(props);
@@ -28,7 +30,7 @@ export async function handler({ exec }: { exec: boolean }): Promise<void> {
   while (true) {
     if (fs.existsSync(path)) {
       magenta(`Received job, initiating...`);
-      execSync(`cd ${process.cwd()} && yarn fl cover:watch --exec`);
+      execSync(`node ${__dirname}/../../app.js cover:watch --exec`);
     }
     await new Promise((res) => setTimeout(res, 750));
   }

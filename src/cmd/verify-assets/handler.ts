@@ -3,7 +3,7 @@ import pLimit from 'p-limit';
 import env from '@friends-library/env';
 import { eachEdition } from '@friends-library/friends';
 import { AUDIO_QUALITIES } from '@friends-library/types';
-import { red, log, c } from '@friends-library/cli-utils/color';
+import { red, log, c } from 'x-chalk';
 import * as docMeta from '@friends-library/document-meta';
 
 export default async function handler(): Promise<void> {

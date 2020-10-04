@@ -1,8 +1,8 @@
 import { execSync } from 'child_process';
 import { CommandBuilder, Arguments } from 'yargs';
-import { deleteNamespaceDir } from '@friends-library/doc-artifacts';
 import fs from 'fs-extra';
-import path from 'path';
+import env from '@friends-library/env';
+import { deleteNamespaceDir } from '@friends-library/doc-artifacts';
 import { FsDocPrecursor, hydrate } from '@friends-library/dpc-fs';
 import { MakeOptions, makeDpc } from '../make/handler';
 import { builder as makeBuilder } from '../make';
@@ -33,10 +33,9 @@ export async function handler(
 }
 
 function dpcFromPath(doc: string): FsDocPrecursor {
-  const dpc = new FsDocPrecursor(
-    `${__dirname}/${doc}.adoc`,
-    `en/thomas-kite/ref-doc-${doc}/updated`,
-  );
+  const { DEV_APPS_PATH } = env.require(`DEV_APPS_PATH`);
+  const adocPath = `${DEV_APPS_PATH}/cli/src/cmd/make-ref/${doc}.adoc`;
+  const dpc = new FsDocPrecursor(adocPath, `en/thomas-kite/ref-doc-${doc}/updated`);
   dpc.documentId = `9986cb73-f240-4651-8c0c-636566f8c169`;
   dpc.revision = {
     timestamp: Math.floor(Date.now() / 1000),
@@ -52,6 +51,6 @@ function dpcFromPath(doc: string): FsDocPrecursor {
     },
   };
   dpc.customCode.css[`paperback-interior`] = `.sect1 { page-break-before: avoid; }`;
-  dpc.asciidoc = fs.readFileSync(path.resolve(__dirname, `${doc}.adoc`)).toString();
+  dpc.asciidoc = fs.readFileSync(adocPath).toString();
   return dpc;
 }

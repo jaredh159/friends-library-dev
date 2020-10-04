@@ -2,7 +2,7 @@ import fs from 'fs-extra';
 import { execSync } from 'child_process';
 import fetch from 'node-fetch';
 import memoize from 'lodash/memoize';
-import { log, c, red } from '@friends-library/cli-utils/color';
+import { log, c, red } from 'x-chalk';
 import * as docMeta from '@friends-library/document-meta';
 import env from '@friends-library/env';
 import { Sha, DocPrecursor, ArtifactType } from '@friends-library/types';

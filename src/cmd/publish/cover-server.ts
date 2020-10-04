@@ -1,16 +1,16 @@
 import puppeteer from 'puppeteer-core';
 import { exec, execSync } from 'child_process';
 import env from '@friends-library/env';
-import { green } from '@friends-library/cli-utils/color';
+import { green } from 'x-chalk';
 
 export async function start(): Promise<number> {
   const port = 51515;
-  const cwd = process.cwd();
+  const { DEV_APPS_PATH } = env.require(`DEV_APPS_PATH`);
   green(`Building cover app...`);
-  execSync(`cd ${cwd} && yarn cover:build`);
+  execSync(`cd ${DEV_APPS_PATH}/cover-web-app && npm run build`);
   green(`Serving cover app`);
   stop(port);
-  exec(`cd ${cwd}/packages/cli && yarn serve -l ${port} ../cover-web-app/build`);
+  exec(`serve -l ${port} ${DEV_APPS_PATH}/cover-web-app/dist`);
   await new Promise((res) => setTimeout(res, 1000));
   return port;
 }

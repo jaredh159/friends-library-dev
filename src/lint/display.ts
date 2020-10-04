@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import { LintResult } from '@friends-library/types';
-import { c, log, red, green, grey, yellow } from '@friends-library/cli-utils/color';
+import { c, log, red, green, grey, yellow } from 'x-chalk';
 import DirLints from './DirLints';
 
 export function printLints(lints: DirLints, limit: false | number = false): void {

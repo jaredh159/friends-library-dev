@@ -1,5 +1,5 @@
 import env from '@friends-library/env';
-import { red } from '@friends-library/cli-utils/color';
+import { red } from 'x-chalk';
 import fs from 'fs-extra';
 import path from 'path';
 

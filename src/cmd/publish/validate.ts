@@ -2,7 +2,7 @@ import path from 'path';
 import { execSync } from 'child_process';
 import fetch from 'node-fetch';
 import env from '@friends-library/env';
-import { red } from '@friends-library/cli-utils/color';
+import { red } from 'x-chalk';
 import { FsDocPrecursor } from '@friends-library/dpc-fs';
 import lintPath from '../../lint/lint-path';
 

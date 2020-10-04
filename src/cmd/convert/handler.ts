@@ -2,7 +2,7 @@ import fs from 'fs-extra';
 import uuid from 'uuid/v4';
 import { flow } from 'lodash';
 import { spawnSync } from 'child_process';
-import { red, green, cyan } from '@friends-library/cli-utils/color';
+import { red, green, cyan } from 'x-chalk';
 import { splitLines, refMutate, refUnmutate } from '@friends-library/adoc-utils';
 import * as hilkiah from '@friends-library/hilkiah';
 import { combineLines } from './combine';

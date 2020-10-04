@@ -11,7 +11,10 @@ declare module 'gmail-send' {
     files?: string | string[];
   }
   export interface SendFn {
-    (opts: SendOptions, cb?: (err: object | null, res?: string) => void): void;
+    (
+      opts: SendOptions,
+      cb?: (err: Record<string, unknown> | null, res?: string) => void,
+    ): void;
   }
   export default function (opts: SendOptions): SendFn;
 }

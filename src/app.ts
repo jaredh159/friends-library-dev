@@ -1,6 +1,6 @@
+// @ts-nocheck
 import '@friends-library/env/load';
 import yargs from 'yargs';
-import { prettifyErrors } from '@friends-library/cli-utils/error';
 import * as make from './cmd/make';
 import * as cover from './cmd/cover';
 import * as coverWatch from './cmd/cover-watch';
@@ -18,12 +18,9 @@ import * as publishRef from './cmd/make-ref';
 import * as docx from './cmd/docx';
 import * as verifyAssets from './cmd/verify-assets';
 
-prettifyErrors();
-
 /* eslint-disable  @typescript-eslint/no-unused-expressions */
 yargs
-  .scriptName(`yarn fl`)
-  // @ts-ignore
+  .scriptName(`fl`)
   .command(make)
   .command(verifyAssets)
   .command(cover)
