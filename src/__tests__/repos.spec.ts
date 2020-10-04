@@ -21,8 +21,7 @@ describe(`getBranchMap()`, () => {
 describe(`getRepos()`, () => {
   beforeEach(() => {
     jest.resetAllMocks();
-    (<jest.Mock>glob.sync).mockReturnValueOnce([`en/repo-1`, `en/repo-2`]);
-    (<jest.Mock>glob.sync).mockReturnValueOnce([`es/repo-3`]);
+    (<jest.Mock>glob.sync).mockReturnValueOnce([`en/repo-1`, `en/repo-2`, `es/repo-3`]);
   });
 
   it(`returns all dirs when no exclude`, async () => {

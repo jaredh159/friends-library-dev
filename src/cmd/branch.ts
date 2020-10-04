@@ -1,4 +1,4 @@
-import { log } from '@friends-library/cli-utils/color';
+import { log } from 'x-chalk';
 import { Options } from 'yargs';
 import chalk from 'chalk';
 import { Argv } from '../type';
@@ -18,7 +18,7 @@ export async function handler({ exclude }: Argv): Promise<void> {
   });
 }
 
-export const command = `branch`;
+export const command = [`branch`, `br`];
 
 export const describe = `Reports the current <HEAD> branch for all repos`;
 

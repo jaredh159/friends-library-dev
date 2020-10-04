@@ -1,5 +1,5 @@
 import { Options } from 'yargs';
-import { red, green } from '@friends-library/cli-utils/color';
+import { red, green } from 'x-chalk';
 import chalk from 'chalk';
 import { Argv } from '../type';
 import { getRepos, getStatusGroups } from '../repos';
@@ -19,7 +19,7 @@ export async function handler({ exclude, scope }: Argv): Promise<void> {
   });
 }
 
-export const command = `status`;
+export const command = [`status`, `s`];
 
 export const describe = `Reports the current status for all repos`;
 

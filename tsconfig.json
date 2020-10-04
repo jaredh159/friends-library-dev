@@ -1,11 +1,10 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "lib": ["es2017", "dom"],
-    "moduleResolution": "node",
-    "noEmit": true,
-    "incremental": false,
-    "target": "es2017"
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "downlevelIteration": true,
+    "skipLibCheck": true
   },
-  "references": [{ "path": "../cli-utils" }, { "path": "../env" }, { "path": "../types" }]
+  "exclude": ["./dist"]
 }

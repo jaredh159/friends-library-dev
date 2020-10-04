@@ -1,4 +1,4 @@
-import { green } from '@friends-library/cli-utils/color';
+import { green } from 'x-chalk';
 import { Options } from 'yargs';
 import { Argv as BaseArgv } from '../type';
 import { getRepos, getStatusGroups } from '../repos';

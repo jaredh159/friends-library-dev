@@ -1,4 +1,4 @@
-import { red } from '@friends-library/cli-utils/color';
+import { red } from 'x-chalk';
 import env from '@friends-library/env';
 import NodeGit from 'nodegit';
 import { Repo } from './type';

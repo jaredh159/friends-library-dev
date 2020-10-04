@@ -1,5 +1,4 @@
 import '@friends-library/env/load';
-import { prettifyErrors } from '@friends-library/cli-utils/error';
 import yargs from 'yargs';
 import * as branch from './cmd/branch';
 import * as status from './cmd/status';
@@ -11,11 +10,9 @@ import * as sync from './cmd/sync';
 import * as clone from './cmd/clone';
 import * as workflows from './cmd/workflows';
 
-prettifyErrors();
-
 // eslint-disable-next-line @typescript-eslint/no-unused-expressions
 yargs
-  .scriptName(`yarn fell`)
+  .scriptName(`fell`)
   .command(branch)
   .command(status)
   .command(checkout)
@@ -23,6 +20,7 @@ yargs
   // @ts-ignore
   .command(push)
   .command(sync)
+  // @ts-ignore
   .command(clone)
   // @ts-ignore
   .command(dlete)

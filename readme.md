@@ -2,32 +2,39 @@
 
 Group manipulation of friend repositories.
 
+> Note: all these examples assume you have a bash alias for the `fell` command, something
+> like:
+
+```bash
+alias fell='node /path/to/fell/dist/app.js "$@"'
+```
+
 ## Commands
 
 ```SHELL
-$ yarn fell branch
-$ yarn fell status
-$ yarn fell checkout -b feature-x
-$ yarn fell commit -m "my message"
-$ yarn fell push feature-x --open-pr
-$ yarn fell delete feature-x
-$ yarn fell sync # pull --rebase
-$ yarn fell clone
-$ yarn fell workflows
+$ fell branch
+$ fell status
+$ fell checkout -b feature-x
+$ fell commit -m "my message"
+$ fell push feature-x --open-pr
+$ fell delete feature-x
+$ fell sync # pull --rebase
+$ fell clone
+$ fell workflows
 ```
 
 _Exclude_ repos by passing strings, if these strings appear _anywhere in repo path_, that
 repo will be excluded:
 
 ```SHELL
-$ yarn fell branch --exclude wheeler
-$ yarn fell branch --exclude wheeler --exclude fox
+$ fell branch --exclude wheeler
+$ fell branch --exclude wheeler --exclude fox
 ```
 
 Or, you can _scope_ most command to repos on a specific branch, using the `--scope` flag:
 
 ```SHELL
-$ yarn fell commit -m "feature x is rad" --scope feature-x
+$ fell commit -m "feature x is rad" --scope feature-x
 ```
 
 ### `branch`
@@ -35,7 +42,7 @@ $ yarn fell commit -m "feature x is rad" --scope feature-x
 Reports the current HEAD branch for all repos.
 
 ```SHELL
-$ yarn fell branch
+$ fell branch
 ```
 
 ### `status [--scope]`
@@ -43,8 +50,8 @@ $ yarn fell branch
 Reports the current status for all repos.
 
 ```SHELL
-$ yarn fell status
-$ yarn fell status --scope master # only report repos on branch = `master`
+$ fell status
+$ fell status --scope master # only report repos on branch = `master`
 ```
 
 ### `checkout [-b] <branchname> [--exclude] [--scope]`
@@ -56,8 +63,8 @@ restricted by passing a `--scope` option, so that the command will only operate 
 that started on that branch.
 
 ```SHELL
-$ yarn fell checkout -b feature-x
-$ yarn fell checkout -b feature-x --scope master # only checkout if repo WAS `master`
+$ fell checkout -b feature-x
+$ fell checkout -b feature-x --scope master # only checkout if repo WAS `master`
 ```
 
 ### `commit --message "my commit message" [--exclude] [--scope]`
@@ -65,8 +72,8 @@ $ yarn fell checkout -b feature-x --scope master # only checkout if repo WAS `ma
 Stage everything `git add .` and commit to all repos.
 
 ```SHELL
-$ yarn fell commit --message "my message" --scope feature-x
-$ yarn fell commit -m "my message" # -m shorthand for message
+$ fell commit --message "my message" --scope feature-x
+$ fell commit -m "my message" # -m shorthand for message
 ```
 
 ### `push <branch> [--open-pr] [--pr-title] [--pr-body] [--delay]`
@@ -83,9 +90,9 @@ This helps prevent GitHub api abuse sensors, and gives time for the API to not b
 overwhelmed making pdf previews.
 
 ```SHELL
-$ yarn fell push feature-x --open-pr --pr-title "my rad pr!"
-$ yarn fell push master # push all repos straight to master
-$ yarn fell push feature-x --delay 120 # delay 2 minutes between each push
+$ fell push feature-x --open-pr --pr-title "my rad pr!"
+$ fell push master # push all repos straight to master
+$ fell push feature-x --delay 120 # delay 2 minutes between each push
 ```
 
 ### `delete <branch> [--exclude] [--scope]`
@@ -94,7 +101,7 @@ Delete branch from repos. Seems to always behave as if _forced_
 (`git branch -D <branch>`).
 
 ```SHELL
-$ yarn fell delete feature-x  # delete all `feature-x` branch
+$ fell delete feature-x  # delete all `feature-x` branch
 ```
 
 ### `sync [--exclude] [--scope]`
@@ -103,13 +110,13 @@ Sync local repos with `origin/master`. Similar to `git pull --rebase`. Only oper
 repos with clean statuses. Should only do fast-forward merges.
 
 ```SHELL
-$ yarn fell sync
-$ yarn fell sync --exclude wheeler
-$ yarn fell sync --scope feature-x
+$ fell sync
+$ fell sync --exclude wheeler
+$ fell sync --scope feature-x
 ```
 
 ### `workflows [--exclude]`
 
-Update all non-excluded repos with github action workflow files from
-`actions/workflows/*.yml`. Allows for mass-updates of github actions for all doc repos.
-Usually combined with `yarn fell commit` and `yarn fell push`
+Update all non-excluded repos with github action workflow files from `workflows/*.yml`.
+Allows for mass-updates of github actions for all doc repos. Usually combined with
+`fell commit` and `fell push`

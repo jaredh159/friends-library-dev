@@ -1,14 +1,12 @@
-import { isNotFalse } from '@friends-library/types';
-import path from 'path';
-import glob from 'glob';
+import { sync as glob } from 'glob';
+import { isNotFalse } from 'x-ts-utils';
+import env from '@friends-library/env';
 import { Repo } from './type';
 import * as git from './git';
 
 export async function getRepos(exclude: string[], branch?: string): Promise<string[]> {
-  const cwd = process.cwd();
-  const enRepos = glob.sync(path.resolve(cwd, `en`, `*`));
-  const esRepos = glob.sync(path.resolve(cwd, `es`, `*`));
-  const repos = [...enRepos, ...esRepos];
+  const { DOCS_REPOS_ROOT: ROOT } = env.require(`DOCS_REPOS_ROOT`);
+  const repos = glob(`${ROOT.replace(/\/$/, ``)}/{en,es}/*`);
   const notExcluded = repos.filter((repo) => {
     return exclude.reduce((bool, str) => {
       return bool === false ? false : repo.indexOf(str) === -1;
@@ -24,9 +22,7 @@ export async function getRepos(exclude: string[], branch?: string): Promise<stri
   );
 
   return branches
-    .map((repoBranch, index) => {
-      return repoBranch === branch ? notExcluded[index] : false;
-    })
+    .map((repoBranch, idx) => (repoBranch === branch ? notExcluded[idx] : false))
     .filter(isNotFalse);
 }
 
@@ -38,11 +34,7 @@ export async function getStatusGroups(
   await Promise.all(
     repos.map(async (repo) => {
       const isClean = await git.isStatusClean(repo);
-      if (isClean) {
-        clean.push(repo);
-      } else {
-        dirty.push(repo);
-      }
+      isClean ? clean.push(repo) : dirty.push(repo);
     }),
   );
   return { dirty, clean };

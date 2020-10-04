@@ -25,16 +25,6 @@ export async function openPullRequest(
   }
 }
 
-export async function getFriendRepos(): Promise<
-  { name: string; ssh_url: string; clone_url: string; full_name: string }[]
-> {
-  const gh = getClient();
-  let enRepos = await gh.paginate(`/orgs/friends-library/repos`);
-  enRepos = enRepos.filter((repo) => repo.name !== `friends-library`);
-  const esRepos = await gh.paginate(`/orgs/biblioteca-de-los-amigos/repos`);
-  return [...enRepos, ...esRepos];
-}
-
 function getClient(): Octokit {
   const { FELL_GITHUB_TOKEN } = env.require(`FELL_GITHUB_TOKEN`);
   return new Octokit({
