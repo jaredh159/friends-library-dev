@@ -207,18 +207,6 @@ export type NewsFeedType =
   | `feature`
   | `chapter`;
 
-export function isDefined<T>(x: T | undefined): x is T {
-  return typeof x !== `undefined`;
-}
-
-export function isNotNull<T>(x: T | null): x is T {
-  return x !== null;
-}
-
-export function isNotFalse<T>(x: T | false): x is T {
-  return x !== false;
-}
-
 export function isPrintSize(x: unknown): x is PrintSize {
   if (typeof x !== `string`) {
     return false;
@@ -250,19 +238,6 @@ export const HTML_DEC_ENTITIES = {
   ELLIPSES: `&#8230;`,
   NON_BREAKING_SPACE: `&#160;`,
 };
-
-// identity passthrough tagged template literal for getting vscode syntax
-// highlighting for stuff like css`` and graphql``
-export function syntax(
-  strings: TemplateStringsArray,
-  ...values: (string | number)[]
-): string {
-  let str = ``;
-  strings.forEach((string, i) => {
-    str += string + (values[i] || ``);
-  });
-  return str;
-}
 
 export {
   ISBN,
