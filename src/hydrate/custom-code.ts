@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import { sync as glob } from 'glob';
 import { DocPrecursor } from '@friends-library/types';
+import { sync as glob } from 'glob';
 import FsDocPrecursor from '../FsDocPrecursor';
 
 export default function customCode(dpc: FsDocPrecursor): void {

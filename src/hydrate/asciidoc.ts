@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { sync as glob } from 'glob';
-import FsDocPrecursor from '../FsDocPrecursor';
 import { Asciidoc } from '@friends-library/types';
+import FsDocPrecursor from '../FsDocPrecursor';
 
 interface AsciidocMutator {
   (adoc: Asciidoc, path: string, idx: number): Asciidoc;
