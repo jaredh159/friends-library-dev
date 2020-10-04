@@ -1,0 +1,5 @@
+.github/
+tsconfig.tsbuildinfo
+jest.config.js
+**/__tests__/*
+./dist/scripts/

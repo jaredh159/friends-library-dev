@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-nocheck
 import myRule from '../my-slug';
 
 const opts = { lang: `en` as const };

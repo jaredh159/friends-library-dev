@@ -1,17 +1,12 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": { "*": ["types/*"] },
     "declaration": true,
     "outDir": "./dist",
     "rootDir": "./src",
-    "composite": true
+    "module": "CommonJS",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "target": "ES2019"
   },
-  "include": ["./src"],
-  "references": [
-    { "path": "../types" },
-    { "path": "../hilkiah" },
-    { "path": "../adoc-utils" }
-  ]
+  "exclude": ["./scripts", "./dist"]
 }

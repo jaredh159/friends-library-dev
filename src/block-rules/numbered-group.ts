@@ -1,12 +1,6 @@
 import { Asciidoc, LintResult } from '@friends-library/types';
 import { BlockRule } from '../types';
 
-interface Delimiter {
-  line: number;
-  type: 'start' | 'end';
-  flagged: boolean;
-}
-
 const rule: BlockRule = (block: Asciidoc): LintResult[] => {
   const lints: LintResult[] = [];
   let withinNumberedGroup = false;

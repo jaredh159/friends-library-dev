@@ -2,21 +2,31 @@
   "name": "@friends-library/adoc-lint",
   "version": "1.0.0",
   "author": "Jared Henderson <jared@netrivet.com>",
+  "repository": "github:friends-library-dev/adoc-lint",
+  "description": "linting of asciidoc for FLP",
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
   "browser": {
-    "./dist/character-name.js": "./dist/character-name.browser.js"
+    "./dist/index.js": "./src/index.ts",
+    "./dist/character-name.js": "./dist/character-name.browser.js",
+    "./src/character-name.ts": "./src/character-name.browser.ts"
   },
   "scripts": {
-    "compile": "cd ../../ && yarn compile adoc-lint",
     "scaffold:lint": "yarn ts-node ./scripts/scaffold-lint.ts",
-    "test": "cd ../../ && yarn jest packages/adoc-lint"
+    "test": "fldev test",
+    "test:watch": "fldev test:watch",
+    "lint": "fldev lint",
+    "lint:fix": "fldev lint:fix",
+    "ts:check": "fldev ts:check",
+    "format": "fldev format",
+    "compile": "fldev ts:compile",
+    "prepublishOnly": "npm run compile"
   },
   "dependencies": {
     "@asciidoctor/core": "^2.0.2",
-    "@friends-library/adoc-utils": "1.0.0",
-    "@friends-library/hilkiah": "1.0.0",
-    "@friends-library/types": "1.0.0",
+    "@friends-library/adoc-utils": "^1.0.0",
+    "@friends-library/hilkiah": "^1.0.0",
+    "@friends-library/types": "^1.0.0",
     "escape-string-regexp": "^2.0.0",
     "roman-numerals": "^0.3.2",
     "strip-indent": "^3.0.0",
@@ -24,6 +34,9 @@
     "uuid": "^3.3.3"
   },
   "devDependencies": {
+    "@friends-library/dev": "^4.1.6",
+    "@types/jest": "^26.0.14",
+    "@types/lodash": "^4.14.161",
     "@types/roman-numerals": "^0.3.0"
   }
 }
