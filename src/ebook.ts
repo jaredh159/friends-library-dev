@@ -3,10 +3,10 @@ import Zip from 'node-zip';
 // @ts-ignore
 import epubCheck from 'epub-check';
 import fs from 'fs-extra';
+import { red } from 'x-chalk';
 import { FileManifest } from '@friends-library/types';
 import { dirs } from './dirs';
 import { EbookOptions } from './types';
-import { red } from '@friends-library/cli-utils/color';
 
 export async function writeEbookManifest(
   manifest: FileManifest,

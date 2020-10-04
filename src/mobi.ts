@@ -4,7 +4,7 @@ import { FileManifest } from '@friends-library/types';
 import env from '@friends-library/env';
 import { EbookOptions } from './types';
 import { writeEbookManifest } from './ebook';
-import { red } from '@friends-library/cli-utils/color';
+import { red } from 'x-chalk';
 
 export default async function mobi(
   manifest: FileManifest,

@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 import { spawn } from 'child_process';
 import env from '@friends-library/env';
-import { yellow } from '@friends-library/cli-utils/color';
+import { yellow } from 'x-chalk';
 import { FileManifest } from '@friends-library/types';
 import { PdfOptions } from './types';
 import { dirs } from './dirs';

@@ -2,21 +2,29 @@
   "name": "@friends-library/doc-artifacts",
   "version": "1.0.0",
   "description": "create filesystem final artifacts for consumables from manifests",
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
+  "browser": false,
   "author": "Jared Henderson <jared@netrivet.com>",
   "license": "MIT",
   "scripts": {
-    "compile": "cd ../../ && yarn compile doc-artifacts"
+    "test": "true",
+    "lint": "fldev lint",
+    "lint:fix": "fldev lint:fix",
+    "ts:check": "fldev ts:check",
+    "format": "fldev format",
+    "compile": "fldev ts:compile",
+    "prepublishOnly": "npm run compile"
   },
   "dependencies": {
-    "@friends-library/cli-utils": "1.0.0",
-    "@friends-library/env": "1.0.0",
-    "@friends-library/types": "1.0.0",
+    "@friends-library/env": "^1.2.0",
+    "@friends-library/types": "^1.1.1",
     "epub-check": "^0.3.0",
-    "fs-extra": "^8.1.0",
-    "node-zip": "^1.1.1"
+    "fs-extra": "^9.0.1",
+    "node-zip": "^1.1.1",
+    "x-chalk": "^1.0.1"
   },
   "devDependencies": {
-    "@types/fs-extra": "^8.0.0"
+    "@friends-library/dev": "^4.1.6",
+    "@types/fs-extra": "^9.0.1"
   }
 }
