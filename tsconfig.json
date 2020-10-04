@@ -1,11 +1,10 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "declaration": true,
-    "outDir": "./dist",
     "rootDir": "./src",
-    "composite": true
-  },
-  "include": ["./src"],
-  "references": [{ "path": "../types" }, { "path": "../env" }]
+    "outDir": "./dist",
+    "declaration": true,
+    "target": "ES2019",
+    "module": "CommonJS",
+    "incremental": true
+  }
 }

@@ -1,7 +1,7 @@
-import env from '@friends-library/env';
-import { Url, isDefined } from '@friends-library/types';
+import { isDefined } from 'x-ts-utils';
 import * as AWS from 'aws-sdk';
-import fs from 'fs-extra';
+import env from '@friends-library/env';
+import * as fs from 'fs';
 import { extname } from 'path';
 
 type LocalFilePath = string;
@@ -56,7 +56,7 @@ export async function uploadFile(
   localFilePath: LocalFilePath,
   cloudFilePath: CloudFilePath,
   opts: { delete: boolean } = { delete: false },
-): Promise<Url> {
+): Promise<string> {
   const { CLOUD_STORAGE_BUCKET_URL, CLOUD_STORAGE_BUCKET } = env.require(
     `CLOUD_STORAGE_BUCKET_URL`,
     `CLOUD_STORAGE_BUCKET`,
@@ -77,7 +77,7 @@ export async function uploadFile(
           return;
         }
         if (opts.delete) {
-          fs.removeSync(localFilePath);
+          fs.unlinkSync(localFilePath);
         }
         resolve(`${CLOUD_STORAGE_BUCKET_URL}/${cloudFilePath}`);
       },
@@ -88,7 +88,7 @@ export async function uploadFile(
 export async function uploadFiles(
   files: Map<LocalFilePath, CloudFilePath>,
   opts: { delete: boolean } = { delete: false },
-): Promise<Url[]> {
+): Promise<string[]> {
   const { CLOUD_STORAGE_BUCKET_URL } = env.require(`CLOUD_STORAGE_BUCKET_URL`);
   const promises = [...files].map(([localPath, cloudPath]) =>
     uploadFile(localPath, cloudPath, opts),
