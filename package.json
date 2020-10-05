@@ -2,11 +2,22 @@
   "name": "@friends-library/locale",
   "version": "1.0.0",
   "description": "localization, translation, etc.",
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
+  "browser": "./src/index.ts",
   "author": "Jared Henderson <jared@netrivet.com>",
+  "repository": "github:friends-library-dev/locale",
   "license": "MIT",
   "scripts": {
-    "test": "cd ../.. && yarn jest packages/locale",
-    "compile": "cd ../../ && yarn compile locale"
+    "test": "true",
+    "lint": "fldev lint",
+    "lint:fix": "fldev lint:fix",
+    "ts:check": "fldev ts:check",
+    "format": "fldev format",
+    "compile": "fldev ts:compile",
+    "prepublishOnly": "npm run compile"
+  },
+  "devDependencies": {
+    "@friends-library/dev": "^4.1.6",
+    "@friends-library/types": "^1.1.2"
   }
 }
