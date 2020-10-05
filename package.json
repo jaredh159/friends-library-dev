@@ -1,10 +1,11 @@
 {
-  "name": "@friends-library/color",
+  "name": "@friends-library/theme",
   "version": "1.0.0",
-  "description": "FLP color",
+  "description": "friends library theme, color, etc.",
   "main": "./dist/index.js",
   "browser": "./src/index.ts",
   "author": "Jared Henderson <jared@netrivet.com>",
+  "repository": "github:friends-library-dev/theme",
   "license": "MIT",
   "sideEffects": false,
   "scripts": {
