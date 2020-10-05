@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import { connect } from 'react-redux';
 import { SearchResult as SearchResultType, Dispatch } from '../../type';
 import SearchResultActions from './SearchResultActions';

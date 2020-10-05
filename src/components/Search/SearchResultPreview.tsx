@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import { Html } from '@friends-library/types';
 import { SearchResult, SearchResultContext, Dispatch } from '../../type';
 

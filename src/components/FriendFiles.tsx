@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import cx from 'classnames';
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import { FilePath, Uuid } from '@friends-library/types';
 import { Dispatch, State as AppState } from '../type';
 import * as actions from '../actions';

@@ -1,6 +1,6 @@
 import { SavedState } from '../type';
 
-export default function migrate(state: SavedState): SavedState {
+export default function migrate(state: Partial<SavedState>): Partial<SavedState> {
   const { tasks, version } = state;
   if (version > 1) {
     return state;

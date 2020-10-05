@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import Button from './Button';
 
 const Div = styled.div`
@@ -42,7 +42,7 @@ const Div = styled.div`
 const Component: React.FC = () => {
   const url = [
     `https://github.com/login/oauth/authorize`,
-    `?client_id=${process.env.REACT_APP_OAUTH_CLIENT_ID || ``}`,
+    `?client_id=${process.env.OAUTH_CLIENT_ID || ``}`,
     `&scope=repo,read:user`,
     `&state=894c5e7f-c83f-4bd3-b299-47b754d9b506`,
   ].join(``);

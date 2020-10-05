@@ -27,7 +27,7 @@ const noopEditor = new Proxy(
   },
 );
 
-const ChooseAFile: React.FC<{}> = () => (
+const ChooseAFile: React.FC = () => (
   <Centered>
     <p style={{ opacity: 0.5 }}>
       <span role="img" aria-label="left">
@@ -167,7 +167,8 @@ const mapState = (state: State): Omit<StateProps, 'size'> => {
   const file = task.files[task.editingFile || ``];
   return {
     lintOptions: editorSubsetLintOptions(file ? file.path : ``),
-    githubUser: state.github.token ? state.github.user : ``,
+    // @ts-ignore
+    githubUser: state.github.token !== null ? state.github.user : ``,
     fontSize: state.prefs.editorFontSize,
     searching: state.search.searching,
     adoc: file ? file.editedContent || file.content : undefined,

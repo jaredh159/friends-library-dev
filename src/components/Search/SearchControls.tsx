@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch, State as AppState } from '../../type';
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import debounce from 'lodash/debounce';
 import Button from '../Button';
 import * as actions from '../../actions';

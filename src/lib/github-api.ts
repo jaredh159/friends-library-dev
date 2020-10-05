@@ -5,12 +5,7 @@ import { Task, File } from '../type';
 
 const isDev = process.env.NODE_ENV === `development`;
 
-let GITHUB_ORG = `friends-library`;
-if (process.env.REACT_APP_GITHUB_ORG) {
-  GITHUB_ORG = process.env.REACT_APP_GITHUB_ORG;
-} else if (process.env.REACT_APP_NETLIFY_CONTEXT === `deploy-preview` || isDev) {
-  GITHUB_ORG = `friends-library-sandbox`;
-}
+const GITHUB_ORG = process.env.GITHUB_ORG || `friends-library`;
 export const ORG = GITHUB_ORG;
 export const LANG: Lang = ORG === `biblioteca-de-los-amigos` ? `es` : `en`;
 

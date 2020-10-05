@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import { searchedFiles, currentTaskFriendName, requireCurrentTask } from '../../select';
 import { State } from '../../type';
 import { EditionType } from '@friends-library/types';

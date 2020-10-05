@@ -1,12 +1,14 @@
 import React from 'react';
 import debounce from 'lodash/debounce';
 import { connect } from 'react-redux';
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import { Global, css } from '@emotion/core';
 import { Uuid, Html } from '@friends-library/types';
 import { State as AppState } from '../../type';
 import chapterHtml from '../../lib/chapter-html';
 import Centered from '../Centered';
+
+// @ts-ignore
 import throbber from '../../assets/throbber.gif';
 
 const Rendered = styled.div`

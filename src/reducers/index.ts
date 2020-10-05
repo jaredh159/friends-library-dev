@@ -17,5 +17,5 @@ export default {
   prefs,
   search,
   network,
-  version: () => 2,
+  version: (): number => 2,
 };

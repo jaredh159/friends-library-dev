@@ -20,9 +20,9 @@ const defaultState: State = {
   network: [],
 };
 
-async function loadState(): Promise<State | {}> {
+async function loadState(): Promise<Partial<State> | null> {
   try {
-    let state = (await localForage.getItem(`jones`)) as SavedState;
+    let state = (await localForage.getItem(`jones`)) as Partial<SavedState>;
     state = state || getLegacyState() || {};
     state = migrate(state);
     return {
@@ -34,7 +34,7 @@ async function loadState(): Promise<State | {}> {
       },
     };
   } catch (err) {
-    return {};
+    return null;
   }
 }
 
@@ -80,20 +80,10 @@ export default async function (): Promise<any> {
     });
   });
 
-  // @ts-ignore
-  if (module.hot) {
-    // @ts-ignore
-    module.hot.accept(`./reducers`, () => {
-      // eslint-disable global-require
-      const nextReducer = require(`./reducers`).default;
-      store.replaceReducer(nextReducer);
-    });
-  }
-
   return store;
 }
 
-function getLegacyState(): Record<string, any> | null {
+function getLegacyState(): SavedState | null {
   const serialized = localStorage.getItem(`jones`);
   if (serialized == null) {
     return null;

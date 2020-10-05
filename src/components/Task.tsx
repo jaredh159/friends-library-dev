@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import moment from 'moment';
 import uuid from 'uuid/v4';
 import smalltalk from 'smalltalk';

@@ -15,9 +15,10 @@ export function deleteTask(id: Uuid): ReduxThunk {
 
     const { tasks, repos, github } = getState();
     const task = tasks.present[id];
-    if (!task || !github.token) {
+    if (github.token === null || !task) {
       return;
     }
+    github;
 
     const repo = repos.find((r) => r.id === task.repoId);
     if (!repo) {
@@ -25,6 +26,7 @@ export function deleteTask(id: Uuid): ReduxThunk {
     }
 
     try {
+      // @ts-ignore
       gh.deleteBranch(github.user, repo.slug, `task-${id}`);
     } catch {
       // ¯\_(ツ)_/¯
@@ -68,6 +70,7 @@ export function submitTask(task: Task): ReduxThunk {
     dispatch({ type: `SUBMITTING_TASK` });
     const pr = await tryGithub(
       async () => {
+        // @ts-ignore
         return await gh.createNewPullRequest(fixedTask, github.user);
       },
       `SUBMIT_TASK`,
@@ -184,6 +187,7 @@ interface Named {
 export function fetchFriendRepos(): ReduxThunk {
   return async (dispatch: Dispatch) => {
     dispatch({ type: `REQUEST_FRIEND_REPOS` });
+    console.log({ gh });
     let repos;
     try {
       const friendRepos = (await gh.getFriendRepos()) as Named[];

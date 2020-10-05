@@ -1,37 +1,21 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "types": ["@emotion/core"],
+    "target": "ES2019",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "lib": ["ES2017", "dom"],
+    "strict": false,
+    "noEmit": true,
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "noUnusedLocals": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
+    "noImplicitAny": false,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
     "jsx": "preserve",
-    "plugins": [
-      {
-        "name": "typescript-styled-plugin",
-        "lint": {
-          "unknownProperties": "ignore"
-        }
-      }
-    ]
-  },
-  "include": ["src"],
-  "exclude": ["src/**/__tests__/**"],
-  "references": [
-    { "path": "../types" },
-    { "path": "../adoc-lint" },
-    { "path": "../adoc-convert" },
-    { "path": "../doc-css" },
-    { "path": "../doc-html" }
-  ]
+    "typeRoots": ["node_modules/@types", "./src/types"],
+    "rootDir": "./src"
+  }
 }

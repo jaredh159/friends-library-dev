@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import * as actions from '../actions';
 import * as gh from '../lib/github-api';
 import fox from '../assets/george-fox.png';
@@ -101,7 +101,12 @@ const mapState = (state: AppState): Omit<Props, 'requestGitHubUser' | 'logout'> 
     throw new Error(`No github token found`);
   }
   return {
-    ...state.github,
+    ...(state.github as {
+      token: string;
+      name?: string;
+      avatar: string;
+      user: string;
+    }),
     screen: state.screen,
     throbbing: state.network.length > 0,
   };

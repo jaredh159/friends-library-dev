@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import { Task, Dispatch, State as AppState } from '../type';
 import { requireCurrentTask } from '../select';
 import * as actions from '../actions';

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import KeyEvent from 'react-keyboard-event-handler';
 import { Task, Dispatch, State as AppState } from '../type';
 import { requireCurrentTask } from '../select';
