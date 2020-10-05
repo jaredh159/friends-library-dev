@@ -1,0 +1,22 @@
+{
+  "name": "@friends-library/color",
+  "version": "1.0.0",
+  "description": "FLP color",
+  "main": "./dist/index.js",
+  "browser": "./src/index.ts",
+  "author": "Jared Henderson <jared@netrivet.com>",
+  "license": "MIT",
+  "sideEffects": false,
+  "scripts": {
+    "test": "true",
+    "lint": "fldev lint",
+    "lint:fix": "fldev lint:fix",
+    "ts:check": "fldev ts:check",
+    "format": "fldev format",
+    "compile": "fldev ts:compile",
+    "prepublishOnly": "npm run compile"
+  },
+  "devDependencies": {
+    "@friends-library/dev": "^4.1.6"
+  }
+}
