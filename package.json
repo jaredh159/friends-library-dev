@@ -2,15 +2,28 @@
   "name": "@friends-library/db",
   "version": "1.0.0",
   "description": "db stuff",
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
+  "browser": false,
   "author": "Jared Henderson <jared@netrivet.com>",
+  "repository": "github:friends-library-dev/db",
   "license": "MIT",
   "scripts": {
-    "test": "cd ../.. && yarn jest packages/db",
-    "compile": "cd ../../ && yarn compile db"
+    "test": "true",
+    "lint": "fldev lint",
+    "lint:fix": "fldev lint:fix",
+    "ts:check": "fldev ts:check",
+    "format": "fldev format",
+    "compile": "fldev ts:compile",
+    "prepublishOnly": "npm run compile"
   },
   "dependencies": {
-    "@friends-library/slack": "1.0.0",
-    "node-fetch": "^2.6.0"
+    "@friends-library/slack": "^1.0.0",
+    "node-fetch": "^2.6.0",
+    "x-syntax": "^1.0.0"
+  },
+  "devDependencies": {
+    "@friends-library/dev": "^4.1.6",
+    "@friends-library/types": "^1.1.2",
+    "@types/node-fetch": "^2.5.7"
   }
 }

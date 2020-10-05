@@ -1,4 +1,4 @@
-import { syntax as graphql } from '@friends-library/types';
+import graphql from 'x-syntax';
 import { Db } from './types';
 import Client from './Client';
 

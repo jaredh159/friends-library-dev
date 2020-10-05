@@ -1,4 +1,5 @@
-import { syntax as graphql, Uuid, PrintJobStatus } from '@friends-library/types';
+import graphql from 'x-syntax';
+import { Uuid, PrintJobStatus } from '@friends-library/types';
 import { Db } from './types';
 import Client from './Client';
 
