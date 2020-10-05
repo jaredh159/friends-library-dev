@@ -1,0 +1,5 @@
+#GettingStartedLinkBlock,
+#GettingStartedLinkBlock::before,
+#GettingStartedLinkBlock::after {
+  background-position: center bottom;
+}

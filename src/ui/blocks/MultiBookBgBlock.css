@@ -1,0 +1,6 @@
+#MultiBookBgBlock.bright,
+#MultiBookBgBlock.bright::before,
+#MultiBookBgBlock.bright::after {
+  background-size: 826px 625px;
+  background-repeat: repeat;
+}
