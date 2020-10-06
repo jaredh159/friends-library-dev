@@ -1,6 +1,6 @@
 {
   "name": "@friends-library/cover-component",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "paperback cover react component",
   "main": "./dist/index.js",
   "browser": "./src/index.web.ts",
