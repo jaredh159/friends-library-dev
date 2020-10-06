@@ -1,7 +1,7 @@
 import React from 'react';
 import { ThreeD } from '@friends-library/cover-component';
-import { LANG } from '../env';
 import { PrintSize, EditionType, ISBN, CoverProps } from '@friends-library/types';
+import { LANG } from '../env';
 
 export interface CoverData {
   title: string;

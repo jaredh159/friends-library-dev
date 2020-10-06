@@ -8,14 +8,9 @@ import {
   Heading,
   Lang,
 } from '@friends-library/types';
-import {
-  DocBlock,
-  ListenBlock,
-  BookTeaserCards,
-  makeScroller,
-} from '@friends-library/ui';
-import { Layout, Seo } from '../components';
-import ExploreBooksBlock from '../components/ExploreBooksBlock';
+import { DocBlock, ListenBlock, BookTeaserCards, makeScroller } from '../components';
+import { Layout, Seo } from '../components/data';
+import ExploreBooksBlock from '../components/data/ExploreBooksBlock';
 import { SiteMetadata } from '../types';
 import { LANG } from '../env';
 import { bookPageMetaDesc } from '../lib/seo';

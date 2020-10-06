@@ -5,8 +5,8 @@ import {
   FluidImageObject,
   NewsFeedType,
 } from '@friends-library/types';
-import Layout from '../components/Layout';
-import ExploreBooksBlock from '../components/ExploreBooksBlock';
+import Layout from '../components/data/Layout';
+import ExploreBooksBlock from '../components/data/ExploreBooksBlock';
 import { LANG } from '../env';
 import { SiteMetadata } from '../types';
 import {
@@ -17,7 +17,7 @@ import {
   HomeFeaturedBooksBlock,
   HomeFormatsBlock,
   NewsFeedBlock,
-} from '@friends-library/ui';
+} from '../components';
 import { coverPropsFromQueryData } from '../lib/covers';
 
 const HomePage: React.FC<Props> = ({ data }) => {

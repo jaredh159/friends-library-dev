@@ -1,4 +1,4 @@
-import '../ui/src/Tailwind.css';
+import './src/css/tailwind.css';
 
 export function onClientEntry() {
   // polyfill document.querySelectorAll().forEach support

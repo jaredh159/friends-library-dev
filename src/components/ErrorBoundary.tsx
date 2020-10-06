@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dual } from '@friends-library/ui';
+import Dual from './Dual';
 import { NODE_ENV } from '../env';
 
 interface State {

@@ -4,15 +4,9 @@ import { FluidBgImageObject } from '@friends-library/types';
 import { t } from '@friends-library/locale';
 import { coverPropsFromQueryData, CoverData } from '../lib/covers';
 import { PAGE_META_DESCS } from '../lib/seo';
-import { LANG } from '../env';
-import {
-  Dual,
-  Stack,
-  Audiobook,
-  AudiobooksHero,
-  BookTeaserCard,
-} from '@friends-library/ui';
-import { Layout, Seo } from '../components';
+import { LANG } from '../components/env';
+import { Dual, Stack, Audiobook, AudiobooksHero, BookTeaserCard } from '../components';
+import { Layout, Seo } from '../components/data';
 
 type AudioBookNode = CoverData & {
   authorUrl: string;

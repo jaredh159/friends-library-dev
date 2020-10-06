@@ -1,5 +1,5 @@
 import React from 'react';
-import { SlideoverMenu } from '@friends-library/ui';
+import SlideoverMenu from './SlideoverMenu';
 import './Slideover.css';
 
 interface Props {

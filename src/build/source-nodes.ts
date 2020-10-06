@@ -6,7 +6,7 @@ import { allFriends } from '@friends-library/friends';
 import { price } from '@friends-library/lulu';
 import { fetch } from '@friends-library/document-meta';
 import { query, hydrate } from '@friends-library/dpc-fs';
-import { red } from '@friends-library/cli-utils/color';
+import { red } from 'x-chalk';
 import { htmlShortTitle, htmlTitle } from '@friends-library/adoc-convert';
 import { allDocsMap, justHeadings } from './helpers';
 import { getDpcCache, persistDpcCache, EditionCache } from './dpc-cache';

@@ -3,8 +3,8 @@ import cx from 'classnames';
 import { MDXProvider } from '@mdx-js/react';
 import { graphql } from 'gatsby';
 import { MDXRenderer } from 'gatsby-plugin-mdx';
-import BooksBgBlock from '../components/BooksBgBlock';
-import { Layout, Seo } from '../components';
+import BooksBgBlock from '../components/data/BooksBgBlock';
+import { Layout, Seo } from '../components/data';
 import { SiteMetadata } from '../types';
 
 interface Props {

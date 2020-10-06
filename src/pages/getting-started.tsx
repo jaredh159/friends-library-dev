@@ -8,13 +8,13 @@ import {
   Heading,
   Dual,
   makeScroller,
-} from '@friends-library/ui';
+} from '../components';
 import { SiteMetadata } from '../types';
-import { LANG } from '../env';
+import { LANG } from '../components/env';
 import { PAGE_META_DESCS } from '../lib/seo';
-import { Layout, Seo } from '../components';
-import GettingStartedPaths from '../components/GettingStartedPaths';
-import BooksBgBlock from '../components/BooksBgBlock';
+import { Layout, Seo } from '../components/data';
+import GettingStartedPaths from '../components/data/GettingStartedPaths';
+import BooksBgBlock from '../components/data/BooksBgBlock';
 
 interface Props {
   data: {

@@ -5,9 +5,9 @@ import {
   HomeGettingStartedBlock,
   ExploreAltSiteBlock,
   NotFoundHeroBlock,
-} from '@friends-library/ui';
-import Layout from '../components/Layout';
-import ExploreBooksBlock from '../components/ExploreBooksBlock';
+} from '../components';
+import Layout from '../components/data/Layout';
+import ExploreBooksBlock from '../components/data/ExploreBooksBlock';
 import { APP_ALT_URL, LANG } from '../env';
 import { SiteMetadata } from '../types';
 

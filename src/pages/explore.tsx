@@ -13,9 +13,9 @@ import {
   ExploreAltSiteBlock,
   ExploreSearchBlock,
   Dual,
-} from '@friends-library/ui';
-import { Layout, Seo } from '../components';
-import BooksBgBlock from '../components/BooksBgBlock';
+} from '../components';
+import { Layout, Seo } from '../components/data';
+import BooksBgBlock from '../components/data/BooksBgBlock';
 import { SiteMetadata } from '../types';
 import { PAGE_META_DESCS } from '../lib/seo';
 import { coverPropsFromQueryData, CoverData } from '../lib/covers';

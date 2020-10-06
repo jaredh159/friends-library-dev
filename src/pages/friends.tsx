@@ -8,10 +8,10 @@ import {
   FriendsPageControlsBlock,
   FriendCard,
   Stack,
-} from '@friends-library/ui';
-import { LANG } from '../env';
+} from '../components';
+import { LANG } from '../components/env';
 import { PAGE_META_DESCS } from '../lib/seo';
-import { Seo, Layout } from '../components';
+import { Seo, Layout } from '../components/data';
 
 const FriendsPage: React.FC<Props> = ({
   data: { allFriend, recent, street, village },

@@ -10,9 +10,9 @@ import {
   TestimonialsBlock,
   BookTeaserCards,
   MapBlock,
-} from '@friends-library/ui';
+} from '../components';
 import { coverPropsFromQueryData, CoverData } from '../lib/covers';
-import { Layout, Seo } from '../components';
+import { Layout, Seo } from '../components/data';
 import { LANG } from '../env';
 import { friendPageMetaDesc } from '../lib/seo';
 import './FriendPage.css';
