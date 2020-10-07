@@ -22,8 +22,8 @@
   "dependencies": {
     "@babel/core": "^7.11.6",
     "@friends-library/cover-component": "^1.0.0",
-    "@friends-library/dev": "^4.1.6",
     "@friends-library/friends": "^1.1.1",
+    "@friends-library/theme": "^1.1.0",
     "@friends-library/types": "^1.1.1",
     "@storybook/addon-actions": "^6.0.25",
     "@storybook/addon-essentials": "^6.0.25",
@@ -31,7 +31,11 @@
     "@storybook/react": "^6.0.25",
     "babel-loader": "^8.1.0",
     "react-is": "^16.13.1",
+    "tailwindcss": "^1.8.11",
     "ts-loader": "^8.0.4",
     "x-syntax": "^1.0.0"
+  },
+  "devDependencies": {
+    "@friends-library/dev": "^4.1.9"
   }
 }

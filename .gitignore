@@ -1,4 +1,4 @@
 node_modules
 .DS_Store
-src/stories/books.ts
+src/cover/books.ts
 storybook-static/

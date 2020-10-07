@@ -4,7 +4,7 @@ const { allFriends } = require('@friends-library/friends');
 const friends = allFriends().filter((f) => f.hasNonDraftDocument);
 
 fs.writeFileSync(
-  `${__dirname}/../src/stories/books.ts`,
+  `${__dirname}/../src/cover/books.ts`,
   `export default ` +
     JSON.stringify(
       friends.reduce(
