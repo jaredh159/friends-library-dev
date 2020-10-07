@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link } from 'gatsby';
+import Link from 'gatsby-link';
 import { CoverProps, PrintSize, EditionType, Html } from '@friends-library/types';
 import { bookDims } from '@friends-library/lulu';
 import { t } from '@friends-library/locale';

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'gatsby';
+import Link from 'gatsby-link';
 import cx from 'classnames';
 import { CoverProps } from '@friends-library/types';
 import { Front } from '@friends-library/cover-component';

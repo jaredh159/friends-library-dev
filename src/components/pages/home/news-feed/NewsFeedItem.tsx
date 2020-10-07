@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'gatsby';
+import Link from 'gatsby-link';
 import cx from 'classnames';
 import { NewsFeedType } from '@friends-library/types';
 import NewsFeedIcon from './NewsFeedIcon';

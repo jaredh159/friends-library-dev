@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'gatsby';
+import Link from 'gatsby-link';
 import { Lang } from '@friends-library/types';
 import { t } from '@friends-library/locale';
 import FriendsLogo from './LogoFriends';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'gatsby';
+import Link from 'gatsby-link';
 import { Diamonds } from '@friends-library/cover-component';
 import ChoiceStep from './ChoiceStep';
 import ChoiceItem from './ChoiceItem';

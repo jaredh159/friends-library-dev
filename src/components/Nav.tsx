@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'gatsby';
+import Link from 'gatsby-link';
 import cx from 'classnames';
 import { LANG } from './env';
 import FriendsLogo from './LogoFriends';

@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import { Link } from 'gatsby';
+import Link from 'gatsby-link';
 import { Front } from '@friends-library/cover-component';
 import { CoverProps } from '@friends-library/types';
 import { t } from '@friends-library/locale';

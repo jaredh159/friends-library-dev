@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'gatsby';
+import Link from 'gatsby-link';
 import Image from 'gatsby-image';
 import { FluidImageObject } from '@friends-library/types';
 import { t } from '@friends-library/locale';

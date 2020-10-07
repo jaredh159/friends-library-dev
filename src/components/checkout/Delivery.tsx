@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'gatsby';
+import Link from 'gatsby-link';
 import cx from 'classnames';
 import { t } from '@friends-library/locale';
 import Dual from '../Dual';

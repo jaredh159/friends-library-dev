@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import cx from 'classnames';
-import { Link } from 'gatsby';
+import Link from 'gatsby-link';
 import { Swipeable } from 'react-swipeable';
 import { Front } from '@friends-library/cover-component';
 import { Book } from './types';

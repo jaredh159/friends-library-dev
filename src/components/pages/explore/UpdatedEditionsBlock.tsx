@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'gatsby';
+import Link from 'gatsby-link';
 import { t } from '@friends-library/locale';
 import { LANG } from '../../env';
 import Dual from '../../Dual';
