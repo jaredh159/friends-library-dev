@@ -2,7 +2,7 @@ import React from 'react';
 import { Meta } from '@storybook/react';
 import { PrintSize } from '@friends-library/types';
 import { Spine } from '@friends-library/cover-component';
-import { Wrapped, Style, parameters, p } from './cover-helpers';
+import { Wrapped, Style, parameters, p } from '../cover-helpers';
 
 export default {
   title: `Cover/Variants/Spine`,

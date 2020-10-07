@@ -1,7 +1,7 @@
 import React from 'react';
 import { Meta } from '@storybook/react';
 import { PrintPdf } from '@friends-library/cover-component';
-import { Style, parameters, props, p } from './cover-helpers';
+import { Style, parameters, props, p } from '../cover-helpers';
 
 export default {
   title: `Cover/Variants/Pdf`,

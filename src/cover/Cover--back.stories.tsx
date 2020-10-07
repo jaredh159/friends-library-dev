@@ -1,7 +1,7 @@
 import React from 'react';
 import { Meta } from '@storybook/react';
 import { Back } from '@friends-library/cover-component';
-import { Wrapped, Style, parameters } from './cover-helpers';
+import { Wrapped, Style, parameters } from '../cover-helpers';
 
 export default {
   title: `Cover/Variants/Back`,

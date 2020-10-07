@@ -1,9 +1,15 @@
 {
   "compilerOptions": {
     "resolveJsonModule": true,
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "target": "ES2019",
     "jsx": "react",
-    "lib": ["ES2019", "DOM"]
+    "baseUrl": ".",
+    "lib": ["ES2019", "DOM"],
+    "paths": {
+      "@evans/*": ["../evans/src/components/*"]
+    }
   }
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import css from 'x-syntax';
 import { Meta } from '@storybook/react';
 import { Front } from '@friends-library/cover-component';
-import { Style, parameters, p, props } from './cover-helpers';
+import { Style, parameters, p, props } from '../cover-helpers';
 import books from './books';
 
 export default {
