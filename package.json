@@ -61,7 +61,7 @@
     "@friends-library/dpc-fs": "^1.0.0",
     "@friends-library/env": "^1.2.0",
     "@friends-library/friends": "^1.2.0",
-    "@friends-library/theme": "^1.0.0",
+    "@friends-library/theme": "^1.1.0",
     "@types/classnames": "^2.2.10",
     "@types/fs-extra": "^9.0.1",
     "@types/he": "^1.1.1",

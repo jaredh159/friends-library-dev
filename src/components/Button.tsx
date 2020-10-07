@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import { Link } from 'gatsby';
+import Link from 'gatsby-link';
 import './Button.css';
 
 interface Props {
