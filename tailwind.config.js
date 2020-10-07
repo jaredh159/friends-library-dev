@@ -1,14 +1,14 @@
 // @ts-check
-const { fontFamily } = require('tailwindcss/defaultTheme');
-const c = require('@friends-library/theme');
+const { fontFamily } = require(`tailwindcss/defaultTheme`);
+const c = require(`@friends-library/theme`);
 
-const LANG = process.env.GATSBY_LANG === 'es' ? 'es' : 'en';
+const LANG = process.env.GATSBY_LANG === `es` ? `es` : `en`;
 
 module.exports = {
   theme: {
     fontFamily: {
-      sans: ['Cabin'].concat(fontFamily.sans),
-      serif: ['Baskerville'].concat(fontFamily.serif),
+      sans: [`Cabin`].concat(fontFamily.sans),
+      serif: [`Baskerville`].concat(fontFamily.serif),
       mono: fontFamily.mono,
     },
     extend: {
@@ -48,30 +48,30 @@ module.exports = {
         'flgray-100': rgb(c.GRAY_100_RGB),
       },
       fontSize: {
-        '1-5xl': '1.375rem',
-        '2-5xl': '1.6875rem',
-        '3-5xl': '2.0625rem',
+        '1-5xl': `1.375rem`,
+        '2-5xl': `1.6875rem`,
+        '3-5xl': `2.0625rem`,
       },
       boxShadow: {
-        btn: 'rgba(0, 0, 0, 0.15) 0px 0px 10px 4px',
+        btn: `rgba(0, 0, 0, 0.15) 0px 0px 10px 4px`,
         direct:
-          '0 -7px 25px -5px rgba(0, 0, 0, 0.1), 0 15px 10px -5px rgba(0, 0, 0, 0.04)',
+          `0 -7px 25px -5px rgba(0, 0, 0, 0.1), 0 15px 10px -5px rgba(0, 0, 0, 0.04)`,
       },
     },
   },
   variants: [
-    'responsive',
-    'group-hover',
-    'focus-within',
-    'first',
-    'last',
-    'odd',
-    'even',
-    'hover',
-    'focus',
-    'active',
-    'visited',
-    'disabled',
+    `responsive`,
+    `group-hover`,
+    `focus-within`,
+    `first`,
+    `last`,
+    `odd`,
+    `even`,
+    `hover`,
+    `focus`,
+    `active`,
+    `visited`,
+    `disabled`,
   ],
   plugins: [],
   purge: {

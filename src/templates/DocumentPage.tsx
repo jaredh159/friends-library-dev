@@ -8,13 +8,16 @@ import {
   Heading,
   Lang,
 } from '@friends-library/types';
-import { DocBlock, ListenBlock, BookTeaserCards, makeScroller } from '../components';
 import { Layout, Seo } from '../components/data';
 import ExploreBooksBlock from '../components/data/ExploreBooksBlock';
 import { SiteMetadata } from '../types';
 import { LANG } from '../env';
 import { bookPageMetaDesc } from '../lib/seo';
 import { coverPropsFromQueryData, CoverData } from '../lib/covers';
+import BookTeaserCards from '../components/blocks/BookTeaserCards';
+import { makeScroller } from '../components/lib/scroll';
+import DocBlock from '../components/pages/document/DocBlock';
+import ListenBlock from '../components/pages/document/ListenBlock';
 
 interface Props {
   data: {

@@ -2,24 +2,22 @@ import React from 'react';
 import { graphql } from 'gatsby';
 import { FluidBgImageObject } from '@friends-library/types';
 import { t } from '@friends-library/locale';
-import {
-  ExploreNavBlock,
-  ExploreUpdatedEditionsBlock,
-  ExploreGettingStartedLinkBlock,
-  ExploreAudioBooksBlock,
-  ExploreNewBooksBlock,
-  ExploreTimelineBlock,
-  ExploreRegionBlock,
-  ExploreAltSiteBlock,
-  ExploreSearchBlock,
-  Dual,
-} from '../components';
 import { Layout, Seo } from '../components/data';
 import BooksBgBlock from '../components/data/BooksBgBlock';
+import ExploreNavBlock from '../components/pages/explore/NavBlock';
+import ExploreRegionBlock from '../components/pages/explore/RegionBlock';
+import ExploreSearchBlock from '../components/pages/explore/SearchBlock';
+import ExploreAltSiteBlock from '../components/pages/explore/AltSiteBlock';
+import ExploreNewBooksBlock from '../components/pages/explore/NewBooksBlock';
+import ExploreTimelineBlock from '../components/pages/explore/TimelineBlock';
+import ExploreAudioBooksBlock from '../components/pages/explore/AudioBooksBlock';
+import ExploreUpdatedEditionsBlock from '../components/pages/explore/UpdatedEditionsBlock';
+import ExploreGettingStartedLinkBlock from '../components/pages/explore/GettingStartedLinkBlock';
 import { SiteMetadata } from '../types';
 import { PAGE_META_DESCS } from '../lib/seo';
 import { coverPropsFromQueryData, CoverData } from '../lib/covers';
 import { APP_ALT_URL, LANG } from '../env';
+import Dual from '../components/Dual';
 
 const ExplorePage: React.FC<Props> = ({
   data: {

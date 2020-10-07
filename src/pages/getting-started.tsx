@@ -2,19 +2,17 @@ import React from 'react';
 import cx from 'classnames';
 import { graphql } from 'gatsby';
 import { t } from '@friends-library/locale';
-import {
-  EmbeddedAudio,
-  DuoToneWaveBlock,
-  Heading,
-  Dual,
-  makeScroller,
-} from '../components';
 import { SiteMetadata } from '../types';
 import { LANG } from '../components/env';
 import { PAGE_META_DESCS } from '../lib/seo';
 import { Layout, Seo } from '../components/data';
 import GettingStartedPaths from '../components/data/GettingStartedPaths';
 import BooksBgBlock from '../components/data/BooksBgBlock';
+import DuoToneWaveBlock from '../components/blocks/DuoToneWaveBlock';
+import Dual from '../components/Dual';
+import EmbeddedAudio from '../components/EmbeddedAudio';
+import Heading from '../components/Heading';
+import { makeScroller } from '../components/lib/scroll';
 
 interface Props {
   data: {

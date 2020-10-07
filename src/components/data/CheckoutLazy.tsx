@@ -1,12 +1,10 @@
 import React from 'react';
-import {
-  CartStore,
-  CheckoutApi,
-  CheckoutService,
-  CheckoutMachine,
-  CheckoutModal,
-  CheckoutFlow,
-} from '../';
+import CartStore from '../checkout/services/CartStore';
+import CheckoutApi from '../checkout/services/CheckoutApi';
+import CheckoutService from '../checkout/services/CheckoutService';
+import CheckoutMachine from '../checkout/services/CheckoutMachine';
+import CheckoutModal from '../checkout/Modal';
+import CheckoutFlow from '../checkout/Flow';
 import ErrorBoundary from '../ErrorBoundary';
 
 const store = CartStore.getSingleton();

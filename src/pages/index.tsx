@@ -9,16 +9,14 @@ import Layout from '../components/data/Layout';
 import ExploreBooksBlock from '../components/data/ExploreBooksBlock';
 import { LANG } from '../env';
 import { SiteMetadata } from '../types';
-import {
-  HomeWhoWereTheQuakersBlock,
-  HomeHeroBlock,
-  HomeSubHeroBlock,
-  HomeGettingStartedBlock,
-  HomeFeaturedBooksBlock,
-  HomeFormatsBlock,
-  NewsFeedBlock,
-} from '../components';
 import { coverPropsFromQueryData } from '../lib/covers';
+import HomeHeroBlock from '../components/pages/home/HeroBlock';
+import HomeGettingStartedBlock from '../components/pages/home/GettingStartedBlock';
+import HomeSubHeroBlock from '../components/pages/home/SubHeroBlock';
+import NewsFeedBlock from '../components/pages/home/news-feed/NewsFeedBlock';
+import HomeWhoWereTheQuakersBlock from '../components/pages/home/WhoWereTheQuakersBlock';
+import HomeFeaturedBooksBlock from '../components/pages/home/FeaturedBooksBlock';
+import HomeFormatsBlock from '../components/pages/home/FormatsBlock';
 
 const HomePage: React.FC<Props> = ({ data }) => {
   const {

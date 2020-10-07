@@ -2,16 +2,14 @@ import React, { useState } from 'react';
 import { graphql } from 'gatsby';
 import { FluidBgImageObject } from '@friends-library/types';
 import { t } from '@friends-library/locale';
-import {
-  FriendsPageCompilationsBlock,
-  FriendsPageHero,
-  FriendsPageControlsBlock,
-  FriendCard,
-  Stack,
-} from '../components';
 import { LANG } from '../components/env';
 import { PAGE_META_DESCS } from '../lib/seo';
 import { Seo, Layout } from '../components/data';
+import Stack from '../components/layout/Stack';
+import FriendCard from '../components/pages/friends/FriendCard';
+import FriendsPageHero from '../components/pages/friends/FriendsPageHero';
+import FriendsPageControlsBlock from '../components/pages/friends/ControlsBlock';
+import FriendsPageCompilationsBlock from '../components/pages/friends/CompilationsBlock';
 
 const FriendsPage: React.FC<Props> = ({
   data: { allFriend, recent, street, village },

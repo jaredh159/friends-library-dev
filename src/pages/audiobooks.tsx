@@ -5,8 +5,12 @@ import { t } from '@friends-library/locale';
 import { coverPropsFromQueryData, CoverData } from '../lib/covers';
 import { PAGE_META_DESCS } from '../lib/seo';
 import { LANG } from '../components/env';
-import { Dual, Stack, Audiobook, AudiobooksHero, BookTeaserCard } from '../components';
 import { Layout, Seo } from '../components/data';
+import AudiobooksHero from '../components/blocks/AudiobooksHero';
+import BookTeaserCard from '../components/BookTeaserCard';
+import Dual from '../components/Dual';
+import Stack from '../components/layout/Stack';
+import Audiobook from '../components/pages/audiobooks/Audiobook';
 
 type AudioBookNode = CoverData & {
   authorUrl: string;

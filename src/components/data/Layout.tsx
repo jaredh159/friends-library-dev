@@ -5,15 +5,6 @@ import smoothscroll from 'smoothscroll-polyfill';
 import { Helmet } from 'react-helmet';
 import { t } from '@friends-library/locale';
 import {
-  useNumCartItems,
-  CartStore,
-  useEscapeable,
-  Dual,
-  Nav,
-  PopUnder,
-  Footer,
-} from '..';
-import {
   CoverWebStylesAllStatic,
   CoverWebStylesSizes,
 } from '@friends-library/cover-component';
@@ -22,6 +13,13 @@ import Slideover from '../Slideover';
 import { LANG } from '../env';
 import ErrorBoundary from '../ErrorBoundary';
 import './Layout.css';
+import Dual from '../Dual';
+import Footer from '../Footer';
+import Nav from '../Nav';
+import CartStore from '../checkout/services/CartStore';
+import { useNumCartItems } from '../checkout/hooks';
+import { useEscapeable } from '../lib/hooks';
+import PopUnder from '../PopUnder';
 
 const store = CartStore.getSingleton();
 

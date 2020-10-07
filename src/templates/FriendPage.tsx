@@ -3,19 +3,17 @@ import cx from 'classnames';
 import { graphql } from 'gatsby';
 import { Name, Description, FluidBgImageObject } from '@friends-library/types';
 import { t, translate } from '@friends-library/locale';
-import {
-  FriendBlock,
-  FeaturedQuoteBlock,
-  BookByFriend,
-  TestimonialsBlock,
-  BookTeaserCards,
-  MapBlock,
-} from '../components';
 import { coverPropsFromQueryData, CoverData } from '../lib/covers';
 import { Layout, Seo } from '../components/data';
 import { LANG } from '../env';
 import { friendPageMetaDesc } from '../lib/seo';
 import './FriendPage.css';
+import BookTeaserCards from '../components/blocks/BookTeaserCards';
+import BookByFriend from '../components/pages/friend/BookByFriend';
+import FeaturedQuoteBlock from '../components/pages/friend/FeaturedQuoteBlock';
+import FriendBlock from '../components/pages/friend/FriendBlock';
+import MapBlock from '../components/pages/friend/MapBlock';
+import TestimonialsBlock from '../components/pages/friend/TestimonialsBlock';
 
 interface Props {
   data: {

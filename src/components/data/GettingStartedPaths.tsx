@@ -2,7 +2,7 @@ import React from 'react';
 import { useStaticQuery, graphql } from 'gatsby';
 import { CoverProps } from '@friends-library/types';
 import { t } from '@friends-library/locale';
-import { PathBlock } from '..';
+import PathBlock from '../pages/getting-started/PathBlock';
 import { coverPropsFromQueryData } from '../../lib/covers';
 import { LANG } from '../env';
 

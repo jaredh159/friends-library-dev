@@ -1,15 +1,13 @@
 import React from 'react';
 import { graphql } from 'gatsby';
 import { FluidBgImageObject } from '@friends-library/types';
-import {
-  HomeGettingStartedBlock,
-  ExploreAltSiteBlock,
-  NotFoundHeroBlock,
-} from '../components';
 import Layout from '../components/data/Layout';
 import ExploreBooksBlock from '../components/data/ExploreBooksBlock';
 import { APP_ALT_URL, LANG } from '../env';
 import { SiteMetadata } from '../types';
+import NotFoundHeroBlock from '../components/blocks/NotFoundHeroBlock';
+import HomeGettingStartedBlock from '../components/pages/home/GettingStartedBlock';
+import ExploreAltSiteBlock from '../components/pages/explore/AltSiteBlock';
 
 interface Props {
   data: {
