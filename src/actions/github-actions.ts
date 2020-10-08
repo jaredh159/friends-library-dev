@@ -18,7 +18,6 @@ export function deleteTask(id: Uuid): ReduxThunk {
     if (github.token === null || !task) {
       return;
     }
-    github;
 
     const repo = repos.find((r) => r.id === task.repoId);
     if (!repo) {
