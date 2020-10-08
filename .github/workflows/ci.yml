@@ -31,6 +31,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: bahmutov/npm-install@v1
+      - uses: actions/checkout@v2
+        with:
+          repository: friends-library-dev/functions
+          path: functions
+      - uses: bahmutov/npm-install@v1
+        with:
+          working-directory: functions
       - name: clone-friend-repos
         run: npx friend-repos-clone-all $DOCS_REPOS_ROOT
       - name: build:en
@@ -42,6 +49,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: bahmutov/npm-install@v1
+      - uses: actions/checkout@v2
+        with:
+          repository: friends-library-dev/functions
+          path: functions
+      - uses: bahmutov/npm-install@v1
+        with:
+          working-directory: functions
       - name: clone-friend-repos
         run: npx friend-repos-clone-all $DOCS_REPOS_ROOT
       - name: build:es
