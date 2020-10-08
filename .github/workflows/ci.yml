@@ -25,5 +25,5 @@ jobs:
           test $NUM_REPOS -gt 100
       - name: clone
         run: |
-          node -e 'require("${{ github.workspace }}/dist/index.js").cloneAll("${{ github.workspace }}")';
+          node ./clone-all.js ${{ github.workspace }} --delete-existing
           test -d ${{ github.workspace }}/en/ambrose-rigge && test -d ${{ github.workspace }}/es/william-penn

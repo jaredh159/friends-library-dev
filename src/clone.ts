@@ -34,7 +34,7 @@ export default async function cloneAll(
         alreadyCloned++;
         return Promise.resolve();
       }
-      log(c`📡  Cloning missing repo {green ${lang}/${slug}}`);
+      log(c`📡 Cloning missing repo {green ${lang}/${slug}}`);
       return pExec(`git clone ${isCI ? httpsCloneUrl : sshCloneUrl}`, { cwd: langRoot });
     });
   });
@@ -42,7 +42,7 @@ export default async function cloneAll(
   await Promise.all(promises);
 
   if (alreadyCloned > 0) {
-    log(c`👌  Skipped {green ${alreadyCloned}} repos already cloned.`);
+    log(c`👌 Skipped {green ${alreadyCloned}} repos already cloned.`);
   }
 }
 

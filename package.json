@@ -7,6 +7,9 @@
   "license": "MIT",
   "repository": "github:friends-library-dev/friend-repos",
   "sideEffects": false,
+  "bin": {
+    "friend-repos-clone-all": "./clone-all.js"
+  },
   "scripts": {
     "test": "true",
     "test:watch": "fldev test:watch",
