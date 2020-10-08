@@ -8,8 +8,8 @@
   "license": "MIT",
   "scripts": {
     "test": "fldev test",
-    "lint": "fldev lint",
-    "lint:fix": "fldev lint:fix",
+    "lint": "fldev lint --rule 'react-hooks/rules-of-hooks: off'",
+    "lint:fix": "npm run lint -- --fix",
     "ts:check": "fldev ts:check",
     "format": "fldev format",
     "compile": "fldev ts:compile",
