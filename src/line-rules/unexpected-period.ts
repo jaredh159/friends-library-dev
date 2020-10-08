@@ -44,7 +44,9 @@ function isRomanNumeral(match: RegExpExecArray, line: string): boolean {
     if (typeof num === `number`) {
       return true;
     }
-  } catch {}
+  } catch {
+    // ¯\_(ツ)_/¯
+  }
 
   return false;
 }

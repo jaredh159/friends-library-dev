@@ -15,8 +15,8 @@
     "scaffold:lint": "yarn ts-node ./scripts/scaffold-lint.ts",
     "test": "fldev test",
     "test:watch": "fldev test:watch",
-    "lint": "fldev lint",
-    "lint:fix": "fldev lint:fix",
+    "lint": "fldev lint --rule 'no-irregular-whitespace: off'",
+    "lint:fix": "npm run lint -- --fix",
     "ts:check": "fldev ts:check",
     "format": "fldev format",
     "compile": "fldev ts:compile",
@@ -34,8 +34,7 @@
     "uuid": "^3.3.3"
   },
   "devDependencies": {
-    "@friends-library/dev": "^4.1.6",
-    "@types/jest": "^26.0.14",
+    "@friends-library/dev": "^4.1.10",
     "@types/lodash": "^4.14.161",
     "@types/roman-numerals": "^0.3.0"
   }
