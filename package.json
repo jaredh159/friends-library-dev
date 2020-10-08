@@ -19,7 +19,6 @@
     "prepublishOnly": "npm run compile"
   },
   "devDependencies": {
-    "@friends-library/dev": "^4.0.8",
-    "@types/jest": "^26.0.14"
+    "@friends-library/dev": "^4.1.10"
   }
 }
