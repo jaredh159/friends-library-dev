@@ -1,0 +1,68 @@
+name: basic-ci
+
+on: push
+
+env:
+  CLOUD_STORAGE_BUCKET_URL: ${{ secrets.CLOUD_STORAGE_BUCKET_URL }}
+  DOCUMENT_META_AUTH_TOKEN: ${{ secrets.DOCUMENT_META_AUTH_TOKEN }}
+  DOCUMENT_META_GIST_ID: ${{ secrets.DOCUMENT_META_GIST_ID }}
+  DOCUMENT_META_GIST_FILENAME: ${{ secrets.DOCUMENT_META_GIST_FILENAME }}
+  DOCS_REPOS_ROOT: ${{ github.workspace }}
+
+jobs:
+  ci:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: bahmutov/npm-install@v1
+      - name: lint
+        run: npm run lint
+      - name: ts
+        run: npm run ts:check
+      - name: test
+        run: npm run test
+      - name: prettier
+        run: npm run format -- --check
+
+  build-en:
+    name: build-en
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: bahmutov/npm-install@v1
+      - name: clone-friend-repos
+        run: npx friend-repos-clone-all $DOCS_REPOS_ROOT
+      - name: build:en
+        run: npm run build:en
+
+  build-es:
+    name: build-es
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: bahmutov/npm-install@v1
+      - name: clone-friend-repos
+        run: npx friend-repos-clone-all $DOCS_REPOS_ROOT
+      - name: build:es
+        run: npm run build:es
+
+  storybook:
+    name: build-storybook
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: evans
+      - uses: bahmutov/npm-install@v1
+        with:
+          working-directory: evans
+      - uses: actions/checkout@v2
+        with:
+          repository: friends-library-dev/storybook-web
+          path: sb
+      - uses: bahmutov/npm-install@v1
+        with:
+          working-directory: sb
+      - name: build
+        run: cd sb && npm run build
