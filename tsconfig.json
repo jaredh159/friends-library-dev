@@ -2,6 +2,7 @@
   "compilerOptions": {
     "resolveJsonModule": true,
     "moduleResolution": "node",
+    "module": "ES2020",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "target": "ES2019",
