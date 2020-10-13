@@ -172,8 +172,6 @@ export interface CoverProps {
   showGuides?: boolean;
   scope?: string;
   scaler?: number;
-  allowEditingBlurb?: boolean;
-  updateBlurb?: (blurb: string) => void;
 }
 
 export interface FluidBgImageObject {
