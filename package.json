@@ -8,6 +8,7 @@
   "license": "MIT",
   "scripts": {
     "test": "true",
+    "compile": "true",
     "lint": "fldev lint",
     "lint:fix": "fldev lint:fix",
     "prets:check": "test -f ./src/stories/books.ts || npm run create-books-ts",
