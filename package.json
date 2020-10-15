@@ -12,6 +12,7 @@
     "watch:frags": "npm run build:frags -- --watch",
     "build": "npm run build:frags && parcel build ./src/index.html",
     "test": "true",
+    "compile": "true",
     "lint": "fldev lint --rule 'jsx-a11y/accessible-emoji: off'",
     "lint:fix": "npm run lint -- --fix",
     "ts:check": "fldev ts:check",
