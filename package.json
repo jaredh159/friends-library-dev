@@ -8,6 +8,7 @@
   "license": "MIT",
   "scripts": {
     "start": "parcel --port 8888 ./src/index.html",
+    "compile": "true",
     "build": "parcel build ./src/index.html",
     "prestart": "npm run write:css",
     "prebuild": "npm run write:css",
