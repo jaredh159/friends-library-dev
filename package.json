@@ -24,6 +24,7 @@
     "analyze": "rm -rf ./functions && ANALYZE_BUNDLE_SIZE=true npm run build:en",
     "start": "gatsby develop --port 9222",
     "test": "fldev test",
+    "compile": "true",
     "lint": "fldev lint",
     "lint:fix": "npm run lint -- --fix",
     "ts:check": "fldev ts:check",
