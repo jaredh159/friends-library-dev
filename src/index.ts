@@ -52,6 +52,48 @@ export function downloadFile(cloudFilePath: CloudFilePath): Promise<Buffer> {
   });
 }
 
+export async function metaData(
+  cloudFilePath: CloudFilePath,
+): Promise<{
+  LastModified?: Date;
+  ContentLength?: number;
+  ETag?: string;
+  ContentType?: string;
+}> {
+  const { CLOUD_STORAGE_BUCKET } = env.require(`CLOUD_STORAGE_BUCKET`);
+  const client = getClient();
+  return new Promise((resolve, reject) => {
+    client.headObject(
+      { Key: cloudFilePath, Bucket: CLOUD_STORAGE_BUCKET },
+      (err, headData) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(headData);
+      },
+    );
+  });
+}
+
+export async function filesize(cloudFilePath: CloudFilePath): Promise<number | null> {
+  try {
+    const { ContentLength } = await metaData(cloudFilePath);
+    return ContentLength || null;
+  } catch (err) {
+    return null;
+  }
+}
+
+export async function md5File(cloudFilePath: CloudFilePath): Promise<string | null> {
+  try {
+    const { ETag } = await metaData(cloudFilePath);
+    return ETag ? ETag.replace(/"/g, ``) : null;
+  } catch (err) {
+    return null;
+  }
+}
+
 export async function uploadFile(
   localFilePath: LocalFilePath,
   cloudFilePath: CloudFilePath,
