@@ -20,8 +20,6 @@ export {
   PaperbackInteriorConfig,
   PaperbackCoverConfig,
   EbookConfig,
-  EditionMeta,
-  PageData,
   genericDpc,
 } from './doc';
 export { checkoutErrors, CheckoutError } from './errors';

@@ -9,7 +9,6 @@ import {
   DocSection,
   Notes,
   PrintSize,
-  PrintSizeVariant,
 } from '.';
 
 export interface DocPrecursor {
@@ -107,33 +106,3 @@ export interface EbookConfig {
   coverImg?: Buffer;
   randomizeForLocalTesting?: boolean;
 }
-
-export interface EditionMeta {
-  updated: string;
-  published: string;
-  adocLength: number;
-  numSections: number;
-  revision: Sha;
-  productionRevision: Sha;
-  audioFilesizes?: {
-    mp3ZipHq: number;
-    mp3ZipLq: number;
-    m4bHq: number;
-    m4bLq: number;
-  };
-  paperback: {
-    size: PrintSize;
-    volumes: number[];
-    condense: boolean;
-    pageData: {
-      single: { [key in PrintSizeVariant]: number };
-      split?: {
-        m: number[];
-        xl: number[];
-        'xl--condensed': number[];
-      };
-    };
-  };
-}
-
-export type PageData = EditionMeta['paperback']['pageData'];
