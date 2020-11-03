@@ -1,5 +1,6 @@
 import { price, choosePrintSize, podPackageId } from '../';
-import { PageData, PrintSize } from '@friends-library/types';
+import { PrintSize } from '@friends-library/types';
+import { PageData } from '@friends-library/document-meta';
 
 describe(`podPackageId()`, () => {
   const cases: [PrintSize, number, string][] = [

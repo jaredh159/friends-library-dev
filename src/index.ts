@@ -1,4 +1,5 @@
-import { PrintSize, PrintSizeDetails, PageData } from '@friends-library/types';
+import { PrintSize, PrintSizeDetails } from '@friends-library/types';
+import { PageData } from '@friends-library/document-meta';
 import LuluClient from './client';
 import { LuluAPI } from './types';
 

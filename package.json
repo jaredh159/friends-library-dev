@@ -23,7 +23,8 @@
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {
-    "@friends-library/dev": "^4.1.10",
-    "@friends-library/types": "^1.1.1"
+    "@friends-library/dev": "^4.1.12",
+    "@friends-library/document-meta": "^2.0.0",
+    "@friends-library/types": "^3.0.0"
   }
 }
