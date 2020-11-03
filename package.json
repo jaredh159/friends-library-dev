@@ -17,13 +17,13 @@
     "prepublishOnly": "npm run compile"
   },
   "dependencies": {
-    "@friends-library/adoc-convert": "^1.1.2",
+    "@friends-library/adoc-convert": "^1.2.0",
     "@friends-library/env": "^1.2.0",
-    "@friends-library/friends": "^1.1.2",
-    "@friends-library/types": "^1.1.2",
+    "@friends-library/friends": "^2.1.0",
+    "@friends-library/types": "^3.0.0",
     "glob": "^7.1.4"
   },
   "devDependencies": {
-    "@friends-library/dev": "^4.1.6"
+    "@friends-library/dev": "^4.1.12"
   }
 }
