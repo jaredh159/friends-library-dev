@@ -114,6 +114,8 @@ const strings: { [k: string]: string } = {
   '/ebook-help': `/ebook-ayuda`,
   '/contact': `/contactanos`,
   '/spanish-translations': `/nuestras-traducciones`,
+  '/app': `/app`,
+  '/app-privacy': `/app-privacidad`,
 
   // contact
   Submit: `Enviar`,
@@ -187,6 +189,8 @@ const strings: { [k: string]: string } = {
   'No internet': `No hay internet`,
   'Unable to download at this time': `No se puede descargar en este momento`,
   'No internet connection': `No hay conexión de internet`,
+  'Get it on Google Play': `Disponible en Google Play`,
+  'Download on the App Store': `Consíguelo en el App Store`,
 
   // geography
   Bristol: `Bristol`,
