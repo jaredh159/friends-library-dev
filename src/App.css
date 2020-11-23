@@ -1,0 +1,19 @@
+body {
+  margin: 0;
+  background: #333;
+}
+
+.serif {
+  font-family: Baskerville, serif;
+}
+
+.sans {
+  font-family: Cabin, sans-serif;
+}
+
+.youtube-poster {
+  width: 1920px;
+  height: 1080px;
+  position: relative;
+  overflow: hidden;
+}
