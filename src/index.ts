@@ -21,6 +21,7 @@ function getClient(): AWS.S3 {
       `CLOUD_STORAGE_SECRET`,
     );
     clientInstance = new AWS.S3({
+      httpOptions: { timeout: 1200000 }, // 20 minutes
       endpoint: new AWS.Endpoint(CLOUD_STORAGE_ENDPOINT).href,
       credentials: new AWS.Credentials({
         accessKeyId: CLOUD_STORAGE_KEY,
