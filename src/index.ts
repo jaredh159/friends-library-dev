@@ -7,7 +7,7 @@ import { extname } from 'path';
 type LocalFilePath = string;
 type CloudFilePath = string;
 
-let clientInstance: AWS.S3;
+let clientInstance: AWS.S3 | null = null;
 
 function getClient(): AWS.S3 {
   if (!clientInstance) {
