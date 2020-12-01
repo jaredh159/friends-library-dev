@@ -1,7 +1,7 @@
 {
   "name": "@friends-library/poster",
   "version": "1.0.0",
-  "description": "web app for video poster puppeteer screenshots",
+  "description": "web app for youtube poster screenshots (via puppeteer)",
   "author": "Jared Henderson <jared@netrivet.com>",
   "repository": "github:friends-library-dev/poster",
   "license": "MIT",
@@ -17,6 +17,7 @@
     "prestart": "npm run data",
     "prebuild": "npm run data",
     "start": "parcel --port 3535 index.html",
+    "build": "parcel build --out-dir ./dist index.html",
     "postinstall": "test -f ./src/cover-props.ts || npm run data -- --empty"
   },
   "dependencies": {
@@ -35,6 +36,7 @@
   },
   "devDependencies": {
     "@friends-library/dev": "^4.1.13",
+    "@friends-library/friends": "^2.4.0",
     "@friends-library/theme": "^1.1.0",
     "@friends-library/types": "^3.0.0",
     "@types/classnames": "^2.2.11",

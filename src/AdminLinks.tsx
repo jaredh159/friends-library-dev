@@ -44,6 +44,19 @@ const AdminLinks: React.FC<{ current: string; setPath: (path: string) => unknown
           );
         })}
       </ul>
+      <h2 className="bold mt-6 mb-2 text-xl text-white">App Tease:</h2>
+      <ul className="grid grid-cols-4 text-gray-400">
+        {Object.entries(coverPropsMap).map(([editionPath, props]) => {
+          const path = `/app-tease/${editionPath}`;
+          return (
+            <li key={path}>
+              <Link to={path} path={current} setPath={setPath}>
+                {props?.title}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
       <h2 className="bold mt-6 mb-2 text-xl text-white">Static:</h2>
       <ul className="grid grid-cols-4 text-gray-400">
         <li>
@@ -57,13 +70,13 @@ const AdminLinks: React.FC<{ current: string; setPath: (path: string) => unknown
           </Link>
         </li>
         <li>
-          <Link to="/app-tease/en" path={current} setPath={setPath}>
-            App Tease (English)
+          <Link to="/continued/en" path={current} setPath={setPath}>
+            Continued (English)
           </Link>
         </li>
         <li>
-          <Link to="/app-tease/es" path={current} setPath={setPath}>
-            App Tease (Spanish)
+          <Link to="/continued/es" path={current} setPath={setPath}>
+            Continued (Spanish)
           </Link>
         </li>
       </ul>

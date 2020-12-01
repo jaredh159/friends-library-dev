@@ -1,0 +1,8 @@
+.CoverGeneral.en {
+  background-image: radial-gradient(
+    circle at 64% 20%,
+    rgba(0, 0, 0, 0.03),
+    rgba(0, 0, 0, 0.335) 70%,
+    rgba(0, 0, 0, 0.44) 95%
+  );
+}

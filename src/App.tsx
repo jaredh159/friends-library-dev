@@ -4,6 +4,7 @@ import FreeBooks from './FreeBooks';
 import AppTease from './AppTease';
 import Chapter from './Chapter';
 import AdminLinks from './AdminLinks';
+import Continued from './Continued';
 import './App.css';
 
 const App: React.FC = () => {
@@ -45,12 +46,21 @@ const App: React.FC = () => {
   let poster: JSX.Element | null = null;
   if (path.startsWith(`/cover/`)) {
     const editionPath = path.replace(/^\/cover\//, ``);
-    poster = <CoverGeneral editionPath={editionPath} />;
+    const params = new URLSearchParams(window.location.search);
+    const numVols = params.has(`vols`) ? Number(params.get(`vols`)) : 1;
+    const volNum = params.has(`vol`) ? Number(params.get(`vol`)) : 1;
+    poster = <CoverGeneral editionPath={editionPath} numVols={numVols} volNum={volNum} />;
+  }
+
+  if (path.startsWith(`/continued/`)) {
+    const lang = path.endsWith(`/es`) ? `es` : `en`;
+    poster = <Continued lang={lang} />;
   }
 
   if (path.startsWith(`/app-tease/`)) {
-    const lang = path.endsWith(`/es`) ? `es` : `en`;
-    poster = <AppTease lang={lang} />;
+    const editionPath = path.replace(/^\/app-tease\//, ``);
+    const lang = path.includes(`/es/`) ? `es` : `en`;
+    poster = <AppTease lang={lang} editionPath={editionPath} />;
   }
 
   if (path.startsWith(`/chapter/`)) {

@@ -17,3 +17,18 @@ body {
   position: relative;
   overflow: hidden;
 }
+
+.youtube-poster .Album {
+  width: 5.5in;
+  height: 5.5in;
+}
+
+.youtube-poster .Album .Cover {
+  transform: translateY(-1.74in);
+}
+
+.youtube-poster .Album .Cover svg.Logo {
+  height: 2.25rem;
+  margin-right: 0.75rem;
+  margin-bottom: 0.75rem;
+}

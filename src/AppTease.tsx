@@ -1,20 +1,31 @@
 import React from 'react';
 import cx from 'classnames';
 import { Lang } from '@friends-library/types';
+import Album from 'evans/components/Album';
 import EsSplash from 'evans/images/app-screens/app-splash.es.jpg';
 import EsAudio from 'evans/images/app-screens/app-audio.es.jpg';
 import EsList from 'evans/images/app-screens/app-audio-list.es.jpg';
 import EnSplash from 'evans/images/app-screens/app-splash.en.jpg';
 import EnAudio from 'evans/images/app-screens/app-audio.en.jpg';
 import EnList from 'evans/images/app-screens/app-audio-list.en.jpg';
+import coverPropsMap from './cover-props';
+import CoverCss from './CoverCss';
+import './AppTease.css';
 
 interface Props {
   lang: Lang;
+  editionPath: string;
 }
 
-const AppTease: React.FC<Props> = ({ lang }) => {
+const AppTease: React.FC<Props> = ({ lang, editionPath }) => {
+  const coverProps = coverPropsMap[editionPath];
+  if (!coverProps) throw new Error(`missing cover props for ${editionPath}`);
   return (
-    <div className="youtube-poster bg-white flex flex-col items-center overflow-hidden justify-between">
+    <div className="AppTease youtube-poster bg-white flex flex-col items-center overflow-hidden justify-between">
+      <div className="absolute">
+        <Album scaler={1} scope="custom-1" {...coverProps} />
+      </div>
+      <CoverCss scaler={1} scope="custom-1" />
       <div
         className="text-center flex flex-col self-stretch px-2"
         style={{ transform: `translateY(100px)` }}
