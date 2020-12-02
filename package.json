@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@friends-library/dev": "^4.1.13",
-    "@friends-library/friends": "^2.4.0",
+    "@friends-library/friends": "^2.6.1",
     "@friends-library/theme": "^1.1.0",
     "@friends-library/types": "^3.0.0",
     "@types/classnames": "^2.2.11",

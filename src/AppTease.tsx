@@ -22,7 +22,7 @@ const AppTease: React.FC<Props> = ({ lang, editionPath }) => {
   if (!coverProps) throw new Error(`missing cover props for ${editionPath}`);
   return (
     <div className="AppTease youtube-poster bg-white flex flex-col items-center overflow-hidden justify-between">
-      <div className="absolute">
+      <div className="AlbumWrap absolute z-10">
         <Album scaler={1} scope="custom-1" {...coverProps} />
       </div>
       <CoverCss scaler={1} scope="custom-1" />
@@ -31,24 +31,36 @@ const AppTease: React.FC<Props> = ({ lang, editionPath }) => {
         style={{ transform: `translateY(100px)` }}
       >
         <div className="space-y-16">
-          <h1 className="sans font-bold tracking-wide text-6xl">Listen on the go!</h1>
-          <p className="serif text-4xl px-16 leading-relaxed text-gray-500 antialiased">
-            Listen to <em>this book</em> or any other of our early Quaker audiobooks from
-            your <b className="text-black">iOS</b> or{` `}
-            <b className="text-black">Android</b> device.
-            <br />
-            Visit our website at{` `}
-            <span
-              className={cx(`sans font-bold tracking-wide`, {
-                'text-flmaroon': lang === `en`,
-                'text-flgold': lang === `es`,
-              })}
-            >
-              {lang === `en` ? `www.friendslibrary.com` : `www.bibliotecadelosamigos.org`}
-            </span>
-            {` `}
-            or search for &ldquo;Friends Library&rdquo; in the App Store.
-          </p>
+          <h1 className="sans font-bold tracking-wide text-6xl">
+            {lang === `en` ? `Listen on the go!` : `¡Escucha en cualquier momento!`}
+          </h1>
+          {lang === `en` ? (
+            <p className="serif text-4xl px-16 leading-relaxed text-gray-500 antialiased">
+              Listen to <em>this book</em> or any other of our early Quaker audiobooks
+              from your <b className="text-black">iOS</b> or{` `}
+              <b className="text-black">Android</b> device.
+              <br />
+              Visit our website at{` `}
+              <span className={cx(`sans font-bold tracking-wide text-flmaroon`)}>
+                www.friendslibrary.com
+              </span>
+              {` `}
+              or search for &ldquo;Friends Library&rdquo; in the App Store.
+            </p>
+          ) : (
+            <p className="serif text-4xl px-16 leading-relaxed text-gray-500 antialiased">
+              Escucha <em>este libro</em> o cualquier otro de nuestros audiolibros de los
+              primeros Cuáqueros desde tu dispositivo <b className="text-black">iOS</b> o
+              {` `}
+              <b className="text-black">Android</b>.
+              <br />
+              Visita nuestro sitio web{` `}
+              <span className={cx(`sans font-bold tracking-wide text-flgold`)}>
+                www.bibliotecadelosamigos.org
+              </span>
+              {` `}o busca “Biblioteca de Los Amigos” en la App Store.
+            </p>
+          )}
         </div>
       </div>
       <div className="flex space-x-16" style={{ transform: `translateY(185px)` }}>

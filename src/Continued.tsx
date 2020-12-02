@@ -5,7 +5,7 @@ interface Props {
   lang: Lang;
 }
 
-const Continued: React.FC<Props> = () => {
+const Continued: React.FC<Props> = ({ lang }) => {
   return (
     <div
       className="Continued youtube-poster bg-flmaroon"
@@ -18,9 +18,21 @@ const Continued: React.FC<Props> = () => {
         style={{ textShadow: `2px 2px black` }}
       >
         <p className="text-5xl antialiased text-center opacity-90 leading-loose">
-          This audiobook has been broken into multiple parts.
-          <br />
-          To continue listening, click the link to the next part in the description below.
+          {lang === `en` ? (
+            <>
+              This audiobook has been broken into multiple parts.
+              <br />
+              To continue listening, click the link to the next part in the description
+              below.
+            </>
+          ) : (
+            <>
+              Este audiolibro ha sido divido en varias partes.
+              <br />
+              Para seguir escuchándolo, haz clic en el enlace de la siguiente parte, el
+              cual encontrarás más abajo en la descripción.
+            </>
+          )}
         </p>
       </div>
     </div>

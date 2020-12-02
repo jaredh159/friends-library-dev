@@ -2,18 +2,32 @@ name: basic-ci
 
 on: push
 
+env:
+  FLP_API_URL: ${{ secrets.FLP_API_URL }}
+
 jobs:
   ci:
     name: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          path: poster
       - uses: bahmutov/npm-install@v1
+        with:
+          working-directory: poster
+      - uses: actions/checkout@v2
+        with:
+          repository: friends-library-dev/evans
+          path: evans
+      - uses: bahmutov/npm-install@v1
+        with:
+          working-directory: evans
       - name: lint
-        run: npm run lint
+        run: cd poster && npm run lint
       - name: ts
-        run: npm run ts:check
+        run: cd poster && npm run ts:check
       - name: test
-        run: npm run test
+        run: cd poster && npm run test
       - name: prettier
-        run: npm run format -- --check
+        run: cd poster && npm run format -- --check

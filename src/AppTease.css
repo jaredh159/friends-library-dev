@@ -2,5 +2,8 @@
   border-width: 0;
   z-index: 2;
   transform: scale(0.6159);
+}
+
+.AppTease .AlbumWrap {
   top: 552px;
 }

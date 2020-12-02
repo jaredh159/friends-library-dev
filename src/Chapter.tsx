@@ -32,7 +32,15 @@ const Chapter: React.FC<Props> = ({ lang, editionPath, partIdx }) => {
           style={{ textShadow: `2px 2px black` }}
         >
           <h2 className="text-4xl sans">
-            Part {partIdx + 1} of {parts.length}
+            {lang === `en` ? (
+              <>
+                Part {partIdx + 1} of {parts.length}
+              </>
+            ) : (
+              <>
+                Parte {partIdx + 1} de {parts.length}
+              </>
+            )}
           </h2>
           <h1
             className={cx(

@@ -51,7 +51,7 @@ const CoverGeneral: React.FC<Props> = ({ editionPath, volNum, numVols }) => {
           </div>
         ) : (
           <p className="rounded-full bg-flblue py-2 px-8 text-white sans text-3xl antialiased">
-            Video {volNum} of {numVols}
+            Video {volNum} {lang === `en` ? `of` : `de`} {numVols}
           </p>
         )}
         <p className="sans text-3xl opacity-50 antialiased">
