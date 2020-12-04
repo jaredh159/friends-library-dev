@@ -220,6 +220,7 @@ const strings: { [k: string]: string } = {
   Amsterdam: `Ámsterdam`,
   Netherlands: `Holanda`,
   Aberdeenshire: `Aberdeenshire`,
+  Wakefield: `Wakefield`,
 };
 
 export default strings;
