@@ -1,0 +1,24 @@
+{
+  "name": "@friends-library/action-print-jobs",
+  "version": "1.0.0",
+  "author": "Jared Henderson <jared@netrivet.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "npm run bundle -- watch",
+    "build": "npm run bundle -- build",
+    "bundle": "fldev tsnode ./scripts/bundle.ts"
+  },
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "@friends-library/db": "^1.0.0",
+    "@friends-library/document-meta": "^2.1.0",
+    "@friends-library/friends": "^2.7.0",
+    "@friends-library/lulu": "^1.2.1"
+  },
+  "devDependencies": {
+    "@friends-library/dev": "^4.1.13",
+    "@vercel/ncc": "^0.25.1",
+    "x-chalk": "^1.0.1",
+    "x-exec": "^1.2.0"
+  }
+}

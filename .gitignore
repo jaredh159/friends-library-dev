@@ -1,0 +1,4 @@
+.DS_Store
+actions/*/bundled/*
+!actions/*/bundled/*.js
+node_modules/
