@@ -41,8 +41,8 @@ async function uploadVideo(youtube: youtube_v3.Youtube) {
       notifySubscribers: false,
       requestBody: {
         snippet: {
-          title: `Testing`,
-          description: `Testing, 1, 2, 3`,
+          title: `testing yt client`,
+          description: `test description`,
         },
         status: {
           privacyStatus: `private`,
