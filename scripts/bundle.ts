@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { red, green, magenta } from 'x-chalk';
+import { red, log, c } from 'x-chalk';
 import exec from 'x-exec';
 
 const ROOT_DIR = path.resolve(__dirname, '..');
@@ -27,11 +27,11 @@ if (action == `all`) {
 }
 
 function bundle(action: string) {
-  if (task === `build`) {
-    magenta(`bundling <${action}> for production\n`);
-  } else {
-    green(`bundling <${action}> for dev in watch mode...`);
-  }
+  log(
+    c`📦 {gray bundling action} {magenta <${action}>} {gray for}`,
+    task === `build` ? c`production {gray ...}\n` : c`dev {gray in watch mode ...}\n`,
+  );
+
   const dir = `${ACTIONS_DIR}/${action}`;
   const last = task === `build` ? `--minify` : `--watch`;
   exec.out(

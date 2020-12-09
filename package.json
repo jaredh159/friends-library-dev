@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@actions/core": "^1.2.6",
+    "@friends-library/cloud": "^1.2.0",
     "@friends-library/db": "^1.0.0",
     "@friends-library/document-meta": "^2.1.0",
     "@friends-library/friends": "^2.7.0",
