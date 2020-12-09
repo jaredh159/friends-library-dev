@@ -3,7 +3,7 @@ actions/*/bundled/*
 !actions/*/bundled/*.js
 node_modules/
 
-# flp pdf css is needed
+!actions/deploy/bundled/*.wasm
 !actions/pdf/bundled/css1/
 !actions/pdf/bundled/css1/common.css
 actions/pdf/bundled/css1/ebook/*
