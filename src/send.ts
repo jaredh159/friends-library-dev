@@ -6,7 +6,7 @@ export async function send(
   channel: string,
   emoji = `:robot_face:`,
 ): Promise<void> {
-  getClient().chat.postMessage({
+  getClient(channel).chat.postMessage({
     username: `FL Bot`,
     icon_emoji: emoji,
     parse: `full`,
@@ -27,7 +27,7 @@ export async function sendJson(
     blocks.push(sectionBlock(`_${label.toUpperCase()}:_`));
     blocks.push(sectionBlock(`\`\`\`` + JSON.stringify(data[label], null, 2) + `\`\`\``));
   }
-  getClient().chat.postMessage({
+  getClient(channel).chat.postMessage({
     username: `FL Bot`,
     icon_emoji: emoji,
     parse: `full`,
@@ -37,14 +37,27 @@ export async function sendJson(
   });
 }
 
-let client: WebClient | undefined;
+let clientMain: WebClient | undefined;
+let clientBot: WebClient | undefined;
 
-function getClient(): WebClient {
-  if (!client) {
-    const { SLACK_API_TOKEN } = env.require(`SLACK_API_TOKEN`);
-    client = new WebClient(SLACK_API_TOKEN);
+function getClient(channel: string): WebClient {
+  const workspace = [`debug`, `audio-downloads`].includes(channel) ? `BOT` : `MAIN`;
+  if (workspace === `MAIN`) {
+    if (!clientMain) {
+      clientMain = workspaceClient(`MAIN`);
+    }
+    return clientMain;
   }
-  return client;
+  if (!clientBot) {
+    clientBot = workspaceClient(`BOT`);
+  }
+  return clientBot;
+}
+
+function workspaceClient(workspace: 'BOT' | 'MAIN'): WebClient {
+  const varname = `SLACK_API_TOKEN_WORKSPACE_${workspace}`;
+  const token = env.require(varname)[varname];
+  return new WebClient(token);
 }
 
 interface SectionBlock {
