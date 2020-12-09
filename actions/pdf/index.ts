@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import * as core from '@actions/core';
 import { Octokit } from '@octokit/action';
 import { pdf } from '@friends-library/doc-artifacts';
 import { uploadFile } from '@friends-library/cloud';
@@ -24,18 +25,22 @@ async function main(): Promise<void> {
     const filename = path.basename(file);
     const adoc = fs.readFileSync(file).toString();
     const dpc = dpcFromAdocFragment(adoc, owner, repo);
-    const [manifest] = await paperbackInterior(dpc, {
-      frontmatter: false,
-      printSize: `m`,
-      condense: false,
-      allowSplits: false,
-    });
-
-    const pdfPath = await pdf(manifest, `doc_${Date.now()}`);
-    const [, edition] = file.split(`/`);
-    const cloudFilename = `${COMMIT_SHA.substr(0, 8)}--${edition}--${filename}`;
-    const url = await uploadFile(pdfPath, `actions/${repo}/${PR_NUM}/${cloudFilename}`);
-    uploaded.push([url, cloudFilename]);
+    try {
+      const [manifest] = await paperbackInterior(dpc, {
+        frontmatter: false,
+        printSize: `m`,
+        condense: false,
+        allowSplits: false,
+      });
+      const pdfPath = await pdf(manifest, `doc_${Date.now()}`);
+      const [, edition] = file.split(`/`);
+      const cloudFilename = `${COMMIT_SHA.substr(0, 8)}--${edition}--${filename}`;
+      const url = await uploadFile(pdfPath, `actions/${repo}/${PR_NUM}/${cloudFilename}`);
+      uploaded.push([url, cloudFilename]);
+    } catch (err) {
+      core.setFailed(err);
+      return;
+    }
   }
 
   if (uploaded.length) {
