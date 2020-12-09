@@ -1,7 +1,8 @@
 {
-  "name": "@friends-library/action-print-jobs",
+  "name": "@friends-library/action-ts-pack",
   "version": "1.0.0",
   "author": "Jared Henderson <jared@netrivet.com>",
+  "repository": "github:friends-library-dev/action-ts-pack",
   "license": "MIT",
   "scripts": {
     "start": "npm run bundle -- watch",
@@ -10,8 +11,11 @@
   },
   "dependencies": {
     "@actions/core": "^1.2.6",
+    "@friends-library/adoc-convert": "^1.2.0",
     "@friends-library/cloud": "^1.2.0",
     "@friends-library/db": "^1.0.0",
+    "@friends-library/doc-artifacts": "^1.0.1",
+    "@friends-library/doc-manifests": "^1.0.1",
     "@friends-library/document-meta": "^2.1.0",
     "@friends-library/friends": "^2.7.0",
     "@friends-library/lulu": "^1.2.1",
@@ -19,6 +23,7 @@
   },
   "devDependencies": {
     "@friends-library/dev": "^4.1.13",
+    "@friends-library/types": "^3.0.0",
     "@vercel/ncc": "^0.25.1",
     "x-chalk": "^1.0.1",
     "x-exec": "^1.2.0"
