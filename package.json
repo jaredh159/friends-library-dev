@@ -13,7 +13,8 @@
     "@friends-library/db": "^1.0.0",
     "@friends-library/document-meta": "^2.1.0",
     "@friends-library/friends": "^2.7.0",
-    "@friends-library/lulu": "^1.2.1"
+    "@friends-library/lulu": "^1.2.1",
+    "@octokit/action": "^3.1.6"
   },
   "devDependencies": {
     "@friends-library/dev": "^4.1.13",

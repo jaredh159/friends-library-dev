@@ -28,7 +28,7 @@ if (action == `all`) {
 
 function bundle(action: string) {
   if (task === `build`) {
-    magenta(`bundling <${action}> for production`);
+    magenta(`bundling <${action}> for production\n`);
   } else {
     green(`bundling <${action}> for dev in watch mode...`);
   }
