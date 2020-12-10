@@ -1,5 +1,5 @@
 import { find } from '@friends-library/hilkiah';
-import memoize from 'lodash/memoize';
+import memoize from 'lodash.memoize';
 
 export function makeSplitLines(
   maxLen: number,

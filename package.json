@@ -19,11 +19,13 @@
     "prepublishOnly": "npm run compile"
   },
   "dependencies": {
-    "@friends-library/hilkiah": "^1.1.5",
-    "@friends-library/types": "^1.1.1"
+    "@friends-library/hilkiah": "^1.2.0",
+    "@friends-library/types": "^3.0.0",
+    "lodash.memoize": "^4.1.2"
   },
   "devDependencies": {
-    "@friends-library/dev": "^4.0.8",
+    "@friends-library/dev": "^4.1.15",
+    "@types/lodash.memoize": "^4.1.6",
     "strip-indent": "^3.0.0"
   }
 }
