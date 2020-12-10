@@ -1,7 +1,12 @@
 {
   "compilerOptions": {
+    "moduleResolution": "node",
+    "strict": true,
     "declaration": true,
     "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noUncheckedIndexedAccess": true,
+    "target": "ES2019",
     "outDir": "./dist",
     "rootDir": "./src"
   }

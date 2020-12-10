@@ -1,4 +1,5 @@
-import { Edition, getAllFriends } from '@friends-library/friends';
+import { Edition } from '@friends-library/friends';
+import { getAllFriends } from '@friends-library/friends/query';
 import FsDocPrecursor from '../FsDocPrecursor';
 
 let editions: undefined | Map<string, Edition>;
