@@ -10,12 +10,12 @@ import * as artifacts from '@friends-library/doc-artifacts';
 import * as manifest from '@friends-library/doc-manifests';
 import * as cloud from '@friends-library/cloud';
 import { hydrate, query as dpcQuery, FsDocPrecursor } from '@friends-library/dpc-fs';
+import { Edition } from '@friends-library/friends';
 import * as coverServer from './cover-server';
 import { ScreenshotTaker } from './cover-server';
 import validate from './validate';
 import { logDocStart, logDocComplete, logPublishComplete, logPublishStart } from './log';
 import { publishPaperback } from './paperback';
-import { Edition } from '@friends-library/friends';
 
 interface PublishOptions {
   build: boolean;
