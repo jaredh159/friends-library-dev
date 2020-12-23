@@ -4,6 +4,7 @@
   "description": "web app for youtube poster screenshots (via puppeteer)",
   "author": "Jared Henderson <jared@netrivet.com>",
   "repository": "github:friends-library-dev/poster",
+  "private": true,
   "license": "MIT",
   "main": "index.js",
   "scripts": {
