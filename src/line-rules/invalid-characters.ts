@@ -104,11 +104,11 @@ function nbsp(line: Asciidoc, column: number): Asciidoc {
 const allowedEn = [
   `abcdefghijklmnopqrstuvwxyz`,
   `ABCDEFGHIJKLMNOPQRSTUVWXYZ`,
-  `01234567890`,
+  `0123456789`,
   `.,;:!?`,
   `"'\``,
   `£$`,
-  `[]#%^&*()-_=+\\/{}°`,
+  `[]#^&*()-_=+/{}°`,
   `\n `,
 ];
 
