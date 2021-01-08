@@ -129,6 +129,12 @@ const runner = new RegexLintRunner(
       fixable: true,
     },
     {
+      test: `besom`,
+      search: /\b(B|b)esom\b/g,
+      replace: `$1room`,
+      fixable: true,
+    },
+    {
       test: `whoso`,
       search: /\b(W|w)hoso\b/g,
       replace: `$1hoever`,
