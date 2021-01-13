@@ -31,7 +31,7 @@ const runner = new RegexLintRunner(
     },
     {
       test: `you`,
-      search: /\b(Believe|Go|Seek|Get|Come|Bring|Know|Praise|(p|P)ossess|(W|w)ait|Turn) (Y|y)ou\b/g,
+      search: /\b(Believe|Go|Seek|Get|Come|Bring|Know|Praise|(p|P)ossess|(W|w)ait|Turn|Enter) (Y|y)ou\b/g,
       replace: `$1`,
       fixable: false,
       message: `"<verb> you" is often an automated modernization error and should be replaced with "<verb>"`,
