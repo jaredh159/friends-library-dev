@@ -210,4 +210,10 @@ const WHITELIST: Record<string, number> = {
   comes: 1,
   tenders: 1,
   comforts: 1,
+  less: 1,
+  envious: 1,
+  touches: 1,
+  perceives: 1,
+  victorious: 1,
+  places: 1,
 };
