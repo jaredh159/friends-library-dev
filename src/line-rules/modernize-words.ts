@@ -39,6 +39,16 @@ const runner = new RegexLintRunner(
       allowIfNear: /((go|come) you (cursed|blessed|workers)|do you know what|possess you,|wait you shall)/i,
     },
     {
+      test: `what do you`,
+      search: /\b(w)hat do you\b/gi,
+      replace: `$1hat are you doing`,
+      fixable: false,
+      isMaybe: true,
+      message: `"What do you" is sometimes an automated modernization error that should be replaced with "What are you doing" or "What have you done"`,
+      includeNextLineFirstWord: true,
+      allowIfNear: /what do you (say|mean|call|deny|tell|gain|know|preach|do|witness|think|need|succeed|watch|go|owe|make|lie|talk|feel|have|pray|complain|thou|want|rejoice)\b/i,
+    },
+    {
       test: `do you it`,
       search: /\b(D|d)o (Y|y)ou it\b/g,
       replace: `$1o it`,
