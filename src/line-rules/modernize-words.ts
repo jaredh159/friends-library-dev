@@ -49,6 +49,14 @@ const runner = new RegexLintRunner(
       allowIfNear: /what do you (say|mean|call|deny|tell|gain|know|preach|do|witness|think|need|succeed|watch|go|owe|make|lie|talk|feel|have|pray|complain|thou|want|rejoice)\b/i,
     },
     {
+      test: `enter you not`,
+      search: /\benter you not\b/gi,
+      replace: `do not enter`,
+      fixable: false,
+      message: `"enter you not" is often an automated modernization error and should be replaced with "do not enter"`,
+      includeNextLineFirstWord: true,
+    },
+    {
       test: `do you it`,
       search: /\b(D|d)o (Y|y)ou it\b/g,
       replace: `$1o it`,
