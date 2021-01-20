@@ -9,7 +9,18 @@ export default function lint(
 ): LintResult[] {
   const lineRules: LineRule[] = Object.values(lineLints);
   const lines = adoc.split(`\n`);
+  let inPassthroughBlock = false;
+
   const lineResults = lines.reduce((acc, line, index) => {
+    if (isPassthroughBlockDelim(line)) {
+      inPassthroughBlock = !inPassthroughBlock;
+      return acc;
+    }
+
+    if (inPassthroughBlock) {
+      return acc;
+    }
+
     if (isLintComment(line)) {
       return acc;
     }
@@ -83,6 +94,10 @@ function isLintComment(line: Asciidoc): boolean {
 
 function isComment(line: Asciidoc): boolean {
   return line[0] === `/` && line[1] === `/`;
+}
+
+function isPassthroughBlockDelim(line: Asciidoc): boolean {
+  return line === `++++`;
 }
 
 function commentWarning(lineNumber: number): LintResult {

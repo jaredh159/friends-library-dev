@@ -121,4 +121,19 @@ describe(`lint()`, () => {
     const results = lint(`${adoc}\n`);
     expect(results).toHaveLength(0);
   });
+
+  it(`passthrough blocks produce no lint errors`, () => {
+    const adoc = stripIndent(`
+      == Ch 1
+
+      ++++
+      Foo    bar.
+      <img src="cat.jpg" />
+      Foo • bar.
+      ++++
+    `).trim();
+
+    const results = lint(`${adoc}\n`);
+    expect(results).toHaveLength(0);
+  });
 });
