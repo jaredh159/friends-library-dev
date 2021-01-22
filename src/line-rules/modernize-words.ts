@@ -31,7 +31,7 @@ const runner = new RegexLintRunner(
     },
     {
       test: `you`,
-      search: /\b(Believe|Be|Go|Seek|Get|Come|Bring|Know|Praise|(p|P)ossess|(W|w)ait|Turn|Enter|Why stand) (Y|y)ou\b/g,
+      search: /\b(Believe|Be|Go|Seek|Get|Come|Bring|Know|Praise|(p|P)ossess|(W|w)ait|Turn|Enter|Why stand|(W|w)atch) (Y|y)ou\b/g,
       replace: `$1`,
       fixable: false,
       message: `"<verb> you" is often an automated modernization error and should be replaced with "<verb>"`,
@@ -71,6 +71,14 @@ const runner = new RegexLintRunner(
       fixable: false,
       message: `"Turn you" is often an automated modernization error and should be replaced with "turn"`,
       isMaybe: true,
+      includeNextLineFirstWord: true,
+    },
+    {
+      test: `quit you`,
+      search: /\bquit you\b/gi,
+      replace: `acquit yourselves`,
+      fixable: false,
+      message: `"Quit you" is often an automated modernization error and should be replaced with "acquit yourselves"`,
       includeNextLineFirstWord: true,
     },
     {
