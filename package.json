@@ -1,0 +1,27 @@
+{
+  "name": "@friends-library/compile-speech",
+  "version": "1.0.0",
+  "description": "compile document AST's to text-to-speech format",
+  "main": "./dist/index.js",
+  "browser": false,
+  "author": "Jared Henderson <jared@netrivet.com>",
+  "repository": "github:friends-library-dev/compile-speech",
+  "license": "MIT",
+  "scripts": {
+    "test": "fldev test",
+    "test:watch": "fldev test:watch",
+    "lint": "fldev lint",
+    "lint:fix": "fldev lint:fix",
+    "ts:check": "fldev ts:check",
+    "format": "fldev format",
+    "compile": "fldev ts:compile"
+  },
+  "dependencies": {
+    "@friends-library/parser": "^0.0.1",
+    "@friends-library/types": "^3.0.0"
+  },
+  "devDependencies": {
+    "@friends-library/dev": "^4.1.16",
+    "strip-indent": "^3.0.0"
+  }
+}
