@@ -1,0 +1,389 @@
+// ********************************
+## handles hello world
+// ********************************
+
+****
+== Chapter 1
+
+Hello __world.__
+****
+
+++++
+CHAPTER 1
+
+Hello world.
+++++
+
+// ********************************
+## handles misc formatting
+// ********************************
+
+****
+== Chapter 1
+
+Hello +++_______+++ world&hellip;
+****
+
+++++
+CHAPTER 1
+
+Hello [name removed] world...
+++++
+
+// ********************************
+## handles money nodes
+// ********************************
+
+****
+== Chapter 1
+
+He was fined £1, $40 and £1,125.
+****
+
+++++
+CHAPTER 1
+
+He was fined 1 pound, 40 dollars and 1,125 pounds.
+++++
+
+// ********************************
+## handles quotes
+// ********************************
+
+****
+== Chapter 1
+
+Hello "`world`" '`herp.`'
+****
+
+++++
+CHAPTER 1
+
+Hello “world” ‘herp.’
+++++
+
+// ********************************
+## handles single-paragraph footnotes
+// ********************************
+
+****
+== Chapter 1
+
+Hello world.footnote:[Howdy]
+****
+
+++++
+CHAPTER 1
+
+Hello world. [footnote: Howdy --returning to text.]
+++++
+
+// ********************************
+## handles multi-paragraph footnotes
+// ********************************
+
+****
+== Chapter 1
+
+Hello world.^
+footnote:[Beep.
+{footnote-paragraph-split}
+Boop.
+{footnote-paragraph-split}
+Baz.]
+Goodbye world.
+****
+
+++++
+CHAPTER 1
+
+Hello world.
+
+[footnote:]
+
+Beep.
+
+Boop.
+
+Baz.
+
+[--returning to text.]
+
+Goodbye world.
+++++
+
+// ********************************
+## adds "signed" to signatures
+// ********************************
+
+****
+== Chapter 1
+
+[.signed-section-signature]
+George Fox
+
+[.embedded-content-document.letter]
+--
+
+Hello world.
+
+[.signed-section-signature]
+G+++.+++ F.
+
+--
+****
+
+++++
+CHAPTER 1
+
+Signed, George Fox
+
+Hello world.
+
+Signed, G. F.
+++++
+
+// ********************************
+## handles multi-chapter
+// ********************************
+
+****
+== Chapter 1
+
+Hello world.
+****
+
+****
+== Chapter 2
+
+Goodbye world.
+****
+
+++++
+CHAPTER 1
+
+Hello world.
+
+CHAPTER 2
+
+Goodbye world.
+++++
+
+// ********************************
+## handles description lists
+// ********************************
+
+****
+== Chapter 1
+
+Herp:: Derp
+
+Beep::
+Hello world, _goodbye_ world.
+****
+
+++++
+CHAPTER 1
+
+HERP: Derp
+
+BEEP: Hello world, goodbye world.
+++++
+
+// ********************************
+## footnote in quote block
+// ********************************
+
+****
+== Chapter 1
+
+[quote.scripture]
+____
+Hello world.^
+footnote:[Believe in "`the light.`"]
+____
+****
+
+++++
+CHAPTER 1
+
+Hello world. [footnote: Believe in “the light.” --returning to text.]
+++++
+
+// ********************************
+## high-level headings capitalized
+// ********************************
+
+****
+== Chapter 1
+
+=== Level 3
+
+// 4th level not capitalized
+==== Level 4
+****
+
+++++
+CHAPTER 1
+
+LEVEL 3
+
+Level 4
+++++
+
+// ********************************
+## skips chapter-synopsis
+// ********************************
+
+****
+== Chapter 1
+
+[.chapter-synopsis]
+* Item 1
+* Item 2
+
+Hello world.
+****
+
+++++
+CHAPTER 1
+
+Hello world.
+++++
+
+// ********************************
+## handles poetry
+// ********************************
+
+****
+== Chapter 1
+
+[verse]
+____
+Herp derp
+Beep "`boop`"
+____
+
+Hello world
+
+[verse]
+____
+Herp derp
+Beep boop
+
+Jim jam
+Foo bar
+____
+****
+
+++++
+CHAPTER 1
+
+Herp derp
+Beep “boop”
+
+Hello world
+
+Herp derp
+Beep boop
+
+Jim jam
+Foo bar
+++++
+
+// ********************************
+## handles syllogisms
+// ********************************
+
+****
+== Chapter 1
+
+Hello world.
+
+[.syllogism]
+* Item 1
+* Item 2
+* Item 3
+
+Goodbye world.
+****
+
+++++
+CHAPTER 1
+
+Hello world.
+
+- Item 1
+- Item 2
+- Item 3
+
+Goodbye world.
+++++
+
+// ********************************
+## handles document epigraphs
+// ********************************
+
+****
+[quote.epigraph, , John 1:1]
+____
+In the beginning was the Word.
+____
+
+[quote.epigraph, , John 1:2]
+____
+"`And the Word was God.
+He was in the beginning with God.`"
+____
+
+== Chapter 1
+
+Hello world.
+****
+
+++++
+“In the beginning was the Word.” —John 1:1
+
+“And the Word was God. He was in the beginning with God.” —John 1:2
+
+CHAPTER 1
+
+Hello world.
+++++
+
+// ********************************
+## handles scripture quotes
+// ********************************
+
+****
+== Chapter 1
+
+Hello world.
+
+[quote.scripture, , John 1:1]
+____
+In the beginning was the Word.
+____
+
+[quote.scripture, Bible, John 1:2]
+____
+"`And the Word was God.
+He was in the beginning with God.`"
+____
+
+Goodbye world.
+****
+
+++++
+CHAPTER 1
+
+Hello world.
+
+In the beginning was the Word.
+—John 1:1
+
+“And the Word was God. He was in the beginning with God.”
+—Bible, John 1:2
+
+Goodbye world.
+++++

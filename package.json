@@ -10,7 +10,7 @@
   "scripts": {
     "test": "fldev test",
     "test:watch": "fldev test:watch",
-    "lint": "fldev lint",
+    "lint": "fldev lint --rule '@typescript-eslint/explicit-module-boundary-types: [error, {allowedNames: [enter, exit]}]'",
     "lint:fix": "fldev lint:fix",
     "ts:check": "fldev ts:check",
     "format": "fldev format",
