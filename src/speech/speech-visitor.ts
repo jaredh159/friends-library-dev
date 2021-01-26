@@ -27,6 +27,7 @@ const visitor: Visitor<Output, Context> = {
         });
       }
     },
+
     exit({ output, context }) {
       output.push(``);
       output.push(`THE END.\n\n`);
@@ -41,6 +42,7 @@ const visitor: Visitor<Output, Context> = {
       append(output, new Date(context.dpc.revision.timestamp).toLocaleDateString());
     },
   },
+
   footnote: {
     enter({ node, output, context }) {
       if (node.children.length === 1) {
@@ -66,12 +68,14 @@ const visitor: Visitor<Output, Context> = {
       }
     },
   },
+
   listItem: {
     enter({ output }) {
       append(output, `- `);
     },
     exit: pushLine,
   },
+
   money: {
     enter({ node, output }) {
       let moneyStr = node.value.replace(/^./, ``);
@@ -84,12 +88,15 @@ const visitor: Visitor<Output, Context> = {
       append(output, moneyStr);
     },
   },
+
   verseStanza: {
     enter: pushLine,
   },
+
   verseLine: {
     exit: pushLine,
   },
+
   symbol: {
     enter({ node, output }) {
       switch (node.meta.subType) {
@@ -113,6 +120,7 @@ const visitor: Visitor<Output, Context> = {
       }
     },
   },
+
   entity: {
     enter({ node, output }) {
       switch (node.meta.subType) {
@@ -128,6 +136,7 @@ const visitor: Visitor<Output, Context> = {
       }
     },
   },
+
   paragraph: {
     enter({ output, node, context }) {
       const parent = node.parent;
@@ -155,15 +164,18 @@ const visitor: Visitor<Output, Context> = {
       output.push(``);
     },
   },
+
   heading: {
     enter: pushLine,
     exit: pushLine,
   },
+
   redacted: {
     enter({ output }) {
       append(output, `[name removed]`);
     },
   },
+
   text: {
     enter(data) {
       const { node, output } = data;
@@ -179,20 +191,24 @@ const visitor: Visitor<Output, Context> = {
       appendNodeValue(data);
     },
   },
+
   descriptionListItemTerm: {
     exit({ output }) {
       append(output, `: `);
     },
   },
+
   descriptionList: {
     enter: pushLine,
   },
+
   descriptionListItem: {
     exit({ output }) {
       output.push(``);
       output.push(``);
     },
   },
+
   unorderedList: {
     enter({ node, output }) {
       if (hasClass(node, `chapter-synopsis`)) {
@@ -202,6 +218,7 @@ const visitor: Visitor<Output, Context> = {
       }
     },
   },
+
   block: {
     exit({ node, output }) {
       const { meta, context } = node;
@@ -223,6 +240,7 @@ const visitor: Visitor<Output, Context> = {
       }
     },
   },
+
   node: {
     enter: appendNodeValue,
   },

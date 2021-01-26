@@ -1,7 +1,7 @@
 import fs from 'fs';
 import stripIndent from 'strip-indent';
 import { DocPrecursor, genericDpc } from '@friends-library/types';
-import compile from '../';
+import compile from '../eval-speech';
 
 describe(`compile()`, () => {
   it(`adds correct document start/end metadata`, () => {
@@ -49,7 +49,7 @@ type TestCase = [
 ];
 
 function getTestCases(): Array<TestCase> {
-  const file = fs.readFileSync(`${__dirname}/tests.adoc`, `utf-8`);
+  const file = fs.readFileSync(`${__dirname}/speech-tests.adoc`, `utf-8`);
   const tests = file.split(/## /g);
   consume(tests, `comment`);
   const cases: TestCase[] = tests.map((block) => {
