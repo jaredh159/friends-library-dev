@@ -113,5 +113,8 @@ visitor.unorderedList = wrap(`ul`);
 visitor.listItem = wrap(`li`);
 visitor.emphasis = wrap(`em`);
 visitor.oldStyleLine = wrap(`span`);
+visitor.descriptionList = wrap(`dl`);
+visitor.descriptionListItemTerm = wrap(`dt`);
+visitor.descriptionListItemContent = wrap(`dd`);
 
 export default visitor;
