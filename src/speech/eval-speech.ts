@@ -2,7 +2,7 @@ import { DocPrecursor } from '@friends-library/types';
 import { Parser, traverse } from '@friends-library/parser';
 import visitor from './speech-visitor';
 
-export default function compileSpeech(dpc: DocPrecursor): string {
+export default function evalSpeech(dpc: DocPrecursor): string {
   const document = Parser.parseDocument(...dpc.asciidocFiles);
   const lines: string[] = [];
   traverse(document, visitor, lines, { dpc });

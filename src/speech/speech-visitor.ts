@@ -1,12 +1,7 @@
 /* eslint @typescript-eslint/explicit-module-boundary-types: "off" */
 import { DocPrecursor } from '@friends-library/types';
-import {
-  Visitor,
-  AstNode,
-  NodeType,
-  traverse,
-  DocumentNode,
-} from '@friends-library/parser';
+import { Visitor, AstNode, NodeType, traverse } from '@friends-library/parser';
+import { symbolOutput } from '../utils';
 
 type Output = string[];
 type Context = { dpc: DocPrecursor; inlineFootnote?: boolean; quotifyEpigraph?: boolean };
@@ -19,13 +14,11 @@ const visitor: Visitor<Output, Context> = {
       output.push(``);
       output.push(`by ${context.dpc.meta.author.name.toUpperCase()}\n`);
       output.push(``);
-      if (node instanceof DocumentNode) {
-        node.epigraphs.forEach((epigraph) => {
-          const epigraphLines: string[] = [];
-          traverse(epigraph, visitor, epigraphLines, context);
-          output.push(epigraphLines.join(``));
-        });
-      }
+      node.document().epigraphs.forEach((epigraph) => {
+        const epigraphLines: string[] = [];
+        traverse(epigraph, visitor, epigraphLines, context);
+        output.push(epigraphLines.join(``));
+      });
     },
 
     exit({ output, context }) {
@@ -99,25 +92,7 @@ const visitor: Visitor<Output, Context> = {
 
   symbol: {
     enter({ node, output }) {
-      switch (node.meta.subType) {
-        case `LEFT_DOUBLE_CURLY`:
-          return append(output, `“`);
-        case `RIGHT_DOUBLE_CURLY`:
-          return append(output, `”`);
-        case `LEFT_SINGLE_CURLY`:
-          return append(output, `‘`);
-        case `RIGHT_SINGLE_CURLY`:
-          return append(output, `’`);
-        case `DOUBLE_DASH`:
-          return append(output, `—`);
-        case `POUND_SYMBOL`:
-        case `DOLLAR_SYMBOL`:
-        case `DEGREE_SYMBOL`:
-          return append(output, node.value);
-        default:
-          node.print(true);
-          throw new Error(`unhandled symbol: ${node.value}`);
-      }
+      append(output, symbolOutput(node));
     },
   },
 

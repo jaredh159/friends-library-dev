@@ -1,0 +1,325 @@
+// ********************************
+## hello world
+// ********************************
+
+****
+== Chapter 1
+
+Hello __world.__
+****
+
+++++
+<div class="chapter chapter-1">
+  <h2>Chapter 1</h2>
+  <p>Hello <em>world.</em></p>
+</div>
+++++
+
+// ********************************
+## curly quotes
+// ********************************
+
+****
+== "`Introduction`"
+
+'`Hello`' "`world.`"
+****
+
+++++
+<div class="chapter chapter-1">
+  <h2>“Introduction”</h2>
+  <p>‘Hello’ “world.”</p>
+</div>
+++++
+
+// ********************************
+## chapter context
+// ********************************
+
+****
+[#intro.style-blurb, short="Short Title"]
+== Chapter 1
+
+Hello world.
+****
+
+++++
+<div id="intro" class="chapter chapter-1 style-blurb" data-short-title="Short Title">
+  <h2>Chapter 1</h2>
+  <p>Hello world.</p>
+</div>
+++++
+
+// ********************************
+## multiple chapters
+// ********************************
+
+****
+== Chapter 1
+
+Hello __world.__
+****
+
+****
+== Chapter 2
+
+Goodbye world.
+****
+
+++++
+<div class="chapter chapter-1">
+  <h2>Chapter 1</h2>
+  <p>Hello <em>world.</em></p>
+</div>
+<div class="chapter chapter-2">
+  <h2>Chapter 2</h2>
+  <p>Goodbye world.</p>
+</div>
+++++
+
+// ********************************
+## paragraph classes
+// ********************************
+
+****
+== Chapter 1
+
+[.offset]
+Hello world.
+****
+
+++++
+<div class="chapter chapter-1">
+  <h2>Chapter 1</h2>
+  <p class="offset">Hello world.</p>
+</div>
+++++
+
+// ********************************
+## embedded letter
+// ********************************
+
+****
+== Chapter 1
+
+[.embedded-content-document.letter]
+--
+
+[.salutation]
+Friend,
+
+Hello world.
+
+[.signed-section-signature]
+George Fox
+
+--
+****
+
+++++
+<div class="chapter chapter-1">
+  <h2>Chapter 1</h2>
+  <div class="embedded-content-document letter">
+    <p class="salutation">Friend,</p>
+    <p>Hello world.</p>
+    <p class="signed-section-signature">George Fox</p>
+  </div>
+</div>
+++++
+
+// ********************************
+## syllogism
+// ********************************
+
+****
+== Chapter 1
+
+[.syllogism]
+* Item 1
+* Item 2
+* Item 3
+****
+
+++++
+<div class="chapter chapter-1">
+  <h2>Chapter 1</h2>
+  <ul class="syllogism">
+    <li>Item 1</li>
+    <li>Item 2</li>
+    <li>Item 3</li>
+  </ul>
+</div>
+++++
+
+// ********************************
+## footnotes
+// ********************************
+
+****
+== Chapter 1.footnote:[Note _one._]
+
+Hello world.^
+footnote:[Note two.]
+
+Goodbye world.^
+footnote:[Note
+{footnote-paragraph-split}
+three.]
+****
+
+++++
+<div class="chapter chapter-1">
+  <h2>Chapter 1.<span class="footnote">Note <em>one.</em></span></h2>
+  <p>Hello world.<span class="footnote">Note two.</span></p>
+  <p>
+    Goodbye world.
+    <span class="footnote">
+      <span class="footnote-paragraph">Note</span>
+      <span class="footnote-paragraph">three.</span>
+    </span>
+  </p>
+</div>
+++++
+
+// ********************************
+## asterism
+// ********************************
+
+****
+== Chapter 1
+
+Hello world.
+
+[.asterism]
+'''
+
+Goodbye world.
+****
+
+++++
+<div class="chapter chapter-1">
+  <h2>Chapter 1</h2>
+  <p>Hello world.</p>
+  <div class="asterism">*&#160;&#160;*&#160;&#160;*</div>
+  <p>Goodbye world.</p>
+</div>
+++++
+
+// ********************************
+## block quotes
+// ********************************
+
+****
+== Chapter 1
+
+[quote.scripture, , ]
+____
+A single paragraph quote.
+____
+
+[quote.scripture, , John 1:1]
+____
+In the beginning was the Word.
+
+And the Word was with God.
+____
+
+[quote, Bob Barclay, Apology]
+____
+Ask not what your country can do for you.
+____
+****
+
+++++
+<div class="chapter chapter-1">
+  <h2>Chapter 1</h2>
+  <blockquote class="scripture">
+    <p>A single paragraph quote.</p>
+  </blockquote>
+  <figure class="attributed-quote scripture">
+    <blockquote class="scripture">
+      <p>In the beginning was the Word.</p>
+      <p>And the Word was with God.</p>
+    </blockquote>
+    <figcaption>
+      <cite>John 1:1</cite>
+    </figcaption>
+  </figure>
+  <figure class="attributed-quote">
+    <blockquote>
+      <p>Ask not what your country can do for you.</p>
+    </blockquote>
+    <figcaption>
+      <span class="quote-attribution">&#8212; Bob Barclay</span>
+      <cite>Apology</cite>
+    </figcaption>
+  </figure>
+</div>
+++++
+
+// ********************************
+## old-style h3
+// ********************************
+
+****
+== Chapter 1
+
+[.old-style]
+=== Part 1 / Part 2 / Part 3
+
+Hello world.
+****
+
+++++
+<div class="chapter chapter-1">
+  <h2>Chapter 1</h2>
+  <h3 class="old-style">
+    <span>Part 1</span>
+    <span>Part 2</span>
+    <span>Part 3</span>
+  </h3>
+  <p>Hello world.</p>
+</div>
+++++
+
+// ********************************
+## numbered-group
+// ********************************
+
+****
+== Chapter 1
+
+[.numbered-group]
+====
+
+[.numbered]
+Item 1.
+
+[.numbered]
+Item 2.
+
+[.numbered]
+Item 3.
+
+Item 3, paragraph 2.
+
+====
+****
+
+++++
+<div class="chapter chapter-1">
+  <h2>Chapter 1</h2>
+  <div class="numbered-group">
+    <div class="numbered">
+      <p>Item 1.</p>
+    </div>
+    <div class="numbered">
+      <p>Item 2.</p>
+    </div>
+    <div class="numbered">
+      <p>Item 3.</p>
+      <p>Item 3, paragraph 2.</p>
+    </div>
+  </div>
+</div>
+++++

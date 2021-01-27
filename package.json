@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "@friends-library/dev": "^4.1.16",
+    "prettier": "^2.2.1",
     "strip-indent": "^3.0.0"
   }
 }

@@ -1,44 +1,15 @@
 import fs from 'fs';
+import prettier from 'prettier';
 import stripIndent from 'strip-indent';
 import { DocPrecursor, genericDpc } from '@friends-library/types';
-import evalSpeech from '../eval-speech';
+import evalHtml from '../eval-html';
 
-describe(`evalSpeech()`, () => {
-  it(`adds correct document start/end metadata`, () => {
-    const text = getEvald(`== Chapter 1\n\nHello world.`);
-    const expected = stripIndent(`
-      JOURNAL OF GEORGE FOX
-
-      by GEORGE FOX
-
-
-      CHAPTER 1
-
-      Hello world.
-      
-      THE END.
-
-
-      Published by FRIENDS LIBRARY PUBLISHING.
-
-      Download free books from early members of the Religious Society of Friends (Quakers) in a variety of formats at www.friendslibrary.com.
-      
-      Public domain in the USA.
-
-      Contact the publishers at info@friendslibrary.com.
-
-      ISBN: 978-1-64476-029-1
-
-      Text revision: 327ceb2 - 1/22/2021
-    `);
-    expect(text).toBe(expected.trim());
-  });
-
+describe(`evalHtml()`, () => {
   test.each(getTestCases())(`%s`, (_, files, expected) => {
-    const text = getEvald(...files.map((f) => f.adoc));
-    const lines = text.split(`\n`).slice(5);
-    const body = lines.slice(0, -15).join(`\n`);
-    expect(body).toBe(expected);
+    const chapters = getEvald(...files.map((f) => f.adoc));
+    const evaled = format(chapters.join(``));
+    console.log(evaled);
+    expect(evaled).toBe(format(expected));
   });
 });
 
@@ -49,7 +20,7 @@ type TestCase = [
 ];
 
 function getTestCases(): Array<TestCase> {
-  const file = fs.readFileSync(`${__dirname}/speech-tests.adoc`, `utf-8`);
+  const file = fs.readFileSync(`${__dirname}/html-tests.adoc`, `utf-8`);
   const tests = file.split(/## /g);
   consume(tests, `comment`);
   const cases: TestCase[] = tests.map((block) => {
@@ -113,6 +84,19 @@ function getDpc(...files: string[]): DocPrecursor {
   return dpc;
 }
 
-function getEvald(...files: string[]): string {
-  return evalSpeech(getDpc(...files));
+function getEvald(...files: string[]): string[] {
+  return evalHtml(getDpc(...files)).chapters;
+}
+
+function format(rawHtml: string): string {
+  const preprocessed = rawHtml
+    .replace(/\n/g, ``)
+    .replace(/  +/g, ` `)
+    .replace(/> </g, `><`)
+    .replace(/ </g, `<`)
+    .replace(/> /g, `>`);
+  return prettier.format(preprocessed, {
+    parser: `html`,
+    htmlWhitespaceSensitivity: `ignore`,
+  });
 }
