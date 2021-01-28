@@ -73,13 +73,18 @@ export function joinTokens(tokens: Token[]): string {
     .join(``);
 }
 
-export function wrap(tag: string): Visitable<unknown> {
+export function wrap(
+  tag: string | ((node: AstNode) => string | null),
+  classList?: string[],
+): Visitable<unknown> {
   return {
     enter({ node }) {
-      c.push(`<${tag}${classAttr(node) || classAttr(node.parent)}>`);
+      const el = typeof tag === `function` ? tag(node) : tag;
+      el && c.push(`<${el}${classAttr(node, classList) || classAttr(node.parent)}>`);
     },
-    exit() {
-      c.push(`</${tag}>`);
+    exit({ node }) {
+      const el = typeof tag === `function` ? tag(node) : tag;
+      el && c.push(`</${el}>`);
     },
   };
 }
