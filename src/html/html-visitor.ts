@@ -1,6 +1,7 @@
 import { Visitor } from '@friends-library/parser';
 import { utils as u, chapterMarkup as c, wrap } from '../utils';
 import AttributedQuoteBlockVisitor from './AttributedQuoteBlockVisitor';
+import HeadingVisitor from './HeadingVisitor';
 import ParagraphVisitor from './ParagraphVisitor';
 
 type Output = Array<string[]>;
@@ -65,17 +66,24 @@ const visitor: Visitor<Output> = {
     },
   },
 
+  discoursePartIdentifier: {
+    enter({ node }) {
+      c.append(`<em>${node.value}</em>`);
+    },
+  },
+
   paragraph: new ParagraphVisitor(),
   footnote: wrap(`span`, [`footnote`]),
-  heading: wrap((node) => `h${node.meta.level ?? 1}`),
   unorderedList: wrap(`ul`),
   listItem: wrap(`li`),
   emphasis: wrap(`em`),
-  oldStyleLine: wrap(`span`),
+  headingSegment: wrap(`span`),
   descriptionList: wrap(`dl`),
   descriptionListItemTerm: wrap(`dt`),
   descriptionListItemContent: wrap(`dd`),
   verseLine: wrap(`span`, [`verse-line`]),
   verseStanza: wrap((n) => (n.isInFootnote() ? `span` : `div`), [`verse-stanza`]),
+
+  ...HeadingVisitor,
 };
 export default visitor;

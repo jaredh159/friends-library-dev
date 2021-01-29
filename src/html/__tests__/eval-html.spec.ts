@@ -8,7 +8,7 @@ describe(`evalHtml()`, () => {
   test.each(getTestCases())(`%s`, (_, files, expected) => {
     const chapters = getEvald(...files.map((f) => f.adoc));
     const evaled = format(chapters.join(``));
-    console.log(evaled);
+    // console.log(evaled);
     expect(evaled).toBe(format(expected));
   });
 });
