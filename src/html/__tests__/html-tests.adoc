@@ -5,13 +5,13 @@
 ****
 == Preface
 
-Hello __world.__
+Hello **there** __world.__
 ****
 
 ++++
 <div class="chapter chapter-1">
   <header class="chapter-heading"><h2>Preface</h2></header>
-  <p>Hello <em>world.</em></p>
+  <p>Hello <b>there</b> <em>world.</em></p>
 </div>
 ++++
 
@@ -556,5 +556,66 @@ Hello world
     </div>
   </header>
   <p>Hello world</p>
+</div>
+++++
+
+// ********************************
+## chapter subtitle-blurb becomes h3
+// ********************************
+
+****
+== Preface
+
+[.chapter-subtitle--blurb]
+Hello world.
+****
+
+++++
+<div class="chapter chapter-1">
+  <header class="chapter-heading"><h2>Preface</h2></header>
+  <h3 class="chapter-subtitle--blurb">Hello world.</h3>
+</div>
+++++
+
+// ********************************
+## misc formatting
+// ********************************
+
+****
+== Preface
+
+Barclay [.book-title]#Apology.#
+****
+
+++++
+<div class="chapter chapter-1">
+  <header class="chapter-heading"><h2>Preface</h2></header>
+  <p>Barclay <span class="book-title">Apology.</span></p>
+</div>
+++++
+
+// ********************************
+## postscript
+// ********************************
+
+****
+== Preface
+
+[.postscript]
+====
+
+P+++.+++ S. Hello world.
+
+====
+****
+
+++++
+<div class="chapter chapter-1">
+  <header class="chapter-heading"><h2>Preface</h2></header>
+  <div class="postscript">
+    <p>
+     <em>P. S.</em> Hello world.
+    </p>
+  </div>
 </div>
 ++++

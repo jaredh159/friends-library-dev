@@ -66,6 +66,12 @@ const visitor: Visitor<Output> = {
     },
   },
 
+  postscriptIdentifier: {
+    enter({ node }) {
+      c.append(`<em>${node.value}</em>`);
+    },
+  },
+
   discoursePartIdentifier: {
     enter({ node }) {
       c.append(`<em>${node.value}</em>`);
@@ -74,8 +80,10 @@ const visitor: Visitor<Output> = {
 
   paragraph: new ParagraphVisitor(),
   footnote: wrap(`span`, [`footnote`]),
+  inline: wrap(`span`),
   unorderedList: wrap(`ul`),
   listItem: wrap(`li`),
+  strong: wrap(`b`),
   emphasis: wrap(`em`),
   headingSegment: wrap(`span`),
   descriptionList: wrap(`dl`),
