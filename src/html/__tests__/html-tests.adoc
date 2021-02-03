@@ -585,12 +585,18 @@ Hello world.
 == Preface
 
 Barclay [.book-title]#Apology.#
+
+This [.underline]#is underlined.#
+
+Some +++[+++random square brackets+++]+++.
 ****
 
 ++++
 <div class="chapter chapter-1">
   <header class="chapter-heading"><h2>Preface</h2></header>
   <p>Barclay <span class="book-title">Apology.</span></p>
+  <p>This <span class="underline">is underlined.</span></p>
+  <p>Some [random square brackets].</p>
 </div>
 ++++
 
@@ -604,7 +610,7 @@ Barclay [.book-title]#Apology.#
 [.postscript]
 ====
 
-P+++.+++ S. Hello world.
+P+++.+++ S.--Hello world.
 
 ====
 ****
@@ -614,7 +620,7 @@ P+++.+++ S. Hello world.
   <header class="chapter-heading"><h2>Preface</h2></header>
   <div class="postscript">
     <p>
-     <em>P. S.</em> Hello world.
+     <em>P. S.</em>—Hello world.
     </p>
   </div>
 </div>
