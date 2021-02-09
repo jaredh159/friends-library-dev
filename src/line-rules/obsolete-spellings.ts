@@ -11,6 +11,11 @@ const runner = new RegexLintRunner([
     message: `Obsolete grammar from references to archaic KJV of Ps. 118:23 should be carefully updated`,
   },
   {
+    test: `biass`,
+    search: /\b(un)?(b)iass(es|ed|ing)\b/gi,
+    replace: (_, un, b, end) => `${un !== undefined ? un : ``}${b}ias${end}`,
+  },
+  {
     test: `jun`,
     search: /\bjun\./g,
     replace: `Jr.`,
