@@ -211,6 +211,7 @@ const strings: { [k: string]: string } = {
   Norwich: `Norwich`,
   Colchester: `Colchester`,
   Carlisle: `Carlisle`,
+  Leicester: `Leicester`,
   England: `Inglaterra`,
   Scotland: `Escocia`,
   London: `Londres`,
