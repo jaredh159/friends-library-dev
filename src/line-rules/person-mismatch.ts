@@ -219,4 +219,6 @@ const WHITELIST: Record<string, number> = {
   conscious: 1,
   anxious: 1,
   railers: 1,
+  years: 1,
+  bears: 1,
 };
