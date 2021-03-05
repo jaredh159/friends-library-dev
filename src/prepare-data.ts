@@ -13,10 +13,10 @@ const audiobooks: Edition[] = process.argv.includes(`--empty`)
 
 async function main(): Promise<void> {
   const promises = audiobooks.map((audiobook) => {
-    return fetch(`${FLP_API_URL}/cover-props/${audiobook.path}`)
+    return fetch(`${FLP_API_URL}/cover-props/v1/${audiobook.path}`)
       .then((res) => {
         if (res.status !== 200) {
-          throw new Error(`Failed to fetch cover props`);
+          throw new Error(`Failed to fetch cover props for ${audiobook.path}`);
         }
         return res.json();
       })
