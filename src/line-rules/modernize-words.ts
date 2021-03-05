@@ -31,12 +31,24 @@ const runner = new RegexLintRunner(
     },
     {
       test: `you`,
-      search: /\b(Believe|Be|Go|Seek|Get|Come|Bring|Know|Praise|(p|P)ossess|(W|w)ait|Turn|Enter|Why stand|(W|w)atch) (Y|y)ou\b/g,
+      // NOTE: when adding here, test whether the lowercase version should be added to "MAYBE" lint below
+      search: /\b(Believe|Be|(G|g)o|Seek|Get|Come|Bring|Know|Praise|(p|P)ossess|(W|w)ait|Turn|(E|e)nter|Why stand|(W|w)atch) (Y|y)ou\b/g,
       replace: `$1`,
       fixable: false,
       message: `"<verb> you" is often an automated modernization error and should be replaced with "<verb>"`,
       includeNextLineFirstWord: true,
-      allowIfNear: /((go|come) you (cursed|blessed|workers)|do you know what|possess you,|wait you shall)/i,
+      allowIfNear: /((go|come) you (cursed|blessed|workers)|do you know what|possess you,|wait you shall|go you cannot come|enter you(,|;|:|\.|\?))/i,
+      isMaybe: false,
+    },
+    {
+      test: `you`,
+      search: /\b(be|seek|get|come|know|praise) (Y|y)ou\b/g,
+      replace: `$1`,
+      fixable: false,
+      message: `this "<verb> you" is sometimes an automated modernization error and should be replaced with "<verb>"`,
+      includeNextLineFirstWord: true,
+      allowIfNear: /(come you (cursed|blessed|workers)|do you know what)/i,
+      isMaybe: true,
     },
     {
       test: `what do you`,
