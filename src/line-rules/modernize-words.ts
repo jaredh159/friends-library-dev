@@ -32,7 +32,7 @@ const runner = new RegexLintRunner(
     {
       test: `you`,
       // NOTE: when adding here, test whether the lowercase version should be added to "MAYBE" lint below
-      search: /\b(Believe|Be|(G|g)o|Seek|Get|Come|Bring|Know|Praise|(p|P)ossess|(W|w)ait|Turn|(E|e)nter|Why stand|(W|w)atch) (Y|y)ou\b/g,
+      search: /\b(Believe|Be|(G|g)o|Seek|Get|Come|Bring|Know|Praise|(p|P)ossess|(W|w)ait|Turn|(E|e)nter|Why stand|(W|w)atch|Wash) (Y|y)ou\b/g,
       replace: `$1`,
       fixable: false,
       message: `"<verb> you" is often an automated modernization error and should be replaced with "<verb>"`,
