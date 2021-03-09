@@ -41,7 +41,7 @@ export async function writeEbookManifest(
     const check = await epubCheck(SRC_DIR);
     if (!check.pass) {
       logEpubCheckFail(basename, check.messages);
-      process.exit(1);
+      throw new Error(`epubCheck failed for ${basename}`);
     }
   }
 

@@ -16,9 +16,8 @@ export default async function mobi(
   try {
     await kindlegen(filePath, filenameNoExt);
   } catch (err) {
-    red(`Error generating MOBI ${filenameNoExt}:`);
-    red(err);
-    process.exit(1);
+    red(`Error generating MOBI ${filenameNoExt}`);
+    throw new Error(`Error generating MOBI ${filenameNoExt}: ${err.message}`);
   }
 
   return filePath.replace(/\.epub$/, ``);
