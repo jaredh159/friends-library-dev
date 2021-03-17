@@ -1,0 +1,133 @@
+// ******************************************
+## epigraph with italics and citation
+// ******************************************
+
+****
+[quote.epigraph, , John 1:1]
+____
+In the beginning was the _Word,_ and the Word was God.
+____
+
+== Preface
+
+Hello world.
+****
+
+++++
+<div class="epigraphs own-page">
+  <div class="epigraph">
+    <span class="epigraph__text">
+      In the beginning was the <em>Word,</em> and the Word was God.
+    </span>
+    <span class="epigraph__source">
+      John 1:1
+    </span>
+  </div>
+</div>
+++++
+
+// ******************************************
+## epigraph with mdash and curly quotes and entity
+// ******************************************
+
+****
+[quote.epigraph, , John 1:1]
+____
+&hellip;In the beginning was the "`Word,`"--and the Word was God.
+____
+
+== Preface
+
+Hello world.
+****
+
+++++
+<div class="epigraphs own-page">
+  <div class="epigraph">
+    <span class="epigraph__text">
+      &#8230;In the beginning was the “Word,”—and the Word was God.
+    </span>
+    <span class="epigraph__source">
+      John 1:1
+    </span>
+  </div>
+</div>
+++++
+
+// ******************************************
+## double epigraps
+// ******************************************
+
+****
+[quote.epigraph, , Prov. 4:18]
+____
+The path of the just is as the shining light,
+that shines more and more unto the perfect day.
+____
+
+[quote.epigraph, , Ps. 37:37]
+____
+Mark the perfect man, and behold the upright; for the end of that man is peace.
+____
+
+== Preface
+
+Hello world.
+****
+
+++++
+<div class="epigraphs own-page">
+  <div class="epigraph">
+    <span class="epigraph__text">
+      The path of the just is as the shining light,
+      that shines more and more unto the perfect day.
+    </span>
+    <span class="epigraph__source">
+      Prov. 4:18
+    </span>
+  </div>
+  <div class="epigraph epigraph--not-first">
+    <span class="epigraph__text">
+      Mark the perfect man, and behold the upright;
+      for the end of that man is peace.
+    </span>
+    <span class="epigraph__source">
+      Ps. 37:37
+    </span>
+  </div>
+</div>
+++++
+
+// ******************************************
+## epigraph with unusual citation
+// ******************************************
+
+****
+[quote.epigraph, , "Hooker`'s Ecclesiastical Polity, Preface, sect. ix"]
+____
+If Truth do anywhere manifest itself,
+seek not to smother it with glossing delusion;
+Acknowledge the greatness thereof, and think it your best victory,
+when the same prevails over you.
+____
+
+== Preface
+
+Hello world.
+****
+
+++++
+<div class="epigraphs own-page">
+  <div class="epigraph">
+    <span class="epigraph__text">
+      If Truth do anywhere manifest itself,
+      seek not to smother it with glossing delusion;
+      Acknowledge the greatness thereof, and think it your best victory,
+      when the same prevails over you.
+      </span>
+    <span class="epigraph__source">
+      Hooker’s Ecclesiastical Polity, Preface, sect. ix
+    </span>
+  </div>
+</div>
+++++

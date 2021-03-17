@@ -1,0 +1,114 @@
+// ******************************************
+## complex footnote [ebook]
+// ******************************************
+
+****
+God has exalted above every name, "`that at`" or in^
+footnote:[J. G. Bevan`'s [.book-title]#Life of Paul,# note, page 363.]
+"`the name of Jesus, every knee should bow.`"
+****
+
+++++
+<p class="paragraph">
+  God has exalted above every name, “that at” or in
+  <sup class="footnote" id="fn-call__2">
+    <a href="notes.xhtml#fn__2" title="View footnote.">*</a>
+  </sup>
+  “the name of Jesus, every knee should bow.”
+</p>
+++++
+
+// ******************************************
+## chapter heading has id, but NO data-attr [ebook]
+// ******************************************
+
+****
+[#preface, short="Pre"]
+== Preface
+
+Hello world.
+****
+
+++++
+<div id="preface" class="chapter chapter-1">
+  <header class="chapter-heading">
+    <h2>Preface</h2>
+  </header>
+  <p class="paragraph">Hello world.</p>
+</div>
+++++
+
+// ******************************************
+## ebook footnote call markup [ebook]
+// ******************************************
+
+****
+Hello world.footnote:[A note.]
+****
+
+++++
+<p class="paragraph">
+  Hello world.
+  <sup class="footnote" id="fn-call__2">
+    <a href="notes.xhtml#fn__2" title="View footnote.">*</a>
+  </sup>
+</p>
+++++
+
+// ******************************************
+## multiple ebook call footnote markup [ebook]
+// ******************************************
+
+****
+Hellofootnote:[Note 1.] world.footnote:[Note 2.]
+****
+
+++++
+<p class="paragraph">
+  Hello
+  <sup class="footnote" id="fn-call__2">
+    <a href="notes.xhtml#fn__2" title="View footnote.">*</a>
+  </sup>
+  world.
+  <sup class="footnote" id="fn-call__3">
+    <a href="notes.xhtml#fn__3" title="View footnote.">†</a>
+  </sup>
+</p>
+++++
+
+// ******************************************
+## numbered ebook call footnote markup [ebook]
+// ******************************************
+
+****
+Hello^
+footnote:[Note 1.]
+there^
+footnote:[Note 2.]
+you^
+footnote:[Note 3.]
+world^
+footnote:[Note 4.]
+****
+
+++++
+<p class="paragraph">
+  Hello
+  <sup class="footnote" id="fn-call__2">
+    <a href="notes.xhtml#fn__2" title="View footnote.">2</a>
+  </sup>
+  there
+  <sup class="footnote" id="fn-call__3">
+    <a href="notes.xhtml#fn__3" title="View footnote.">3</a>
+  </sup>
+  you
+  <sup class="footnote" id="fn-call__4">
+    <a href="notes.xhtml#fn__4" title="View footnote.">4</a>
+  </sup>
+  world
+  <sup class="footnote" id="fn-call__5">
+    <a href="notes.xhtml#fn__5" title="View footnote.">5</a>
+  </sup>
+</p>
+++++
+

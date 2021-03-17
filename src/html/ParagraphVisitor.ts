@@ -7,7 +7,11 @@ export default class ParagraphVisitor implements Visitable {
     if (opensNumberedSubgroup(node)) {
       c.push(`<div${u.classAttr(node)}>`);
     }
-    c.push(`<${el}${u.classAttr(node) || u.classAttr(node.parent)}>`);
+    // let classAttr = u.classAttr(node) || u.classAttr(node.parent);
+    // if (el === `p` && classAttr === ``) {
+    //   classAttr = ` class="paragraph"`;
+    // }
+    c.push(`<${el}${classAttr(el, node)}>`);
   }
 
   exit({ node }: VisitData): void {
@@ -35,4 +39,18 @@ function isChapterSubtitleBlurb(node: AstNode): boolean {
     node.hasClass(`chapter-subtitle--blurb`) ||
     node.parent.hasClass(`chapter-subtitle--blurb`)
   );
+}
+
+function classAttr(el: 'p' | 'h3', node: AstNode): string {
+  let htmlAttr = u.classAttr(node) || u.classAttr(node.parent);
+  if (el === `h3`) {
+    return htmlAttr;
+  }
+
+  if (htmlAttr === ``) {
+    htmlAttr = ` class="paragraph"`;
+  } else if (htmlAttr.includes('emphasized')) {
+    htmlAttr = htmlAttr.replace(`class="`, `class="paragraph `);
+  }
+  return htmlAttr;
 }

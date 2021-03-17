@@ -9,9 +9,9 @@ Hello **there** __world.__
 ****
 
 ++++
-<div class="chapter chapter-1">
+<div id="chapter-1" class="chapter chapter-1">
   <header class="chapter-heading"><h2>Preface</h2></header>
-  <p>Hello <b>there</b> <em>world.</em></p>
+  <p class="paragraph">Hello <b>there</b> <em>world.</em></p>
 </div>
 ++++
 
@@ -26,9 +26,9 @@ Hello **there** __world.__
 ****
 
 ++++
-<div class="chapter chapter-1">
+<div id="chapter-1" class="chapter chapter-1">
   <header class="chapter-heading"><h2>“Introduction”</h2></header>
-  <p>‘Hello’ “world.”</p>
+  <p class="paragraph">‘Hello’ “world.”</p>
 </div>
 ++++
 
@@ -46,7 +46,7 @@ Hello world.
 ++++
 <div id="intro" class="chapter chapter-1 style-blurb" data-short-title="Short Title">
   <header class="chapter-heading"><h2>Preface</h2></header>
-  <p>Hello world.</p>
+  <p class="paragraph">Hello world.</p>
 </div>
 ++++
 
@@ -67,13 +67,13 @@ Goodbye world.
 ****
 
 ++++
-<div class="chapter chapter-1">
+<div id="chapter-1" class="chapter chapter-1">
   <header class="chapter-heading"><h2>Preface</h2></header>
-  <p>Hello <em>world.</em></p>
+  <p class="paragraph">Hello <em>world.</em></p>
 </div>
-<div class="chapter chapter-2">
+<div id="chapter-2" class="chapter chapter-2">
   <header class="chapter-heading"><h2>Intro</h2></header>
-  <p>Goodbye world.</p>
+  <p class="paragraph">Goodbye world.</p>
 </div>
 ++++
 
@@ -89,7 +89,7 @@ Hello world.
 ****
 
 ++++
-<div class="chapter chapter-1">
+<div id="chapter-1" class="chapter chapter-1">
   <header class="chapter-heading"><h2>Preface</h2></header>
   <p class="offset">Hello world.</p>
 </div>
@@ -117,11 +117,11 @@ George Fox
 ****
 
 ++++
-<div class="chapter chapter-1">
+<div id="chapter-1" class="chapter chapter-1">
   <header class="chapter-heading"><h2>Preface</h2></header>
   <div class="embedded-content-document letter">
     <p class="salutation">Friend,</p>
-    <p>Hello world.</p>
+    <p class="paragraph">Hello world.</p>
     <p class="signed-section-signature">George Fox</p>
   </div>
 </div>
@@ -141,7 +141,7 @@ George Fox
 ****
 
 ++++
-<div class="chapter chapter-1">
+<div id="chapter-1" class="chapter chapter-1">
   <header class="chapter-heading"><h2>Preface</h2></header>
   <ul class="syllogism">
     <li>Item 1</li>
@@ -168,12 +168,12 @@ three.]
 ****
 
 ++++
-<div class="chapter chapter-1">
+<div id="chapter-1" class="chapter chapter-1">
   <header class="chapter-heading">
     <h2>Preface.<span class="footnote">Note <em>one.</em></span></h2>
   </header>
-  <p>Hello world.<span class="footnote">Note two.</span></p>
-  <p>
+  <p class="paragraph">Hello world.<span class="footnote">Note two.</span></p>
+  <p class="paragraph">
     Goodbye world.
     <span class="footnote">
       <span class="footnote-paragraph">Note</span>
@@ -201,9 +201,9 @@ Some text after.]
 ****
 
 ++++
-<div class="chapter chapter-1">
+<div id="chapter-1" class="chapter chapter-1">
   <header class="chapter-heading"><h2>Preface</h2></header>
-  <p>
+  <p class="paragraph">
     Hello world.
     <span class="footnote">
       <span class="footnote-paragraph">Footnotes can have poetry:</span>
@@ -249,15 +249,15 @@ ____
 ****
 
 ++++
-<div class="chapter chapter-1">
+<div id="chapter-1" class="chapter chapter-1">
   <header class="chapter-heading"><h2>Preface</h2></header>
   <blockquote class="scripture">
-    <p>A single paragraph quote.</p>
+    <p class="paragraph">A single paragraph quote.</p>
   </blockquote>
   <figure class="attributed-quote scripture">
     <blockquote class="scripture">
-      <p>In the beginning was the Word.</p>
-      <p>And the Word was with God.</p>
+      <p class="paragraph">In the beginning was the Word.</p>
+      <p class="paragraph">And the Word was with God.</p>
     </blockquote>
     <figcaption>
       <cite>John 1:1</cite>
@@ -265,7 +265,7 @@ ____
   </figure>
   <figure class="attributed-quote">
     <blockquote>
-      <p>Ask not what your country can do for you.</p>
+      <p class="paragraph">Ask not what your country can do for you.</p>
     </blockquote>
     <figcaption>
       <span class="quote-attribution">&#8212; Bob Barclay</span>
@@ -289,14 +289,14 @@ Hello world.
 ****
 
 ++++
-<div class="chapter chapter-1">
+<div id="chapter-1" class="chapter chapter-1">
   <header class="chapter-heading"><h2>Preface</h2></header>
   <h3 class="old-style">
-    <span>Part 1</span>
-    <span>Part 2</span>
-    <span>Part 3</span>
+    <span class="heading-segment heading-segment--1">Part 1</span>
+    <span class="heading-segment heading-segment--2">Part 2</span>
+    <span class="heading-segment heading-segment--3">Part 3</span>
   </h3>
-  <p>Hello world.</p>
+  <p class="paragraph">Hello world.</p>
 </div>
 ++++
 
@@ -325,18 +325,18 @@ Item 3, paragraph 2.
 ****
 
 ++++
-<div class="chapter chapter-1">
+<div id="chapter-1" class="chapter chapter-1">
   <header class="chapter-heading"><h2>Preface</h2></header>
   <div class="numbered-group">
     <div class="numbered">
-      <p>Item 1.</p>
+      <p class="paragraph">Item 1.</p>
     </div>
     <div class="numbered">
-      <p>Item 2.</p>
+      <p class="paragraph">Item 2.</p>
     </div>
     <div class="numbered">
-      <p>Item 3.</p>
-      <p>Item 3, paragraph 2.</p>
+      <p class="paragraph">Item 3.</p>
+      <p class="paragraph">Item 3, paragraph 2.</p>
     </div>
   </div>
 </div>
@@ -356,7 +356,7 @@ A longer _definition._
 ****
 
 ++++
-<div class="chapter chapter-1">
+<div id="chapter-1" class="chapter chapter-1">
   <header class="chapter-heading"><h2>Preface</h2></header>
   <dl>
     <dt>Term</dt>
@@ -391,7 +391,7 @@ ____
 ****
 
 ++++
-<div class="chapter chapter-1">
+<div id="chapter-1" class="chapter chapter-1">
   <header class="chapter-heading"><h2>Preface</h2></header>
   <section class="poetry">
     <div class="verse-stanza">
@@ -433,13 +433,13 @@ Goodbye world.
 ****
 
 ++++
-<div class="chapter chapter-1">
+<div id="chapter-1" class="chapter chapter-1">
   <header class="chapter-heading"><h2>Preface</h2></header>
-  <p>Hello world.</p>
+  <p class="paragraph">Hello world.</p>
   <div class="asterism">*&#160;&#160;*&#160;&#160;*</div>
-  <p>Still here world.</p>
+  <p class="paragraph">Still here world.</p>
   <div class="small-break"></div>
-  <p>Goodbye world.</p>
+  <p class="paragraph">Goodbye world.</p>
 </div>
 ++++
 
@@ -458,7 +458,7 @@ Answer 32: yes indeed.
 ****
 
 ++++
-<div class="chapter chapter-1">
+<div id="chapter-1" class="chapter chapter-1">
   <header class="chapter-heading"><h2>Preface</h2></header>
   <p class="discourse-part">
     <em>Landlord.</em> So John, you are busy?
@@ -483,7 +483,7 @@ Answer 32: yes indeed.
 ****
 
 ++++
-<div class="chapter chapter-1">
+<div id="chapter-1" class="chapter chapter-1">
   <header class="chapter-heading"><h2>Preface</h2></header>
   <ul class="chapter-synopsis">
     <li>Item <em>one</em>.</li>
@@ -504,11 +504,11 @@ Hello world
 ****
 
 ++++
-<div class="chapter chapter-1">
+<div id="chapter-1" class="chapter chapter-1">
   <header class="chapter-heading">
     <h2>Chapter XVII</h2>
   </header>
-  <p>Hello world</p>
+  <p class="paragraph">Hello world</p>
 </div>
 ++++
 
@@ -523,14 +523,14 @@ Hello world
 ****
 
 ++++
-<div class="chapter chapter-1">
+<div id="chapter-1" class="chapter chapter-1">
   <header class="chapter-heading">
     <h2 class="chapter-heading__sequence">
       Chapter <span class="chapter-heading__sequence__number">I</span>
     </h2>
-    <div class="chapter-heading-title">Beep boop</div>
+    <div class="chapter-heading__title">Beep boop</div>
   </header>
-  <p>Hello world</p>
+  <p class="paragraph">Hello world</p>
 </div>
 ++++
 
@@ -545,17 +545,17 @@ Hello world
 ****
 
 ++++
-<div class="chapter chapter-1">
+<div id="chapter-1" class="chapter chapter-1">
   <header class="chapter-heading">
     <h2 class="chapter-heading__sequence">
       Capítulo <span class="chapter-heading__sequence__number">I</span>
     </h2>
-    <div class="chapter-heading-title">
-      <span>Beep</span>
-      <span>Boop</span>
+    <div class="chapter-heading__title">
+      <span class="heading-segment heading-segment--1">Beep</span>
+      <span class="heading-segment heading-segment--2">Boop</span>
     </div>
   </header>
-  <p>Hello world</p>
+  <p class="paragraph">Hello world</p>
 </div>
 ++++
 
@@ -571,7 +571,7 @@ Hello world.
 ****
 
 ++++
-<div class="chapter chapter-1">
+<div id="chapter-1" class="chapter chapter-1">
   <header class="chapter-heading"><h2>Preface</h2></header>
   <h3 class="chapter-subtitle--blurb">Hello world.</h3>
 </div>
@@ -588,15 +588,15 @@ Barclay [.book-title]#Apology.#
 
 This [.underline]#is underlined.#
 
-Some +++[+++random square brackets+++]+++.
+&hellip;some +++[+++random square brackets+++]+++.
 ****
 
 ++++
-<div class="chapter chapter-1">
+<div id="chapter-1" class="chapter chapter-1">
   <header class="chapter-heading"><h2>Preface</h2></header>
-  <p>Barclay <span class="book-title">Apology.</span></p>
-  <p>This <span class="underline">is underlined.</span></p>
-  <p>Some [random square brackets].</p>
+  <p class="paragraph">Barclay <span class="book-title">Apology.</span></p>
+  <p class="paragraph">This <span class="underline">is underlined.</span></p>
+  <p class="paragraph">&#8230;some [random square brackets].</p>
 </div>
 ++++
 
@@ -616,12 +616,50 @@ P+++.+++ S.--Hello world.
 ****
 
 ++++
-<div class="chapter chapter-1">
+<div id="chapter-1" class="chapter chapter-1">
   <header class="chapter-heading"><h2>Preface</h2></header>
   <div class="postscript">
-    <p>
+    <p class="paragraph">
      <em>P. S.</em>—Hello world.
     </p>
   </div>
+</div>
+++++
+
+// ********************************
+## intermediate titles
+// ********************************
+
+****
+[#book2.intermediate-title, short="Book II"]
+== Preface
+
+Hello world.
+****
+
+++++
+<div
+  id="book2"
+  class="chapter chapter-1 intermediate-title"
+  data-short-title="Book II">
+  <header class="chapter-heading"><h2>Preface</h2></header>
+  <p class="paragraph">Hello world.</p>
+</div>
+++++
+
+// ********************************
+## inline passthrough rendered
+// ********************************
+
+****
+== Preface
+
+Hello +++world.+++
+****
+
+++++
+<div id="chapter-1" class="chapter chapter-1">
+  <header class="chapter-heading"><h2>Preface</h2></header>
+  <p class="paragraph">Hello world.</p>
 </div>
 ++++

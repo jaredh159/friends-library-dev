@@ -8,11 +8,24 @@ let _chapterLines: string[] = [];
  * files and functions
  */
 class ChapterMarkup {
+  private paused = false;
+
+  public pause() {
+    this.paused = true;
+  }
+
+  public unpause() {
+    this.paused = false;
+  }
+
   public push(str: string): void {
-    _chapterLines.push(str);
+    !this.paused && _chapterLines.push(str);
   }
 
   public append(str: string): void {
+    if (this.paused) {
+      return;
+    }
     _chapterLines[_chapterLines.length - 1] = `${
       _chapterLines[_chapterLines.length - 1]
     }${str}`;
@@ -102,12 +115,20 @@ export function consumeClasses(node: AstNode): string[] {
   return [];
 }
 
+export function trimTrailingPunctuation(str: string): string {
+  if (str.endsWith(`etc.`)) {
+    return str;
+  }
+  return str.replace(/[.,;:]$/, ``);
+}
+
 export const utils = {
   consumeClasses,
   classAttr,
   wrap,
   joinTokens,
   symbolOutput,
+  trimTrailingPunctuation,
 };
 
 const CONSUMED_CLASSES = `__CONSUMED_CLASSES`;

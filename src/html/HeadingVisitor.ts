@@ -3,7 +3,7 @@ import { utils as u, chapterMarkup as c } from '../utils';
 
 const HeadingVisitor: Visitor<Array<string[]>> = {
   heading: {
-    dispatch(node: AstNode): Visitable<Array<string[]>> {
+    dispatch({ node }): Visitable<Array<string[]>> {
       if (!isChapter(node)) {
         return u.wrap((node) => `h${level(node)}`);
       }
@@ -24,6 +24,8 @@ const HeadingVisitor: Visitor<Array<string[]>> = {
       const el = isChapter(node.parent) ? `h2` : `span`;
       const kind = node.getMetaData(`kind`);
       const roman = node.getMetaData(`roman`);
+      const sequenceNumber = node.expectNumberMetaData(`number`);
+      node.chapter.setMetaData(`sequenceNumber`, sequenceNumber);
 
       if (node.isOnlyChild()) {
         c.push(`<${el}>${kind} ${roman}</${el}>`);
@@ -45,7 +47,7 @@ const HeadingVisitor: Visitor<Array<string[]>> = {
       if (node.isFirstChild()) {
         c.push(`<h2>`);
       } else {
-        c.push(`<div class="chapter-heading-title">`);
+        c.push(`<div class="chapter-heading__title">`);
       }
     },
 
