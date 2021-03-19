@@ -8,14 +8,32 @@ let _chapterLines: string[] = [];
  * files and functions
  */
 class ChapterMarkup {
+  private DEFER_STR = `<!-- DEFER OUTPUT -->`;
   private paused = false;
 
-  public pause() {
+  public pause(): void {
     this.paused = true;
   }
 
-  public unpause() {
+  public unpause(): void {
     this.paused = false;
+  }
+
+  public defer(): void {
+    this.push(this.DEFER_STR);
+    this.push(``);
+  }
+
+  public fulfillDeferred(str: string): void {
+    let index = _chapterLines.length - 1;
+    let line = _chapterLines[index];
+    while (index > 0 && line !== this.DEFER_STR) {
+      line = _chapterLines[--index];
+    }
+    if (line !== this.DEFER_STR) {
+      throw new Error(`Unable to fulfill deferred output`);
+    }
+    _chapterLines[index] = str;
   }
 
   public push(str: string): void {
@@ -93,11 +111,11 @@ export function wrap(
   return {
     enter({ node }) {
       const el = typeof tag === `function` ? tag(node) : tag;
-      el && c.push(`<${el}${classAttr(node, classList) || classAttr(node.parent)}>`);
+      el && c.append(`<${el}${classAttr(node, classList) || classAttr(node.parent)}>`);
     },
     exit({ node }) {
       const el = typeof tag === `function` ? tag(node) : tag;
-      el && c.push(`</${el}>`);
+      el && c.append(`</${el}>`);
     },
   };
 }

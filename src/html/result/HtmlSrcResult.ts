@@ -46,12 +46,16 @@ export default abstract class HtmlSrcResult {
       let sequenceNumber: number | undefined;
       try {
         sequenceNumber = chapter.expectNumberMetaData(`sequenceNumber`);
-      } catch {}
+      } catch {
+        // ¯\_(ツ)_/¯
+      }
 
       let nonSequenceTitle: string | undefined;
       try {
         nonSequenceTitle = chapter.expectStringMetaData(`nonSequenceTitle`);
-      } catch {}
+      } catch {
+        // ¯\_(ツ)_/¯
+      }
 
       return new ChapterResult(
         idx,

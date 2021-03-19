@@ -145,6 +145,12 @@ const visitor: Visitor<Output, Context> = {
     exit: pushLine,
   },
 
+  headingSequenceIdentifier: {
+    enter({ node, output }) {
+      append(output, node.value.toUpperCase());
+    },
+  },
+
   redacted: {
     enter({ output }) {
       append(output, `[name removed]`);

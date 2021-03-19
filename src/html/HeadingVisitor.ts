@@ -1,4 +1,5 @@
 import { Visitable, AstNode, Visitor } from '@friends-library/parser';
+import evalShortChapterHeading from '../short-chapter-heading';
 import { utils as u, chapterMarkup as c } from '../utils';
 
 const HeadingVisitor: Visitor<Array<string[]>> = {
@@ -11,10 +12,14 @@ const HeadingVisitor: Visitor<Array<string[]>> = {
     },
 
     enter() {
-      c.push(`<header class="chapter-heading">`);
+      c.defer();
     },
 
-    exit() {
+    exit({ node }) {
+      const chapter = node.chapter;
+      const short = evalShortChapterHeading(chapter);
+      chapter.setMetaData(`shortChapterHeading`, short);
+      c.fulfillDeferred(`<header class="chapter-heading" data-short="${short}">`);
       c.push(`</header>`);
     },
   },

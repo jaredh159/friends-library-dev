@@ -1,5 +1,5 @@
 import { Visitor, AstNode } from '@friends-library/parser';
-import { utils as u, wrap, chapterMarkup as c } from '../utils';
+import { wrap, chapterMarkup as c } from '../utils';
 
 const FootnoteVisitor: Visitor<Array<string[]>, { target: 'pdf' | 'ebook' }> = {
   blockInFootnote: {
@@ -73,7 +73,7 @@ export function footnoteMarker(numTotalFootnotes: number, footnoteIndex: number)
 }
 
 function isEbook(context: { target: 'pdf' | 'ebook' }): boolean {
-  return context.target === 'ebook';
+  return context.target === `ebook`;
 }
 
 export function footnoteCallMarkup(num: number, marker: string, file: string): string {

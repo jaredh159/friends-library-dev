@@ -6,6 +6,7 @@ describe(`shortChapterHeading()`, () => {
   const cases: Array<[string, string]> = [
     [`Segment "\`1\`" / Segment 2`, `Segment “1”`],
     [`Preface`, `Preface`],
+    [`Preface.`, `Preface`],
     [`Forward`, `Forward`],
     [`A Warning,`, `A Warning`],
     [`Hello "\`world\`"`, `Hello “world”`],
@@ -14,6 +15,7 @@ describe(`shortChapterHeading()`, () => {
     [`Section 5: Lorem`, `Section V &#8212; Lorem`],
     [`Chapter 1`, `Chapter I`],
     [`Chapter 2. Hello World`, `Chapter II &#8212; Hello World`],
+    [`Preface.footnote:[Hello]`, `Preface`],
   ];
 
   test.each(cases)(`chapter title "%s" => nav text "%s"`, (input, expected) => {

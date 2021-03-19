@@ -1,4 +1,4 @@
-import { Visitor, ENTITY } from '@friends-library/parser';
+import { Visitor } from '@friends-library/parser';
 import { utils as u, wrap, chapterMarkup as c } from '../utils';
 
 const PrimitivesVisitor: Visitor<Array<string[]>> = {
@@ -10,6 +10,18 @@ const PrimitivesVisitor: Visitor<Array<string[]>> = {
   },
 
   text: {
+    enter({ node }) {
+      c.append(node.value);
+    },
+  },
+
+  redacted: {
+    enter({ node }) {
+      c.append(node.value);
+    },
+  },
+
+  blockPassthrough: {
     enter({ node }) {
       c.append(node.value);
     },

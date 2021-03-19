@@ -50,6 +50,48 @@ describe(`eval.toPdfSrcHtml()`, () => {
     expect(chapter1.nonSequenceTitle).toBe(`Conclusion`);
     expect(chapter1.hasNonSequenceTitle).toBe(true);
   });
+
+  test(`rundell 1`, () => {
+    const chapter1 = firstChapter(`== Chapter I: On Conversion and Regeneration`);
+    expect(chapter1.isSequenced).toBe(true);
+    expect(chapter1.sequenceNumber).toBe(1);
+    expect(chapter1.nonSequenceTitle).toBe(`On Conversion and Regeneration`);
+    expect(chapter1.hasNonSequenceTitle).toBe(true);
+  });
+
+  test(`rundell 2`, () => {
+    const chapter1 = firstChapter(
+      [
+        `[#chapter-2, short="The Worship Ordained of God"]`,
+        `== Chapter II: The Worship Ordained of God Under the Christian Dispensation`,
+      ].join(`\n`),
+    );
+    expect(chapter1.isSequenced).toBe(true);
+    expect(chapter1.sequenceNumber).toBe(2);
+    expect(chapter1.shortHeading).toBe(`The Worship Ordained of God`);
+    expect(chapter1.nonSequenceTitle).toBe(
+      `The Worship Ordained of God Under the Christian Dispensation`,
+    );
+    expect(chapter1.hasNonSequenceTitle).toBe(true);
+  });
+
+  test(`block passthroughs`, () => {
+    // prettier-ignore
+    const adoc = [
+      `== Preface`,
+      ``,
+      `++++`,
+      `<aside>RAW HTML!</aside>`,
+      `++++`
+    ].join(`\n`)
+    const html = firstChapter(adoc).content;
+    expect(html).toContain(`<aside>RAW HTML!</aside>`);
+  });
+
+  test(`sub-word emphasis`, () => {
+    const chapter1 = firstChapter(`== Preface\n\nPa__ragra__ph\n`);
+    expect(chapter1.content).toContain(`Pa<em>ragra</em>ph`);
+  });
 });
 
 function getResult(adoc: string): PdfSrcResult {

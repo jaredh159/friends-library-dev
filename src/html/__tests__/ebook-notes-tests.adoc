@@ -14,10 +14,12 @@ Hello world.footnote:[A _note._]
     click the back arrow (⏎) at the end of the note,
     or the symbol at the beginning of the note,
     or use your e-reader’s “back to page...” feature.
+    <a href="footnote-helper.xhtml#fn-call__1">⏎</a>
   </div>
   <div class="footnote" id="fn__2">
     <a href="chapter-1.xhtml#fn-call__2">*</a>
     A <em>note.</em>
+    <a href="chapter-1.xhtml#fn-call__2">⏎</a>
   </div>
 </div>
 ++++
@@ -45,6 +47,7 @@ Some text after.]
     click the back arrow (⏎) at the end of the note,
     or the symbol at the beginning of the note,
     or use your e-reader’s “back to page...” feature.
+    <a href="footnote-helper.xhtml#fn-call__1">⏎</a>
   </div>
   <div class="footnote" id="fn__2">
     <a href="chapter-1.xhtml#fn-call__2">*</a>
@@ -60,6 +63,7 @@ Some text after.]
       </span>
     </span>
     <span class="footnote-paragraph">Some text after.</span>
+    <a href="chapter-1.xhtml#fn-call__2">⏎</a>
   </div>
 </div>
 ++++

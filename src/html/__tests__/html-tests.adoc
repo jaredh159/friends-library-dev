@@ -9,8 +9,8 @@ Hello **there** __world.__
 ****
 
 ++++
-<div id="chapter-1" class="chapter chapter-1">
-  <header class="chapter-heading"><h2>Preface</h2></header>
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <!-- preface chapter heading markup here -->
   <p class="paragraph">Hello <b>there</b> <em>world.</em></p>
 </div>
 ++++
@@ -26,8 +26,10 @@ Hello **there** __world.__
 ****
 
 ++++
-<div id="chapter-1" class="chapter chapter-1">
-  <header class="chapter-heading"><h2>“Introduction”</h2></header>
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <header class="chapter-heading" data-short="“Introduction”">
+    <h2>“Introduction”</h2>
+  </header>
   <p class="paragraph">‘Hello’ “world.”</p>
 </div>
 ++++
@@ -44,8 +46,10 @@ Hello world.
 ****
 
 ++++
-<div id="intro" class="chapter chapter-1 style-blurb" data-short-title="Short Title">
-  <header class="chapter-heading"><h2>Preface</h2></header>
+<div id="intro" class="chapter chapter-1 chapter--no-signed-section style-blurb">
+  <header class="chapter-heading" data-short="Short Title">
+    <h2>Preface</h2>
+  </header>
   <p class="paragraph">Hello world.</p>
 </div>
 ++++
@@ -67,12 +71,14 @@ Goodbye world.
 ****
 
 ++++
-<div id="chapter-1" class="chapter chapter-1">
-  <header class="chapter-heading"><h2>Preface</h2></header>
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <!-- preface chapter heading markup here -->
   <p class="paragraph">Hello <em>world.</em></p>
 </div>
-<div id="chapter-2" class="chapter chapter-2">
-  <header class="chapter-heading"><h2>Intro</h2></header>
+<div id="chapter-2" class="chapter chapter-2 chapter--no-signed-section">
+  <header class="chapter-heading" data-short="Intro">
+    <h2>Intro</h2>
+  </header>
   <p class="paragraph">Goodbye world.</p>
 </div>
 ++++
@@ -89,8 +95,8 @@ Hello world.
 ****
 
 ++++
-<div id="chapter-1" class="chapter chapter-1">
-  <header class="chapter-heading"><h2>Preface</h2></header>
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <!-- preface chapter heading markup here -->
   <p class="offset">Hello world.</p>
 </div>
 ++++
@@ -117,8 +123,8 @@ George Fox
 ****
 
 ++++
-<div id="chapter-1" class="chapter chapter-1">
-  <header class="chapter-heading"><h2>Preface</h2></header>
+<div id="chapter-1" class="chapter chapter-1 chapter--has-signed-section">
+  <!-- preface chapter heading markup here -->
   <div class="embedded-content-document letter">
     <p class="salutation">Friend,</p>
     <p class="paragraph">Hello world.</p>
@@ -141,8 +147,8 @@ George Fox
 ****
 
 ++++
-<div id="chapter-1" class="chapter chapter-1">
-  <header class="chapter-heading"><h2>Preface</h2></header>
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <!-- preface chapter heading markup here -->
   <ul class="syllogism">
     <li>Item 1</li>
     <li>Item 2</li>
@@ -168,8 +174,8 @@ three.]
 ****
 
 ++++
-<div id="chapter-1" class="chapter chapter-1">
-  <header class="chapter-heading">
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <header class="chapter-heading" data-short="Preface">
     <h2>Preface.<span class="footnote">Note <em>one.</em></span></h2>
   </header>
   <p class="paragraph">Hello world.<span class="footnote">Note two.</span></p>
@@ -201,8 +207,8 @@ Some text after.]
 ****
 
 ++++
-<div id="chapter-1" class="chapter chapter-1">
-  <header class="chapter-heading"><h2>Preface</h2></header>
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <!-- preface chapter heading markup here -->
   <p class="paragraph">
     Hello world.
     <span class="footnote">
@@ -249,8 +255,8 @@ ____
 ****
 
 ++++
-<div id="chapter-1" class="chapter chapter-1">
-  <header class="chapter-heading"><h2>Preface</h2></header>
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <!-- preface chapter heading markup here -->
   <blockquote class="scripture">
     <p class="paragraph">A single paragraph quote.</p>
   </blockquote>
@@ -268,7 +274,7 @@ ____
       <p class="paragraph">Ask not what your country can do for you.</p>
     </blockquote>
     <figcaption>
-      <span class="quote-attribution">&#8212; Bob Barclay</span>
+      <span class="quote-attribution">Bob Barclay</span>
       <cite>Apology</cite>
     </figcaption>
   </figure>
@@ -289,8 +295,8 @@ Hello world.
 ****
 
 ++++
-<div id="chapter-1" class="chapter chapter-1">
-  <header class="chapter-heading"><h2>Preface</h2></header>
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <!-- preface chapter heading markup here -->
   <h3 class="old-style">
     <span class="heading-segment heading-segment--1">Part 1</span>
     <span class="heading-segment heading-segment--2">Part 2</span>
@@ -325,8 +331,8 @@ Item 3, paragraph 2.
 ****
 
 ++++
-<div id="chapter-1" class="chapter chapter-1">
-  <header class="chapter-heading"><h2>Preface</h2></header>
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <!-- preface chapter heading markup here -->
   <div class="numbered-group">
     <div class="numbered">
       <p class="paragraph">Item 1.</p>
@@ -356,8 +362,8 @@ A longer _definition._
 ****
 
 ++++
-<div id="chapter-1" class="chapter chapter-1">
-  <header class="chapter-heading"><h2>Preface</h2></header>
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <!-- preface chapter heading markup here -->
   <dl>
     <dt>Term</dt>
     <dd>definition.</dd>
@@ -391,8 +397,8 @@ ____
 ****
 
 ++++
-<div id="chapter-1" class="chapter chapter-1">
-  <header class="chapter-heading"><h2>Preface</h2></header>
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <!-- preface chapter heading markup here -->
   <section class="poetry">
     <div class="verse-stanza">
       <span class="verse-line">Foo bar</span>
@@ -433,8 +439,8 @@ Goodbye world.
 ****
 
 ++++
-<div id="chapter-1" class="chapter chapter-1">
-  <header class="chapter-heading"><h2>Preface</h2></header>
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <!-- preface chapter heading markup here -->
   <p class="paragraph">Hello world.</p>
   <div class="asterism">*&#160;&#160;*&#160;&#160;*</div>
   <p class="paragraph">Still here world.</p>
@@ -458,8 +464,8 @@ Answer 32: yes indeed.
 ****
 
 ++++
-<div id="chapter-1" class="chapter chapter-1">
-  <header class="chapter-heading"><h2>Preface</h2></header>
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <!-- preface chapter heading markup here -->
   <p class="discourse-part">
     <em>Landlord.</em> So John, you are busy?
   </p>
@@ -483,8 +489,8 @@ Answer 32: yes indeed.
 ****
 
 ++++
-<div id="chapter-1" class="chapter chapter-1">
-  <header class="chapter-heading"><h2>Preface</h2></header>
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <!-- preface chapter heading markup here -->
   <ul class="chapter-synopsis">
     <li>Item <em>one</em>.</li>
     <li>Item “two.”</li>
@@ -504,8 +510,8 @@ Hello world
 ****
 
 ++++
-<div id="chapter-1" class="chapter chapter-1">
-  <header class="chapter-heading">
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <header class="chapter-heading" data-short="Chapter XVII">
     <h2>Chapter XVII</h2>
   </header>
   <p class="paragraph">Hello world</p>
@@ -523,8 +529,8 @@ Hello world
 ****
 
 ++++
-<div id="chapter-1" class="chapter chapter-1">
-  <header class="chapter-heading">
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <header class="chapter-heading" data-short="Chapter I &#8212; Beep boop">
     <h2 class="chapter-heading__sequence">
       Chapter <span class="chapter-heading__sequence__number">I</span>
     </h2>
@@ -545,8 +551,8 @@ Hello world
 ****
 
 ++++
-<div id="chapter-1" class="chapter chapter-1">
-  <header class="chapter-heading">
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <header class="chapter-heading" data-short="Capítulo I &#8212; Beep">
     <h2 class="chapter-heading__sequence">
       Capítulo <span class="chapter-heading__sequence__number">I</span>
     </h2>
@@ -571,8 +577,8 @@ Hello world.
 ****
 
 ++++
-<div id="chapter-1" class="chapter chapter-1">
-  <header class="chapter-heading"><h2>Preface</h2></header>
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <!-- preface chapter heading markup here -->
   <h3 class="chapter-subtitle--blurb">Hello world.</h3>
 </div>
 ++++
@@ -592,8 +598,8 @@ This [.underline]#is underlined.#
 ****
 
 ++++
-<div id="chapter-1" class="chapter chapter-1">
-  <header class="chapter-heading"><h2>Preface</h2></header>
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <!-- preface chapter heading markup here -->
   <p class="paragraph">Barclay <span class="book-title">Apology.</span></p>
   <p class="paragraph">This <span class="underline">is underlined.</span></p>
   <p class="paragraph">&#8230;some [random square brackets].</p>
@@ -616,8 +622,8 @@ P+++.+++ S.--Hello world.
 ****
 
 ++++
-<div id="chapter-1" class="chapter chapter-1">
-  <header class="chapter-heading"><h2>Preface</h2></header>
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <!-- preface chapter heading markup here -->
   <div class="postscript">
     <p class="paragraph">
      <em>P. S.</em>—Hello world.
@@ -638,11 +644,10 @@ Hello world.
 ****
 
 ++++
-<div
-  id="book2"
-  class="chapter chapter-1 intermediate-title"
-  data-short-title="Book II">
-  <header class="chapter-heading"><h2>Preface</h2></header>
+<div id="book2" class="chapter chapter-1 chapter--no-signed-section intermediate-title">
+  <header class="chapter-heading" data-short="Book II">
+    <h2>Preface</h2>
+  </header>
   <p class="paragraph">Hello world.</p>
 </div>
 ++++
@@ -658,8 +663,109 @@ Hello +++world.+++
 ****
 
 ++++
-<div id="chapter-1" class="chapter chapter-1">
-  <header class="chapter-heading"><h2>Preface</h2></header>
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <!-- preface chapter heading markup here -->
   <p class="paragraph">Hello world.</p>
+</div>
+++++
+
+// ********************************
+## redacted rendered
+// ********************************
+
+****
+== Preface
+
+Greet _______.
+****
+
+++++
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <!-- preface chapter heading markup here -->
+  <p class="paragraph">Greet _______.</p>
+</div>
+++++
+
+// ********************************
+## unattributed quote block
+// ********************************
+
+****
+== Preface
+
+On the 17th of the same month, they came to the following resolution:
+
+[quote]
+____
+That James Nayler be set in the stocks, with his head in the stocks,
+in the Palace-yard, Westminster, during the space of two hours, on Thursday next,
+and then be whipped by the hangman as he is conveyed through the streets of London,
+from Westminster to the Old Exchange.
+There he is likewise to be set in the stocks,
+with his head in the stocks for the space of two hours.
+____
+****
+
+++++
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <!-- preface chapter heading markup here -->
+  <p class="paragraph">On the 17th of the same month, they came to the following resolution:</p>
+  <blockquote>
+    <p class="paragraph">
+      That James Nayler be set in the stocks, with his head in the stocks, in
+      the Palace-yard, Westminster, during the space of two hours, on Thursday
+      next, and then be whipped by the hangman as he is conveyed through the
+      streets of London, from Westminster to the Old Exchange. There he is
+      likewise to be set in the stocks, with his head in the stocks for the
+      space of two hours.
+    </p>
+  </blockquote>
+</div>
+++++
+
+// ********************************
+## passthrough block within numbered group (only)
+// ********************************
+
+****
+== Preface
+
+[.numbered-group]
+====
+
+[.numbered]
+Paragraph 1.
+
+[.numbered]
+Paragraph 2.
+
+++++
+<table></table>
+++++
+
+[.numbered]
+Paragraph 3.
+
+====
+
+Hello world
+****
+
+++++
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <!-- preface chapter heading markup here -->
+  <div class="numbered-group">
+    <div class="numbered">
+      <p class="paragraph">Paragraph 1.</p>
+    </div>
+    <div class="numbered">
+      <p class="paragraph">Paragraph 2.</p>
+    </div>
+    <table></table>
+    <div class="numbered">
+      <p class="paragraph">Paragraph 3.</p>
+    </div>
+  </div>
+  <p class="paragraph">Hello world</p>
 </div>
 ++++

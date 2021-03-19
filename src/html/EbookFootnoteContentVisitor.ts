@@ -21,7 +21,9 @@ const EbookFootnoteContentVisitor: Visitor<Array<string[]>> = {
       c.push(`<div class="footnote" id="fn__${num}">`);
       c.push(`<a href="${file}.xhtml#fn-call__${num}">${marker}</a>`);
     },
-    exit() {
+    exit({ node }) {
+      const [num, , file] = ebookFootnoteData(node, true);
+      c.push(`<a href="${file}.xhtml#fn-call__${num}">\u23CE</a>`);
       c.push(`</div>`);
     },
   },

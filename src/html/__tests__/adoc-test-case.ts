@@ -55,12 +55,17 @@ export function getTestCases<T>(
     let expectedOutput = expectedLines.join(`\n`);
     if (chapterHeadingOmitted && supplyMissingChapterHeadings) {
       expectedOutput = [
-        `<div id="chapter-1" class="chapter chapter-1">`,
-        `<header class="chapter-heading"><h2>Preface</h2></header>`,
+        `<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">`,
+        `<!-- preface chapter heading markup here -->`,
         expectedOutput,
         `</div>`,
       ].join(`\n`);
     }
+
+    expectedOutput = expectedOutput.replace(
+      `<!-- preface chapter heading markup here -->`,
+      `<header class="chapter-heading" data-short="Preface"><h2>Preface</h2></header>`,
+    );
 
     const dpc = getDpc(...files.map((f) => f.adoc));
     const src = evaluator(dpc);

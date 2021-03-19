@@ -7,14 +7,16 @@ export default function evalShortChapterHeading(chapter: AstNode): string {
     throw new Error(`Unexpected non-chapter arg passed to evalShortChapterHeading()`);
   }
 
-  if (chapter.context?.shortTitle) {
-    return joinTokens(chapter.context.shortTitle);
-  }
-
+  // always evaluate to set up the rich metadata on the chapter...
   const heading = chapter.expectFirstChild(n.HEADING);
   const output = { string: ``, buffer: `` };
   traverse(heading, visitor, output, {});
   const shortHeading = trimTrailingPunctuation(output.string);
+
+  // ...but prefer an explicitly set short title
+  if (chapter.context?.shortTitle) {
+    return joinTokens(chapter.context.shortTitle);
+  }
 
   return shortHeading;
 }
@@ -61,7 +63,9 @@ const visitor: Visitor<{ string: string; buffer: string }> = {
 
   text: {
     enter({ node, output }) {
-      output.string += node.value;
+      if (!node.isInFootnote()) {
+        output.string += node.value;
+      }
     },
   },
 

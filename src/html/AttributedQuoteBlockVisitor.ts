@@ -20,7 +20,7 @@ export default class AttributedQuoteBlockVisitor implements Visitable {
 function getAttribution(node: AstNode): string {
   if (node.context?.quoteAttribution?.length) {
     const src = u.joinTokens(node.context.quoteAttribution);
-    return `<span class="quote-attribution">&#8212; ${src}</span>`;
+    return `<span class="quote-attribution">${src}</span>`;
   }
   return ``;
 }

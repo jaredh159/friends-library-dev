@@ -1,5 +1,4 @@
 import { Visitor } from '@friends-library/parser';
-import evalShortChapterHeading from '../short-chapter-heading';
 import { utils as u, chapterMarkup as c, wrap } from '../utils';
 import AttributedQuoteBlockVisitor from './AttributedQuoteBlockVisitor';
 import HeadingVisitor from './HeadingVisitor';
@@ -12,21 +11,22 @@ type Context = { target: 'pdf' | 'ebook' };
 
 const documentVisitor: Visitor<Output, Context> = {
   chapter: {
-    enter({ node, output, index, context: { target } }) {
+    enter({ node, output, index }) {
       c.reset();
       output.push(c.get());
       const { context } = node;
-      const classes = [`chapter`, `chapter-${index + 1}`, ...u.consumeClasses(node)];
-      const attrs =
-        context?.shortTitle && target == `pdf`
-          ? ` data-short-title="${u.joinTokens(context.shortTitle)}" `
-          : ``;
+      const hasSignedSection = node.getMetaData(`hasSignedSection`) === true;
+      const classes = [
+        `chapter`,
+        `chapter-${index + 1}`,
+        `chapter--${hasSignedSection ? `has` : `no`}-signed-section`,
+        ...u.consumeClasses(node),
+      ];
       const id = context?.id ? context.id : `chapter-${index + 1}`;
       node.setMetaData(`id`, id);
-      c.push(`<div id="${id}" class="${classes.join(` `)}"${attrs}>`);
+      c.push(`<div id="${id}" class="${classes.join(` `)}">`);
     },
-    exit({ node }) {
-      node.setMetaData(`shortChapterHeading`, evalShortChapterHeading(node));
+    exit() {
       c.push(`</div>`);
     },
   },
@@ -36,7 +36,7 @@ const documentVisitor: Visitor<Output, Context> = {
       if (node.isAttributedQuoteBlock()) {
         return new AttributedQuoteBlockVisitor();
       } else if (node.isPoetryBlock()) {
-        return wrap(`section`, ['poetry']);
+        return wrap(`section`, [`poetry`]);
       } else if (node.isQuoteBlock()) {
         return wrap(`blockquote`);
       } else if (node.isExampleBlock() || node.isOpenBlock()) {
@@ -79,7 +79,6 @@ const documentVisitor: Visitor<Output, Context> = {
   },
 
   paragraph: new ParagraphVisitor(),
-  // headingSegment: wrap(`span`),
 
   ...PrimitivesVisitor,
   ...HeadingVisitor,

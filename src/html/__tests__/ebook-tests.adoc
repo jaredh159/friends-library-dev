@@ -19,7 +19,7 @@ footnote:[J. G. Bevan`'s [.book-title]#Life of Paul,# note, page 363.]
 ++++
 
 // ******************************************
-## chapter heading has id, but NO data-attr [ebook]
+## chapter heading has id [ebook]
 // ******************************************
 
 ****
@@ -30,8 +30,8 @@ Hello world.
 ****
 
 ++++
-<div id="preface" class="chapter chapter-1">
-  <header class="chapter-heading">
+<div id="preface" class="chapter chapter-1 chapter--no-signed-section">
+  <header class="chapter-heading" data-short="Pre">
     <h2>Preface</h2>
   </header>
   <p class="paragraph">Hello world.</p>

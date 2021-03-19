@@ -1,4 +1,4 @@
-import { Visitable, AstNode, VisitData } from '@friends-library/parser';
+import { Visitable, AstNode, VisitData, NODE as n } from '@friends-library/parser';
 import { utils as u, chapterMarkup as c } from '../utils';
 
 export default class ParagraphVisitor implements Visitable {
@@ -7,10 +7,6 @@ export default class ParagraphVisitor implements Visitable {
     if (opensNumberedSubgroup(node)) {
       c.push(`<div${u.classAttr(node)}>`);
     }
-    // let classAttr = u.classAttr(node) || u.classAttr(node.parent);
-    // if (el === `p` && classAttr === ``) {
-    //   classAttr = ` class="paragraph"`;
-    // }
     c.push(`<${el}${classAttr(el, node)}>`);
   }
 
@@ -30,7 +26,9 @@ function opensNumberedSubgroup(node: AstNode): boolean {
 function closesNumberedSubgroup(node: AstNode): boolean {
   return !!(
     node.parent.hasClass(`numbered-group`) &&
-    (node.isLastChild() || node.nextSibling()?.hasClass('numbered'))
+    (node.isLastChild() ||
+      node.nextSibling()?.hasClass(`numbered`) ||
+      node.nextSibling()?.type !== n.PARAGRAPH)
   );
 }
 
@@ -49,7 +47,7 @@ function classAttr(el: 'p' | 'h3', node: AstNode): string {
 
   if (htmlAttr === ``) {
     htmlAttr = ` class="paragraph"`;
-  } else if (htmlAttr.includes('emphasized')) {
+  } else if (htmlAttr.includes(`emphasized`)) {
     htmlAttr = htmlAttr.replace(`class="`, `class="paragraph `);
   }
   return htmlAttr;
