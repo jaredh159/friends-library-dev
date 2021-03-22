@@ -1,26 +1,15 @@
 import fs from 'fs';
+import { basename } from 'path';
 import { sync as glob } from 'glob';
-import { Asciidoc } from '@friends-library/types';
 import FsDocPrecursor from '../FsDocPrecursor';
 
-interface AsciidocMutator {
-  (adoc: Asciidoc, path: string, idx: number): Asciidoc;
-}
-
-export default function asciidoc(
-  dpc: FsDocPrecursor,
-  isolate?: number,
-  mutator?: AsciidocMutator,
-): void {
+export default function asciidoc(dpc: FsDocPrecursor, isolate?: number): void {
   let pattern = `*`;
   if (isolate) {
     pattern = `${isolate < 10 ? `0` : ``}${isolate}*`;
   }
 
-  const asciidoc = glob(`${dpc.fullPath}/${pattern}.adoc`)
-    .map((path) => ({ path, adoc: fs.readFileSync(path).toString() }))
-    .map(mutator ? ({ path, adoc }, idx) => mutator(adoc, path, idx) : ({ adoc }) => adoc)
-    .join(`\n`);
-
-  dpc.asciidoc = asciidoc;
+  const paths = glob(`${dpc.fullPath}/${pattern}.adoc`);
+  const files = paths.map((path) => ({ path, adoc: fs.readFileSync(path, `utf-8`) }));
+  dpc.asciidocFiles = files.map((f) => ({ adoc: f.adoc, filename: basename(f.path) }));
 }

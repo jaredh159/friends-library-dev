@@ -17,11 +17,8 @@ export default class FsDocPrecursor implements DocPrecursor {
   public revision: DocPrecursor['revision'];
   public config: DocPrecursor['config'] = {};
   public customCode: DocPrecursor['customCode'] = { css: {}, html: {} };
-  public asciidoc: DocPrecursor['asciidoc'] = ``;
-  public epigraphs: DocPrecursor['epigraphs'] = [];
+  public asciidocFiles: DocPrecursor['asciidocFiles'] = [];
   public paperbackSplits: DocPrecursor['paperbackSplits'] = [];
-  public sections: DocPrecursor['sections'] = [];
-  public notes: DocPrecursor['notes'] = new Map();
   public documentId: DocPrecursor['documentId'] = ``;
   public isCompilation: DocPrecursor['isCompilation'] = false;
   public blurb: DocPrecursor['blurb'] = ``;
