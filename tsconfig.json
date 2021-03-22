@@ -11,7 +11,13 @@
     "target": "ESNext",
     "module": "CommonJS",
     "incremental": true,
-    "lib": ["ESNext"]
+    "lib": ["ESNext"],
+    "plugins": [
+      {
+        "name": "typescript-styled-plugin",
+        "validate": false
+      }
+    ]
   },
   "exclude": ["**/__tests__/*", "./dist"]
 }

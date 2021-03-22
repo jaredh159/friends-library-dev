@@ -1,27 +1,21 @@
-import { DocPrecursor, Css } from '@friends-library/types';
-import { joinCssFiles, replaceVars, runningHead } from './helpers';
+import { Css } from '@friends-library/types';
+import * as css from './css';
 
-export default function paperbackInterior(dpc: DocPrecursor): Css {
-  let css = joinCssFiles([
-    `common`,
-    `tables`,
-    `not-mobi7`,
-    `pdf/base`,
-    `pdf/typography`,
-    `pdf/half-title`,
-    `pdf/original-title`,
-    `pdf/copyright`,
-    `pdf/toc`,
-    `pdf/chapter-heading`,
-    `pdf/web-pdf`,
-    `pdf/intermediate-title`,
-    ...(dpc.notes.size < 5 ? [`pdf/symbol-notes`] : []),
-  ]);
-
-  const { customCode } = dpc;
-  css += customCode.css.all || ``;
-  css += customCode.css.pdf || ``;
-  css += customCode.css[`web-pdf`] || ``; // @TODO rename all repo files!!!
-
-  return replaceVars(css, { '--running-head-title': `"${runningHead(dpc)}"` });
+export default function webPdfCss(config: { customCss?: Css }): Css {
+  return [
+    css.common,
+    css.signedSections,
+    css.tables,
+    css.notMobi7,
+    css.pdfBase,
+    css.pdfTypography,
+    css.pdfHalfTitle,
+    css.pdfOriginalTitle,
+    css.pdfCopyright,
+    css.pdfToc,
+    css.pdfChapterHeading,
+    css.pdfWeb,
+    css.pdfIntermediateTitle,
+    ...(config.customCss ? [config.customCss] : []),
+  ].join(`\n\n`);
 }

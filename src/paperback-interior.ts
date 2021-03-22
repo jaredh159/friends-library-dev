@@ -1,54 +1,46 @@
 import mapValues from 'lodash.mapvalues';
-import {
-  DocPrecursor,
-  PaperbackInteriorConfig,
-  Css,
-  PrintSizeDetails,
-  genericDpc,
-} from '@friends-library/types';
+import { Css, PrintSize, PrintSizeDetails } from '@friends-library/types';
 import { getPrintSizeDetails } from '@friends-library/lulu';
-import { runningHead, joinCssFiles, replaceVars } from './helpers';
+import * as css from './css';
+import { replaceVars } from './helpers';
 
-export default function paperbackInterior(
-  dpc: DocPrecursor,
-  conf: PaperbackInteriorConfig,
-): Css {
-  let css = joinCssFiles([
-    `common`,
-    `tables`,
-    `not-mobi7`,
-    `pdf/base`,
-    `pdf/paging`,
-    `pdf/typography`,
-    `pdf/half-title`,
-    `pdf/original-title`,
-    `pdf/copyright`,
-    `pdf/toc`,
-    `pdf/chapter-heading`,
-    `pdf/paperback-interior`,
-    `pdf/intermediate-title`,
-    ...(dpc.notes.size < 5 ? [`pdf/symbol-notes`] : []),
-    ...(conf.condense ? [`pdf/condense`] : []),
-  ]);
+export default function paperbackInteriorCss(config: {
+  runningHeadTitle: string;
+  printSize: PrintSize;
+  numFootnotes: number;
+  customCss?: Css;
+  condense?: boolean;
+}): Css {
+  const joined = [
+    css.common,
+    css.signedSections,
+    css.tables,
+    css.notMobi7,
+    css.pdfBase,
+    css.pdfPaging,
+    css.pdfTypography,
+    css.pdfHalfTitle,
+    css.pdfOriginalTitle,
+    css.pdfCopyright,
+    css.pdfToc,
+    css.pdfChapterHeading,
+    css.pdfPaperbackInterior,
+    css.pdfIntermediateTitle,
 
-  const { customCode } = dpc;
-  css += customCode.css.all || ``;
-  css += customCode.css.pdf || ``;
-  css += customCode.css[`paperback-interior`] || ``; // @TODO rename all repo files!!!
+    ...(config.numFootnotes < 5 ? [css.pdfSymbolNotes] : []),
+    ...(config.condense ? [css.pdfCondense] : []),
+    ...(config.customCss ? [config.customCss] : []),
+  ].join(`\n\n`);
 
-  const vars = getVars(dpc, conf);
-  return replaceVars(css, vars);
+  return replaceVars(joined, getVars(config.runningHeadTitle, config.printSize));
 }
 
-function getVars(
-  dpc: DocPrecursor,
-  conf: PaperbackInteriorConfig,
-): Record<string, string> {
-  const size = getPrintSizeDetails(conf.printSize);
+function getVars(runningHead: string, printSize: PrintSize): Record<string, string> {
+  const size = getPrintSizeDetails(printSize);
   const { dims, margins } = size;
 
   return {
-    '--running-head-title': `"${runningHead(dpc)}"`,
+    '--running-head-title': `"${runningHead}"`,
     '--chapter-margin-top': `${dims.height / 4}in`,
     '--copyright-page-height': `${dims.height - margins.top - margins.bottom}in`,
     '--half-title-page-height': `${dims.height - (margins.top + margins.bottom) * 3}in`,
@@ -81,13 +73,4 @@ export function printDimsVars(size: PrintSizeDetails): Record<string, string> {
     },
     (v) => `${v}in`,
   );
-}
-
-export function generic(): Css {
-  return paperbackInterior(genericDpc(), {
-    printSize: `m`,
-    allowSplits: false,
-    frontmatter: false,
-    condense: false,
-  });
 }
