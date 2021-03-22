@@ -100,37 +100,6 @@ export interface PrintSizeDetails {
   };
 }
 
-export interface AsciidocConversionLog {
-  getText(): string;
-  getSeverity(): string;
-  getSourceLocation(): { getLineNumber(): number } | undefined;
-}
-
-export interface Epigraph {
-  text: string;
-  source?: string;
-}
-
-export type Notes = Map<string, Html>;
-
-export interface Heading {
-  id: string;
-  text: string;
-  shortText?: string;
-  sequence?: {
-    type: string;
-    number: number;
-  };
-}
-
-export type DocSection = Readonly<{
-  id: string;
-  index: number;
-  heading: Heading;
-  html: Html;
-  isIntermediateTitle?: boolean;
-}>;
-
 export interface FileManifest {
   [key: string]: string | Buffer;
 }
