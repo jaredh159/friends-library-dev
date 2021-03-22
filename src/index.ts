@@ -1,5 +1,15 @@
-export { default as speech } from './speech/eval-speech';
-export * as evaluate from './html/eval-html';
+import { default as toSpeechText } from './speech/eval-speech';
+import { toPdfSrcHtml, toEbookSrcHtml } from './html/eval-html';
+
+export { default as HtmlSrcResult } from './html/result/HtmlSrcResult';
 export { default as PdfSrcResult } from './html/result/PdfSrcResult';
 export { default as EbookSrcResult } from './html/result/EbookSrcResult';
 export { default as ChapterResult } from './html/result/ChapterResult';
+
+const evaluate = {
+  toPdfSrcHtml,
+  toEbookSrcHtml,
+  toSpeechText,
+};
+
+export { evaluate };
