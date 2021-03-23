@@ -5,6 +5,7 @@ import { yellow } from 'x-chalk';
 import { FileManifest } from '@friends-library/types';
 import { PdfOptions } from './types';
 import { dirs } from './dirs';
+import prettify from './prettify';
 
 export default async function pdf(
   manifest: FileManifest,
@@ -15,13 +16,13 @@ export default async function pdf(
   fs.ensureDirSync(SRC_DIR);
 
   await Promise.all(
-    Object.keys(manifest).map((path) =>
-      fs.outputFile(
+    Object.keys(manifest).map((path) => {
+      return fs.outputFile(
         `${SRC_DIR}/${path}`,
-        manifest[path],
+        prettify(path, manifest[path]),
         path.endsWith(`.png`) ? `binary` : undefined,
-      ),
-    ),
+      );
+    }),
   );
 
   const src = `${SRC_DIR}/doc.html`;
@@ -29,7 +30,7 @@ export default async function pdf(
   const stream = spawn(PRINCE_BIN, [src]);
 
   let output = ``;
-  await new Promise((resolve, reject) => {
+  await new Promise<void>((resolve, reject) => {
     stream.stderr.on(`data`, (data) => {
       output = output.concat(data.toString());
     });

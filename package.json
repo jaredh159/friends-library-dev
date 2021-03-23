@@ -18,14 +18,15 @@
   },
   "dependencies": {
     "@friends-library/env": "^1.2.0",
-    "@friends-library/types": "^1.1.1",
+    "@friends-library/types": "^4.0.0",
     "epub-check": "^0.3.0",
     "fs-extra": "^9.0.1",
     "node-zip": "^1.1.1",
+    "prettier": "^2.2.1",
     "x-chalk": "^1.0.1"
   },
   "devDependencies": {
-    "@friends-library/dev": "^4.1.6",
+    "@friends-library/dev": "^4.1.18",
     "@types/fs-extra": "^9.0.1"
   }
 }
