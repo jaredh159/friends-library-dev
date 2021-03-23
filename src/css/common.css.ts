@@ -292,6 +292,7 @@ export default css`
 
   dd {
     margin: 1em 0 1em 2.85em;
+    text-align: justify;
   }
 
   dt {
