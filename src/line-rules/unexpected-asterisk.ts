@@ -14,7 +14,7 @@ const rule: LineRule = (
     line.startsWith(`|`) ||
     line.match(/^\* .+/) ||
     line.includes(`+++*`) ||
-    line.match(/( |^)\*\w.*(\w|,|\.)\*( |-|$)/)
+    line.match(/( |^)\*\*\w.*(\w|,|\.)\*\*( |-|$)/)
   ) {
     return [];
   }

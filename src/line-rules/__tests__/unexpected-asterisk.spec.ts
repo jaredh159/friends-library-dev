@@ -19,6 +19,7 @@ describe(`unexpectedAsterisk()`, () => {
 
   const violations: [string, string][] = [
     [`My desire is that I may be pre*served`, `My desire is that I may be preserved`],
+    [`This *is wrong old format* for bold`, `This is wrong old format for bold`],
   ];
 
   test.each(violations)(`\`%s\` should become "%s"`, (line, reco) => {
@@ -31,9 +32,9 @@ describe(`unexpectedAsterisk()`, () => {
     [`* chapter synopsis list item`],
     [`| **in a table** | ** foo bar ** | baz |`],
     [`+++*+++ escaped is OK`],
-    [`*rare intentional bold* is ok too`],
-    [`*Foobar*--is ok too`],
-    [`*Foobar,* is ok too`],
+    [`**rare intentional bold** is ok too`],
+    [`**Foobar**--is ok too`],
+    [`**Foobar,** is ok too`],
   ];
 
   test.each(allowed)(`%s is not a lint violation`, (line) => {
