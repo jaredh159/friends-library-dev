@@ -7,7 +7,7 @@ import { red } from 'x-chalk';
 import { FileManifest } from '@friends-library/types';
 import { dirs } from './dirs';
 import { EbookOptions } from './types';
-import prettify from './prettify';
+import format from './format';
 
 export async function writeEbookManifest(
   manifest: FileManifest,
@@ -22,12 +22,12 @@ export async function writeEbookManifest(
   const promises: Promise<any>[] = [];
 
   Object.keys(manifest).forEach((path) => {
-    const prettified = prettify(path, manifest[path]);
-    zip.file(path, prettified);
+    const formatted = format(path, manifest[path]);
+    zip.file(path, formatted);
     promises.push(
       fs.outputFile(
         `${SRC_DIR}/${path}`,
-        prettified,
+        formatted,
         path.endsWith(`.png`) ? `binary` : undefined,
       ),
     );

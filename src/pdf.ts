@@ -5,7 +5,7 @@ import { yellow } from 'x-chalk';
 import { FileManifest } from '@friends-library/types';
 import { PdfOptions } from './types';
 import { dirs } from './dirs';
-import prettify from './prettify';
+import format from './format';
 
 export default async function pdf(
   manifest: FileManifest,
@@ -19,7 +19,7 @@ export default async function pdf(
     Object.keys(manifest).map((path) => {
       return fs.outputFile(
         `${SRC_DIR}/${path}`,
-        prettify(path, manifest[path]),
+        format(path, manifest[path]),
         path.endsWith(`.png`) ? `binary` : undefined,
       );
     }),
