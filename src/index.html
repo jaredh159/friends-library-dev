@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <title>Friends Library Style Guide</title>
-    <script src="https://unpkg.com/@asciidoctor/core@2.0.2/dist/browser/asciidoctor.min.js"></script>
     <link rel="stylesheet" href="./paperback-interior.css" />
     <style>
       html,
@@ -19,14 +18,11 @@
       *:after {
         box-sizing: inherit;
       }
-      .rendered-adoc h2,
+      .rendered-adoc .chapter,
       .rendered-adoc .epigraphs {
         margin-top: 0 !important;
       }
-      .epigraph--not-first::before {
-        margin-top: 0.5em;
-      }
-      #_generated {
+      #generated .chapter-heading {
         display: none;
       }
     </style>

@@ -47,7 +47,7 @@ const Asciidoc: React.FC<Props> = ({ id, emphasize }) => {
   inFootnote = false;
   const adoc = getAdoc(id)
     .trim()
-    .replace(/^== Generated\n\n/, ``);
+    .replace(/\n?\[#generated\]\n== Generated\n?\n?/, ``);
   const lines = adoc.split(`\n`);
   return (
     <StyleDiv className="asciidoc">

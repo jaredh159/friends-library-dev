@@ -3,10 +3,9 @@ import path from 'path';
 import { sync as glob } from 'glob';
 import chokidar from 'chokidar';
 import throttle from 'lodash/throttle';
-import { Html, Asciidoc } from '@friends-library/types';
-import { processDocument } from '@friends-library/adoc-convert';
-import { genericPaperbackInterior } from '@friends-library/doc-css';
-import { webHtml, epigraph } from '@friends-library/doc-html';
+import { Html, Asciidoc, genericDpc } from '@friends-library/types';
+import { paperbackInterior } from '@friends-library/doc-css';
+import { evaluate, ParserError } from '@friends-library/evaluator';
 
 const notify = throttle(
   () => console.log(`🚁 \x1b[35mstyleguide fragments regenerated\x1b[0m`),
@@ -24,7 +23,7 @@ if (process.argv.includes(`--watch`)) {
 function regen(): void {
   fs.writeFileSync(
     `${__dirname}/paperback-interior.css`,
-    genericPaperbackInterior().replace(
+    paperbackInterior({ runningHeadTitle: ``, printSize: `m`, numFootnotes: 10 }).replace(
       `background: url(line.svg)`,
       `_background: url(line.svg)`,
     ),
@@ -34,11 +33,22 @@ function regen(): void {
 
   files.forEach((file) => {
     const adoc = normalizeAdoc(fs.readFileSync(file).toString());
-    const { sections, epigraphs } = processDocument(adoc);
+    const dpc = genericDpc();
+    dpc.asciidocFiles = [{ adoc, filename: file }];
+    try {
+      var result = evaluate.toPdfSrcHtml(dpc);
+    } catch (err) {
+      if (err instanceof ParserError) {
+        console.log(err.codeFrame);
+        process.exit(1);
+      } else {
+        throw err;
+      }
+    }
     const id = path.basename(file).replace(/\.adoc$/, ``);
 
     frags[id] = {
-      html: `${epigraph({ epigraphs })}${webHtml(sections)}`,
+      html: `${result.epigraphHtml}${result.mergedChapterHtml()}`,
       adoc,
     };
   });
@@ -51,6 +61,9 @@ function normalizeAdoc(adoc: Asciidoc): Asciidoc {
   if (adoc.match(/(^|\n)== /)) {
     return adoc;
   }
-
-  return `== Generated\n\n${adoc}`;
+  if (!adoc.includes(`[quote.epigraph`)) {
+    return `[#generated]\n== Generated\n\n${adoc}`;
+  } else {
+    return `${adoc}\n[#generated]\n== Generated\n`;
+  }
 }
