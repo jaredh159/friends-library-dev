@@ -18,7 +18,7 @@
     "prepublishOnly": "npm run compile"
   },
   "dependencies": {
-    "@friends-library/parser": "^1.0.1",
+    "@friends-library/parser": "^1.1.0",
     "@friends-library/types": "^4.0.0"
   },
   "devDependencies": {

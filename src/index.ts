@@ -7,7 +7,7 @@ export { default as EbookSrcResult } from './html/result/EbookSrcResult';
 export { default as ChapterResult } from './html/result/ChapterResult';
 
 // convenience re-export for libs that only want to evaluate, but also handle ParserError's
-export { default as ParserError } from '@friends-library/parser';
+export { ParserError } from '@friends-library/parser';
 
 const evaluate = {
   toPdfSrcHtml,
