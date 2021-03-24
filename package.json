@@ -23,7 +23,7 @@
     "dotenv": "^6.2.0"
   },
   "devDependencies": {
-    "@friends-library/dev": "^4.0.8",
+    "@friends-library/dev": "^4.1.18",
     "@types/dotenv": "^6.1.1"
   }
 }
