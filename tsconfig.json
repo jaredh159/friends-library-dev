@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": false,
     "declaration": true,
     "outDir": "./dist",
     "rootDir": "./src",
