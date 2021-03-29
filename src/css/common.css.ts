@@ -203,7 +203,9 @@ export default css`
     display: inline-block;
   }
 
-  .offset {
+  .offset,
+  .paragraph.offset {
+    text-indent: 0;
     margin-top: 1em;
     margin-bottom: 1em;
     text-align: justify;
@@ -426,6 +428,10 @@ export default css`
 
   h3 + h4 {
     margin-top: -0.75em;
+  }
+
+  h3 + h4.old-style {
+    margin-top: 0.75em;
   }
 
   h3 + h3,
