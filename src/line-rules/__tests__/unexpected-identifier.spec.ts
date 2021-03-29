@@ -29,6 +29,8 @@ describe(`unxpectedIdentifier()`, () => {
     [`[quote.scripture, , Ps. 101]`],
     [`[#chap4, short="Foobar"]`],
     [`[#chap4.style-blurb, short="Foobar"]`],
+    [`[short="Foobar"]`],
+    [`[.style-blurb, short="Foobar"]`],
     [`[.centered.alt]`],
     [`[.alt.centered]`],
     [`[.centered.offset.emphasized]`],

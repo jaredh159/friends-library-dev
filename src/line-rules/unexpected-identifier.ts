@@ -26,6 +26,10 @@ const rule: LineRule = (
     return [];
   }
 
+  if (identifiers.startsWith(`short="`)) {
+    return [];
+  }
+
   if (identifiers.startsWith(`quote.`)) {
     const rest = identifiers.replace(/^quote\./, ``);
     if (![`scripture`, `epigraph`, `section-epigraph`].includes(rest)) {
