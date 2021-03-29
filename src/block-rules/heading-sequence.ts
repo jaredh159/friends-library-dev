@@ -17,17 +17,6 @@ const rule: BlockRule = (block: Asciidoc): LintResult[] => {
       return;
     }
 
-    // these are made `.discrete` by the `discreteize` function
-    // @TODO it would be better not to have this escape-hatch for out of order
-    // headings and clean up the approx 110 out-of-order headings
-    if (
-      idx > 0 &&
-      level !== 1 &&
-      lines[idx - 1].match(/^\[.*(\.blurb|\.alt|\.centered|\.inline|discrete).*\]$/)
-    ) {
-      return;
-    }
-
     const newLevel = match[1].length;
     if (Math.abs(newLevel - level) > 1) {
       lints.push({

@@ -44,25 +44,4 @@ describe(`headingSequence()`, () => {
     const results = headingSequence(adoc, opts);
     expect(results).toHaveLength(0);
   });
-
-  it(`headings with class .alt, .centered, or .blurb are "discrete" and thus, cant be out of order`, () => {
-    const adoc = stripIndent(`
-      == Chapter 1
-
-      Foo
-
-      [.blurb]
-      ==== Foo blurb
-
-      [.centered]
-      ==== Foo centered
-
-      [.alt]
-      ==== Foo alt
-
-    `).trim();
-
-    const results = headingSequence(adoc, opts);
-    expect(results).toHaveLength(0);
-  });
 });
