@@ -724,7 +724,7 @@ ____
 ++++
 
 // ********************************
-## passthrough block within numbered group (only)
+## passthrough block within numbered group
 // ********************************
 
 ****
@@ -767,5 +767,40 @@ Hello world
     </div>
   </div>
   <p class="paragraph">Hello world</p>
+</div>
+++++
+
+// ********************************
+## numbered paragraph followed by small break
+// ********************************
+
+****
+== Preface
+
+[.numbered-group]
+====
+
+[.numbered]
+__1. Hello world.__
+
+[.small-break]
+'''
+
+Paragraph text.
+
+====
+
+****
+
+++++
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <!-- preface chapter heading markup here -->
+  <div class="numbered-group">
+    <div class="numbered">
+      <p class="paragraph"><em>1. Hello world.</em></p>
+    </div>
+    <div class="small-break"></div>
+    <p class="paragraph">Paragraph text.</p>
+  </div>
 </div>
 ++++

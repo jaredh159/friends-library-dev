@@ -2,10 +2,16 @@ import { Visitable, AstNode, VisitData, NODE as n } from '@friends-library/parse
 import { utils as u, chapterMarkup as c } from '../utils';
 
 export default class ParagraphVisitor implements Visitable {
+  protected subGroupIsOpen = false;
+
   enter({ node }: VisitData): void {
     const el = isChapterSubtitleBlurb(node) ? `h3` : `p`;
     if (opensNumberedSubgroup(node)) {
       c.push(`<div${u.classAttr(node)}>`);
+      // this seems like a smell... i think it's telling me
+      // that the parser should be creating a wrapping node
+      // so that the evaluator doesn't have to be this smart or stateful...
+      this.subGroupIsOpen = true;
     }
     c.push(`<${el}${classAttr(el, node)}>`);
   }
@@ -13,23 +19,27 @@ export default class ParagraphVisitor implements Visitable {
   exit({ node }: VisitData): void {
     const el = isChapterSubtitleBlurb(node) ? `h3` : `p`;
     c.push(`</${el}>`);
-    if (closesNumberedSubgroup(node)) {
+    if (this.closesNumberedSubgroup(node)) {
       c.push(`</div>`);
+      this.subGroupIsOpen = false;
     }
+  }
+
+  closesNumberedSubgroup(node: AstNode): boolean {
+    if (!this.subGroupIsOpen) {
+      return false;
+    }
+    return !!(
+      node.parent.hasClass(`numbered-group`) &&
+      (node.isLastChild() ||
+        node.nextSibling()?.hasClass(`numbered`) ||
+        node.nextSibling()?.type !== n.PARAGRAPH)
+    );
   }
 }
 
 function opensNumberedSubgroup(node: AstNode): boolean {
   return node.hasClass(`numbered`);
-}
-
-function closesNumberedSubgroup(node: AstNode): boolean {
-  return !!(
-    node.parent.hasClass(`numbered-group`) &&
-    (node.isLastChild() ||
-      node.nextSibling()?.hasClass(`numbered`) ||
-      node.nextSibling()?.type !== n.PARAGRAPH)
-  );
 }
 
 function isChapterSubtitleBlurb(node: AstNode): boolean {
