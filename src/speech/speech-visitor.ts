@@ -21,7 +21,7 @@ const visitor: Visitor<Output, Context> = {
       });
     },
 
-    exit({ output, context }) {
+    exit({ output, context: { dpc } }) {
       output.push(``);
       output.push(`THE END.\n\n`);
       output.push(`Published by FRIENDS LIBRARY PUBLISHING.\n`);
@@ -30,9 +30,9 @@ const visitor: Visitor<Output, Context> = {
       );
       output.push(`Public domain in the USA.\n`);
       output.push(`Contact the publishers at info@friendslibrary.com.\n`);
-      output.push(`ISBN: ${context.dpc.meta.isbn}\n`);
-      output.push(`Text revision: ${context.dpc.revision.sha} - `);
-      append(output, new Date(context.dpc.revision.timestamp).toLocaleDateString());
+      output.push(`ISBN: ${dpc.meta.isbn}\n`);
+      output.push(`Text revision: ${dpc.revision.sha} - `);
+      append(output, new Date(dpc.revision.timestamp * 1000).toLocaleDateString());
     },
   },
 
