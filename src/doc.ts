@@ -60,7 +60,7 @@ export function genericDpc(): DocPrecursor {
       isbn: `978-1-64476-029-1`,
       author: { name: `George Fox`, nameSort: `Fox, George` },
     },
-    revision: { timestamp: 1611345625979, sha: `327ceb2`, url: `` },
+    revision: { timestamp: 1611345625, sha: `327ceb2`, url: `` },
   };
 }
 
