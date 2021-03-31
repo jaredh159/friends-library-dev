@@ -200,6 +200,8 @@ function getContentType(path: LocalFilePath): string {
       return `application/x-mobipocket-ebook`;
     case `.zip`:
       return `application/zip`;
+    case `.txt`:
+      return `text/plain`;
     default:
       throw new Error(`Unexpected file extension: ${path}`);
   }
