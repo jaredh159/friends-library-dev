@@ -54,6 +54,7 @@ export const DOWNLOAD_FORMATS = [
   `mp3-zip`,
   `m4b`,
   `mp3`,
+  `speech`,
   `podcast`,
 ] as const;
 export type DownloadFormat = typeof DOWNLOAD_FORMATS[number];
