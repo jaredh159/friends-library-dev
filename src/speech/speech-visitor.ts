@@ -12,8 +12,12 @@ const visitor: Visitor<Output, Context> = {
     enter({ output, context, node }) {
       output.push(context.dpc.meta.title.toUpperCase());
       output.push(``);
-      output.push(`by ${context.dpc.meta.author.name.toUpperCase()}\n`);
-      output.push(``);
+
+      if (!context.dpc.isCompilation) {
+        output.push(`by ${context.dpc.meta.author.name.toUpperCase()}\n`);
+        output.push(``);
+      }
+
       node.document().epigraphs.children.forEach((epigraph) => {
         const epigraphLines: string[] = [];
         traverse(epigraph, visitor, epigraphLines, context);

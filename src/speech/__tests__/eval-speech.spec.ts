@@ -75,6 +75,15 @@ describe(`toSpeechText()`, () => {
     expect(text).toBe(expected.trim());
   });
 
+  it(`does not add "by COMPILATIONS" for compilations`, () => {
+    const text = `== Chpater 2\n\nHello world.`;
+    const dpc = getDpc(text);
+    dpc.isCompilation = true;
+    dpc.meta.author.name = 'Compilations';
+    const speech = toSpeechText(dpc);
+    expect(speech).not.toContain(`by COMPILATIONS`);
+  });
+
   test.each(getTestCases())(`%s`, (_, files, expected) => {
     const text = getEvald(...files.map((f) => f.adoc));
     const lines = text.split(`\n`).slice(5);
