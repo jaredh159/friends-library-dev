@@ -202,6 +202,8 @@ function getContentType(path: LocalFilePath): string {
       return `application/zip`;
     case `.txt`:
       return `text/plain`;
+    case `.html`:
+      return `text/html`;
     default:
       throw new Error(`Unexpected file extension: ${path}`);
   }

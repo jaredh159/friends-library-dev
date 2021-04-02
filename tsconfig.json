@@ -6,6 +6,7 @@
     "strict": true,
     "target": "ES2019",
     "module": "CommonJS",
-    "incremental": true
+    "incremental": true,
+    "noUncheckedIndexedAccess": true
   }
 }
