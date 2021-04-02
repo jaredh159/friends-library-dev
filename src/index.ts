@@ -1,4 +1,4 @@
-import { toSpeechText } from './speech/eval-speech';
+import { toSpeechText, toSpeechHtml } from './speech/eval-speech';
 import { toPdfSrcHtml, toEbookSrcHtml } from './html/eval-html';
 
 export { default as HtmlSrcResult } from './html/result/HtmlSrcResult';
@@ -13,6 +13,7 @@ const evaluate = {
   toPdfSrcHtml,
   toEbookSrcHtml,
   toSpeechText,
+  toSpeechHtml,
 };
 
 export { evaluate };
