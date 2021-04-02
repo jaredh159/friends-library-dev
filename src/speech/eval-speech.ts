@@ -16,16 +16,14 @@ export function toSpeechText(dpc: DocPrecursor): string {
 }
 
 export function toSpeechHtml(dpc: DocPrecursor): Html {
-  return `
-<!DOCTYPE html>
+  return `<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8" />
 <title>${dpc.meta.title}</title>
 </head>
 <body>
-${toSpeechText(dpc).trim().replace(/\n/g, `<br />`)}
+${toSpeechText(dpc).trim().replace(/\n/g, `\n<br />`)}
 </body>
-</html>
-`;
+</html>`;
 }
