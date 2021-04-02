@@ -1,9 +1,50 @@
 import fs from 'fs';
 import stripIndent from 'strip-indent';
 import { DocPrecursor, genericDpc } from '@friends-library/types';
-import evalSpeech from '../eval-speech';
+import { toSpeechText, toSpeechHtml } from '../eval-speech';
 
-describe(`evalSpeech()`, () => {
+describe(`toSpeechHtml()`, () => {
+  it(`formats plain text in to rudimentary HTML`, () => {
+    const html = toSpeechHtml(getDpc(`== Chapter 1\n\nHello world.`));
+    const expected = stripIndent(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+      <meta charset="UTF-8" />
+      <title>Journal of George Fox</title>
+      </head>
+      <body>
+      JOURNAL OF GEORGE FOX<br />
+      <br />
+      by GEORGE FOX<br />
+      <br />
+      <br />
+      CHAPTER 1<br />
+      <br />
+      Hello world.<br />
+      <br />
+      THE END.<br />
+      <br />
+      <br />
+      Published by FRIENDS LIBRARY PUBLISHING.<br />
+      <br />
+      Download free books from early members of the Religious Society of Friends (Quakers) in a variety of formats at www.friendslibrary.com.<br />
+      <br />
+      Public domain in the USA.<br />
+      <br />
+      Contact the publishers at info@friendslibrary.com.<br />
+      <br />
+      ISBN: 978-1-64476-029-1<br />
+      <br />
+      Text revision: 327ceb2 - 1/22/2021
+      </body>
+      </html>
+    `);
+    expect(html.replace(/\n/g, ``)).toBe(expected.trim().replace(/\n/g, ``));
+  });
+});
+
+describe(`toSpeechText()`, () => {
   it(`adds correct document start/end metadata`, () => {
     const text = getEvald(`== Chapter 1\n\nHello world.`);
     const expected = stripIndent(`
@@ -114,5 +155,5 @@ function getDpc(...files: string[]): DocPrecursor {
 }
 
 function getEvald(...files: string[]): string {
-  return evalSpeech(getDpc(...files));
+  return toSpeechText(getDpc(...files));
 }

@@ -1,4 +1,4 @@
-import { default as toSpeechText } from './speech/eval-speech';
+import { toSpeechText } from './speech/eval-speech';
 import { toPdfSrcHtml, toEbookSrcHtml } from './html/eval-html';
 
 export { default as HtmlSrcResult } from './html/result/HtmlSrcResult';
