@@ -1,6 +1,6 @@
 {
   "name": "@friends-library/locale",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "localization, translation, etc.",
   "main": "./dist/index.js",
   "browser": "./src/index.ts",
