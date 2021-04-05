@@ -1,6 +1,6 @@
-/* eslint @typescript-eslint/explicit-module-boundary-types: "off" */
 import { DocPrecursor } from '@friends-library/types';
 import { Visitor, AstNode, NodeType, traverse } from '@friends-library/parser';
+import { t, setLocale } from '@friends-library/locale';
 import { symbolOutput } from '../utils';
 
 type Output = string[];
@@ -10,11 +10,12 @@ type Data = { node: AstNode; output: Output; context: Context };
 const visitor: Visitor<Output, Context> = {
   document: {
     enter({ output, context, node }) {
+      setLocale(context.dpc.lang);
       output.push(context.dpc.meta.title.toUpperCase());
       output.push(``);
 
       if (!context.dpc.isCompilation) {
-        output.push(`by ${context.dpc.meta.author.name.toUpperCase()}\n`);
+        output.push(`${t`by`} ${context.dpc.meta.author.name.toUpperCase()}\n`);
         output.push(``);
       }
 
@@ -26,16 +27,17 @@ const visitor: Visitor<Output, Context> = {
     },
 
     exit({ output, context: { dpc } }) {
+      output.push(`\n`);
+      output.push(`\n\n* * *\n`);
+      output.push(`${t`Published by ${t`Friends Library Publishing`.toUpperCase()}`}.`);
       output.push(``);
-      output.push(`THE END.\n\n`);
-      output.push(`Published by FRIENDS LIBRARY PUBLISHING.\n`);
       output.push(
-        `Download free books from early members of the Religious Society of Friends (Quakers) in a variety of formats at www.friendslibrary.com.\n`,
+        `${t`Find more free books from early Quakers at`} www.${t`friendslibrary.com`}.\n`,
       );
-      output.push(`Public domain in the USA.\n`);
-      output.push(`Contact the publishers at info@friendslibrary.com.\n`);
+      output.push(`${t`Public domain in the USA`}.\n`);
+      output.push(`${t`Contact the publishers at`} ${t`info@friendslibrary.com`}.\n`);
       output.push(`ISBN: ${dpc.meta.isbn}\n`);
-      output.push(`Text revision: ${dpc.revision.sha} - `);
+      output.push(`${t`Text revision ${dpc.revision.sha}`} - `);
       append(output, new Date(dpc.revision.timestamp * 1000).toLocaleDateString());
     },
   },

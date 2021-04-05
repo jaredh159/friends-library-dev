@@ -23,12 +23,12 @@ describe(`toSpeechHtml()`, () => {
       <br />
       Hello world.<br />
       <br />
-      THE END.<br />
       <br />
+      * * *<br />
       <br />
       Published by FRIENDS LIBRARY PUBLISHING.<br />
       <br />
-      Download free books from early members of the Religious Society of Friends (Quakers) in a variety of formats at www.friendslibrary.com.<br />
+      Find more free books from early Quakers at www.friendslibrary.com.<br />
       <br />
       Public domain in the USA.<br />
       <br />
@@ -36,7 +36,7 @@ describe(`toSpeechHtml()`, () => {
       <br />
       ISBN: 978-1-64476-029-1<br />
       <br />
-      Text revision: 327ceb2 - 1/22/2021
+      Text revision 327ceb2 - 1/22/2021
       </body>
       </html>
     `);
@@ -57,12 +57,12 @@ describe(`toSpeechText()`, () => {
 
       Hello world.
       
-      THE END.
 
+      * * *
 
       Published by FRIENDS LIBRARY PUBLISHING.
 
-      Download free books from early members of the Religious Society of Friends (Quakers) in a variety of formats at www.friendslibrary.com.
+      Find more free books from early Quakers at www.friendslibrary.com.
       
       Public domain in the USA.
 
@@ -70,16 +70,49 @@ describe(`toSpeechText()`, () => {
 
       ISBN: 978-1-64476-029-1
 
-      Text revision: 327ceb2 - 1/22/2021
+      Text revision 327ceb2 - 1/22/2021
     `);
     expect(text).toBe(expected.trim());
   });
 
+  it(`uses spanish strings when necessary`, () => {
+    const text = `== Capitulo 1\n\nHola world.`;
+    const dpc = getDpc(text);
+    dpc.lang = `es`;
+    const speech = toSpeechText(dpc);
+    const expected = stripIndent(`
+      JOURNAL OF GEORGE FOX
+
+      por GEORGE FOX
+
+
+      CAPITULO 1
+
+      Hola world.
+      
+
+      * * *
+
+      Publicado por LA BIBLIOTECA DE LOS AMIGOS.
+
+      Encuentre más libros gratis de los primeros Cuáqueros en www.bibliotecadelosamigos.org.
+      
+      Dominio público en los Estados Unidos de América.
+
+      Puede contactarnos en info@bibliotecadelosamigos.org.
+
+      ISBN: 978-1-64476-029-1
+
+      Revisión de texto 327ceb2 - 1/22/2021
+    `);
+    expect(speech).toBe(expected.trim());
+  });
+
   it(`does not add "by COMPILATIONS" for compilations`, () => {
-    const text = `== Chpater 2\n\nHello world.`;
+    const text = `== Chpater 1\n\nHello world.`;
     const dpc = getDpc(text);
     dpc.isCompilation = true;
-    dpc.meta.author.name = 'Compilations';
+    dpc.meta.author.name = `Compilations`;
     const speech = toSpeechText(dpc);
     expect(speech).not.toContain(`by COMPILATIONS`);
   });
