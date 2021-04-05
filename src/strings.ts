@@ -192,6 +192,17 @@ const strings: { [k: string]: string } = {
   'Get it on Google Play': `Disponible en Google Play`,
   'Download on the App Store': `Consíguelo en el App Store`,
 
+  // book publishing metadata
+  'Public domain in the USA': `Dominio público en los Estados Unidos de América`,
+  'Originally published in %s': `Publicado originalmente en %s`,
+  'friendslibrary.com': `bibliotecadelosamigos.org`,
+  'info@friendslibrary.com': `info@bibliotecadelosamigos.org`,
+  'Text revision %s': `Revisión de texto %s`,
+  'Created and freely distributed by': `Creado y distribuido gratuitamente por`,
+  'Find more free books from early Quakers at': `Encuentre más libros gratis de los primeros Cuáqueros en`,
+  'Published by %s': `Publicado por %s`,
+  'Contact the publishers at': `Puede contactarnos en`,
+
   // geography
   Bristol: `Bristol`,
   Gloucester: `Gloucester`,

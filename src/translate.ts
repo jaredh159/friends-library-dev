@@ -14,8 +14,9 @@ export function translate(str: string): string {
   }
 
   if (locale === `es`) {
-    if (dict[str] !== undefined) {
-      return dict[str];
+    const translated = dict[str];
+    if (typeof translated === `string`) {
+      return translated;
     } else {
       throw new Error(`Missing translation for string: ${str}`);
     }
