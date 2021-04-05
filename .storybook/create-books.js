@@ -1,5 +1,6 @@
+// @ts-check
 const fs = require(`fs`);
-const { allFriends } = require('@friends-library/friends');
+const { allFriends } = require('@friends-library/friends/query');
 
 const friends = allFriends().filter((f) => f.hasNonDraftDocument);
 
