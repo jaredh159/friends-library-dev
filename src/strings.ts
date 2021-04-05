@@ -119,6 +119,7 @@ const strings: { [k: string]: string } = {
   '/spanish-translations': `/nuestras-traducciones`,
   '/app': `/app`,
   '/app-privacy': `/app-privacidad`,
+  '/plain-text-format': `/descargar-texto-sin-formato`,
 
   // contact
   Submit: `Enviar`,
@@ -129,13 +130,15 @@ const strings: { [k: string]: string } = {
   Message: `Mensaje`,
 
   // download / add to cart wizard
-  'Choose Book Type': `Escoger el tipo de Libro`,
+  'Choose Book Type': `Escoger el tipo de Libro`, // <-- now unused, remove next major
+  'Choose Download Format': `Escoge el Formato de Descarga`,
   'E-Book': `Libro Electrónico`,
   'Best for reading on a computer, phone, or tablet.': `La mejor opción para leer en computadora, teléfono o tablet.`,
   'Best for printing out your own copy.': `La mejor opción para imprimir tu propia copia`,
   'Choose eBook Type': `Selecciona el Tipo de Libro Electrónico`,
   'Best for most apps and platforms, including iOS.': `El mejor formato para la mayoría de aplicaciones y plataformas, incluyendo iOS.`,
   'Best on Amazon devices, Kindle app, and Android.': `El mejor formato para los dispositivos Amazon, aplicaciones de Kindle y Android.`,
+  'Best for text-to-speech apps like “Voice Dream.”': `La mejor opción para aplicaciones que convierten el texto a voz como “Voice Dream.”`,
 
   // Cart / Checkout
   'Your Order': `Tu Pedido`,
