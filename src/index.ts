@@ -128,6 +128,16 @@ export async function uploadFile(
   });
 }
 
+export async function deleteFile(cloudFilePath: CloudFilePath): Promise<boolean> {
+  const client = getClient();
+  const BUCKET = env.requireVar(`CLOUD_STORAGE_BUCKET`);
+  return new Promise((resolve, reject) => {
+    client.deleteObject({ Bucket: BUCKET, Key: cloudFilePath }, (err) => {
+      err ? reject(err) : resolve(true);
+    });
+  });
+}
+
 export async function uploadFiles(
   files: Map<LocalFilePath, CloudFilePath>,
   opts: { delete: boolean } = { delete: false },
