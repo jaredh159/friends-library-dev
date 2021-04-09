@@ -214,6 +214,8 @@ function getContentType(path: LocalFilePath): string {
       return `text/plain`;
     case `.html`:
       return `text/html`;
+    case `.json`:
+      return `application/json`;
     default:
       throw new Error(`Unexpected file extension: ${path}`);
   }
