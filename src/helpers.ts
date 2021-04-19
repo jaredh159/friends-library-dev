@@ -1,4 +1,4 @@
-import { htmlShortTitle } from '@friends-library/adoc-convert';
+import { htmlShortTitle } from '@friends-library/adoc-utils';
 
 export function htmlTitle(title: string, author: string): string {
   return htmlShortTitle(title.replace(author, author.replace(/ +/g, `&nbsp;`)))

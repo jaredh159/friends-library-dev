@@ -4,3 +4,4 @@ node_modules/
 .DS_Store
 src/cover-props.ts
 src/part-titles.ts
+.parcel-cache/
