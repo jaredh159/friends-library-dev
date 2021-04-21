@@ -32,14 +32,36 @@ const rule: LineRule = (
     if (hasEscape && escapeStart <= index && escapeEnd > index) {
       return;
     }
-    if (!allowed[char]) {
-      const name = characterName(char);
-      results.push(getLint(char, line, lineNumber, index + 1, name));
+    if (allowed[char]) {
+      return;
     }
+    if (delimitsXref(char, index, line)) {
+      return;
+    }
+    const name = characterName(char);
+    results.push(getLint(char, line, lineNumber, index + 1, name));
   });
 
   return results;
 };
+
+function delimitsXref(char: string, index: number, line: string): boolean {
+  if (![`>`, `<`].includes(char)) {
+    return false;
+  }
+
+  if (line[index - 1] !== char && line[index + 1] === char && line[index + 2] !== char) {
+    // is FIRST part of doubled sequence, like `<<` or `>>`
+    return true;
+  }
+
+  if (line[index - 2] !== char && line[index - 1] === char && line[index + 1] !== char) {
+    // is SECOND part of doubled sequence, like `<<` or `>>`
+    return true;
+  }
+
+  return false;
+}
 
 function getLint(
   char: string,

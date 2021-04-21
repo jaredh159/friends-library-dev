@@ -45,6 +45,7 @@ describe(`invalidCharacters()`, () => {
     [`|==`], // table line
     [`| Foo | Bar`], // table line
     [`2+| Jim Jam`], // table line
+    [`<<note-BB__xref_src,?LINKABLE-BACK>>`], // cross-reference
   ];
 
   test.each(allowed)(`%s should not be linted`, (adoc) => {

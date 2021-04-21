@@ -24,6 +24,11 @@ const rule: LineRule = (
     return [];
   }
 
+  // don't flag xrefs
+  if (restOfLine.match(/^src,/) && line.includes(`__xref_src`)) {
+    return [];
+  }
+
   return [
     {
       line: lineNumber,

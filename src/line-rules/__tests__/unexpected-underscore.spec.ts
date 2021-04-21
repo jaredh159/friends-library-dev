@@ -28,6 +28,7 @@ describe(`unexpectedUnderscore()`, () => {
     [`(_Foobar_)`],
     [`**_Totals:_**`],
     [`Foo bar._`],
+    [`<<note-O__xref_src,?LINKABLE-BACK>`],
   ];
 
   test.each(allowed)(`%s is not a lint violation`, (line) => {
