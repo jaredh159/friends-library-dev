@@ -134,4 +134,13 @@ export default css`
   .chapter-heading {
     string-set: chapter attr(data-short);
   }
+
+  a.__xref {
+    text-decoration: none;
+    color: black;
+  }
+
+  a.__xref-linkable-back {
+    display: none;
+  }
 `;
