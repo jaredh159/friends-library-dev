@@ -2,6 +2,7 @@ import { DocPrecursor } from '@friends-library/types';
 import { Visitor, AstNode, NodeType, traverse } from '@friends-library/parser';
 import { t, setLocale } from '@friends-library/locale';
 import { symbolOutput } from '../utils';
+import { nodeToSpeechTextLines } from './eval-speech';
 
 type Output = string[];
 type Context = { dpc: DocPrecursor; inlineFootnote?: boolean; quotifyEpigraph?: boolean };
@@ -46,22 +47,22 @@ const visitor: Visitor<Output, Context> = {
     enter({ node, output, context }) {
       if (node.children.length === 1) {
         context.inlineFootnote = true;
-        append(output, ` [footnote: `);
+        append(output, ` [${t`footnote`}: `);
         const paragraph = node.children.shift();
         node.children = (paragraph ?? { children: [] }).children;
       } else {
         output.push(``);
-        output.push(`[footnote:]`);
+        output.push(`[${t`footnote`}:]`);
         output.push(``);
       }
     },
     exit({ context, output }) {
       if (context.inlineFootnote) {
         context.inlineFootnote = false;
-        append(output, ` --returning to text.]`);
+        append(output, ` --${t`returning to text`}.]`);
       } else {
         output.push(``);
-        output.push(`[--returning to text.]`);
+        output.push(`[--${t`returning to text`}.]`);
         output.push(``);
         output.push(``);
       }
@@ -225,6 +226,32 @@ const visitor: Visitor<Output, Context> = {
         }
         output.push(`\n`);
       }
+    },
+  },
+
+  xref: {
+    enter() {},
+    exit({ node, output, context: { dpc } }) {
+      const target = node.getMetaData(`target`);
+      if (typeof target !== `string`) {
+        return;
+      }
+      const document = node.document();
+      const section = document.embeddableSections[target];
+      if (section === undefined) {
+        return;
+      }
+      output.push(``);
+      output.push(`[${t`footnote`}:]`);
+      output.push(``);
+      // render the embedded note here...
+      nodeToSpeechTextLines(section, dpc).forEach((line) => output.push(line));
+      output.push(``);
+      output.push(`[--${t`returning to text`}.]`);
+      output.push(``);
+      output.push(``);
+      // and then mutate it, clearing children so it doesn't render twice
+      section.children = [];
     },
   },
 

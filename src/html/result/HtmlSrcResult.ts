@@ -29,7 +29,7 @@ export default abstract class HtmlSrcResult {
   }
 
   public get epigraphHtml(): string {
-    return evalEpigraphs(this.document);
+    return evalEpigraphs(this.document, this.lang);
   }
 
   public get chapters(): ChapterResult[] {

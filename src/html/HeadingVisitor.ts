@@ -6,7 +6,16 @@ const HeadingVisitor: Visitor<Array<string[]>> = {
   heading: {
     dispatch({ node }): Visitable<Array<string[]>> {
       if (!isChapter(node)) {
-        return u.wrap((node) => `h${level(node)}`);
+        return {
+          enter({ node }) {
+            const el = `h${level(node)}`;
+            const id = node.parent.context?.id ? ` id="${node.parent.context.id}" ` : ``;
+            c.append(`<${el}${id}${u.classAttr(node) || u.classAttr(node.parent)}>`);
+          },
+          exit({ node }) {
+            c.append(`</h${level(node)}>`);
+          },
+        };
       }
       return this;
     },

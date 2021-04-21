@@ -92,6 +92,11 @@ describe(`eval.toPdfSrcHtml()`, () => {
     const chapter1 = firstChapter(`== Preface\n\nPa__ragra__ph\n`);
     expect(chapter1.content).toContain(`Pa<em>ragra</em>ph`);
   });
+
+  test(`xref tight wrapping`, () => {
+    const chapter1 = firstChapter(`== Preface\n\n+++[+++See <<apx,Appendix.>>]\n`);
+    expect(chapter1.content).toContain(`Appendix.</a>]`);
+  });
 });
 
 function getResult(adoc: string): PdfSrcResult {

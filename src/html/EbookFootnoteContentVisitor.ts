@@ -2,8 +2,12 @@ import { Visitor } from '@friends-library/parser';
 import { utils as u, chapterMarkup as c } from '../utils';
 import PrimitivesVisitor from './PrimitivesVisitor';
 import { ebookFootnoteData } from './FootnoteVisitor';
+import { Lang } from '@friends-library/types';
 
-const EbookFootnoteContentVisitor: Visitor<Array<string[]>> = {
+const EbookFootnoteContentVisitor: Visitor<
+  Array<string[]>,
+  { target: `ebook`; lang: Lang }
+> = {
   collection: {
     enter({ output }) {
       c.reset();

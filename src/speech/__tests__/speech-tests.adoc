@@ -387,3 +387,48 @@ In the beginning was the Word.
 
 Goodbye world.
 ++++
+
+// ********************************
+## embeds cross-referenced endnotes
+// *******************************
+
+****
+== Chapter 1
+
+Hello <<note-A,world.>>
+
+== Chapter 2
+
+First Paragraph.
+
+[#note-A]
+=== Note A.
+
+Should be inlined.
+
+== Chapter 3
+
+Last chapter.
+****
+
+++++
+CHAPTER 1
+
+Hello world.
+
+[footnote:]
+
+NOTE A.
+
+Should be inlined.
+
+[--returning to text.]
+
+CHAPTER 2
+
+First Paragraph.
+
+CHAPTER 3
+
+Last chapter.
+++++

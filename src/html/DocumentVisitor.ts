@@ -1,4 +1,5 @@
 import { Visitor } from '@friends-library/parser';
+import { Lang } from '@friends-library/types';
 import { utils as u, chapterMarkup as c, wrap } from '../utils';
 import AttributedQuoteBlockVisitor from './AttributedQuoteBlockVisitor';
 import HeadingVisitor from './HeadingVisitor';
@@ -7,7 +8,7 @@ import FootnoteVisitor from './FootnoteVisitor';
 import PrimitivesVisitor from './PrimitivesVisitor';
 
 type Output = Array<string[]>;
-type Context = { target: 'pdf' | 'ebook' };
+type Context = { target: 'pdf' | 'ebook'; lang: Lang };
 
 const documentVisitor: Visitor<Output, Context> = {
   chapter: {

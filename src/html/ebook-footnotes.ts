@@ -16,7 +16,7 @@ export default function evalEbookFootnotesContent(
   const footnotes = document.footnotes;
   footnotes.children.unshift(helperNote(footnotes, lang));
   const output: Array<string[]> = [];
-  traverse(footnotes, visitor, output, null);
+  traverse(footnotes, visitor, output, { target: `ebook`, lang });
   return output[0]?.join(`\n`) ?? ``;
 }
 

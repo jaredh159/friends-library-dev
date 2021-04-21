@@ -112,3 +112,44 @@ footnote:[Note 4.]
 </p>
 ++++
 
+// ******************************************
+## cross-chapter cross-reference links [ebook]
+// ******************************************
+
+****
+== Preface
+
+Hello <<note-A,world.>>
+
+== Introduction
+
+[#note-A]
+=== Note A
+
+Here is a note.
+<<note-A__xref_src,?LINKABLE-BACK>>
+****
+
+++++
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <header class="chapter-heading" data-short="Preface">
+    <h2>Preface</h2>
+  </header>
+  <p class="paragraph">
+    Hello
+    <a id="note-A__xref_src" class="__xref" href="chapter-2.xhtml#note-A">world.</a>
+  </p>
+</div>
+<div id="chapter-2" class="chapter chapter-2 chapter--no-signed-section">
+  <header class="chapter-heading" data-short="Introduction">
+    <h2>Introduction</h2>
+  </header>
+  <h3 id="note-A">Note A</h3>
+  <p class="paragraph">
+    Here is a note.
+    <a class="__xref __xref-linkable-back" href="chapter-1.xhtml#note-A__xref_src">
+       &#9166; 
+    </a>
+  </p>
+</div>
+++++

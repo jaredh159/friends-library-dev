@@ -804,3 +804,74 @@ Paragraph text.
   </div>
 </div>
 ++++
+
+// ********************************
+## cross-reference
+// ********************************
+
+****
+== Preface
+
+Hello <<note-A,world.>>
+****
+
+++++
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <!-- preface chapter heading markup here -->
+  <p class="paragraph">
+    Hello
+    <a id="note-A__xref_src" class="__xref" href="#note-A">
+      world.
+    </a>
+  </p>
+</div>
+++++
+
+// ********************************
+## cross-reference linkable-back
+// ********************************
+
+****
+== Preface
+
+Hello world.
+<<note-A__xref_src,?LINKABLE-BACK>>
+****
+
+++++
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <!-- preface chapter heading markup here -->
+  <p class="paragraph">
+    Hello world.
+    <a class="__xref __xref-linkable-back" href="#note-A__xref_src">
+      &larr; Back
+    </a>
+  </p>
+</div>
+++++
+
+// ********************************
+## embeddable section
+// ********************************
+
+****
+== Preface
+
+Hello world.
+
+[#embed-me]
+=== Embed
+
+Goodbye world.
+****
+
+++++
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <!-- preface chapter heading markup here -->
+  <p class="paragraph">
+    Hello world.
+  </p>
+  <h3 id="embed-me">Embed</h3>
+  <p class="paragraph">Goodbye world.</p>
+</div>
+++++

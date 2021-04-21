@@ -20,7 +20,7 @@ function toSrcHtml(
 ): PdfSrcResult | EbookSrcResult {
   const document = Parser.parseDocument(...dpc.asciidocFiles);
   const output: Array<string[]> = [];
-  traverse(document, documentVisitor, output, { target });
+  traverse(document, documentVisitor, output, { target, lang: dpc.lang });
   const Result = target === `pdf` ? PdfSrcResult : EbookSrcResult;
   return new Result(output, document, dpc.lang);
 }
