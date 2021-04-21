@@ -209,6 +209,11 @@ const strings: { [k: string]: string } = {
   'Published by %s': `Publicado por %s`,
   'Contact the publishers at': `Puede contactarnos en`,
 
+  // speech target
+  footnote: `Nota a pie de página`,
+  'returning to text': `Volviendo al texto`,
+  Back: `Volver`,
+
   // geography
   Bristol: `Bristol`,
   Gloucester: `Gloucester`,
