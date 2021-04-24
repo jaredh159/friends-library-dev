@@ -154,6 +154,25 @@ export async function uploadFiles(
   });
 }
 
+export async function listObjects(prefix: CloudFilePath): Promise<CloudFilePath[]> {
+  const client = getClient();
+  return new Promise((resolve, reject) => {
+    client.listObjects(
+      {
+        Bucket: env.requireVar(`CLOUD_STORAGE_BUCKET`),
+        Prefix: prefix,
+      },
+      (listErr, listData) => {
+        if (listErr) {
+          reject(listErr);
+          return;
+        }
+        resolve((listData.Contents || []).map(({ Key }) => Key).filter(isDefined));
+      },
+    );
+  });
+}
+
 export async function rimraf(path: CloudFilePath): Promise<CloudFilePath[]> {
   const { CLOUD_STORAGE_BUCKET } = env.require(`CLOUD_STORAGE_BUCKET`);
   const client = getClient();
