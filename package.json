@@ -1,6 +1,6 @@
 {
   "name": "@friends-library/adoc-lint",
-  "version": "1.11.0",
+  "version": "1.12.0",
   "author": "Jared Henderson <jared@netrivet.com>",
   "repository": "github:friends-library-dev/adoc-lint",
   "description": "linting of asciidoc for FLP",
