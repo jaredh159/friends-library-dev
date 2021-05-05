@@ -24,6 +24,12 @@ const runner = new RegexLintRunner(
       fixable: true,
     },
     {
+      test: `yon`,
+      search: /\b(Y|y)on\b/g,
+      replace: `$1ou`,
+      fixable: false,
+    },
+    {
       test: `mmd`,
       search: /\bmmd\b/g,
       replace: `mind`,

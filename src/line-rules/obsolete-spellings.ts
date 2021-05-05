@@ -21,6 +21,16 @@ const runner = new RegexLintRunner([
     replace: `Jr.`,
   },
   {
+    test: `havock`,
+    search: /\b(H|h)avock\b/g,
+    replace: `$1avoc`,
+  },
+  {
+    test: `mould`,
+    search: /\b(M|m)ould\b/g,
+    replace: `$1old`,
+  },
+  {
     test: `incumb`,
     search: /\b(I|i)ncumb(er|ered|ering|ers|rance)\b/g,
     replace: (_, i, end) => `${i === `I` ? `E` : `e`}ncumb${end}`,
