@@ -71,6 +71,7 @@ export const ARTIFACT_TYPES = [
   `epub`,
   `mobi`,
   `speech`,
+  `app-ebook`,
 ] as const;
 
 export type ArtifactType = typeof ARTIFACT_TYPES[number];
