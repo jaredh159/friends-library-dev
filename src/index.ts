@@ -80,6 +80,9 @@ export const SHIPPING_LEVELS = [
 ] as const;
 export type ShippingLevel = typeof SHIPPING_LEVELS[number];
 
+export const THREE_D_COVER_IMAGE_WIDTHS = [250, 300, 350, 400, 450, 500, 564] as const;
+export type ThreeDCoverImageWidth = typeof THREE_D_COVER_IMAGE_WIDTHS[number];
+
 export const SQUARE_COVER_IMAGE_SIZES = [
   90,
   180,
