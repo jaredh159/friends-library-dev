@@ -1,6 +1,6 @@
 {
   "name": "@friends-library/types",
-  "version": "4.2.0-beta.1",
+  "version": "4.2.0-beta.2",
   "description": "types and typescript-related util fns for friends library",
   "main": "./dist/index.js",
   "browser": "./src/index.ts",
