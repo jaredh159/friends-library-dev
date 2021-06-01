@@ -13,16 +13,10 @@ import {
   FilePath,
   Sha,
 } from './primitive';
-export {
-  DocPrecursor,
-  ARTIFACT_TYPES,
-  ArtifactType,
-  PaperbackInteriorConfig,
-  PaperbackCoverConfig,
-  EbookConfig,
-  genericDpc,
-} from './doc';
-export { checkoutErrors, CheckoutError } from './errors';
+
+export * from './doc';
+export * from './errors';
+export * from './image-sizes';
 
 export type Environment = `production` | `staging` | `development`;
 
@@ -79,23 +73,6 @@ export const SHIPPING_LEVELS = [
   `EXPRESS`,
 ] as const;
 export type ShippingLevel = typeof SHIPPING_LEVELS[number];
-
-export const THREE_D_COVER_IMAGE_WIDTHS = [250, 300, 350, 400, 450, 500, 564] as const;
-export type ThreeDCoverImageWidth = typeof THREE_D_COVER_IMAGE_WIDTHS[number];
-
-export const SQUARE_COVER_IMAGE_SIZES = [
-  90,
-  180,
-  270,
-  300,
-  450,
-  600,
-  750,
-  900,
-  1150,
-  1400,
-] as const;
-export type SquareCoverImageSize = typeof SQUARE_COVER_IMAGE_SIZES[number];
 
 export const AUDIO_QUALITIES = [`HQ`, `LQ`] as const;
 export type AudioQuality = typeof AUDIO_QUALITIES[number];
