@@ -3,12 +3,15 @@ import meta from './meta';
 import revision from './revision';
 import config from './config';
 import customCode from './custom-code';
-import asciidoc from './asciidoc';
+import asciidoc, { HydrateAsciidocConfig } from './asciidoc';
 
-export default function all(dpcs: FsDocPrecursor[], isolate?: number): void {
+export default function all(
+  dpcs: FsDocPrecursor[],
+  adocConfig: HydrateAsciidocConfig = {},
+): void {
   dpcs.forEach(meta);
   dpcs.forEach(revision);
   dpcs.forEach(config);
   dpcs.forEach(customCode);
-  dpcs.forEach((dpc) => asciidoc(dpc, isolate || undefined));
+  dpcs.forEach((dpc) => asciidoc(dpc, adocConfig));
 }
