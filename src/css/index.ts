@@ -20,3 +20,4 @@ export { default as ebookEpub } from './ebook/epub.css';
 export { default as ebookIntermediateTitle } from './ebook/intermediate-title.css';
 export { default as ebookMobi } from './ebook/mobi.css';
 export { default as ebookKf8 } from './ebook/kf8.css';
+export { default as appEbook } from './app-ebook.css';
