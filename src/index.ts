@@ -11,15 +11,8 @@ let clientInstance: AWS.S3 | null = null;
 
 function getClient(): AWS.S3 {
   if (!clientInstance) {
-    const {
-      CLOUD_STORAGE_ENDPOINT,
-      CLOUD_STORAGE_KEY,
-      CLOUD_STORAGE_SECRET,
-    } = env.require(
-      `CLOUD_STORAGE_ENDPOINT`,
-      `CLOUD_STORAGE_KEY`,
-      `CLOUD_STORAGE_SECRET`,
-    );
+    const { CLOUD_STORAGE_ENDPOINT, CLOUD_STORAGE_KEY, CLOUD_STORAGE_SECRET } =
+      env.require(`CLOUD_STORAGE_ENDPOINT`, `CLOUD_STORAGE_KEY`, `CLOUD_STORAGE_SECRET`);
     clientInstance = new AWS.S3({
       httpOptions: { timeout: 1200000 }, // 20 minutes
       endpoint: new AWS.Endpoint(CLOUD_STORAGE_ENDPOINT).href,
@@ -53,9 +46,7 @@ export function downloadFile(cloudFilePath: CloudFilePath): Promise<Buffer> {
   });
 }
 
-export async function metaData(
-  cloudFilePath: CloudFilePath,
-): Promise<{
+export async function metaData(cloudFilePath: CloudFilePath): Promise<{
   LastModified?: Date;
   ContentLength?: number;
   ETag?: string;
@@ -235,6 +226,8 @@ function getContentType(path: LocalFilePath): string {
       return `text/html`;
     case `.json`:
       return `application/json`;
+    case `.css`:
+      return `text/css`;
     default:
       throw new Error(`Unexpected file extension: ${path}`);
   }
