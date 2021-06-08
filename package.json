@@ -19,11 +19,11 @@
   },
   "dependencies": {
     "@friends-library/locale": "^1.7.0",
-    "@friends-library/parser": "^1.4.1",
-    "@friends-library/types": "^4.1.0"
+    "@friends-library/parser": "^1.4.2",
+    "@friends-library/types": "^5.0.1"
   },
   "devDependencies": {
-    "@friends-library/dev": "^4.1.18",
+    "@friends-library/dev": "~4.1.20",
     "strip-indent": "^3.0.0"
   }
 }

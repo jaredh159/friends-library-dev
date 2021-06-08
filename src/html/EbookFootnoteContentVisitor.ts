@@ -34,9 +34,10 @@ const EbookFootnoteContentVisitor: Visitor<
 
   blockInFootnote: u.wrap(`span`, [`poetry`]),
 
-  paragraphInFootnote: u.wrap((n) => (n.hasSiblings() ? `span` : null), [
-    `footnote-paragraph`,
-  ]),
+  paragraphInFootnote: u.wrap(
+    (n) => (n.hasSiblings() ? `span` : null),
+    [`footnote-paragraph`],
+  ),
 
   textInFootnote: {
     enter({ node }) {
