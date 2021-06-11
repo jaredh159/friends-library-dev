@@ -82,22 +82,21 @@ function splitByPunctuation(sentence: string): string[] {
   return sentence.replace(/([,|;|:]) /gm, `$1\n`).split(`\n`);
 }
 
-const rejoinShortPhrases: (
-  maxLen: number,
-) => (acc: string[], part: string) => string[] = (maxLen) => {
-  return (acc, part) => {
-    const lastIndex = acc.length - 1;
-    const lastLine = acc[lastIndex];
-    if (lastLine === ``) {
-      acc[lastIndex] = part;
-    } else if (`${lastLine} ${part}`.length < maxLen) {
-      acc[lastIndex] = `${lastLine} ${part}`;
-    } else {
-      acc.push(part);
-    }
-    return acc;
+const rejoinShortPhrases: (maxLen: number) => (acc: string[], part: string) => string[] =
+  (maxLen) => {
+    return (acc, part) => {
+      const lastIndex = acc.length - 1;
+      const lastLine = acc[lastIndex];
+      if (lastLine === ``) {
+        acc[lastIndex] = part;
+      } else if (`${lastLine} ${part}`.length < maxLen) {
+        acc[lastIndex] = `${lastLine} ${part}`;
+      } else {
+        acc.push(part);
+      }
+      return acc;
+    };
   };
-};
 
 function splitBetweenWords(
   maxLen: number,
