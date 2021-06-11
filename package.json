@@ -1,7 +1,7 @@
 {
   "name": "@friends-library/friend-repos",
   "description": "minimalistic node utils for handling friend repos",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "main": "./dist/index.js",
   "browser": false,
   "license": "MIT",
