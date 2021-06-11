@@ -24,11 +24,11 @@
     "node-fetch": "^2.6.1",
     "p-limit": "^3.0.2",
     "x-chalk": "^1.0.1",
-    "x-exec": "^1.1.0"
+    "x-exec": "^1.2.0"
   },
   "devDependencies": {
-    "@friends-library/dev": "^4.1.6",
-    "@friends-library/types": "^1.1.1",
+    "@friends-library/dev": "~4.3.1",
+    "@friends-library/types": "^5.0.3",
     "@types/node-fetch": "^2.5.7"
   }
 }

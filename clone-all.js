@@ -3,7 +3,7 @@ const cloneAll = require(`./dist/clone`).default;
 
 const path = process.argv[2];
 if (!path) {
-  console.error(`missing path param -- \`clone-all <path>\ [--delete-existing]\``);
+  console.error(`missing path param -- \`clone-all <path> [--delete-existing]\``);
   process.exit(1);
 }
 

@@ -33,9 +33,9 @@ async function fetchApiPage(lang: Lang, page: number): Promise<Repo[]> {
     .filter((repo) => repo.name !== `friends-library`)
     .map((repo) => ({
       lang,
-      slug: repo.name,
-      repo: repo.full_name,
-      sshCloneUrl: repo.ssh_url,
-      httpsCloneUrl: repo.clone_url,
+      slug: repo.name ?? ``,
+      repo: repo.full_name ?? ``,
+      sshCloneUrl: repo.ssh_url ?? ``,
+      httpsCloneUrl: repo.clone_url ?? ``,
     }));
 }
