@@ -38,11 +38,11 @@ function truthy(key: string): boolean {
 }
 
 function requireVar(key: string): string {
-  return req(key)[key];
+  return req(key)[key] ?? ``;
 }
 
 function variable(key: string): string {
-  return get(key)[key];
+  return get(key)[key] ?? ``;
 }
 
 export default {
