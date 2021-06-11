@@ -7,6 +7,7 @@
     "target": "ES2019",
     "module": "CommonJS",
     "incremental": true,
-    "noUncheckedIndexedAccess": true
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true
   }
 }
