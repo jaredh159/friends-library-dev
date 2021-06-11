@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
+    "strict": true,
+    "noImplicitOverride": true,
     "noUncheckedIndexedAccess": true,
     "esModuleInterop": true,
-    "strict": true,
     "declaration": true,
     "outDir": "./dist",
     "rootDir": "./src",
