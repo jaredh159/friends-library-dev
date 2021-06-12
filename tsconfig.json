@@ -5,6 +5,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
     "outDir": "./dist",
     "rootDir": "./src"
   }
