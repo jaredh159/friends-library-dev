@@ -19,13 +19,13 @@
     "prepublishOnly": "npm run compile"
   },
   "dependencies": {
-    "@friends-library/document-meta": "^2.2.0",
-    "@friends-library/types": "^3.0.0",
+    "@friends-library/document-meta": "^2.2.2",
+    "@friends-library/types": "^5.0.3",
     "client-oauth2": "^4.3.0",
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {
-    "@friends-library/dev": "^4.1.15",
+    "@friends-library/dev": "~4.3.1",
     "@types/node-fetch": "^2.5.7"
   }
 }

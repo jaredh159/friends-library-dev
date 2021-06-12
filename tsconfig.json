@@ -3,6 +3,7 @@
     "strict": true,
     "esModuleInterop": true,
     "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
     "moduleResolution": "node",
     "declaration": true,
     "outDir": "./dist",
