@@ -18,12 +18,12 @@
     "prepublishOnly": "npm run compile"
   },
   "dependencies": {
-    "@friends-library/locale": "^1.7.0",
-    "@friends-library/parser": "^1.4.2",
-    "@friends-library/types": "^5.0.1"
+    "@friends-library/locale": "^1.7.1",
+    "@friends-library/parser": "^1.4.4",
+    "@friends-library/types": "^5.0.3"
   },
   "devDependencies": {
-    "@friends-library/dev": "~4.1.20",
+    "@friends-library/dev": "~4.3.1",
     "strip-indent": "^3.0.0"
   }
 }
