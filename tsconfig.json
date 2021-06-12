@@ -2,6 +2,7 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "declaration": true,
