@@ -5,7 +5,8 @@ import RegexLintRunner from '../RegexLintRunner';
 const runner = new RegexLintRunner([
   {
     test: `(a|p). ?m.`,
-    search: /\b(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|clock|\d),? (a|p)\. ?m\.\.?/i,
+    search:
+      /\b(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|clock|\d),? (a|p)\. ?m\.\.?/i,
     replace: (_, prefix, aOrP) => `${prefix} ${aOrP.toLowerCase()}.m.`,
     fixable: true,
     message: `AM/PM must be formatted consistently as "a.m." and "p.m", without leading comma`,

@@ -11,7 +11,8 @@ const rule: LineRule = (
     return [];
   }
 
-  const expr = /[a-z]\.(?<!\betc\.)(?<!\bviz\.)(?<!\b(V|v)ol\.)(?<!\bch\.)(?<!\b8vo\.)(?<!\bfol\.)(?<!\bsect\.)(?<!\bedit\.)(?<!\b\d+(d|s)\.)(?<!\bchap\.)(?<!\bp\.) [a-z]/g;
+  const expr =
+    /[a-z]\.(?<!\betc\.)(?<!\bviz\.)(?<!\b(V|v)ol\.)(?<!\bch\.)(?<!\b8vo\.)(?<!\bfol\.)(?<!\bsect\.)(?<!\bedit\.)(?<!\b\d+(d|s)\.)(?<!\bchap\.)(?<!\bp\.) [a-z]/g;
 
   let match: RegExpExecArray | null = null;
   const results: LintResult[] = [];

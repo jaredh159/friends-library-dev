@@ -26,18 +26,21 @@ const runner = new RegexLintRunner(
         );
       },
       replace: `$1y $2`,
-      allowIfNear: /\bmine (and|in|is|of|a|at|as|or|unites|on|are|ascend|also|often|inherit|unto|appeared|into|under|once|especially)\b/i,
+      allowIfNear:
+        /\bmine (and|in|is|of|a|at|as|or|unites|on|are|ascend|also|often|inherit|unto|appeared|into|under|once|especially)\b/i,
       message: `"mine" used as the modern "my" (e.g. "mine eyes have seen") should be updated to "my"`,
     },
     {
       test: `you`,
       // NOTE: when adding here, test whether the lowercase version should be added to "MAYBE" lint below
-      search: /\b(Believe|Be|(G|g)o|Seek|Get|Come|Bring|Know|Praise|(p|P)ossess|(W|w)ait|Turn|(E|e)nter|Why stand|(W|w)atch|Wash) (Y|y)ou\b/g,
+      search:
+        /\b(Believe|Be|(G|g)o|Seek|Get|Come|Bring|Know|Praise|(p|P)ossess|(W|w)ait|Turn|(E|e)nter|Why stand|(W|w)atch|Wash) (Y|y)ou\b/g,
       replace: `$1`,
       fixable: false,
       message: `"<verb> you" is often an automated modernization error and should be replaced with "<verb>"`,
       includeNextLineFirstWord: true,
-      allowIfNear: /((go|come) you (cursed|blessed|workers)|do you know what|possess you,|wait you shall|go you cannot come|enter you(,|;|:|\.|\?))/i,
+      allowIfNear:
+        /((go|come) you (cursed|blessed|workers)|do you know what|possess you,|wait you shall|go you cannot come|enter you(,|;|:|\.|\?))/i,
       isMaybe: false,
     },
     {
@@ -58,7 +61,8 @@ const runner = new RegexLintRunner(
       isMaybe: true,
       message: `"What do you" is sometimes an automated modernization error that should be replaced with "What are you doing" or "What have you done"`,
       includeNextLineFirstWord: true,
-      allowIfNear: /what do you (say|mean|call|deny|tell|gain|know|preach|do|witness|think|need|succeed|watch|go|owe|make|lie|talk|feel|have|pray|complain|thou|want|rejoice)\b/i,
+      allowIfNear:
+        /what do you (say|mean|call|deny|tell|gain|know|preach|do|witness|think|need|succeed|watch|go|owe|make|lie|talk|feel|have|pray|complain|thou|want|rejoice)\b/i,
     },
     {
       test: `enter you not`,
