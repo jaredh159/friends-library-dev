@@ -64,15 +64,9 @@ export default css`
   }
 
   .paragraph {
-    text-align: left;
     margin-bottom: 0.5em;
     line-height: 150%;
     -webkit-hyphens: auto !important;
-  }
-
-  dd,
-  .discourse-part {
-    text-align: left;
   }
 
   .chapter-1 {
@@ -221,7 +215,6 @@ export default css`
   #fn-content-inner,
   #fn-content-inner > * {
     font-size: 0.9em;
-    text-align: left;
     line-height: 150%;
     -webkit-hyphens: auto !important;
   }
@@ -247,5 +240,16 @@ export default css`
 
   .embedded-content-document {
     margin-left: 0;
+  }
+
+  /* UN-justify */
+  dd,
+  .discourse-part,
+  .paragraph,
+  .offset,
+  .paragraph.offset,
+  #fn-content-inner,
+  #fn-content-inner > * {
+    text-align: left;
   }
 `;
