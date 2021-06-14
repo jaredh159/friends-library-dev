@@ -5,6 +5,13 @@ const webpack = require(`webpack`);
 module.exports = {
   stories: ['../src/**/*.stories.@(js|jsx|ts|tsx)'],
   addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
+
+  typescript: {
+    // TS 4.3 issue - @see https://github.com/styleguidist/react-docgen-typescript/issues/356
+    // but I don't think i was using this anyway, this could speed up builds too, i think
+    reactDocgen: false,
+  },
+
   webpackFinal: async (config, { configType }) => {
     // `configType` has a value of 'DEVELOPMENT' or 'PRODUCTION'
     // 'PRODUCTION' is used when building the static version of storybook.
