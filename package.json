@@ -1,6 +1,6 @@
 {
   "name": "@friends-library/env",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "flp env helpers",
   "main": "./dist/index.js",
   "browser": false,
