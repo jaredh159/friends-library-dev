@@ -20,7 +20,8 @@ const Chapter: React.FC<Props> = ({ lang, editionPath, partIdx }) => {
   const coverProps = coverPropsMap[editionPath];
   if (!coverProps) throw new Error(`missing cover props for ${editionPath}`);
   const parts = partTitlesMap[editionPath];
-  const title = htmlTitle(parts[partIdx], coverProps.author);
+  if (!parts) throw new Error(`missing part titles for ${editionPath}`);
+  const title = htmlTitle(parts[partIdx] ?? ``, coverProps.author);
   setLocale(lang);
   return (
     <div className="Chapter youtube-poster">

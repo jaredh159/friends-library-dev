@@ -33,7 +33,7 @@ const App: React.FC = () => {
         } else {
           nextIdx = idx === 0 ? allLinks.length - 1 : idx - 1;
         }
-        const nextPath = allLinks[nextIdx].getAttribute(`href`) || ``;
+        const nextPath = allLinks[nextIdx]?.getAttribute(`href`) || ``;
         setPath(nextPath);
       });
     };
