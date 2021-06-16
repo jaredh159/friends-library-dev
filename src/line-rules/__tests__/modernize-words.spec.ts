@@ -35,6 +35,7 @@ describe(`modernizeWords()`, () => {
   const allowed: [string][] = [
     [`Samual Amongstrong came to meeting`],
     [`This weight of burden of mine is too great to bear`],
+    [`A friend of mine traveled with me to Southwark`],
   ];
 
   test.each(allowed)(`%s is not a lint violation`, (line) => {

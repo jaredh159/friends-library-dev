@@ -27,7 +27,7 @@ const runner = new RegexLintRunner(
       },
       replace: `$1y $2`,
       allowIfNear:
-        /\bmine (and|in|is|of|a|at|as|or|unites|on|are|ascend|also|often|inherit|unto|appeared|into|under|once|especially)\b/i,
+        /(friend of mine (a|e|i|o|u)|\bmine (and|in|is|of|a|at|as|or|unites|on|are|ascend|also|often|inherit|unto|appeared|into|under|once|especially)\b)/i,
       message: `"mine" used as the modern "my" (e.g. "mine eyes have seen") should be updated to "my"`,
     },
     {
