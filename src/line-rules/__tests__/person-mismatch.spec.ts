@@ -37,6 +37,7 @@ describe(`personMismatch()`, () => {
     [`You profess the truth`],
     [`We give you thanks, Oh Lord`],
     [`You his lambs`],
+    [`Sir, I can tell you news: What news?`],
   ];
 
   test.each(allowed)(`multiline adoc should not have lint error`, (adoc) => {

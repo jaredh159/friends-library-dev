@@ -221,4 +221,5 @@ const WHITELIST: Record<string, number> = {
   railers: 1,
   years: 1,
   bears: 1,
+  news: 1,
 };
