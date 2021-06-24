@@ -197,6 +197,11 @@ const strings: { [k: string]: string } = {
   'No internet connection': `No hay conexión de internet`,
   'Get it on Google Play': `Disponible en Google Play`,
   'Download on the App Store': `Consíguelo en el App Store`,
+  Read: `Leer`,
+  Loading: `Cargando`,
+  Preferences: `Preferencias`,
+  'Continue reading': `Seguir leyendo`,
+  'Continue listening': `Seguir escuchando`,
 
   // book publishing metadata
   'Public domain in the USA': `Dominio público en los Estados Unidos de América`,
