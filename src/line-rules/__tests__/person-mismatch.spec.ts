@@ -1,6 +1,6 @@
 import personMismatch from '../person-mismatch';
 
-const opts = { lang: `en`, editionType: `modernized` } as const;
+const opts = { lang: `en`, editionType: `modernized`, maybe: true } as const;
 
 describe(`personMismatch()`, () => {
   it(`creates a lint for violation of \`person-mismatch\` rule`, () => {
