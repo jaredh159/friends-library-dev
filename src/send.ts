@@ -25,7 +25,8 @@ export async function sendJson(
   const blocks = [sectionBlock(msg)];
   for (const label in data) {
     blocks.push(sectionBlock(`_${label.toUpperCase()}:_`));
-    blocks.push(sectionBlock(`\`\`\`` + JSON.stringify(data[label], null, 2) + `\`\`\``));
+    const json = JSON.stringify(data[label], null, 2).slice(0, MAX_BLOCK_LEN);
+    blocks.push(sectionBlock(`\`\`\`` + json + `\`\`\``));
   }
   getClient(channel).chat.postMessage({
     username: `FL Bot`,
@@ -77,3 +78,6 @@ function sectionBlock(text: string): SectionBlock {
     },
   };
 }
+
+// actual value seems to be 3001, leave a little fudge room
+const MAX_BLOCK_LEN = 2900;
