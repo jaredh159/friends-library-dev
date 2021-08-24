@@ -1,0 +1,38 @@
+{
+  "name": "@friends-library/graphql",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "watchexec --restart --watch Sources --exts swift --signal SIGINT swift run",
+    "debug": "export LOG_LEVEL=trace; npm run start",
+    "prod:up": "pm2 start ./serve.sh --name flp-graphql",
+    "prod:down": "pm2 stop flp-graphql && pm2 delete flp-graphql;",
+    "prod:restart": "npm run prod:down; npm run prod:up",
+    "prod:logs": "pm2 logs flp-graphql",
+    "db:shell": "psql flp",
+    "migrate:up": "vapor run migrate --yes",
+    "migrate:down": "vapor run migrate --revert --yes",
+    "migrate:reset": "npm run migrate:down && npm run migrate:up",
+    "migrate:nuke": "killall Postico; dropdb gertrude_api_swift && createdb gertrude_api_swift && npm run migrate:up",
+    "schema:update": "apollo client:download-schema --endpoint=http://127.0.0.1:8080/graphql ./Sources/App/GraphQL/schema.graphql",
+    "lint": "test $(swift-format-5.3 --mode lint --configuration ./.swift-format.json --recursive ./Sources ./Tests ./Package.swift 2>&1 | wc -l | sed -E 's/ //g') == '0'",
+    "format": "swift-format-5.3 --configuration ./.swift-format.json --recursive --in-place ./Sources ./Tests ./Package.swift",
+    "test": "swift test 2>&1 | xcbeautify",
+    "test:isolate": "swift test --filter Isolate 2>&1 | xcbeautify",
+    "nuke": "npm run migrate:nuke; npm run test:db:nuke",
+    "test:db:nuke": "killall Postico; dropdb gertrude_api_swift_TEST && createdb gertrude_api_swift_TEST",
+    "test:clear": "clear && printf '\\e[3J' && npm run test; echo",
+    "test:clear:isolate": "clear && printf '\\e[3J' && npm run test:isolate; echo",
+    "test:watch": "watchexec --restart --watch Sources --watch Tests --exts swift npm run test:clear",
+    "test:watch:isolate": "watchexec --restart --watch Sources --watch Tests --exts swift npm run test:clear:isolate",
+    "ci": "npm run lint && npm run test && npm run test:stress"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "apollo": "^2.33.4"
+  }
+}
