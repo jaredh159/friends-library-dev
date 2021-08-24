@@ -34,7 +34,9 @@ public func configure(_ app: Application) throws {
 }
 
 private func addMigrations(to app: Application) {
-  app.migrations.add(CreateAdminUsers())
+  app.migrations.add(CreateDownloads())
+  app.migrations.add(CreateOrders())
+  app.migrations.add(CreateOrderItems())
 
   if Environment.get("SEED_DB") == "true" {
     app.migrations.add(Seed())

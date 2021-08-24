@@ -2,7 +2,7 @@
 import PackageDescription
 
 let package = Package(
-  name: "flp-graphql-api",
+  name: "graphql-api",
   platforms: [
     .macOS(.v10_15)
   ],
@@ -25,6 +25,10 @@ let package = Package(
       from: "2.3.0"
     ),
     .package(
+      name: "VaporUtils",
+      path: "/Users/jared/gertie/vapor-utils"
+    ),
+    .package(
       name: "QueuesFluentDriver",
       url: "https://github.com/m-barthelemy/vapor-queues-fluent-driver.git",
       from: "1.2.0"
@@ -39,11 +43,9 @@ let package = Package(
         .product(name: "Vapor", package: "vapor"),
         "GraphQLKit",
         "QueuesFluentDriver",
+        "VaporUtils",
       ],
       swiftSettings: [
-        // Enable better optimizations when building in Release configuration. Despite the use of
-        // the `.unsafeFlags` construct required by SwiftPM, this flag is recommended for Release
-        // builds. See <https://github.com/swift-server/guides/blob/main/docs/building.md#building-for-production> for details.
         .unsafeFlags(["-cross-module-optimization"], .when(configuration: .release))
       ]
     ),
