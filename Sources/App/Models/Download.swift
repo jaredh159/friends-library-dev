@@ -1,7 +1,7 @@
 import Fluent
 import Vapor
 
-enum EditionType: String, Codable {
+enum EditionType: String, Codable, CaseIterable {
   case updated
   case original
   case modernized
@@ -10,12 +10,12 @@ enum EditionType: String, Codable {
 final class Download: Model, Content {
   static let schema = "downloads"
 
-  enum AudioQuality: String, Codable {
+  enum AudioQuality: String, Codable, CaseIterable {
     case lq
     case hq
   }
 
-  enum Format: String, Codable {
+  enum Format: String, Codable, CaseIterable {
     case epub
     case mobi
     case webPdf
@@ -27,8 +27,8 @@ final class Download: Model, Content {
     case appEbook
   }
 
-  enum Source: String, Codable {
-    case web
+  enum Source: String, Codable, CaseIterable {
+    case website
     case podcast
     case app
   }
@@ -39,13 +39,13 @@ final class Download: Model, Content {
   @Field(key: "document_id")
   var documentId: UUID
 
-  @Field(key: "edition_type")
+  @Enum(key: "edition_type")
   var editionType: EditionType
 
-  @Field(key: "format")
+  @Enum(key: "format")
   var format: Format
 
-  @Field(key: "source")
+  @Enum(key: "source")
   var source: Source
 
   @OptionalEnum(key: "audio_quality")
@@ -53,6 +53,9 @@ final class Download: Model, Content {
 
   @OptionalField(key: "audio_part_number")
   var audioPartNumber: Int?
+
+  @Field(key: "is_mobile")
+  var isMobile: Bool
 
   @OptionalField(key: "user_agent")
   var userAgent: String?

@@ -26,7 +26,7 @@ struct CreateDownloads: Migration {
       .create()
 
     let sourceFuture = database.enum("download_source")
-      .case("web")
+      .case("website")
       .case("podcast")
       .case("app")
       .create()
@@ -55,7 +55,7 @@ struct CreateDownloads: Migration {
           .field("ip", .string)
           .field("city", .string)
           .field("region", .string)
-          .field("postalCode", .string)
+          .field("postal_code", .string)
           .field("country", .string)
           .field("latitude", .string)
           .field("longitude", .string)
