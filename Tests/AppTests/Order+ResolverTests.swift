@@ -110,4 +110,31 @@ final class OrderResolverTests: GraphQLTestCase {
       ])
     ).run(self, variables: ["input": input])
   }
+
+  func testUpdateOrders() throws {
+    let order1 = Order.createFixture(on: app.db)
+    let order2 = Order.createFixture(on: app.db)
+
+    let input: Map = .array([
+      .dictionary([
+        "id": .string(order1.id!.uuidString),
+        "printJobId": .number(5555),
+      ]),
+      .dictionary([
+        "id": .string(order2.id!.uuidString),
+        "printJobId": .number(3333),
+      ]),
+    ])
+
+    GraphQLTest(
+      """
+      mutation UpdateOrders($input: [UpdateOrderInput!]!) {
+        order: updateOrders(input: $input) {
+          printJobId
+        }
+      }
+      """,
+      expectedData: .containsAll(["5555", "3333"])
+    ).run(self, variables: ["input": input])
+  }
 }

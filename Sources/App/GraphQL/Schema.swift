@@ -144,6 +144,10 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
     Field("updateOrder", at: Resolver.updateOrder) {
       Argument("input", at: \.input)
     }
+
+    Field("updateOrders", at: Resolver.updateOrders) {
+      Argument("input", at: \.input)
+    }
   }
 
   Types(OrderItem.self)

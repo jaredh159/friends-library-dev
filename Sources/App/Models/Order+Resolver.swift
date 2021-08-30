@@ -112,4 +112,18 @@ extension Resolver {
         return order.save(on: request.db).map { order }
       }
   }
+
+  struct UpdateOrdersArgs: Codable {
+    let input: [UpdateOrderInput]
+  }
+
+  func updateOrders(
+    request: Request,
+    args: UpdateOrdersArgs
+  ) throws -> Future<[Order]> {
+    return try args.input.map { input in
+      try updateOrder(request: request, args: UpdateOrderArgs(input: input))
+    }.flatten(on: request.eventLoop)
+  }
+
 }
