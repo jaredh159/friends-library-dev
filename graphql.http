@@ -1,15 +1,19 @@
-### List Monitoring Items (union)
+### Get Order
 
 POST {{endpoint}}
 Content-Type: application/json
 X-REQUEST-TYPE: GraphQL
 
 query {
-  allDownloads {
+  order: getOrder(id: "fbf9c172-e57e-49a8-8806-85f6c923e55a") {
     id
+    items {
+      title
+    }
   }
 }
 
 
+###
 
 @endpoint = http://127.0.0.1:8080/graphql

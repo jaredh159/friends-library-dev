@@ -1,10 +1,15 @@
 import Fluent
 import Vapor
 
+enum Lang: String, Codable, CaseIterable {
+  case en
+  case es
+}
+
 final class Order: Model, Content {
   static let schema = "orders"
 
-  enum PrintJobStatus: String, Codable {
+  enum PrintJobStatus: String, Codable, CaseIterable {
     case presubmit
     case pending
     case accepted
@@ -14,7 +19,7 @@ final class Order: Model, Content {
     case bricked
   }
 
-  enum ShippingLevel: String, Codable {
+  enum ShippingLevel: String, Codable, CaseIterable {
     case mail
     case priorityMail
     case groundHd
@@ -23,14 +28,9 @@ final class Order: Model, Content {
     case express
   }
 
-  enum Source: String, Codable {
+  enum OrderSource: String, Codable, CaseIterable {
     case website
     case `internal`
-  }
-
-  enum Lang: String, Codable {
-    case en
-    case es
   }
 
   @ID(key: .id)
@@ -72,8 +72,8 @@ final class Order: Model, Content {
   @Field(key: "address_street")
   var addressStreet: String
 
-  @Field(key: "address_street2")
-  var addressStreet2: String
+  @OptionalField(key: "address_street2")
+  var addressStreet2: String?
 
   @Field(key: "address_city")
   var addressCity: String
@@ -91,7 +91,7 @@ final class Order: Model, Content {
   var lang: Lang
 
   @Enum(key: "source")
-  var source: Source
+  var source: OrderSource
 
   @Timestamp(key: "created_at", on: .create)
   var createdAt: Date?

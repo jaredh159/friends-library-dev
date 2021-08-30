@@ -8,7 +8,7 @@ extension Resolver {
     let documentId: UUID
     let editionType: EditionType
     let format: Download.Format
-    let source: Download.Source
+    let source: Download.DownloadSource
     let isMobile: Bool
     let audioQuality: Download.AudioQuality?
     let audioPartNumber: Int?

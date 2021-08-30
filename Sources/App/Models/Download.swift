@@ -27,7 +27,7 @@ final class Download: Model, Content {
     case appEbook
   }
 
-  enum Source: String, Codable, CaseIterable {
+  enum DownloadSource: String, Codable, CaseIterable {
     case website
     case podcast
     case app
@@ -46,7 +46,7 @@ final class Download: Model, Content {
   var format: Format
 
   @Enum(key: "source")
-  var source: Source
+  var source: DownloadSource
 
   @OptionalEnum(key: "audio_quality")
   var audioQuality: AudioQuality?

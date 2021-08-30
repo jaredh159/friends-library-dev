@@ -27,7 +27,7 @@
     "test:clear:isolate": "clear && printf '\\e[3J' && npm run test:isolate; echo",
     "test:watch": "watchexec --restart --watch Sources --watch Tests --exts swift npm run test:clear",
     "test:watch:isolate": "watchexec --restart --watch Sources --watch Tests --exts swift npm run test:clear:isolate",
-    "ci": "npm run lint && npm run test && npm run test:stress"
+    "ci": "npm run lint && npm run test"
   },
   "keywords": [],
   "author": "",

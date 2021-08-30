@@ -6,10 +6,78 @@ import Vapor
 let AppSchema = try! Graphiti.Schema<Resolver, Request> {
   Scalar(UUID.self)
   DateScalar(formatter: ISO8601DateFormatter())
+
   Enum(EditionType.self)
+  Enum(Lang.self)
+
   Enum(Download.Format.self)
   Enum(Download.AudioQuality.self)
-  Enum(Download.Source.self)
+  Enum(Download.DownloadSource.self)
+  Enum(Order.PrintJobStatus.self)
+  Enum(Order.ShippingLevel.self)
+  Enum(Order.OrderSource.self)
+
+  Type(Order.self) {
+    Field("id", at: \.id)
+    Field("paymentId", at: \.paymentId)
+    Field("printJobStatus", at: \.printJobStatus)
+    Field("printJobId", at: \.printJobId)
+    Field("amount", at: \.amount)
+    Field("shipping", at: \.shipping)
+    Field("taxes", at: \.taxes)
+    Field("ccFeeOffset", at: \.ccFeeOffset)
+    Field("shippingLevel", at: \.shippingLevel)
+    Field("email", at: \.email)
+    Field("addressName", at: \.addressName)
+    Field("addressStreet", at: \.addressStreet)
+    Field("addressStreet2", at: \.addressStreet2)
+    Field("addressCity", at: \.addressCity)
+    Field("addressState", at: \.addressState)
+    Field("addressZip", at: \.addressZip)
+    Field("addressCountry", at: \.addressCountry)
+    Field("lang", at: \.lang)
+    Field("source", at: \.source)
+    Field("items", with: \.$items)
+  }
+
+  Type(OrderItem.self) {
+    Field("title", at: \.title)
+    Field("documentId", at: \.documentId)
+    Field("editionType", at: \.editionType)
+    Field("quantity", at: \.quantity)
+    Field("unitPrice", at: \.unitPrice)
+    Field("order", with: \.$order)
+  }
+
+  Input(CreateOrderInput.Item.self) {
+    InputField("title", at: \.title)
+    InputField("documentId", at: \.documentId)
+    InputField("editionType", at: \.editionType)
+    InputField("quantity", at: \.quantity)
+    InputField("unitPrice", at: \.unitPrice)
+  }
+
+  Input(CreateOrderInput.self) {
+    InputField("paymentId", at: \.paymentId)
+    InputField("printJobStatus", at: \.printJobStatus)
+    InputField("printJobId", at: \.printJobId)
+    InputField("amount", at: \.amount)
+    InputField("shipping", at: \.shipping)
+    InputField("taxes", at: \.taxes)
+    InputField("ccFeeOffset", at: \.ccFeeOffset)
+    InputField("shippingLevel", at: \.shippingLevel)
+    InputField("email", at: \.email)
+    InputField("addressName", at: \.addressName)
+    InputField("addressStreet", at: \.addressStreet)
+    InputField("addressStreet2", at: \.addressStreet2)
+    InputField("addressCity", at: \.addressCity)
+    InputField("addressState", at: \.addressState)
+    InputField("addressZip", at: \.addressZip)
+    InputField("addressCountry", at: \.addressCountry)
+    InputField("lang", at: \.lang)
+    InputField("source", at: \.source)
+    InputField("items", at: \.items)
+  }
 
   Type(Download.self) {
     Field("id", at: \.id)
@@ -35,7 +103,9 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
   }
 
   Query {
-    Field("getLol", at: Resolver.getLol)
+    Field("getOrder", at: Resolver.getOrder) {
+      Argument("id", at: \.id)
+    }
   }
 
   Mutation {
@@ -60,5 +130,11 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
       Argument("latitude", at: \.latitude)
       Argument("longitude", at: \.longitude)
     }
+
+    Field("createOrder", at: Resolver.createOrder) {
+      Argument("order", at: \.order)
+    }
   }
+
+  Types(OrderItem.self)
 }
