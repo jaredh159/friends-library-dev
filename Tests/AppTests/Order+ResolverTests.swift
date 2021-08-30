@@ -40,8 +40,8 @@ final class OrderResolverTests: GraphQLTestCase {
 
     GraphQLTest(
       """
-      mutation CreateOrder($order: CreateOrderInput!) {
-        order: createOrder(order: $order) {
+      mutation CreateOrder($input: CreateOrderInput!) {
+        order: createOrder(input: $input) {
           paymentId
           printJobStatus
           shippingLevel
@@ -64,25 +64,50 @@ final class OrderResolverTests: GraphQLTestCase {
         }
       }
       """,
-      expectedData: .containsAll([
-        #""paymentId":"stripe-123""#,
-        #""printJobStatus":"presubmit""#,
-        #""shippingLevel":"mail""#,
-        #""email":"jared@netrivet.com""#,
-        #""addressName":"Jared Henderson""#,
-        #""addressStreet":"123 Magnolia Lane""#,
-        #""addressCity":"New York""#,
-        #""addressState":"NY""#,
-        #""addressZip":"90210""#,
-        #""addressCountry":"US""#,
-        #""lang":"en""#,
-        #""source":"website""#,
-        #""title":"Journal of George Fox""#,
-        #""documentId":"9050EDBA-197E-498F-9FB8-61C36ABAE59E""#,
-        #""editionType":"original""#,
-        #""quantity":1"#,
-        #""unitPrice":333"#,
+      expectedData: .containsKVPs([
+        "paymentId": "stripe-123",
+        "printJobStatus": "presubmit",
+        "shippingLevel": "mail",
+        "email": "jared@netrivet.com",
+        "addressName": "Jared Henderson",
+        "addressStreet": "123 Magnolia Lane",
+        "addressCity": "New York",
+        "addressState": "NY",
+        "addressZip": "90210",
+        "addressCountry": "US",
+        "lang": "en",
+        "source": "website",
+        "title": "Journal of George Fox",
+        "documentId": "9050EDBA-197E-498F-9FB8-61C36ABAE59E",
+        "editionType": "original",
+        "quantity": 1,
+        "unitPrice": 333,
       ])
-    ).run(self, variables: ["order": order])
+    ).run(self, variables: ["input": order])
+  }
+
+  func testUpdateOrder() throws {
+    let order = Order.createFixture(on: app.db)
+
+    let input: Map = .dictionary([
+      "id": .string(order.id!.uuidString),
+      "printJobId": .number(12345),
+      "printJobStatus": .string("accepted"),
+    ])
+
+    GraphQLTest(
+      """
+      mutation UpdateOrder($input: UpdateOrderInput!) {
+        order: updateOrder(input: $input) {
+          printJobId
+          printJobStatus
+        }
+      }
+      """,
+      expectedData: .containsKVPs([
+        "printJobId": 12345,
+        "printJobStatus": "accepted",
+      ])
+    ).run(self, variables: ["input": input])
   }
 }

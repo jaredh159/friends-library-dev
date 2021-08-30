@@ -49,6 +49,12 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
     Field("order", with: \.$order)
   }
 
+  Input(UpdateOrderInput.self) {
+    InputField("id", at: \.id)
+    InputField("printJobStatus", at: \.printJobStatus)
+    InputField("printJobId", at: \.printJobId)
+  }
+
   Input(CreateOrderInput.Item.self) {
     InputField("title", at: \.title)
     InputField("documentId", at: \.documentId)
@@ -132,7 +138,11 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
     }
 
     Field("createOrder", at: Resolver.createOrder) {
-      Argument("order", at: \.order)
+      Argument("input", at: \.input)
+    }
+
+    Field("updateOrder", at: Resolver.updateOrder) {
+      Argument("input", at: \.input)
     }
   }
 

@@ -3,6 +3,12 @@ import Foundation
 import Graphiti
 import Vapor
 
+struct UpdateOrderInput: Codable {
+  let id: UUID
+  let printJobStatus: Order.PrintJobStatus?
+  let printJobId: Int?
+}
+
 struct CreateOrderInput: Codable {
   struct Item: Codable {
     let title: String
@@ -35,7 +41,7 @@ struct CreateOrderInput: Codable {
 
 extension Resolver {
   struct CreateOrderArgs: Codable {
-    let order: CreateOrderInput
+    let input: CreateOrderInput
   }
 
   func createOrder(
@@ -43,26 +49,26 @@ extension Resolver {
     args: CreateOrderArgs
   ) throws -> Future<Order> {
     let order = Order()
-    order.paymentId = args.order.paymentId
-    order.printJobStatus = args.order.printJobStatus
-    order.printJobId = args.order.printJobId
-    order.amount = args.order.amount
-    order.shipping = args.order.shipping
-    order.taxes = args.order.taxes
-    order.ccFeeOffset = args.order.ccFeeOffset
-    order.shippingLevel = args.order.shippingLevel
-    order.email = args.order.email
-    order.addressName = args.order.addressName
-    order.addressStreet = args.order.addressStreet
-    order.addressStreet2 = args.order.addressStreet2
-    order.addressCity = args.order.addressCity
-    order.addressState = args.order.addressState
-    order.addressZip = args.order.addressZip
-    order.addressCountry = args.order.addressCountry
-    order.lang = args.order.lang
-    order.source = args.order.source
+    order.paymentId = args.input.paymentId
+    order.printJobStatus = args.input.printJobStatus
+    order.printJobId = args.input.printJobId
+    order.amount = args.input.amount
+    order.shipping = args.input.shipping
+    order.taxes = args.input.taxes
+    order.ccFeeOffset = args.input.ccFeeOffset
+    order.shippingLevel = args.input.shippingLevel
+    order.email = args.input.email
+    order.addressName = args.input.addressName
+    order.addressStreet = args.input.addressStreet
+    order.addressStreet2 = args.input.addressStreet2
+    order.addressCity = args.input.addressCity
+    order.addressState = args.input.addressState
+    order.addressZip = args.input.addressZip
+    order.addressCountry = args.input.addressCountry
+    order.lang = args.input.lang
+    order.source = args.input.source
     return order.create(on: request.db).flatMap { _ in
-      let items = args.order.items.map { item -> OrderItem in
+      let items = args.input.items.map { item -> OrderItem in
         let orderItem = OrderItem()
         orderItem.title = item.title
         orderItem.documentId = item.documentId
@@ -84,5 +90,26 @@ extension Resolver {
       .filter(\.$id == args.id)
       .first()
       .unwrap(or: Abort(.notFound))
+  }
+
+  struct UpdateOrderArgs: Codable {
+    let input: UpdateOrderInput
+  }
+
+  func updateOrder(
+    request: Request,
+    args: UpdateOrderArgs
+  ) throws -> Future<Order> {
+    Order.find(args.input.id, on: request.db)
+      .unwrap(or: Abort(.notFound))
+      .flatMap { order in
+        if let printJobId = args.input.printJobId {
+          order.printJobId = printJobId
+        }
+        if let printJobStatus = args.input.printJobStatus {
+          order.printJobStatus = printJobStatus
+        }
+        return order.save(on: request.db).map { order }
+      }
   }
 }
