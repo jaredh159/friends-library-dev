@@ -48,6 +48,7 @@ extension Resolver {
     request: Request,
     args: CreateOrderArgs
   ) throws -> Future<Order> {
+    try request.requirePermission(to: .mutateOrders)
     let order = Order()
     order.paymentId = args.input.paymentId
     order.printJobStatus = args.input.printJobStatus
@@ -85,11 +86,28 @@ extension Resolver {
     request: Request,
     args: IdentifyEntityArgs
   ) throws -> Future<Order> {
+    try request.requirePermission(to: .queryOrders)
     return Order.query(on: request.db)
       .with(\.$items)
       .filter(\.$id == args.id)
       .first()
       .unwrap(or: Abort(.notFound))
+  }
+
+  struct GetOrdersArgs: Codable {
+    let printJobStatus: Order.PrintJobStatus?
+  }
+
+  func getOrders(
+    request: Request,
+    args: GetOrdersArgs
+  ) throws -> Future<[Order]> {
+    try request.requirePermission(to: .queryOrders)
+    var query = Order.query(on: request.db)
+    if let printJobStatus = args.printJobStatus {
+      query = query.filter(\.$printJobStatus == printJobStatus)
+    }
+    return query.all()
   }
 
   struct UpdateOrderArgs: Codable {
@@ -100,7 +118,8 @@ extension Resolver {
     request: Request,
     args: UpdateOrderArgs
   ) throws -> Future<Order> {
-    Order.find(args.input.id, on: request.db)
+    try request.requirePermission(to: .mutateOrders)
+    return Order.find(args.input.id, on: request.db)
       .unwrap(or: Abort(.notFound))
       .flatMap { order in
         if let printJobId = args.input.printJobId {
@@ -121,9 +140,9 @@ extension Resolver {
     request: Request,
     args: UpdateOrdersArgs
   ) throws -> Future<[Order]> {
+    try request.requirePermission(to: .mutateOrders)
     return try args.input.map { input in
       try updateOrder(request: request, args: UpdateOrderArgs(input: input))
     }.flatten(on: request.eventLoop)
   }
-
 }

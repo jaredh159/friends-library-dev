@@ -112,6 +112,10 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
     Field("getOrder", at: Resolver.getOrder) {
       Argument("id", at: \.id)
     }
+
+    Field("getOrders", at: Resolver.getOrders) {
+      Argument("printJobStatus", at: \.printJobStatus)
+    }
   }
 
   Mutation {

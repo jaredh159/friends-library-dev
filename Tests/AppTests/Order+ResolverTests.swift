@@ -82,7 +82,8 @@ final class OrderResolverTests: GraphQLTestCase {
         "editionType": "original",
         "quantity": 1,
         "unitPrice": 333,
-      ])
+      ]),
+      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(self, variables: ["input": order])
   }
 
@@ -107,7 +108,8 @@ final class OrderResolverTests: GraphQLTestCase {
       expectedData: .containsKVPs([
         "printJobId": 12345,
         "printJobStatus": "accepted",
-      ])
+      ]),
+      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(self, variables: ["input": input])
   }
 
@@ -134,7 +136,62 @@ final class OrderResolverTests: GraphQLTestCase {
         }
       }
       """,
-      expectedData: .containsAll(["5555", "3333"])
+      expectedData: .containsAll(["5555", "3333"]),
+      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(self, variables: ["input": input])
+  }
+
+  func testGetOrderById() throws {
+    let order = Order.createFixture(on: app.db) {
+      $0.printJobId = 234432
+    }
+
+    GraphQLTest(
+      """
+      query {
+        order: getOrder(id: "\(order.id!.uuidString)") {
+          printJobId
+        }
+      }
+      """,
+      expectedData: .containsKVPs(["printJobId": 234432]),
+      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
+    ).run(self)
+  }
+
+  func testGetOrderByIdFailsWithWrongTokenScope() throws {
+    let order = Order.createFixture(on: app.db)
+    GraphQLTest(
+      """
+      query {
+        order: getOrder(id: "\(order.id!.uuidString)") {
+          printJobId
+        }
+      }
+      """,
+      expectedError: .status(.unauthorized),
+      headers: [.authorization: "Bearer \(Seeded.tokens.queryDownloads)"]  // 👋 <-- bad scope
+    ).run(self)
+  }
+
+  func testGetOrdersByPrintJobId() throws {
+    let order1 = Order.createFixture(on: app.db) {
+      $0.printJobStatus = .bricked
+    }
+    let order2 = Order.createFixture(on: app.db) {
+      $0.printJobStatus = .bricked
+    }
+
+    GraphQLTest(
+      """
+      query {
+        order: getOrders(printJobStatus: "bricked") {
+          id
+        }
+      }
+      """,
+      expectedData: .containsUUIDs([order1.id!, order2.id!]),
+      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
+    ).run(self)
   }
 }

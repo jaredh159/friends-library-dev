@@ -30,6 +30,7 @@ extension Resolver {
     request: Request,
     args: CreateDownloadArgs
   ) throws -> Future<Download> {
+    try request.requirePermission(to: .mutateDownloads)
     let download = Download()
     download.documentId = args.documentId
     download.editionType = args.editionType

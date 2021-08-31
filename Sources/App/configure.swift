@@ -20,7 +20,10 @@ public func configure(_ app: Application) throws {
 
   addMigrations(to: app)
 
-  app.register(graphQLSchema: AppSchema, withResolver: Resolver())
+  app
+    .grouped(UserAuthenticator())
+    .grouped(User.guardMiddleware())
+    .register(graphQLSchema: AppSchema, withResolver: Resolver())
 
   if app.environment == .production {
     try configureScheduledJobs(app)
@@ -37,6 +40,8 @@ private func addMigrations(to app: Application) {
   app.migrations.add(CreateDownloads())
   app.migrations.add(CreateOrders())
   app.migrations.add(CreateOrderItems())
+  app.migrations.add(CreateTokens())
+  app.migrations.add(CreateTokenScopes())
 
   if Environment.get("SEED_DB") == "true" {
     app.migrations.add(Seed())

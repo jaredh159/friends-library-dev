@@ -75,7 +75,8 @@ final class DownloadResolverTests: GraphQLTestCase {
         "country": "US",
         "latitude": "6",
         "longitude": "7",
-      ])
+      ]),
+      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(self)
   }
 }
