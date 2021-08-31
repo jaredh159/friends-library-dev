@@ -3,6 +3,7 @@ import FluentPostgresDriver
 import GraphQLKit
 import QueuesFluentDriver
 import Vapor
+import VaporUtils
 
 typealias Future = EventLoopFuture
 
@@ -51,11 +52,23 @@ private func addMigrations(to app: Application) {
 private func configureScheduledJobs(_ app: Application) throws {
   // since we're not using redis, only have one core (currently)
   // and are just doing very low frequency tasks, throttle way down
-  // app.queues.configuration.workerCount = 1
-  // app.queues.configuration.refreshInterval = .seconds(300)
+  app.queues.configuration.workerCount = 1
+  app.queues.configuration.refreshInterval = .seconds(300)
 
-  // app.queues.use(.fluent(useSoftDeletes: false))
-  // app.queues.schedule(BackupJob()).daily().at(4, 00, .am)  // 2am EST
-  // app.queues.schedule(CleanupJob()).daily().at(4, 30, .am)  // 2:30am EST
-  // try app.queues.startScheduledJobs()
+  app.queues.use(.fluent(useSoftDeletes: false))
+
+  let backupJob = BackupJob(
+    appName: "FLP",
+    dbName: Environment.DATABASE_NAME,
+    pgDumpPath: Environment.PG_DUMP_PATH,
+    sendGridApiKey: Environment.SENDGRID_API_KEY,
+    fromEmail: .init(
+      email: "notifications@graphql-api.friendslibrary.com",
+      name: "FLP GraphQL"
+    )
+  )
+
+  app.queues.schedule(backupJob).daily().at(4, 00, .am)  // 2am EST
+
+  try app.queues.startScheduledJobs()
 }
