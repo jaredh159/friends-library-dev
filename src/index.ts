@@ -1,3 +1,9 @@
+import dotenv from 'dotenv';
+
+function load(path: string): void {
+  dotenv.config({ path });
+}
+
 function getEnv<T extends string>(required: boolean, ...keys: T[]): { [k in T]: string } {
   const obj = {} as { [k in T]: string };
   keys.forEach((key) => {
@@ -52,4 +58,5 @@ export default {
   truthy,
   var: variable,
   requireVar,
+  load,
 };
