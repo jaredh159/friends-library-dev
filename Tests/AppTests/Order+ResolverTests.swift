@@ -174,7 +174,7 @@ final class OrderResolverTests: GraphQLTestCase {
     ).run(self)
   }
 
-  func testGetOrdersByPrintJobId() throws {
+  func testGetOrdersByPrintJobStatus() throws {
     let order1 = Order.createFixture(on: app.db) {
       $0.printJobStatus = .bricked
     }
@@ -185,7 +185,7 @@ final class OrderResolverTests: GraphQLTestCase {
     GraphQLTest(
       """
       query {
-        order: getOrders(printJobStatus: "bricked") {
+        orders: getOrders(printJobStatus: "bricked") {
           id
         }
       }

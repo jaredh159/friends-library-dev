@@ -23,7 +23,6 @@ public func configure(_ app: Application) throws {
 
   app
     .grouped(UserAuthenticator())
-    .grouped(User.guardMiddleware())
     .register(graphQLSchema: AppSchema, withResolver: Resolver())
 
   if app.environment == .production {

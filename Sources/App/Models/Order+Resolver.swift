@@ -18,6 +18,7 @@ struct CreateOrderInput: Codable {
     let unitPrice: Int
   }
 
+  let id: UUID?
   let paymentId: String
   let printJobStatus: Order.PrintJobStatus
   let printJobId: Int?
@@ -50,6 +51,9 @@ extension Resolver {
   ) throws -> Future<Order> {
     try request.requirePermission(to: .mutateOrders)
     let order = Order()
+    if let id = args.input.id {
+      order.id = id
+    }
     order.paymentId = args.input.paymentId
     order.printJobStatus = args.input.printJobStatus
     order.printJobId = args.input.printJobId

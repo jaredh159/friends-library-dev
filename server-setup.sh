@@ -24,7 +24,7 @@ sudo apt install -y postgresql postgresql-contrib
 sudo -i -u postgres
 createuser jared
 
-# open psql shell for a hot second and then
+# open psql shell for a hot second and then 🔁
 psql
 > ALTER USER jared WITH SUPERUSER;
 > \q;
@@ -34,10 +34,12 @@ createdb flp
 
 # then, INSIDE of the psql terminal i had to:
 psql -d flp
-GRANT ALL PRIVILEGES ON DATABASE flp TO jared; # maybe run this as postgres user?
-\password jared # then type in password twice
+> GRANT ALL PRIVILEGES ON DATABASE flp TO jared; # maybe run this as postgres user?
+> \password jared # then type in password twice
 
 # my connection string was then (in .env) `DATABASE_URL=postgresql://<user>:<pass>@localhost/<dbname>`
+
+# Then go back to 🔁 above, and create `staging` database
 
 # generate an ssh key to access github
 su jared
@@ -76,12 +78,30 @@ server {
       proxy_read_timeout 10s;
    }
 }
+
+server {
+  server_name api-graphql--staging.friendslibrary.com;
+  location / {
+      proxy_pass http://127.0.0.1:8090;
+      proxy_http_version 1.1;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection 'upgrade';
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_pass_header Server;
+      proxy_cache_bypass $http_upgrade;
+      proxy_connect_timeout 3s;
+      proxy_read_timeout 10s;
+   }
+}
 ```
 
 # then install and run let's encrypt, letting it finish the config
 sudo apt install -y certbot python3-certbot-nginx
 # choose 2 for https redirect
 sudo certbot --nginx -d api-graphql.friendslibrary.com
+sudo certbot --nginx -d api-graphql--staging.friendslibrary.com
 sudo systemctl reload nginx
 
 # customize

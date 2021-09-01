@@ -17,6 +17,28 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
   Enum(Order.ShippingLevel.self)
   Enum(Order.OrderSource.self)
 
+  Input(CreateDownloadInput.self) {
+    InputField("documentId", at: \.documentId)
+    InputField("editionType", at: \.editionType)
+    InputField("format", at: \.format)
+    InputField("source", at: \.source)
+    InputField("isMobile", at: \.isMobile)
+    InputField("audioQuality", at: \.audioQuality)
+    InputField("audioPartNumber", at: \.audioPartNumber)
+    InputField("userAgent", at: \.userAgent)
+    InputField("os", at: \.os)
+    InputField("browser", at: \.browser)
+    InputField("platform", at: \.platform)
+    InputField("referrer", at: \.referrer)
+    InputField("ip", at: \.ip)
+    InputField("city", at: \.city)
+    InputField("region", at: \.region)
+    InputField("postalCode", at: \.postalCode)
+    InputField("country", at: \.country)
+    InputField("latitude", at: \.latitude)
+    InputField("longitude", at: \.longitude)
+  }
+
   Type(Order.self) {
     Field("id", at: \.id)
     Field("paymentId", at: \.paymentId)
@@ -37,6 +59,8 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
     Field("addressCountry", at: \.addressCountry)
     Field("lang", at: \.lang)
     Field("source", at: \.source)
+    Field("createdAt", at: \.createdAt)
+    Field("updatedAt", at: \.updatedAt)
     Field("items", with: \.$items)
   }
 
@@ -64,6 +88,7 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
   }
 
   Input(CreateOrderInput.self) {
+    InputField("id", at: \.id)
     InputField("paymentId", at: \.paymentId)
     InputField("printJobStatus", at: \.printJobStatus)
     InputField("printJobId", at: \.printJobId)
@@ -120,25 +145,7 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
 
   Mutation {
     Field("createDownload", at: Resolver.createDownload) {
-      Argument("documentId", at: \.documentId)
-      Argument("editionType", at: \.editionType)
-      Argument("format", at: \.format)
-      Argument("source", at: \.source)
-      Argument("isMobile", at: \.isMobile)
-      Argument("audioQuality", at: \.audioQuality)
-      Argument("audioPartNumber", at: \.audioPartNumber)
-      Argument("userAgent", at: \.userAgent)
-      Argument("os", at: \.os)
-      Argument("browser", at: \.browser)
-      Argument("platform", at: \.platform)
-      Argument("referrer", at: \.referrer)
-      Argument("ip", at: \.ip)
-      Argument("city", at: \.city)
-      Argument("region", at: \.region)
-      Argument("postalCode", at: \.postalCode)
-      Argument("country", at: \.country)
-      Argument("latitude", at: \.latitude)
-      Argument("longitude", at: \.longitude)
+      Argument("input", at: \.input)
     }
 
     Field("createOrder", at: Resolver.createOrder) {
