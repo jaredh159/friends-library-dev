@@ -7,10 +7,8 @@
   "scripts": {
     "start": "watchexec --restart --watch Sources --exts swift --signal SIGINT swift run",
     "debug": "export LOG_LEVEL=trace; npm run start",
-    "prod:up": "pm2 start ./serve.sh --name flp-graphql",
-    "prod:down": "pm2 stop flp-graphql && pm2 delete flp-graphql;",
-    "prod:restart": "npm run prod:down; npm run prod:up",
-    "prod:logs": "pm2 logs flp-graphql",
+    "deploy:staging": "fldev tsnode deploy.ts",
+    "deploy:production": "fldev tsnode deploy.ts --production",
     "db:shell": "psql flp",
     "migrate:up": "vapor run migrate --yes",
     "migrate:down": "vapor run migrate --revert --yes",
@@ -33,6 +31,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "apollo": "^2.33.4"
+    "@friends-library/dev": "^4.4.1",
+    "@friends-library/env": "^1.4.0",
+    "apollo": "^2.33.4",
+    "x-chalk": "^1.0.1",
+    "x-exec": "^1.2.0"
   }
 }

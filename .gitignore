@@ -8,4 +8,5 @@ DerivedData/
 db.sqlite
 .swiftpm
 *.swp
-.env
+.env*
+serve.sh

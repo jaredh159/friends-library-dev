@@ -24,7 +24,7 @@ sudo apt install -y postgresql postgresql-contrib
 sudo -i -u postgres
 createuser jared
 
-# open psql shell for a hot second and then 🔁
+# open psql shell for a hot second and then
 psql
 > ALTER USER jared WITH SUPERUSER;
 > \q;
@@ -34,12 +34,15 @@ createdb flp
 
 # then, INSIDE of the psql terminal i had to:
 psql -d flp
-> GRANT ALL PRIVILEGES ON DATABASE flp TO jared; # maybe run this as postgres user?
+> GRANT ALL PRIVILEGES ON DATABASE flp TO jared;
 > \password jared # then type in password twice
 
 # my connection string was then (in .env) `DATABASE_URL=postgresql://<user>:<pass>@localhost/<dbname>`
 
-# Then go back to 🔁 above, and create `staging` database
+# create `staging` database
+createdb staging
+psql -d flp
+> GRANT ALL PRIVILEGES ON DATABASE staging TO jared;
 
 # generate an ssh key to access github
 su jared
@@ -104,7 +107,34 @@ sudo certbot --nginx -d api-graphql.friendslibrary.com
 sudo certbot --nginx -d api-graphql--staging.friendslibrary.com
 sudo systemctl reload nginx
 
+# install swift
+# get correct link from  https://swift.org/download/#releases
+wget https://swift.org/builds/swift-5.4.2-release/ubuntu2004/swift-5.4.2-RELEASE/swift-5.4.2-RELEASE-ubuntu20.04.tar.gz
+tar xzf swift-5.4.2-RELEASE-ubuntu20.04.tar.gz
+sudo mkdir /swift
+sudo mv swift-5.4.2-RELEASE-ubuntu20.04 /swift/5.4.2
+sudo ln -s /swift/5.4.2/usr/bin/swift /usr/bin/swift
+# check install
+swift --version
+rm swift-5.4.2-RELEASE-ubuntu20.04.tar.gz
+# install swift deps: (from swift.org/downloads)
+sudo apt-get install -y binutils git gnupg2 libc6-dev libcurl4 libedit2 libgcc-9-dev libpython2.7 libsqlite3-0 libstdc++-9-dev libxml2 libz3-dev pkg-config tzdata zlib1g-dev
+
+
+# install vapor deps 
+sudo apt-get install -y make openssl libssl-dev libsqlite3-dev
+# install vapor (Optional, i had trouble with `make install`)
+cd ~
+git clone https://github.com/vapor/toolbox.git vapor-toolbox
+cd vapor-toolbox
+make install
+
+
+
 # customize
+sudo apt install tree
+sudo apt-get install ripgrep
+echo "alias grep=rg" >> ~/.bashrc
 echo "alias run='npm run \"\$@\"'" >> ~/.bashrc
 
 vim ~/.gitconfig
