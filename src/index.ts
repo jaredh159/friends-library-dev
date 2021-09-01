@@ -51,15 +51,14 @@ export const DOWNLOAD_FORMATS = [
   `speech`,
   `podcast`,
   `app-ebook`,
-  /*
-   * @TODO - when I rework the database layer, which logs downloads, I'd like
-   * to get rid of the concept of an `app-mp3` download, and instead introduce
-   * a `source` column ('web' | 'podcase' | 'app') to hold that contextual
-   * information, instead of overloading the concept of a "DownloadFormat"
-   */
-  `app-mp3`,
 ] as const;
 export type DownloadFormat = typeof DOWNLOAD_FORMATS[number];
+
+export const ORDER_SOURCES = [`internal`, `website`] as const;
+export type OrderSource = typeof ORDER_SOURCES[number];
+
+export const DOWNLOAD_SOURCES = [`app`, `podcast`, `website`] as const;
+export type DownloadSource = typeof DOWNLOAD_SOURCES[number];
 
 export const PRINT_JOB_STATUSES = [
   `presubmit`,
