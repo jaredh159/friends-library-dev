@@ -1,6 +1,6 @@
 {
   "name": "@friends-library/db",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "db stuff",
   "main": "./dist/index.js",
   "browser": false,
