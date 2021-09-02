@@ -30,7 +30,7 @@ export default class Client {
     });
 
     this.apollo = new ApolloClient({
-      link: from([httpLink, authLink]),
+      link: from([authLink, httpLink]),
       cache: new InMemoryCache(),
     });
   }
