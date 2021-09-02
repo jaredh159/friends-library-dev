@@ -69,7 +69,9 @@ exec(`ssh ${HOST} "pm2 delete ${PM2_PREV_NAME}"`);
 // helper functions
 
 function withCommandOutput(cmd: string): void {
+  console.log(``);
   spawnSync(`ssh`, [HOST, `cd ${DEPLOY_DIR} && ${cmd}`], { stdio: `inherit` });
+  console.log(``);
 }
 
 function inDeployDir(cmd: string): void {
