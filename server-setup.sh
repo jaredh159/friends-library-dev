@@ -41,8 +41,13 @@ psql -d flp
 
 # create `staging` database
 createdb staging
-psql -d flp
+psql -d staging
 > GRANT ALL PRIVILEGES ON DATABASE staging TO jared;
+
+# create `staging_test` database
+createdb staging_test
+psql -d staging_test
+> GRANT ALL PRIVILEGES ON DATABASE staging_test TO jared;
 
 # generate an ssh key to access github
 su jared
@@ -129,7 +134,13 @@ git clone https://github.com/vapor/toolbox.git vapor-toolbox
 cd vapor-toolbox
 make install
 
-
+# install `xcbeautify` for running tests
+cd ~
+git clone https://github.com/thii/xcbeautify.git
+cd xcbeautify
+make install
+sudo mv /home/jared/xcbeautify/.build/x86_64-unknown-linux-gnu/release/xcbeautify /usr/local/bin/
+rm -rf ~/xcbeautify
 
 # customize
 sudo apt install tree

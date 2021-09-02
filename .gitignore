@@ -10,3 +10,4 @@ db.sqlite
 *.swp
 .env*
 serve.sh
+admin-queries.sql

@@ -32,6 +32,7 @@ log(c`{green git:} {gray ensuring repo exists at} {magenta ${DEPLOY_DIR}}`);
 inDeployDir(`test -d .git || git clone ${REPO_URL} .`);
 
 log(c`{green git:} {gray updating repo at} {magenta ${DEPLOY_DIR}}`);
+inDeployDir(`git reset --hard HEAD`);
 inDeployDir(`git pull origin master`);
 
 log(c`{green env:} {gray copying .env file to} {magenta ${DEPLOY_DIR}}`);
@@ -42,6 +43,11 @@ withCommandOutput(BUILD_CMD);
 
 log(c`{green vapor:} {gray running migrations}`);
 withCommandOutput(`${VAPOR_RUN} migrate --yes`);
+
+if (ENV === `staging`) {
+  log(c`{green test:} {gray running tests}`);
+  withCommandOutput(`npm run test`);
+}
 
 log(c`{green pm2:} {gray setting serve script for pm2} {magenta ${SERVE_CMD}}`);
 inDeployDir(`echo \\"#!/usr/bin/bash\\" >> ./serve.sh`);
