@@ -78,7 +78,7 @@ export default class Orders {
   /**
    * @deprecated use `updateAll()` instead
    */
-  public async savAll(input: UpdateOrderInput[]): Promise<Result<Array<{ id: Uuid }>>> {
+  public async saveAll(input: UpdateOrderInput[]): Promise<Result<Array<{ id: Uuid }>>> {
     return this.updateAll(input);
   }
 
