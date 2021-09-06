@@ -4,6 +4,8 @@
     ".swiftpm/": true,
     "**/*.swp": true,
     "node_modules/": true,
-    ".build/": true
+    ".build/": true,
+    "sync.sql": true,
+    "sync.sql.gz": true
   }
 }
