@@ -16,6 +16,11 @@ exit
 # don't ask `jared` for sudo password
 echo "jared ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
+# other programs
+sudo apt install -y unzip
+sudo apt install -y tree
+sudo apt install -y ripgrep
+
 # install postgresql
 sudo apt update
 sudo apt install -y postgresql postgresql-contrib
@@ -142,9 +147,9 @@ make install
 sudo mv /home/jared/xcbeautify/.build/x86_64-unknown-linux-gnu/release/xcbeautify /usr/local/bin/
 rm -rf ~/xcbeautify
 
+# if you want cron-based postgres backups uploaded to S3, see ./server-setup-aws.sh
+
 # customize
-sudo apt install tree
-sudo apt-get install ripgrep
 echo "alias grep=rg" >> ~/.bashrc
 echo "alias run='npm run \"\$@\"'" >> ~/.bashrc
 

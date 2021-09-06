@@ -27,7 +27,7 @@ let package = Package(
     .package(
       name: "VaporUtils",
       url: "https://github.com/jaredh159/vapor-utils.git",
-      from: "1.0.0"
+      from: "2.0.0"
     ),
     .package(
       name: "QueuesFluentDriver",
