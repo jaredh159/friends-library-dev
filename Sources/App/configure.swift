@@ -60,7 +60,6 @@ private func configureScheduledJobs(_ app: Application) throws {
     appName: "FLP",
     dbName: Environment.DATABASE_NAME,
     pgDumpPath: Environment.PG_DUMP_PATH,
-    gzipPath: Environment.GZIP_PATH,
     sendGridApiKey: Environment.SENDGRID_API_KEY,
     fromEmail: .init(
       email: "notifications@graphql-api.friendslibrary.com",
