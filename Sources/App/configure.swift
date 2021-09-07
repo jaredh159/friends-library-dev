@@ -68,8 +68,7 @@ private func configureScheduledJobs(_ app: Application) throws {
   )
 
   // midnight EST
-  // app.queues.schedule(backupJob).daily().at(4, 00, .am)
-  app.queues.schedule(backupJob).hourly().at(10)  // temp, ensure things are working
+  app.queues.schedule(backupJob).daily().at(4, 00, .am)
 
   try app.queues.startScheduledJobs()
 }
