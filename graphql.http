@@ -5,11 +5,10 @@ Content-Type: application/json
 X-REQUEST-TYPE: GraphQL
 
 query {
-  order: getOrder(id: "fbf9c172-e57e-49a8-8806-85f6c923e55a") {
-    id
-    items {
-      title
-    }
+  counts: getModelsCounts {
+    downloads
+    orders
+    orderItems
   }
 }
 

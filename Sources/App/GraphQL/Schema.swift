@@ -39,6 +39,12 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
     InputField("longitude", at: \.longitude)
   }
 
+  Type(ModelsCounts.self) {
+    Field("downloads", at: \.downloads)
+    Field("orders", at: \.orders)
+    Field("orderItems", at: \.orderItems)
+  }
+
   Type(Order.self) {
     Field("id", at: \.id)
     Field("paymentId", at: \.paymentId)
@@ -141,6 +147,8 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
     Field("getOrders", at: Resolver.getOrders) {
       Argument("printJobStatus", at: \.printJobStatus)
     }
+
+    Field("getModelsCounts", at: Resolver.getModelsCounts)
   }
 
   Mutation {
