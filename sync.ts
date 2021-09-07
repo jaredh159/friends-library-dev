@@ -1,5 +1,5 @@
-import { gray, green, magenta } from 'x-chalk';
 import exec from 'x-exec';
+import { gray, green, magenta } from 'x-chalk';
 
 magenta(`\nStarting db sync process\n`);
 exec.exit(`rm -f ./sync.sql.gz ./sync.sql`);

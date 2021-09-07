@@ -50,7 +50,7 @@ if (ENV === `staging`) {
 }
 
 log(c`{green pm2:} {gray setting serve script for pm2} {magenta ${SERVE_CMD}}`);
-inDeployDir(`echo \\"#!/usr/bin/bash\\" >> ./serve.sh`);
+inDeployDir(`echo \\"#!/usr/bin/bash\\" > ./serve.sh`);
 inDeployDir(`echo \\"${SERVE_CMD}\\" >> ./serve.sh`);
 
 log(c`{green pm2:} {gray starting pm2 app} {magenta ${PM2_NEXT_NAME}}`);
