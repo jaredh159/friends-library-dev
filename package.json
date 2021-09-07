@@ -10,6 +10,7 @@
     "deploy:staging": "fldev tsnode deploy.ts",
     "deploy:production": "fldev tsnode deploy.ts --production",
     "db:shell": "psql flp",
+    "db:sync": "fldev tsnode sync.ts",
     "migrate:up": "vapor run migrate --yes",
     "migrate:down": "vapor run migrate --revert --yes",
     "migrate:reset": "npm run migrate:down && npm run migrate:up",

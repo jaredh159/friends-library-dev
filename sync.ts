@@ -1,5 +1,10 @@
 import exec from 'x-exec';
-import { gray, green, magenta } from 'x-chalk';
+import { gray, green, magenta, red } from 'x-chalk';
+
+if (!exec.success(`ls /Users/$USER`)) {
+  red(`ERROR! db:sync may only be run from local dev machine!\n`);
+  process.exit(1);
+}
 
 magenta(`\nStarting db sync process\n`);
 exec.exit(`rm -f ./sync.sql.gz ./sync.sql`);
