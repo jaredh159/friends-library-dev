@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import cx from 'classnames';
+import ErrorMessage from './ErrorMessage';
+import * as api from '../lib/api';
 
 interface Props {
   setToken(token: string): unknown;
@@ -7,7 +9,9 @@ interface Props {
 
 const SignIn: React.FC<Props> = ({ setToken }) => {
   const [input, setInput] = useState(``);
-  const validInput = input.length === 36;
+  const [state, setState] = useState<'waiting' | 'authorizing'>(`waiting`);
+  const [error, setError] = useState<string | null>(null);
+  const inputLengthValid = input.length === 36;
   return (
     <div className="min-h-screen bg-white flex">
       <div className="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20">
@@ -15,10 +19,19 @@ const SignIn: React.FC<Props> = ({ setToken }) => {
           <div className="mt-8">
             <div className="mt-6">
               <form
-                onSubmit={(event) => {
+                onSubmit={async (event) => {
                   event.preventDefault();
-                  if (validInput) {
+                  if (inputLengthValid && input.match(MATCH_UUID)) {
+                    setState(`authorizing`);
+                    const err = await api.validateToken(input);
+                    setState(`waiting`);
+                    if (err) {
+                      setError(err);
+                      return;
+                    }
                     setToken(input);
+                  } else {
+                    setError(`Invalid token`);
                   }
                 }}
                 className="space-y-6"
@@ -40,18 +53,20 @@ const SignIn: React.FC<Props> = ({ setToken }) => {
                       onChange={(e) => setInput(e.target.value)}
                       className="font-mono appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-200 focus:outline-none focus:ring-flprimary-500 focus:border-flprimary-500 sm:text-md"
                     />
+                    {error && <ErrorMessage className="mt-2">{error}</ErrorMessage>}
                   </div>
                 </div>
                 <div>
                   <button
                     type="submit"
-                    disabled={!validInput}
+                    disabled={!inputLengthValid || state === `authorizing`}
                     className={cx(
-                      !validInput && `opacity-75 cursor-not-allowed`,
+                      (!inputLengthValid || state === `authorizing`) &&
+                        `opacity-50 cursor-not-allowed`,
                       `font-sans bg-flprimary antialiased w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-md text-white hover:bg-flprimary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-flprimary-500`,
                     )}
                   >
-                    Authorize
+                    {state === `waiting` ? `Authorize` : `Authorizing...`}
                   </button>
                 </div>
               </form>
@@ -74,3 +89,6 @@ const SignIn: React.FC<Props> = ({ setToken }) => {
 };
 
 export default SignIn;
+
+const MATCH_UUID =
+  /^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i;

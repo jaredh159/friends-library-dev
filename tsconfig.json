@@ -1,6 +1,7 @@
 {
   "include": ["src", "types"],
   "compilerOptions": {
+    "isolatedModules": true,
     "baseUrl": "./",
     "module": "ESNext",
     "moduleResolution": "node",

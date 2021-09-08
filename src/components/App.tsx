@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import CreateOrder from './CreateOrder';
 import SignIn from './SignIn';
 
 const App: React.FC = () => {
@@ -14,7 +15,7 @@ const App: React.FC = () => {
     );
   }
 
-  return <h1>TODO</h1>;
+  return <CreateOrder />;
 };
 
 export default App;
