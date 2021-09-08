@@ -8,6 +8,8 @@ import VaporUtils
 typealias Future = EventLoopFuture
 
 public func configure(_ app: Application) throws {
+  app.middleware.use(corsMiddleware(app), at: .beginning)
+
   let dbPrefix = app.environment == .testing ? "TEST_" : ""
   app.databases.use(
     .postgres(
@@ -71,4 +73,29 @@ private func configureScheduledJobs(_ app: Application) throws {
   app.queues.schedule(backupJob).daily().at(4, 00, .am)
 
   try app.queues.startScheduledJobs()
+}
+
+private func corsMiddleware(_ app: Application) -> CORSMiddleware {
+  let corsConfiguration = CORSMiddleware.Configuration(
+    allowedOrigin: app.environment == .production
+      ? .custom("https://orders.friendslibrary.com") : .all,
+    allowedMethods: [.GET, .POST, .PUT, .OPTIONS, .DELETE, .PATCH],
+    allowedHeaders: [
+      .accept,
+      .authorization,
+      .contentType,
+      .origin,
+      .xRequestedWith,
+      .userAgent,
+      .accessControlAllowOrigin,
+      .referer,
+      .xAuthorizationType,
+    ]
+  )
+  return CORSMiddleware(configuration: corsConfiguration)
+}
+
+extension HTTPHeaders.Name {
+  public static let xAuthorizationType = HTTPHeaders.Name("X-Authorization-Type")
+  public static let wildcard = HTTPHeaders.Name("*")
 }
