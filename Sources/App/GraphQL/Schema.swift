@@ -16,6 +16,7 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
   Enum(Order.PrintJobStatus.self)
   Enum(Order.ShippingLevel.self)
   Enum(Order.OrderSource.self)
+  Enum(Scope.self)
 
   Input(CreateDownloadInput.self) {
     InputField("documentId", at: \.documentId)
@@ -37,6 +38,21 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
     InputField("country", at: \.country)
     InputField("latitude", at: \.latitude)
     InputField("longitude", at: \.longitude)
+  }
+
+  Type(TokenScope.self) {
+    Field("id", at: \.id)
+    Field("scope", at: \.scope)
+    Field("createdAt", at: \.createdAt)
+    Field("token", with: \.$token)
+  }
+
+  Type(Token.self) {
+    Field("id", at: \.id)
+    Field("value", at: \.value)
+    Field("description", at: \.description)
+    Field("createdAt", at: \.createdAt)
+    Field("scopes", with: \.$scopes)
   }
 
   Type(ModelsCounts.self) {
@@ -148,6 +164,10 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
       Argument("printJobStatus", at: \.printJobStatus)
     }
 
+    Field("getTokenByValue", at: Resolver.getTokenByValue) {
+      Argument("value", at: \.value)
+    }
+
     Field("getModelsCounts", at: Resolver.getModelsCounts)
   }
 
@@ -169,5 +189,5 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
     }
   }
 
-  Types(OrderItem.self)
+  Types(OrderItem.self, TokenScope.self)
 }
