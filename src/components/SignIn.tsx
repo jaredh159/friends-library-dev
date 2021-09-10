@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import cx from 'classnames';
-import ErrorMessage from './ErrorMessage';
+import InfoMessage from './InfoMessage';
 import * as api from '../lib/api';
 
 interface Props {
@@ -53,7 +53,11 @@ const SignIn: React.FC<Props> = ({ setToken }) => {
                       onChange={(e) => setInput(e.target.value)}
                       className="font-mono appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-200 focus:outline-none focus:ring-flprimary-500 focus:border-flprimary-500 sm:text-md"
                     />
-                    {error && <ErrorMessage className="mt-2">{error}</ErrorMessage>}
+                    {error && (
+                      <InfoMessage type="error" className="mt-2">
+                        {error}
+                      </InfoMessage>
+                    )}
                   </div>
                 </div>
                 <div>
