@@ -56,6 +56,8 @@ const SelectBook: React.FC<Props> = ({ editions, onCancel, onSelect }) => {
           <div key={edition.id} className="bg-[#efefef] rounded-md mb-3 py-1.5 flex pr-2">
             <img
               className="h-[161px] w-auto"
+              width="110"
+              height="161"
               alt={edition.document.trimmedUtf8ShortTitle}
               src={edition.image.large}
             />
