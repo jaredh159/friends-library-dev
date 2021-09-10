@@ -34,7 +34,7 @@ const CreateOrder: React.FC = () => {
   const [checkingAddress, setCheckingAddress] = useState(false);
   const [submittingOrder, setSubmittingOrder] = useState(false);
   const [submitResult, setSubmitResult] = useState<Result<string> | null>(null);
-  const [email, setEmail] = useState(`jared@netrivet.com`);
+  const [email, setEmail] = useState(``);
   const [address, setAddress] = useState<OrderAddress>(emptyAddress());
 
   useEffect(() => {
