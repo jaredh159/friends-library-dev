@@ -149,6 +149,9 @@ rm -rf ~/xcbeautify
 
 # if you want cron-based postgres backups uploaded to S3, see ./server-setup-aws.sh
 
+# set timezone to EST for scheduled jobs, etc.
+sudo timedatectl set-timezone America/New_York
+
 # customize
 echo "alias grep=rg" >> ~/.bashrc
 echo "alias run='npm run \"\$@\"'" >> ~/.bashrc
