@@ -8,7 +8,31 @@ export function t(strings: TemplateStringsArray, ...vars: (string | number)[]): 
   return string.replace(`%s`, String(vars[0]));
 }
 
+export function tOpt(
+  strings: TemplateStringsArray,
+  ...vars: (string | number)[]
+): string {
+  const string = translateOptional(strings.join(`%s`));
+  return string.replace(`%s`, String(vars[0]));
+}
+
 export function translate(str: string): string {
+  const translation = getTranslation(str);
+  if (translation === null) {
+    throw new Error(`missing translation for string: ${str}`);
+  }
+  return translation;
+}
+
+export function translateOptional(str: string): string {
+  return getTranslation(str) ?? str;
+}
+
+export function setLocale(set: Lang): void {
+  locale = set;
+}
+
+function getTranslation(str: string): string | null {
   if (!locale) {
     locale = localeFromEnv();
   }
@@ -18,14 +42,10 @@ export function translate(str: string): string {
     if (typeof translated === `string`) {
       return translated;
     } else {
-      throw new Error(`Missing translation for string: ${str}`);
+      return null;
     }
   }
   return str;
-}
-
-export function setLocale(set: Lang): void {
-  locale = set;
 }
 
 function localeFromEnv(): Lang {
