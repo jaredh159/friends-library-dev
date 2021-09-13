@@ -250,6 +250,10 @@ const strings: { [k: string]: string } = {
   Aberdeenshire: `Aberdeenshire`,
   Wakefield: `Wakefield`,
   Whitehaven: `Whitehaven`,
+  Providence: `Providence`,
+  'Rhode Island': `Rhode Island`,
+  Monyash: `Monyash`,
+  Sunderland: `Sunderland`,
 };
 
 export default strings;
