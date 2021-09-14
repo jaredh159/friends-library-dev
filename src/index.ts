@@ -1,1 +1,1 @@
-export { t, translate, setLocale } from './translate';
+export { t, tOpt, translateOptional, translate, setLocale } from './translate';
