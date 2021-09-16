@@ -44,11 +44,11 @@ export default css`
     height: var(--half-title-page-height);
   }
 
-  blockquote .paragraph {
+  blockquote > p {
     font-size: 0.98rem;
   }
 
-  blockquote .paragraph + .paragraph {
+  .chapter blockquote > p + p {
     margin-top: 0.4em;
   }
 

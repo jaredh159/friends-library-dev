@@ -45,7 +45,7 @@ export default css`
     margin-top: 0.85rem;
   }
 
-  blockquote .paragraph + .paragraph {
+  .chapter blockquote > p + p {
     margin-top: 0.7rem;
   }
 
@@ -57,10 +57,6 @@ export default css`
 
   .toc p {
     font-size: 0.95rem;
-  }
-
-  blockquote .paragraph p {
-    font-size: 0.8rem;
   }
 
   .footnote {
