@@ -113,6 +113,7 @@ export const DocBlock_ = fullscreen(
       title="The Journal and Writings of Ambrose Rigge"
       htmlTitle="The Journal and Writings of Ambrose Rigge"
       htmlShortTitle="The Journal and Writings of Ambrose Rigge"
+      utf8ShortTitle="Journal and Writings of Ambrose Rigge"
       author="Ambrose Rigge"
       size="s"
       pages={[222]}
