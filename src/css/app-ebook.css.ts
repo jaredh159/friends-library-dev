@@ -252,4 +252,99 @@ export default css`
   #fn-content-inner > * {
     text-align: left;
   }
+
+  /* breakpoint "ipad" in native app */
+  @media (min-width: 768px) {
+    html.font-size--1 {
+      padding: 9em;
+    }
+
+    html.font-size--2 {
+      padding: 7em;
+    }
+
+    html.font-size--3 {
+      padding: 5.5em;
+    }
+
+    html.font-size--4 {
+      padding: 4.5em;
+    }
+
+    html.font-size--5 {
+      padding: 4em;
+    }
+
+    html.font-size--6 {
+      padding: 3.5em;
+    }
+
+    html.font-size--7 {
+      padding: 3.25em;
+    }
+
+    html.font-size--8 {
+      padding: 2.25em;
+    }
+
+    html.font-size--9 {
+      padding: 2.125em;
+    }
+
+    html.font-size--10 {
+      padding: 1.75em;
+    }
+
+    .paragraph {
+      line-height: 165%;
+    }
+  }
+
+  /* breakpoint "ipad-xl" in native app */
+  @media (min-width: 1024px) {
+    html.font-size--1 {
+      padding: 25em;
+    }
+
+    html.font-size--2 {
+      padding: 19em;
+    }
+
+    html.font-size--3 {
+      padding: 15em;
+    }
+
+    html.font-size--4 {
+      padding: 13em;
+    }
+
+    html.font-size--5 {
+      padding: 12em;
+    }
+
+    html.font-size--6 {
+      padding: 10em;
+    }
+
+    html.font-size--7 {
+      padding: 7em;
+    }
+
+    html.font-size--8 {
+      padding: 6.5em;
+    }
+
+    html.font-size--9 {
+      padding: 5em;
+    }
+
+    html.font-size--10 {
+      padding: 4em;
+    }
+
+    .paragraph {
+      line-height: 165%;
+      margin-bottom: 0.75em;
+    }
+  }
 `;
