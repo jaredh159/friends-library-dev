@@ -33,6 +33,9 @@ export const BLUE_600_RGB: Rgb = BLUE_RGB;
 export const BLUE_400_RGB: Rgb = [152, 200, 220];
 
 export const GRAY_900_RGB: Rgb = [44, 42, 41];
+export const GRAY_800_RGB: Rgb = [70, 70, 70];
+export const GRAY_700_RGB: Rgb = [95, 95, 95];
+export const GRAY_600_RGB: Rgb = [120, 120, 120];
 export const GRAY_500_RGB: Rgb = [146, 146, 146];
 export const GRAY_400_RGB: Rgb = [218, 218, 218];
 export const GRAY_300_RGB: Rgb = [233, 233, 233];
