@@ -9,7 +9,7 @@ export default css`
 
   html {
     font-size: 20px;
-    padding: 1.6em;
+    padding: 1em;
   }
 
   html.font-size--1 {
@@ -30,32 +30,31 @@ export default css`
 
   html.font-size--5 {
     font-size: 20px;
-    padding: 1.5em;
   }
 
   html.font-size--6 {
     font-size: 22px;
-    padding: 1.5em;
+    padding: 0.8em;
   }
 
   html.font-size--7 {
     font-size: 24px;
-    padding: 1.4em;
+    padding: 0.7em;
   }
 
   html.font-size--8 {
     font-size: 26px;
-    padding: 1.3em;
+    padding: 0.6em;
   }
 
   html.font-size--9 {
     font-size: 28px;
-    padding: 1.1em;
+    padding: 0.5em;
   }
 
   html.font-size--10 {
     font-size: 30px;
-    padding: 1em;
+    padding: 0.4em;
   }
 
   body {
@@ -124,10 +123,10 @@ export default css`
   .increase-clickable::after {
     content: '';
     position: absolute;
-    width: 50px;
-    height: 50px;
     left: 0;
     top: 0;
+    width: 3.5em;
+    height: 3.5em;
     transform: translate(calc(0.5em - 50%), calc(0.5em - 50%));
   }
 
@@ -248,6 +247,11 @@ export default css`
   .paragraph,
   .offset,
   .paragraph.offset,
+  .heading-continuation-blurb,
+  .section-summary-preface,
+  h3.inline,
+  h4.inline,
+  h5.inline,
   #fn-content-inner,
   #fn-content-inner > * {
     text-align: left;
@@ -299,4 +303,154 @@ export default css`
       margin-bottom: 0.75em;
     }
   }
+
+  /* only allow justification for small screens when <= font-size 6 */
+  .align--justify.font-size-lte--6 dd,
+  .align--justify.font-size-lte--6 .discourse-part,
+  .align--justify.font-size-lte--6 .paragraph,
+  .align--justify.font-size-lte--6 .offset,
+  .align--justify.font-size-lte--6 .paragraph.offset,
+  .align--justify.font-size-lte--6 .heading-continuation-blurb,
+  .align--justify.font-size-lte--6 .section-summary-preface,
+  .align--justify.font-size-lte--6 h3.inline,
+  .align--justify.font-size-lte--6 h4.inline,
+  .align--justify.font-size-lte--6 h5.inline,
+  .align--justify.font-size-lte--6 #fn-content-inner,
+  .align--justify.font-size-lte--6 #fn-content-inner > * {
+    text-align: justify;
+  }
+
+  /* only allow justification for medium screens when <= font-size 7 */
+  @media (min-width: 767px) {
+    .align--justify.font-size-lte--7 dd,
+    .align--justify.font-size-lte--7 .discourse-part,
+    .align--justify.font-size-lte--7 .paragraph,
+    .align--justify.font-size-lte--7 .offset,
+    .align--justify.font-size-lte--7 .paragraph.offset,
+    .align--justify.font-size-lte--7 .heading-continuation-blurb,
+    .align--justify.font-size-lte--7 .section-summary-preface,
+    .align--justify.font-size-lte--7 h3.inline,
+    .align--justify.font-size-lte--7 h4.inline,
+    .align--justify.font-size-lte--7 h5.inline,
+    .align--justify.font-size-lte--7 #fn-content-inner,
+    .align--justify.font-size-lte--7 #fn-content-inner > * {
+      text-align: justify;
+    }
+  }
+
+  /* allow justification for any font size at large screens */
+  @media (min-width: 819px) {
+    .align--justify.align--justify dd,
+    .align--justify.align--justify .discourse-part,
+    .align--justify.align--justify .paragraph,
+    .align--justify.align--justify .offset,
+    .align--justify.align--justify .paragraph.offset,
+    .align--justify.align--justify .heading-continuation-blurb,
+    .align--justify.align--justify .section-summary-preface,
+    .align--justify.align--justify h3.inline,
+    .align--justify.align--justify h4.inline,
+    .align--justify.align--justify h5.inline,
+    .align--justify.align--justify #fn-content-inner,
+    .align--justify.align--justify #fn-content-inner > * {
+      text-align: justify;
+    }
+  }
+
+  /* BEGIN new footnote dismissal from v2.1.0 (iPad support) */
+  .version--gte-2_1_0.header--visible #fn-overlay {
+    top: var(--header-height, 86px);
+  }
+
+  .version--gte-2_1_0 #fn-overlay {
+    height: auto;
+    width: auto;
+    padding-top: 0;
+  }
+
+  .version--gte-2_1_0 #fn-content {
+    min-height: 100vh;
+    padding-left: 30px;
+    position: absolute;
+    box-sizing: border-box;
+  }
+
+  .version--gte-2_1_0.header--visible #fn-content {
+    min-height: calc(100vh - var(--header-height, 86px));
+    top: 0;
+  }
+
+  .version--gte-2_1_0 #fn-content-inner {
+    padding-bottom: 15rem;
+  }
+
+  #fn-back {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+
+  #fn-back-inner {
+    padding: 1em 2em 0.35em 2em;
+    padding-top: 75px;
+    padding-bottom: 75px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .colorscheme--black #fn-back-inner {
+    background: linear-gradient(to top, black, black 35%, rgba(0, 0, 0, 0));
+  }
+
+  .colorscheme--white #fn-back-inner {
+    background: linear-gradient(to top, white, white 33%, rgba(255, 255, 255, 0));
+  }
+
+  .colorscheme--sepia #fn-back-inner {
+    background: linear-gradient(
+      to top,
+      var(--ebook-colorscheme-sepia-bg),
+      var(--ebook-colorscheme-sepia-bg) 33%,
+      rgba(255, 255, 255, 0)
+    );
+  }
+
+  .colorscheme--black #fn-back #back-to-text {
+    background: var(--ebook-colorscheme-black-accent);
+  }
+
+  .colorscheme--sepia #fn-back #back-to-text {
+    background: var(--ebook-colorscheme-sepia-accent);
+  }
+
+  .colorscheme--white #fn-back #back-to-text {
+    background: black;
+  }
+
+  #fn-back #back-to-text {
+    color: white;
+    font-weight: 400;
+    padding: 0.85em 2em;
+    text-transform: uppercase;
+    font-family: Cabin, 'HelveticaNeue-Light', 'Helvetica Neue', Helvetica, Arial,
+      sans-serif;
+    font-size: 14px;
+    border-radius: 9999px;
+  }
+
+  #fn-back p {
+    margin: 0.65em 0 0 0;
+    font-size: 12px;
+    opacity: 0.45;
+  }
+
+  .version--gte-2_1_0 #fn-content-inner {
+    /* keep footnote content to max-w 50ch for readability */
+    padding-left: calc((100vw - 50ch) / 2);
+    padding-right: calc((100vw - 50ch) / 2);
+  }
+
+  /* END new footnote dismissal */
 `;
