@@ -1,6 +1,6 @@
 {
   "name": "@friends-library/slack",
-  "version": "2.0.2",
+  "version": "3.0.0",
   "description": "FLP slack client",
   "main": "./dist/index.js",
   "browser": false,
