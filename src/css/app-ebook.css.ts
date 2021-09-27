@@ -93,17 +93,24 @@ export default css`
     font-weight: 700;
   }
 
+  a.__xref-linkable-back {
+    display: inline;
+  }
+
   .colorscheme--white .fn-close,
+  .colorscheme--white .__xref,
   .colorscheme--white .footnote-marker {
     color: var(--ebook-colorscheme-white-accent, rgba(0, 0, 255));
   }
 
   .colorscheme--black .fn-close,
+  .colorscheme--black .__xref,
   .colorscheme--black .footnote-marker {
     color: var(--ebook-colorscheme-black-accent, rgba(110, 141, 234));
   }
 
   .colorscheme--sepia .fn-close,
+  .colorscheme--sepia .__xref,
   .colorscheme--sepia .footnote-marker {
     color: var(--ebook-colorscheme-sepia-accent, rgb(201, 154, 61));
   }
