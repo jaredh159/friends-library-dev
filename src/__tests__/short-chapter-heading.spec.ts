@@ -16,6 +16,7 @@ describe(`shortChapterHeading()`, () => {
     [`Chapter 1`, `Chapter I`],
     [`Chapter 2. Hello World`, `Chapter II &#8212; Hello World`],
     [`Preface.footnote:[Hello]`, `Preface`],
+    [`Chapter 9. Letters from 1818--1820`, `Chapter IX &#8212; Letters from 1818—1820`],
   ];
 
   test.each(cases)(`chapter title "%s" => nav text "%s"`, (input, expected) => {
