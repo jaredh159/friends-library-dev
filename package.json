@@ -1,6 +1,6 @@
 {
   "name": "@friends-library/doc-artifacts",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "create filesystem final artifacts for consumables from manifests",
   "main": "./dist/index.js",
   "browser": false,
