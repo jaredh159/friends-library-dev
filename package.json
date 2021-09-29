@@ -1,6 +1,6 @@
 {
   "name": "@friends-library/adoc-utils",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "author": "Jared Henderson <jared@netrivet.com>",
   "description": "asciidoc utils",
   "license": "MIT",
