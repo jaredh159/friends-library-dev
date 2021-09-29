@@ -65,5 +65,9 @@ function filterPrinceOutput(line: string): boolean {
     return false;
   }
 
+  if (line.includes(`unsupported properties: box-shadow`)) {
+    return false;
+  }
+
   return true;
 }
