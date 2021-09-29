@@ -6,6 +6,8 @@ import { extname } from 'path';
 
 type LocalFilePath = string;
 type CloudFilePath = string;
+type Acl = 'public-read' | 'private';
+type UploadOpts = { delete?: boolean; acl?: Acl };
 
 let clientInstance: AWS.S3 | null = null;
 
@@ -89,7 +91,7 @@ export async function md5File(cloudFilePath: CloudFilePath): Promise<string | nu
 export async function uploadFile(
   localFilePath: LocalFilePath,
   cloudFilePath: CloudFilePath,
-  opts: { delete: boolean } = { delete: false },
+  opts: UploadOpts = {},
 ): Promise<string> {
   const { CLOUD_STORAGE_BUCKET_URL, CLOUD_STORAGE_BUCKET } = env.require(
     `CLOUD_STORAGE_BUCKET_URL`,
@@ -103,14 +105,14 @@ export async function uploadFile(
         Body: fs.readFileSync(localFilePath),
         Bucket: CLOUD_STORAGE_BUCKET,
         ContentType: getContentType(localFilePath),
-        ACL: `public-read`,
+        ACL: opts.acl ?? `public-read`,
       },
       (err) => {
         if (err) {
           reject(err);
           return;
         }
-        if (opts.delete) {
+        if (opts.delete === true) {
           fs.unlinkSync(localFilePath);
         }
         resolve(`${CLOUD_STORAGE_BUCKET_URL}/${cloudFilePath}`);
@@ -131,7 +133,7 @@ export async function deleteFile(cloudFilePath: CloudFilePath): Promise<boolean>
 
 export async function uploadFiles(
   files: Map<LocalFilePath, CloudFilePath>,
-  opts: { delete: boolean } = { delete: false },
+  opts: UploadOpts = {},
 ): Promise<string[]> {
   const { CLOUD_STORAGE_BUCKET_URL } = env.require(`CLOUD_STORAGE_BUCKET_URL`);
   const promises = [...files].map(([localPath, cloudPath]) =>
@@ -210,6 +212,8 @@ function getContentType(path: LocalFilePath): string {
       return `audio/mpeg`;
     case `.m4b`:
       return `audio/mp4`;
+    case `.wav`:
+      return `audio/wav`;
     case `.png`:
       return `image/png`;
     case `.pdf`:
