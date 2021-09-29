@@ -6,9 +6,15 @@ export function htmlShortTitle(title: Asciidoc): Html {
 }
 
 export function htmlTitle(title: Asciidoc): Html {
-  return title.replace(/ -- /g, ` ${HEX.MDASH} `).replace(/\b\d+$/, (digits) => {
-    return toRoman(Number(digits));
-  });
+  return title
+    .replace(/\b(\d+)\b(.)?/g, (_, digits, next) => {
+      const number = Number(digits);
+      // don't convert `#&160;` to roman -- entity for space
+      return (number === 160 && next === `;`) || number > 1000
+        ? `${digits}${next ?? ``}`
+        : `${toRoman(number)}${next ?? ``}`;
+    })
+    .replace(/--/g, HEX.MDASH);
 }
 
 export function utf8ShortTitle(title: Asciidoc): string {
