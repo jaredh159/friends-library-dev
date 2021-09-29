@@ -23,7 +23,7 @@ export default function format(path: string, code: string | Buffer): string | Bu
     return formatted;
   } catch (err) {
     if (env.truthy(`DEBUG_ARTIFACT_SRC`)) {
-      console.log(err.message);
+      console.log(String(err));
       red(`Error formatting cource code at ${path}, using un-formatted source instead`);
       return code;
     } else {
