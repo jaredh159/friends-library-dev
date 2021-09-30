@@ -1,8 +1,12 @@
 import { Environment } from '@friends-library/types';
 import { send, sendJson } from './send';
 
-function log(msg: string, data?: Record<string, any>, channel?: string): void {
-  sendAndLog({ msg, data, channel });
+interface LogFn {
+  (msg: string, data?: Record<string, any>, emoji?: string): Promise<void>;
+}
+
+function log(msg: string, data?: Record<string, any>, channel?: string): Promise<void> {
+  return sendAndLog({ msg, data, channel });
 }
 
 log.env = `production` as Environment;
@@ -11,29 +15,36 @@ log.setEnv = function (env: Environment): void {
   log.env = env;
 };
 
-log.error = function error(msg: string, data?: Record<string, any>): void {
-  sendAndLog({ msg, data, emoji: `:fire_engine:`, channel: `errors` });
+const logError: LogFn = (msg, data, emoji) => {
+  return sendAndLog({ msg, data, emoji: emoji ?? `:fire_engine:`, channel: `errors` });
 };
 
-log.info = function info(msg: string, data?: Record<string, any>): void {
-  sendAndLog({ msg, data, channel: `info` });
+const logInfo: LogFn = (msg, data, emoji) => {
+  return sendAndLog({ msg, data, channel: `info`, emoji });
 };
 
-log.order = function order(msg: string, data?: Record<string, any>): void {
-  sendAndLog({ msg, data, channel: `orders`, emoji: `:books:` });
+const logOrder: LogFn = (msg, data, emoji) => {
+  return sendAndLog({ msg, data, channel: `orders`, emoji: emoji ?? `:books:` });
 };
 
-log.download = function download(msg: string, data?: Record<string, any>): void {
-  sendAndLog({ msg, data, channel: `downloads` });
+const logDownload: LogFn = (msg, data, emoji) => {
+  return sendAndLog({ msg, data, channel: `downloads`, emoji });
 };
 
-log.audio = function download(msg: string, data?: Record<string, any>): void {
-  sendAndLog({ msg, data, channel: `audio-downloads` });
+const logAudio: LogFn = (msg, data, emoji) => {
+  return sendAndLog({ msg, data, channel: `audio-downloads`, emoji });
 };
 
-log.debug = function debug(msg: string, data?: Record<string, any>): void {
-  sendAndLog({ msg, data, channel: `debug` });
+const logDebug: LogFn = (msg, data, emoji) => {
+  return sendAndLog({ msg, data, channel: `debug`, emoji });
 };
+
+log.error = logError;
+log.info = logInfo;
+log.order = logOrder;
+log.download = logDownload;
+log.audio = logAudio;
+log.debug = logDebug;
 
 interface SlackData {
   msg: string;
