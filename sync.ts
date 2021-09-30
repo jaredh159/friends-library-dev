@@ -18,7 +18,7 @@ exec.exit(`ssh fql "rm sync.sql.gz"`);
 gray(`  • Unzipping local dump file...`);
 exec.exit(`gunzip ./sync.sql.gz`);
 gray(`  • Killing any running instances of Postico...`);
-exec(`killall postico`);
+exec(`killall Postico`);
 gray(`  • Dropping and re-creating local flp database...`);
 exec.exit(`dropdb flp_mirror`);
 exec.exit(`createdb flp_mirror`);
