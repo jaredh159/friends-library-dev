@@ -141,6 +141,10 @@ function printJobLineItem(
   // friend/doc/edition entity.... but... that's a bit janky
   // probably better is a c printf style placeholder paperback-cover-multivol filename
   // or... we could have a github action webhook to rebuild this repo with latest /friends repo?
+
+  // UPDATE 10/1/21 - setup a GH action to auto republish this, updating the friends repo
+  // core issue of datasource wonkiness remains, should be solved by the great API/DB refactor
+  // @see https://github.com/friends-library-dev/issues/issues/46
   const edition = editions().get(key);
   if (!edition) throw new Error(`404 Edition from order item: ${key}`);
 
