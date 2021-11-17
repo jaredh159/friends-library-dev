@@ -16,6 +16,20 @@ exit
 # don't ask `jared` for sudo password
 echo "jared ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
+# add 1GB of SWAP space (compiling swift takes a lot of memory)
+# especially important for SMALL droplets, since compiling swift takes LOTS of memory
+# the `1G` amount below should possibly be increased, if going to a larger droplet
+# @see https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-20-04
+sudo fallocate -l 1G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+sudo sysctl vm.swappiness=10
+sudo sysctl vm.vfs_cache_pressure=50
+echo "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
+echo "vm.vfs_cache_pressure=50" | sudo tee -a /etc/sysctl.conf
+
 # other programs
 sudo apt install -y unzip
 sudo apt install -y tree
