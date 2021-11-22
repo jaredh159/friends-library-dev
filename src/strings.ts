@@ -204,6 +204,7 @@ const strings: { [k: string]: string } = {
   'Continue listening': `Seguir escuchando`,
 
   // book publishing metadata
+  'Original title': `Título original`,
   'Public domain in the USA': `Dominio público en los Estados Unidos de América`,
   'Originally published in %s': `Publicado originalmente en %s`,
   'friendslibrary.com': `bibliotecadelosamigos.org`,
