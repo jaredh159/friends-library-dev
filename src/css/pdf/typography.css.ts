@@ -57,7 +57,8 @@ export default css`
     font-size: 1.3rem;
   }
 
-  blockquote > p {
+  blockquote > p,
+  blockquote .numbered-group p {
     line-height: 137%;
     padding-left: 1.65em;
   }

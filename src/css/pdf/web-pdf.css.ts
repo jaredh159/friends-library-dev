@@ -45,7 +45,8 @@ export default css`
     margin-top: 0.85rem;
   }
 
-  .chapter blockquote > p + p {
+  .chapter blockquote > p + p,
+  .chapter blockquote .numbered-group p + p {
     margin-top: 0.7rem;
   }
 
