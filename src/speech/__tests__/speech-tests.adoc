@@ -432,3 +432,38 @@ CHAPTER 3
 
 Last chapter.
 ++++
+
+// ********************************
+## numbered group within blockquote
+// ********************************
+
+****
+== Preface
+
+[quote]
+____
+
+[.numbered-group]
+====
+
+[.numbered]
+Foo
+
+[.numbered]
+Bar
+
+====
+
+Baz
+____
+****
+
+++++
+PREFACE
+
+Foo
+
+Bar
+
+Baz
+++++

@@ -875,3 +875,41 @@ Goodbye world.
   <p class="paragraph">Goodbye world.</p>
 </div>
 ++++
+
+// ********************************
+## numbered group within blockquote
+// ********************************
+
+****
+== Preface
+
+[quote]
+____
+
+[.numbered-group]
+====
+
+[.numbered]
+Foo
+
+[.numbered]
+Bar
+
+====
+
+Baz
+____
+****
+
+++++
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <!-- preface chapter heading markup here -->
+  <blockquote>
+    <div class="numbered-group">
+      <div class="numbered"><p class="paragraph">Foo</p></div>
+      <div class="numbered"><p class="paragraph">Bar</p></div>
+    </div>
+    <p class="paragraph">Baz</p>
+  </blockquote>
+</div>
+++++

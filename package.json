@@ -15,15 +15,16 @@
     "ts:check": "fldev ts:check",
     "format": "fldev format",
     "compile": "fldev ts:compile",
-    "prepublishOnly": "npm run compile"
+    "prepublishOnly": "npm run compile",
+    "npub:precheck": "fldev ci"
   },
   "dependencies": {
-    "@friends-library/locale": "^1.7.1",
-    "@friends-library/parser": "^1.4.4",
-    "@friends-library/types": "^5.0.3"
+    "@friends-library/locale": "^2.1.0",
+    "@friends-library/parser": "^1.5.0",
+    "@friends-library/types": "^6.0.0"
   },
   "devDependencies": {
-    "@friends-library/dev": "~4.3.1",
+    "@friends-library/dev": "~4.4.1",
     "strip-indent": "^3.0.0"
   }
 }
