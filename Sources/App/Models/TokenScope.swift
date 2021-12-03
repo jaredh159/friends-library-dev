@@ -21,7 +21,7 @@ final class TokenScope: Model, Content {
   @Parent(key: M5.tokenId)
   var token: Token
 
-  @Timestamp(key: FieldKey.createdAt, on: .create)
+  @Timestamp(key: .createdAt, on: .create)
   var createdAt: Date?
 
   init() {}

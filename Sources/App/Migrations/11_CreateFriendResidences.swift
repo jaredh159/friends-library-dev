@@ -16,8 +16,8 @@ struct CreateFriendResidences: Migration {
       .field(M11.city, .string, .required)
       .field(M11.region, .string, .required)
       .field(M11.duration, .dictionary)
-      .field(FieldKey.createdAt, .datetime, .required)
-      .field(FieldKey.updatedAt, .datetime, .required)
+      .field(.createdAt, .datetime, .required)
+      .field(.updatedAt, .datetime, .required)
       .create()
   }
 

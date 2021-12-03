@@ -52,6 +52,7 @@ private func addMigrations(to app: Application) {
   app.migrations.add(CreateFriends())
   app.migrations.add(CreateFriendResidences())
   app.migrations.add(CreateFriendQuotes())
+  app.migrations.add(CreateDocuments())
 
   if Env.get("SEED_DB") == "true" || app.environment == .testing {
     app.migrations.add(Seed())

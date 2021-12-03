@@ -13,7 +13,7 @@ final class Token: Model, Content {
   @Field(key: M4.description)
   var description: String
 
-  @Timestamp(key: FieldKey.createdAt, on: .create)
+  @Timestamp(key: .createdAt, on: .create)
   var createdAt: Date?
 
   @Children(for: \TokenScope.$token)

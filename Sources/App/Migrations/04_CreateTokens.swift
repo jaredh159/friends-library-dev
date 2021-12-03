@@ -8,7 +8,7 @@ struct CreateTokens: Migration {
       .id()
       .field(Token.M4.value, .uuid, .required)
       .field(Token.M4.description, .string, .required)
-      .field(FieldKey.createdAt, .datetime, .required)
+      .field(.createdAt, .datetime, .required)
       .unique(on: Token.M4.value)
       .create()
   }

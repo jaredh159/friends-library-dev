@@ -17,8 +17,8 @@ struct CreateFreeOrderRequests: Migration {
       .field(FreeOrderRequest.M6.addressZip, .string, .required)
       .field(FreeOrderRequest.M6.addressCountry, .string, .required)
       .field(FreeOrderRequest.M6.source, .string, .required)
-      .field(FieldKey.createdAt, .datetime, .required)
-      .field(FieldKey.updatedAt, .datetime, .required)
+      .field(.createdAt, .datetime, .required)
+      .field(.updatedAt, .datetime, .required)
       .create()
   }
 

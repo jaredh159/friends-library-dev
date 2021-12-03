@@ -10,7 +10,7 @@ final class ArtifactProductionVersion: Model, Content {
   @Field(key: M8.version)
   var version: String
 
-  @Timestamp(key: FieldKey.createdAt, on: .create)
+  @Timestamp(key: .createdAt, on: .create)
   var createdAt: Date?
 
   init() {}

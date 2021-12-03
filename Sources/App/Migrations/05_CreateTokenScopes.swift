@@ -20,7 +20,7 @@ struct CreateTokenScopes: Migration {
             .references(Token.M4.tableName, "id", onDelete: .cascade)
           )
           .field(TokenScope.M5.scope, scopes, .required)
-          .field(FieldKey.createdAt, .datetime, .required)
+          .field(.createdAt, .datetime, .required)
           .unique(on: TokenScope.M5.tokenId, TokenScope.M5.scope)
           .create()
       }

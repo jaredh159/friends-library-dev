@@ -40,10 +40,10 @@ final class FreeOrderRequest: Model, Content {
   @Field(key: FreeOrderRequest.M6.source)
   var source: String
 
-  @Timestamp(key: FieldKey.createdAt, on: .create)
+  @Timestamp(key: .createdAt, on: .create)
   var createdAt: Date?
 
-  @Timestamp(key: FieldKey.updatedAt, on: .update)
+  @Timestamp(key: .updatedAt, on: .update)
   var updatedAt: Date?
 
   init() {}

@@ -7,7 +7,7 @@ struct CreateArtifactProductionVersion: Migration {
     database.schema(ArtifactProductionVersion.M8.tableName)
       .id()
       .field(ArtifactProductionVersion.M8.version, .string, .required)
-      .field(FieldKey.createdAt, .datetime, .required)
+      .field(.createdAt, .datetime, .required)
       .unique(on: ArtifactProductionVersion.M8.version)
       .create()
   }

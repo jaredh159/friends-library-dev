@@ -39,10 +39,10 @@ final class Friend: Model, Content {
   @Field(key: M10.published)
   var published: Date?
 
-  @Timestamp(key: FieldKey.createdAt, on: .create)
+  @Timestamp(key: .createdAt, on: .create)
   var createdAt: Date?
 
-  @Timestamp(key: FieldKey.updatedAt, on: .update)
+  @Timestamp(key: .updatedAt, on: .update)
   var updatedAt: Date?
 
   @Children(for: \FriendResidence.$friend)
@@ -54,7 +54,6 @@ final class Friend: Model, Content {
 extension Friend {
   enum M10 {
     static let tableName = "friends"
-    static let id = FieldKey("id")
     static let lang = FieldKey("lang")
     static let name = FieldKey("name")
     static let slug = FieldKey("slug")

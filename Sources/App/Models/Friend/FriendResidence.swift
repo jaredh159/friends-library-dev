@@ -25,10 +25,10 @@ final class FriendResidence: Model, Content {
   @Parent(key: M11.friendId)
   var friend: Friend
 
-  @Timestamp(key: FieldKey.createdAt, on: .create)
+  @Timestamp(key: .createdAt, on: .create)
   var createdAt: Date?
 
-  @Timestamp(key: FieldKey.updatedAt, on: .update)
+  @Timestamp(key: .updatedAt, on: .update)
   var updatedAt: Date?
 
   init() {}
