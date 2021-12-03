@@ -11,7 +11,7 @@ struct CreateFriendResidences: Migration {
         M11.friendId,
         .uuid,
         .required,
-        .references(Friend.M10.tableName, FieldKey.id, onDelete: .cascade)
+        .references(Friend.M10.tableName, .id, onDelete: .cascade)
       )
       .field(M11.city, .string, .required)
       .field(M11.region, .string, .required)

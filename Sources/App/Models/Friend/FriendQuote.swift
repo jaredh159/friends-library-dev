@@ -7,6 +7,9 @@ final class FriendQuote: Model, Content {
   @ID(key: .id)
   var id: UUID?
 
+  @Parent(key: M12.friendId)
+  var friend: Friend
+
   @Field(key: M12.source)
   var source: String
 
@@ -18,9 +21,6 @@ final class FriendQuote: Model, Content {
 
   @OptionalField(key: M12.context)
   var context: String?
-
-  @Parent(key: M12.friendId)
-  var friend: Friend
 
   @Timestamp(key: .createdAt, on: .create)
   var createdAt: Date?
@@ -34,10 +34,10 @@ final class FriendQuote: Model, Content {
 extension FriendQuote {
   enum M12 {
     static let tableName = "friend_quotes"
+    static let friendId = FieldKey("friend_id")
     static let source = FieldKey("source")
     static let text = FieldKey("text")
     static let order = FieldKey("order")
     static let context = FieldKey("context")
-    static let friendId = FieldKey("friend_id")
   }
 }

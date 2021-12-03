@@ -15,7 +15,7 @@ struct CreateFriendQuotes: Migration {
         M12.friendId,
         .uuid,
         .required,
-        .references(Friend.M10.tableName, FieldKey.id, onDelete: .cascade)
+        .references(Friend.M10.tableName, .id, onDelete: .cascade)
       )
       .field(.createdAt, .datetime, .required)
       .field(.updatedAt, .datetime, .required)

@@ -13,6 +13,9 @@ final class FriendResidence: Model, Content {
   @ID(key: .id)
   var id: UUID?
 
+  @Parent(key: M11.friendId)
+  var friend: Friend
+
   @Field(key: M11.city)
   var city: String
 
@@ -21,9 +24,6 @@ final class FriendResidence: Model, Content {
 
   @OptionalField(key: M11.duration)
   var duration: Duration?
-
-  @Parent(key: M11.friendId)
-  var friend: Friend
 
   @Timestamp(key: .createdAt, on: .create)
   var createdAt: Date?

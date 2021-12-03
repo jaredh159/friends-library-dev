@@ -7,8 +7,8 @@ final class Document: Model, Content {
   @ID(key: .id)
   var id: UUID?
 
-  @Enum(key: M13.lang)
-  var lang: Lang
+  @Parent(key: M13.friendId)
+  var friend: Friend
 
   @OptionalParent(key: M13.altLanguageId)
   var altLanguageDocument: Document?
@@ -61,7 +61,7 @@ final class Document: Model, Content {
 extension Document {
   enum M13 {
     static let tableName = "documents"
-    static let lang = FieldKey("lang")
+    static let friendId = FieldKey("friend_id")
     static let altLanguageId = FieldKey("alt_language_id")
     static let title = FieldKey("title")
     static let slug = FieldKey("slug")

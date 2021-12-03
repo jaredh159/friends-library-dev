@@ -34,8 +34,6 @@ final class Friend: Model, Content {
   @Field(key: M10.died)
   var died: Int
 
-  // @TODO isCompilations as computed property
-
   @Field(key: M10.published)
   var published: Date?
 
@@ -47,6 +45,16 @@ final class Friend: Model, Content {
 
   @Children(for: \FriendResidence.$friend)
   var residences: [FriendResidence]
+
+  @Children(for: \FriendQuote.$friend)
+  var quotes: [FriendQuote]
+
+  @Children(for: \Document.$friend)
+  var documents: [Document]
+
+  var isCompilations: Bool {
+    slug.starts(with: "compila")
+  }
 
   init() {}
 }
