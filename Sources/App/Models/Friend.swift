@@ -2,7 +2,7 @@ import Fluent
 import Vapor
 
 final class Friend: Model, Content {
-  static let schema = Friend.M6.tableName
+  static let schema = M10.tableName
 
   enum Gender: String, Codable, CaseIterable {
     case male
@@ -13,31 +13,31 @@ final class Friend: Model, Content {
   @ID(key: .id)
   var id: UUID?
 
-  @Enum(key: Friend.M6.lang)
+  @Enum(key: M10.lang)
   var lang: Lang
 
-  @Field(key: Friend.M6.name)
+  @Field(key: M10.name)
   var name: String
 
-  @Field(key: Friend.M6.slug)
+  @Field(key: M10.slug)
   var slug: String
 
-  @Enum(key: Friend.M6.gender)
+  @Enum(key: M10.gender)
   var gender: Gender
 
-  @Field(key: Friend.M6.description)
+  @Field(key: M10.description)
   var description: String
 
-  @OptionalField(key: Friend.M6.born)
+  @OptionalField(key: M10.born)
   var born: Int?
 
-  @Field(key: Friend.M6.died)
+  @Field(key: M10.died)
   var died: Int
 
-  @Field(key: Friend.M6.isCompilations)
+  @Field(key: M10.isCompilations)
   var isCompilations: Bool
 
-  @Field(key: Friend.M6.published)
+  @Field(key: M10.published)
   var published: Date?
 
   @Timestamp(key: FieldKey.createdAt, on: .create)
@@ -53,7 +53,7 @@ final class Friend: Model, Content {
 }
 
 extension Friend {
-  enum M6 {
+  enum M10 {
     static let tableName = "friends"
     static let id = FieldKey("id")
     static let lang = FieldKey("lang")

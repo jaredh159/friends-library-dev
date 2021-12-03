@@ -3,7 +3,7 @@ import Foundation
 import Vapor
 
 final class FriendResidence: Model, Content {
-  static let schema = FriendResidence.M7.tableName
+  static let schema = M11.tableName
 
   struct Duration: Codable {
     var start: Int
@@ -13,16 +13,16 @@ final class FriendResidence: Model, Content {
   @ID(key: .id)
   var id: UUID?
 
-  @Field(key: FriendResidence.M7.city)
+  @Field(key: M11.city)
   var city: String
 
-  @Field(key: FriendResidence.M7.region)
+  @Field(key: M11.region)
   var region: String
 
-  @OptionalField(key: FriendResidence.M7.duration)
+  @OptionalField(key: M11.duration)
   var duration: Duration?
 
-  @Parent(key: FriendResidence.M7.friendId)
+  @Parent(key: M11.friendId)
   var friend: Friend
 
   init() {}
@@ -45,7 +45,7 @@ final class FriendResidence: Model, Content {
 }
 
 extension FriendResidence {
-  enum M7 {
+  enum M11 {
     static let tableName = "friend_residences"
     static let id = FieldKey("id")
     static let city = FieldKey("city")
