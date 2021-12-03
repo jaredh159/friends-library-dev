@@ -58,6 +58,9 @@ private func addMigrations(to app: Application) {
   app.migrations.add(CreateEditions())
   app.migrations.add(CreateEditionImpressions())
   app.migrations.add(CreateIsbns())
+  app.migrations.add(CreateAudios())
+  app.migrations.add(CreateAudioParts())
+  app.migrations.add(CreateEditionChapters())
 
   if Env.get("SEED_DB") == "true" || app.environment == .testing {
     app.migrations.add(Seed())
