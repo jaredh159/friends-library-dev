@@ -34,8 +34,7 @@ final class Friend: Model, Content {
   @Field(key: M10.died)
   var died: Int
 
-  @Field(key: M10.isCompilations)
-  var isCompilations: Bool
+  // @TODO isCompilations as computed property
 
   @Field(key: M10.published)
   var published: Date?
@@ -63,7 +62,12 @@ extension Friend {
     static let description = FieldKey("description")
     static let born = FieldKey("born")
     static let died = FieldKey("died")
-    static let isCompilations = FieldKey("is_compilations")
     static let published = FieldKey("published")
+    enum GenderEnum {
+      static let name = "gender"
+      static let caseMale = "male"
+      static let caseFemale = "female"
+      static let caseMixed = "mixed"
+    }
   }
 }

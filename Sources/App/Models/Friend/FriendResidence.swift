@@ -25,23 +25,13 @@ final class FriendResidence: Model, Content {
   @Parent(key: M11.friendId)
   var friend: Friend
 
-  init() {}
+  @Timestamp(key: FieldKey.createdAt, on: .create)
+  var createdAt: Date?
 
-  init(
-    id: UUID? = nil,
-    friendId: UUID? = nil,
-    city: String,
-    region: String,
-    duration: Duration? = nil
-  ) {
-    self.id = id
-    self.city = city
-    self.region = region
-    self.duration = duration
-    if let friendId = friendId {
-      self.$friend.id = friendId
-    }
-  }
+  @Timestamp(key: FieldKey.updatedAt, on: .update)
+  var updatedAt: Date?
+
+  init() {}
 }
 
 extension FriendResidence {
