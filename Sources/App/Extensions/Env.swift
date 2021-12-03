@@ -1,6 +1,6 @@
 import Vapor
 
-extension Environment {
+extension Env {
   static let PG_DUMP_PATH = get("PG_DUMP_PATH")!
   static let SENDGRID_API_KEY = get("SENDGRID_API_KEY")!
   static let SLACK_API_TOKEN = get("SLACK_API_TOKEN")!

@@ -6,6 +6,7 @@ import Vapor
 import VaporUtils
 
 typealias Future = EventLoopFuture
+typealias Env = Vapor.Environment
 
 public func configure(_ app: Application) throws {
   app.middleware.use(corsMiddleware(app), at: .beginning)
@@ -13,12 +14,12 @@ public func configure(_ app: Application) throws {
   let dbPrefix = app.environment == .testing ? "TEST_" : ""
   app.databases.use(
     .postgres(
-      hostname: Environment.get("DATABASE_HOST") ?? "localhost",
-      port: Environment.get("DATABASE_PORT").flatMap(Int.init(_:))
+      hostname: Env.get("DATABASE_HOST") ?? "localhost",
+      port: Env.get("DATABASE_PORT").flatMap(Int.init(_:))
         ?? PostgresConfiguration.ianaPortNumber,
-      username: Environment.DATABASE_USERNAME,
-      password: Environment.DATABASE_PASSWORD,
-      database: Environment.get("\(dbPrefix)DATABASE_NAME")!
+      username: Env.DATABASE_USERNAME,
+      password: Env.DATABASE_PASSWORD,
+      database: Env.get("\(dbPrefix)DATABASE_NAME")!
     ), as: .psql)
 
   addMigrations(to: app)
@@ -50,8 +51,9 @@ private func addMigrations(to app: Application) {
   app.migrations.add(AddMutateArtifactProductionVersionScope())
   app.migrations.add(CreateFriends())
   app.migrations.add(CreateFriendResidences())
+  app.migrations.add(CreateFriendQuotes())
 
-  if Environment.get("SEED_DB") == "true" || app.environment == .testing {
+  if Env.get("SEED_DB") == "true" || app.environment == .testing {
     app.migrations.add(Seed())
   }
 }
@@ -66,9 +68,9 @@ private func configureScheduledJobs(_ app: Application) throws {
 
   let backupJob = BackupJob(
     appName: "FLP",
-    dbName: Environment.DATABASE_NAME,
-    pgDumpPath: Environment.PG_DUMP_PATH,
-    sendGridApiKey: Environment.SENDGRID_API_KEY,
+    dbName: Env.DATABASE_NAME,
+    pgDumpPath: Env.PG_DUMP_PATH,
+    sendGridApiKey: Env.SENDGRID_API_KEY,
     fromEmail: .init(
       email: "notifications@graphql-api.friendslibrary.com",
       name: "FLP GraphQL"

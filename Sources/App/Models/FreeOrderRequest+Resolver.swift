@@ -63,7 +63,7 @@ private func sendFreeOrderRequestNotifications(
 ) -> Future<Void> {
   let id = order.id!.uuidString.lowercased()
   var emailFuture = request.eventLoop.makeSucceededVoidFuture()
-  if let emailTo = Environment.get("FREE_ORDER_REQUEST_EMAIL_RECIPIENT") {
+  if let emailTo = Env.get("FREE_ORDER_REQUEST_EMAIL_RECIPIENT") {
     emailFuture = SendGridEmail(
       to: .init(email: emailTo),
       from: .init(
@@ -93,7 +93,7 @@ private func sendFreeOrderRequestNotifications(
         </a>
         """
     )
-    .send(on: request.client, withKey: Environment.SENDGRID_API_KEY)
+    .send(on: request.client, withKey: Env.SENDGRID_API_KEY)
     .transform(to: ())
   }
 
@@ -106,7 +106,7 @@ private func sendFreeOrderRequestNotifications(
       username: "FLP Api Bot",
       emoji: .custom("orange_book")
     )
-    .send(on: request.client, withToken: Environment.SLACK_API_TOKEN)
+    .send(on: request.client, withToken: Env.SLACK_API_TOKEN)
     .transform(to: ())
   }
 

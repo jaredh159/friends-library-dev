@@ -108,9 +108,9 @@ extension Model where IDValue == UUID {
 
     let task = Process()
 
-    task.executableURL = URL(fileURLWithPath: Environment.get("PSQL_PATH")!)
+    task.executableURL = URL(fileURLWithPath: Env.get("PSQL_PATH")!)
     task.arguments = [
-      "-d", Environment.get("TEST_DATABASE_NAME")!,
+      "-d", Env.get("TEST_DATABASE_NAME")!,
       "-c", query,
     ]
 
