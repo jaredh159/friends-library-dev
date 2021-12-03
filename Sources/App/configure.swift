@@ -55,6 +55,9 @@ private func addMigrations(to app: Application) {
   app.migrations.add(CreateDocuments())
   app.migrations.add(CreateTags())
   app.migrations.add(CreateDocumentTagsPivot())
+  app.migrations.add(CreateEditions())
+  app.migrations.add(CreateEditionImpressions())
+  app.migrations.add(CreateIsbns())
 
   if Env.get("SEED_DB") == "true" || app.environment == .testing {
     app.migrations.add(Seed())

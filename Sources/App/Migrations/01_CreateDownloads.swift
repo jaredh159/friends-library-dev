@@ -1,11 +1,13 @@
 import Fluent
 
 struct CreateDownloads: Migration {
+  private typealias M1 = Download.M1
+
   func prepare(on database: Database) -> Future<Void> {
-    let editionTypeFuture = database.enum("edition_type")
-      .case("updated")
-      .case("original")
-      .case("modernized")
+    let editionTypeFuture = database.enum(M1.EditionTypeEnum.name)
+      .case(M1.EditionTypeEnum.caseUpdated)
+      .case(M1.EditionTypeEnum.caseModernized)
+      .case(M1.EditionTypeEnum.caseOriginal)
       .create()
 
     let audioQualityFuture = database.enum("audio_quality")

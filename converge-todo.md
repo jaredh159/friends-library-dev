@@ -1,8 +1,10 @@
 # Converge TODOs:
 
+- [ ] - ensure all usages of @OptionalChild have a uniqueness constraint, per vapor docs
 - [ ] - pivot table for document related_documents
 - [ ] - look at all migrations since 10, thinking through `unique(on:)` constraints
 - [√] - pivot table for document tags
+- [√] - table for isbns, with optional FK to edition 👍
 
 ## rando notes
 

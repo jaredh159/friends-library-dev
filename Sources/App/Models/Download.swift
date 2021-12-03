@@ -1,12 +1,6 @@
 import Fluent
 import Vapor
 
-enum EditionType: String, Codable, CaseIterable {
-  case updated
-  case original
-  case modernized
-}
-
 final class Download: Model, Content {
   static let schema = "downloads"
 
@@ -97,4 +91,15 @@ final class Download: Model, Content {
   var createdAt: Date?
 
   init() {}
+}
+
+extension Download {
+  enum M1 {
+    enum EditionTypeEnum {
+      static let name = "edition_type"
+      static let caseUpdated = "updated"
+      static let caseModernized = "modernized"
+      static let caseOriginal = "original"
+    }
+  }
 }

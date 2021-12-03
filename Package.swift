@@ -34,6 +34,14 @@ let package = Package(
       url: "https://github.com/m-barthelemy/vapor-queues-fluent-driver.git",
       from: "1.2.0"
     ),
+    .package(
+      url: "https://github.com/pointfreeco/swift-tagged",
+      from: "0.6.0"
+    ),
+    .package(
+      url: "https://github.com/pointfreeco/swift-nonempty.git",
+      from: "0.3.0"
+    ),
   ],
   targets: [
     .target(
@@ -42,6 +50,8 @@ let package = Package(
         .product(name: "Fluent", package: "fluent"),
         .product(name: "FluentPostgresDriver", package: "fluent-postgres-driver"),
         .product(name: "Vapor", package: "vapor"),
+        .product(name: "Tagged", package: "swift-tagged"),
+        .product(name: "NonEmpty", package: "swift-nonempty"),
         "GraphQLKit",
         "QueuesFluentDriver",
         "VaporUtils",

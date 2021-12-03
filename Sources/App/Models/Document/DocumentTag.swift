@@ -1,17 +1,6 @@
 import Fluent
 import Vapor
 
-enum DocumentTag: String, Codable, CaseIterable {
-  case journal
-  case letters
-  case exhortation
-  case doctrinal
-  case treatise
-  case history
-  case allegory
-  case spiritualLife
-}
-
 final class DocumentTagModel: Model, Content {
   static let schema = M14.tableName
 
