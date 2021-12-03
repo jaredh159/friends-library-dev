@@ -51,6 +51,7 @@ let package = Package(
         .product(name: "FluentPostgresDriver", package: "fluent-postgres-driver"),
         .product(name: "Vapor", package: "vapor"),
         .product(name: "Tagged", package: "swift-tagged"),
+        .product(name: "TaggedTime", package: "swift-tagged"),
         .product(name: "NonEmpty", package: "swift-nonempty"),
         "GraphQLKit",
         "QueuesFluentDriver",
