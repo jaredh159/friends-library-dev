@@ -30,6 +30,8 @@ struct CreateDocuments: Migration {
       .field(.createdAt, .datetime, .required)
       .field(.updatedAt, .datetime, .required)
       .field(.deletedAt, .datetime, .required)
+      .unique(on: M13.filename)
+      .unique(on: M13.title)
       .create()
   }
 

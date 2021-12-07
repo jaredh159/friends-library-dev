@@ -14,6 +14,7 @@ struct CreateIsbns: Migration {
       )
       .field(.createdAt, .datetime, .required)
       .field(.updatedAt, .datetime, .required)
+      .unique(on: M18.code)
       .create()
   }
 

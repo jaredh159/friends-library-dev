@@ -30,6 +30,7 @@ struct CreateEditions: Migration {
           .field(.createdAt, .datetime, .required)
           .field(.updatedAt, .datetime, .required)
           .field(.deletedAt, .datetime, .required)
+          .unique(on: M16.documentId, M16.type)
           .create()
       }
   }

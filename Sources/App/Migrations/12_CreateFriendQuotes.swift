@@ -19,6 +19,7 @@ struct CreateFriendQuotes: Migration {
       )
       .field(.createdAt, .datetime, .required)
       .field(.updatedAt, .datetime, .required)
+      .unique(on: M12.friendId, M12.order)
       .create()
   }
 

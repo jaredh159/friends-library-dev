@@ -27,7 +27,7 @@ struct CreateFriends: Migration {
         .field(M10.published, .datetime)
         .field(.createdAt, .datetime, .required)
         .field(.updatedAt, .datetime, .required)
-        .unique(on: M10.lang, M10.name, M10.slug)
+        .unique(on: M10.lang, M10.slug)
         .create()
     }
   }
