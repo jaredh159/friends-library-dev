@@ -17,12 +17,10 @@ struct CreateEditionImpressions: Migration {
           )
           .field(M17.adocLength, .int, .required)
           .field(M17.paperbackSize, printSizeVariants, .required)
-          .field(M17.paperbackSplits, .array(of: .int), .required)
           .field(M17.paperbackVolumes, .array(of: .int), .required)
           .field(M17.publishedRevision, .string, .required)
           .field(M17.productionToolchainRevision, .string, .required)
           .field(.createdAt, .datetime, .required)
-          .field(.updatedAt, .datetime, .required)
           .unique(on: M17.editionId)
           .create()
       }

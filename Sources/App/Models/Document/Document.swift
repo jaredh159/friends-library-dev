@@ -49,13 +49,8 @@ final class Document: Model, Content {
   @Timestamp(key: .deletedAt, on: .delete)
   var deletedAt: Date?
 
-  init() {}
-
-  /*
-  - tags (pivot)
-  - editions (children)
-  - related_documents (children? pivot?)
-  */
+  @Children(for: \RelatedDocument.$parentDocument)
+  var relatedDocuments: [RelatedDocument]
 }
 
 extension Document {

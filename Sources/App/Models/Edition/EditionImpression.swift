@@ -18,9 +18,6 @@ final class EditionImpression: Model, Content {
   @Enum(key: M17.paperbackSize)
   var paperbackSize: PrintSizeVariant
 
-  @Field(key: M17.paperbackSplits)
-  var paperbackSplits: NonEmpty<[Int]>
-
   @Field(key: M17.paperbackVolumes)
   var paperbackVolumes: NonEmpty<[Int]>
 
@@ -32,9 +29,6 @@ final class EditionImpression: Model, Content {
 
   @Timestamp(key: .createdAt, on: .create)
   var createdAt: Date?
-
-  @Timestamp(key: .updatedAt, on: .update)
-  var updatedAt: Date?
 }
 
 extension EditionImpression {
@@ -44,7 +38,6 @@ extension EditionImpression {
     static let adocLength = FieldKey("adoc_length")
     static let publishedRevision = FieldKey("published_revision")
     static let productionToolchainRevision = FieldKey("production_toolchain_revision")
-    static let paperbackSplits = FieldKey("paperback_splits")
     static let paperbackSize = FieldKey("paperback_size")
     static let paperbackVolumes = FieldKey("paperback_volumes")
   }

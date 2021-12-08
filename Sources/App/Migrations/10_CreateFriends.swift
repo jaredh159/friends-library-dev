@@ -23,7 +23,7 @@ struct CreateFriends: Migration {
         .field(M10.gender, genders, .required)
         .field(M10.description, .string, .required)
         .field(M10.born, .int)
-        .field(M10.died, .int, .required)
+        .field(M10.died, .int)
         .field(M10.published, .datetime)
         .field(.createdAt, .datetime, .required)
         .field(.updatedAt, .datetime, .required)

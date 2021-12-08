@@ -1,5 +1,6 @@
 import Fluent
 import Foundation
+import NonEmpty
 import Vapor
 
 final class Edition: Model, Content {
@@ -26,6 +27,9 @@ final class Edition: Model, Content {
   @Field(key: M16.isDraft)
   var isDraft: Bool
 
+  @OptionalField(key: M16.paperbackSplits)
+  var paperbackSplits: NonEmpty<[Int]>?
+
   @OptionalEnum(key: M16.paperbackOverrideSize)
   var paperbackOverrideSize: PrintSizeVariant?
 
@@ -47,6 +51,7 @@ extension Edition {
     static let editor = FieldKey("editor")
     static let isDraft = FieldKey("is_draft")
     static let paperbackOverrideSize = FieldKey("paperback_override_size")
+    static let paperbackSplits = FieldKey("paperback_splits")
     enum PrintSizeVariantEnum {
       static let name = "print_size_variants"
       static let caseS = "s"

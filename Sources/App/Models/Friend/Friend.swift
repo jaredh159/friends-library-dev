@@ -31,8 +31,8 @@ final class Friend: Model, Content {
   @OptionalField(key: M10.born)
   var born: Int?
 
-  @Field(key: M10.died)
-  var died: Int
+  @OptionalField(key: M10.died)
+  var died: Int?
 
   @Field(key: M10.published)
   var published: Date?

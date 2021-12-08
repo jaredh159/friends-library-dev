@@ -1,4 +1,5 @@
 import Fluent
+import Foundation
 import Vapor
 
 final class DocumentTagModel: Model, Content {
@@ -15,7 +16,8 @@ final class DocumentTagModel: Model, Content {
 
   init() {}
 
-  init(slug: DocumentTag) {
+  init(id: UUID? = nil, slug: DocumentTag) {
+    self.id = id
     self.slug = slug
   }
 }

@@ -26,10 +26,11 @@ struct CreateEditions: Migration {
           .field(M16.type, editionTypes, .required)
           .field(M16.editor, .string)
           .field(M16.isDraft, .bool, .required)
+          .field(M16.paperbackSplits, .array(of: .int))
           .field(M16.paperbackOverrideSize, printSizeVariants)
           .field(.createdAt, .datetime, .required)
           .field(.updatedAt, .datetime, .required)
-          .field(.deletedAt, .datetime, .required)
+          .field(.deletedAt, .datetime)
           .unique(on: M16.documentId, M16.type)
           .create()
       }

@@ -61,6 +61,7 @@ private func addMigrations(to app: Application) {
   app.migrations.add(CreateAudios())
   app.migrations.add(CreateAudioParts())
   app.migrations.add(CreateEditionChapters())
+  app.migrations.add(CreateRelatedDocuments())
 
   if Env.get("SEED_DB") == "true" || app.environment == .testing {
     app.migrations.add(Seed())

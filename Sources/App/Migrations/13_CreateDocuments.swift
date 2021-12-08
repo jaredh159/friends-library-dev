@@ -29,7 +29,7 @@ struct CreateDocuments: Migration {
       .field(M13.featuredDescription, .string)
       .field(.createdAt, .datetime, .required)
       .field(.updatedAt, .datetime, .required)
-      .field(.deletedAt, .datetime, .required)
+      .field(.deletedAt, .datetime)
       .unique(on: M13.filename)
       .unique(on: M13.title)
       .create()

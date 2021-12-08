@@ -1,6 +1,6 @@
 # Converge TODOs:
 
-- [ ] - pivot table for document related_documents
+- [√] - pivot table for document related_documents
 - [√] - ensure all usages of @OptionalChild have a uniqueness constraint, per vapor docs
 - [√] - look at all migrations since 10, thinking through `unique(on:)` constraints
 - [√] - pivot table for document tags
