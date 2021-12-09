@@ -24,6 +24,8 @@ public func configure(_ app: Application) throws {
 
   addMigrations(to: app)
 
+  Current.db = .live(db: app.db)
+
   app
     .grouped(UserAuthenticator())
     .register(graphQLSchema: AppSchema, withResolver: Resolver())

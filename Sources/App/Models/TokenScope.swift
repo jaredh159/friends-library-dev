@@ -1,4 +1,5 @@
 import Fluent
+import Tagged
 import Vapor
 
 enum Scope: String, Codable, CaseIterable, Equatable {
@@ -9,11 +10,16 @@ enum Scope: String, Codable, CaseIterable, Equatable {
   case mutateArtifactProductionVersions
 }
 
-final class TokenScope: Model, Content {
+typealias FlpModel = Model & Content & RandomIdGenerating
+
+final class TokenScope: FlpModel {
+
   static let schema = M5.tableName
 
-  @ID(key: .id)
-  var id: UUID?
+  typealias Id = Tagged<TokenScope, UUID>
+
+  @ID(custom: .id, generatedBy: .user)
+  var id: Id?
 
   @Enum(key: M5.scope)
   var scope: Scope
@@ -26,7 +32,7 @@ final class TokenScope: Model, Content {
 
   init() {}
 
-  init(id: UUID? = nil, tokenId: UUID? = nil, scope: Scope, createdAt: Date? = nil) {
+  init(id: Id = .init(), tokenId: Token.Id? = nil, scope: Scope, createdAt: Date? = nil) {
     self.id = id
     self.scope = scope
     self.createdAt = createdAt ?? Date()
@@ -35,6 +41,32 @@ final class TokenScope: Model, Content {
     }
   }
 }
+
+protocol EmptyInitializing {
+  init()
+}
+
+protocol RandomIdGenerating {
+  associatedtype IdType
+  var id: IdType? { get }
+  static func randomId() -> IdType
+}
+
+extension RandomIdGenerating where IdType: EmptyInitializing {
+  static func randomId() -> IdType {
+    IdType.init()
+  }
+}
+
+extension Tagged where RawValue == UUID {
+  init() {
+    self = .init(rawValue: UUID())
+  }
+}
+
+extension Tagged: EmptyInitializing where RawValue == UUID {}
+
+let foo = Tagged<(lol: (), rofl: ()), UUID>.init()
 
 extension TokenScope {
   enum M5 {

@@ -10,10 +10,17 @@ final class TokenResolverTests: GraphQLTestCase {
   }
 
   func testTokenByValue() throws {
+    Current.db = .mock(el: app.db.eventLoop)
+    print(1)
     let token = Token(description: "test")
-    try token.create(on: app.db).wait()
+    print(2)
+    _ = try Current.db.createToken(token).wait()
+    print(3)
+    // try token.create(on: app.db).wait()
     let scope = TokenScope(tokenId: token.id!, scope: .queryOrders)
-    try scope.create(on: app.db).wait()
+    print(4)
+    _ = try Current.db.createTokenScope(scope).wait()
+    print(5)
 
     GraphQLTest(
       """
@@ -22,9 +29,6 @@ final class TokenResolverTests: GraphQLTestCase {
           id
           value
           description
-          scopes {
-            scope
-          }
         }
       }
       """,
@@ -32,7 +36,7 @@ final class TokenResolverTests: GraphQLTestCase {
         "id": token.id!.uuidString,
         "value": token.value.uuidString,
         "description": "test",
-        "scope": "queryOrders",
+          // "scope": "queryOrders",
       ])
     ).run(self)
   }

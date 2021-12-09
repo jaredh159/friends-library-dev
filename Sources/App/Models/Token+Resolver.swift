@@ -5,17 +5,11 @@ import Vapor
 
 extension Resolver {
   struct GetTokenByValueArgs: Codable {
-    let value: UUID
+    let value: Token.Value
   }
 
-  func getTokenByValue(
-    request: Request,
-    args: GetTokenByValueArgs
-  ) throws -> Future<Token> {
-    Token.query(on: request.db)
-      .filter(\.$value == args.value)
-      .with(\.$scopes)
-      .first()
-      .unwrap(or: Abort(.notFound))
+  func getTokenByValue(request: Request, args: GetTokenByValueArgs) throws -> Future<Token> {
+    dump(Current.db)
+    return try Current.db.getTokenByValue(args.value)
   }
 }

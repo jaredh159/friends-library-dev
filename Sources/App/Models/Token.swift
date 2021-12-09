@@ -1,14 +1,18 @@
 import Fluent
+import Tagged
 import Vapor
 
-final class Token: Model, Content {
+final class Token: FlpModel {
+  typealias Id = Tagged<(Token, id: ()), UUID>
+  typealias Value = Tagged<(Token, Value: ()), UUID>
+
   static let schema = M4.tableName
 
-  @ID(key: .id)
-  var id: UUID?
+  @ID(custom: .id, generatedBy: .user)
+  var id: Id?
 
   @Field(key: M4.value)
-  var value: UUID
+  var value: Value
 
   @Field(key: M4.description)
   var description: String
@@ -22,16 +26,17 @@ final class Token: Model, Content {
   init() {}
 
   init(
-    id: UUID? = nil,
-    value: UUID? = nil,
+    id: Id? = nil,
+    value: Value? = nil,
     description: String,
     createdAt: Date? = nil
   ) {
-    self.id = id
-    self.value = value ?? UUID()
+    self.id = id ?? .init(rawValue: UUID())
+    self.value = value ?? .init(rawValue: UUID())
     self.description = description
     self.createdAt = createdAt ?? Date()
   }
+
 }
 
 extension Token {

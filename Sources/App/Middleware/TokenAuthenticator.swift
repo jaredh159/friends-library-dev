@@ -20,7 +20,7 @@ struct UserAuthenticator: BearerAuthenticator {
 
     return Token.query(on: request.db)
       .with(\.$scopes)
-      .filter(\.$value == tokenValue)
+      .filter(\.$value == .init(rawValue: tokenValue))
       .first()
       .flatMap { token in
         if let token = token {

@@ -5,6 +5,9 @@ import Vapor
 
 let AppSchema = try! Graphiti.Schema<Resolver, Request> {
   Scalar(UUID.self)
+  Scalar(Token.Id.self, as: "TokenId")
+  Scalar(TokenScope.Id.self, as: "TokenScopeId")
+  Scalar(Token.Value.self, as: "TokenValue")
   DateScalar(formatter: ISO8601DateFormatter())
 
   Enum(EditionType.self)

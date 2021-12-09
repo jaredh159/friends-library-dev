@@ -41,7 +41,7 @@ struct Seed: Migration {
     var futures: [Future<Void>] = []
 
     for (tokenValue, (description, scopes)) in tokens {
-      let token = Token(value: tokenValue, description: description)
+      let token = Token(value: .init(rawValue: tokenValue), description: description)
       let future = token.create(on: database).flatMap {
         scopes
           .map { TokenScope(tokenId: token.id!, scope: $0) }
