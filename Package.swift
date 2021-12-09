@@ -20,9 +20,8 @@ let package = Package(
       from: "2.1.3"
     ),
     .package(
-      name: "GraphQLKit",
-      url: "https://github.com/alexsteinerde/graphql-kit.git",
-      from: "2.3.0"
+      url: "https://github.com/GraphQLSwift/Graphiti.git",
+      from: "0.24.0"
     ),
     .package(
       name: "VaporUtils",
@@ -53,7 +52,7 @@ let package = Package(
         .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "TaggedTime", package: "swift-tagged"),
         .product(name: "NonEmpty", package: "swift-nonempty"),
-        "GraphQLKit",
+        "Graphiti",
         "QueuesFluentDriver",
         "VaporUtils",
       ],

@@ -5,6 +5,7 @@ struct Db {
   var createToken: (Token) -> Future<Token>
   var getTokenByValue: (Token.Value) throws -> Future<Token>
   var createTokenScope: (TokenScope) -> Future<TokenScope>
+  var getTokenScopes: (Token.Id) -> Future<[TokenScope]>
 }
 
 extension Db {
@@ -12,13 +13,11 @@ extension Db {
     Db(
 
       createToken: { token in
-        print("LIVE!!!")
-        return token.create(on: db).map { token }
+        token.create(on: db).map { token }
       },
 
       getTokenByValue: { tokenValue in
-        print("LIVE!!!")
-        return Token.query(on: db)
+        Token.query(on: db)
           .filter(\.$value == tokenValue)
           .with(\.$scopes)
           .first()
@@ -26,8 +25,13 @@ extension Db {
       },
 
       createTokenScope: { scope in
-        print("LIVE!!!")
-        return scope.create(on: db).map { scope }
+        scope.create(on: db).map { scope }
+      },
+
+      getTokenScopes: { tokenId in
+        TokenScope.query(on: db)
+          .filter(\.$token.$id == tokenId)
+          .all()
       }
     )
   }
@@ -66,13 +70,13 @@ extension Db {
         print(models.tokens.values, "jared")
         for token in models.tokens.values {
           if token.value == tokenValue {
-            print(token.id, "TOKEN iD")
+            // print(token.id, "TOKEN iD")
             // throw Abort(.notFound)
             // token.$scopes.idValue = token.id!
-            // token.$scopes.value = Array(models.tokenScopes.values)
-            // .filter { scope in
-            //   scope.$token.id == token.id
-            // }
+            token.$scopes.value = models.tokenScopes.values.filter { scope in
+              print("within here?")
+              return scope.$token.id == token.id
+            }
 
             return el.makeSucceededFuture(token)
           }
@@ -80,7 +84,15 @@ extension Db {
         throw Abort(.notFound)
       },
 
-      createTokenScope: { models.add($0, \.tokenScopes) }
+      createTokenScope: { models.add($0, \.tokenScopes) },
+
+      getTokenScopes: { tokenId in
+        el.makeSucceededFuture(
+          models.tokenScopes.values.filter { scope in
+            scope.token.id == tokenId
+          }
+        )
+      }
     )
   }
 }

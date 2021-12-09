@@ -1,4 +1,4 @@
-import GraphQLKit
+// import GraphQlKit
 import XCTVapor
 import XCTVaporUtils
 
@@ -9,18 +9,14 @@ final class TokenResolverTests: GraphQLTestCase {
     return try configure(app)
   }
 
-  func testTokenByValue() throws {
+  func doIt() throws {
     Current.db = .mock(el: app.db.eventLoop)
-    print(1)
     let token = Token(description: "test")
-    print(2)
     _ = try Current.db.createToken(token).wait()
-    print(3)
-    // try token.create(on: app.db).wait()
-    let scope = TokenScope(tokenId: token.id!, scope: .queryOrders)
-    print(4)
+    let scope = TokenScope(scope: .queryOrders)
+    scope.$token.value = token
+    scope.$token.$id.value = token.id!
     _ = try Current.db.createTokenScope(scope).wait()
-    print(5)
 
     GraphQLTest(
       """
@@ -29,6 +25,9 @@ final class TokenResolverTests: GraphQLTestCase {
           id
           value
           description
+          scopes {
+            scope
+          }
         }
       }
       """,
@@ -36,8 +35,42 @@ final class TokenResolverTests: GraphQLTestCase {
         "id": token.id!.uuidString,
         "value": token.value.uuidString,
         "description": "test",
-          // "scope": "queryOrders",
+        "scope": "queryOrders",
       ])
     ).run(self)
+  }
+
+  func testTokenByValue() throws {
+    for _ in 1...1000 {
+      try doIt()
+    }
+    // Current.db = .mock(el: app.db.eventLoop)
+    // let token = Token(description: "test")
+    // _ = try Current.db.createToken(token).wait()
+    // let scope = TokenScope(scope: .queryOrders)
+    // scope.$token.value = token
+    // scope.$token.$id.value = token.id!
+    // _ = try Current.db.createTokenScope(scope).wait()
+
+    // GraphQLTest(
+    //   """
+    //   query {
+    //     getTokenByValue(value: "\(token.value.uuidString)") {
+    //       id
+    //       value
+    //       description
+    //       scopes {
+    //         scope
+    //       }
+    //     }
+    //   }
+    //   """,
+    //   expectedData: .containsKVPs([
+    //     "id": token.id!.uuidString,
+    //     "value": token.value.uuidString,
+    //     "description": "test",
+    //     "scope": "queryOrders",
+    //   ])
+    // ).run(self)
   }
 }

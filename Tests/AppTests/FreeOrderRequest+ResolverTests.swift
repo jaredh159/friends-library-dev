@@ -1,4 +1,4 @@
-import GraphQLKit
+import GraphQL
 import XCTVapor
 import XCTVaporUtils
 
