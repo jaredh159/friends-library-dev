@@ -40,3 +40,8 @@ extension MockRepository {
     eventLoop.makeSucceededFuture(value)
   }
 }
+
+enum DbError: Error {
+  case notFound
+  case decodingFailed
+}

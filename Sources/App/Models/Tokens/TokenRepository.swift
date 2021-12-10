@@ -29,16 +29,19 @@ struct TokenRepository {
       SELECT * FROM \(table: Token.self)
       WHERE "\(col: Token[.value])" = '\(id: value)'
       """
-    ).all().map { rows -> Token in
-      let row = rows.first!
-      return try! row.decode(Token.self)
-    }.flatMap { token in
-      try! Current.db.getTokenScopes(token.id).map { scopes in
+    ).all().flatMapThrowing { rows -> Token in
+      guard let row = rows.first else { throw DbError.notFound }
+      return try row.decode(Token.self)
+    }.flatMapThrowing { token in
+      try Current.db.getTokenScopes(token.id).map { scopes in
         (token, scopes)
       }
-    }.map { (token, scopes) in
+    }.flatMap { future in
+      future
+    }.flatMap {
+      (token: Token, scopes: [TokenScope]) -> Future<Token> in
       token.scopes = .loaded(scopes)
-      return token
+      return db.eventLoop.makeSucceededFuture(token)
     }
   }
 
@@ -68,10 +71,7 @@ struct TokenRepository {
       WHERE \(col: TokenScope[.tokenId]) = '\(id: tokenId)'
       """
     ).all().flatMapThrowing { rows in
-      try rows.compactMap { row in
-        try row.decode(
-          model: TokenScope.self, prefix: nil, keyDecodingStrategy: .convertFromSnakeCase)
-      }
+      try rows.compactMap { try $0.decode(TokenScope.self) }
     }
   }
 }

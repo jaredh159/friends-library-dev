@@ -1,6 +1,6 @@
 # Converge TODOs:
 
-- [ ] - remove force try!s in current live impl
+- [√] - remove force try!s in current live impl
 - [√] - separate out live/mock into sub-repos, or something else
 - [√] - change dep of live to be SQLDatabase
 - [√] - remove from `Alt` faux namespace
