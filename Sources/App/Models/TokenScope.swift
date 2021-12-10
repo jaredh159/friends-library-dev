@@ -10,63 +10,37 @@ enum Scope: String, Codable, CaseIterable, Equatable {
   case mutateArtifactProductionVersions
 }
 
-typealias FlpModel = Model & Content & RandomIdGenerating
-
-final class TokenScope: FlpModel {
-
-  static let schema = M5.tableName
-
+final class TokenScope: AppModel, DuetModel {
   typealias Id = Tagged<TokenScope, UUID>
 
-  @ID(custom: .id, generatedBy: .user)
-  var id: Id?
+  static let tableName = "token_scopes"
 
-  @Enum(key: M5.scope)
+  var id: Id
   var scope: Scope
+  var tokenId: Token.Id
+  var createdAt = Current.date()
 
-  @Parent(key: M5.tokenId)
-  var token: Token
+  var token = Parent<Token>.notLoaded
 
-  @Timestamp(key: .createdAt, on: .create)
-  var createdAt: Date?
-
-  init() {}
-
-  init(id: Id = .init(), tokenId: Token.Id? = nil, scope: Scope, createdAt: Date? = nil) {
+  init(id: Id = .init(), tokenId: Token.Id, scope: Scope) {
     self.id = id
     self.scope = scope
-    self.createdAt = createdAt ?? Date()
-    if let tokenId = tokenId {
-      self.$token.id = tokenId
-    }
+    self.tokenId = tokenId
   }
 }
 
-protocol EmptyInitializing {
-  init()
-}
+/// extensions
 
-protocol RandomIdGenerating {
-  associatedtype IdType
-  var id: IdType? { get }
-  static func randomId() -> IdType
-}
+extension TokenScope: Codable {
+  typealias ColumnName = CodingKeys
 
-extension RandomIdGenerating where IdType: EmptyInitializing {
-  static func randomId() -> IdType {
-    IdType.init()
+  enum CodingKeys: String, CodingKey {
+    case id
+    case scope
+    case tokenId
+    case createdAt
   }
 }
-
-extension Tagged where RawValue == UUID {
-  init() {
-    self = .init(rawValue: UUID())
-  }
-}
-
-extension Tagged: EmptyInitializing where RawValue == UUID {}
-
-let foo = Tagged<(lol: (), rofl: ()), UUID>.init()
 
 extension TokenScope {
   enum M5 {

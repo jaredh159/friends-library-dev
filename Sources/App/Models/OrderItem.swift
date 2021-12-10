@@ -7,8 +7,8 @@ final class OrderItem: Model, Content {
   @ID(key: .id)
   var id: UUID?
 
-  @Parent(key: "order_id")
-  var order: Order
+  // @Parent(key: "order_id")
+  // var order: Order
 
   @Field(key: "title")
   var title: String

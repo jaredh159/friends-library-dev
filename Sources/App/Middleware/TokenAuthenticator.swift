@@ -5,7 +5,13 @@ struct User: Authenticatable {
   var token: Token
 
   func hasScope(_ scope: Scope) -> Bool {
-    token.scopes.contains { $0.scope == scope }
+    switch token.scopes {
+      case .notLoaded:
+        // @TODO, maybe throw? or log?
+        return false
+      case let .loaded(scopes):
+        return scopes.contains { $0.scope == scope }
+    }
   }
 }
 
@@ -14,20 +20,23 @@ struct UserAuthenticator: BearerAuthenticator {
     bearer: BearerAuthorization,
     for request: Request
   ) -> EventLoopFuture<Void> {
-    guard let tokenValue = UUID(uuidString: bearer.token) else {
-      return request.eventLoop.makeSucceededVoidFuture()
-    }
+    // @TODO
+    // guard let tokenValue = UUID(uuidString: bearer.token) else {
+    //   return request.eventLoop.makeSucceededVoidFuture()
+    // }
 
-    return Token.query(on: request.db)
-      .with(\.$scopes)
-      .filter(\.$value == .init(rawValue: tokenValue))
-      .first()
-      .flatMap { token in
-        if let token = token {
-          request.auth.login(User(token: token))
-        }
-        return request.eventLoop.makeSucceededVoidFuture()
-      }
+    return request.eventLoop.makeSucceededVoidFuture()
+    // @TODO
+    //   return Token.query(on: request.db)
+    //     .with(\.$scopes)
+    //     .filter(\.$value == .init(rawValue: tokenValue))
+    //     .first()
+    //     .flatMap { token in
+    //       if let token = token {
+    //         request.auth.login(User(token: token))
+    //       }
+    //       return request.eventLoop.makeSucceededVoidFuture()
+    //     }
   }
 }
 

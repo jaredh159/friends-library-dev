@@ -5,10 +5,10 @@ import Vapor
 
 extension Resolver {
   struct GetTokenByValueArgs: Codable {
-    let value: Alt.Token.Value
+    let value: Token.Value
   }
 
-  func getTokenByValue(request: Request, args: GetTokenByValueArgs) throws -> Future<Alt.Token> {
+  func getTokenByValue(request: Request, args: GetTokenByValueArgs) throws -> Future<Token> {
     try Current.db.getTokenByValue(args.value)
   }
 }

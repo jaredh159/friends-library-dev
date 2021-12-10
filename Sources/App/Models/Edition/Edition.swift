@@ -9,14 +9,14 @@ final class Edition: Model, Content {
   @ID(key: .id)
   var id: UUID?
 
-  @OptionalChild(for: \EditionImpression.$edition)
-  var impression: EditionImpression?
+  // @OptionalChild(for: \EditionImpression.$edition)
+  // var impression: EditionImpression?
 
   @OptionalChild(for: \Isbn.$edition)
   var isbn: Isbn?
 
-  @Parent(key: M16.documentId)
-  var document: Document
+  // @Parent(key: M16.documentId)
+  // var document: Document
 
   @Enum(key: M16.type)
   var type: EditionType

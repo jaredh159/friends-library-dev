@@ -31,8 +31,8 @@ final class Order: Model, Content {
   @ID(key: .id)
   var id: UUID?
 
-  @Children(for: \OrderItem.$order)
-  var items: [OrderItem]
+  // @Children(for: \OrderItem.$order)
+  // var items: [OrderItem]
 
   @OptionalParent(key: M7.freeOrderRequestId)
   var freeOrderRequest: FreeOrderRequest?

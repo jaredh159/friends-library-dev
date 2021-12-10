@@ -8,8 +8,8 @@ final class EditionChapter: Model, Content {
   @ID(key: .id)
   var id: UUID?
 
-  @Parent(key: M21.editionId)
-  var edition: Edition
+  // @Parent(key: M21.editionId)
+  // var edition: Edition
 
   @Field(key: M21.order)
   var order: Int

@@ -43,7 +43,7 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
     InputField("longitude", at: \.longitude)
   }
 
-  Type(Alt.TokenScope.self) {
+  Type(TokenScope.self) {
     Field("id", at: \.id.rawValue)
     Field("scope", at: \.scope)
     Field("createdAt", at: \.createdAt)
@@ -57,7 +57,7 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
   //   Field("token", with: \.$token)
   // }
 
-  Type(Alt.Token.self) {
+  Type(Token.self) {
     Field("id", at: \.id.rawValue)
     Field("value", at: \.value.rawValue)
     Field("description", at: \.description)
@@ -118,7 +118,7 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
     Field("source", at: \.source)
     Field("createdAt", at: \.createdAt)
     Field("updatedAt", at: \.updatedAt)
-    Field("items", with: \.$items)
+    // Field("items", with: \.$items)
     Field("freeOrderRequest", with: \.$freeOrderRequest)
   }
 
@@ -128,7 +128,7 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
     Field("editionType", at: \.editionType)
     Field("quantity", at: \.quantity)
     Field("unitPrice", at: \.unitPrice)
-    Field("order", with: \.$order)
+    // Field("order", with: \.$order)
   }
 
   Type(ArtifactProductionVersion.self) {

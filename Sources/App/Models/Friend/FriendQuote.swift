@@ -7,8 +7,8 @@ final class FriendQuote: Model, Content {
   @ID(key: .id)
   var id: UUID?
 
-  @Parent(key: M12.friendId)
-  var friend: Friend
+  // @Parent(key: M12.friendId)
+  // var friend: Friend
 
   @Field(key: M12.source)
   var source: String

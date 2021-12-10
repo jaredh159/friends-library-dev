@@ -2,16 +2,16 @@ import Fluent
 import Graphiti
 import Vapor
 
-extension Graphiti.Field where Arguments == NoArguments, Context == Request, ObjectType: Alt.Token {
+extension Graphiti.Field where Arguments == NoArguments, Context == Request, ObjectType: Token {
 
   convenience init(
     _ name: FieldKey,
-    with keyPath: KeyPath<ObjectType, Alt.Children<Alt.TokenScope>>
-  ) where FieldType == [TypeReference<Alt.TokenScope>] {
+    with keyPath: KeyPath<ObjectType, Children<TokenScope>>
+  ) where FieldType == [TypeReference<TokenScope>] {
     self.init(
       name.description,
       at: {
-        (model) -> (Request, NoArguments, EventLoopGroup) throws -> Future<[Alt.TokenScope]> in
+        (model) -> (Request, NoArguments, EventLoopGroup) throws -> Future<[TokenScope]> in
         return { (_, _, eventLoopGroup) in
           switch model.scopes {
             case .notLoaded:
@@ -20,6 +20,6 @@ extension Graphiti.Field where Arguments == NoArguments, Context == Request, Obj
               return eventLoopGroup.next().makeSucceededFuture(scopes)
           }
         }
-      }, as: [TypeReference<Alt.TokenScope>].self)
+      }, as: [TypeReference<TokenScope>].self)
   }
 }

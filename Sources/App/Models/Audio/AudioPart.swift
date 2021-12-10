@@ -12,8 +12,8 @@ final class AudioPart: Model, Content {
   @ID(key: .id)
   var id: UUID?
 
-  @Parent(key: M20.audioId)
-  var audio: Audio
+  // @Parent(key: M20.audioId)
+  // var audio: Audio
 
   @Field(key: M20.title)
   var title: String

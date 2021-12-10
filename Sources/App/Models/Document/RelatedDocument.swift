@@ -8,11 +8,11 @@ final class RelatedDocument: Model, Content {
   @ID(key: .id)
   var id: UUID?
 
-  @Parent(key: M22.parentDocumentId)
-  var parentDocument: Document
+  // @Parent(key: M22.parentDocumentId)
+  // var parentDocument: Document
 
-  @Parent(key: M22.documentId)
-  var document: Document
+  // @Parent(key: M22.documentId)
+  // var document: Document
 
   @Field(key: M22.description)
   var description: String

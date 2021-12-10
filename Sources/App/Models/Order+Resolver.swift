@@ -51,41 +51,42 @@ extension Resolver {
     args: CreateOrderArgs
   ) throws -> Future<Order> {
     try request.requirePermission(to: .mutateOrders)
-    let order = Order()
-    if let id = args.input.id {
-      order.id = id
-    }
-    order.$freeOrderRequest.id = args.input.freeOrderRequestId
-    order.paymentId = args.input.paymentId
-    order.printJobStatus = args.input.printJobStatus
-    order.printJobId = args.input.printJobId
-    order.amount = args.input.amount
-    order.shipping = args.input.shipping
-    order.taxes = args.input.taxes
-    order.ccFeeOffset = args.input.ccFeeOffset
-    order.shippingLevel = args.input.shippingLevel
-    order.email = args.input.email
-    order.addressName = args.input.addressName
-    order.addressStreet = args.input.addressStreet
-    order.addressStreet2 = args.input.addressStreet2
-    order.addressCity = args.input.addressCity
-    order.addressState = args.input.addressState
-    order.addressZip = args.input.addressZip
-    order.addressCountry = args.input.addressCountry
-    order.lang = args.input.lang
-    order.source = args.input.source
-    return order.create(on: request.db).flatMap { _ in
-      let items = args.input.items.map { item -> OrderItem in
-        let orderItem = OrderItem()
-        orderItem.title = item.title
-        orderItem.documentId = item.documentId
-        orderItem.editionType = item.editionType
-        orderItem.quantity = item.quantity
-        orderItem.unitPrice = item.unitPrice
-        return orderItem
-      }
-      return order.$items.create(items, on: request.db).map { order }
-    }
+    throw Abort(.notImplemented)
+    // let order = Order()
+    // if let id = args.input.id {
+    //   order.id = id
+    // }
+    // order.$freeOrderRequest.id = args.input.freeOrderRequestId
+    // order.paymentId = args.input.paymentId
+    // order.printJobStatus = args.input.printJobStatus
+    // order.printJobId = args.input.printJobId
+    // order.amount = args.input.amount
+    // order.shipping = args.input.shipping
+    // order.taxes = args.input.taxes
+    // order.ccFeeOffset = args.input.ccFeeOffset
+    // order.shippingLevel = args.input.shippingLevel
+    // order.email = args.input.email
+    // order.addressName = args.input.addressName
+    // order.addressStreet = args.input.addressStreet
+    // order.addressStreet2 = args.input.addressStreet2
+    // order.addressCity = args.input.addressCity
+    // order.addressState = args.input.addressState
+    // order.addressZip = args.input.addressZip
+    // order.addressCountry = args.input.addressCountry
+    // order.lang = args.input.lang
+    // order.source = args.input.source
+    // return order.create(on: request.db).flatMap { _ in
+    //   let items = args.input.items.map { item -> OrderItem in
+    //     let orderItem = OrderItem()
+    //     orderItem.title = item.title
+    //     orderItem.documentId = item.documentId
+    //     orderItem.editionType = item.editionType
+    //     orderItem.quantity = item.quantity
+    //     orderItem.unitPrice = item.unitPrice
+    //     return orderItem
+    //   }
+    //   return order.$items.create(items, on: request.db).map { order }
+    // }
   }
 
   func getOrder(
@@ -93,11 +94,12 @@ extension Resolver {
     args: IdentifyEntityArgs
   ) throws -> Future<Order> {
     try request.requirePermission(to: .queryOrders)
-    return Order.query(on: request.db)
-      .with(\.$items)
-      .filter(\.$id == args.id)
-      .first()
-      .unwrap(or: Abort(.notFound))
+    throw Abort(.notImplemented)
+    // return Order.query(on: request.db)
+    //   .with(\.$items)
+    //   .filter(\.$id == args.id)
+    //   .first()
+    //   .unwrap(or: Abort(.notFound))
   }
 
   struct GetOrdersArgs: Codable {

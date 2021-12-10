@@ -9,8 +9,8 @@ final class EditionImpression: Model, Content {
   @ID(key: .id)
   var id: UUID?
 
-  @Parent(key: M17.editionId)
-  var edition: Edition
+  // @Parent(key: M17.editionId)
+  // var edition: Edition
 
   @Field(key: M17.adocLength)
   var adocLength: Int

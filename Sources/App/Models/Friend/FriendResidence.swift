@@ -13,8 +13,8 @@ final class FriendResidence: Model, Content {
   @ID(key: .id)
   var id: UUID?
 
-  @Parent(key: M11.friendId)
-  var friend: Friend
+  // @Parent(key: M11.friendId)
+  // var friend: Friend
 
   @Field(key: M11.city)
   var city: String

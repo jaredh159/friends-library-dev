@@ -7,8 +7,8 @@ final class Document: Model, Content {
   @ID(key: .id)
   var id: UUID?
 
-  @Parent(key: M13.friendId)
-  var friend: Friend
+  // @Parent(key: M13.friendId)
+  // var friend: Friend
 
   @OptionalParent(key: M13.altLanguageId)
   var altLanguageDocument: Document?
@@ -49,8 +49,8 @@ final class Document: Model, Content {
   @Timestamp(key: .deletedAt, on: .delete)
   var deletedAt: Date?
 
-  @Children(for: \RelatedDocument.$parentDocument)
-  var relatedDocuments: [RelatedDocument]
+  // @Children(for: \RelatedDocument.$parentDocument)
+  // var relatedDocuments: [RelatedDocument]
 }
 
 extension Document {

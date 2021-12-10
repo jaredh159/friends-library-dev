@@ -10,8 +10,8 @@ final class Audio: Model, Content {
   @ID(key: .id)
   var id: UUID?
 
-  @Parent(key: M19.editionId)
-  var edition: Edition
+  // @Parent(key: M19.editionId)
+  // var edition: Edition
 
   @Field(key: M19.reader)
   var reader: String

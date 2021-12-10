@@ -4,16 +4,13 @@ import Tagged
 import Vapor
 
 struct Db {
-  var createToken: (Alt.Token) -> Future<Void>
-  var getTokenByValue: (Alt.Token.Value) throws -> Future<Alt.Token>
-  var createTokenScope: (Alt.TokenScope) -> Future<Void>
-  var getTokenScopes: (Alt.Token.Id) throws -> Future<[Alt.TokenScope]>
+  var createToken: (Token) -> Future<Void>
+  var getTokenByValue: (Token.Value) throws -> Future<Token>
+  var createTokenScope: (TokenScope) -> Future<Void>
+  var getTokenScopes: (Token.Id) throws -> Future<[TokenScope]>
 }
 
 extension Db {
-  private typealias Token = Alt.Token
-  private typealias TokenScope = Alt.TokenScope
-
   static func live(db: Database) -> Db {
     Db(
 
@@ -44,9 +41,9 @@ extension Db {
           SELECT * FROM \(table: Token.self)
           WHERE "\(col: Token[.value])" = '\(id: tokenValue)'
           """
-        ).all().map { rows -> Alt.Token in
+        ).all().map { rows -> Token in
           let row = rows.first!
-          return try! row.decode(Alt.Token.self)
+          return try! row.decode(Token.self)
         }.flatMap { token in
           try! Current.db.getTokenScopes(token.id).map { scopes in
             (token, scopes)
@@ -87,7 +84,7 @@ extension Db {
         ).all().flatMapThrowing { rows in
           try rows.compactMap { row in
             try row.decode(
-              model: Alt.TokenScope.self, prefix: nil, keyDecodingStrategy: .convertFromSnakeCase)
+              model: TokenScope.self, prefix: nil, keyDecodingStrategy: .convertFromSnakeCase)
           }
         }
       }
@@ -98,11 +95,11 @@ extension Db {
 extension Db {
   fileprivate struct Models {
     var el: EventLoop
-    var tokens: [Alt.Token.Id: Alt.Token] = [:]
-    var tokenScopes: [Alt.TokenScope.Id: Alt.TokenScope] = [:]
+    var tokens: [Token.Id: Token] = [:]
+    var tokenScopes: [TokenScope.Id: TokenScope] = [:]
 
     @discardableResult
-    mutating func add<M: AltModel>(
+    mutating func add<M: AppModel>(
       _ model: M,
       _ keyPath: WritableKeyPath<Self, [M.IdValue: M]>
     ) -> Future<Void> {

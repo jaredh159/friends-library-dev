@@ -2,41 +2,37 @@ import Fluent
 import Tagged
 import Vapor
 
-final class Token: FlpModel {
+final class Token: AppModel, DuetModel {
   typealias Id = Tagged<(Token, id: ()), UUID>
-  typealias Value = Tagged<(Token, Value: ()), UUID>
+  typealias Value = Tagged<(Token, value: ()), UUID>
 
-  static let schema = M4.tableName
+  static let tableName = "tokens"
 
-  @ID(custom: .id, generatedBy: .user)
-  var id: Id?
-
-  @Field(key: M4.value)
+  var id: Id
   var value: Value
-
-  @Field(key: M4.description)
   var description: String
+  var createdAt = Current.date()
 
-  @Timestamp(key: .createdAt, on: .create)
-  var createdAt: Date?
+  var scopes = Children<TokenScope>.notLoaded
 
-  @Children(for: \TokenScope.$token)
-  var scopes: [TokenScope]
-
-  init() {}
-
-  init(
-    id: Id? = nil,
-    value: Value? = nil,
-    description: String,
-    createdAt: Date? = nil
-  ) {
-    self.id = id ?? .init(rawValue: UUID())
-    self.value = value ?? .init(rawValue: UUID())
+  init(id: Id = .init(), value: Value = .init(), description: String) {
+    self.id = id
+    self.value = value
     self.description = description
-    self.createdAt = createdAt ?? Date()
   }
+}
 
+/// extensions
+
+extension Token: Codable {
+  typealias ColumnName = CodingKeys
+
+  enum CodingKeys: String, CodingKey {
+    case id
+    case value
+    case description
+    case createdAt
+  }
 }
 
 extension Token {

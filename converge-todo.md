@@ -2,8 +2,8 @@
 
 - [ ] - change dep of live to be SQLDatabase
 - [ ] - remove force try!s in current live impl
-- [ ] - remove from `Alt` faux namespace
 - [ ] - separate out live/mock into sub-repos, or something else
+- [√] - remove from `Alt` faux namespace
 - [√] - make some other files, and move stuff around
 - [√] - restore graphql-kit
 - [√] - pivot table for document related_documents

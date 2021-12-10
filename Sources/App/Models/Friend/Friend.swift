@@ -43,14 +43,14 @@ final class Friend: Model, Content {
   @Timestamp(key: .updatedAt, on: .update)
   var updatedAt: Date?
 
-  @Children(for: \FriendResidence.$friend)
-  var residences: [FriendResidence]
+  // @Children(for: \FriendResidence.$friend)
+  // var residences: [FriendResidence]
 
-  @Children(for: \FriendQuote.$friend)
-  var quotes: [FriendQuote]
+  // @Children(for: \FriendQuote.$friend)
+  // var quotes: [FriendQuote]
 
-  @Children(for: \Document.$friend)
-  var documents: [Document]
+  // @Children(for: \Document.$friend)
+  // var documents: [Document]
 
   var isCompilations: Bool {
     slug.starts(with: "compila")

@@ -2,7 +2,7 @@ import FluentSQL
 import Foundation
 
 extension SQLRow {
-  func decode<M: AltModel>(_ type: M.Type) throws -> M {
+  func decode<M: DuetModel>(_ type: M.Type) throws -> M {
     try decode(model: M.self, prefix: nil, keyDecodingStrategy: .convertFromSnakeCase)
   }
 }
@@ -12,7 +12,7 @@ extension SQLQueryString {
     self.appendInterpolation(raw: id.rawValue.uuidString)
   }
 
-  mutating func appendInterpolation<M: AltModel>(table model: M.Type) {
+  mutating func appendInterpolation<M: DuetModel>(table model: M.Type) {
     self.appendInterpolation(raw: model.tableName)
   }
 

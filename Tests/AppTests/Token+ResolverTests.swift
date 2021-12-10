@@ -11,9 +11,9 @@ final class TokenResolverTests: GraphQLTestCase {
 
   func testTokenByValue() throws {
     Current.db = .mock(el: app.db.eventLoop)
-    let token = Alt.Token(description: "test")
+    let token = Token(description: "test")
     _ = try Current.db.createToken(token).wait()
-    let scope = Alt.TokenScope(tokenId: token.id, scope: .queryOrders)
+    let scope = TokenScope(tokenId: token.id, scope: .queryOrders)
     _ = try Current.db.createTokenScope(scope).wait()
 
     GraphQLTest(
