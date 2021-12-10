@@ -1,5 +1,11 @@
 # Converge TODOs:
 
+- [ ] - change dep of live to be SQLDatabase
+- [ ] - remove force try!s in current live impl
+- [ ] - make some other files, and move stuff around
+- [ ] - remove from `Alt` faux namespace
+- [ ] - ANOTHER_TODO
+- [√] - restore graphql-kit
 - [√] - pivot table for document related_documents
 - [√] - ensure all usages of @OptionalChild have a uniqueness constraint, per vapor docs
 - [√] - look at all migrations since 10, thinking through `unique(on:)` constraints

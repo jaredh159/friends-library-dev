@@ -1,6 +1,6 @@
 import Fluent
 import FluentPostgresDriver
-// import GraphQlKit
+import GraphQLKit
 import QueuesFluentDriver
 import Vapor
 import VaporUtils
