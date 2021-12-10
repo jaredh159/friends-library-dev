@@ -2,12 +2,7 @@ import Fluent
 import Tagged
 import Vapor
 
-final class Token: AppModel, DuetModel {
-  typealias Id = Tagged<(Token, id: ()), UUID>
-  typealias Value = Tagged<(Token, value: ()), UUID>
-
-  static let tableName = "tokens"
-
+final class Token {
   var id: Id
   var value: Value
   var description: String
@@ -23,6 +18,15 @@ final class Token: AppModel, DuetModel {
 }
 
 /// extensions
+
+extension Token: AppModel {
+  typealias Id = Tagged<(Token, id: ()), UUID>
+  typealias Value = Tagged<(Token, value: ()), UUID>
+}
+
+extension Token: DuetModel {
+  static let tableName = "tokens"
+}
 
 extension Token: Codable {
   typealias ColumnName = CodingKeys

@@ -52,6 +52,7 @@ let package = Package(
         .product(name: "Vapor", package: "vapor"),
         .product(name: "Tagged", package: "swift-tagged"),
         .product(name: "TaggedTime", package: "swift-tagged"),
+        .product(name: "TaggedMoney", package: "swift-tagged"),
         .product(name: "NonEmpty", package: "swift-nonempty"),
         "GraphQLKit",
         "QueuesFluentDriver",

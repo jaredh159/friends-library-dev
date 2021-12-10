@@ -2,8 +2,7 @@ import Fluent
 import Graphiti
 import Vapor
 
-extension Graphiti.Field where Arguments == NoArguments, Context == Request, ObjectType: Token {
-
+extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: Token {
   convenience init(
     _ name: FieldKey,
     with keyPath: KeyPath<ObjectType, Children<TokenScope>>
@@ -11,7 +10,7 @@ extension Graphiti.Field where Arguments == NoArguments, Context == Request, Obj
     self.init(
       name.description,
       at: {
-        (model) -> (Request, NoArguments, EventLoopGroup) throws -> Future<[TokenScope]> in
+        (model) -> (Req, NoArgs, EventLoopGroup) throws -> Future<[TokenScope]> in
         return { (_, _, eventLoopGroup) in
           switch model.scopes {
             case .notLoaded:

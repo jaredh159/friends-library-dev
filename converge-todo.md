@@ -11,6 +11,7 @@
 - [√] - look at all migrations since 10, thinking through `unique(on:)` constraints
 - [√] - pivot table for document tags
 - [√] - table for isbns, with optional FK to edition 👍
+- [ ] - migrate `order_items` to store Edition.Id instead of Document.Id AND edition type
 
 ## rando notes
 

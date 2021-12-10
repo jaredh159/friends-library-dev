@@ -4,6 +4,25 @@ import Vapor
 final class MockDb {
   var tokens: [Token.Id: Token] = [:]
   var tokenScopes: [TokenScope.Id: TokenScope] = [:]
+  var orders: [Order.Id: Order] = [:]
+  var orderItems: [OrderItem.Id: OrderItem] = [:]
+
+  func find<M: AppModel>(
+    _ id: M.IdValue,
+    in keyPath: ReferenceWritableKeyPath<MockDb, [M.IdValue: M]>
+  ) throws -> M {
+    guard let model = self[keyPath: keyPath][id] else {
+      throw Abort(.notFound)
+    }
+    return model
+  }
+
+  func find<M: AppModel>(
+    where predicate: (M) -> Bool,
+    in keyPath: ReferenceWritableKeyPath<MockDb, [M.IdValue: M]>
+  ) -> [M] {
+    self[keyPath: keyPath].values.filter(predicate)
+  }
 
   func first<M: AppModel>(
     where predicate: (M) -> Bool,

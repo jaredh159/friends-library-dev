@@ -1,6 +1,7 @@
 import Fluent
 import Foundation
 import Graphiti
+import TaggedMoney
 import Vapor
 
 struct UpdateOrderInput: Codable {
@@ -38,7 +39,7 @@ struct CreateOrderInput: Codable {
   let addressCountry: String
   let lang: Lang
   let source: Order.OrderSource
-  let items: [Item]
+  let items: [CreateOrderInput.Item]
 }
 
 extension Resolver {
@@ -46,11 +47,8 @@ extension Resolver {
     let input: CreateOrderInput
   }
 
-  func createOrder(
-    request: Request,
-    args: CreateOrderArgs
-  ) throws -> Future<Order> {
-    try request.requirePermission(to: .mutateOrders)
+  func createOrder(req: Req, args: CreateOrderArgs) throws -> Future<Order> {
+    try req.requirePermission(to: .mutateOrders)
     throw Abort(.notImplemented)
     // let order = Order()
     // if let id = args.input.id {
@@ -89,68 +87,36 @@ extension Resolver {
     // }
   }
 
-  func getOrder(
-    request: Request,
-    args: IdentifyEntityArgs
-  ) throws -> Future<Order> {
-    try request.requirePermission(to: .queryOrders)
-    throw Abort(.notImplemented)
-    // return Order.query(on: request.db)
-    //   .with(\.$items)
-    //   .filter(\.$id == args.id)
-    //   .first()
-    //   .unwrap(or: Abort(.notFound))
+  func getOrder(req: Req, args: IdentifyEntityArgs) throws -> Future<Order> {
+    try req.requirePermission(to: .queryOrders)
+    return try Current.db.getOrder(.init(rawValue: args.id))
   }
 
   struct GetOrdersArgs: Codable {
-    let printJobStatus: Order.PrintJobStatus?
+    let printJobStatus: Order.PrintJobStatus
   }
 
-  func getOrders(
-    request: Request,
-    args: GetOrdersArgs
-  ) throws -> Future<[Order]> {
-    try request.requirePermission(to: .queryOrders)
-    var query = Order.query(on: request.db)
-    if let printJobStatus = args.printJobStatus {
-      query = query.filter(\.$printJobStatus == printJobStatus)
-    }
-    return query.all()
+  func getOrders(req: Req, args: GetOrdersArgs) throws -> Future<[Order]> {
+    try req.requirePermission(to: .queryOrders)
+    return try Current.db.getOrdersByPrintJobStatus(args.printJobStatus)
   }
 
   struct UpdateOrderArgs: Codable {
     let input: UpdateOrderInput
   }
 
-  func updateOrder(
-    request: Request,
-    args: UpdateOrderArgs
-  ) throws -> Future<Order> {
-    try request.requirePermission(to: .mutateOrders)
-    return Order.find(args.input.id, on: request.db)
-      .unwrap(or: Abort(.notFound))
-      .flatMap { order in
-        if let printJobId = args.input.printJobId {
-          order.printJobId = printJobId
-        }
-        if let printJobStatus = args.input.printJobStatus {
-          order.printJobStatus = printJobStatus
-        }
-        return order.save(on: request.db).map { order }
-      }
+  func updateOrder(req: Req, args: UpdateOrderArgs) throws -> Future<Order> {
+    try req.requirePermission(to: .mutateOrders)
+    return try Current.db.updateOrder(args.input)
   }
 
   struct UpdateOrdersArgs: Codable {
     let input: [UpdateOrderInput]
   }
 
-  func updateOrders(
-    request: Request,
-    args: UpdateOrdersArgs
-  ) throws -> Future<[Order]> {
-    try request.requirePermission(to: .mutateOrders)
-    return try args.input.map { input in
-      try updateOrder(request: request, args: UpdateOrderArgs(input: input))
-    }.flatten(on: request.eventLoop)
+  func updateOrders(req: Req, args: UpdateOrdersArgs) throws -> Future<[Order]> {
+    try req.requirePermission(to: .mutateOrders)
+    return try args.input.map { try Current.db.updateOrder($0) }
+      .flatten(on: req.eventLoop)
   }
 }

@@ -1,9 +1,83 @@
 import Fluent
+import Tagged
+import TaggedMoney
 import Vapor
 
-final class Order: Model, Content {
-  static let schema = M2.tableName
+final class Order {
+  var id: Id
+  var lang: Lang
+  var source: OrderSource
+  var paymentId: PaymentId
+  var printJobId: PrintJobId?
+  var printJobStatus: PrintJobStatus
+  var amount: Cents<Int>
+  var taxes: Cents<Int>
+  var ccFeeOffset: Cents<Int>
+  var shipping: Cents<Int>
+  var shippingLevel: ShippingLevel
+  var email: EmailAddress
+  var addressName: String
+  var addressStreet: String
+  var addressStreet2: String?
+  var addressCity: String
+  var addressState: String
+  var addressZip: String
+  var addressCountry: String
+  var createdAt = Current.date()
+  var updatedAt = Current.date()
 
+  var items = Children<OrderItem>.notLoaded
+
+  init(
+    id: Id = .init(),
+    printJobId: PrintJobId? = nil,
+    lang: Lang,
+    source: OrderSource,
+    paymentId: PaymentId,
+    printJobStatus: PrintJobStatus,
+    amount: Cents<Int>,
+    taxes: Cents<Int>,
+    ccFeeOffset: Cents<Int>,
+    shipping: Cents<Int>,
+    shippingLevel: ShippingLevel,
+    email: EmailAddress,
+    addressName: String,
+    addressStreet: String,
+    addressStreet2: String?,
+    addressCity: String,
+    addressState: String,
+    addressZip: String,
+    addressCountry: String
+  ) {
+    self.id = id
+    self.printJobId = printJobId
+    self.lang = lang
+    self.source = source
+    self.paymentId = paymentId
+    self.printJobStatus = printJobStatus
+    self.amount = amount
+    self.taxes = taxes
+    self.ccFeeOffset = ccFeeOffset
+    self.shipping = shipping
+    self.shippingLevel = shippingLevel
+    self.email = email
+    self.addressName = addressName
+    self.addressStreet = addressStreet
+    self.addressStreet2 = addressStreet2
+    self.addressCity = addressCity
+    self.addressState = addressState
+    self.addressZip = addressZip
+    self.addressCountry = addressCountry
+  }
+
+  // @TODO
+  // @OptionalParent(key: M7.freeOrderRequestId)
+  // var freeOrderRequest: FreeOrderRequest?
+}
+
+/// extensions
+
+extension Order {
   enum PrintJobStatus: String, Codable, CaseIterable {
     case presubmit
     case pending
@@ -27,77 +101,44 @@ final class Order: Model, Content {
     case website
     case `internal`
   }
+}
 
-  @ID(key: .id)
-  var id: UUID?
+extension Order: AppModel {
+  typealias Id = Tagged<Order, UUID>
+  typealias PaymentId = Tagged<(order: Order, paymentId: ()), String>
+  typealias PrintJobId = Tagged<(order: Order, printJobId: ()), Int>
+}
 
-  // @Children(for: \OrderItem.$order)
-  // var items: [OrderItem]
+extension Order: DuetModel {
+  static let tableName = M2.tableName
+}
 
-  @OptionalParent(key: M7.freeOrderRequestId)
-  var freeOrderRequest: FreeOrderRequest?
+extension Order: Codable {
+  typealias ColumnName = CodingKeys
 
-  @Field(key: M2.paymentId)
-  var paymentId: String
-
-  @Enum(key: M2.printJobStatus)
-  var printJobStatus: PrintJobStatus
-
-  @OptionalField(key: M2.printJobId)
-  var printJobId: Int?
-
-  @Field(key: M2.amount)
-  var amount: Int
-
-  @Field(key: M2.shipping)
-  var shipping: Int
-
-  @Field(key: M2.taxes)
-  var taxes: Int
-
-  @Field(key: M2.ccFeeOffset)
-  var ccFeeOffset: Int
-
-  @Enum(key: M2.shippingLevel)
-  var shippingLevel: ShippingLevel
-
-  @Field(key: M2.email)
-  var email: String
-
-  @Field(key: M2.addressName)
-  var addressName: String
-
-  @Field(key: M2.addressStreet)
-  var addressStreet: String
-
-  @OptionalField(key: M2.addressStreet2)
-  var addressStreet2: String?
-
-  @Field(key: M2.addressCity)
-  var addressCity: String
-
-  @Field(key: M2.addressState)
-  var addressState: String
-
-  @Field(key: M2.addressZip)
-  var addressZip: String
-
-  @Field(key: M2.addressCountry)
-  var addressCountry: String
-
-  @Enum(key: M2.lang)
-  var lang: Lang
-
-  @Enum(key: M2.source)
-  var source: OrderSource
-
-  @Timestamp(key: .createdAt, on: .create)
-  var createdAt: Date?
-
-  @Timestamp(key: .updatedAt, on: .update)
-  var updatedAt: Date?
-
-  init() {}
+  enum CodingKeys: String, CodingKey {
+    case id
+    case lang
+    case amount
+    case taxes
+    case ccFeeOffset
+    case shipping
+    case shippingLevel
+    case paymentId
+    case printJobId
+    case printJobStatus
+    case email
+    case source
+    case addressName
+    case addressStreet
+    case addressStreet2
+    case addressCity
+    case addressState
+    case addressZip
+    case addressCountry
+    case createdAt
+    case updatedAt
+  }
 }
 
 extension Order {

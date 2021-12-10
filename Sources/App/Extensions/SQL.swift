@@ -19,4 +19,22 @@ extension SQLQueryString {
   mutating func appendInterpolation(col: String) {
     self.appendInterpolation(raw: col)
   }
+
+  mutating func appendInterpolation(nullable: String?) {
+    if let string = nullable {
+      self.appendInterpolation(raw: "'")
+      self.appendInterpolation(raw: string)
+      self.appendInterpolation(raw: "'")
+    } else {
+      self.appendInterpolation(raw: "NULL")
+    }
+  }
+
+  mutating func appendInterpolation(nullable: Int?) {
+    if let string = nullable {
+      self.appendInterpolation(literal: string)
+    } else {
+      self.appendInterpolation(raw: "NULL")
+    }
+  }
 }

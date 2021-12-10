@@ -1,32 +1,61 @@
 import Fluent
+import Tagged
 import Vapor
 
-final class OrderItem: Model, Content {
-  static let schema = "order_items"
-
-  @ID(key: .id)
-  var id: UUID?
-
-  // @Parent(key: "order_id")
-  // var order: Order
-
-  @Field(key: "title")
+final class OrderItem {
+  var id: Id
+  var orderId: Order.Id
+  var documentId: UUID  // @TODO, should become Document.Id, then be deleted when switching to Edition.Id
+  var editionType: EditionType  // @TODO remove
   var title: String
-
-  @Field(key: "document_id")
-  var documentId: UUID
-
-  @Enum(key: "edition_type")
-  var editionType: EditionType
-
-  @Field(key: "quantity")
   var quantity: Int
-
-  @Field(key: "unit_price")
   var unitPrice: Int
+  var createdAt = Current.date()
+  var order = Parent<Order>.notLoaded
 
-  @Timestamp(key: "created_at", on: .create)
-  var createdAt: Date?
+  // var document = Parent<Document>.notLoaded // @TODO, then switch
+  // var edition = Parent<Edition>.notLoaded // @TODO, longer-term correct
 
-  init() {}
+  init(
+    id: Id = .init(),
+    orderId: Order.Id,
+    documentId: UUID,
+    editionType: EditionType,
+    title: String,
+    quantity: Int,
+    unitPrice: Int
+  ) {
+    self.id = id
+    self.orderId = orderId
+    self.documentId = documentId
+    self.editionType = editionType
+    self.title = title
+    self.quantity = quantity
+    self.unitPrice = unitPrice
+  }
+}
+
+/// extensions
+
+extension OrderItem: AppModel {
+  typealias Id = Tagged<OrderItem, UUID>
+}
+
+extension OrderItem: DuetModel {
+  static let tableName = "order_items"
+}
+
+extension OrderItem: Codable {
+  typealias ColumnName = CodingKeys
+
+  enum CodingKeys: String, CodingKey {
+    case id
+    case orderId
+    case documentId
+    case editionType
+    case title
+    case quantity
+    case unitPrice
+    case createdAt
+  }
 }

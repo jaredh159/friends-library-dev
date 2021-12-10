@@ -19,12 +19,15 @@ final class Resolver {
   func getModelsCounts(request: Request, args: NoArguments) throws -> Future<ModelsCounts> {
     try request.requirePermission(to: .queryOrders)
     try request.requirePermission(to: .queryDownloads)
-    let downloads = Download.query(on: request.db).count()
-    let orders = Order.query(on: request.db).count()
-    let orderItems = OrderItem.query(on: request.db).count()
-    return downloads.and(orders).and(orderItems).map { counts in
-      let ((downloads, orders), orderItems) = counts
-      return ModelsCounts(downloads: downloads, orders: orders, orderItems: orderItems)
-    }
+    return request.eventLoop.makeSucceededFuture(
+      ModelsCounts(downloads: 0, orders: 0, orderItems: 0))
+    // @TODO
+    // let downloads = Download.query(on: request.db).count()
+    // let orders = Order.query(on: request.db).count()
+    // let orderItems = OrderItem.query(on: request.db).count()
+    // return downloads.and(orders).and(orderItems).map { counts in
+    //   let ((downloads, orders), orderItems) = counts
+    //   return ModelsCounts(downloads: downloads, orders: orders, orderItems: orderItems)
+    // }
   }
 }

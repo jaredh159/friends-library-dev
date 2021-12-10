@@ -137,7 +137,7 @@ final class OrderResolverTests: GraphQLTestCase {
     let order = Order.createFixture(on: app.db)
 
     let input: Map = .dictionary([
-      "id": .string(order.id!.uuidString),
+      "id": .string(order.id.uuidString),
       "printJobId": .number(12345),
       "printJobStatus": .string("accepted"),
     ])
@@ -165,11 +165,11 @@ final class OrderResolverTests: GraphQLTestCase {
 
     let input: Map = .array([
       .dictionary([
-        "id": .string(order1.id!.uuidString),
+        "id": .string(order1.id.uuidString),
         "printJobId": .number(5555),
       ]),
       .dictionary([
-        "id": .string(order2.id!.uuidString),
+        "id": .string(order2.id.uuidString),
         "printJobId": .number(3333),
       ]),
     ])
@@ -188,14 +188,17 @@ final class OrderResolverTests: GraphQLTestCase {
   }
 
   func testGetOrderById() throws {
-    let order = Order.createFixture(on: app.db) {
-      $0.printJobId = 234432
+    let order = Order.createFixture(on: app.db) { _ in
+      // $0.printJobId = 234432
+
+      // @TODO
+      fatalError()
     }
 
     GraphQLTest(
       """
       query {
-        order: getOrder(id: "\(order.id!.uuidString)") {
+        order: getOrder(id: "\(order.id.uuidString)") {
           printJobId
         }
       }
@@ -210,7 +213,7 @@ final class OrderResolverTests: GraphQLTestCase {
     GraphQLTest(
       """
       query {
-        order: getOrder(id: "\(order.id!.uuidString)") {
+        order: getOrder(id: "\(order.id.uuidString)") {
           printJobId
         }
       }
@@ -236,7 +239,7 @@ final class OrderResolverTests: GraphQLTestCase {
         }
       }
       """,
-      expectedData: .containsUUIDs([order1.id!, order2.id!]),
+      expectedData: .containsUUIDs([order1.id.rawValue, order2.id.rawValue]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(self)
   }

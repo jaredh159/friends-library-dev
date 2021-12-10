@@ -32,3 +32,4 @@ enum PrintSizeVariant: String, Codable, CaseIterable {
 typealias GitCommitSha = Tagged<(tagged: (), sha: ()), String>
 typealias ISBN = Tagged<(tagged: (), isbn: ()), String>
 typealias Bytes = Tagged<(tagged: (), bytes: ()), Int>
+typealias EmailAddress = Tagged<(tagged: (), emailAddress: ()), String>
