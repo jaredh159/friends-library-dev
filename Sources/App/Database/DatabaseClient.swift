@@ -12,10 +12,10 @@ struct DatabaseClient {
 
 extension DatabaseClient {
   static let throwing = DatabaseClient(
-    createToken: { _ in throw Abort(.payloadTooLarge) },
-    getTokenByValue: { _ in throw Abort(.payloadTooLarge) },
-    createTokenScope: { _ in throw Abort(.payloadTooLarge) },
-    getTokenScopes: { _ in throw Abort(.payloadTooLarge) }
+    createToken: { _ in throw Abort(.notImplemented) },
+    getTokenByValue: { _ in throw Abort(.notImplemented) },
+    createTokenScope: { _ in throw Abort(.notImplemented) },
+    getTokenScopes: { _ in throw Abort(.notImplemented) }
   )
 }
 

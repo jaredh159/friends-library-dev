@@ -7,6 +7,8 @@ import VaporUtils
 
 typealias Future = EventLoopFuture
 typealias Env = Vapor.Environment
+typealias Req = Vapor.Request
+typealias NoArgs = Graphiti.NoArguments
 
 public func configure(_ app: Application) throws {
   app.middleware.use(corsMiddleware(app), at: .beginning)
