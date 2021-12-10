@@ -10,42 +10,6 @@ struct Db {
   var getTokenScopes: (Alt.Token.Id) throws -> Future<[Alt.TokenScope]>
 }
 
-extension String {
-  var snakeCased: String {
-    let acronymPattern = "([A-Z]+)([A-Z][a-z]|[0-9])"
-    let normalPattern = "([a-z0-9])([A-Z])"
-    return self.processCamalCaseRegex(pattern: acronymPattern)?
-      .processCamalCaseRegex(pattern: normalPattern)?.lowercased() ?? self.lowercased()
-  }
-
-  fileprivate func processCamalCaseRegex(pattern: String) -> String? {
-    let regex = try? NSRegularExpression(pattern: pattern, options: [])
-    let range = NSRange(location: 0, length: count)
-    return regex?.stringByReplacingMatches(
-      in: self, options: [], range: range, withTemplate: "$1_$2")
-  }
-}
-
-extension SQLRow {
-  func decode<M: AltModel>(_ type: M.Type) throws -> M {
-    try decode(model: M.self, prefix: nil, keyDecodingStrategy: .convertFromSnakeCase)
-  }
-}
-
-extension SQLQueryString {
-  mutating func appendInterpolation<T: RawRepresentable>(id: T) where T.RawValue == UUID {
-    self.appendInterpolation(raw: id.rawValue.uuidString)
-  }
-
-  mutating func appendInterpolation<M: AltModel>(table model: M.Type) {
-    self.appendInterpolation(raw: model.tableName)
-  }
-
-  mutating func appendInterpolation(col: String) {
-    self.appendInterpolation(raw: col)
-  }
-}
-
 extension Db {
   private typealias Token = Alt.Token
   private typealias TokenScope = Alt.TokenScope

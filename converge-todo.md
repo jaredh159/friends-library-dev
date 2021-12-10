@@ -2,9 +2,9 @@
 
 - [ ] - change dep of live to be SQLDatabase
 - [ ] - remove force try!s in current live impl
-- [ ] - make some other files, and move stuff around
 - [ ] - remove from `Alt` faux namespace
-- [ ] - ANOTHER_TODO
+- [ ] - separate out live/mock into sub-repos, or something else
+- [√] - make some other files, and move stuff around
 - [√] - restore graphql-kit
 - [√] - pivot table for document related_documents
 - [√] - ensure all usages of @OptionalChild have a uniqueness constraint, per vapor docs
@@ -18,3 +18,5 @@
   left it out of migration for now
 - moved optional `print_size` prop from Document to Edition, i think it more correctly
   belongs there
+
+- [ ] - ANOTHER_TODO
