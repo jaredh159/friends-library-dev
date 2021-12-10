@@ -3,20 +3,25 @@ import Graphiti
 import Vapor
 
 // Child Relationship
-extension Graphiti.Field where Arguments == NoArguments, Context == Request, ObjectType: Token {
+extension Graphiti.Field where Arguments == NoArguments, Context == Request, ObjectType: Alt.Token {
 
   convenience init(
     _ name: FieldKey,
-    with keyPath: KeyPath<ObjectType, ChildrenProperty<ObjectType, TokenScope>>
-  ) where FieldType == [TypeReference<TokenScope>] {
+    with keyPath: KeyPath<ObjectType, Alt.Children<Alt.TokenScope>>
+  ) where FieldType == [TypeReference<Alt.TokenScope>] {
     self.init(
       name.description,
       at: {
-        (model) -> (Request, NoArguments, EventLoopGroup) throws -> EventLoopFuture<[TokenScope]> in
-        return { (context: Request, arguments: NoArguments, eventLoop: EventLoopGroup) in
-          try Current.db.getTokenScopes(model.requireID())
+        (model) -> (Request, NoArguments, EventLoopGroup) throws -> Future<[Alt.TokenScope]> in
+        return { (_, _, eventLoopGroup) in
+          switch model.scopes {
+            case .notLoaded:
+              return try Current.db.getTokenScopes(model.id)
+            case let .loaded(scopes):
+              return eventLoopGroup.next().makeSucceededFuture(scopes)
+          }
         }
-      }, as: [TypeReference<TokenScope>].self)
+      }, as: [TypeReference<Alt.TokenScope>].self)
   }
 }
 
@@ -32,17 +37,17 @@ extension Graphiti.Field where Arguments == NoArguments, Context == Request, Obj
     self.init(
       name.description,
       at: {
-        (model) -> (Request, NoArguments, EventLoopGroup) throws -> EventLoopFuture<[ChildType]> in
+        (model) -> (Request, NoArguments, EventLoopGroup) throws -> Future<[ChildType]> in
         return { (context: Request, arguments: NoArguments, eventLoop: EventLoopGroup) in
-          switch model {
-            case let token as Token:
-              print("yolo it's a token")
-              let id: Token.Id = try token.requireID()
-              return Current.db.getTokenScopes(id) as! Future<[ChildType]>
-            // return try Current.db.getTokenScopes(token.requireID())
-            default:
-              print("not a token")
-          }
+          // switch model {
+          //   case let token as Token:
+          //     print("yolo it's a token")
+          //     let id: Token.Id = try token.requireID()
+          //     return Current.db.getTokenScopes(id) as! Future<[ChildType]>
+          //   // return try Current.db.getTokenScopes(token.requireID())
+          //   default:
+          //     print("not a token")
+          // }
           // print("\n\n\n-------------TYPE-------------")
           // print(Swift.model(of: model))
           // print(model)
@@ -71,7 +76,7 @@ extension Graphiti.Field where Arguments == NoArguments, Context == Request, Obj
     self.init(
       name.description,
       at: {
-        (type) -> (Request, NoArguments, EventLoopGroup) throws -> EventLoopFuture<ParentType> in
+        (type) -> (Request, NoArguments, EventLoopGroup) throws -> Future<ParentType> in
         return { (context: Request, arguments: NoArguments, eventLoop: EventLoopGroup) in
           return type[keyPath: keyPath].get(on: context.db)  // Get the desired property and make the Fluent database query on it.
         }
@@ -92,7 +97,7 @@ extension Graphiti.Field where Arguments == NoArguments, Context == Request, Obj
   ) where FieldType == [TypeReference<ToType>] {
     self.init(
       name.description,
-      at: { (type) -> (Request, NoArguments, EventLoopGroup) throws -> EventLoopFuture<[ToType]> in
+      at: { (type) -> (Request, NoArguments, EventLoopGroup) throws -> Future<[ToType]> in
         return { (context: Request, arguments: NoArguments, eventLoop: EventLoopGroup) in
           return type[keyPath: keyPath].query(on: context.db).all()  // Get the desired property and make the Fluent database query on it.
         }
@@ -114,10 +119,10 @@ extension Graphiti.Field where Arguments == NoArguments, Context == Request, Obj
     self.init(
       name.description,
       at: {
-        (type) -> (Request, NoArguments, EventLoopGroup) throws -> EventLoopFuture<ParentType?> in
+        (type) -> (Request, NoArguments, EventLoopGroup) throws -> Future<ParentType?> in
         return {
           (context: Request, arguments: NoArguments, eventLoop: EventLoopGroup) throws
-            -> EventLoopFuture<ParentType?> in
+            -> Future<ParentType?> in
           return type[keyPath: keyPath].get(on: context.db)  // Get the desired property and make the Fluent database query on it.
         }
       }, as: TypeReference<ParentType>?.self)
@@ -138,10 +143,10 @@ extension Graphiti.Field where Arguments == NoArguments, Context == Request, Obj
     self.init(
       name.description,
       at: {
-        (type) -> (Request, NoArguments, EventLoopGroup) throws -> EventLoopFuture<ParentType?> in
+        (type) -> (Request, NoArguments, EventLoopGroup) throws -> Future<ParentType?> in
         return {
           (context: Request, arguments: NoArguments, eventLoop: EventLoopGroup) throws
-            -> EventLoopFuture<ParentType?> in
+            -> Future<ParentType?> in
           return type[keyPath: keyPath].get(on: context.db)  // Get the desired property and make the Fluent database query on it.
         }
       }, as: TypeReference<ParentType>?.self)

@@ -9,13 +9,11 @@ final class TokenResolverTests: GraphQLTestCase {
     return try configure(app)
   }
 
-  func doIt() throws {
-    Current.db = .mock(el: app.db.eventLoop)
-    let token = Token(description: "test")
+  func testTokenByValue() throws {
+    // Current.db = .mock(el: app.db.eventLoop)
+    let token = Alt.Token(description: "test")
     _ = try Current.db.createToken(token).wait()
-    let scope = TokenScope(scope: .queryOrders)
-    scope.$token.value = token
-    scope.$token.$id.value = token.id!
+    let scope = Alt.TokenScope(tokenId: token.id, scope: .queryOrders)
     _ = try Current.db.createTokenScope(scope).wait()
 
     GraphQLTest(
@@ -32,45 +30,11 @@ final class TokenResolverTests: GraphQLTestCase {
       }
       """,
       expectedData: .containsKVPs([
-        "id": token.id!.uuidString,
+        "id": token.id.uuidString,
         "value": token.value.uuidString,
         "description": "test",
         "scope": "queryOrders",
       ])
     ).run(self)
-  }
-
-  func testTokenByValue() throws {
-    for _ in 1...1000 {
-      try doIt()
-    }
-    // Current.db = .mock(el: app.db.eventLoop)
-    // let token = Token(description: "test")
-    // _ = try Current.db.createToken(token).wait()
-    // let scope = TokenScope(scope: .queryOrders)
-    // scope.$token.value = token
-    // scope.$token.$id.value = token.id!
-    // _ = try Current.db.createTokenScope(scope).wait()
-
-    // GraphQLTest(
-    //   """
-    //   query {
-    //     getTokenByValue(value: "\(token.value.uuidString)") {
-    //       id
-    //       value
-    //       description
-    //       scopes {
-    //         scope
-    //       }
-    //     }
-    //   }
-    //   """,
-    //   expectedData: .containsKVPs([
-    //     "id": token.id!.uuidString,
-    //     "value": token.value.uuidString,
-    //     "description": "test",
-    //     "scope": "queryOrders",
-    //   ])
-    // ).run(self)
   }
 }

@@ -43,20 +43,35 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
     InputField("longitude", at: \.longitude)
   }
 
-  Type(TokenScope.self) {
-    Field("id", at: \.id)
+  Type(Alt.TokenScope.self) {
+    Field("id", at: \.id.rawValue)
     Field("scope", at: \.scope)
     Field("createdAt", at: \.createdAt)
-    Field("token", with: \.$token)
+    // Field("token", with: \.$token)
   }
 
-  Type(Token.self) {
-    Field("id", at: \.id)
-    Field("value", at: \.value)
+  // Type(TokenScope.self) {
+  //   Field("id", at: \.id)
+  //   Field("scope", at: \.scope)
+  //   Field("createdAt", at: \.createdAt)
+  //   Field("token", with: \.$token)
+  // }
+
+  Type(Alt.Token.self) {
+    Field("id", at: \.id.rawValue)
+    Field("value", at: \.value.rawValue)
     Field("description", at: \.description)
     Field("createdAt", at: \.createdAt)
-    Field("scopes", with: \.$scopes)
+    Field("scopes", with: \.scopes)
   }
+
+  // Type(Token.self) {
+  //   Field("id", at: \.id)
+  //   Field("value", at: \.value)
+  //   Field("description", at: \.description)
+  //   Field("createdAt", at: \.createdAt)
+  //   Field("scopes", with: \.$scopes)
+  // }
 
   Type(ModelsCounts.self) {
     Field("downloads", at: \.downloads)
@@ -207,7 +222,7 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
     }
 
     Field("getTokenByValue", at: Resolver.getTokenByValue) {
-      Argument("value", at: \.value)
+      Argument("value", at: \.value.rawValue)
     }
 
     Field("getModelsCounts", at: Resolver.getModelsCounts)
