@@ -11,12 +11,10 @@ struct Db {
 }
 
 extension Db {
-  static func live(db: Database) -> Db {
+  static func live(db: SQLDatabase) -> Db {
     Db(
-
       createToken: { token in
-        let pg = db as! SQLDatabase
-        return pg.raw(
+        db.raw(
           """
           INSERT INTO \(table: Token.self)
           (
@@ -35,8 +33,7 @@ extension Db {
       },
 
       getTokenByValue: { tokenValue in
-        let pg = db as! SQLDatabase
-        return pg.raw(
+        db.raw(
           """
           SELECT * FROM \(table: Token.self)
           WHERE "\(col: Token[.value])" = '\(id: tokenValue)'
@@ -55,8 +52,7 @@ extension Db {
       },
 
       createTokenScope: { scope in
-        let pg = db as! SQLDatabase
-        return pg.raw(
+        db.raw(
           """
           INSERT INTO \(table: TokenScope.self)
           (
@@ -75,8 +71,7 @@ extension Db {
       },
 
       getTokenScopes: { tokenId in
-        let pg = db as! SQLDatabase
-        return pg.raw(
+        db.raw(
           """
           SELECT * FROM \(table: TokenScope.self)
           WHERE \(col: TokenScope[.tokenId]) = '\(id: tokenId)'
@@ -94,22 +89,19 @@ extension Db {
 
 extension Db {
   fileprivate struct Models {
-    var el: EventLoop
     var tokens: [Token.Id: Token] = [:]
     var tokenScopes: [TokenScope.Id: TokenScope] = [:]
 
-    @discardableResult
     mutating func add<M: AppModel>(
       _ model: M,
       _ keyPath: WritableKeyPath<Self, [M.IdValue: M]>
-    ) -> Future<Void> {
+    ) {
       self[keyPath: keyPath][model.id] = model
-      return el.makeSucceededFuture(())
     }
   }
 
   static func mock(el: EventLoop) -> Db {
-    var models = Models(el: el)
+    var models = Models()
 
     func future<T>(_ model: T) -> Future<T> {
       el.makeSucceededFuture(model)
@@ -117,7 +109,7 @@ extension Db {
 
     return Db(
 
-      createToken: { models.add($0, \.tokens) },
+      createToken: { future(models.add($0, \.tokens)) },
 
       getTokenByValue: { tokenValue in
         for token in models.tokens.values {
@@ -128,7 +120,7 @@ extension Db {
         throw Abort(.notFound)
       },
 
-      createTokenScope: { models.add($0, \.tokenScopes) },
+      createTokenScope: { future(models.add($0, \.tokenScopes)) },
 
       getTokenScopes: { tokenId in
         future(
