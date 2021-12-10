@@ -3,7 +3,7 @@ import Foundation
 struct Environment {
   var uuid: () -> UUID = UUID.init
   var date: () -> Date = Date.init
-  var db: Db!
+  var db: DatabaseClient = .throwing
 }
 
 var Current = Environment()

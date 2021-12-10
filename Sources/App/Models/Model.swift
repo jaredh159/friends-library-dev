@@ -1,4 +1,5 @@
 import Foundation
+import NIO
 import Tagged
 
 protocol AppModel: Codable, Equatable, RandomIdInitializable {}
