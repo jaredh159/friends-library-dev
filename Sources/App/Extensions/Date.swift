@@ -26,6 +26,11 @@ extension Date {
   init(subtractingDays: Int) {
     self = Date.createByAdding(days: -subtractingDays, to: Date())
   }
+
+  var isoString: String {
+    let formatter = cachedFormatter ?? createFormatter()
+    return formatter.string(from: self)
+  }
 }
 
 private var cachedFormatter: ISO8601DateFormatter?

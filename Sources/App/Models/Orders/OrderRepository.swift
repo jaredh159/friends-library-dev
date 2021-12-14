@@ -5,58 +5,35 @@ struct OrderRepository {
   var db: SQLDatabase
 
   func createOrder(_ order: Order) throws -> Future<Void> {
-    db.raw(
-      """
-      INSERT INTO \(table: Order.self)
-      (
-        \(col: Order[.id]),
-        \(col: Order[.paymentId]),
-        \(col: Order[.printJobStatus]),
-        \(col: Order[.printJobId]),
-        \(col: Order[.amount]),
-        \(col: Order[.shipping]),
-        \(col: Order[.taxes]),
-        \(col: Order[.ccFeeOffset]),
-        \(col: Order[.shippingLevel]),
-        \(col: Order[.email]),
-        \(col: Order[.addressName]),
-        \(col: Order[.addressStreet]),
-        \(col: Order[.addressStreet2]),
-        \(col: Order[.addressCity]),
-        \(col: Order[.addressState]),
-        \(col: Order[.addressZip]),
-        \(col: Order[.addressCountry]),
-        \(col: Order[.lang]),
-        \(col: Order[.source]),
-        \(col: Order[.createdAt]),
-        \(col: Order[.updatedAt]),
-        free_order_request_id -- @TODO
-      ) VALUES (
-        '\(id: order.id)',
-        \(nullable: order.paymentId.rawValue),
-        '\(raw: order.printJobStatus.rawValue)',
-        \(nullable: order.printJobId?.rawValue),
-        \(literal: order.amount.rawValue),
-        \(literal: order.shipping.rawValue),
-        \(literal: order.taxes.rawValue),
-        \(literal: order.ccFeeOffset.rawValue),
-        '\(raw: order.shippingLevel.rawValue)',
-        '\(raw: order.email.rawValue)',
-        '\(raw: order.addressName)',
-        '\(raw: order.addressStreet)',
-        \(nullable: order.addressStreet2),
-        '\(raw: order.addressCity)',
-        '\(raw: order.addressState)',
-        '\(raw: order.addressZip)',
-        '\(raw: order.addressCountry)',
-        '\(raw: order.lang.rawValue)',
-        '\(raw: order.source.rawValue)',
-        current_timestamp,
-        current_timestamp,
-        NULL
-      );
-      """
-    ).all().map { _ in }
+    let query = insert(
+      into: Order.tableName,
+      values: [
+        Order[.id]: .uuid(order.id.rawValue),
+        Order[.paymentId]: .string(order.paymentId.rawValue),
+        Order[.printJobStatus]: .enum(order.printJobStatus),
+        Order[.printJobId]: .int(order.printJobId?.rawValue),
+        Order[.amount]: .int(order.amount.rawValue),
+        Order[.shipping]: .int(order.shipping.rawValue),
+        Order[.taxes]: .int(order.taxes.rawValue),
+        Order[.ccFeeOffset]: .int(order.ccFeeOffset.rawValue),
+        Order[.shippingLevel]: .enum(order.shippingLevel),
+        Order[.email]: .string(order.email.rawValue),
+        Order[.addressName]: .string(order.addressName),
+        Order[.addressStreet]: .string(order.addressStreet),
+        Order[.addressStreet2]: .string(order.addressStreet2),
+        Order[.addressCity]: .string(order.addressCity),
+        Order[.addressState]: .string(order.addressState),
+        Order[.addressZip]: .string(order.addressZip),
+        Order[.addressCountry]: .string(order.addressCountry),
+        Order[.lang]: .enum(order.lang),
+        Order[.source]: .enum(order.source),
+        Order[.createdAt]: .currentTimestamp,
+        Order[.updatedAt]: .currentTimestamp,
+      ]
+    )
+
+    return execute(query, on: db)
+      .flatMap { $0.all() }.map { _ in }
   }
 
   func getOrder(_ id: Order.Id) throws -> Future<Order> {
