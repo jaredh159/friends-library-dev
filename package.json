@@ -20,7 +20,8 @@
     "ts:check": "fldev ts:check",
     "format": "fldev format",
     "compile": "fldev ts:compile",
-    "prepublishOnly": "npm run compile"
+    "prepublishOnly": "npm run compile",
+    "npub:precheck": "fldev ci"
   },
   "dependencies": {
     "@friends-library/adoc-utils": "^1.3.2",
