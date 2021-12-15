@@ -49,6 +49,27 @@ extension Resolver {
 
   func createOrder(req: Req, args: CreateOrderArgs) throws -> Future<Order> {
     try req.requirePermission(to: .mutateOrders)
+    let input = args.input
+    let order = Order(
+      id: .init(rawValue: input.id ?? UUID()),
+      lang: input.lang,
+      source: input.source,
+      paymentId: .init(rawValue: input.paymentId),
+      printJobStatus: input.printJobStatus,
+      amount: .init(rawValue: input.amount),
+      taxes: .init(rawValue: input.taxes),
+      ccFeeOffset: .init(rawValue: input.ccFeeOffset),
+      shipping: .init(rawValue: input.shipping),
+      shippingLevel: input.shippingLevel,
+      email: .init(rawValue: input.email),
+      addressName: input.addressName,
+      addressStreet: input.addressStreet,
+      addressStreet2: input.addressStreet2,
+      addressCity: input.addressCity,
+      addressState: input.addressState,
+      addressZip: input.addressZip,
+      addressCountry: input.addressCountry
+    )
     throw Abort(.notImplemented)
     // let order = Order()
     // if let id = args.input.id {
