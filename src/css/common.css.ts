@@ -64,6 +64,7 @@ export default css`
 
   .epigraph__text::after {
     content: '”';
+    margin-left: -0.25em;
   }
 
   @page epigraphs {
