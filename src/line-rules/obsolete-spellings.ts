@@ -4,6 +4,12 @@ import RegexLintRunner from '../RegexLintRunner';
 
 const runner = new RegexLintRunner([
   {
+    test: `much`,
+    search: /\bin-(so|as)-much\b/g,
+    replace: `in$1much`,
+    fixable: true,
+  },
+  {
     test: `doings`,
     search: /\bLord`'s doings\b/g,
     replace: `Lord\`'s doing`,
