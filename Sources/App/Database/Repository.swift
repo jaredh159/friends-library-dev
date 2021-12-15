@@ -7,7 +7,7 @@ final class MockDb {
   var orders: [Order.Id: Order] = [:]
   var orderItems: [OrderItem.Id: OrderItem] = [:]
 
-  func find<M: AppModel>(
+  func find<M: DuetModel>(
     _ id: M.IdValue,
     in keyPath: ReferenceWritableKeyPath<MockDb, [M.IdValue: M]>
   ) throws -> M {
@@ -17,14 +17,14 @@ final class MockDb {
     return model
   }
 
-  func find<M: AppModel>(
+  func find<M: DuetModel>(
     where predicate: (M) -> Bool,
     in keyPath: ReferenceWritableKeyPath<MockDb, [M.IdValue: M]>
   ) -> [M] {
     self[keyPath: keyPath].values.filter(predicate)
   }
 
-  func first<M: AppModel>(
+  func first<M: DuetModel>(
     where predicate: (M) -> Bool,
     in keyPath: ReferenceWritableKeyPath<MockDb, [M.IdValue: M]>
   ) throws -> M {
@@ -34,7 +34,7 @@ final class MockDb {
     return model
   }
 
-  func add<M: AppModel>(_ model: M, to keyPath: ReferenceWritableKeyPath<MockDb, [M.IdValue: M]>) {
+  func add<M: DuetModel>(_ model: M, to keyPath: ReferenceWritableKeyPath<MockDb, [M.IdValue: M]>) {
     self[keyPath: keyPath][model.id] = model
   }
 }
@@ -63,4 +63,5 @@ extension MockRepository {
 enum DbError: Error {
   case notFound
   case decodingFailed
+  case preparedStatementNameCollision
 }

@@ -32,20 +32,18 @@ struct OrderRepository {
       ]
     )
 
-    return execute(query, on: db)
+    return try execute(query, on: db)
       .flatMap { $0.all() }.map { _ in }
   }
 
   func getOrder(_ id: Order.Id) throws -> Future<Order> {
-    db.raw(
-      """
-      SELECT * FROM \(table: Order.self)
-      WHERE "\(col: Order[.id])" = '\(id: id)'
-      """
-    ).all().flatMapThrowing { rows -> Order in
-      guard let row = rows.first else { throw DbError.notFound }
-      return try row.decode(Order.self)
-    }
+    let select = select(.all, from: Order.self, where: (Order[.id], .equals, .uuid(id)))
+    return try execute(select, on: db)
+      .flatMap { $0.all() }
+      .flatMapThrowing { rows -> Order in
+        guard let row = rows.first else { throw DbError.notFound }
+        return try row.decode(Order.self)
+      }
   }
 
   func getOrdersByPrintJobStatus(_ status: Order.PrintJobStatus) throws -> Future<[Order]> {
