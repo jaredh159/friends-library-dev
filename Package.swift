@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package(
   name: "graphql-api",
   platforms: [
-    .macOS(.v12)
+    .macOS(.v11)
   ],
   dependencies: [
     .package(

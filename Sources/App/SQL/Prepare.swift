@@ -1,202 +1,154 @@
 import FluentSQL
 import Foundation
 
-protocol PostgresEnum {
-  var dataType: String { get }
-  var rawValue: String { get }
-}
-
-enum Postgres {
-
-  enum Columns {
-    case all
-    case columns([String])
-
-    var sql: String {
-      switch self {
-        case .all:
-          return "*"
-        case .columns(let columns):
-          return "\"\(columns.joined(separator: "\", \""))\""
-      }
-    }
-  }
-
-  enum WhereOperator {
-    case equals
-
-    var sql: String {
-      switch self {
-        case .equals:
-          return "="
-      }
-    }
-  }
-
-  enum Data {
-    case id(UUIDIdentifiable)
-    case string(String?)
-    case int(Int?)
-    case float(Float?)
-    case double(Double?)
-    case uuid(UUIDStringable?)
-    case bool(Bool?)
-    case date(Date?)
-    case `enum`(PostgresEnum?)
-    case currentTimestamp
-
-    var typeName: String {
-      switch self {
-        case .string:
-          return "text"
-        case .int, .double, .float:
-          return "numeric"
-        case .uuid, .id:
-          return "uuid"
-        case .bool:
-          return "bool"
-        case .enum(let enumVal):
-          return enumVal?.dataType ?? "unknown"
-        case .date:
-          return "timestamp"
-        case .currentTimestamp:
-          return "timestamp"
-      }
-    }
-
-    var param: String {
-      switch self {
-        case let .enum(enumVal):
-          return nullable(enumVal?.rawValue)
-        case let .string(string):
-          return nullable(string)
-        case let .int(int):
-          return nullable(int)
-        case let .float(float):
-          return nullable(float)
-        case let .double(double):
-          return nullable(double)
-        case let .id(model):
-          return "'\(model.uuidId.uuidString)'"
-        case let .uuid(uuid):
-          return nullable(uuid?.uuidString)
-        case let .bool(bool):
-          return nullable(bool)
-        case let .date(date):
-          return nullable(date)
-        case .currentTimestamp:
-          return "current_timestamp"
-      }
-    }
-  }
-}
-
-typealias PreparedStatement = (name: String, prepare: String, execute: String)
-
 private var prepared: [String: String] = [:]
 
-func execute(_ statement: PreparedStatement, on db: SQLDatabase) throws -> Future<SQLRawBuilder> {
-  let prepareFuture: Future<[SQLRow]>
-  if prepared[statement.name] == statement.prepare {
-    prepareFuture = db.eventLoop.makeSucceededFuture([])
-  } else if prepared[statement.name] != nil {
-    throw DbError.preparedStatementNameCollision
-  } else {
-    prepared[statement.name] = statement.prepare
-    prepareFuture = db.raw("\(raw: statement.prepare)").all()
+enum SQL {
+  typealias WhereConstraint = (
+    column: String,
+    operator: Postgres.WhereOperator,
+    value: Postgres.Data
+  )
+
+  struct PreparedStatement {
+    let name: String
+    let prepare: String
+    let execute: String
   }
-  return prepareFuture.map { _ in
-    db.raw("\(raw: statement.execute)")
+
+  static func resetPrepared() {
+    prepared = [:]
+  }
+
+  static func update(
+    _ table: String,
+    set values: [String: Postgres.Data],
+    where constraint: WhereConstraint? = nil,
+    returning: Postgres.Columns? = nil,
+    as name: String = #function
+  ) -> PreparedStatement {
+    let name = name.replace(#"[^A-Za-z]"#, "")
+    var paramTypes: [String] = []
+    var setPairs: [String] = []
+    var params: [String] = []
+    var currentBinding = 1
+
+    for (column, value) in values {
+      paramTypes.append(value.typeName)
+      params.append(value.param)
+      setPairs.append("\"\(column)\" = $\(currentBinding)")
+      currentBinding += 1
+    }
+
+    var WHERE = ""
+    if let constraint = constraint {
+      paramTypes.append(constraint.value.typeName)
+      params.append(constraint.value.param)
+      WHERE = "\n  \(whereClause(constraint, boundTo: currentBinding))"
+    }
+
+    var RETURNING = ""
+    if let returning = returning {
+      RETURNING = "\n  RETURNING \(returning.sql)"
+    }
+
+    let prepare = """
+      PREPARE \(name)(\(paramTypes.list)) AS
+        UPDATE "\(table)"
+        SET \(setPairs.list)\(WHERE)\(RETURNING);
+      """
+
+    let execute = "EXECUTE \(name)(\(params.list));"
+
+    return PreparedStatement(name: name, prepare: prepare, execute: execute)
+  }
+
+  static func insert(
+    into table: String,
+    values: [String: Postgres.Data],
+    as name: String = #function
+  ) -> PreparedStatement {
+    let name = name.replace(#"[^A-Za-z]"#, "")
+    var dataTypes: [String] = []
+    var columns: [String] = []
+    var bindings: [String] = []
+    var params: [String] = []
+    var currentBinding = 1
+
+    for (column, value) in values {
+      columns.append(column)
+      dataTypes.append(value.typeName)
+      params.append(value.param)
+      bindings.append("$\(currentBinding)")
+      currentBinding += 1
+    }
+
+    let prepare = """
+      PREPARE \(name)(\(dataTypes.list)) AS
+        INSERT INTO "\(table)" (\(columns.quotedList)) VALUES (\(bindings.list));
+      """
+
+    let execute = "EXECUTE \(name)(\(params.list));"
+
+    return PreparedStatement(name: name, prepare: prepare, execute: execute)
+  }
+
+  static func select(
+    _ columns: Postgres.Columns,
+    from table: String,
+    where constraint: WhereConstraint,
+    as name: String = #function
+  ) -> PreparedStatement {
+    let name = name.replace(#"[^A-Za-z]"#, "")
+
+    let prepare = """
+      PREPARE \(name)(\(constraint.value.typeName)) AS
+        SELECT \(columns.sql) from "\(table)"
+        \(whereClause(constraint, boundTo: 1));
+      """
+
+    let execute = "EXECUTE \(name)(\(constraint.value.param))"
+    return PreparedStatement(name: name, prepare: prepare, execute: execute)
+  }
+
+  static func execute(
+    _ statement: PreparedStatement,
+    on db: SQLDatabase
+  ) throws -> Future<SQLRawBuilder> {
+    let prepareFuture: Future<[SQLRow]>
+    if prepared[statement.name] == statement.prepare {
+      prepareFuture = db.eventLoop.makeSucceededFuture([])
+    } else if prepared[statement.name] != nil {
+      print("\n\n\n")
+      print(statement.name)
+      print("----")
+      print(prepared[statement.name]!)
+      print("----")
+      print(statement.prepare)
+      print("----")
+      print(prepared[statement.name] == Optional<String>.some(statement.prepare))
+      print("----")
+      throw DbError.preparedStatementNameCollision
+    } else {
+      prepared[statement.name] = statement.prepare
+      prepareFuture = db.raw("\(raw: statement.prepare)").all()
+    }
+    return prepareFuture.map { _ in
+      db.raw("\(raw: statement.execute)")
+    }
+  }
+
+  private static func whereClause(_ constraint: WhereConstraint, boundTo binding: Int) -> String {
+    "WHERE \"\(constraint.column)\" \(constraint.operator.sql) $\(binding)"
   }
 }
 
-func insert(
-  into table: String,
-  values: [String: Postgres.Data],
-  as name: String? = nil
-) -> PreparedStatement {
-  let statement = name ?? "insert_\(table.dropLast())"
-  var dataTypes: [String] = []
-  var columns: [String] = []
-  var bindings: [String] = []
-  var params: [String] = []
-  var currentBinding = 1
-
-  for (column, value) in values {
-    columns.append(column)
-    dataTypes.append(value.typeName)
-    params.append(value.param)
-    bindings.append("$\(currentBinding)")
-    currentBinding += 1
+extension Sequence where Element == String {
+  fileprivate var list: String {
+    self.joined(separator: ", ")
   }
 
-  let columnNames = #"("\#(columns.joined(separator: "\", \""))")"#
-  let values = "(\(bindings.joined(separator: ", ")))"
-
-  let prepare = """
-    PREPARE \(statement)(\(dataTypes.joined(separator: ", "))) AS
-      INSERT INTO "\(table)" \(columnNames) VALUES \(values);
-    """
-
-  let execute = """
-    EXECUTE \(statement)(\(params.joined(separator: ", ")));
-    """
-
-  return (statement, prepare, execute)
-}
-
-func select<Model: DuetModel>(
-  _ columns: Postgres.Columns,
-  from model: Model.Type,
-  where: (String, Postgres.WhereOperator, Postgres.Data),
-  as name: String? = nil
-) -> PreparedStatement {
-  let table = model.tableName
-  let (whereCol, whereOp, whereParam) = `where`
-  let name = name ?? "select_\(table.dropLast())"
-
-  let prepare = """
-    PREPARE \(name)(\(whereParam.typeName)) AS
-      SELECT \(columns.sql) from "\(table)"
-      WHERE "\(whereCol)" \(whereOp.sql) $1;
-    """
-
-  let execute = "EXECUTE \(name)(\(whereParam.param))"
-  return (name, prepare, execute)
-}
-
-private func nullable(_ string: String?) -> String {
-  switch string {
-    case nil:
-      return "NULL"
-    case .some(let string):
-      return "'\(string)'"
-  }
-}
-
-private func nullable(_ bool: Bool?) -> String {
-  switch bool {
-    case nil:
-      return "NULL"
-    case .some(let bool):
-      return bool ? "true" : "false"
-  }
-}
-
-private func nullable(_ date: Date?) -> String {
-  switch date {
-    case nil:
-      return "NULL"
-    case .some(let date):
-      return "'\(date.isoString)'"
-  }
-}
-
-private func nullable<N: Numeric>(_ string: N?) -> String {
-  switch string {
-    case nil:
-      return "NULL"
-    case .some(let number):
-      return "\(number)"
+  fileprivate var quotedList: String {
+    "\"\(self.joined(separator: "\", \""))\""
   }
 }

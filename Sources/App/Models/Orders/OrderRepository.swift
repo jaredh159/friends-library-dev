@@ -5,7 +5,7 @@ struct OrderRepository {
   var db: SQLDatabase
 
   func createOrder(_ order: Order) throws -> Future<Void> {
-    let query = insert(
+    try insert(
       into: Order.tableName,
       values: [
         Order[.id]: .uuid(order.id.rawValue),
@@ -31,30 +31,22 @@ struct OrderRepository {
         Order[.updatedAt]: .currentTimestamp,
       ]
     )
-
-    return try execute(query, on: db)
-      .flatMap { $0.all() }.map { _ in }
   }
 
   func getOrder(_ id: Order.Id) throws -> Future<Order> {
-    let select = select(.all, from: Order.self, where: (Order[.id], .equals, .uuid(id)))
-    return try execute(select, on: db)
-      .flatMap { $0.all() }
-      .flatMapThrowing { rows -> Order in
-        guard let row = rows.first else { throw DbError.notFound }
-        return try row.decode(Order.self)
+    try select(.all, from: Order.self, where: (Order[.id], .equals, .uuid(id)))
+      .flatMapThrowing { orders in
+        guard let order = orders.first else { throw DbError.notFound }
+        return order
       }
   }
 
   func getOrdersByPrintJobStatus(_ status: Order.PrintJobStatus) throws -> Future<[Order]> {
-    db.raw(
-      """
-      SELECT * FROM \(table: Order.self)
-      WHERE "\(col: Order[.printJobStatus])" = '\(raw: status.rawValue)'
-      """
-    ).all().flatMapThrowing { rows in
-      try rows.compactMap { try $0.decode(Order.self) }
-    }
+    try select(
+      .all,
+      from: Order.self,
+      where: (Order[.printJobStatus], .equals, .enum(status))
+    )
   }
 
   func deleteAllOrders() -> Future<Void> {
@@ -66,25 +58,35 @@ struct OrderRepository {
       return try getOrder(.init(rawValue: input.id))
     }
 
-    var fragments: [String] = []
+    var setPairs: [String: Postgres.Data] = [:]
+
     if let status = input.printJobStatus {
-      fragments.append("\(Order.columnName(.printJobStatus)) = '\(status.rawValue)'")
+      setPairs[Order[.printJobStatus]] = .enum(status)
     }
     if let printJobId = input.printJobId {
-      fragments.append("\(Order.columnName(.printJobId)) = \(printJobId)")
+      setPairs[Order[.printJobId]] = .int(printJobId)
     }
 
-    return db.raw(
-      """
-      UPDATE \(table: Order.self)
-      SET \(raw: fragments.joined(separator: ", "))
-      WHERE \(col: Order[.id]) = '\(raw: input.id.uuidString)'
-      RETURNING *
-      """
-    ).first().flatMapThrowing { row in
-      guard let row = row else { throw DbError.notFound }
-      return try row.decode(Order.self)
+    return try updateReturning(
+      Order.self,
+      set: setPairs,
+      where: (Order[.id], .equals, .uuid(input.id))
+    ).flatMapThrowing { orders in
+      guard let order = orders.first else { throw DbError.notFound }
+      return order
     }
+
+    // return db.raw(
+    //   """
+    //   UPDATE \(table: Order.self)
+    //   SET \(raw: fragments.joined(separator: ", "))
+    //   WHERE \(col: Order[.id]) = '\(raw: input.id.uuidString)'
+    //   RETURNING *
+    //   """
+    // ).first().flatMapThrowing { row in
+    //   guard let row = row else { throw DbError.notFound }
+    //   return try row.decode(Order.self)
+    // }
   }
 }
 
