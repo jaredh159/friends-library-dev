@@ -8,32 +8,26 @@ final class SqlTests: XCTestCase {
   func testUpdate() {
     let statement = SQL.update("foos", set: ["bar": 1, "baz": true], where: ("lol", .equals, "a"))
 
-    let prepare = """
-      PREPARE testUpdate(numeric, bool, text) AS
-        UPDATE "foos"
-        SET "bar" = $1, "baz" = $2
-        WHERE "lol" = $3;
+    let query = """
+      UPDATE "foos"
+      SET "bar" = $1, "baz" = $2
+      WHERE "lol" = $3;
       """
 
-    let execute = "EXECUTE testUpdate(1, true, 'a');"
-
-    XCTAssertEqual(statement.prepare, prepare)
-    XCTAssertEqual(statement.execute, execute)
+    XCTAssertEqual(statement.query, query)
+    XCTAssertEqual(statement.bindings, [1, true, "a"])
   }
 
   func testUpdateWithoutWhere() {
     let statement = SQL.update("foos", set: ["bar": 1])
 
-    let prepare = """
-      PREPARE testUpdateWithoutWhere(numeric) AS
-        UPDATE "foos"
-        SET "bar" = $1;
+    let query = """
+      UPDATE "foos"
+      SET "bar" = $1;
       """
 
-    let execute = "EXECUTE testUpdateWithoutWhere(1);"
-
-    XCTAssertEqual(statement.prepare, prepare)
-    XCTAssertEqual(statement.execute, execute)
+    XCTAssertEqual(statement.query, query)
+    XCTAssertEqual(statement.bindings, [1])
   }
 
   func testUpdateReturning() {
@@ -44,109 +38,94 @@ final class SqlTests: XCTestCase {
       returning: .all
     )
 
-    let prepare = """
-      PREPARE testUpdateReturning(numeric, text) AS
-        UPDATE "foos"
-        SET "bar" = $1
-        WHERE "lol" = $2
-        RETURNING *;
+    let query = """
+      UPDATE "foos"
+      SET "bar" = $1
+      WHERE "lol" = $2
+      RETURNING *;
       """
 
-    let execute = "EXECUTE testUpdateReturning(1, 'a');"
-
-    XCTAssertEqual(statement.prepare, prepare)
-    XCTAssertEqual(statement.execute, execute)
+    XCTAssertEqual(statement.query, query)
+    XCTAssertEqual(statement.bindings, [1, "a"])
   }
 
   func testBasicInsert() {
     let id = UUID()
-    let query = SQL.insert(into: "foos", values: ["a": 33, "b": "lol", "c": .uuid(id)])
+    let statement = SQL.insert(into: "foos", values: ["a": 33, "b": "lol", "c": .uuid(id)])
 
-    let prepare = """
-      PREPARE testBasicInsert(numeric, text, uuid) AS
-        INSERT INTO "foos" ("a", "b", "c") VALUES ($1, $2, $3);
+    let query = """
+      INSERT INTO "foos"
+      ("a", "b", "c")
+      VALUES
+      ($1, $2, $3);
       """
 
-    let execute = """
-      EXECUTE testBasicInsert(33, 'lol', '\(id.uuidString)');
-      """
-
-    XCTAssertEqual(query.prepare, prepare)
-    XCTAssertEqual(query.execute, execute)
-    XCTAssertEqual(query.name, "testBasicInsert")
+    XCTAssertEqual(statement.query, query)
+    XCTAssertEqual(statement.bindings, [33, "lol", .uuid(id)])
   }
 
   func testOptionalInts() {
-    let query = SQL.insert(into: "foos", values: ["a": .int(22), "b": .int(nil)])
+    let statement = SQL.insert(into: "foos", values: ["a": .int(22), "b": .int(nil)])
 
-    let prepare = """
-      PREPARE testOptionalInts(numeric, numeric) AS
-        INSERT INTO "foos" ("a", "b") VALUES ($1, $2);
+    let query = """
+      INSERT INTO "foos"
+      ("a", "b")
+      VALUES
+      ($1, $2);
       """
 
-    let execute = """
-      EXECUTE testOptionalInts(22, NULL);
-      """
-
-    XCTAssertEqual(query.prepare, prepare)
-    XCTAssertEqual(query.execute, execute)
+    XCTAssertEqual(statement.query, query)
+    XCTAssertEqual(statement.bindings, [22, .int(nil)])
   }
 
   func testOptionalStrings() {
-    let query = SQL.insert(into: "foos", values: ["a": "howdy", "b": .string(nil)])
+    let statement = SQL.insert(into: "foos", values: ["a": "howdy", "b": .string(nil)])
 
-    let prepare = """
-      PREPARE testOptionalStrings(text, text) AS
-        INSERT INTO "foos" ("a", "b") VALUES ($1, $2);
+    let query = """
+      INSERT INTO "foos"
+      ("a", "b")
+      VALUES
+      ($1, $2);
       """
 
-    let execute = """
-      EXECUTE testOptionalStrings('howdy', NULL);
-      """
-
-    XCTAssertEqual(query.prepare, prepare)
-    XCTAssertEqual(query.execute, execute)
+    XCTAssertEqual(statement.query, query)
+    XCTAssertEqual(statement.bindings, ["howdy", .string(nil)])
   }
 
   func testEnums() {
-    let query = SQL.insert(
+    let statement = SQL.insert(
       into: "foos",
       values: [
         "a": .enum(FooBar.foo),
         "b": .enum(FooBar.bar),
         "c": .enum(nil),
-      ],
-      as: "customName"
+      ]
     )
 
-    let prepare = """
-      PREPARE customName(foobar, foobar, unknown) AS
-        INSERT INTO "foos" ("a", "b", "c") VALUES ($1, $2, $3);
+    let query = """
+      INSERT INTO "foos"
+      ("a", "b", "c")
+      VALUES
+      ($1, $2, $3);
       """
 
-    let execute = """
-      EXECUTE customName('foo', 'bar', NULL);
-      """
-
-    XCTAssertEqual(query.prepare, prepare)
-    XCTAssertEqual(query.execute, execute)
+    XCTAssertEqual(statement.query, query)
+    XCTAssertEqual(statement.bindings, [.enum(FooBar.foo), .enum(FooBar.bar), .enum(nil)])
   }
 
   func testDates() {
     let date = Date.fromISOString("2021-12-14T17:16:16.896Z")!
-    let query = SQL.insert(into: "foos", values: ["a": .date(date), "b": .currentTimestamp])
+    let statement = SQL.insert(into: "foos", values: ["a": .date(date), "b": .currentTimestamp])
 
-    let prepare = """
-      PREPARE testDates(timestamp, timestamp) AS
-        INSERT INTO "foos" ("a", "b") VALUES ($1, $2);
+    let query = """
+      INSERT INTO "foos"
+      ("a", "b")
+      VALUES
+      ($1, $2);
       """
 
-    let execute = """
-      EXECUTE testDates('2021-12-14T17:16:16.896Z', current_timestamp);
-      """
-
-    XCTAssertEqual(query.prepare, prepare)
-    XCTAssertEqual(query.execute, execute)
+    XCTAssertEqual(statement.query, query)
+    XCTAssertEqual(statement.bindings, [.date(date), .currentTimestamp])
   }
 }
 

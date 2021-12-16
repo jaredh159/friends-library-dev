@@ -67,12 +67,8 @@ enum DbError: Error {
 }
 
 extension LiveRepository {
-  func insert(
-    into table: String,
-    values: [String: Postgres.Data],
-    as name: String = #function
-  ) throws -> Future<Void> {
-    let prepared = SQL.insert(into: table, values: values, as: name)
+  func insert(into table: String, values: [String: Postgres.Data]) throws -> Future<Void> {
+    let prepared = SQL.insert(into: table, values: values)
     return try SQL.execute(prepared, on: db)
       .flatMap { (builder: SQLRawBuilder) in builder.all() }
       .map { (rows: [SQLRow]) in return () }
@@ -81,10 +77,9 @@ extension LiveRepository {
   func select<Model: DuetModel>(
     _ columns: Postgres.Columns,
     from model: Model.Type,
-    where: (String, Postgres.WhereOperator, Postgres.Data),
-    as name: String = #function
+    where: SQL.WhereConstraint
   ) throws -> Future<[Model]> {
-    let prepared = SQL.select(columns, from: model.tableName, where: `where`, as: name)
+    let prepared = SQL.select(columns, from: model.tableName, where: `where`)
     return try SQL.execute(prepared, on: db)
       .flatMap { (builder: SQLRawBuilder) in builder.all() }
       .flatMapThrowing { (rows: [SQLRow]) in
@@ -95,11 +90,10 @@ extension LiveRepository {
   func updateReturning<Model: DuetModel>(
     _ model: Model.Type,
     set values: [String: Postgres.Data],
-    where constraint: SQL.WhereConstraint? = nil,
-    as name: String = #function
+    where constraint: SQL.WhereConstraint? = nil
   ) throws -> Future<[Model]> {
     let prepared = SQL.update(
-      model.tableName, set: values, where: constraint, returning: .all, as: name)
+      model.tableName, set: values, where: constraint, returning: .all)
     return try SQL.execute(prepared, on: db)
       .flatMap { (builder: SQLRawBuilder) in builder.all() }
       .flatMapThrowing { (rows: [SQLRow]) in

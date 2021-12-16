@@ -75,18 +75,6 @@ struct OrderRepository {
       guard let order = orders.first else { throw DbError.notFound }
       return order
     }
-
-    // return db.raw(
-    //   """
-    //   UPDATE \(table: Order.self)
-    //   SET \(raw: fragments.joined(separator: ", "))
-    //   WHERE \(col: Order[.id]) = '\(raw: input.id.uuidString)'
-    //   RETURNING *
-    //   """
-    // ).first().flatMapThrowing { row in
-    //   guard let row = row else { throw DbError.notFound }
-    //   return try row.decode(Order.self)
-    // }
   }
 }
 

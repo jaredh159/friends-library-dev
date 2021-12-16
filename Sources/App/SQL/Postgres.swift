@@ -143,3 +143,9 @@ extension Postgres.Data: ExpressibleByBooleanLiteral {
     self = .bool(value)
   }
 }
+
+extension Postgres.Data: Equatable {
+  static func == (lhs: Postgres.Data, rhs: Postgres.Data) -> Bool {
+    [lhs.typeName, lhs.param] == [rhs.typeName, rhs.param]
+  }
+}

@@ -14,7 +14,7 @@ final class OrderRepositoryTests: XCTestCase {
   }
 
   override func setUp() {
-    // Current.db = .mock(eventLoop: Self.app.db.eventLoop)
+    Current.db = .mock(eventLoop: Self.app.db.eventLoop)
   }
 
   func testInsertingAndRetrievingOrder() throws {

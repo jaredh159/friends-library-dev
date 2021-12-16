@@ -11,9 +11,8 @@ enum SQL {
   )
 
   struct PreparedStatement {
-    let name: String
-    let prepare: String
-    let execute: String
+    let query: String
+    let bindings: [Postgres.Data]
   }
 
   static func resetPrepared() {
@@ -24,117 +23,97 @@ enum SQL {
     _ table: String,
     set values: [String: Postgres.Data],
     where constraint: WhereConstraint? = nil,
-    returning: Postgres.Columns? = nil,
-    as name: String = #function
+    returning: Postgres.Columns? = nil
   ) -> PreparedStatement {
-    let name = name.replace(#"[^A-Za-z]"#, "")
-    var paramTypes: [String] = []
+    var bindings: [Postgres.Data] = []
     var setPairs: [String] = []
-    var params: [String] = []
     var currentBinding = 1
 
     for (column, value) in values {
-      paramTypes.append(value.typeName)
-      params.append(value.param)
+      bindings.append(value)
       setPairs.append("\"\(column)\" = $\(currentBinding)")
       currentBinding += 1
     }
 
     var WHERE = ""
     if let constraint = constraint {
-      paramTypes.append(constraint.value.typeName)
-      params.append(constraint.value.param)
-      WHERE = "\n  \(whereClause(constraint, boundTo: currentBinding))"
+      bindings.append(constraint.value)
+      WHERE = "\n\(whereClause(constraint, boundTo: currentBinding))"
     }
 
     var RETURNING = ""
     if let returning = returning {
-      RETURNING = "\n  RETURNING \(returning.sql)"
+      RETURNING = "\nRETURNING \(returning.sql)"
     }
 
-    let prepare = """
-      PREPARE \(name)(\(paramTypes.list)) AS
-        UPDATE "\(table)"
-        SET \(setPairs.list)\(WHERE)\(RETURNING);
+    let query = """
+      UPDATE "\(table)"
+      SET \(setPairs.list)\(WHERE)\(RETURNING);
       """
 
-    let execute = "EXECUTE \(name)(\(params.list));"
-
-    return PreparedStatement(name: name, prepare: prepare, execute: execute)
+    return PreparedStatement(query: query, bindings: bindings)
   }
 
-  static func insert(
-    into table: String,
-    values: [String: Postgres.Data],
-    as name: String = #function
-  ) -> PreparedStatement {
-    let name = name.replace(#"[^A-Za-z]"#, "")
-    var dataTypes: [String] = []
+  static func insert(into table: String, values: [String: Postgres.Data]) -> PreparedStatement {
     var columns: [String] = []
-    var bindings: [String] = []
-    var params: [String] = []
+    var placeholders: [String] = []
     var currentBinding = 1
 
-    for (column, value) in values {
+    for column in values.keys {
       columns.append(column)
-      dataTypes.append(value.typeName)
-      params.append(value.param)
-      bindings.append("$\(currentBinding)")
+      placeholders.append("$\(currentBinding)")
       currentBinding += 1
     }
 
-    let prepare = """
-      PREPARE \(name)(\(dataTypes.list)) AS
-        INSERT INTO "\(table)" (\(columns.quotedList)) VALUES (\(bindings.list));
+    let query = """
+      INSERT INTO "\(table)"
+      (\(columns.quotedList))
+      VALUES
+      (\(placeholders.list));
       """
 
-    let execute = "EXECUTE \(name)(\(params.list));"
-
-    return PreparedStatement(name: name, prepare: prepare, execute: execute)
+    return PreparedStatement(query: query, bindings: Array(values.values))
   }
 
   static func select(
     _ columns: Postgres.Columns,
     from table: String,
-    where constraint: WhereConstraint,
-    as name: String = #function
+    where constraint: WhereConstraint
   ) -> PreparedStatement {
-    let name = name.replace(#"[^A-Za-z]"#, "")
-
-    let prepare = """
-      PREPARE \(name)(\(constraint.value.typeName)) AS
-        SELECT \(columns.sql) from "\(table)"
-        \(whereClause(constraint, boundTo: 1));
+    let query = """
+      SELECT \(columns.sql) from "\(table)"
+      \(whereClause(constraint, boundTo: 1));
       """
 
-    let execute = "EXECUTE \(name)(\(constraint.value.param))"
-    return PreparedStatement(name: name, prepare: prepare, execute: execute)
+    return PreparedStatement(query: query, bindings: [constraint.value])
   }
 
   static func execute(
     _ statement: PreparedStatement,
     on db: SQLDatabase
   ) throws -> Future<SQLRawBuilder> {
+    let types = statement.bindings.map(\.typeName).list
+    let params = statement.bindings.map(\.param).list
+    let key = [statement.query, types].joined()
     let prepareFuture: Future<[SQLRow]>
-    if prepared[statement.name] == statement.prepare {
+    let name: String
+
+    if let previouslyInsertedName = prepared[key] {
+      name = previouslyInsertedName
       prepareFuture = db.eventLoop.makeSucceededFuture([])
-    } else if prepared[statement.name] != nil {
-      print("\n\n\n")
-      print(statement.name)
-      print("----")
-      print(prepared[statement.name]!)
-      print("----")
-      print(statement.prepare)
-      print("----")
-      print(prepared[statement.name] == Optional<String>.some(statement.prepare))
-      print("----")
-      throw DbError.preparedStatementNameCollision
     } else {
-      prepared[statement.name] = statement.prepare
-      prepareFuture = db.raw("\(raw: statement.prepare)").all()
+      let id = UUID().uuidString.replacingOccurrences(of: "-", with: "").lowercased()
+      name = "plan_\(id)"
+      let insertPrepareSql = """
+        PREPARE \(name)(\(types)) AS
+        \(statement.query)
+        """
+      prepared[key] = name
+      prepareFuture = db.raw("\(raw: insertPrepareSql)").all()
     }
+
     return prepareFuture.map { _ in
-      db.raw("\(raw: statement.execute)")
+      db.raw("\(raw: "EXECUTE \(name)(\(params))")")
     }
   }
 
