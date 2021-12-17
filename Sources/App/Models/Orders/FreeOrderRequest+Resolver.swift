@@ -21,12 +21,14 @@ struct CreateFreeOrderRequestInput: Codable {
 extension Resolver {
 
   func getFreeOrderRequest(
-    request: Request,
+    req: Req,
     args: IdentifyEntityArgs
   ) throws -> Future<FreeOrderRequest> {
-    FreeOrderRequest
-      .find(args.id, on: request.db)
-      .unwrap(or: Abort(.notFound))
+    try req.requirePermission(to: .queryOrders)
+    throw Abort(.notImplemented)
+    // FreeOrderRequest
+    //   .find(args.id, on: request.db)
+    //   .unwrap(or: Abort(.notFound))
   }
 
   struct CreateFreeOrderRequestArgs: Codable {
@@ -34,26 +36,29 @@ extension Resolver {
   }
 
   func createFreeOrderRequest(
-    request: Request,
+    req: Req,
     args: CreateFreeOrderRequestArgs
   ) throws -> Future<FreeOrderRequest> {
-    let order = FreeOrderRequest()
-    order.name = args.input.name
-    order.email = args.input.email
-    order.requestedBooks = args.input.requestedBooks
-    order.aboutRequester = args.input.aboutRequester
-    order.addressStreet = args.input.addressStreet
-    order.addressStreet2 = args.input.addressStreet2
-    order.addressCity = args.input.addressCity
-    order.addressState = args.input.addressState
-    order.addressZip = args.input.addressZip
-    order.addressCountry = args.input.addressCountry
-    order.source = args.input.source
+    try req.requirePermission(to: .mutateOrders)
+    let order = FreeOrderRequest(
+      name: args.input.name,
+      email: .init(rawValue: args.input.email),
+      requestedBooks: args.input.requestedBooks,
+      aboutRequester: args.input.aboutRequester,
+      addressStreet: args.input.addressStreet,
+      addressStreet2: args.input.addressStreet2,
+      addressCity: args.input.addressCity,
+      addressState: args.input.addressState,
+      addressZip: args.input.addressZip,
+      addressCountry: args.input.addressCountry,
+      source: args.input.source
+    )
 
-    return order.create(on: request.db).flatMap {
-      sendFreeOrderRequestNotifications(for: order, on: request)
-        .map { order }
-    }
+    throw Abort(.notImplemented)
+    // return order.create(on: request.db).flatMap {
+    //   sendFreeOrderRequestNotifications(for: order, on: request)
+    //     .map { order }
+    // }
   }
 }
 
@@ -61,7 +66,7 @@ private func sendFreeOrderRequestNotifications(
   for order: FreeOrderRequest,
   on request: Request
 ) -> Future<Void> {
-  let id = order.id!.uuidString.lowercased()
+  let id = order.id.rawValue.uuidString.lowercased()
   var emailFuture = request.eventLoop.makeSucceededVoidFuture()
   if let emailTo = Env.get("FREE_ORDER_REQUEST_EMAIL_RECIPIENT") {
     emailFuture = SendGridEmail(
@@ -74,7 +79,7 @@ private func sendFreeOrderRequestNotifications(
       html:
         """
         \(entry("Name", order.name))
-        \(entry("Email", order.email))
+        \(entry("Email", order.email.rawValue))
         \(entry("Requested Books", order.requestedBooks))
         \(entry("About Requester", order.aboutRequester))
         \(entry("Street", order.addressStreet))

@@ -62,8 +62,8 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
   }
 
   Type(FreeOrderRequest.self) {
-    Field("id", at: \.id)
-    Field("email", at: \.email)
+    Field("id", at: \.id.rawValue)
+    Field("email", at: \.email.rawValue)
     Field("requestedBooks", at: \.requestedBooks)
     Field("aboutRequester", at: \.aboutRequester)
     Field("name", at: \.name)

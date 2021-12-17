@@ -23,10 +23,12 @@ final class Order {
   var addressState: String
   var addressZip: String
   var addressCountry: String
+  var freeOrderRequestId: FreeOrderRequest.Id?
   var createdAt = Current.date()
   var updatedAt = Current.date()
 
   var items = Children<OrderItem>.notLoaded
+  var freeOrderRequest = OptionalParent<FreeOrderRequest>.notLoaded
 
   init(
     id: Id = .init(),
@@ -47,7 +49,8 @@ final class Order {
     addressCity: String,
     addressState: String,
     addressZip: String,
-    addressCountry: String
+    addressCountry: String,
+    freeOrderRequestId: FreeOrderRequest.Id? = nil
   ) {
     self.id = id
     self.printJobId = printJobId
@@ -68,11 +71,8 @@ final class Order {
     self.addressState = addressState
     self.addressZip = addressZip
     self.addressCountry = addressCountry
+    self.freeOrderRequestId = freeOrderRequestId
   }
-
-  // @TODO
-  // @OptionalParent(key: M7.freeOrderRequestId)
-  // var freeOrderRequest: FreeOrderRequest?
 }
 
 /// extensions

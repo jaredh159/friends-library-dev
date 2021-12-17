@@ -1,52 +1,81 @@
 import Fluent
+import Tagged
 import Vapor
 
-final class FreeOrderRequest: Model, Content {
-  static let schema = FreeOrderRequest.M6.tableName
-
-  @ID(key: .id)
-  var id: UUID?
-
-  @Field(key: FreeOrderRequest.M6.name)
+final class FreeOrderRequest {
+  var id: Id
   var name: String
-
-  @Field(key: FreeOrderRequest.M6.email)
-  var email: String
-
-  @Field(key: FreeOrderRequest.M6.requestedBooks)
+  var email: EmailAddress
   var requestedBooks: String
-
-  @Field(key: FreeOrderRequest.M6.aboutRequester)
   var aboutRequester: String
-
-  @Field(key: FreeOrderRequest.M6.addressStreet)
   var addressStreet: String
-
-  @OptionalField(key: FreeOrderRequest.M6.addressStreet2)
   var addressStreet2: String?
-
-  @Field(key: FreeOrderRequest.M6.addressCity)
   var addressCity: String
-
-  @Field(key: FreeOrderRequest.M6.addressState)
   var addressState: String
-
-  @Field(key: FreeOrderRequest.M6.addressZip)
   var addressZip: String
-
-  @Field(key: FreeOrderRequest.M6.addressCountry)
   var addressCountry: String
-
-  @Field(key: FreeOrderRequest.M6.source)
   var source: String
+  var createdAt = Current.date()
+  var updatedAt = Current.date()
 
-  @Timestamp(key: .createdAt, on: .create)
-  var createdAt: Date?
+  init(
+    id: Id = .init(),
+    name: String,
+    email: EmailAddress,
+    requestedBooks: String,
+    aboutRequester: String,
+    addressStreet: String,
+    addressStreet2: String?,
+    addressCity: String,
+    addressState: String,
+    addressZip: String,
+    addressCountry: String,
+    source: String
+  ) {
+    self.id = id
+    self.name = name
+    self.email = email
+    self.requestedBooks = requestedBooks
+    self.aboutRequester = aboutRequester
+    self.addressStreet = addressStreet
+    self.addressStreet2 = addressStreet2
+    self.addressCity = addressCity
+    self.addressState = addressState
+    self.addressZip = addressZip
+    self.addressCountry = addressCountry
+    self.source = source
+  }
+}
 
-  @Timestamp(key: .updatedAt, on: .update)
-  var updatedAt: Date?
+// extensions
 
-  init() {}
+extension FreeOrderRequest: AppModel {
+  typealias Id = Tagged<FreeOrderRequest, UUID>
+}
+
+extension FreeOrderRequest: DuetModel {
+  static let tableName = M6.tableName
+}
+
+extension FreeOrderRequest: Codable {
+  typealias ColumnName = CodingKeys
+
+  enum CodingKeys: String, CodingKey {
+    case id
+    case name
+    case email
+    case requestedBooks
+    case aboutRequester
+    case addressStreet
+    case addressStreet2
+    case addressCity
+    case addressState
+    case addressZip
+    case addressCountry
+    case source
+    case createdAt
+    case updatedAt
+  }
 }
 
 extension FreeOrderRequest {
