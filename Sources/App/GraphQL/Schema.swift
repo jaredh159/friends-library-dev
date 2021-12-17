@@ -219,7 +219,7 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
     }
 
     Field("getOrders", at: Resolver.getOrders) {
-      Argument("printJobStatus", at: \.printJobStatus)
+      Argument("printJobStatus", at: \.printJobStatus.rawValue)
     }
 
     Field("getTokenByValue", at: Resolver.getTokenByValue) {

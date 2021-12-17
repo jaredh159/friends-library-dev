@@ -3,13 +3,9 @@ import XCTVaporUtils
 
 @testable import App
 
-final class TokenResolverTests: GraphQLTestCase {
-  override func configureApp(_ app: Application) throws {
-    return try configure(app)
-  }
+final class TokenResolverTests: AppTestCase {
 
   func testTokenByValue() throws {
-    Current.db = .mock(eventLoop: app.db.eventLoop)
     let token = Token(description: "test")
     _ = try Current.db.createToken(token).wait()
     let scope = TokenScope(tokenId: token.id, scope: .queryOrders)
@@ -34,6 +30,6 @@ final class TokenResolverTests: GraphQLTestCase {
         "description": "test",
         "scope": "queryOrders",
       ])
-    ).run(self)
+    ).run(Self.app)
   }
 }

@@ -263,15 +263,6 @@
         }
       },
       {
-        "package": "VaporUtils",
-        "repositoryURL": "https://github.com/jaredh159/vapor-utils.git",
-        "state": {
-          "branch": null,
-          "revision": "00ef397e4abb858b1e3af971ae27617a53a3c03e",
-          "version": "2.1.0"
-        }
-      },
-      {
         "package": "websocket-kit",
         "repositoryURL": "https://github.com/vapor/websocket-kit.git",
         "state": {

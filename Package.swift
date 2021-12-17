@@ -24,10 +24,14 @@ let package = Package(
       url: "https://github.com/alexsteinerde/graphql-kit.git",
       from: "2.3.0"
     ),
+    // .package(
+    //   name: "VaporUtils",
+    //   url: "https://github.com/jaredh159/vapor-utils.git",
+    //   from: "2.1.0"
+    // ),
     .package(
       name: "VaporUtils",
-      url: "https://github.com/jaredh159/vapor-utils.git",
-      from: "2.1.0"
+      path: "/Users/jared/gertie/vapor-utils"
     ),
     .package(
       name: "QueuesFluentDriver",

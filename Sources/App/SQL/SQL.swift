@@ -136,6 +136,10 @@ enum SQL {
     }
   }
 
+  static func resetPreparedStatements() {
+    prepared = [:]
+  }
+
   private static func whereClause(_ constraint: WhereConstraint, boundTo binding: Int) -> String {
     "WHERE \"\(constraint.column)\" \(constraint.operator.sql) $\(binding)"
   }

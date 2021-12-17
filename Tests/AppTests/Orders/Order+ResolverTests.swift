@@ -4,18 +4,9 @@ import XCTVaporUtils
 
 @testable import App
 
-final class OrderResolverTests: GraphQLTestCase {
-  override func configureApp(_ app: Application) throws {
-    return try configure(app)
-  }
-
-  // override func setUp() {
-  //   Current.db = .mock(eventLoop: Self.app.db.eventLoop)
-  // }
+final class OrderResolverTests: AppTestCase {
 
   func testCreateOrder() throws {
-    Current.auth = .mockWithAllScopes
-    // Current.db = .mock(eventLoop: app.db.eventLoop)
     let order: Map = .dictionary([
       "paymentId": .string("stripe-123"),
       "printJobStatus": .string("presubmit"),
@@ -90,9 +81,10 @@ final class OrderResolverTests: GraphQLTestCase {
         "unitPrice": 333,
       ]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(self, variables: ["input": order])
+    ).run(Self.app, variables: ["input": order])
   }
 
+  // @TODO
   // func testCreateOrderWithFreeRequestId() throws {
   //   let freeOrderRequest = FreeOrderRequest.createFixture(on: app.db)
   //   let order: Map = .dictionary([
@@ -139,114 +131,116 @@ final class OrderResolverTests: GraphQLTestCase {
   //   ).run(self, variables: ["input": order])
   // }
 
-  // func testUpdateOrder() throws {
-  //   let order = Order.createFixture(on: app.db)
+  func testUpdateOrder() throws {
+    let order = Order.empty
+    _ = try! Current.db.createOrder(order).wait()
 
-  //   let input: Map = .dictionary([
-  //     "id": .string(order.id.uuidString),
-  //     "printJobId": .number(12345),
-  //     "printJobStatus": .string("accepted"),
-  //   ])
+    let input: Map = .dictionary([
+      "id": .string(order.id.uuidString),
+      "printJobId": .number(12345),
+      "printJobStatus": .string("accepted"),
+    ])
 
-  //   GraphQLTest(
-  //     """
-  //     mutation UpdateOrder($input: UpdateOrderInput!) {
-  //       order: updateOrder(input: $input) {
-  //         printJobId
-  //         printJobStatus
-  //       }
-  //     }
-  //     """,
-  //     expectedData: .containsKVPs([
-  //       "printJobId": 12345,
-  //       "printJobStatus": "accepted",
-  //     ]),
-  //     headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-  //   ).run(self, variables: ["input": input])
-  // }
+    GraphQLTest(
+      """
+      mutation UpdateOrder($input: UpdateOrderInput!) {
+        order: updateOrder(input: $input) {
+          printJobId
+          printJobStatus
+        }
+      }
+      """,
+      expectedData: .containsKVPs([
+        "printJobId": 12345,
+        "printJobStatus": "accepted",
+      ]),
+      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
+    ).run(Self.app, variables: ["input": input])
+  }
 
-  // func testUpdateOrders() throws {
-  //   let order1 = Order.createFixture(on: app.db)
-  //   let order2 = Order.createFixture(on: app.db)
+  func testUpdateOrders() throws {
+    let order1 = Order.empty
+    let order2 = Order.empty
+    _ = try! Current.db.createOrder(order1).wait()
+    _ = try! Current.db.createOrder(order2).wait()
 
-  //   let input: Map = .array([
-  //     .dictionary([
-  //       "id": .string(order1.id.uuidString),
-  //       "printJobId": .number(5555),
-  //     ]),
-  //     .dictionary([
-  //       "id": .string(order2.id.uuidString),
-  //       "printJobId": .number(3333),
-  //     ]),
-  //   ])
+    let input: Map = .array([
+      .dictionary([
+        "id": .string(order1.id.uuidString),
+        "printJobId": .number(5555),
+      ]),
+      .dictionary([
+        "id": .string(order2.id.uuidString),
+        "printJobId": .number(3333),
+      ]),
+    ])
 
-  //   GraphQLTest(
-  //     """
-  //     mutation UpdateOrders($input: [UpdateOrderInput!]!) {
-  //       order: updateOrders(input: $input) {
-  //         printJobId
-  //       }
-  //     }
-  //     """,
-  //     expectedData: .containsAll(["5555", "3333"]),
-  //     headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-  //   ).run(self, variables: ["input": input])
-  // }
+    GraphQLTest(
+      """
+      mutation UpdateOrders($input: [UpdateOrderInput!]!) {
+        order: updateOrders(input: $input) {
+          printJobId
+        }
+      }
+      """,
+      expectedData: .containsAll(["5555", "3333"]),
+      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
+    ).run(Self.app, variables: ["input": input])
+  }
 
-  // func testGetOrderById() throws {
-  //   let order = Order.createFixture(on: app.db) { _ in
-  //     // $0.printJobId = 234432
+  func testGetOrderById() throws {
+    let order = Order.empty
+    order.printJobId = 234432
+    _ = try! Current.db.createOrder(order).wait()
 
-  //     // @TODO
-  //     fatalError()
-  //   }
+    GraphQLTest(
+      """
+      query {
+        order: getOrder(id: "\(order.id.uuidString)") {
+          printJobId
+        }
+      }
+      """,
+      expectedData: .containsKVPs(["printJobId": 234432]),
+      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
+    ).run(Self.app)
+  }
 
-  //   GraphQLTest(
-  //     """
-  //     query {
-  //       order: getOrder(id: "\(order.id.uuidString)") {
-  //         printJobId
-  //       }
-  //     }
-  //     """,
-  //     expectedData: .containsKVPs(["printJobId": 234432]),
-  //     headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-  //   ).run(self)
-  // }
+  func testGetOrderByIdFailsWithWrongTokenScope() throws {
+    Current.auth = .live
+    let order = Order.empty
+    _ = try! Current.db.createOrder(order).wait()
+    GraphQLTest(
+      """
+      query {
+        order: getOrder(id: "\(order.id.uuidString)") {
+          printJobId
+        }
+      }
+      """,
+      expectedError: .status(.unauthorized),
+      headers: [.authorization: "Bearer \(Seeded.tokens.queryDownloads)"]  // 👋 <-- bad scope
+    ).run(Self.app)
+  }
 
-  // func testGetOrderByIdFailsWithWrongTokenScope() throws {
-  //   let order = Order.createFixture(on: app.db)
-  //   GraphQLTest(
-  //     """
-  //     query {
-  //       order: getOrder(id: "\(order.id.uuidString)") {
-  //         printJobId
-  //       }
-  //     }
-  //     """,
-  //     expectedError: .status(.unauthorized),
-  //     headers: [.authorization: "Bearer \(Seeded.tokens.queryDownloads)"]  // 👋 <-- bad scope
-  //   ).run(self)
-  // }
+  func testGetOrdersByPrintJobStatus() throws {
+    let order1 = Order.empty
+    order1.printJobStatus = .bricked
+    let order2 = Order.empty
+    order2.printJobStatus = .bricked
+    _ = try! Current.db.createOrder(order1).wait()
+    _ = try! Current.db.createOrder(order2).wait()
 
-  // func testGetOrdersByPrintJobStatus() throws {
-  //   let order1 = Order.createFixture(on: app.db) {
-  //     $0.printJobStatus = .bricked
-  //   }
-  //   let order2 = Order.createFixture(on: app.db) {
-  //     $0.printJobStatus = .bricked
-  //   }
-
-  //   GraphQLTest(
-  //     """
-  //     query {
-  //       orders: getOrders(printJobStatus: "bricked") {
-  //         id
-  //       }
-  //     }
-  //     """,
-  //     expectedData: .containsUUIDs([order1.id.rawValue, order2.id.rawValue]),
-  //     headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-  //   ).run(self)
-  // }
+    GraphQLTest(
+      """
+      query {
+        orders: getOrders(printJobStatus: "bricked") {
+          id
+        }
+      }
+      """,
+      expectedData: .containsUUIDs([order1.id.rawValue, order2.id.rawValue]),
+      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
+    ).run(Self.app)
+  }
 }

@@ -1,6 +1,7 @@
 import FluentSQL
 
 extension LiveRepository {
+
   func insert(into table: String, values: [[String: Postgres.Data]]) throws -> Future<Void> {
     let prepared = try SQL.insert(into: table, values: values)
     return try SQL.execute(prepared, on: db)

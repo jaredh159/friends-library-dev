@@ -66,3 +66,7 @@ extension TokenScope {
     }
   }
 }
+
+extension Scope: PostgresEnum {
+  var dataType: String { TokenScope.M5.dbEnumName }
+}

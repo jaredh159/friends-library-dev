@@ -3,19 +3,7 @@ import XCTest
 
 @testable import App
 
-final class OrderRepositoryTests: XCTestCase {
-  static var app: Application!
-
-  override static func setUp() {
-    app = Application(.testing)
-    try! app.autoRevert().wait()
-    try! app.autoMigrate().wait()
-    try! configure(app)
-  }
-
-  override func setUp() {
-    Current.db = .mock(eventLoop: Self.app.db.eventLoop)
-  }
+final class OrderRepositoryTests: AppTestCase {
 
   func testInsertingAndRetrievingOrder() throws {
     let inserted: Order = .empty
