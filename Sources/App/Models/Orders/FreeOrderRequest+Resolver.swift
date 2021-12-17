@@ -25,10 +25,7 @@ extension Resolver {
     args: IdentifyEntityArgs
   ) throws -> Future<FreeOrderRequest> {
     try req.requirePermission(to: .queryOrders)
-    throw Abort(.notImplemented)
-    // FreeOrderRequest
-    //   .find(args.id, on: request.db)
-    //   .unwrap(or: Abort(.notFound))
+    return try Current.db.getFreeOrderRequest(.init(rawValue: args.id))
   }
 
   struct CreateFreeOrderRequestArgs: Codable {
@@ -54,11 +51,10 @@ extension Resolver {
       source: args.input.source
     )
 
-    throw Abort(.notImplemented)
-    // return order.create(on: request.db).flatMap {
-    //   sendFreeOrderRequestNotifications(for: order, on: request)
-    //     .map { order }
-    // }
+    return try Current.db.createFreeOrderRequest(order).flatMap {
+      sendFreeOrderRequestNotifications(for: order, on: req)
+        .map { order }
+    }
   }
 }
 

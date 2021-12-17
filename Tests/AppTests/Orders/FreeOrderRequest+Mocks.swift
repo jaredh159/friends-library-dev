@@ -13,7 +13,7 @@ extension FreeOrderRequest {
       addressState: "MI",
       addressZip: "48302",
       addressCountry: "US",
-      source: "/rad-site"
+      source: "rad-site"
     )
   }
 }
