@@ -9,22 +9,19 @@ extension Resolver {
     let revision: String
   }
 
-  // func createArtifactProductionVersion(
-  //   request: Request,
-  //   args: CreateArtifactProductionVersionArgs
-  // ) throws -> Future<ArtifactProductionVersion> {
-  //   try request.requirePermission(to: .mutateArtifactProductionVersions)
-  //   let version = ArtifactProductionVersion(version: args.revision)
-  //   return version.create(on: request.db).map { version }
-  // }
+  func createArtifactProductionVersion(
+    req: Req,
+    args: CreateArtifactProductionVersionArgs
+  ) throws -> Future<ArtifactProductionVersion> {
+    try req.requirePermission(to: .mutateArtifactProductionVersions)
+    let version = ArtifactProductionVersion(version: .init(rawValue: args.revision))
+    return try Current.db.createArtifactProductionVersion(version).map { version }
+  }
 
-  // func getLatestArtifactProductionVersion(
-  //   request: Request,
-  //   args: NoArguments
-  // ) throws -> Future<ArtifactProductionVersion> {
-  //   ArtifactProductionVersion.query(on: request.db)
-  //     .sort(\.$createdAt, .descending)
-  //     .first()
-  //     .unwrap(or: Abort(.notFound))
-  // }
+  func getLatestArtifactProductionVersion(
+    req: Req,
+    args: NoArgs
+  ) throws -> Future<ArtifactProductionVersion> {
+    try Current.db.getLatestArtifactProductionVersion()
+  }
 }

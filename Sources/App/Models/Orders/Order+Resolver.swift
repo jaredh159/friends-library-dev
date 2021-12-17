@@ -74,7 +74,7 @@ extension Resolver {
     let items = input.items.map { item in
       OrderItem(
         orderId: order.id,
-        documentId: item.documentId,
+        documentId: .init(rawValue: item.documentId),
         editionType: item.editionType,
         title: item.title,
         quantity: item.quantity,

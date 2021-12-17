@@ -3,6 +3,7 @@ final class MockDb {
   var tokenScopes: [TokenScope.Id: TokenScope] = [:]
   var orders: [Order.Id: Order] = [:]
   var orderItems: [OrderItem.Id: OrderItem] = [:]
+  var artifactProductionVersions: [ArtifactProductionVersion.Id: ArtifactProductionVersion] = [:]
 
   func find<M: DuetModel>(
     _ id: M.IdValue,
@@ -12,6 +13,10 @@ final class MockDb {
       throw DbError.notFound
     }
     return model
+  }
+
+  func all<M: DuetModel>(_ keyPath: KeyPath<MockDb, [M.IdValue: M]>) -> [M] {
+    Array(self[keyPath: keyPath].values)
   }
 
   func find<M: DuetModel>(

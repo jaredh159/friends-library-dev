@@ -97,20 +97,38 @@ enum SQL {
   static func select(
     _ columns: Postgres.Columns,
     from table: String,
-    where constraint: WhereConstraint
+    where constraint: WhereConstraint? = nil
   ) -> PreparedStatement {
+    var bindings: [Postgres.Data] = []
+
+    var WHERE = ""
+    if let constraint = constraint {
+      bindings.append(constraint.value)
+      WHERE = "\n\(whereClause(constraint, boundTo: 1))"
+    }
+
     let query = """
-      SELECT \(columns.sql) from "\(table)"
-      \(whereClause(constraint, boundTo: 1));
+      SELECT \(columns.sql) from "\(table)"\(WHERE);
       """
 
-    return PreparedStatement(query: query, bindings: [constraint.value])
+    // print("\n\n\n\n\n")
+    // print(query)
+    // print("\n\n\n\n\n")
+
+    return PreparedStatement(query: query, bindings: bindings)
   }
 
   static func execute(
     _ statement: PreparedStatement,
     on db: SQLDatabase
   ) throws -> Future<SQLRawBuilder> {
+    // e.g. SELECT statements with no WHERE clause have
+    // no bindings, and so can't be sent as a pg prepared statement
+    if statement.bindings.isEmpty {
+      let builder = db.raw("\(raw: statement.query)")
+      return db.eventLoop.makeSucceededFuture(builder)
+    }
+
     let types = statement.bindings.map(\.typeName).list
     let params = statement.bindings.map(\.param).list
     let key = [statement.query, types].joined()

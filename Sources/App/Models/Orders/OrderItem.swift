@@ -6,7 +6,7 @@ import Vapor
 final class OrderItem {
   var id: Id
   var orderId: Order.Id
-  var documentId: UUID  // @TODO, should become Document.Id, then be deleted when switching to Edition.Id
+  var documentId: Document.Id
   var editionType: EditionType  // @TODO remove
   var title: String  // @TODO, also redundant, could join on the edition...
   var quantity: Int
@@ -14,13 +14,14 @@ final class OrderItem {
   var createdAt = Current.date()
   var order = Parent<Order>.notLoaded
 
-  // var document = Parent<Document>.notLoaded // @TODO, then switch
+  var document = Parent<Document>.notLoaded
+
   // var edition = Parent<Edition>.notLoaded // @TODO, longer-term correct
 
   init(
     id: Id = .init(),
     orderId: Order.Id,
-    documentId: UUID,
+    documentId: Document.Id,
     editionType: EditionType,
     title: String,
     quantity: Int,

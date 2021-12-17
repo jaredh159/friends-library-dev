@@ -19,7 +19,7 @@ extension LiveRepository {
   func select<Model: DuetModel>(
     _ columns: Postgres.Columns,
     from model: Model.Type,
-    where: SQL.WhereConstraint
+    where: SQL.WhereConstraint? = nil
   ) throws -> Future<[Model]> {
     let prepared = SQL.select(columns, from: model.tableName, where: `where`)
     return try SQL.execute(prepared, on: db)

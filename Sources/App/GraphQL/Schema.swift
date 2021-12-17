@@ -5,9 +5,6 @@ import Vapor
 
 let AppSchema = try! Graphiti.Schema<Resolver, Request> {
   Scalar(UUID.self)
-  Scalar(Token.Id.self, as: "TokenId")
-  Scalar(TokenScope.Id.self, as: "TokenScopeId")
-  Scalar(Token.Value.self, as: "TokenValue")
   DateScalar(formatter: ISO8601DateFormatter())
 
   Enum(EditionType.self)
@@ -84,7 +81,7 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
   Type(OrderItem.self) {
     Field("id", at: \.id.rawValue)
     Field("title", at: \.title)
-    Field("documentId", at: \.documentId)
+    Field("documentId", at: \.documentId.rawValue)
     Field("editionType", at: \.editionType)
     Field("quantity", at: \.quantity)
     Field("unitPrice", at: \.unitPrice.rawValue)
@@ -118,8 +115,8 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
   }
 
   Type(ArtifactProductionVersion.self) {
-    Field("id", at: \.id)
-    Field("version", at: \.version)
+    Field("id", at: \.id.rawValue)
+    Field("version", at: \.version.rawValue)
     Field("createdAt", at: \.createdAt)
   }
 
@@ -176,8 +173,8 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
   }
 
   Type(Download.self) {
-    Field("id", at: \.id)
-    Field("documentId", at: \.documentId)
+    Field("id", at: \.id.rawValue)
+    Field("documentId", at: \.documentId.rawValue)
     Field("editionType", at: \.editionType)
     Field("format", at: \.format)
     Field("source", at: \.source)
