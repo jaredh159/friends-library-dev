@@ -1,39 +1,67 @@
 import Fluent
 import Foundation
-import Vapor
+import Tagged
 
-final class EditionChapter: Model, Content {
-  static let schema = M21.tableName
-
-  @ID(key: .id)
-  var id: UUID?
-
-  // @Parent(key: M21.editionId)
-  // var edition: Edition
-
-  @Field(key: M21.order)
+final class EditionChapter {
+  var id: Id
+  var editionId: Edition.Id
   var order: Int
-
-  @OptionalField(key: M21.customId)
-  var customId: String?
-
-  @Field(key: M21.shortHeading)
   var shortHeading: String
-
-  @Field(key: M21.isIntermediateTitle)
   var isIntermediateTitle: Bool
-
-  @OptionalField(key: M21.sequenceNumber)
+  var customId: String?
   var sequenceNumber: Int?
-
-  @OptionalField(key: M21.nonSequenceTitle)
   var nonSequenceTitle: String?
+  var createdAt = Current.date()
+  var updatedAt = Current.date()
 
-  @Timestamp(key: .createdAt, on: .create)
-  var createdAt: Date?
+  var edition = Parent<Edition>.notLoaded
 
-  @Timestamp(key: .updatedAt, on: .update)
-  var updatedAt: Date?
+  init(
+    id: Id = .init(),
+    editionId: Edition.Id,
+    order: Int,
+    shortHeading: String,
+    isIntermediateTitle: Bool,
+    customId: String? = nil,
+    sequenceNumber: Int? = nil,
+    nonSequenceTitle: String? = nil
+  ) {
+    self.id = id
+    self.editionId = editionId
+    self.order = order
+    self.shortHeading = shortHeading
+    self.isIntermediateTitle = isIntermediateTitle
+    self.customId = customId
+    self.sequenceNumber = sequenceNumber
+    self.nonSequenceTitle = nonSequenceTitle
+  }
+}
+
+// extensions
+
+extension EditionChapter: AppModel {
+  typealias Id = Tagged<EditionChapter, UUID>
+}
+
+extension EditionChapter: DuetModel {
+  static let tableName = M21.tableName
+}
+
+extension EditionChapter: Codable {
+  typealias ColumnName = CodingKeys
+
+  enum CodingKeys: String, CodingKey {
+    case id
+    case editionId
+    case order
+    case shortHeading
+    case isIntermediateTitle
+    case customId
+    case sequenceNumber
+    case nonSequenceTitle
+    case createdAt
+    case updatedAt
+  }
 }
 
 extension EditionChapter {

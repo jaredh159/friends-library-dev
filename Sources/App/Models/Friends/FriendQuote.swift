@@ -1,34 +1,56 @@
 import Fluent
-import Vapor
+import Foundation
+import Tagged
 
-final class FriendQuote: Model, Content {
-  static let schema = M12.tableName
-
-  @ID(key: .id)
-  var id: UUID?
-
-  // @Parent(key: M12.friendId)
-  // var friend: Friend
-
-  @Field(key: M12.source)
+final class FriendQuote {
+  var id: Id
+  var friendId: Friend.Id
   var source: String
-
-  @Field(key: M12.text)
-  var text: String
-
-  @Field(key: M12.order)
   var order: Int
-
-  @OptionalField(key: M12.context)
   var context: String?
+  var createdAt = Current.date()
+  var updatedAt = Current.date()
 
-  @Timestamp(key: .createdAt, on: .create)
-  var createdAt: Date?
+  var friend = Parent<Friend>.notLoaded
 
-  @Timestamp(key: .updatedAt, on: .update)
-  var updatedAt: Date?
+  init(
+    id: Id = .init(),
+    friendId: Friend.Id,
+    source: String,
+    order: Int,
+    context: String? = nil
+  ) {
+    self.id = id
+    self.friendId = friendId
+    self.source = source
+    self.order = order
+    self.context = context
+  }
 
-  init() {}
+}
+
+// extensions
+
+extension FriendQuote: AppModel {
+  typealias Id = Tagged<FriendQuote, UUID>
+}
+
+extension FriendQuote: DuetModel {
+  static let tableName = M12.tableName
+}
+
+extension FriendQuote: Codable {
+  typealias ColumnName = CodingKeys
+
+  enum CodingKeys: String, CodingKey {
+    case id
+    case friendId
+    case source
+    case order
+    case context
+    case createdAt
+    case updatedAt
+  }
 }
 
 extension FriendQuote {

@@ -1,37 +1,63 @@
 import Fluent
 import Foundation
+import Tagged
 import Vapor
 
-final class FriendResidence: Model, Content {
-  static let schema = M11.tableName
+final class FriendResidence {
+  var id: Id
+  var friendId: Friend.Id
+  var city: String
+  var region: String
+  var duration: Duration?
+  var createdAt = Current.date()
+  var updatedAt = Current.date()
 
+  var friend = Parent<Friend>.notLoaded
+
+  init(
+    id: Id = .init(),
+    friendId: Friend.Id,
+    city: String,
+    region: String,
+    duration: Duration? = nil
+  ) {
+    self.id = id
+    self.friendId = friendId
+    self.city = city
+    self.region = region
+    self.duration = duration
+  }
+}
+
+// extensions
+
+extension FriendResidence {
   struct Duration: Codable {
     var start: Int
     var end: Int
   }
+}
 
-  @ID(key: .id)
-  var id: UUID?
+extension FriendResidence: AppModel {
+  typealias Id = Tagged<FriendResidence, UUID>
+}
 
-  // @Parent(key: M11.friendId)
-  // var friend: Friend
+extension FriendResidence: DuetModel {
+  static let tableName = M11.tableName
+}
 
-  @Field(key: M11.city)
-  var city: String
+extension FriendResidence: Codable {
+  typealias ColumnName = CodingKeys
 
-  @Field(key: M11.region)
-  var region: String
-
-  @OptionalField(key: M11.duration)
-  var duration: Duration?
-
-  @Timestamp(key: .createdAt, on: .create)
-  var createdAt: Date?
-
-  @Timestamp(key: .updatedAt, on: .update)
-  var updatedAt: Date?
-
-  init() {}
+  enum CodingKeys: String, CodingKey {
+    case id
+    case friendId
+    case city
+    case region
+    case duration
+    case createdAt
+    case updatedAt
+  }
 }
 
 extension FriendResidence {

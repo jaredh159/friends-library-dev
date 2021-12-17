@@ -1,47 +1,76 @@
 import Fluent
 import Foundation
 import Tagged
-import Vapor
 
-final class Audio: Model, Content {
-  static let schema = M19.tableName
-  typealias ExternalPlaylistId = Tagged<Audio, Int64>
-
-  @ID(key: .id)
-  var id: UUID?
-
-  // @Parent(key: M19.editionId)
-  // var edition: Edition
-
-  @Field(key: M19.reader)
+final class Audio {
+  var id: Id
+  var editionId: Edition.Id
   var reader: String
-
-  @Field(key: M19.isIncomplete)
   var isIncomplete: Bool
-
-  @Field(key: M19.mp3ZipSizeHq)
   var mp3ZipSizeHq: Bytes
-
-  @Field(key: M19.mp3ZipSizeLq)
   var mp3ZipSizeLq: Bytes
-
-  @Field(key: M19.m4bSizeHq)
   var m4bSizeHq: Bytes
-
-  @Field(key: M19.m4bSizeLq)
   var m4bSizeLq: Bytes
+  var externalPlaylistIdHq: ExternalPlaylistId?
+  var externalPlaylistIdLq: ExternalPlaylistId?
+  var createdAt = Current.date()
+  var updatedAt = Current.date()
 
-  @Field(key: M19.externalPlaylistIdHq)
-  var externalPlaylistIdHq: ExternalPlaylistId
+  var edition = Parent<Edition>.notLoaded
 
-  @Field(key: M19.externalPlaylistIdLq)
-  var externalPlaylistIdLq: ExternalPlaylistId
+  init(
+    id: Id = .init(),
+    editionId: Edition.Id,
+    reader: String,
+    mp3ZipSizeHq: Bytes,
+    mp3ZipSizeLq: Bytes,
+    m4bSizeHq: Bytes,
+    m4bSizeLq: Bytes,
+    externalPlaylistIdHq: ExternalPlaylistId? = nil,
+    externalPlaylistIdLq: ExternalPlaylistId? = nil,
+    isIncomplete: Bool = false
+  ) {
+    self.id = id
+    self.editionId = editionId
+    self.reader = reader
+    self.mp3ZipSizeHq = mp3ZipSizeHq
+    self.mp3ZipSizeLq = mp3ZipSizeLq
+    self.m4bSizeHq = m4bSizeHq
+    self.m4bSizeLq = m4bSizeLq
+    self.externalPlaylistIdHq = externalPlaylistIdHq
+    self.externalPlaylistIdLq = externalPlaylistIdLq
+    self.isIncomplete = isIncomplete
+  }
+}
 
-  @Timestamp(key: .createdAt, on: .create)
-  var createdAt: Date?
+// extensions
 
-  @Timestamp(key: .updatedAt, on: .update)
-  var updatedAt: Date?
+extension Audio: AppModel {
+  typealias Id = Tagged<Audio, UUID>
+  typealias ExternalPlaylistId = Tagged<Audio, Int64>
+}
+
+extension Audio: DuetModel {
+  static let tableName = M19.tableName
+}
+
+extension Audio: Codable {
+  typealias ColumnName = CodingKeys
+
+  enum CodingKeys: String, CodingKey {
+    case id
+    case editionId
+    case reader
+    case mp3ZipSizeHq
+    case mp3ZipSizeLq
+    case m4bSizeHq
+    case m4bSizeLq
+    case externalPlaylistIdHq
+    case externalPlaylistIdLq
+    case isIncomplete
+    case createdAt
+    case updatedAt
+  }
 }
 
 extension Audio {

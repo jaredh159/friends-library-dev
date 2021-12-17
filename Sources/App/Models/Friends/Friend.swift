@@ -1,6 +1,6 @@
 import Fluent
+import Foundation
 import Tagged
-import Vapor
 
 final class Friend {
   var id: Id
@@ -16,6 +16,8 @@ final class Friend {
   var updatedAt = Current.date()
 
   var documents = Children<Document>.notLoaded
+  var residences = Children<FriendResidence>.notLoaded
+  var quotes = Children<FriendQuote>.notLoaded
 
   var isCompilations: Bool {
     slug.starts(with: "compila")
@@ -42,12 +44,6 @@ final class Friend {
     self.died = died
     self.published = published
   }
-
-  // @Children(for: \FriendResidence.$friend)
-  // var residences: [FriendResidence]
-
-  // @Children(for: \FriendQuote.$friend)
-  // var quotes: [FriendQuote]
 }
 
 // extensions

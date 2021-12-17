@@ -1,34 +1,62 @@
 import Fluent
 import Foundation
 import NonEmpty
-import Vapor
+import Tagged
 
-final class EditionImpression: Model, Content {
-  static let schema = M17.tableName
-
-  @ID(key: .id)
-  var id: UUID?
-
-  // @Parent(key: M17.editionId)
-  // var edition: Edition
-
-  @Field(key: M17.adocLength)
+final class EditionImpression {
+  var id: Id
+  var editionId: Edition.Id
   var adocLength: Int
-
-  @Enum(key: M17.paperbackSize)
   var paperbackSize: PrintSizeVariant
-
-  @Field(key: M17.paperbackVolumes)
   var paperbackVolumes: NonEmpty<[Int]>
-
-  @Field(key: M17.publishedRevision)
   var publishedRevision: GitCommitSha
-
-  @Field(key: M17.productionToolchainRevision)
   var productionToolchainRevision: GitCommitSha
+  var createdAt = Current.date()
 
-  @Timestamp(key: .createdAt, on: .create)
-  var createdAt: Date?
+  var edition = Parent<Edition>.notLoaded
+
+  init(
+    id: Id = .init(),
+    editionId: Edition.Id,
+    adocLength: Int,
+    paperbackSize: PrintSizeVariant,
+    paperbackVolumes: NonEmpty<[Int]>,
+    publishedRevision: GitCommitSha,
+    productionToolchainRevision: GitCommitSha
+  ) {
+    self.id = id
+    self.editionId = editionId
+    self.adocLength = adocLength
+    self.paperbackSize = paperbackSize
+    self.paperbackVolumes = paperbackVolumes
+    self.publishedRevision = publishedRevision
+    self.productionToolchainRevision = productionToolchainRevision
+  }
+}
+
+// extensions
+
+extension EditionImpression: AppModel {
+  typealias Id = Tagged<EditionImpression, UUID>
+}
+
+extension EditionImpression: DuetModel {
+  static let tableName = M17.tableName
+}
+
+extension EditionImpression: Codable {
+  typealias ColumnName = CodingKeys
+
+  enum CodingKeys: String, CodingKey {
+    case id
+    case editionId
+    case adocLength
+    case paperbackSize
+    case paperbackVolumes
+    case publishedRevision
+    case productionToolchainRevision
+    case createdAt
+  }
 }
 
 extension EditionImpression {

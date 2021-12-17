@@ -1,24 +1,47 @@
 import Fluent
 import Foundation
-import Vapor
+import Tagged
 
-final class Isbn: Model, Content {
-  static let schema = M18.tableName
-
-  @ID(key: .id)
-  var id: UUID?
-
-  @Field(key: M18.code)
+final class Isbn {
+  var id: Id
   var code: ISBN
+  var editionId: Edition.Id?
+  var createdAt = Current.date()
+  var updatedAt = Current.date()
 
-  @OptionalParent(key: M18.editionId)
-  var edition: Edition?
+  var edition = OptionalParent<Edition>.notLoaded
 
-  @Timestamp(key: .createdAt, on: .create)
-  var createdAt: Date?
+  init(
+    id: Id = .init(),
+    code: ISBN,
+    editionId: Edition.Id?
+  ) {
+    self.id = id
+    self.code = code
+    self.editionId = editionId
+  }
+}
 
-  @Timestamp(key: .updatedAt, on: .update)
-  var updatedAt: Date?
+// extensions
+
+extension Isbn: AppModel {
+  typealias Id = Tagged<Isbn, UUID>
+}
+
+extension Isbn: DuetModel {
+  static let tableName = M18.tableName
+}
+
+extension Isbn: Codable {
+  typealias ColumnName = CodingKeys
+
+  enum CodingKeys: String, CodingKey {
+    case id
+    case code
+    case editionId
+    case createdAt
+    case updatedAt
+  }
 }
 
 extension Isbn {

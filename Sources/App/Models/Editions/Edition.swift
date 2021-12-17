@@ -1,46 +1,74 @@
 import Fluent
 import Foundation
 import NonEmpty
+import Tagged
 import Vapor
 
-final class Edition: Model, Content {
-  static let schema = M16.tableName
+final class Edition {
+  var id: Id
+  var documentId: Document.Id
+  var type: EditionType
+  var editor: String?
+  var isDraft: Bool
+  var paperbackSplits: NonEmpty<[Int]>?
+  var paperbackOverrideSize: PrintSizeVariant?
+  var createdAt = Current.date()
+  var updatedAt = Current.date()
+  var deletedAt: Date? = nil
 
-  @ID(key: .id)
-  var id: UUID?
+  var document = Parent<Document>.notLoaded
+
+  init(
+    id: Id = .init(),
+    documentId: Document.Id,
+    type: EditionType,
+    editor: String?,
+    isDraft: Bool = false,
+    paperbackSplits: NonEmpty<[Int]>? = nil,
+    paperbackOverrideSize: PrintSizeVariant? = nil
+  ) {
+    self.id = id
+    self.documentId = documentId
+    self.type = type
+    self.editor = editor
+    self.isDraft = isDraft
+    self.paperbackSplits = paperbackSplits
+    self.paperbackOverrideSize = paperbackOverrideSize
+  }
 
   // @OptionalChild(for: \EditionImpression.$edition)
   // var impression: EditionImpression?
 
-  @OptionalChild(for: \Isbn.$edition)
-  var isbn: Isbn?
+  // @OptionalChild(for: \Isbn.$edition)
+  // var isbn: Isbn?
+}
 
-  // @Parent(key: M16.documentId)
-  // var document: Document
+// extensions
 
-  @Enum(key: M16.type)
-  var type: EditionType
+extension Edition: AppModel {
+  typealias Id = Tagged<Edition, UUID>
+}
 
-  @OptionalField(key: M16.editor)
-  var editor: String?
+extension Edition: DuetModel {
+  static let tableName = M16.tableName
+}
 
-  @Field(key: M16.isDraft)
-  var isDraft: Bool
+extension Edition: Codable {
+  typealias ColumnName = CodingKeys
 
-  @OptionalField(key: M16.paperbackSplits)
-  var paperbackSplits: NonEmpty<[Int]>?
+  enum CodingKeys: String, CodingKey {
+    case id
+    case documentId
+    case type
+    case editor
+    case isDraft
+    case paperbackSplits
+    case paperbackOverrideSize
+    case createdAt
+    case updatedAt
+    case deletedAt
 
-  @OptionalEnum(key: M16.paperbackOverrideSize)
-  var paperbackOverrideSize: PrintSizeVariant?
-
-  @Timestamp(key: .createdAt, on: .create)
-  var createdAt: Date?
-
-  @Timestamp(key: .updatedAt, on: .update)
-  var updatedAt: Date?
-
-  @Timestamp(key: .deletedAt, on: .delete)
-  var deletedAt: Date?
+  }
 }
 
 extension Edition {
