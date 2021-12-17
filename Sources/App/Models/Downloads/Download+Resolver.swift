@@ -35,27 +35,28 @@ extension Resolver {
     args: CreateDownloadArgs
   ) throws -> Future<Download> {
     try request.requirePermission(to: .mutateDownloads)
-    fatalError()
-    // let download = Download()
-    // download.documentId = args.input.documentId
-    // download.editionType = args.input.editionType
-    // download.format = args.input.format
-    // download.source = args.input.source
-    // download.isMobile = args.input.isMobile
-    // download.audioQuality = args.input.audioQuality
-    // download.audioPartNumber = args.input.audioPartNumber
-    // download.userAgent = args.input.userAgent
-    // download.os = args.input.os
-    // download.browser = args.input.browser
-    // download.platform = args.input.platform
-    // download.referrer = args.input.referrer
-    // download.ip = args.input.ip
-    // download.city = args.input.city
-    // download.region = args.input.region
-    // download.postalCode = args.input.postalCode
-    // download.country = args.input.country
-    // download.latitude = args.input.latitude
-    // download.longitude = args.input.longitude
-    // return download.create(on: request.db).map { download }
+    let input = args.input
+    let download = Download(
+      documentId: .init(rawValue: input.documentId),
+      editionType: input.editionType,
+      format: input.format,
+      source: input.source,
+      isMobile: input.isMobile,
+      audioQuality: input.audioQuality,
+      audioPartNumber: input.audioPartNumber,
+      userAgent: input.userAgent,
+      os: input.os,
+      browser: input.browser,
+      platform: input.platform,
+      referrer: input.referrer,
+      ip: input.ip,
+      city: input.city,
+      region: input.region,
+      postalCode: input.postalCode,
+      country: input.country,
+      latitude: input.latitude,
+      longitude: input.longitude
+    )
+    return try Current.db.createDownload(download).map { download }
   }
 }

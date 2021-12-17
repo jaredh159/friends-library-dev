@@ -17,6 +17,10 @@ struct DatabaseClient {
   var getOrdersByPrintJobStatus: (Order.PrintJobStatus) throws -> Future<[Order]>
   var updateOrder: (UpdateOrderInput) throws -> Future<Order>
 
+  // downloads
+  var createDownload: (Download) throws -> Future<Void>
+  var getDownload: (Download.Id) throws -> Future<Download>
+
   // artifact production versions
   var createArtifactProductionVersion: (ArtifactProductionVersion) throws -> Future<Void>
   var getLatestArtifactProductionVersion: () throws -> Future<ArtifactProductionVersion>
@@ -37,6 +41,10 @@ extension DatabaseClient {
     getOrdersByPrintJobStatus: { _ in throw Abort(.notImplemented) },
     updateOrder: { _ in throw Abort(.notImplemented) },
 
+    // downloads
+    createDownload: { _ in throw Abort(.notImplemented) },
+    getDownload: { _ in throw Abort(.notImplemented) },
+
     // artifact production versions
     createArtifactProductionVersion: { _ in throw Abort(.notImplemented) },
     getLatestArtifactProductionVersion: { throw Abort(.notImplemented) }
@@ -48,6 +56,7 @@ extension DatabaseClient {
     var client: DatabaseClient = .notImplemented
     TokenRepository(db: db).assign(client: &client)
     OrderRepository(db: db).assign(client: &client)
+    DownloadRepository(db: db).assign(client: &client)
     ArtifactProductionVersionRepository(db: db).assign(client: &client)
     return client
   }
@@ -59,6 +68,7 @@ extension DatabaseClient {
     var client: DatabaseClient = .notImplemented
     MockTokenRepository(db: mockDb, eventLoop: el).assign(client: &client)
     MockOrderRepository(db: mockDb, eventLoop: el).assign(client: &client)
+    MockDownloadRepository(db: mockDb, eventLoop: el).assign(client: &client)
     MockArtifactProductionVersionRepository(db: mockDb, eventLoop: el).assign(client: &client)
     return client
   }

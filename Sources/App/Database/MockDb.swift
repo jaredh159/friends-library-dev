@@ -2,6 +2,7 @@ final class MockDb {
   var tokens: [Token.Id: Token] = [:]
   var tokenScopes: [TokenScope.Id: TokenScope] = [:]
   var orders: [Order.Id: Order] = [:]
+  var downloads: [Download.Id: Download] = [:]
   var orderItems: [OrderItem.Id: OrderItem] = [:]
   var artifactProductionVersions: [ArtifactProductionVersion.Id: ArtifactProductionVersion] = [:]
 

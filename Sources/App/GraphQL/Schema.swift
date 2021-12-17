@@ -218,9 +218,9 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
   }
 
   Mutation {
-    // Field("createDownload", at: Resolver.createDownload) {
-    //   Argument("input", at: \.input)
-    // }
+    Field("createDownload", at: Resolver.createDownload) {
+      Argument("input", at: \.input)
+    }
 
     Field("createOrder", at: Resolver.createOrder) {
       Argument("input", at: \.input)
