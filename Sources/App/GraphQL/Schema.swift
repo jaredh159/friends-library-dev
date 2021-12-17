@@ -50,13 +50,6 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
     // Field("token", with: \.$token)
   }
 
-  // Type(TokenScope.self) {
-  //   Field("id", at: \.id)
-  //   Field("scope", at: \.scope)
-  //   Field("createdAt", at: \.createdAt)
-  //   Field("token", with: \.$token)
-  // }
-
   Type(Token.self) {
     Field("id", at: \.id.rawValue)
     Field("value", at: \.value.rawValue)
@@ -64,14 +57,6 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
     Field("createdAt", at: \.createdAt)
     Field("scopes", with: \.scopes)
   }
-
-  // Type(Token.self) {
-  //   Field("id", at: \.id)
-  //   Field("value", at: \.value)
-  //   Field("description", at: \.description)
-  //   Field("createdAt", at: \.createdAt)
-  //   Field("scopes", with: \.$scopes)
-  // }
 
   Type(ModelsCounts.self) {
     Field("downloads", at: \.downloads)

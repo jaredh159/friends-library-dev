@@ -1,62 +1,91 @@
 import Fluent
+import Tagged
 import Vapor
 
-final class Friend: Model, Content {
-  static let schema = M10.tableName
+final class Friend {
+  var id: Id
+  var lang: Lang
+  var name: String
+  var slug: String
+  var gender: Gender
+  var description: String
+  var born: Int?
+  var died: Int?
+  var published: Date?
+  var createdAt = Current.date()
+  var updatedAt = Current.date()
 
-  enum Gender: String, Codable, CaseIterable {
-    case male
-    case female
-    case mixed
+  var documents = Children<Document>.notLoaded
+
+  var isCompilations: Bool {
+    slug.starts(with: "compila")
   }
 
-  @ID(key: .id)
-  var id: UUID?
-
-  @Enum(key: M10.lang)
-  var lang: Lang
-
-  @Field(key: M10.name)
-  var name: String
-
-  @Field(key: M10.slug)
-  var slug: String
-
-  @Enum(key: M10.gender)
-  var gender: Gender
-
-  @Field(key: M10.description)
-  var description: String
-
-  @OptionalField(key: M10.born)
-  var born: Int?
-
-  @OptionalField(key: M10.died)
-  var died: Int?
-
-  @Field(key: M10.published)
-  var published: Date?
-
-  @Timestamp(key: .createdAt, on: .create)
-  var createdAt: Date?
-
-  @Timestamp(key: .updatedAt, on: .update)
-  var updatedAt: Date?
+  init(
+    id: Id = .init(),
+    lang: Lang,
+    name: String,
+    slug: String,
+    gender: Gender,
+    description: String,
+    born: Int?,
+    died: Int?,
+    published: Date?
+  ) {
+    self.id = id
+    self.lang = lang
+    self.name = name
+    self.slug = slug
+    self.gender = gender
+    self.description = description
+    self.born = born
+    self.died = died
+    self.published = published
+  }
 
   // @Children(for: \FriendResidence.$friend)
   // var residences: [FriendResidence]
 
   // @Children(for: \FriendQuote.$friend)
   // var quotes: [FriendQuote]
+}
 
-  // @Children(for: \Document.$friend)
-  // var documents: [Document]
+// extensions
 
-  var isCompilations: Bool {
-    slug.starts(with: "compila")
+extension Friend {
+  enum Gender: String, Codable, CaseIterable {
+    case male
+    case female
+    case mixed
   }
+}
 
-  init() {}
+extension Friend: AppModel {
+  typealias Id = Tagged<Friend, UUID>
+}
+
+extension Friend: DuetModel {
+  static let tableName = M10.tableName
+}
+
+extension Friend: Codable {
+  typealias ColumnName = CodingKeys
+
+  enum CodingKeys: String, CodingKey {
+    case id
+    case lang
+    case name
+    case slug
+    case gender
+    case description
+    case born
+    case died
+    case published
+  }
+}
+
+extension Friend.Gender: PostgresEnum {
+  var dataType: String { Friend.M10.GenderEnum.name }
 }
 
 extension Friend {

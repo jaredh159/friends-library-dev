@@ -14,6 +14,11 @@ enum Parent<M: AppModel> {
   case loaded(M)
 }
 
+enum OptionalParent<M: AppModel> {
+  case notLoaded
+  case loaded(M?)
+}
+
 protocol UUIDStringable {
   var uuidString: String { get }
 }

@@ -1,56 +1,87 @@
 import Fluent
+import Tagged
 import Vapor
 
-final class Document: Model, Content {
-  static let schema = M13.tableName
-
-  @ID(key: .id)
-  var id: UUID?
-
-  // @Parent(key: M13.friendId)
-  // var friend: Friend
-
-  @OptionalParent(key: M13.altLanguageId)
-  var altLanguageDocument: Document?
-
-  @Field(key: M13.title)
+final class Document {
+  var id: Id
+  var friendId: Friend.Id
+  var altLanguageId: Id?
   var title: String
-
-  @Field(key: M13.slug)
   var slug: String
-
-  @Field(key: M13.filename)
   var filename: String
-
-  @OptionalField(key: M13.published)
   var published: Int?
-
-  @OptionalField(key: M13.originalTitle)
   var originalTitle: String?
-
-  @Field(key: M13.incomplete)
   var incomplete: Bool
-
-  @Field(key: M13.description)
   var description: String
-
-  @Field(key: M13.partialDescription)
   var partialDescription: String
-
-  @OptionalField(key: M13.featuredDescription)
   var featuredDescription: String?
+  var createdAt = Current.date()
+  var updatedAt = Current.date()
+  var deletedAt: Date? = nil
 
-  @Timestamp(key: .createdAt, on: .create)
-  var createdAt: Date?
+  var friend = Parent<Friend>.notLoaded
+  var altLanguageDocument = OptionalParent<Document>.notLoaded
+  var relatedDocuments = Children<Document>.notLoaded
 
-  @Timestamp(key: .updatedAt, on: .update)
-  var updatedAt: Date?
+  init(
+    id: Id = .init(),
+    friendId: Friend.Id,
+    altLanguageId: Id?,
+    title: String,
+    slug: String,
+    filename: String,
+    published: Int?,
+    originalTitle: String?,
+    incomplete: Bool,
+    description: String,
+    partialDescription: String,
+    featuredDescription: String?
+  ) {
+    self.id = id
+    self.friendId = friendId
+    self.slug = slug
+    self.altLanguageId = altLanguageId
+    self.title = title
+    self.filename = filename
+    self.published = published
+    self.originalTitle = originalTitle
+    self.incomplete = incomplete
+    self.description = description
+    self.partialDescription = partialDescription
+    self.featuredDescription = featuredDescription
+  }
+}
 
-  @Timestamp(key: .deletedAt, on: .delete)
-  var deletedAt: Date?
+// extensions
 
-  // @Children(for: \RelatedDocument.$parentDocument)
-  // var relatedDocuments: [RelatedDocument]
+extension Document: AppModel {
+  typealias Id = Tagged<Document, UUID>
+}
+
+extension Document: DuetModel {
+  static let tableName = M13.tableName
+}
+
+extension Document: Codable {
+  typealias ColumnName = CodingKeys
+
+  enum CodingKeys: String, CodingKey {
+    case id
+    case friendId
+    case slug
+    case altLanguageId
+    case title
+    case filename
+    case published
+    case originalTitle
+    case incomplete
+    case description
+    case partialDescription
+    case featuredDescription
+    case createdAt
+    case updatedAt
+    case deletedAt
+  }
 }
 
 extension Document {
