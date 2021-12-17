@@ -9,7 +9,13 @@ final class OrderResolverTests: GraphQLTestCase {
     return try configure(app)
   }
 
+  // override func setUp() {
+  //   Current.db = .mock(eventLoop: Self.app.db.eventLoop)
+  // }
+
   func testCreateOrder() throws {
+    Current.auth = .mockWithAllScopes
+    // Current.db = .mock(eventLoop: app.db.eventLoop)
     let order: Map = .dictionary([
       "paymentId": .string("stripe-123"),
       "printJobStatus": .string("presubmit"),
@@ -87,160 +93,160 @@ final class OrderResolverTests: GraphQLTestCase {
     ).run(self, variables: ["input": order])
   }
 
-  func testCreateOrderWithFreeRequestId() throws {
-    let freeOrderRequest = FreeOrderRequest.createFixture(on: app.db)
-    let order: Map = .dictionary([
-      "freeOrderRequestId": .string(freeOrderRequest.id!.uuidString),
-      "paymentId": .string("stripe-123"),
-      "printJobStatus": .string("presubmit"),
-      "shippingLevel": .string("mail"),
-      "amount": .int(33),
-      "shipping": .int(33),
-      "taxes": .int(33),
-      "ccFeeOffset": .int(33),
-      "email": .string("jared@netrivet.com"),
-      "addressName": .string("Jared Henderson"),
-      "addressStreet": .string("123 Magnolia Lane"),
-      "addressCity": .string("New York"),
-      "addressState": .string("NY"),
-      "addressZip": .string("90210"),
-      "addressCountry": .string("US"),
-      "lang": .string("en"),
-      "source": .string("website"),
-      "items": .array([
-        .dictionary([
-          "title": .string("Journal of George Fox"),
-          "documentId": .string("9050edba-197e-498f-9fb8-61c36abae59e"),
-          "editionType": .string("original"),
-          "quantity": .int(1),
-          "unitPrice": .int(333),
-        ])
-      ]),
-    ])
+  // func testCreateOrderWithFreeRequestId() throws {
+  //   let freeOrderRequest = FreeOrderRequest.createFixture(on: app.db)
+  //   let order: Map = .dictionary([
+  //     "freeOrderRequestId": .string(freeOrderRequest.id!.uuidString),
+  //     "paymentId": .string("stripe-123"),
+  //     "printJobStatus": .string("presubmit"),
+  //     "shippingLevel": .string("mail"),
+  //     "amount": .int(33),
+  //     "shipping": .int(33),
+  //     "taxes": .int(33),
+  //     "ccFeeOffset": .int(33),
+  //     "email": .string("jared@netrivet.com"),
+  //     "addressName": .string("Jared Henderson"),
+  //     "addressStreet": .string("123 Magnolia Lane"),
+  //     "addressCity": .string("New York"),
+  //     "addressState": .string("NY"),
+  //     "addressZip": .string("90210"),
+  //     "addressCountry": .string("US"),
+  //     "lang": .string("en"),
+  //     "source": .string("website"),
+  //     "items": .array([
+  //       .dictionary([
+  //         "title": .string("Journal of George Fox"),
+  //         "documentId": .string("9050edba-197e-498f-9fb8-61c36abae59e"),
+  //         "editionType": .string("original"),
+  //         "quantity": .int(1),
+  //         "unitPrice": .int(333),
+  //       ])
+  //     ]),
+  //   ])
 
-    GraphQLTest(
-      """
-      mutation CreateOrder($input: CreateOrderInput!) {
-        order: createOrder(input: $input) {
-          freeOrderRequest {
-            id
-          }
-        }
-      }
-      """,
-      expectedData: .containsKVPs(["id": freeOrderRequest.id!.uuidString]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(self, variables: ["input": order])
-  }
+  //   GraphQLTest(
+  //     """
+  //     mutation CreateOrder($input: CreateOrderInput!) {
+  //       order: createOrder(input: $input) {
+  //         freeOrderRequest {
+  //           id
+  //         }
+  //       }
+  //     }
+  //     """,
+  //     expectedData: .containsKVPs(["id": freeOrderRequest.id!.uuidString]),
+  //     headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
+  //   ).run(self, variables: ["input": order])
+  // }
 
-  func testUpdateOrder() throws {
-    let order = Order.createFixture(on: app.db)
+  // func testUpdateOrder() throws {
+  //   let order = Order.createFixture(on: app.db)
 
-    let input: Map = .dictionary([
-      "id": .string(order.id.uuidString),
-      "printJobId": .number(12345),
-      "printJobStatus": .string("accepted"),
-    ])
+  //   let input: Map = .dictionary([
+  //     "id": .string(order.id.uuidString),
+  //     "printJobId": .number(12345),
+  //     "printJobStatus": .string("accepted"),
+  //   ])
 
-    GraphQLTest(
-      """
-      mutation UpdateOrder($input: UpdateOrderInput!) {
-        order: updateOrder(input: $input) {
-          printJobId
-          printJobStatus
-        }
-      }
-      """,
-      expectedData: .containsKVPs([
-        "printJobId": 12345,
-        "printJobStatus": "accepted",
-      ]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(self, variables: ["input": input])
-  }
+  //   GraphQLTest(
+  //     """
+  //     mutation UpdateOrder($input: UpdateOrderInput!) {
+  //       order: updateOrder(input: $input) {
+  //         printJobId
+  //         printJobStatus
+  //       }
+  //     }
+  //     """,
+  //     expectedData: .containsKVPs([
+  //       "printJobId": 12345,
+  //       "printJobStatus": "accepted",
+  //     ]),
+  //     headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
+  //   ).run(self, variables: ["input": input])
+  // }
 
-  func testUpdateOrders() throws {
-    let order1 = Order.createFixture(on: app.db)
-    let order2 = Order.createFixture(on: app.db)
+  // func testUpdateOrders() throws {
+  //   let order1 = Order.createFixture(on: app.db)
+  //   let order2 = Order.createFixture(on: app.db)
 
-    let input: Map = .array([
-      .dictionary([
-        "id": .string(order1.id.uuidString),
-        "printJobId": .number(5555),
-      ]),
-      .dictionary([
-        "id": .string(order2.id.uuidString),
-        "printJobId": .number(3333),
-      ]),
-    ])
+  //   let input: Map = .array([
+  //     .dictionary([
+  //       "id": .string(order1.id.uuidString),
+  //       "printJobId": .number(5555),
+  //     ]),
+  //     .dictionary([
+  //       "id": .string(order2.id.uuidString),
+  //       "printJobId": .number(3333),
+  //     ]),
+  //   ])
 
-    GraphQLTest(
-      """
-      mutation UpdateOrders($input: [UpdateOrderInput!]!) {
-        order: updateOrders(input: $input) {
-          printJobId
-        }
-      }
-      """,
-      expectedData: .containsAll(["5555", "3333"]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(self, variables: ["input": input])
-  }
+  //   GraphQLTest(
+  //     """
+  //     mutation UpdateOrders($input: [UpdateOrderInput!]!) {
+  //       order: updateOrders(input: $input) {
+  //         printJobId
+  //       }
+  //     }
+  //     """,
+  //     expectedData: .containsAll(["5555", "3333"]),
+  //     headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
+  //   ).run(self, variables: ["input": input])
+  // }
 
-  func testGetOrderById() throws {
-    let order = Order.createFixture(on: app.db) { _ in
-      // $0.printJobId = 234432
+  // func testGetOrderById() throws {
+  //   let order = Order.createFixture(on: app.db) { _ in
+  //     // $0.printJobId = 234432
 
-      // @TODO
-      fatalError()
-    }
+  //     // @TODO
+  //     fatalError()
+  //   }
 
-    GraphQLTest(
-      """
-      query {
-        order: getOrder(id: "\(order.id.uuidString)") {
-          printJobId
-        }
-      }
-      """,
-      expectedData: .containsKVPs(["printJobId": 234432]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(self)
-  }
+  //   GraphQLTest(
+  //     """
+  //     query {
+  //       order: getOrder(id: "\(order.id.uuidString)") {
+  //         printJobId
+  //       }
+  //     }
+  //     """,
+  //     expectedData: .containsKVPs(["printJobId": 234432]),
+  //     headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
+  //   ).run(self)
+  // }
 
-  func testGetOrderByIdFailsWithWrongTokenScope() throws {
-    let order = Order.createFixture(on: app.db)
-    GraphQLTest(
-      """
-      query {
-        order: getOrder(id: "\(order.id.uuidString)") {
-          printJobId
-        }
-      }
-      """,
-      expectedError: .status(.unauthorized),
-      headers: [.authorization: "Bearer \(Seeded.tokens.queryDownloads)"]  // 👋 <-- bad scope
-    ).run(self)
-  }
+  // func testGetOrderByIdFailsWithWrongTokenScope() throws {
+  //   let order = Order.createFixture(on: app.db)
+  //   GraphQLTest(
+  //     """
+  //     query {
+  //       order: getOrder(id: "\(order.id.uuidString)") {
+  //         printJobId
+  //       }
+  //     }
+  //     """,
+  //     expectedError: .status(.unauthorized),
+  //     headers: [.authorization: "Bearer \(Seeded.tokens.queryDownloads)"]  // 👋 <-- bad scope
+  //   ).run(self)
+  // }
 
-  func testGetOrdersByPrintJobStatus() throws {
-    let order1 = Order.createFixture(on: app.db) {
-      $0.printJobStatus = .bricked
-    }
-    let order2 = Order.createFixture(on: app.db) {
-      $0.printJobStatus = .bricked
-    }
+  // func testGetOrdersByPrintJobStatus() throws {
+  //   let order1 = Order.createFixture(on: app.db) {
+  //     $0.printJobStatus = .bricked
+  //   }
+  //   let order2 = Order.createFixture(on: app.db) {
+  //     $0.printJobStatus = .bricked
+  //   }
 
-    GraphQLTest(
-      """
-      query {
-        orders: getOrders(printJobStatus: "bricked") {
-          id
-        }
-      }
-      """,
-      expectedData: .containsUUIDs([order1.id.rawValue, order2.id.rawValue]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(self)
-  }
+  //   GraphQLTest(
+  //     """
+  //     query {
+  //       orders: getOrders(printJobStatus: "bricked") {
+  //         id
+  //       }
+  //     }
+  //     """,
+  //     expectedData: .containsUUIDs([order1.id.rawValue, order2.id.rawValue]),
+  //     headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
+  //   ).run(self)
+  // }
 }

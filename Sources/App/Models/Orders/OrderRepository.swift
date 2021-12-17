@@ -5,10 +5,10 @@ struct OrderRepository {
   var db: SQLDatabase
 
   func createOrder(_ order: Order) throws -> Future<Void> {
-    try insert(
+    let insertFuture = try insert(
       into: Order.tableName,
       values: [
-        Order[.id]: .uuid(order.id.rawValue),
+        Order[.id]: .id(order),
         Order[.paymentId]: .string(order.paymentId.rawValue),
         Order[.printJobStatus]: .enum(order.printJobStatus),
         Order[.printJobId]: .int(order.printJobId?.rawValue),
@@ -31,6 +31,27 @@ struct OrderRepository {
         Order[.updatedAt]: .currentTimestamp,
       ]
     )
+
+    guard case let .loaded(items) = order.items, !items.isEmpty else {
+      return insertFuture
+    }
+
+    return insertFuture.flatMapThrowing { () -> Future<Void> in
+      try insert(
+        into: OrderItem.tableName,
+        values: items.map { item in
+          [
+            OrderItem[.id]: .id(item),
+            OrderItem[.orderId]: .id(order),
+            OrderItem[.documentId]: .uuid(item.documentId),
+            OrderItem[.editionType]: .enum(item.editionType),
+            OrderItem[.title]: .string(item.title),
+            OrderItem[.quantity]: .int(item.quantity),
+            OrderItem[.unitPrice]: .int(item.unitPrice.rawValue),
+          ]
+        }
+      )
+    }.map { _ in }
   }
 
   func getOrder(_ id: Order.Id) throws -> Future<Order> {

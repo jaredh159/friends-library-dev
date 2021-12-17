@@ -1,5 +1,6 @@
 import Fluent
 import Tagged
+import TaggedMoney
 import Vapor
 
 final class OrderItem {
@@ -7,9 +8,9 @@ final class OrderItem {
   var orderId: Order.Id
   var documentId: UUID  // @TODO, should become Document.Id, then be deleted when switching to Edition.Id
   var editionType: EditionType  // @TODO remove
-  var title: String
+  var title: String  // @TODO, also redundant, could join on the edition...
   var quantity: Int
-  var unitPrice: Int
+  var unitPrice: Cents<Int>
   var createdAt = Current.date()
   var order = Parent<Order>.notLoaded
 
@@ -23,7 +24,7 @@ final class OrderItem {
     editionType: EditionType,
     title: String,
     quantity: Int,
-    unitPrice: Int
+    unitPrice: Cents<Int>
   ) {
     self.id = id
     self.orderId = orderId

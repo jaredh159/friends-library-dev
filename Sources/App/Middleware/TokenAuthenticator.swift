@@ -20,37 +20,23 @@ struct UserAuthenticator: BearerAuthenticator {
     bearer: BearerAuthorization,
     for request: Request
   ) -> EventLoopFuture<Void> {
-    // @TODO
-    // guard let tokenValue = UUID(uuidString: bearer.token) else {
-    //   return request.eventLoop.makeSucceededVoidFuture()
-    // }
+    guard let tokenValue = UUID(uuidString: bearer.token) else {
+      return request.eventLoop.makeSucceededVoidFuture()
+    }
 
-    return request.eventLoop.makeSucceededVoidFuture()
-    // @TODO
-    //   return Token.query(on: request.db)
-    //     .with(\.$scopes)
-    //     .filter(\.$value == .init(rawValue: tokenValue))
-    //     .first()
-    //     .flatMap { token in
-    //       if let token = token {
-    //         request.auth.login(User(token: token))
-    //       }
-    //       return request.eventLoop.makeSucceededVoidFuture()
-    //     }
+    do {
+      return try Current.db.getTokenByValue(.init(rawValue: tokenValue))
+        .map { request.auth.login(User(token: $0)) }
+    } catch {
+      return request.eventLoop.makeSucceededVoidFuture()
+    }
   }
 }
 
 extension Request {
   func requirePermission(to scope: Scope) throws {
-    guard self.userCan(scope) else {
+    guard Current.auth.userCan(self.auth.get(User.self), scope) else {
       throw Abort(.unauthorized)
     }
-  }
-
-  func userCan(_ scope: Scope) -> Bool {
-    guard let user = self.auth.get(User.self), user.hasScope(scope) else {
-      return false
-    }
-    return true
   }
 }

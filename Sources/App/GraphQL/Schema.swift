@@ -96,40 +96,41 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
     Field("updatedAt", at: \.updatedAt)
   }
 
-  // Type(Order.self) {
-  // Field("id", at: \.id)
-  // Field("paymentId", at: \.paymentId)
-  // Field("printJobStatus", at: \.printJobStatus)
-  // Field("printJobId", at: \.printJobId)
-  // Field("amount", at: \.amount)
-  // Field("shipping", at: \.shipping)
-  // Field("taxes", at: \.taxes)
-  // Field("ccFeeOffset", at: \.ccFeeOffset)
-  // Field("shippingLevel", at: \.shippingLevel)
-  // Field("email", at: \.email)
-  // Field("addressName", at: \.addressName)
-  // Field("addressStreet", at: \.addressStreet)
-  // Field("addressStreet2", at: \.addressStreet2)
-  // Field("addressCity", at: \.addressCity)
-  // Field("addressState", at: \.addressState)
-  // Field("addressZip", at: \.addressZip)
-  // Field("addressCountry", at: \.addressCountry)
-  // Field("lang", at: \.lang)
-  // Field("source", at: \.source)
-  // Field("createdAt", at: \.createdAt)
-  // Field("updatedAt", at: \.updatedAt)
-  // // Field("items", with: \.$items)
-  // Field("freeOrderRequest", with: \.$freeOrderRequest)
-  // }
+  Type(OrderItem.self) {
+    Field("id", at: \.id.rawValue)
+    Field("title", at: \.title)
+    Field("documentId", at: \.documentId)
+    Field("editionType", at: \.editionType)
+    Field("quantity", at: \.quantity)
+    Field("unitPrice", at: \.unitPrice.rawValue)
+    // Field("order", with: \.$order)
+  }
 
-  // Type(OrderItem.self) {
-  // Field("title", at: \.title)
-  // Field("documentId", at: \.documentId)
-  // Field("editionType", at: \.editionType)
-  // Field("quantity", at: \.quantity)
-  // Field("unitPrice", at: \.unitPrice)
-  // Field("order", with: \.$order)
-  // }
+  Type(Order.self) {
+    Field("id", at: \.id.rawValue)
+    Field("paymentId", at: \.paymentId.rawValue)
+    Field("printJobStatus", at: \.printJobStatus)
+    Field("printJobId", at: \.printJobId?.rawValue)
+    Field("amount", at: \.amount.rawValue)
+    Field("shipping", at: \.shipping.rawValue)
+    Field("taxes", at: \.taxes.rawValue)
+    Field("ccFeeOffset", at: \.ccFeeOffset.rawValue)
+    Field("shippingLevel", at: \.shippingLevel)
+    Field("email", at: \.email.rawValue)
+    Field("addressName", at: \.addressName)
+    Field("addressStreet", at: \.addressStreet)
+    Field("addressStreet2", at: \.addressStreet2)
+    Field("addressCity", at: \.addressCity)
+    Field("addressState", at: \.addressState)
+    Field("addressZip", at: \.addressZip)
+    Field("addressCountry", at: \.addressCountry)
+    Field("lang", at: \.lang)
+    Field("source", at: \.source)
+    Field("createdAt", at: \.createdAt)
+    Field("updatedAt", at: \.updatedAt)
+    Field("items", with: \.items)
+    // Field("freeOrderRequest", with: \.$freeOrderRequest)
+  }
 
   Type(ArtifactProductionVersion.self) {
     Field("id", at: \.id)
@@ -213,13 +214,13 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
   }
 
   Query {
-    // Field("getOrder", at: Resolver.getOrder) {
-    //   Argument("id", at: \.id)
-    // }
+    Field("getOrder", at: Resolver.getOrder) {
+      Argument("id", at: \.id)
+    }
 
-    // Field("getOrders", at: Resolver.getOrders) {
-    //   Argument("printJobStatus", at: \.printJobStatus)
-    // }
+    Field("getOrders", at: Resolver.getOrders) {
+      Argument("printJobStatus", at: \.printJobStatus)
+    }
 
     Field("getTokenByValue", at: Resolver.getTokenByValue) {
       Argument("value", at: \.value.rawValue)
@@ -239,17 +240,17 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
     //   Argument("input", at: \.input)
     // }
 
-    // Field("createOrder", at: Resolver.createOrder) {
-    //   Argument("input", at: \.input)
-    // }
+    Field("createOrder", at: Resolver.createOrder) {
+      Argument("input", at: \.input)
+    }
 
-    // Field("updateOrder", at: Resolver.updateOrder) {
-    //   Argument("input", at: \.input)
-    // }
+    Field("updateOrder", at: Resolver.updateOrder) {
+      Argument("input", at: \.input)
+    }
 
-    // Field("updateOrders", at: Resolver.updateOrders) {
-    //   Argument("input", at: \.input)
-    // }
+    Field("updateOrders", at: Resolver.updateOrders) {
+      Argument("input", at: \.input)
+    }
 
     Field("createFreeOrderRequest", at: Resolver.createFreeOrderRequest) {
       Argument("input", at: \.input)
@@ -260,6 +261,5 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
     }
   }
 
-  // Types(OrderItem.self, TokenScope.self)
-  Types(TokenScope.self)
+  Types(OrderItem.self, TokenScope.self)
 }

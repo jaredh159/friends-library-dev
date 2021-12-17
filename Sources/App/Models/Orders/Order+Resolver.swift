@@ -49,63 +49,42 @@ extension Resolver {
 
   func createOrder(req: Req, args: CreateOrderArgs) throws -> Future<Order> {
     try req.requirePermission(to: .mutateOrders)
-    // let input = args.input
-    // let order = Order(
-    //   id: .init(rawValue: input.id ?? UUID()),
-    //   lang: input.lang,
-    //   source: input.source,
-    //   paymentId: .init(rawValue: input.paymentId),
-    //   printJobStatus: input.printJobStatus,
-    //   amount: .init(rawValue: input.amount),
-    //   taxes: .init(rawValue: input.taxes),
-    //   ccFeeOffset: .init(rawValue: input.ccFeeOffset),
-    //   shipping: .init(rawValue: input.shipping),
-    //   shippingLevel: input.shippingLevel,
-    //   email: .init(rawValue: input.email),
-    //   addressName: input.addressName,
-    //   addressStreet: input.addressStreet,
-    //   addressStreet2: input.addressStreet2,
-    //   addressCity: input.addressCity,
-    //   addressState: input.addressState,
-    //   addressZip: input.addressZip,
-    //   addressCountry: input.addressCountry
-    // )
-    throw Abort(.notImplemented)
-    // let order = Order()
-    // if let id = args.input.id {
-    //   order.id = id
-    // }
-    // order.$freeOrderRequest.id = args.input.freeOrderRequestId
-    // order.paymentId = args.input.paymentId
-    // order.printJobStatus = args.input.printJobStatus
-    // order.printJobId = args.input.printJobId
-    // order.amount = args.input.amount
-    // order.shipping = args.input.shipping
-    // order.taxes = args.input.taxes
-    // order.ccFeeOffset = args.input.ccFeeOffset
-    // order.shippingLevel = args.input.shippingLevel
-    // order.email = args.input.email
-    // order.addressName = args.input.addressName
-    // order.addressStreet = args.input.addressStreet
-    // order.addressStreet2 = args.input.addressStreet2
-    // order.addressCity = args.input.addressCity
-    // order.addressState = args.input.addressState
-    // order.addressZip = args.input.addressZip
-    // order.addressCountry = args.input.addressCountry
-    // order.lang = args.input.lang
-    // order.source = args.input.source
-    // return order.create(on: request.db).flatMap { _ in
-    //   let items = args.input.items.map { item -> OrderItem in
-    //     let orderItem = OrderItem()
-    //     orderItem.title = item.title
-    //     orderItem.documentId = item.documentId
-    //     orderItem.editionType = item.editionType
-    //     orderItem.quantity = item.quantity
-    //     orderItem.unitPrice = item.unitPrice
-    //     return orderItem
-    //   }
-    //   return order.$items.create(items, on: request.db).map { order }
-    // }
+    let input = args.input
+    let order = Order(
+      id: .init(rawValue: input.id ?? UUID()),
+      lang: input.lang,
+      source: input.source,
+      paymentId: .init(rawValue: input.paymentId),
+      printJobStatus: input.printJobStatus,
+      amount: .init(rawValue: input.amount),
+      taxes: .init(rawValue: input.taxes),
+      ccFeeOffset: .init(rawValue: input.ccFeeOffset),
+      shipping: .init(rawValue: input.shipping),
+      shippingLevel: input.shippingLevel,
+      email: .init(rawValue: input.email),
+      addressName: input.addressName,
+      addressStreet: input.addressStreet,
+      addressStreet2: input.addressStreet2,
+      addressCity: input.addressCity,
+      addressState: input.addressState,
+      addressZip: input.addressZip,
+      addressCountry: input.addressCountry
+    )
+
+    let items = input.items.map { item in
+      OrderItem(
+        orderId: order.id,
+        documentId: item.documentId,
+        editionType: item.editionType,
+        title: item.title,
+        quantity: item.quantity,
+        unitPrice: .init(rawValue: item.unitPrice)
+      )
+    }
+
+    order.items = .loaded(items)
+
+    return try Current.db.createOrder(order).map { _ in order }
   }
 
   func getOrder(req: Req, args: IdentifyEntityArgs) throws -> Future<Order> {

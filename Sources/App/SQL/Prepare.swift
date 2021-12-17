@@ -15,10 +15,6 @@ enum SQL {
     let bindings: [Postgres.Data]
   }
 
-  static func resetPrepared() {
-    prepared = [:]
-  }
-
   static func update(
     _ table: String,
     set values: [String: Postgres.Data],
@@ -54,25 +50,48 @@ enum SQL {
     return PreparedStatement(query: query, bindings: bindings)
   }
 
-  static func insert(into table: String, values: [String: Postgres.Data]) -> PreparedStatement {
-    var columns: [String] = []
-    var placeholders: [String] = []
+  static func insert(
+    into table: String,
+    values: [String: Postgres.Data]
+  ) throws -> PreparedStatement {
+    try insert(into: table, values: [values])
+  }
+
+  static func insert(
+    into table: String,
+    values: [[String: Postgres.Data]]
+  ) throws -> PreparedStatement {
+    guard let firstRecord = values.first else {
+      throw DbError.emptyBulkInsertInput
+    }
+
+    guard values.allSatisfy({ $0.keys.sorted() == firstRecord.keys.sorted() }) else {
+      throw DbError.nonUniformBulkInsertInput
+    }
+
+    let columns = Array(firstRecord.keys.sorted())
+    var placeholderGroups: [String] = []
+    var bindings: [Postgres.Data] = []
     var currentBinding = 1
 
-    for column in values.keys {
-      columns.append(column)
-      placeholders.append("$\(currentBinding)")
-      currentBinding += 1
+    for record in values {
+      var placeholders: [String] = []
+      for key in record.keys.sorted() {
+        bindings.append(record[key]!)
+        placeholders.append("$\(currentBinding)")
+        currentBinding += 1
+      }
+      placeholderGroups.append("(\(placeholders.list))")
     }
 
     let query = """
       INSERT INTO "\(table)"
       (\(columns.quotedList))
       VALUES
-      (\(placeholders.list));
+      \(placeholderGroups.list);
       """
 
-    return PreparedStatement(query: query, bindings: Array(values.values))
+    return PreparedStatement(query: query, bindings: bindings)
   }
 
   static func select(

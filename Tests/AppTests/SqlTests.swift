@@ -5,6 +5,20 @@ import XCTest
 
 final class SqlTests: XCTestCase {
 
+  func testBulkInsert() throws {
+    let stmt = try SQL.insert(into: "foos", values: [["foo": 1, "bar": 2], ["bar": 4, "foo": 3]])
+
+    let expectedQuery = """
+      INSERT INTO "foos"
+      ("bar", "foo")
+      VALUES
+      ($1, $2), ($3, $4);
+      """
+
+    XCTAssertEqual(stmt.query, expectedQuery)
+    XCTAssertEqual(stmt.bindings, [2, 1, 4, 3])
+  }
+
   func testUpdate() {
     let statement = SQL.update("foos", set: ["bar": 1, "baz": true], where: ("lol", .equals, "a"))
 
@@ -49,9 +63,9 @@ final class SqlTests: XCTestCase {
     XCTAssertEqual(statement.bindings, [1, "a"])
   }
 
-  func testBasicInsert() {
+  func testBasicInsert() throws {
     let id = UUID()
-    let statement = SQL.insert(into: "foos", values: ["a": 33, "b": "lol", "c": .uuid(id)])
+    let statement = try SQL.insert(into: "foos", values: ["a": 33, "b": "lol", "c": .uuid(id)])
 
     let query = """
       INSERT INTO "foos"
@@ -64,8 +78,8 @@ final class SqlTests: XCTestCase {
     XCTAssertEqual(statement.bindings, [33, "lol", .uuid(id)])
   }
 
-  func testOptionalInts() {
-    let statement = SQL.insert(into: "foos", values: ["a": .int(22), "b": .int(nil)])
+  func testOptionalInts() throws {
+    let statement = try SQL.insert(into: "foos", values: ["a": .int(22), "b": .int(nil)])
 
     let query = """
       INSERT INTO "foos"
@@ -78,8 +92,8 @@ final class SqlTests: XCTestCase {
     XCTAssertEqual(statement.bindings, [22, .int(nil)])
   }
 
-  func testOptionalStrings() {
-    let statement = SQL.insert(into: "foos", values: ["a": "howdy", "b": .string(nil)])
+  func testOptionalStrings() throws {
+    let statement = try SQL.insert(into: "foos", values: ["a": "howdy", "b": .string(nil)])
 
     let query = """
       INSERT INTO "foos"
@@ -92,8 +106,8 @@ final class SqlTests: XCTestCase {
     XCTAssertEqual(statement.bindings, ["howdy", .string(nil)])
   }
 
-  func testEnums() {
-    let statement = SQL.insert(
+  func testEnums() throws {
+    let statement = try SQL.insert(
       into: "foos",
       values: [
         "a": .enum(FooBar.foo),
@@ -113,9 +127,10 @@ final class SqlTests: XCTestCase {
     XCTAssertEqual(statement.bindings, [.enum(FooBar.foo), .enum(FooBar.bar), .enum(nil)])
   }
 
-  func testDates() {
+  func testDates() throws {
     let date = Date.fromISOString("2021-12-14T17:16:16.896Z")!
-    let statement = SQL.insert(into: "foos", values: ["a": .date(date), "b": .currentTimestamp])
+    let statement = try SQL.insert(
+      into: "foos", values: ["a": .date(date), "b": .currentTimestamp])
 
     let query = """
       INSERT INTO "foos"

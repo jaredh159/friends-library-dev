@@ -17,41 +17,35 @@ struct Seeded {
 struct Seed: Migration {
 
   func prepare(on database: Database) -> Future<Void> {
-    // let tokens: [UUID: (String, [Scope])] = [
-    //   Seeded.tokens.queryDownloads: ("queryDownloads", [.queryDownloads]),
-    //   Seeded.tokens.mutateDownloads: ("mutateDownloads", [.mutateDownloads]),
-    //   Seeded.tokens.queryOrders: ("queryOrders", [.queryOrders]),
-    //   Seeded.tokens.mutateOrders: ("mutateOrders", [.mutateOrders]),
-    //   Seeded.tokens.mutateArtifactProductionVersions: (
-    //     "mutateArtifactProductionVersions",
-    //     [.mutateArtifactProductionVersions]
-    //   ),
-    //   Seeded.tokens.allScopes: (
-    //     "allScopes",
-    //     [
-    //       .queryDownloads,
-    //       .queryOrders,
-    //       .mutateDownloads,
-    //       .mutateOrders,
-    //       .mutateArtifactProductionVersions,
-    //     ]
-    //   ),
-    // ]
+    let tokens: [UUID: (String, [Scope])] = [
+      Seeded.tokens.queryDownloads: ("queryDownloads", [.queryDownloads]),
+      Seeded.tokens.mutateDownloads: ("mutateDownloads", [.mutateDownloads]),
+      Seeded.tokens.queryOrders: ("queryOrders", [.queryOrders]),
+      Seeded.tokens.mutateOrders: ("mutateOrders", [.mutateOrders]),
+      Seeded.tokens.mutateArtifactProductionVersions: (
+        "mutateArtifactProductionVersions",
+        [.mutateArtifactProductionVersions]
+      ),
+      Seeded.tokens.allScopes: (
+        "allScopes",
+        [
+          .queryDownloads,
+          .queryOrders,
+          .mutateDownloads,
+          .mutateOrders,
+          .mutateArtifactProductionVersions,
+        ]
+      ),
+    ]
 
-    // let futures: [Future<Void>] = []
+    var futures: [Future<Void>] = []
+    for (tokenValue, (description, scopes)) in tokens {
+      let token = Token(value: .init(rawValue: tokenValue), description: description)
+      token.scopes = .loaded(scopes.map { TokenScope(tokenId: token.id, scope: $0) })
+      futures.append(try! Current.db.createToken(token))
+    }
 
-    // for (tokenValue, (description, scopes)) in tokens {
-    //   let token = Token(value: .init(rawValue: tokenValue), description: description)
-    // @TODO
-    // let future = token.create(on: database).flatMap {
-    //   scopes
-    //     .map { TokenScope(tokenId: token.id!, scope: $0) }
-    //     .create(on: database)
-    // }
-    // futures.append(future)
-    // }
-    // return futures.flatten(on: database.eventLoop)
-    return database.eventLoop.makeSucceededVoidFuture()
+    return futures.flatten(on: database.eventLoop)
   }
 
   func revert(on database: Database) -> Future<Void> {
