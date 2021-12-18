@@ -79,11 +79,14 @@ struct OrderRepository {
       return try getOrder(.init(rawValue: input.id))
     }
 
-    var setPairs: [String: Postgres.Data] = [:]
+    var setPairs: [String: Postgres.Data] = [
+      Order[.updatedAt]: .currentTimestamp
+    ]
 
     if let status = input.printJobStatus {
       setPairs[Order[.printJobStatus]] = .enum(status)
     }
+
     if let printJobId = input.printJobId {
       setPairs[Order[.printJobId]] = .int(printJobId)
     }

@@ -1,5 +1,9 @@
 # Converge TODOs:
 
+- [ ] - migrate `order_items` to store Edition.Id instead of Document.Id AND edition type
+
+## done...
+
 - [√] - remove force try!s in current live impl
 - [√] - separate out live/mock into sub-repos, or something else
 - [√] - change dep of live to be SQLDatabase
@@ -11,7 +15,6 @@
 - [√] - look at all migrations since 10, thinking through `unique(on:)` constraints
 - [√] - pivot table for document tags
 - [√] - table for isbns, with optional FK to edition 👍
-- [ ] - migrate `order_items` to store Edition.Id instead of Document.Id AND edition type
 
 ## rando notes
 
@@ -21,3 +24,42 @@
   belongs there
 
 - [ ] - ANOTHER_TODO
+
+## what new SCOPES do we need?
+
+- mutateFriends
+- queryFriends
+- mutateDocuments
+- queryDocuments
+- mutateEditionImpressions
+- queryEditionImpressions
+- mutateAudios
+- queryAudios
+- queryArtifactProductionVersions (symmetry)
+- mutateIsbns
+- queryIsbns
+- mutateEditionChapters
+- queryEditionChapters
+- queryCoverProps
+
+## what operations do we need?
+
+- create/update/get a friend
+- create/update/get a document
+- create/update/get an edition
+- create an EditionImpression (should replace old one...) (setEditionImpression?)
+
+## REAL USE CASES...
+
+Some "categories"
+
+- build website
+- stuff i currently do with friends.yml files (adding new docs, updating, publishing,
+  audio/video stuff)
+- Cover Web App (??? cover props?)
+- Cron (handle print jobs, send tracking emails...)
+- @TODO, keep going, review all APPS in monorepo
+
+### Building Website
+
+- get ALL friends, w/ all documents, w/ all editions+impresions, etc... KITCHEN SINK!
