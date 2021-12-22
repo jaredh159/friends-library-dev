@@ -1,4 +1,5 @@
 node_modules/
+jest.config.js
 Packages
 .build
 xcuserdata

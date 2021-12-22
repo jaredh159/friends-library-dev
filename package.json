@@ -33,10 +33,13 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@friends-library/dev": "^4.4.1",
+    "@friends-library/dev": "^4.5.0",
     "@friends-library/env": "^1.4.0",
     "apollo": "^2.33.4",
     "x-chalk": "^1.0.1",
     "x-exec": "^1.2.0"
+  },
+  "dependencies": {
+    "strip-indent": "^3.0.0"
   }
 }
