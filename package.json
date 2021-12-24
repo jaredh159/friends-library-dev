@@ -27,7 +27,8 @@
     "test:watch": "watchexec --restart --watch Sources --watch Tests --exts swift npm run test:clear",
     "test:watch:isolate": "watchexec --restart --watch Sources --watch Tests --exts swift npm run test:clear:isolate",
     "ci": "npm run lint && npm run test",
-    "compile": "true # <-- keep manager automation script happy"
+    "compile": "true # <-- keep manager automation script happy",
+    "generate:models": "fldev tsnode ./.codegen/generate-models.ts"
   },
   "keywords": [],
   "author": "",
@@ -40,6 +41,8 @@
     "x-exec": "^1.2.0"
   },
   "dependencies": {
+    "@types/glob": "^7.2.0",
+    "glob": "^7.2.0",
     "strip-indent": "^3.0.0"
   }
 }

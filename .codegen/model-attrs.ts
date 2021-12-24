@@ -44,7 +44,11 @@ function parseClassInterior(
       continue;
     }
 
-    const [identifier, type] = line.trim().replace(/^var /, ``).split(`: `, 2);
+    const [identifier, type] = line
+      .replace(/\s+\/\/.*/, ``)
+      .trim()
+      .replace(/^var /, ``)
+      .split(`: `, 2);
     attrs.props.push({ identifier, type });
   }
   return attrs;
@@ -54,11 +58,10 @@ export function setMigrationNumbers(
   { source }: File,
   models: Record<string, Model>
 ): void {
-  let extending: String | null = null;
   const lines = source.split(`\n`);
   while (lines.length) {
     const line = lines.shift()!;
-    const extensionMatch = line.match(/^extension ([A-Z][a-z0-9]+) {$/);
+    const extensionMatch = line.match(/^extension ([A-Z][A-Za-z0-9]+) {$/);
     if (extensionMatch && models[extensionMatch[1]]) {
       setMigrationNumber(models[extensionMatch[1]], lines);
     }
@@ -66,6 +69,7 @@ export function setMigrationNumbers(
 }
 
 function setMigrationNumber(model: Model, lines: string[]): void {
+  let inMigration: number | null = null;
   while (lines.length) {
     const line = lines.shift()!;
     if (line.startsWith(`}`)) {
@@ -73,7 +77,10 @@ function setMigrationNumber(model: Model, lines: string[]): void {
     }
     const migrationMatch = line.match(/^  enum M(\d+) {$/);
     if (migrationMatch && !Number.isNaN(Number(migrationMatch[1]))) {
-      model.migrationNumber = Number(migrationMatch[1]);
+      inMigration = Number(migrationMatch[1]);
+    }
+    if (inMigration && line.startsWith(`    static let tableName =`)) {
+      model.migrationNumber = inMigration;
     }
   }
 }
