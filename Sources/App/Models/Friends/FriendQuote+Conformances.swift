@@ -10,6 +10,20 @@ extension FriendQuote: DuetModel {
   static let tableName = M12.tableName
 }
 
+extension FriendQuote: DuetInsertable {
+  var insertValues: [String: Postgres.Data] {
+    [
+      Self[.id]: .id(self),
+      Self[.friendId]: .uuid(friendId),
+      Self[.source]: .string(source),
+      Self[.order]: .int(order),
+      Self[.context]: .string(context),
+      Self[.createdAt]: .currentTimestamp,
+      Self[.updatedAt]: .currentTimestamp,
+    ]
+  }
+}
+
 extension FriendQuote {
   typealias ColumnName = CodingKeys
 

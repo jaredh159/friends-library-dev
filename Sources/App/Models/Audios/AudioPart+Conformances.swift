@@ -10,6 +10,25 @@ extension AudioPart: DuetModel {
   static let tableName = M20.tableName
 }
 
+extension AudioPart: DuetInsertable {
+  var insertValues: [String: Postgres.Data] {
+    [
+      Self[.id]: .id(self),
+      Self[.audioId]: .uuid(audioId),
+      Self[.title]: .string(title),
+      Self[.duration]: .enum(duration),
+      Self[.chapters]: .enum(chapters),
+      Self[.order]: .int(order),
+      Self[.mp3SizeHq]: .int(mp3SizeHq.rawValue),
+      Self[.mp3SizeLq]: .int(mp3SizeLq.rawValue),
+      Self[.externalIdHq]: .int64(externalIdHq.rawValue),
+      Self[.externalIdLq]: .int64(externalIdLq.rawValue),
+      Self[.createdAt]: .currentTimestamp,
+      Self[.updatedAt]: .currentTimestamp,
+    ]
+  }
+}
+
 extension AudioPart {
   typealias ColumnName = CodingKeys
 

@@ -10,6 +10,35 @@ extension Order: DuetModel {
   static let tableName = M2.tableName
 }
 
+extension Order: DuetInsertable {
+  var insertValues: [String: Postgres.Data] {
+    [
+      Self[.id]: .id(self),
+      Self[.lang]: .enum(lang),
+      Self[.source]: .enum(source),
+      Self[.paymentId]: .string(paymentId.rawValue),
+      Self[.printJobId]: .int(printJobId?.rawValue),
+      Self[.printJobStatus]: .enum(printJobStatus),
+      Self[.amount]: .enum(amount),
+      Self[.taxes]: .enum(taxes),
+      Self[.ccFeeOffset]: .enum(ccFeeOffset),
+      Self[.shipping]: .enum(shipping),
+      Self[.shippingLevel]: .enum(shippingLevel),
+      Self[.email]: .string(email.rawValue),
+      Self[.addressName]: .string(addressName),
+      Self[.addressStreet]: .string(addressStreet),
+      Self[.addressStreet2]: .string(addressStreet2),
+      Self[.addressCity]: .string(addressCity),
+      Self[.addressState]: .string(addressState),
+      Self[.addressZip]: .string(addressZip),
+      Self[.addressCountry]: .string(addressCountry),
+      Self[.freeOrderRequestId]: .enum(freeOrderRequestId),
+      Self[.createdAt]: .currentTimestamp,
+      Self[.updatedAt]: .currentTimestamp,
+    ]
+  }
+}
+
 extension Order {
   typealias ColumnName = CodingKeys
 

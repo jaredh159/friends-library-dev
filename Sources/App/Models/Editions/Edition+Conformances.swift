@@ -10,6 +10,22 @@ extension Edition: DuetModel {
   static let tableName = M16.tableName
 }
 
+extension Edition: DuetInsertable {
+  var insertValues: [String: Postgres.Data] {
+    [
+      Self[.id]: .id(self),
+      Self[.documentId]: .uuid(documentId),
+      Self[.type]: .enum(type),
+      Self[.editor]: .string(editor),
+      Self[.isDraft]: .bool(isDraft),
+      Self[.paperbackSplits]: .enum(paperbackSplits),
+      Self[.paperbackOverrideSize]: .enum(paperbackOverrideSize),
+      Self[.createdAt]: .currentTimestamp,
+      Self[.updatedAt]: .currentTimestamp,
+    ]
+  }
+}
+
 extension Edition {
   typealias ColumnName = CodingKeys
 

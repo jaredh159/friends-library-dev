@@ -10,6 +10,18 @@ extension Isbn: DuetModel {
   static let tableName = M18.tableName
 }
 
+extension Isbn: DuetInsertable {
+  var insertValues: [String: Postgres.Data] {
+    [
+      Self[.id]: .id(self),
+      Self[.code]: .string(code.rawValue),
+      Self[.editionId]: .enum(editionId),
+      Self[.createdAt]: .currentTimestamp,
+      Self[.updatedAt]: .currentTimestamp,
+    ]
+  }
+}
+
 extension Isbn {
   typealias ColumnName = CodingKeys
 

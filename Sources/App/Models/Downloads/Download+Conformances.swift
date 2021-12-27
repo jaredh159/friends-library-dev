@@ -10,6 +10,34 @@ extension Download: DuetModel {
   static let tableName = M1.tableName
 }
 
+extension Download: DuetInsertable {
+  var insertValues: [String: Postgres.Data] {
+    [
+      Self[.id]: .id(self),
+      Self[.documentId]: .uuid(documentId),
+      Self[.editionType]: .enum(editionType),
+      Self[.format]: .enum(format),
+      Self[.source]: .enum(source),
+      Self[.audioQuality]: .enum(audioQuality),
+      Self[.audioPartNumber]: .int(audioPartNumber),
+      Self[.isMobile]: .bool(isMobile),
+      Self[.userAgent]: .string(userAgent),
+      Self[.os]: .string(os),
+      Self[.browser]: .string(browser),
+      Self[.platform]: .string(platform),
+      Self[.referrer]: .string(referrer),
+      Self[.ip]: .string(ip),
+      Self[.city]: .string(city),
+      Self[.region]: .string(region),
+      Self[.postalCode]: .string(postalCode),
+      Self[.country]: .string(country),
+      Self[.latitude]: .string(latitude),
+      Self[.longitude]: .string(longitude),
+      Self[.createdAt]: .currentTimestamp,
+    ]
+  }
+}
+
 extension Download {
   typealias ColumnName = CodingKeys
 

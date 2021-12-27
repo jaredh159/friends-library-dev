@@ -17,3 +17,9 @@ extension DocumentTagModel {
     }
   }
 }
+
+extension DocumentTag: PostgresEnum {
+  var dataType: String {
+    DocumentTagModel.M14.DocumentTagEnum.name
+  }
+}

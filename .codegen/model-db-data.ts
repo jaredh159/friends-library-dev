@@ -24,9 +24,22 @@ export function insertData(model: Model, globalTypes: GlobalTypes): string {
         return [ident, `.currentTimestamp`];
       }
 
+      if (type.match(/.+\.Id$/)) {
+        return [ident, `.uuid(${ident})`];
+      }
+
       switch (type) {
         case `Id`:
           return [ident, `.id(self)`];
+        case `Int64`:
+        case `Int64?`:
+          return [ident, `.int64(${ident})`];
+        case `Int`:
+        case `Int?`:
+          return [ident, `.int(${ident})`];
+        case `Bool`:
+        case `Bool?`:
+          return [ident, `.bool(${ident})`];
         case `String`:
         case `String?`:
           return [ident, `.string(${ident})`];
@@ -39,6 +52,10 @@ export function insertData(model: Model, globalTypes: GlobalTypes): string {
             switch (taggedType) {
               case `Int`:
                 return [ident, `.int(${ident}${chain}rawValue)`];
+              case `Int64`:
+                return [ident, `.int64(${ident}${chain}rawValue)`];
+              case `UUID`:
+                return [ident, `.uuid(${ident})`];
               case `String`:
                 return [ident, `.string(${ident}${chain}rawValue)`];
               default:

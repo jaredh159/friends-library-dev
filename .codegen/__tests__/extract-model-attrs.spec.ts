@@ -9,6 +9,7 @@ describe(`extractModelAttrs()`, () => {
       var id: Id
       var name: String
       var foo: String // @TODO comment shouldn't interfere with extraction
+      var parentId: Parent.Id
       var hasBeard: Bool { true }
       var kids = Children<Person>.notLoaded
       var createdAt = Current.date()
@@ -31,6 +32,7 @@ describe(`extractModelAttrs()`, () => {
         { identifier: `id`, type: `Id` },
         { identifier: `name`, type: `String` },
         { identifier: `foo`, type: `String` },
+        { identifier: `parentId`, type: `Parent.Id` },
         { identifier: `createdAt`, type: `Date` },
         { identifier: `updatedAt`, type: `Date` },
         { identifier: `deletedAt`, type: `Date` },

@@ -10,6 +10,17 @@ extension TokenScope: DuetModel {
   static let tableName = M5.tableName
 }
 
+extension TokenScope: DuetInsertable {
+  var insertValues: [String: Postgres.Data] {
+    [
+      Self[.id]: .id(self),
+      Self[.scope]: .enum(scope),
+      Self[.tokenId]: .uuid(tokenId),
+      Self[.createdAt]: .currentTimestamp,
+    ]
+  }
+}
+
 extension TokenScope {
   typealias ColumnName = CodingKeys
 

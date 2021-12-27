@@ -36,6 +36,7 @@ enum Postgres {
     case id(UUIDIdentifiable)
     case string(String?)
     case int(Int?)
+    case int64(Int64?)
     case float(Float?)
     case double(Double?)
     case uuid(UUIDStringable?)
@@ -48,7 +49,7 @@ enum Postgres {
       switch self {
         case .string:
           return "text"
-        case .int, .double, .float:
+        case .int, .int64, .double, .float:
           return "numeric"
         case .uuid, .id:
           return "uuid"
@@ -69,6 +70,8 @@ enum Postgres {
           return nullable(enumVal?.rawValue)
         case let .string(string):
           return nullable(string)
+        case let .int64(int64):
+          return nullable(int64)
         case let .int(int):
           return nullable(int)
         case let .float(float):

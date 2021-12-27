@@ -10,6 +10,17 @@ extension Token: DuetModel {
   static let tableName = M4.tableName
 }
 
+extension Token: DuetInsertable {
+  var insertValues: [String: Postgres.Data] {
+    [
+      Self[.id]: .id(self),
+      Self[.value]: .uuid(value),
+      Self[.description]: .string(description),
+      Self[.createdAt]: .currentTimestamp,
+    ]
+  }
+}
+
 extension Token {
   typealias ColumnName = CodingKeys
 

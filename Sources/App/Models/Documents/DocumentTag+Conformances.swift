@@ -10,6 +10,16 @@ extension DocumentTagModel: DuetModel {
   static let tableName = M14.tableName
 }
 
+extension DocumentTagModel: DuetInsertable {
+  var insertValues: [String: Postgres.Data] {
+    [
+      Self[.id]: .id(self),
+      Self[.slug]: .enum(slug),
+      Self[.createdAt]: .currentTimestamp,
+    ]
+  }
+}
+
 extension DocumentTagModel {
   typealias ColumnName = CodingKeys
 

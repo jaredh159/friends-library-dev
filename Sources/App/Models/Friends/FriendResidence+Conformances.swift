@@ -10,6 +10,20 @@ extension FriendResidence: DuetModel {
   static let tableName = M11.tableName
 }
 
+extension FriendResidence: DuetInsertable {
+  var insertValues: [String: Postgres.Data] {
+    [
+      Self[.id]: .id(self),
+      Self[.friendId]: .uuid(friendId),
+      Self[.city]: .string(city),
+      Self[.region]: .string(region),
+      Self[.duration]: .enum(duration),
+      Self[.createdAt]: .currentTimestamp,
+      Self[.updatedAt]: .currentTimestamp,
+    ]
+  }
+}
+
 extension FriendResidence {
   typealias ColumnName = CodingKeys
 

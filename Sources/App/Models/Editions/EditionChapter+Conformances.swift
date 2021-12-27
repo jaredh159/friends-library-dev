@@ -10,6 +10,23 @@ extension EditionChapter: DuetModel {
   static let tableName = M21.tableName
 }
 
+extension EditionChapter: DuetInsertable {
+  var insertValues: [String: Postgres.Data] {
+    [
+      Self[.id]: .id(self),
+      Self[.editionId]: .uuid(editionId),
+      Self[.order]: .int(order),
+      Self[.shortHeading]: .string(shortHeading),
+      Self[.isIntermediateTitle]: .bool(isIntermediateTitle),
+      Self[.customId]: .string(customId),
+      Self[.sequenceNumber]: .int(sequenceNumber),
+      Self[.nonSequenceTitle]: .string(nonSequenceTitle),
+      Self[.createdAt]: .currentTimestamp,
+      Self[.updatedAt]: .currentTimestamp,
+    ]
+  }
+}
+
 extension EditionChapter {
   typealias ColumnName = CodingKeys
 

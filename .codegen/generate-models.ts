@@ -6,14 +6,15 @@ import { generateModelConformances } from './conformances';
 
 const isDryRun = process.argv.includes(`--dry-run`);
 const appRoot = path.resolve(__dirname, `..`);
-const modelDir = path.resolve(appRoot, `Sources`, `App`, `Models`);
+const appDir = path.resolve(appRoot, `Sources`, `App`);
 
-const files = glob(`${modelDir}/**/*.swift`).map((abspath) => ({
+const files = glob(`${appDir}/**/*.swift`).map((abspath) => ({
   path: abspath.replace(`${appRoot}/`, ``),
   source: fs.readFileSync(abspath, `utf-8`),
 }));
 
 const globalTypes = extractGlobalTypes(files.map((f) => f.source));
+console.log(globalTypes);
 const models = extractModels(files);
 
 for (const model of models) {

@@ -10,6 +10,21 @@ extension EditionImpression: DuetModel {
   static let tableName = M17.tableName
 }
 
+extension EditionImpression: DuetInsertable {
+  var insertValues: [String: Postgres.Data] {
+    [
+      Self[.id]: .id(self),
+      Self[.editionId]: .uuid(editionId),
+      Self[.adocLength]: .int(adocLength),
+      Self[.paperbackSize]: .enum(paperbackSize),
+      Self[.paperbackVolumes]: .enum(paperbackVolumes),
+      Self[.publishedRevision]: .string(publishedRevision.rawValue),
+      Self[.productionToolchainRevision]: .string(productionToolchainRevision.rawValue),
+      Self[.createdAt]: .currentTimestamp,
+    ]
+  }
+}
+
 extension EditionImpression {
   typealias ColumnName = CodingKeys
 

@@ -18,3 +18,9 @@ extension Edition {
     }
   }
 }
+
+extension PrintSizeVariant: PostgresEnum {
+  var dataType: String {
+    Edition.M16.PrintSizeVariantEnum.name
+  }
+}

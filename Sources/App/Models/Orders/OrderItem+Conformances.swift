@@ -10,6 +10,21 @@ extension OrderItem: DuetModel {
   static let tableName = "order_items"
 }
 
+extension OrderItem: DuetInsertable {
+  var insertValues: [String: Postgres.Data] {
+    [
+      Self[.id]: .id(self),
+      Self[.orderId]: .uuid(orderId),
+      Self[.documentId]: .uuid(documentId),
+      Self[.editionType]: .enum(editionType),
+      Self[.title]: .string(title),
+      Self[.quantity]: .int(quantity),
+      Self[.unitPrice]: .enum(unitPrice),
+      Self[.createdAt]: .currentTimestamp,
+    ]
+  }
+}
+
 extension OrderItem {
   typealias ColumnName = CodingKeys
 

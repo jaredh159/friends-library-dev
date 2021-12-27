@@ -10,6 +10,16 @@ extension ArtifactProductionVersion: DuetModel {
   static let tableName = M8.tableName
 }
 
+extension ArtifactProductionVersion: DuetInsertable {
+  var insertValues: [String: Postgres.Data] {
+    [
+      Self[.id]: .id(self),
+      Self[.version]: .string(version.rawValue),
+      Self[.createdAt]: .currentTimestamp,
+    ]
+  }
+}
+
 extension ArtifactProductionVersion {
   typealias ColumnName = CodingKeys
 
