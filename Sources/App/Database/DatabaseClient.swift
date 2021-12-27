@@ -18,8 +18,8 @@ struct DatabaseClient {
   var updateOrder: (UpdateOrderInput) throws -> Future<Order>
 
   // free order requests
-  var createFreeOrderRequest: (FreeOrderRequest) throws -> Future<Void>
-  var getFreeOrderRequest: (FreeOrderRequest.Id) throws -> Future<FreeOrderRequest>
+  var createFreeOrderRequest: (FreeOrderRequest) async throws -> Void
+  var getFreeOrderRequest: (FreeOrderRequest.Id) async throws -> FreeOrderRequest
 
   // downloads
   var createDownload: (Download) throws -> Future<Void>

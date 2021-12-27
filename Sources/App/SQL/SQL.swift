@@ -117,6 +117,14 @@ enum SQL {
   static func execute(
     _ statement: PreparedStatement,
     on db: SQLDatabase
+  ) async throws -> SQLRawBuilder {
+    try await execute(statement, on: db).get()
+  }
+
+  // @TODO deprecate
+  static func execute(
+    _ statement: PreparedStatement,
+    on db: SQLDatabase
   ) throws -> Future<SQLRawBuilder> {
     // e.g. SELECT statements with no WHERE clause have
     // no bindings, and so can't be sent as a pg prepared statement

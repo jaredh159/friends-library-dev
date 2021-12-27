@@ -5,9 +5,9 @@ import XCTVaporUtils
 @testable import App
 
 final class FreeOrderRequestResolverTests: AppTestCase {
-  func testQueryFreeOrder() throws {
+  func testQueryFreeOrder() async throws {
     let request: FreeOrderRequest = .mock
-    _ = try! Current.db.createFreeOrderRequest(request).wait()
+    _ = try await Current.db.createFreeOrderRequest(request)
 
     GraphQLTest(
       """
@@ -40,10 +40,10 @@ final class FreeOrderRequestResolverTests: AppTestCase {
     ).run(Self.app)
   }
 
-  func testQueryFreeOrderWithStreet2() {
+  func testQueryFreeOrderWithStreet2() async throws {
     let request: FreeOrderRequest = .mock
     request.addressStreet2 = "hey ho howdy"
-    _ = try! Current.db.createFreeOrderRequest(request).wait()
+    _ = try await Current.db.createFreeOrderRequest(request)
 
     GraphQLTest(
       """

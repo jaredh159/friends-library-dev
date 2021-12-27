@@ -25,7 +25,11 @@ extension Resolver {
     args: IdentifyEntityArgs
   ) throws -> Future<FreeOrderRequest> {
     try req.requirePermission(to: .queryOrders)
-    return try Current.db.getFreeOrderRequest(.init(rawValue: args.id))
+    let promise = req.eventLoop.makePromise(of: FreeOrderRequest.self)
+    promise.completeWithTask {
+      try await Current.db.getFreeOrderRequest(.init(rawValue: args.id))
+    }
+    return promise.futureResult
   }
 
   struct CreateFreeOrderRequestArgs: Codable {
@@ -51,10 +55,13 @@ extension Resolver {
       source: args.input.source
     )
 
-    return try Current.db.createFreeOrderRequest(order).flatMap {
-      sendFreeOrderRequestNotifications(for: order, on: req)
-        .map { order }
+    let promise = req.eventLoop.makePromise(of: FreeOrderRequest.self)
+    promise.completeWithTask {
+      try await Current.db.createFreeOrderRequest(order)
+      try await sendFreeOrderRequestNotifications(for: order, on: req).get()
+      return order
     }
+    return promise.futureResult
   }
 }
 

@@ -5,12 +5,10 @@ import XCTest
 
 final class FreeOrderRequestRepositoryTests: AppTestCase {
 
-  func testCreateAndGet() {
+  func testCreateAndGet() async throws {
     let inserted: FreeOrderRequest = .mock
-    _ = try! Current.db.createFreeOrderRequest(inserted).wait()
-
-    let retrieved = try! Current.db.getFreeOrderRequest(inserted.id).wait()
-
+    _ = try await Current.db.createFreeOrderRequest(inserted)
+    let retrieved = try await Current.db.getFreeOrderRequest(inserted.id)
     XCTAssertEqual(inserted, retrieved)
   }
 }
