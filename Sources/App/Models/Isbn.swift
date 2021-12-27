@@ -2,7 +2,7 @@ import Fluent
 import Foundation
 import Tagged
 
-final class Isbn {
+final class Isbn: Codable {
   var id: Id
   var code: ISBN
   var editionId: Edition.Id?
@@ -23,26 +23,6 @@ final class Isbn {
 }
 
 // extensions
-
-extension Isbn: AppModel {
-  typealias Id = Tagged<Isbn, UUID>
-}
-
-extension Isbn: DuetModel {
-  static let tableName = M18.tableName
-}
-
-extension Isbn: Codable {
-  typealias ColumnName = CodingKeys
-
-  enum CodingKeys: String, CodingKey {
-    case id
-    case code
-    case editionId
-    case createdAt
-    case updatedAt
-  }
-}
 
 extension Isbn {
   enum M18 {

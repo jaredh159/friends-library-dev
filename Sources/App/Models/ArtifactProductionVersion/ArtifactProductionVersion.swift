@@ -2,7 +2,7 @@ import Fluent
 import Tagged
 import Vapor
 
-final class ArtifactProductionVersion {
+final class ArtifactProductionVersion: Codable {
   var id: Id
   var version: GitCommitSha
   var createdAt = Current.date()
@@ -14,24 +14,6 @@ final class ArtifactProductionVersion {
 }
 
 // extensions
-
-extension ArtifactProductionVersion: AppModel {
-  typealias Id = Tagged<ArtifactProductionVersion, UUID>
-}
-
-extension ArtifactProductionVersion: DuetModel {
-  static let tableName = M8.tableName
-}
-
-extension ArtifactProductionVersion: Codable {
-  typealias ColumnName = CodingKeys
-
-  enum CodingKeys: String, CodingKey {
-    case id
-    case version
-    case createdAt
-  }
-}
 
 extension ArtifactProductionVersion {
   enum M8 {

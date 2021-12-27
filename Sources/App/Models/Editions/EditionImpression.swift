@@ -3,7 +3,7 @@ import Foundation
 import NonEmpty
 import Tagged
 
-final class EditionImpression {
+final class EditionImpression: Codable {
   var id: Id
   var editionId: Edition.Id
   var adocLength: Int
@@ -35,29 +35,6 @@ final class EditionImpression {
 }
 
 // extensions
-
-extension EditionImpression: AppModel {
-  typealias Id = Tagged<EditionImpression, UUID>
-}
-
-extension EditionImpression: DuetModel {
-  static let tableName = M17.tableName
-}
-
-extension EditionImpression: Codable {
-  typealias ColumnName = CodingKeys
-
-  enum CodingKeys: String, CodingKey {
-    case id
-    case editionId
-    case adocLength
-    case paperbackSize
-    case paperbackVolumes
-    case publishedRevision
-    case productionToolchainRevision
-    case createdAt
-  }
-}
 
 extension EditionImpression {
   enum M17 {

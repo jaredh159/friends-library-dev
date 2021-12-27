@@ -2,7 +2,7 @@ import Fluent
 import Foundation
 import Tagged
 
-final class EditionChapter {
+final class EditionChapter: Codable {
   var id: Id
   var editionId: Edition.Id
   var order: Int
@@ -38,31 +38,6 @@ final class EditionChapter {
 }
 
 // extensions
-
-extension EditionChapter: AppModel {
-  typealias Id = Tagged<EditionChapter, UUID>
-}
-
-extension EditionChapter: DuetModel {
-  static let tableName = M21.tableName
-}
-
-extension EditionChapter: Codable {
-  typealias ColumnName = CodingKeys
-
-  enum CodingKeys: String, CodingKey {
-    case id
-    case editionId
-    case order
-    case shortHeading
-    case isIntermediateTitle
-    case customId
-    case sequenceNumber
-    case nonSequenceTitle
-    case createdAt
-    case updatedAt
-  }
-}
 
 extension EditionChapter {
   enum M21 {

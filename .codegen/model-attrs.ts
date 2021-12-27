@@ -4,7 +4,7 @@ export function extractModelAttrs({ source, path }: File): Model | undefined {
   const lines = source.split(`\n`);
   while (lines.length) {
     const line = lines.shift()!;
-    const classMatch = line.match(/^(?:final )?class ([A-Z][^\s]+) {$/);
+    const classMatch = line.match(/^(?:final )?class ([A-Z][^\s]+)(: Codable)? {$/);
     if (classMatch !== null) {
       return parseClassInterior(classMatch[1], path, lines);
     }
@@ -12,11 +12,7 @@ export function extractModelAttrs({ source, path }: File): Model | undefined {
   return undefined;
 }
 
-function parseClassInterior(
-  name: string,
-  path: string,
-  lines: string[]
-): Model {
+function parseClassInterior(name: string, path: string, lines: string[]): Model {
   const attrs: Model = { name: name, filepath: path, props: [] };
   while (lines.length) {
     const line = lines.shift()!;
@@ -56,7 +52,7 @@ function parseClassInterior(
 
 export function setMigrationNumbers(
   { source }: File,
-  models: Record<string, Model>
+  models: Record<string, Model>,
 ): void {
   const lines = source.split(`\n`);
   while (lines.length) {

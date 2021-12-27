@@ -2,7 +2,7 @@ import Fluent
 import Foundation
 import Tagged
 
-final class Audio {
+final class Audio: Codable {
   var id: Id
   var editionId: Edition.Id
   var reader: String
@@ -45,32 +45,8 @@ final class Audio {
 
 // extensions
 
-extension Audio: AppModel {
-  typealias Id = Tagged<Audio, UUID>
+extension Audio {
   typealias ExternalPlaylistId = Tagged<Audio, Int64>
-}
-
-extension Audio: DuetModel {
-  static let tableName = M19.tableName
-}
-
-extension Audio: Codable {
-  typealias ColumnName = CodingKeys
-
-  enum CodingKeys: String, CodingKey {
-    case id
-    case editionId
-    case reader
-    case mp3ZipSizeHq
-    case mp3ZipSizeLq
-    case m4bSizeHq
-    case m4bSizeLq
-    case externalPlaylistIdHq
-    case externalPlaylistIdLq
-    case isIncomplete
-    case createdAt
-    case updatedAt
-  }
 }
 
 extension Audio {

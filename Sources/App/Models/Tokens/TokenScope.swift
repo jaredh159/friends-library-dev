@@ -10,7 +10,7 @@ enum Scope: String, Codable, CaseIterable, Equatable {
   case mutateArtifactProductionVersions
 }
 
-final class TokenScope {
+final class TokenScope: Codable {
   var id: Id
   var scope: Scope
   var tokenId: Token.Id
@@ -26,25 +26,6 @@ final class TokenScope {
 }
 
 /// extensions
-
-extension TokenScope: AppModel {
-  typealias Id = Tagged<TokenScope, UUID>
-}
-
-extension TokenScope: DuetModel {
-  static let tableName = "token_scopes"
-}
-
-extension TokenScope: Codable {
-  typealias ColumnName = CodingKeys
-
-  enum CodingKeys: String, CodingKey {
-    case id
-    case scope
-    case tokenId
-    case createdAt
-  }
-}
 
 extension TokenScope {
   enum M5 {

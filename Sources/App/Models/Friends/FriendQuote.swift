@@ -2,7 +2,7 @@ import Fluent
 import Foundation
 import Tagged
 
-final class FriendQuote {
+final class FriendQuote: Codable {
   var id: Id
   var friendId: Friend.Id
   var source: String
@@ -30,28 +30,6 @@ final class FriendQuote {
 }
 
 // extensions
-
-extension FriendQuote: AppModel {
-  typealias Id = Tagged<FriendQuote, UUID>
-}
-
-extension FriendQuote: DuetModel {
-  static let tableName = M12.tableName
-}
-
-extension FriendQuote: Codable {
-  typealias ColumnName = CodingKeys
-
-  enum CodingKeys: String, CodingKey {
-    case id
-    case friendId
-    case source
-    case order
-    case context
-    case createdAt
-    case updatedAt
-  }
-}
 
 extension FriendQuote {
   enum M12 {

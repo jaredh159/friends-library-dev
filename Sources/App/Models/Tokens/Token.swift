@@ -2,7 +2,7 @@ import Fluent
 import Tagged
 import Vapor
 
-final class Token {
+final class Token: Codable {
   var id: Id
   var value: Value
   var description: String
@@ -19,24 +19,8 @@ final class Token {
 
 /// extensions
 
-extension Token: AppModel {
-  typealias Id = Tagged<(Token, id: ()), UUID>
+extension Token {
   typealias Value = Tagged<(Token, value: ()), UUID>
-}
-
-extension Token: DuetModel {
-  static let tableName = "tokens"
-}
-
-extension Token: Codable {
-  typealias ColumnName = CodingKeys
-
-  enum CodingKeys: String, CodingKey {
-    case id
-    case value
-    case description
-    case createdAt
-  }
 }
 
 extension Token {

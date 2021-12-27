@@ -45,33 +45,7 @@ final class Edition {
 
 // extensions
 
-extension Edition: AppModel {
-  typealias Id = Tagged<Edition, UUID>
-}
-
-extension Edition: DuetModel {
-  static let tableName = M16.tableName
-}
-
 extension Edition: Codable {
-  typealias ColumnName = CodingKeys
-
-  enum CodingKeys: String, CodingKey {
-    case id
-    case documentId
-    case type
-    case editor
-    case isDraft
-    case paperbackSplits
-    case paperbackOverrideSize
-    case createdAt
-    case updatedAt
-    case deletedAt
-
-  }
-}
-
-extension Edition {
   enum M16 {
     static let tableName = "editions"
     static let documentId = FieldKey("document_id")

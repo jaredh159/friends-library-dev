@@ -3,7 +3,7 @@ import Tagged
 import TaggedMoney
 import Vapor
 
-final class OrderItem {
+final class OrderItem: Codable {
   var id: Id
   var orderId: Order.Id
   var documentId: Document.Id
@@ -37,27 +37,3 @@ final class OrderItem {
   }
 }
 
-/// extensions
-
-extension OrderItem: AppModel {
-  typealias Id = Tagged<OrderItem, UUID>
-}
-
-extension OrderItem: DuetModel {
-  static let tableName = "order_items"
-}
-
-extension OrderItem: Codable {
-  typealias ColumnName = CodingKeys
-
-  enum CodingKeys: String, CodingKey {
-    case id
-    case orderId
-    case documentId
-    case editionType
-    case title
-    case quantity
-    case unitPrice
-    case createdAt
-  }
-}

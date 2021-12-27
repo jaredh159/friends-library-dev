@@ -2,7 +2,7 @@ import Fluent
 import Foundation
 import Tagged
 
-final class Friend {
+final class Friend: Codable {
   var id: Id
   var lang: Lang
   var name: String
@@ -53,30 +53,6 @@ extension Friend {
     case male
     case female
     case mixed
-  }
-}
-
-extension Friend: AppModel {
-  typealias Id = Tagged<Friend, UUID>
-}
-
-extension Friend: DuetModel {
-  static let tableName = M10.tableName
-}
-
-extension Friend: Codable {
-  typealias ColumnName = CodingKeys
-
-  enum CodingKeys: String, CodingKey {
-    case id
-    case lang
-    case name
-    case slug
-    case gender
-    case description
-    case born
-    case died
-    case published
   }
 }
 

@@ -2,7 +2,7 @@ import Fluent
 import Tagged
 import Vapor
 
-final class Document {
+final class Document: Codable {
   var id: Id
   var friendId: Friend.Id
   var altLanguageId: Id?
@@ -53,36 +53,6 @@ final class Document {
 }
 
 // extensions
-
-extension Document: AppModel {
-  typealias Id = Tagged<Document, UUID>
-}
-
-extension Document: DuetModel {
-  static let tableName = M13.tableName
-}
-
-extension Document: Codable {
-  typealias ColumnName = CodingKeys
-
-  enum CodingKeys: String, CodingKey {
-    case id
-    case friendId
-    case slug
-    case altLanguageId
-    case title
-    case filename
-    case published
-    case originalTitle
-    case incomplete
-    case description
-    case partialDescription
-    case featuredDescription
-    case createdAt
-    case updatedAt
-    case deletedAt
-  }
-}
 
 extension Document {
   enum M13 {

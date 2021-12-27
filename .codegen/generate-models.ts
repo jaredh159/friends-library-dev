@@ -8,10 +8,12 @@ const isDryRun = process.argv.includes(`--dry-run`);
 const appRoot = path.resolve(__dirname, `..`);
 const modelDir = path.resolve(appRoot, `Sources`, `App`, `Models`);
 
-const files = glob(`${modelDir}/**/*.swift`).map((abspath) => ({
-  path: abspath.replace(`${appRoot}/`, ``),
-  source: fs.readFileSync(abspath, `utf-8`),
-}));
+const files = glob(`${modelDir}/**/*.swift`)
+  .filter((p) => p.includes(`/Models/`))
+  .map((abspath) => ({
+    path: abspath.replace(`${appRoot}/`, ``),
+    source: fs.readFileSync(abspath, `utf-8`),
+  }));
 
 const models = extractModels(files);
 for (const model of models) {
@@ -26,5 +28,3 @@ for (const model of models) {
     fs.writeFileSync(`${appRoot}/${filepath}`, code);
   }
 }
-
-// M9, should be M5

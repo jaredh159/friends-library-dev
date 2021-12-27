@@ -3,7 +3,7 @@ import Foundation
 import Tagged
 import Vapor
 
-final class FriendResidence {
+final class FriendResidence: Codable {
   var id: Id
   var friendId: Friend.Id
   var city: String
@@ -35,28 +35,6 @@ extension FriendResidence {
   struct Duration: Codable {
     var start: Int
     var end: Int
-  }
-}
-
-extension FriendResidence: AppModel {
-  typealias Id = Tagged<FriendResidence, UUID>
-}
-
-extension FriendResidence: DuetModel {
-  static let tableName = M11.tableName
-}
-
-extension FriendResidence: Codable {
-  typealias ColumnName = CodingKeys
-
-  enum CodingKeys: String, CodingKey {
-    case id
-    case friendId
-    case city
-    case region
-    case duration
-    case createdAt
-    case updatedAt
   }
 }
 

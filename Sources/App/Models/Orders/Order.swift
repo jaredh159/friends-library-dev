@@ -3,7 +3,7 @@ import Tagged
 import TaggedMoney
 import Vapor
 
-final class Order {
+final class Order: Codable {
   var id: Id
   var lang: Lang
   var source: OrderSource
@@ -119,42 +119,9 @@ extension Order.PrintJobStatus: PostgresEnum {
   var dataType: String { Order.M2.PrintJobStatusEnum.name }
 }
 
-extension Order: AppModel {
-  typealias Id = Tagged<Order, UUID>
+extension Order {
   typealias PaymentId = Tagged<(order: Order, paymentId: ()), String>
   typealias PrintJobId = Tagged<(order: Order, printJobId: ()), Int>
-}
-
-extension Order: DuetModel {
-  static let tableName = M2.tableName
-}
-
-extension Order: Codable {
-  typealias ColumnName = CodingKeys
-
-  enum CodingKeys: String, CodingKey {
-    case id
-    case lang
-    case amount
-    case taxes
-    case ccFeeOffset
-    case shipping
-    case shippingLevel
-    case paymentId
-    case printJobId
-    case printJobStatus
-    case email
-    case source
-    case addressName
-    case addressStreet
-    case addressStreet2
-    case addressCity
-    case addressState
-    case addressZip
-    case addressCountry
-    case createdAt
-    case updatedAt
-  }
 }
 
 extension Order {

@@ -26,7 +26,7 @@ export function generateModelConformances(
     : `"${pascalToSnake(name)}s"`;
   code += `extension ${name}: DuetModel {\n  static let tableName = ${table}\n}\n\n`;
 
-  code += `extension ${name}: Codable {\n  typealias ColumnName = CodingKeys\n\n`;
+  code += `extension ${name} {\n  typealias ColumnName = CodingKeys\n\n`;
   code += `  enum CodingKeys: String, CodingKey {\n    `;
   code += props.map((p) => `case ${p.identifier}`).join(`\n    `);
   code += `\n  }\n}\n`;

@@ -28,7 +28,7 @@ describe(`generateModelConformances()`, () => {
         static let tableName = M8.tableName
       }
 
-      extension Thing: Codable {
+      extension Thing {
         typealias ColumnName = CodingKeys
 
         enum CodingKeys: String, CodingKey {
