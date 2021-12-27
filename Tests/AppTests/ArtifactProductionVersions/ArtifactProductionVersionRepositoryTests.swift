@@ -5,13 +5,13 @@ import XCTest
 
 final class ArtifactProductionVersionRepositoryTests: AppTestCase {
 
-  func testCreateVersionAndRetrieveLatest() {
+  func testCreateVersionAndRetrieveLatest() async throws {
     let older = ArtifactProductionVersion.mockOld
-    _ = try! Current.db.createArtifactProductionVersion(older).wait()
+    _ = try await Current.db.createArtifactProductionVersion(older)
 
     let latest = ArtifactProductionVersion.mock
-    _ = try! Current.db.createArtifactProductionVersion(latest).wait()
-    let retrieved = try! Current.db.getLatestArtifactProductionVersion().wait()
+    _ = try await Current.db.createArtifactProductionVersion(latest)
+    let retrieved = try await Current.db.getLatestArtifactProductionVersion()
 
     XCTAssertEqual(retrieved, latest)
   }

@@ -26,8 +26,8 @@ struct DatabaseClient {
   var getDownload: (Download.Id) throws -> Future<Download>
 
   // artifact production versions
-  var createArtifactProductionVersion: (ArtifactProductionVersion) throws -> Future<Void>
-  var getLatestArtifactProductionVersion: () throws -> Future<ArtifactProductionVersion>
+  var createArtifactProductionVersion: (ArtifactProductionVersion) async throws -> Void
+  var getLatestArtifactProductionVersion: () async throws -> ArtifactProductionVersion
 }
 
 extension DatabaseClient {

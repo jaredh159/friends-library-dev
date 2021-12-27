@@ -7,12 +7,12 @@ import XCTVaporUtils
 
 final class ArtifactProductionVersionResolverTests: AppTestCase {
 
-  func testGetLatestRevision() throws {
+  func testGetLatestRevision() async throws {
     let older = ArtifactProductionVersion.mockOld
-    _ = try! Current.db.createArtifactProductionVersion(older).wait()
+    _ = try await Current.db.createArtifactProductionVersion(older)
 
     let latest = ArtifactProductionVersion.mock
-    _ = try! Current.db.createArtifactProductionVersion(latest).wait()
+    _ = try await Current.db.createArtifactProductionVersion(latest)
 
     GraphQLTest(
       """
