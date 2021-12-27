@@ -22,9 +22,9 @@ struct CreateTags: Migration {
           .field(.createdAt, .datetime, .required)
           .unique(on: M14.slug)
           .create()
-      }.flatMap {
-        DocumentTag.allCases.map { tag in DocumentTagModel(id: tag.id, slug: tag) }
-          .create(on: database)
+        // }.flatMap {
+        //   DocumentTag.allCases.map { tag in DocumentTagModel(id: .init(rawValue: tag.id), slug: tag) }
+        //     .create(on: database)
       }
   }
 

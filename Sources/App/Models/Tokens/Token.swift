@@ -1,6 +1,5 @@
-import Fluent
+import Foundation
 import Tagged
-import Vapor
 
 final class Token: Codable {
   var id: Id

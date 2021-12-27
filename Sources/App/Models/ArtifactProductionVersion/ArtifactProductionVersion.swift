@@ -1,6 +1,4 @@
-import Fluent
-import Tagged
-import Vapor
+import Foundation
 
 final class ArtifactProductionVersion: Codable {
   var id: Id

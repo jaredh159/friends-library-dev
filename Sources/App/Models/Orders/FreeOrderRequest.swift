@@ -1,6 +1,4 @@
-import Fluent
-import Tagged
-import Vapor
+import Foundation
 
 final class FreeOrderRequest: Codable {
   var id: Id

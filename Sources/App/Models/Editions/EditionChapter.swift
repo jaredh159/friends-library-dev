@@ -1,6 +1,4 @@
-import Fluent
 import Foundation
-import Tagged
 
 final class EditionChapter: Codable {
   var id: Id
@@ -36,5 +34,3 @@ final class EditionChapter: Codable {
     self.nonSequenceTitle = nonSequenceTitle
   }
 }
-
-

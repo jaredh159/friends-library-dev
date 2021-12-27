@@ -1,6 +1,4 @@
-import Fluent
 import Foundation
-import Tagged
 
 final class FriendQuote: Codable {
   var id: Id
@@ -26,5 +24,4 @@ final class FriendQuote: Codable {
     self.order = order
     self.context = context
   }
-
 }

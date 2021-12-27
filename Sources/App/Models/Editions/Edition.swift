@@ -1,8 +1,5 @@
-import Fluent
 import Foundation
 import NonEmpty
-import Tagged
-import Vapor
 
 final class Edition: Codable {
   var id: Id
@@ -17,6 +14,8 @@ final class Edition: Codable {
   var deletedAt: Date? = nil
 
   var document = Parent<Document>.notLoaded
+  var impression = OptionalChild<EditionImpression>.notLoaded
+  var isbn = OptionalChild<Isbn>.notLoaded
 
   init(
     id: Id = .init(),
@@ -35,10 +34,4 @@ final class Edition: Codable {
     self.paperbackSplits = paperbackSplits
     self.paperbackOverrideSize = paperbackOverrideSize
   }
-
-  // @OptionalChild(for: \EditionImpression.$edition)
-  // var impression: EditionImpression?
-
-  // @OptionalChild(for: \Isbn.$edition)
-  // var isbn: Isbn?
 }

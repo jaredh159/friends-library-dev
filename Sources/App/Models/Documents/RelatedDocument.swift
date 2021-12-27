@@ -1,34 +1,25 @@
-import Fluent
 import Foundation
-import Vapor
 
-final class RelatedDocument: Model, Content {
-  static let schema = M22.tableName
-
-  @ID(key: .id)
-  var id: UUID?
-
-  // @Parent(key: M22.parentDocumentId)
-  // var parentDocument: Document
-
-  // @Parent(key: M22.documentId)
-  // var document: Document
-
-  @Field(key: M22.description)
+final class RelatedDocument: Codable {
+  var id: Id
   var description: String
+  var documentId: Document.Id
+  var parentDocumentId: Document.Id
+  var createdAt = Current.date()
+  var updatedAt = Current.date()
 
-  @Timestamp(key: .createdAt, on: .create)
-  var createdAt: Date?
+  var document = Parent<Document>.notLoaded
+  var parentDocument = Parent<Document>.notLoaded
 
-  @Timestamp(key: .updatedAt, on: .update)
-  var updatedAt: Date?
-}
-
-extension RelatedDocument {
-  enum M22 {
-    static let tableName = "related_documents"
-    static let parentDocumentId = FieldKey("parent_document_id")
-    static let documentId = FieldKey("document_id")
-    static let description = FieldKey("description")
+  init(
+    id: Id = .init(),
+    description: String,
+    documentId: Document.Id,
+    parentDocumentId: Document.Id
+  ) {
+    self.id = id
+    self.description = description
+    self.documentId = documentId
+    self.parentDocumentId = parentDocumentId
   }
 }

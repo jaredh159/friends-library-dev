@@ -1,6 +1,4 @@
-import Fluent
-import Tagged
-import Vapor
+import Foundation
 
 // @TODO, do a migration to remove DocumentId / EditionType combo, replace with Edition.Id
 

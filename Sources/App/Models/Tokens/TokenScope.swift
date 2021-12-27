@@ -1,6 +1,4 @@
-import Fluent
-import Tagged
-import Vapor
+import Foundation
 
 enum Scope: String, Codable, CaseIterable, Equatable {
   case queryDownloads

@@ -1,7 +1,5 @@
-import Fluent
 import Tagged
 import TaggedMoney
-import Vapor
 
 final class Order: Codable {
   var id: Id
@@ -123,5 +121,3 @@ extension Order {
   typealias PaymentId = Tagged<(order: Order, paymentId: ()), String>
   typealias PrintJobId = Tagged<(order: Order, printJobId: ()), Int>
 }
-
-

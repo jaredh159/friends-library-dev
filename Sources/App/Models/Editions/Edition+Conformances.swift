@@ -7,7 +7,7 @@ extension Edition: AppModel {
 }
 
 extension Edition: DuetModel {
-  static let tableName = "editions"
+  static let tableName = M16.tableName
 }
 
 extension Edition {

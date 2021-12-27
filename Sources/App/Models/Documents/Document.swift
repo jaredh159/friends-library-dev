@@ -1,6 +1,4 @@
-import Fluent
-import Tagged
-import Vapor
+import Foundation
 
 final class Document: Codable {
   var id: Id
@@ -51,4 +49,3 @@ final class Document: Codable {
     self.featuredDescription = featuredDescription
   }
 }
-

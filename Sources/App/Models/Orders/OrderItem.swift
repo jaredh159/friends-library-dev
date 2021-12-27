@@ -1,7 +1,4 @@
-import Fluent
-import Tagged
 import TaggedMoney
-import Vapor
 
 final class OrderItem: Codable {
   var id: Id
@@ -12,8 +9,8 @@ final class OrderItem: Codable {
   var quantity: Int
   var unitPrice: Cents<Int>
   var createdAt = Current.date()
-  var order = Parent<Order>.notLoaded
 
+  var order = Parent<Order>.notLoaded
   var document = Parent<Document>.notLoaded
 
   // var edition = Parent<Edition>.notLoaded // @TODO, longer-term correct
@@ -36,4 +33,3 @@ final class OrderItem: Codable {
     self.unitPrice = unitPrice
   }
 }
-

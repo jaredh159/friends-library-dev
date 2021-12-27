@@ -1,6 +1,4 @@
-import Fluent
 import Foundation
-import Tagged
 
 final class Friend: Codable {
   var id: Id
@@ -59,4 +57,3 @@ extension Friend {
 extension Friend.Gender: PostgresEnum {
   var dataType: String { Friend.M10.GenderEnum.name }
 }
-
