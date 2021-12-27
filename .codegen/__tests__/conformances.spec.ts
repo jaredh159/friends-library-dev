@@ -3,6 +3,11 @@ import stripIndent from 'strip-indent';
 import { generateModelConformances } from '../conformances';
 
 describe(`generateModelConformances()`, () => {
+  const types = {
+    dbEnums: [`FooEnum`],
+    taggedTypes: { GitCommitSha: `String`, Foo: `Int` },
+  };
+
   it(`generates correct conformances for models`, () => {
     const model = {
       name: `Thing`,
@@ -10,8 +15,10 @@ describe(`generateModelConformances()`, () => {
       migrationNumber: 8,
       props: [
         { identifier: `id`, type: `Id` },
+        { identifier: `name`, type: `String` },
         { identifier: `version`, type: `GitCommitSha` },
       ],
+      taggedTypes: {},
     };
 
     const expectedCode = stripIndent(/* swift */ `
@@ -27,17 +34,28 @@ describe(`generateModelConformances()`, () => {
         static let tableName = M8.tableName
       }
 
+      extension Thing: DuetInsertable {
+        var insertValues: [String: Postgres.Data] {
+          [
+            Self[.id]: .id(self),
+            Self[.name]: .string(name),
+            Self[.version]: .string(version.rawValue),
+          ]
+        }
+      }
+
       extension Thing {
         typealias ColumnName = CodingKeys
 
         enum CodingKeys: String, CodingKey {
           case id
+          case name
           case version
         }
       }
     `).trim();
 
-    const [path, code] = generateModelConformances(model);
+    const [path, code] = generateModelConformances(model, types);
     expect(code).toBe(expectedCode + `\n`);
     expect(path).toBe(`Sources/App/Models/Thing+Conformances.swift`);
   });
@@ -46,6 +64,7 @@ describe(`generateModelConformances()`, () => {
     const model = {
       name: `Thing`,
       filepath: `Sources/App/Models/Thing.swift`,
+      taggedTypes: {},
       props: [
         { identifier: `createdAt`, type: `Date` },
         { identifier: `updatedAt`, type: `Date` },
@@ -63,6 +82,15 @@ describe(`generateModelConformances()`, () => {
         static let tableName = "things"
       }
 
+      extension Thing: DuetInsertable {
+        var insertValues: [String: Postgres.Data] {
+          [
+            Self[.createdAt]: .currentTimestamp,
+            Self[.updatedAt]: .currentTimestamp,
+          ]
+        }
+      }
+
       extension Thing {
         typealias ColumnName = CodingKeys
 
@@ -78,7 +106,7 @@ describe(`generateModelConformances()`, () => {
       extension Thing: SoftDeletable {}
     `).trim();
 
-    const [path, code] = generateModelConformances(model);
+    const [path, code] = generateModelConformances(model, types);
     expect(code).toBe(expectedCode + `\n`);
     expect(path).toBe(`Sources/App/Models/Thing+Conformances.swift`);
   });

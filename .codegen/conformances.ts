@@ -1,7 +1,9 @@
-import { Model } from './types';
+import { insertData } from './model-db-data';
+import { GlobalTypes, Model } from './types';
 
 export function generateModelConformances(
   model: Model,
+  globalTypes: GlobalTypes,
 ): [filepath: string, code: string] {
   const { name, migrationNumber, filepath, props } = model;
   let code = `// auto-generated, do not edit\nimport Foundation\n`;
@@ -24,7 +26,9 @@ export function generateModelConformances(
   const table = migrationNumber
     ? `M${migrationNumber}.tableName`
     : `"${pascalToSnake(name)}s"`;
-  code += `extension ${name}: DuetModel {\n  static let tableName = ${table}\n}\n\n`;
+  code += `extension ${name}: DuetModel {\n  static let tableName = ${table}\n}\n`;
+
+  code += `\n` + insertData(model, globalTypes) + `\n\n`;
 
   code += `extension ${name} {\n  typealias ColumnName = CodingKeys\n\n`;
   code += `  enum CodingKeys: String, CodingKey {\n    `;

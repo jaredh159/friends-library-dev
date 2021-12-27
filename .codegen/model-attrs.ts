@@ -1,19 +1,32 @@
-import { Model, File } from './types';
+import { Model, File, GlobalTypes } from './types';
 
 export function extractModelAttrs({ source, path }: File): Model | undefined {
+  if (
+    !path.includes(`/Models/`) ||
+    path.includes(`+`) ||
+    path.includes(`Repository`) ||
+    path.includes(`Resolver`)
+  ) {
+    return undefined;
+  }
+
+  let model: Model | undefined = undefined;
   const lines = source.split(`\n`);
   while (lines.length) {
     const line = lines.shift()!;
     const classMatch = line.match(/^(?:final )?class ([A-Z][^\s]+)(: Codable)? {$/);
     if (classMatch !== null) {
-      return parseClassInterior(classMatch[1], path, lines);
+      model = parseClassInterior(classMatch[1], path, lines);
+    }
+    if (model && line.startsWith(`extension ${model.name} {`)) {
+      extractModelTaggedTypes(model, lines);
     }
   }
-  return undefined;
+  return model;
 }
 
 function parseClassInterior(name: string, path: string, lines: string[]): Model {
-  const attrs: Model = { name: name, filepath: path, props: [] };
+  const attrs: Model = { name: name, filepath: path, props: [], taggedTypes: {} };
   while (lines.length) {
     const line = lines.shift()!;
     if (line.startsWith(`}`)) {
@@ -95,4 +108,53 @@ export function extractModels(files: File[]): Model[] {
   }
 
   return Object.values(models);
+}
+
+export function extractGlobalTypes(sources: string[]): GlobalTypes {
+  const types: GlobalTypes = {
+    dbEnums: [],
+    taggedTypes: {},
+  };
+
+  for (const source of sources) {
+    for (const line of source.split(`\n`)) {
+      const enumMatch = line.match(/^enum ([^: ]+): String, Codable, CaseIterable {/);
+      if (enumMatch) {
+        types.dbEnums.push(enumMatch[1]);
+      }
+      extractTaggedType(types, line);
+    }
+  }
+
+  return types;
+}
+
+function extractModelTaggedTypes(model: Model, lines: string[]): void {
+  while (lines.length) {
+    const line = lines.shift()!;
+    if (line === `}`) {
+      return;
+    }
+
+    if (!line.startsWith(`  typealias `)) {
+      continue;
+    }
+
+    extractTaggedType(model, line);
+  }
+}
+
+function extractTaggedType(
+  obj: { taggedTypes: Record<string, string> },
+  line: string,
+): void {
+  const match = line.match(/\s*typealias ([^ ]+) = Tagged<(.+)>$/);
+  if (!match) {
+    return;
+  }
+
+  const alias = match[1];
+  const innerParts = match[2].split(`, `);
+  const taggedType = innerParts.pop() ?? ``;
+  obj.taggedTypes[alias] = taggedType;
 }

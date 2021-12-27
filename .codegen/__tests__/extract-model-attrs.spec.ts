@@ -1,8 +1,6 @@
 import { describe, it, test, expect } from '@jest/globals';
 import stripIndent from 'strip-indent';
-import { extractModelAttrs, extractModels } from '../model-attrs';
-
-// remove comments `var title: String // @TODO remove`
+import { extractGlobalTypes, extractModelAttrs, extractModels } from '../model-attrs';
 
 describe(`extractModelAttrs()`, () => {
   it(`extracts basic props, ignoring computed properties`, () => {
@@ -10,7 +8,7 @@ describe(`extractModelAttrs()`, () => {
     final class Thing {
       var id: Id
       var name: String
-      var foo: String // @TODO remove
+      var foo: String // @TODO comment shouldn't interfere with extraction
       var hasBeard: Bool { true }
       var kids = Children<Person>.notLoaded
       var createdAt = Current.date()
@@ -24,10 +22,11 @@ describe(`extractModelAttrs()`, () => {
     } 
   `);
 
-    const attrs = extractModelAttrs({ source, path: `/` });
+    const attrs = extractModelAttrs({ source, path: `/Models/Thing.swift` });
     expect(attrs).toEqual({
       name: `Thing`,
-      filepath: `/`,
+      filepath: `/Models/Thing.swift`,
+      taggedTypes: {},
       props: [
         { identifier: `id`, type: `Id` },
         { identifier: `name`, type: `String` },
@@ -36,6 +35,29 @@ describe(`extractModelAttrs()`, () => {
         { identifier: `updatedAt`, type: `Date` },
         { identifier: `deletedAt`, type: `Date` },
       ],
+    });
+  });
+
+  it(`can extract underlying types from tagged typealiases`, () => {
+    const source = stripIndent(/* swift */ `
+      final class Thing {
+        var t1: Alias1
+        var t2: Alias2?
+        var t3: Alias3
+      } 
+
+      extension Thing {
+        typealias Alias1 = Tagged<Thing, UUID>
+        typealias Alias2 = Tagged<(thing: Thing, t2: ()), Int>
+        typealias Alias3 = Tagged<Thing, String>
+      }
+  `);
+
+    const model = extractModelAttrs({ source, path: `/Models/Thing.swift` });
+    expect(model?.taggedTypes).toEqual({
+      Alias1: `UUID`,
+      Alias2: `Int`,
+      Alias3: `String`,
     });
   });
 });
@@ -56,15 +78,16 @@ describe(`extractModels()`, () => {
   `);
 
     const models = extractModels([
-      { source: source1, path: `Foobar.swift` },
-      { source: source2, path: `Foobar+Migration.swift` },
+      { source: source1, path: `/Models/Foobar.swift` },
+      { source: source2, path: `/Models/Foobar+Migration.swift` },
     ]);
 
     expect(models).toEqual([
       {
         name: `Foobar`,
-        filepath: `Foobar.swift`,
+        filepath: `/Models/Foobar.swift`,
         migrationNumber: 13,
+        taggedTypes: {},
         props: [{ identifier: `id`, type: `UUID` }],
       },
     ]);
@@ -89,28 +112,43 @@ describe(`extractModels()`, () => {
   `);
 
     const models = extractModels([
-      { source: source1, path: `Foobar.swift` },
-      { source: source2, path: `Foobar+Migration.swift` },
+      { source: source1, path: `/Models/Foobar.swift` },
+      { source: source2, path: `/Models/Foobar+Migration.swift` },
     ]);
 
     expect(models).toEqual([
       {
         name: `Foobar`,
-        filepath: `Foobar.swift`,
+        filepath: `/Models/Foobar.swift`,
         migrationNumber: 12,
+        taggedTypes: {},
         props: [{ identifier: `id`, type: `UUID` }],
       },
     ]);
   });
 });
 
-// √ examine multiple files
-// √ extract tablename migration for code gen
-// generate conformances
-// generate insert
+describe(`extractGlobalTypes()`, () => {
+  it(`can extract dbEnums and taggedTypes`, () => {
+    const source = stripIndent(/* swift */ `
+      enum FooEnum: String, Codable, CaseIterable {
+        case foo
+        case bar
+      }
 
-// scaffold repository
-// scaffold repository tests
-// scaffold resolver
-// scaffold resolver tests
-// scaffold Current.db vars
+      enum SkipMe {
+        case lol
+      }
+
+      typealias Foo = Tagged<(tagged: (), foo: ()), String>
+      typealias Bar = Tagged<(tagged: (), bar: ()), Int>
+    `);
+
+    const types = extractGlobalTypes([source]);
+
+    expect(types).toEqual({
+      dbEnums: [`FooEnum`],
+      taggedTypes: { Foo: `String`, Bar: `Int` },
+    });
+  });
+});

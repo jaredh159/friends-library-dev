@@ -60,6 +60,10 @@ extension DuetModel where IdValue: RawRepresentable, IdValue.RawValue == UUID {
   var uuidId: UUID { id.rawValue }
 }
 
+protocol DuetInsertable: DuetModel {
+  var insertValues: [String: Postgres.Data] { get }
+}
+
 protocol RandomEmptyInitializing {
   init()
 }
