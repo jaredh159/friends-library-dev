@@ -5,11 +5,11 @@ import XCTVaporUtils
 
 final class TokenResolverTests: AppTestCase {
 
-  func testTokenByValue() throws {
+  func testTokenByValue() async throws {
     let token = Token(description: "test")
-    _ = try Current.db.createToken(token).wait()
+    _ = try await Current.db.createToken(token)
     let scope = TokenScope(tokenId: token.id, scope: .queryOrders)
-    _ = try Current.db.createTokenScope(scope).wait()
+    _ = try await Current.db.createTokenScope(scope)
 
     GraphQLTest(
       """

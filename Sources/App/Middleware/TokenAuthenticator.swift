@@ -15,20 +15,17 @@ struct User: Authenticatable {
   }
 }
 
-struct UserAuthenticator: BearerAuthenticator {
-  func authenticate(
-    bearer: BearerAuthorization,
-    for request: Request
-  ) -> EventLoopFuture<Void> {
-    guard let tokenValue = UUID(uuidString: bearer.token) else {
-      return request.eventLoop.makeSucceededVoidFuture()
-    }
+struct UserAuthenticator: AsyncBearerAuthenticator {
 
+  func authenticate(bearer: BearerAuthorization, for request: Request) async throws {
+    guard let tokenValue = UUID(uuidString: bearer.token) else {
+      return
+    }
     do {
-      return try Current.db.getTokenByValue(.init(rawValue: tokenValue))
-        .map { request.auth.login(User(token: $0)) }
+      let token = try await Current.db.getTokenByValue(.init(rawValue: tokenValue))
+      request.auth.login(User(token: token))
     } catch {
-      return request.eventLoop.makeSucceededVoidFuture()
+      return
     }
   }
 }

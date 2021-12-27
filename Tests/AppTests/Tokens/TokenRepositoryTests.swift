@@ -5,10 +5,10 @@ import XCTest
 
 final class TokenRepositoryTests: AppTestCase {
 
-  func testCreateToken() {
+  func testCreateToken() async throws {
     let inserted = Token(description: "test")
-    _ = try! Current.db.createToken(inserted).wait()
-    let retrieved = try! Current.db.getTokenByValue(inserted.value).wait()
+    _ = try await Current.db.createToken(inserted)
+    let retrieved = try await Current.db.getTokenByValue(inserted.value)
     XCTAssertEqual(retrieved, inserted)
   }
 }

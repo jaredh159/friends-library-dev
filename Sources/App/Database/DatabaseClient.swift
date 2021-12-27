@@ -5,10 +5,10 @@ import Vapor
 
 struct DatabaseClient {
   // tokens
-  var createToken: (Token) throws -> Future<Void>
-  var getTokenByValue: (Token.Value) throws -> Future<Token>
-  var createTokenScope: (TokenScope) throws -> Future<Void>
-  var getTokenScopes: (Token.Id) throws -> Future<[TokenScope]>
+  var createToken: (Token) async throws -> Void
+  var getTokenByValue: (Token.Value) async throws -> Token
+  var createTokenScope: (TokenScope) async throws -> Void
+  var getTokenScopes: (Token.Id) async throws -> [TokenScope]
 
   // orders
   var deleteAllOrders: () throws -> Future<Void>

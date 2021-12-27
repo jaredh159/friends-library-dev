@@ -17,7 +17,11 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
       at: resolveChildren { token, eventLoop -> Future<[TokenScope]> in
         switch token.scopes {
           case .notLoaded:
-            return try Current.db.getTokenScopes(token.id)
+            let promise = eventLoop.makePromise(of: [TokenScope].self)
+            promise.completeWithTask {
+              try await Current.db.getTokenScopes(token.id)
+            }
+            return promise.futureResult
           case let .loaded(scopes):
             return eventLoop.makeSucceededFuture(scopes)
         }

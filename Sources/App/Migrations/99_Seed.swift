@@ -14,9 +14,9 @@ struct Seeded {
   static let tokens = Tokens()
 }
 
-struct Seed: Migration {
+struct Seed: AsyncMigration {
 
-  func prepare(on database: Database) -> Future<Void> {
+  func prepare(on database: Database) async throws {
     let tokens: [UUID: (String, [Scope])] = [
       Seeded.tokens.queryDownloads: ("queryDownloads", [.queryDownloads]),
       Seeded.tokens.mutateDownloads: ("mutateDownloads", [.mutateDownloads]),
@@ -38,17 +38,13 @@ struct Seed: Migration {
       ),
     ]
 
-    var futures: [Future<Void>] = []
     for (tokenValue, (description, scopes)) in tokens {
       let token = Token(value: .init(rawValue: tokenValue), description: description)
       token.scopes = .loaded(scopes.map { TokenScope(tokenId: token.id, scope: $0) })
-      futures.append(try! Current.db.createToken(token))
+      try await Current.db.createToken(token)
     }
-
-    return futures.flatten(on: database.eventLoop)
   }
 
-  func revert(on database: Database) -> Future<Void> {
-    return database.eventLoop.makeSucceededVoidFuture()
+  func revert(on database: Database) async throws {
   }
 }
