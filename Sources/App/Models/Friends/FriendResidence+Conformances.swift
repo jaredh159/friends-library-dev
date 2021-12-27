@@ -23,3 +23,6 @@ extension FriendResidence {
     case updatedAt
   }
 }
+
+extension FriendResidence: Auditable {}
+extension FriendResidence: Touchable {}

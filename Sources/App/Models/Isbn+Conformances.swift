@@ -21,3 +21,6 @@ extension Isbn {
     case updatedAt
   }
 }
+
+extension Isbn: Auditable {}
+extension Isbn: Touchable {}

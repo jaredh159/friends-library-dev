@@ -30,3 +30,6 @@ extension FreeOrderRequest {
     case updatedAt
   }
 }
+
+extension FreeOrderRequest: Auditable {}
+extension FreeOrderRequest: Touchable {}

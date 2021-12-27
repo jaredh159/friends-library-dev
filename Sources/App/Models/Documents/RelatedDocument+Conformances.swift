@@ -22,3 +22,6 @@ extension RelatedDocument {
     case updatedAt
   }
 }
+
+extension RelatedDocument: Auditable {}
+extension RelatedDocument: Touchable {}

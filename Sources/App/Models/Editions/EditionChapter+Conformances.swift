@@ -26,3 +26,6 @@ extension EditionChapter {
     case updatedAt
   }
 }
+
+extension EditionChapter: Auditable {}
+extension EditionChapter: Touchable {}

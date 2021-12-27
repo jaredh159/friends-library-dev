@@ -1,7 +1,7 @@
 import { Model } from './types';
 
 export function generateModelConformances(
-  model: Model
+  model: Model,
 ): [filepath: string, code: string] {
   const { name, migrationNumber, filepath, props } = model;
   let code = `// auto-generated, do not edit\nimport Foundation\n`;
@@ -30,6 +30,16 @@ export function generateModelConformances(
   code += `  enum CodingKeys: String, CodingKey {\n    `;
   code += props.map((p) => `case ${p.identifier}`).join(`\n    `);
   code += `\n  }\n}\n`;
+
+  if (props.some((p) => p.identifier == `createdAt` && p.type === `Date`)) {
+    code += `\nextension ${name}: Auditable {}\n`;
+  }
+  if (props.some((p) => p.identifier == `updatedAt` && p.type === `Date`)) {
+    code += `extension ${name}: Touchable {}\n`;
+  }
+  if (props.some((p) => p.identifier == `deletedAt` && p.type === `Date?`)) {
+    code += `extension ${name}: SoftDeletable {}\n`;
+  }
 
   const path = filepath.replace(`.swift`, `+Conformances.swift`);
   return [path, code];

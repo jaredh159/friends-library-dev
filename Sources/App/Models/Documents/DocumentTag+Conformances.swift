@@ -19,3 +19,5 @@ extension DocumentTagModel {
     case createdAt
   }
 }
+
+extension DocumentTagModel: Auditable {}

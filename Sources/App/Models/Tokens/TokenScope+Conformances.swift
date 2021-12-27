@@ -20,3 +20,5 @@ extension TokenScope {
     case createdAt
   }
 }
+
+extension TokenScope: Auditable {}

@@ -24,3 +24,5 @@ extension EditionImpression {
     case createdAt
   }
 }
+
+extension EditionImpression: Auditable {}

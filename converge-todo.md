@@ -1,6 +1,6 @@
 # Converge TODOs:
 
-- [ ] - take care of two models that didn't get converted
+- [√] - take care of two models that didn't get converted
 - [ ] - redo insert db logic with protocol magic
 - [ ] - handle timestamps with special props or protocols
 - [ ] - migrate `order_items` to store Edition.Id instead of Document.Id AND edition type

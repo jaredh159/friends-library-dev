@@ -20,3 +20,5 @@ extension Token {
     case createdAt
   }
 }
+
+extension Token: Auditable {}

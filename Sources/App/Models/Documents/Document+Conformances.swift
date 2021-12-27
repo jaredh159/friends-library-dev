@@ -31,3 +31,6 @@ extension Document {
     case deletedAt
   }
 }
+
+extension Document: Auditable {}
+extension Document: Touchable {}

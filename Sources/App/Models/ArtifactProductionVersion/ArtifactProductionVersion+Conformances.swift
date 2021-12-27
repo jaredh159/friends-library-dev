@@ -19,3 +19,5 @@ extension ArtifactProductionVersion {
     case createdAt
   }
 }
+
+extension ArtifactProductionVersion: Auditable {}

@@ -23,3 +23,6 @@ extension FriendQuote {
     case updatedAt
   }
 }
+
+extension FriendQuote: Auditable {}
+extension FriendQuote: Touchable {}

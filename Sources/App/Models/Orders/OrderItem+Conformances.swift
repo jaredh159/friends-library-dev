@@ -24,3 +24,5 @@ extension OrderItem {
     case createdAt
   }
 }
+
+extension OrderItem: Auditable {}

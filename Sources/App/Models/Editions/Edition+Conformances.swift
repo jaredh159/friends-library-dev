@@ -26,3 +26,6 @@ extension Edition {
     case deletedAt
   }
 }
+
+extension Edition: Auditable {}
+extension Edition: Touchable {}

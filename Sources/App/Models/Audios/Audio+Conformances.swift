@@ -28,3 +28,6 @@ extension Audio {
     case updatedAt
   }
 }
+
+extension Audio: Auditable {}
+extension Audio: Touchable {}

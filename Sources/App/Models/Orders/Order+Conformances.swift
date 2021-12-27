@@ -38,3 +38,6 @@ extension Order {
     case updatedAt
   }
 }
+
+extension Order: Auditable {}
+extension Order: Touchable {}

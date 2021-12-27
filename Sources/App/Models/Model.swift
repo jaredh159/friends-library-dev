@@ -75,3 +75,15 @@ extension UUID: UUIDStringable {}
 extension Tagged: UUIDStringable where RawValue == UUID {
   var uuidString: String { self.rawValue.uuidString }
 }
+
+protocol Auditable: DuetModel {
+  var createdAt: Date { get set }
+}
+
+protocol Touchable: DuetModel {
+  var updatedAt: Date { get set }
+}
+
+protocol SoftDeletable: DuetModel {
+  var deletedAt: Date? { get set }
+}

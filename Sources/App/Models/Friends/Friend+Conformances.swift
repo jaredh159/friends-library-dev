@@ -27,3 +27,6 @@ extension Friend {
     case updatedAt
   }
 }
+
+extension Friend: Auditable {}
+extension Friend: Touchable {}
