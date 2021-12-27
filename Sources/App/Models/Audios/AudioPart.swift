@@ -1,10 +1,8 @@
-import Fluent
-import Foundation
 import NonEmpty
 import Tagged
 import TaggedTime
 
-final class AudioPart {
+final class AudioPart: Codable {
   var id: Id
   var audioId: Audio.Id
   var title: String
@@ -48,23 +46,6 @@ final class AudioPart {
 
 // extensions
 
-extension AudioPart: Codable {}
-
 extension AudioPart {
   typealias ExternalId = Tagged<AudioPart, Int64>
-}
-
-extension AudioPart {
-  enum M20 {
-    static let tableName = "edition_audio_parts"
-    static let audioId = FieldKey("audio_id")
-    static let title = FieldKey("title")
-    static let order = FieldKey("order")
-    static let duration = FieldKey("duration")
-    static let mp3SizeHq = FieldKey("mp3_size_hq")
-    static let mp3SizeLq = FieldKey("mp3_size_lq")
-    static let externalIdHq = FieldKey("external_id_hq")
-    static let externalIdLq = FieldKey("external_id_lq")
-    static let chapters = FieldKey("chapters")
-  }
 }

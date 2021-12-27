@@ -4,7 +4,7 @@ import NonEmpty
 import Tagged
 import Vapor
 
-final class Edition {
+final class Edition: Codable {
   var id: Id
   var documentId: Document.Id
   var type: EditionType
@@ -41,25 +41,4 @@ final class Edition {
 
   // @OptionalChild(for: \Isbn.$edition)
   // var isbn: Isbn?
-}
-
-// extensions
-
-extension Edition: Codable {
-  enum M16 {
-    static let tableName = "editions"
-    static let documentId = FieldKey("document_id")
-    static let type = FieldKey("type")
-    static let editor = FieldKey("editor")
-    static let isDraft = FieldKey("is_draft")
-    static let paperbackOverrideSize = FieldKey("paperback_override_size")
-    static let paperbackSplits = FieldKey("paperback_splits")
-    enum PrintSizeVariantEnum {
-      static let name = "print_size_variants"
-      static let caseS = "s"
-      static let caseM = "m"
-      static let caseXl = "xl"
-      static let caseXlCondensed = "xl--condensed"
-    }
-  }
 }

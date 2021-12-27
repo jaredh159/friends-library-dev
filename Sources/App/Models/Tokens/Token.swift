@@ -22,11 +22,3 @@ final class Token: Codable {
 extension Token {
   typealias Value = Tagged<(Token, value: ()), UUID>
 }
-
-extension Token {
-  enum M4 {
-    static let tableName = "tokens"
-    static let value = FieldKey("value")
-    static let description = FieldKey("description")
-  }
-}

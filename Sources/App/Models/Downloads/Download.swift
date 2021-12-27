@@ -4,7 +4,7 @@ import Vapor
 
 // @TODO, do a migration to remove DocumentId / EditionType combo, replace with Edition.Id
 
-final class Download {
+final class Download: Codable {
   var id: Id
   var documentId: Document.Id
   var editionType: EditionType
@@ -75,8 +75,6 @@ final class Download {
 
 // extensions
 
-extension Download: Codable {}
-
 extension Download {
   enum AudioQuality: String, Codable, CaseIterable {
     case lq
@@ -99,18 +97,6 @@ extension Download {
     case website
     case podcast
     case app
-  }
-}
-
-extension Download {
-  enum M1 {
-    static let tableName = "downloads"
-    enum EditionTypeEnum {
-      static let name = "edition_type"
-      static let caseUpdated = "updated"
-      static let caseModernized = "modernized"
-      static let caseOriginal = "original"
-    }
   }
 }
 
