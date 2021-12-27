@@ -17,6 +17,10 @@ describe(`insertData()`, () => {
       props: [
         { identifier: `id`, type: `Id` },
         { identifier: `parentId`, type: `OtherModel.Id` },
+        { identifier: `optionalParentId`, type: `RandoModel.Id?` },
+        { identifier: `published`, type: `Date?` },
+        { identifier: `lols`, type: `NonEmpty<[Int]>` },
+        { identifier: `optionalLols`, type: `NonEmpty<[Int]>?` },
         { identifier: `honestInt`, type: `Int` },
         { identifier: `optionalInt`, type: `Int?` },
         { identifier: `honestString`, type: `String` },
@@ -40,6 +44,10 @@ describe(`insertData()`, () => {
           [
             Self[.id]: .id(self),
             Self[.parentId]: .uuid(parentId),
+            Self[.optionalParentId]: .uuid(optionalParentId),
+            Self[.published]: .date(published),
+            Self[.lols]: .intArray(lols.array),
+            Self[.optionalLols]: .intArray(optionalLols?.array),
             Self[.honestInt]: .int(honestInt),
             Self[.optionalInt]: .int(optionalInt),
             Self[.honestString]: .string(honestString),

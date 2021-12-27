@@ -19,7 +19,7 @@ extension OrderItem: DuetInsertable {
       Self[.editionType]: .enum(editionType),
       Self[.title]: .string(title),
       Self[.quantity]: .int(quantity),
-      Self[.unitPrice]: .enum(unitPrice),
+      Self[.unitPrice]: .int(unitPrice.rawValue),
       Self[.createdAt]: .currentTimestamp,
     ]
   }

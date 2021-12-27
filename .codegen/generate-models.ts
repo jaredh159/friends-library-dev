@@ -14,7 +14,6 @@ const files = glob(`${appDir}/**/*.swift`).map((abspath) => ({
 }));
 
 const globalTypes = extractGlobalTypes(files.map((f) => f.source));
-console.log(globalTypes);
 const models = extractModels(files);
 
 for (const model of models) {

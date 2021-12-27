@@ -17,7 +17,7 @@ extension EditionImpression: DuetInsertable {
       Self[.editionId]: .uuid(editionId),
       Self[.adocLength]: .int(adocLength),
       Self[.paperbackSize]: .enum(paperbackSize),
-      Self[.paperbackVolumes]: .enum(paperbackVolumes),
+      Self[.paperbackVolumes]: .intArray(paperbackVolumes.array),
       Self[.publishedRevision]: .string(publishedRevision.rawValue),
       Self[.productionToolchainRevision]: .string(productionToolchainRevision.rawValue),
       Self[.createdAt]: .currentTimestamp,

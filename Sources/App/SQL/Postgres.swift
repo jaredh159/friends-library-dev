@@ -35,6 +35,7 @@ enum Postgres {
   enum Data {
     case id(UUIDIdentifiable)
     case string(String?)
+    case intArray([Int]?)
     case int(Int?)
     case int64(Int64?)
     case float(Float?)
@@ -43,6 +44,7 @@ enum Postgres {
     case bool(Bool?)
     case date(Date?)
     case `enum`(PostgresEnum?)
+    case json(String?)
     case currentTimestamp
 
     var typeName: String {
@@ -51,6 +53,8 @@ enum Postgres {
           return "text"
         case .int, .int64, .double, .float:
           return "numeric"
+        case .intArray:
+          return "numeric[]"
         case .uuid, .id:
           return "uuid"
         case .bool:
@@ -59,6 +63,8 @@ enum Postgres {
           return enumVal?.dataType ?? "unknown"
         case .date:
           return "timestamp"
+        case .json:
+          return "jsonb"
         case .currentTimestamp:
           return "timestamp"
       }
@@ -78,12 +84,17 @@ enum Postgres {
           return nullable(float)
         case let .double(double):
           return nullable(double)
+        case let .intArray(ints):
+          guard let ints = ints else { return "'{}'" }
+          return "'{\(ints.map(String.init).joined(separator: ","))}'"
         case let .id(model):
           return "'\(model.uuidId.uuidString)'"
         case let .uuid(uuid):
           return nullable(uuid?.uuidString)
         case let .bool(bool):
           return nullable(bool)
+        case let .json(string):
+          return nullable(string)
         case let .date(date):
           return nullable(date)
         case .currentTimestamp:

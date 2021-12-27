@@ -111,10 +111,6 @@ enum SQL {
       SELECT \(columns.sql) from "\(table)"\(WHERE);
       """
 
-    // print("\n\n\n\n\n")
-    // print(query)
-    // print("\n\n\n\n\n")
-
     return PreparedStatement(query: query, bindings: bindings)
   }
 

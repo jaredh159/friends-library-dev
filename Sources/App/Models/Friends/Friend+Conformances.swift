@@ -21,7 +21,7 @@ extension Friend: DuetInsertable {
       Self[.description]: .string(description),
       Self[.born]: .int(born),
       Self[.died]: .int(died),
-      Self[.published]: .enum(published),
+      Self[.published]: .date(published),
       Self[.createdAt]: .currentTimestamp,
       Self[.updatedAt]: .currentTimestamp,
     ]

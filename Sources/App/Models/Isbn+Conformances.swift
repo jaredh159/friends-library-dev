@@ -15,7 +15,7 @@ extension Isbn: DuetInsertable {
     [
       Self[.id]: .id(self),
       Self[.code]: .string(code.rawValue),
-      Self[.editionId]: .enum(editionId),
+      Self[.editionId]: .uuid(editionId),
       Self[.createdAt]: .currentTimestamp,
       Self[.updatedAt]: .currentTimestamp,
     ]

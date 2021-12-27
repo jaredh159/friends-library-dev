@@ -32,5 +32,9 @@ extension FriendResidence {
   struct Duration: Codable {
     var start: Int
     var end: Int
+
+    var jsonString: String? {
+      try? String(data: JSONEncoder().encode(self), encoding: .utf8)
+    }
   }
 }

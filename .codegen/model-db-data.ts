@@ -24,13 +24,24 @@ export function insertData(model: Model, globalTypes: GlobalTypes): string {
         return [ident, `.currentTimestamp`];
       }
 
-      if (type.match(/.+\.Id$/)) {
+      if (type.match(/.+\.Id\??$/)) {
         return [ident, `.uuid(${ident})`];
       }
 
       switch (type) {
         case `Id`:
           return [ident, `.id(self)`];
+        case `NonEmpty<[Int]>`:
+          return [ident, `.intArray(${ident}.array)`];
+        case `NonEmpty<[Int]>?`:
+          return [ident, `.intArray(${ident}?.array)`];
+        case `Seconds<Double>`:
+          return [ident, `.double(${ident}.rawValue)`];
+        case `Cents<Int>`:
+          return [ident, `.int(${ident}.rawValue)`];
+        case `Date`:
+        case `Date?`:
+          return [ident, `.date(${ident})`];
         case `Int64`:
         case `Int64?`:
           return [ident, `.int64(${ident})`];
@@ -62,6 +73,13 @@ export function insertData(model: Model, globalTypes: GlobalTypes): string {
                 throw new Error(`Tagged subtype ${taggedType} not implemented`);
             }
           }
+
+          // special case... if there are more than one of these consider a special
+          // protocol that can be extracted and analyzed for less grossness
+          if (model.name === `FriendResidence` && ident === `duration`) {
+            return [ident, `.json(${ident}?.jsonString)`];
+          }
+
           return [ident, `.enum(${ident})`];
       }
     },

@@ -18,7 +18,7 @@ extension Edition: DuetInsertable {
       Self[.type]: .enum(type),
       Self[.editor]: .string(editor),
       Self[.isDraft]: .bool(isDraft),
-      Self[.paperbackSplits]: .enum(paperbackSplits),
+      Self[.paperbackSplits]: .intArray(paperbackSplits?.array),
       Self[.paperbackOverrideSize]: .enum(paperbackOverrideSize),
       Self[.createdAt]: .currentTimestamp,
       Self[.updatedAt]: .currentTimestamp,

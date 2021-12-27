@@ -17,7 +17,7 @@ extension FriendResidence: DuetInsertable {
       Self[.friendId]: .uuid(friendId),
       Self[.city]: .string(city),
       Self[.region]: .string(region),
-      Self[.duration]: .enum(duration),
+      Self[.duration]: .json(duration?.jsonString),
       Self[.createdAt]: .currentTimestamp,
       Self[.updatedAt]: .currentTimestamp,
     ]
