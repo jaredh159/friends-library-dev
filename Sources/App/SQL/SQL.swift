@@ -118,30 +118,19 @@ enum SQL {
     _ statement: PreparedStatement,
     on db: SQLDatabase
   ) async throws -> SQLRawBuilder {
-    try await execute(statement, on: db).get()
-  }
-
-  // @TODO deprecate
-  static func execute(
-    _ statement: PreparedStatement,
-    on db: SQLDatabase
-  ) throws -> Future<SQLRawBuilder> {
     // e.g. SELECT statements with no WHERE clause have
     // no bindings, and so can't be sent as a pg prepared statement
     if statement.bindings.isEmpty {
-      let builder = db.raw("\(raw: statement.query)")
-      return db.eventLoop.makeSucceededFuture(builder)
+      return db.raw("\(raw: statement.query)")
     }
 
     let types = statement.bindings.map(\.typeName).list
     let params = statement.bindings.map(\.param).list
     let key = [statement.query, types].joined()
-    let prepareFuture: Future<[SQLRow]>
     let name: String
 
     if let previouslyInsertedName = prepared[key] {
       name = previouslyInsertedName
-      prepareFuture = db.eventLoop.makeSucceededFuture([])
     } else {
       let id = UUID().uuidString.replacingOccurrences(of: "-", with: "").lowercased()
       name = "plan_\(id)"
@@ -150,12 +139,10 @@ enum SQL {
         \(statement.query)
         """
       prepared[key] = name
-      prepareFuture = db.raw("\(raw: insertPrepareSql)").all()
+      _ = try await db.raw("\(raw: insertPrepareSql)").all().get()
     }
 
-    return prepareFuture.map { _ in
-      db.raw("\(raw: "EXECUTE \(name)(\(params))")")
-    }
+    return db.raw("\(raw: "EXECUTE \(name)(\(params))")")
   }
 
   static func resetPreparedStatements() {
