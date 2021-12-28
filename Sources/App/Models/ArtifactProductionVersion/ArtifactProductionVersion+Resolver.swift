@@ -15,22 +15,18 @@ extension Resolver {
   ) throws -> Future<ArtifactProductionVersion> {
     try req.requirePermission(to: .mutateArtifactProductionVersions)
     let version = ArtifactProductionVersion(version: .init(rawValue: args.revision))
-    let promise = req.eventLoop.makePromise(of: ArtifactProductionVersion.self)
-    promise.completeWithTask {
+    return future(of: ArtifactProductionVersion.self, on: req.eventLoop) {
       try await Current.db.createArtifactProductionVersion(version)
       return version
     }
-    return promise.futureResult
   }
 
   func getLatestArtifactProductionVersion(
     req: Req,
     args: NoArgs
   ) throws -> Future<ArtifactProductionVersion> {
-    let promise = req.eventLoop.makePromise(of: ArtifactProductionVersion.self)
-    promise.completeWithTask {
+    return future(of: ArtifactProductionVersion.self, on: req.eventLoop) {
       try await Current.db.getLatestArtifactProductionVersion()
     }
-    return promise.futureResult
   }
 }

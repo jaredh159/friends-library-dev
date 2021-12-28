@@ -6,8 +6,8 @@ extension Resolver {
   }
 
   func getTokenByValue(req: Req, args: GetTokenByValueArgs) throws -> Future<Token> {
-    let promise = req.eventLoop.makePromise(of: Token.self)
-    promise.completeWithTask { try await Current.db.getTokenByValue(args.value) }
-    return promise.futureResult
+    future(of: Token.self, on: req.eventLoop) {
+      try await Current.db.getTokenByValue(args.value)
+    }
   }
 }
