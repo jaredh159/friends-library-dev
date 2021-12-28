@@ -3,8 +3,18 @@ import FluentSQL
 extension LiveRepository {
 
   func insert<M: DuetInsertable>(_ model: M) async throws {
-    let prepared = try SQL.insert(into: M.tableName, values: model.insertValues)
-    _ = try await SQL.execute(prepared, on: db)
+    try await insert([model])
+  }
+
+  func insert<M: DuetInsertable>(_ models: [M]) async throws {
+    let prepared = try SQL.insert(into: M.tableName, values: models.map(\.insertValues))
+    _ = try await SQL.execute(prepared, on: db).all()
+  }
+
+  func find<M: DuetModel>(_ id: M.IdValue) async throws -> M {
+    let prepared = SQL.select(.all, from: M.tableName, where: ("id", .equals, .uuid(id)))
+    let rows = try await SQL.execute(prepared, on: db).all()
+    return try rows.compactMap { try $0.decode(M.self) }.firstOrThrowNotFound()
   }
 
   // @TODO deprecate
@@ -51,13 +61,14 @@ extension LiveRepository {
     _ model: Model.Type,
     set values: [String: Postgres.Data],
     where constraint: SQL.WhereConstraint? = nil
-  ) throws -> Future<[Model]> {
+  ) async throws -> [Model] {
     let prepared = SQL.update(
-      model.tableName, set: values, where: constraint, returning: .all)
-    return try SQL.execute(prepared, on: db)
-      .flatMap { (builder: SQLRawBuilder) in builder.all() }
-      .flatMapThrowing { (rows: [SQLRow]) in
-        try rows.compactMap { try $0.decode(model) }
-      }
+      model.tableName,
+      set: values,
+      where: constraint,
+      returning: .all
+    )
+    let rows = try await SQL.execute(prepared, on: db).all()
+    return try rows.compactMap { try $0.decode(model) }
   }
 }

@@ -131,9 +131,9 @@ final class OrderResolverTests: AppTestCase {
   //   ).run(self, variables: ["input": order])
   // }
 
-  func testUpdateOrder() throws {
+  func testUpdateOrder() async throws {
     let order = Order.empty
-    _ = try! Current.db.createOrder(order).wait()
+    try await Current.db.createOrder(order)
 
     let input: Map = .dictionary([
       "id": .string(order.id.uuidString),
@@ -158,11 +158,11 @@ final class OrderResolverTests: AppTestCase {
     ).run(Self.app, variables: ["input": input])
   }
 
-  func testUpdateOrders() throws {
+  func testUpdateOrders() async throws {
     let order1 = Order.empty
     let order2 = Order.empty
-    _ = try! Current.db.createOrder(order1).wait()
-    _ = try! Current.db.createOrder(order2).wait()
+    try await Current.db.createOrder(order1)
+    try await Current.db.createOrder(order2)
 
     let input: Map = .array([
       .dictionary([
@@ -188,10 +188,10 @@ final class OrderResolverTests: AppTestCase {
     ).run(Self.app, variables: ["input": input])
   }
 
-  func testGetOrderById() throws {
+  func testGetOrderById() async throws {
     let order = Order.empty
     order.printJobId = 234432
-    _ = try! Current.db.createOrder(order).wait()
+    try await Current.db.createOrder(order)
 
     GraphQLTest(
       """
@@ -206,10 +206,10 @@ final class OrderResolverTests: AppTestCase {
     ).run(Self.app)
   }
 
-  func testGetOrderByIdFailsWithWrongTokenScope() throws {
+  func testGetOrderByIdFailsWithWrongTokenScope() async throws {
     Current.auth = .live
     let order = Order.empty
-    _ = try! Current.db.createOrder(order).wait()
+    try await Current.db.createOrder(order)
     GraphQLTest(
       """
       query {
@@ -223,13 +223,13 @@ final class OrderResolverTests: AppTestCase {
     ).run(Self.app)
   }
 
-  func testGetOrdersByPrintJobStatus() throws {
+  func testGetOrdersByPrintJobStatus() async throws {
     let order1 = Order.empty
     order1.printJobStatus = .bricked
     let order2 = Order.empty
     order2.printJobStatus = .bricked
-    _ = try! Current.db.createOrder(order1).wait()
-    _ = try! Current.db.createOrder(order2).wait()
+    try await Current.db.createOrder(order1)
+    try await Current.db.createOrder(order2)
 
     GraphQLTest(
       """

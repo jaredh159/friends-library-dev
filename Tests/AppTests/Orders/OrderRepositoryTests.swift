@@ -5,88 +5,88 @@ import XCTest
 
 final class OrderRepositoryTests: AppTestCase {
 
-  func testInsertingAndRetrievingOrder() throws {
+  func testInsertingAndRetrievingOrder() async throws {
     let inserted: Order = .empty
     inserted.addressName = "Bob"
 
-    _ = try Current.db.createOrder(inserted)
-    let retrieved = try Current.db.getOrder(inserted.id).wait()
+    try await Current.db.createOrder(inserted)
+    let retrieved = try await Current.db.getOrder(inserted.id)
 
     XCTAssertEqual(inserted, retrieved)
     XCTAssertEqual(inserted.addressName, retrieved.addressName)
   }
 
-  func testInsertingAndRetrievingOrderNonNulls() throws {
+  func testInsertingAndRetrievingOrderNonNulls() async throws {
     let inserted: Order = .empty
     inserted.printJobId = 55
     inserted.addressStreet2 = "Apt #2"
 
-    _ = try Current.db.createOrder(inserted)
-    let retrieved = try Current.db.getOrder(inserted.id).wait()
+    try await Current.db.createOrder(inserted)
+    let retrieved = try await Current.db.getOrder(inserted.id)
 
     XCTAssertEqual(inserted, retrieved)
     XCTAssertEqual(inserted.printJobId, retrieved.printJobId)
     XCTAssertEqual(inserted.addressStreet2, retrieved.addressStreet2)
   }
 
-  func testGetOrdersByPrintJobStatus() throws {
-    _ = try Current.db.deleteAllOrders().wait()
+  func testGetOrdersByPrintJobStatus() async throws {
+    try await Current.db.deleteAllOrders()
 
     let order1 = Order.empty
     order1.printJobStatus = .accepted
     let order2 = Order.empty
     order2.printJobStatus = .pending
-    _ = try Current.db.createOrder(order1).wait()
-    _ = try Current.db.createOrder(order2).wait()
+    try await Current.db.createOrder(order1)
+    try await Current.db.createOrder(order2)
 
-    let found = try Current.db.getOrdersByPrintJobStatus(.accepted).wait()
+    let found = try await Current.db.getOrdersByPrintJobStatus(.accepted)
 
     XCTAssertEqual(found.count, 1)
     XCTAssertEqual(found.first, order1)
   }
 
-  func testUpdateOrder() throws {
+  func testUpdateOrder() async throws {
     let order = Order.empty
-    _ = try Current.db.createOrder(order).wait()
+    try await Current.db.createOrder(order)
 
     let input = UpdateOrderInput(id: order.id.rawValue, printJobStatus: .bricked, printJobId: 55)
-    let updated = try Current.db.updateOrder(input).wait()
+    let updated = try await Current.db.updateOrder(input)
 
     XCTAssertEqual(updated.printJobId, 55)
     XCTAssertEqual(updated.printJobStatus, .bricked)
   }
 
-  func testUpdateOrderOnlyPrintJobId() throws {
+  func testUpdateOrderOnlyPrintJobId() async throws {
     let order = Order.empty
-    _ = try Current.db.createOrder(order).wait()
+    try await Current.db.createOrder(order)
 
     let input = UpdateOrderInput(id: order.id.rawValue, printJobStatus: nil, printJobId: 66)
-    let updated = try Current.db.updateOrder(input).wait()
+    let updated = try await Current.db.updateOrder(input)
 
     XCTAssertEqual(updated.printJobId, 66)
     XCTAssertEqual(updated.printJobStatus, order.printJobStatus)
   }
 
-  func testUpdateOrderOnlyPrintJobStatus() throws {
+  func testUpdateOrderOnlyPrintJobStatus() async throws {
     let order = Order.empty
     order.printJobId = 77
-    _ = try Current.db.createOrder(order).wait()
+    try await Current.db.createOrder(order)
 
     let input = UpdateOrderInput(id: order.id.rawValue, printJobStatus: .canceled, printJobId: nil)
-    let updated = try Current.db.updateOrder(input).wait()
+    let updated = try await Current.db.updateOrder(input)
 
     XCTAssertEqual(updated.printJobId, 77)
     XCTAssertEqual(updated.printJobStatus, .canceled)
   }
 
-  func testUpdateOrderBothNil() throws {
+  func testUpdateOrderBothNil() async throws {
     let order = Order.empty
     order.printJobId = 88
     order.printJobStatus = .rejected
-    _ = try Current.db.createOrder(order).wait()
+    try await Current.db.createOrder(order)
 
     let input = UpdateOrderInput(id: order.id.rawValue, printJobStatus: nil, printJobId: nil)
-    let updated = try Current.db.updateOrder(input).wait()
+    let updated = try await Current.db.updateOrder(input)
 
     XCTAssertEqual(updated.printJobId, 88)
     XCTAssertEqual(updated.printJobStatus, .rejected)

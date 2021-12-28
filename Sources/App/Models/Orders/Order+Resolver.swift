@@ -84,12 +84,17 @@ extension Resolver {
 
     order.items = .loaded(items)
 
-    return try Current.db.createOrder(order).map { _ in order }
+    return future(of: Order.self, on: req.eventLoop) {
+      try await Current.db.createOrder(order)
+      return order
+    }
   }
 
   func getOrder(req: Req, args: IdentifyEntityArgs) throws -> Future<Order> {
     try req.requirePermission(to: .queryOrders)
-    return try Current.db.getOrder(.init(rawValue: args.id))
+    return future(of: Order.self, on: req.eventLoop) {
+      try await Current.db.getOrder(.init(rawValue: args.id))
+    }
   }
 
   struct GetOrdersArgs: Codable {
@@ -98,7 +103,9 @@ extension Resolver {
 
   func getOrders(req: Req, args: GetOrdersArgs) throws -> Future<[Order]> {
     try req.requirePermission(to: .queryOrders)
-    return try Current.db.getOrdersByPrintJobStatus(args.printJobStatus)
+    return future(of: [Order].self, on: req.eventLoop) {
+      try await Current.db.getOrdersByPrintJobStatus(args.printJobStatus)
+    }
   }
 
   struct UpdateOrderArgs: Codable {
@@ -107,7 +114,9 @@ extension Resolver {
 
   func updateOrder(req: Req, args: UpdateOrderArgs) throws -> Future<Order> {
     try req.requirePermission(to: .mutateOrders)
-    return try Current.db.updateOrder(args.input)
+    return future(of: Order.self, on: req.eventLoop) {
+      try await Current.db.updateOrder(args.input)
+    }
   }
 
   struct UpdateOrdersArgs: Codable {
@@ -116,7 +125,11 @@ extension Resolver {
 
   func updateOrders(req: Req, args: UpdateOrdersArgs) throws -> Future<[Order]> {
     try req.requirePermission(to: .mutateOrders)
-    return try args.input.map { try Current.db.updateOrder($0) }
-      .flatten(on: req.eventLoop)
+    return args.input.map { input in
+      future(of: Order.self, on: req.eventLoop) {
+        try await Current.db.updateOrder(input)
+      }
+    }
+    .flatten(on: req.eventLoop)
   }
 }

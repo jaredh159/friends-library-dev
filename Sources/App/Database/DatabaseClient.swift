@@ -11,11 +11,11 @@ struct DatabaseClient {
   var getTokenScopes: (Token.Id) async throws -> [TokenScope]
 
   // orders
-  var deleteAllOrders: () throws -> Future<Void>
-  var createOrder: (Order) throws -> Future<Void>
-  var getOrder: (Order.Id) throws -> Future<Order>
-  var getOrdersByPrintJobStatus: (Order.PrintJobStatus) throws -> Future<[Order]>
-  var updateOrder: (UpdateOrderInput) throws -> Future<Order>
+  var deleteAllOrders: () async throws -> Void
+  var createOrder: (Order) async throws -> Void
+  var getOrder: (Order.Id) async throws -> Order
+  var getOrdersByPrintJobStatus: (Order.PrintJobStatus) async throws -> [Order]
+  var updateOrder: (UpdateOrderInput) async throws -> Order
 
   // free order requests
   var createFreeOrderRequest: (FreeOrderRequest) async throws -> Void

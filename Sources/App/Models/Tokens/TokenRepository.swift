@@ -9,13 +9,12 @@ struct TokenRepository {
   }
 
   func getTokenByValue(_ value: Token.Value) async throws -> Token {
-    let tokens = try await select(
+    let token = try await select(
       .all,
       from: Token.self,
       where: (Token[.value], .equals, .uuid(value))
-    )
+    ).firstOrThrowNotFound()
 
-    guard let token = tokens.first else { throw DbError.notFound }
     let scopes = try await getTokenScopes(token.id)
     token.scopes = .loaded(scopes)
     return token

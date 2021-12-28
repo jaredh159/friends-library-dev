@@ -7,7 +7,7 @@ final class FreeOrderRequestRepositoryTests: AppTestCase {
 
   func testCreateAndGet() async throws {
     let inserted: FreeOrderRequest = .mock
-    _ = try await Current.db.createFreeOrderRequest(inserted)
+    try await Current.db.createFreeOrderRequest(inserted)
     let retrieved = try await Current.db.getFreeOrderRequest(inserted.id)
     XCTAssertEqual(inserted, retrieved)
   }

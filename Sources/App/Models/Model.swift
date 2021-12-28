@@ -60,6 +60,13 @@ extension DuetModel where IdValue: RawRepresentable, IdValue.RawValue == UUID {
   var uuidId: UUID { id.rawValue }
 }
 
+extension Array where Element: DuetModel {
+  func firstOrThrowNotFound() throws -> Element {
+    guard let first = self.first else { throw DbError.notFound }
+    return first
+  }
+}
+
 protocol DuetInsertable: DuetModel {
   var insertValues: [String: Postgres.Data] { get }
 }
