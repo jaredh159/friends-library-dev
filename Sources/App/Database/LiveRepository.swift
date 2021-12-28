@@ -17,22 +17,6 @@ extension LiveRepository {
     return try rows.compactMap { try $0.decode(M.self) }.firstOrThrowNotFound()
   }
 
-  // @TODO deprecate
-  func insert(into table: String, values: [[String: Postgres.Data]]) throws -> Future<Void> {
-    let prepared = try SQL.insert(into: table, values: values)
-    return try SQL.execute(prepared, on: db)
-      .flatMap { (builder: SQLRawBuilder) in builder.all() }
-      .map { (rows: [SQLRow]) in return () }
-  }
-
-  // @TODO deprecate
-  func insert(into table: String, values: [String: Postgres.Data]) throws -> Future<Void> {
-    let prepared = try SQL.insert(into: table, values: values)
-    return try SQL.execute(prepared, on: db)
-      .flatMap { (builder: SQLRawBuilder) in builder.all() }
-      .map { (rows: [SQLRow]) in return () }
-  }
-
   func select<Model: DuetModel>(
     _ columns: Postgres.Columns,
     from model: Model.Type,
@@ -41,20 +25,6 @@ extension LiveRepository {
     let prepared = SQL.select(columns, from: model.tableName, where: `where`)
     let rows = try await SQL.execute(prepared, on: db).all()
     return try rows.compactMap { try $0.decode(model) }
-  }
-
-  // @TODO deprecate
-  func select<Model: DuetModel>(
-    _ columns: Postgres.Columns,
-    from model: Model.Type,
-    where: SQL.WhereConstraint? = nil
-  ) throws -> Future<[Model]> {
-    let prepared = SQL.select(columns, from: model.tableName, where: `where`)
-    return try SQL.execute(prepared, on: db)
-      .flatMap { (builder: SQLRawBuilder) in builder.all() }
-      .flatMapThrowing { (rows: [SQLRow]) in
-        try rows.compactMap { try $0.decode(model) }
-      }
   }
 
   func updateReturning<Model: DuetModel>(
