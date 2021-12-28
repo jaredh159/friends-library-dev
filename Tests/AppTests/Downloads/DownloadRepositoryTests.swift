@@ -5,15 +5,14 @@ import XCTest
 
 final class DownloadRepositoryTests: AppTestCase {
 
-  func testCreateAndGet() {
+  func testCreateAndGet() async throws {
     // temp, until FK issue
     let oldDb = Current.db
     Current.db = .mock(eventLoop: Self.app.eventLoopGroup.next())
 
     let inserted: Download = .mock
-    _ = try! Current.db.createDownload(inserted).wait()
-
-    let retrieved = try! Current.db.getDownload(inserted.id).wait()
+    try await Current.db.createDownload(inserted)
+    let retrieved = try await Current.db.getDownload(inserted.id)
 
     XCTAssertEqual(inserted, retrieved)
 

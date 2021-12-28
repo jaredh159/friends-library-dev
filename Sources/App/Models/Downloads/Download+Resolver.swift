@@ -57,6 +57,9 @@ extension Resolver {
       latitude: input.latitude,
       longitude: input.longitude
     )
-    return try Current.db.createDownload(download).map { download }
+    return future(of: Download.self, on: request.eventLoop) {
+      try await Current.db.createDownload(download)
+      return download
+    }
   }
 }

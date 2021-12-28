@@ -4,7 +4,7 @@ import Vapor
 struct DownloadRepository {
   var db: SQLDatabase
 
-  func create(_ download: Download) throws -> Future<Void> {
+  func create(_ download: Download) async throws {
     throw Abort(.notImplemented)
     // @TODO, FK issues with documents, do those first
     // try insert(
@@ -15,7 +15,7 @@ struct DownloadRepository {
     // )
   }
 
-  func find(_ id: Download.Id) throws -> Future<Download> {
+  func find(_ id: Download.Id) async throws -> Download {
     throw Abort(.notImplemented)
   }
 }
@@ -24,12 +24,12 @@ struct MockDownloadRepository {
   var db: MockDb
   var eventLoop: EventLoop
 
-  func create(_ download: Download) throws -> Future<Void> {
-    future(db.add(download, to: \.downloads))
+  func create(_ download: Download) async throws {
+    db.add(download, to: \.downloads)
   }
 
-  func find(_ id: Download.Id) throws -> Future<Download> {
-    future(try db.find(id, in: \.downloads))
+  func find(_ id: Download.Id) async throws -> Download {
+    try db.find(id, in: \.downloads)
   }
 }
 
@@ -37,15 +37,15 @@ struct MockDownloadRepository {
 
 extension DownloadRepository: LiveRepository {
   func assign(client: inout DatabaseClient) {
-    client.createDownload = { try create($0) }
-    client.getDownload = { try find($0) }
+    client.createDownload = { try await create($0) }
+    client.getDownload = { try await find($0) }
   }
 }
 
 extension MockDownloadRepository: MockRepository {
   func assign(client: inout DatabaseClient) {
 
-    client.createDownload = { try create($0) }
-    client.getDownload = { try find($0) }
+    client.createDownload = { try await create($0) }
+    client.getDownload = { try await find($0) }
   }
 }

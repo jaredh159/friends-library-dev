@@ -22,8 +22,8 @@ struct DatabaseClient {
   var getFreeOrderRequest: (FreeOrderRequest.Id) async throws -> FreeOrderRequest
 
   // downloads
-  var createDownload: (Download) throws -> Future<Void>
-  var getDownload: (Download.Id) throws -> Future<Download>
+  var createDownload: (Download) async throws -> Void
+  var getDownload: (Download.Id) async throws -> Download
 
   // artifact production versions
   var createArtifactProductionVersion: (ArtifactProductionVersion) async throws -> Void
