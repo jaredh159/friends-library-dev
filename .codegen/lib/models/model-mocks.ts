@@ -5,7 +5,8 @@ export function generateModelMocks(
   globalTypes: GlobalTypes,
 ): [filepath: string, code: string] {
   const mockParams = params(model, globalTypes, `mock`);
-  let code = `extension ${model.name} {\n  `;
+  let code = ``;
+  code += `@testable import App\n\nextension ${model.name} {\n  `;
   code += `static var mock: ${model.name} {\n    ${model.name}(`;
   if (mockParams.join(`, `).length < 80) {
     code += mockParams.join(`, `);
@@ -28,6 +29,12 @@ export function generateModelMocks(
   }
 
   code += `\n}\n`;
+
+  if (code.includes(`NonEmpty<`)) {
+    code = `// auto-generated, do not edit\nimport NonEmpty\n\n${code}`;
+  } else {
+    code = `// auto-generated, do not edit\n${code}`;
+  }
 
   return [`Tests/AppTests/Mocks/${model.name}+Mocks.swift`, code];
 }

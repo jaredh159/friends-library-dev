@@ -25,6 +25,9 @@ describe(`generateModelMocks()`, () => {
     };
 
     const expectedMocks = stripIndent(/* swift */ `
+      // auto-generated, do not edit
+      @testable import App
+      
       extension Thing {
         static var mock: Thing {
           Thing(name: "@mock name")
@@ -80,6 +83,11 @@ describe(`generateModelMocks()`, () => {
     };
 
     const expectedMocks = stripIndent(/* swift */ `
+      // auto-generated, do not edit
+      import NonEmpty
+      
+      @testable import App
+      
       extension Thing {
         static var mock: Thing {
           Thing(

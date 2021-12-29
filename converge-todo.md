@@ -8,10 +8,10 @@
 - [ ] - generate .notImplemented
 - [ ] - generate assignment extensions
 - [ ] - generate graphql types
-- [ ] - generate mocks
+- [√] - generate mocks
 - [√] - take care of two models that didn't get converted
-- [ ] - redo insert db logic with protocol magic
-- [ ] - handle timestamps with special props or protocols
+- [√] - redo insert db logic with protocol magic
+- [√] - handle timestamps with special props or protocols
 - [ ] - migrate `order_items` to store Edition.Id instead of Document.Id AND edition type
 - [ ] - fix migration 14 (insert doc tags w DB somehow... 🤔)
 

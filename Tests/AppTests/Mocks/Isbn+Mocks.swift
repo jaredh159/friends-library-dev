@@ -1,0 +1,12 @@
+// auto-generated, do not edit
+@testable import App
+
+extension Isbn {
+  static var mock: Isbn {
+    Isbn(code: .init(rawValue: "@mock code"), editionId: nil)
+  }
+
+  static var empty: Isbn {
+    Isbn(code: .init(rawValue: ""), editionId: nil)
+  }
+}
