@@ -26,18 +26,18 @@ describe(`generateModelMocks()`, () => {
 
     const expectedMocks = stripIndent(/* swift */ `
       extension Thing {
-        static let mock: Thing {
+        static var mock: Thing {
           Thing(name: "@mock name")
         }
       
-        static let empty: Thing {
+        static var empty: Thing {
           Thing(name: "")
         }
       }
     `).trim();
 
     const [filepath, sourceCode] = generateModelMocks(model, globalTypes);
-    expect(filepath).toBe(`Tests/AppTests/Things/Thing+Mocks.swift`);
+    expect(filepath).toBe(`Tests/AppTests/Mocks/Thing+Mocks.swift`);
     expect(sourceCode).toBe(expectedMocks + `\n`);
   });
 
@@ -81,7 +81,7 @@ describe(`generateModelMocks()`, () => {
 
     const expectedMocks = stripIndent(/* swift */ `
       extension Thing {
-        static let mock: Thing {
+        static var mock: Thing {
           Thing(
             name: "@mock name",
             someInt: 42,
@@ -98,7 +98,7 @@ describe(`generateModelMocks()`, () => {
           )
         }
       
-        static let empty: Thing {
+        static var empty: Thing {
           Thing(
             name: "",
             someInt: 0,
@@ -118,7 +118,7 @@ describe(`generateModelMocks()`, () => {
     `).trim();
 
     const [filepath, sourceCode] = generateModelMocks(model, globalTypes);
-    expect(filepath).toBe(`Tests/AppTests/Things/Thing+Mocks.swift`);
+    expect(filepath).toBe(`Tests/AppTests/Mocks/Thing+Mocks.swift`);
     expect(sourceCode).toBe(expectedMocks + `\n`);
   });
 });

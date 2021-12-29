@@ -6,7 +6,7 @@ export function generateModelMocks(
 ): [filepath: string, code: string] {
   const mockParams = params(model, globalTypes, `mock`);
   let code = `extension ${model.name} {\n  `;
-  code += `static let mock: ${model.name} {\n    ${model.name}(`;
+  code += `static var mock: ${model.name} {\n    ${model.name}(`;
   if (mockParams.join(`, `).length < 80) {
     code += mockParams.join(`, `);
     code += `)\n  }`;
@@ -16,7 +16,7 @@ export function generateModelMocks(
     code += `\n    )\n  }`;
   }
 
-  code += `\n\n  static let empty: ${model.name} {\n    ${model.name}(`;
+  code += `\n\n  static var empty: ${model.name} {\n    ${model.name}(`;
   const emptyParams = params(model, globalTypes, `empty`);
   if (emptyParams.join(`, `).length < 80) {
     code += emptyParams.join(`, `);
@@ -29,7 +29,7 @@ export function generateModelMocks(
 
   code += `\n}\n`;
 
-  return [`Tests/AppTests/${model.name}s/${model.name}+Mocks.swift`, code];
+  return [`Tests/AppTests/Mocks/${model.name}+Mocks.swift`, code];
 }
 
 function params(

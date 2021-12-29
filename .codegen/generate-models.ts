@@ -40,6 +40,10 @@ for (const model of models) {
     console.log(`\n`);
     console.log(`\n`);
   } else {
+    const testDir = path.dirname(`${appRoot}/${mocksPath}`);
+    if (!fs.existsSync(testDir)) {
+      fs.mkdirSync(testDir);
+    }
     fs.writeFileSync(`${appRoot}/${mocksPath}`, mocksCode);
   }
 }
