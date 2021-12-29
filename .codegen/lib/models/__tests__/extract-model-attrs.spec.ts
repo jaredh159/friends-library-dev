@@ -17,9 +17,18 @@ describe(`extractModelAttrs()`, () => {
       var updatedAt: Date
       var deletedAt = Date()
 
-      init(id: Id = .init(), name: String) {
-        self.id = id;
-        self.name = name;
+      init(
+        id: Id = .init(),
+        name: String,
+        foo: String,
+        parentId: Parent.Id,
+        lols: NonEmpty<[Int]>
+      ) {
+        self.id = id
+        self.name = name
+        self.foo = foo
+        self.parentId = parentId
+        self.lols = lols
       }
     } 
   `);
@@ -29,15 +38,23 @@ describe(`extractModelAttrs()`, () => {
       name: `Thing`,
       filepath: `/Models/Thing.swift`,
       taggedTypes: {},
+      dbEnums: {},
       props: [
-        { identifier: `id`, type: `Id` },
-        { identifier: `name`, type: `String` },
-        { identifier: `foo`, type: `String` },
-        { identifier: `parentId`, type: `Parent.Id` },
-        { identifier: `lols`, type: `NonEmpty<[Int]>` },
-        { identifier: `createdAt`, type: `Date` },
-        { identifier: `updatedAt`, type: `Date` },
-        { identifier: `deletedAt`, type: `Date` },
+        { name: `id`, type: `Id` },
+        { name: `name`, type: `String` },
+        { name: `foo`, type: `String` },
+        { name: `parentId`, type: `Parent.Id` },
+        { name: `lols`, type: `NonEmpty<[Int]>` },
+        { name: `createdAt`, type: `Date` },
+        { name: `updatedAt`, type: `Date` },
+        { name: `deletedAt`, type: `Date` },
+      ],
+      init: [
+        { propName: `id`, hasDefault: true },
+        { propName: `name`, hasDefault: false },
+        { propName: `foo`, hasDefault: false },
+        { propName: `parentId`, hasDefault: false },
+        { propName: `lols`, hasDefault: false },
       ],
     });
   });
@@ -64,22 +81,56 @@ describe(`extractModelAttrs()`, () => {
       Alias3: `String`,
     });
   });
+
+  it(`can extract nested db enums`, () => {
+    const source = stripIndent(/* swift */ `
+      final class Thing {
+        var foo: FooBar
+        var bar: JimJam
+      } 
+
+      extension Thing {
+        enum Foobar: String, Codable, CaseIterable {
+          case foo
+          case bar
+        }
+        
+        enum JimJam: String, Codable, CaseIterable {
+          case jim
+          case jam
+        }
+      }
+  `);
+
+    const model = extractModelAttrs({ source, path: `/Models/Thing.swift` });
+    expect(model?.dbEnums).toEqual({
+      Foobar: [`foo`, `bar`],
+      JimJam: [`jim`, `jam`],
+    });
+  });
 });
 
 describe(`extractModels()`, () => {
   it(`extracts migration number (single migration)`, () => {
     const source1 = stripIndent(/* swift */ `
-    final class Foobar {
-      var id: UUID
-    } 
-  `);
+      final class Foobar {
+        var id: UUID
+        var age: Int
+
+        init(id: Id = UUID(), age: Int) {
+          self.id = id
+          self.age = age
+        }
+      } 
+    `);
+
     const source2 = stripIndent(/* swift */ `
-    extension Foobar {
-      enum M13 {
-        static let tableName = "foobar"
-      }
-    } 
-  `);
+      extension Foobar {
+        enum M13 {
+          static let tableName = "foobar"
+        }
+      } 
+    `);
 
     const models = extractModels([
       { source: source1, path: `/Models/Foobar.swift` },
@@ -92,7 +143,15 @@ describe(`extractModels()`, () => {
         filepath: `/Models/Foobar.swift`,
         migrationNumber: 13,
         taggedTypes: {},
-        props: [{ identifier: `id`, type: `UUID` }],
+        dbEnums: {},
+        init: [
+          { propName: `id`, hasDefault: true },
+          { propName: `age`, hasDefault: false },
+        ],
+        props: [
+          { name: `id`, type: `UUID` },
+          { name: `age`, type: `Int` },
+        ],
       },
     ]);
   });
@@ -126,7 +185,9 @@ describe(`extractModels()`, () => {
         filepath: `/Models/Foobar.swift`,
         migrationNumber: 12,
         taggedTypes: {},
-        props: [{ identifier: `id`, type: `UUID` }],
+        dbEnums: {},
+        init: [],
+        props: [{ name: `id`, type: `UUID` }],
       },
     ]);
   });
@@ -151,7 +212,7 @@ describe(`extractGlobalTypes()`, () => {
     const types = extractGlobalTypes([source]);
 
     expect(types).toEqual({
-      dbEnums: [`FooEnum`],
+      dbEnums: { FooEnum: [`foo`, `bar`] },
       taggedTypes: { Foo: `String`, Bar: `Int` },
     });
   });

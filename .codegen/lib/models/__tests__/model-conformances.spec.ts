@@ -4,7 +4,7 @@ import { generateModelConformances } from '../model-conformances';
 
 describe(`generateModelConformances()`, () => {
   const types = {
-    dbEnums: [`FooEnum`],
+    dbEnums: { FooEnum: [`foo`] },
     taggedTypes: { GitCommitSha: `String`, Foo: `Int` },
   };
 
@@ -13,12 +13,14 @@ describe(`generateModelConformances()`, () => {
       name: `Thing`,
       filepath: `Sources/App/Models/Thing.swift`,
       migrationNumber: 8,
+      dbEnums: {},
       props: [
-        { identifier: `id`, type: `Id` },
-        { identifier: `name`, type: `String` },
-        { identifier: `version`, type: `GitCommitSha` },
+        { name: `id`, type: `Id` },
+        { name: `name`, type: `String` },
+        { name: `version`, type: `GitCommitSha` },
       ],
       taggedTypes: {},
+      init: [],
     };
 
     const expectedCode = stripIndent(/* swift */ `
@@ -65,10 +67,12 @@ describe(`generateModelConformances()`, () => {
       name: `Thing`,
       filepath: `Sources/App/Models/Thing.swift`,
       taggedTypes: {},
+      init: [],
+      dbEnums: {},
       props: [
-        { identifier: `createdAt`, type: `Date` },
-        { identifier: `updatedAt`, type: `Date` },
-        { identifier: `deletedAt`, type: `Date?` },
+        { name: `createdAt`, type: `Date` },
+        { name: `updatedAt`, type: `Date` },
+        { name: `deletedAt`, type: `Date?` },
       ],
     };
 

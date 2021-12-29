@@ -3,6 +3,7 @@ import fs from 'fs';
 import { sync as glob } from 'glob';
 import { extractGlobalTypes, extractModels } from './lib/models/model-attrs';
 import { generateModelConformances } from './lib/models/model-conformances';
+import { generateModelMocks } from './lib/models/model-mocks';
 
 const isDryRun = process.argv.includes(`--dry-run`);
 const appRoot = path.resolve(__dirname, `..`);
@@ -17,14 +18,28 @@ const globalTypes = extractGlobalTypes(files.map((f) => f.source));
 const models = extractModels(files);
 
 for (const model of models) {
-  const [filepath, code] = generateModelConformances(model, globalTypes);
+  const [conformancePath, conformanceCode] = generateModelConformances(
+    model,
+    globalTypes,
+  );
   if (isDryRun) {
-    console.log(`Write to filepath: "${filepath}":`);
+    console.log(`Write to filepath: "${conformancePath}":`);
     console.log(`\n`);
-    console.log(code);
+    console.log(conformanceCode);
     console.log(`\n`);
     console.log(`\n`);
   } else {
-    fs.writeFileSync(`${appRoot}/${filepath}`, code);
+    fs.writeFileSync(`${appRoot}/${conformancePath}`, conformanceCode);
+  }
+
+  const [mocksPath, mocksCode] = generateModelMocks(model, globalTypes);
+  if (isDryRun) {
+    console.log(`Write to filepath: "${mocksPath}":`);
+    console.log(`\n`);
+    console.log(mocksCode);
+    console.log(`\n`);
+    console.log(`\n`);
+  } else {
+    fs.writeFileSync(`${appRoot}/${mocksPath}`, mocksCode);
   }
 }

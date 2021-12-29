@@ -1,15 +1,9 @@
-import Foundation
-
-@testable import App
-
 extension ArtifactProductionVersion {
-  static var mock: ArtifactProductionVersion {
-    ArtifactProductionVersion(version: .init(rawValue: UUID().uuidString))
+  static let mock: ArtifactProductionVersion {
+    ArtifactProductionVersion(version: .init(rawValue: "@mock version"))
   }
 
-  static var mockOld: ArtifactProductionVersion {
-    let model = ArtifactProductionVersion(version: .init(rawValue: UUID().uuidString))
-    model.createdAt = .init(subtractingDays: 3)
-    return model
+  static let empty: ArtifactProductionVersion {
+    ArtifactProductionVersion(version: .init(rawValue: ""))
   }
 }

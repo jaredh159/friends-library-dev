@@ -32,16 +32,16 @@ export function generateModelConformances(
 
   code += `extension ${name} {\n  typealias ColumnName = CodingKeys\n\n`;
   code += `  enum CodingKeys: String, CodingKey {\n    `;
-  code += props.map((p) => `case ${p.identifier}`).join(`\n    `);
+  code += props.map((p) => `case ${p.name}`).join(`\n    `);
   code += `\n  }\n}\n`;
 
-  if (props.some((p) => p.identifier == `createdAt` && p.type === `Date`)) {
+  if (props.some((p) => p.name == `createdAt` && p.type === `Date`)) {
     code += `\nextension ${name}: Auditable {}\n`;
   }
-  if (props.some((p) => p.identifier == `updatedAt` && p.type === `Date`)) {
+  if (props.some((p) => p.name == `updatedAt` && p.type === `Date`)) {
     code += `extension ${name}: Touchable {}\n`;
   }
-  if (props.some((p) => p.identifier == `deletedAt` && p.type === `Date?`)) {
+  if (props.some((p) => p.name == `deletedAt` && p.type === `Date?`)) {
     code += `extension ${name}: SoftDeletable {}\n`;
   }
 

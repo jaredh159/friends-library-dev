@@ -19,18 +19,32 @@ export function extractModelAttrs({ source, path }: File): Model | undefined {
       model = parseClassInterior(classMatch[1], path, lines);
     }
     if (model && line.startsWith(`extension ${model.name} {`)) {
-      extractModelTaggedTypes(model, lines);
+      extractFromModelExtension(model, lines);
     }
   }
   return model;
 }
 
 function parseClassInterior(name: string, path: string, lines: string[]): Model {
-  const attrs: Model = { name: name, filepath: path, props: [], taggedTypes: {} };
+  const model: Model = {
+    name: name,
+    filepath: path,
+    props: [],
+    taggedTypes: {},
+    init: [],
+    dbEnums: {},
+  };
+
   while (lines.length) {
     const line = lines.shift()!;
+
     if (line.startsWith(`}`)) {
-      return attrs;
+      return model;
+    }
+
+    if (line.startsWith(`  init`)) {
+      parseInit(model, line, lines);
+      continue;
     }
 
     if (!line.startsWith(`  var `)) {
@@ -49,18 +63,40 @@ function parseClassInterior(name: string, path: string, lines: string[]): Model 
 
     const tzMatch = line.match(/var ((?:crea|upda|dele)tedAt)/);
     if (tzMatch !== null) {
-      attrs.props.push({ identifier: tzMatch[1], type: `Date` });
+      model.props.push({ name: tzMatch[1], type: `Date` });
       continue;
     }
 
-    const [identifier, type] = line
+    const [name, type] = line
       .replace(/\s+\/\/.*/, ``)
       .trim()
       .replace(/^var /, ``)
       .split(`: `, 2);
-    attrs.props.push({ identifier, type });
+    model.props.push({ name, type });
   }
-  return attrs;
+
+  return model;
+}
+
+function parseInit(model: Model, line: string, lines: string[]): void {
+  let slicedLine = line.slice(7);
+  if (slicedLine == ``) {
+    while (lines.length) {
+      const line = lines.shift()!;
+      if (line.trim().startsWith(`)`)) {
+        return;
+      }
+      const match = line.match(/\s*([a-z0-9]+): (.*)/i);
+      if (!match) {
+        throw new Error(`Unable to parse init() for model: ${model.name}, ${line}`);
+      }
+      const [, propName = ``, rest = ``] = match;
+      model.init.push({ propName, hasDefault: rest.includes(`=`) });
+    }
+  } else {
+    slicedLine = slicedLine.replace(/\)\s+{$/, ``);
+    return parseInit(model, `  init(`, [...slicedLine.split(/,\s+/g), `  ) {`]);
+  }
 }
 
 export function setMigrationNumbers(
@@ -112,16 +148,15 @@ export function extractModels(files: File[]): Model[] {
 
 export function extractGlobalTypes(sources: string[]): GlobalTypes {
   const types: GlobalTypes = {
-    dbEnums: [],
+    dbEnums: {},
     taggedTypes: {},
   };
 
   for (const source of sources) {
-    for (const line of source.split(`\n`)) {
-      const enumMatch = line.match(/^enum ([^: ]+): String, Codable, CaseIterable {/);
-      if (enumMatch) {
-        types.dbEnums.push(enumMatch[1]);
-      }
+    const lines = source.split(`\n`);
+    while (lines.length) {
+      const line = lines.shift()!;
+      extractDbEnum(line, lines, types.dbEnums, `global`);
       extractTaggedType(types, line);
     }
   }
@@ -129,18 +164,57 @@ export function extractGlobalTypes(sources: string[]): GlobalTypes {
   return types;
 }
 
-function extractModelTaggedTypes(model: Model, lines: string[]): void {
+function extractDbEnum(
+  line: string,
+  lines: string[],
+  dbEnums: Record<string, string[]>,
+  context: 'global' | 'nested',
+): void {
+  const enumMatch = line.match(
+    /\s*enum ([^: ]+): String, Codable, CaseIterable(, Equatable)? {/,
+  );
+  if (!enumMatch) {
+    return;
+  }
+  if (context === `global` && line.startsWith(` `)) {
+    return;
+  }
+  if (context === `nested` && line.startsWith(`enum`)) {
+    return;
+  }
+
+  const enumName = enumMatch[1];
+  dbEnums[enumName] = extractDbEnumCases(lines);
+}
+
+function extractDbEnumCases(lines: string[]): string[] {
+  const cases: string[] = [];
+  while (lines.length) {
+    const line = lines.shift()!;
+    if (line.match(/^\s*}/)) {
+      return cases;
+    }
+    const caseMatch = line.match(/  case ([a-z0-9]+)$/i);
+    if (caseMatch) {
+      cases.push(caseMatch[1]);
+    }
+  }
+  return cases;
+}
+
+function extractFromModelExtension(model: Model, lines: string[]): void {
   while (lines.length) {
     const line = lines.shift()!;
     if (line === `}`) {
       return;
     }
 
-    if (!line.startsWith(`  typealias `)) {
+    if (line.startsWith(`  typealias `)) {
+      extractTaggedType(model, line);
       continue;
     }
 
-    extractTaggedType(model, line);
+    extractDbEnum(line, lines, model.dbEnums, `nested`);
   }
 }
 

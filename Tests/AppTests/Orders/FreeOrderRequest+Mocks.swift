@@ -4,7 +4,7 @@ extension FreeOrderRequest {
   static var mock: FreeOrderRequest {
     FreeOrderRequest(
       name: "Bob McMock",
-      email: .init(rawValue: "you@example.com"),
+      email: "you@example.com",
       requestedBooks: "all of them",
       aboutRequester: "not a freebie hunter",
       addressStreet: "123 Magnolia Lane",
