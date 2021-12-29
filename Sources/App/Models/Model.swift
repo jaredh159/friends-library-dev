@@ -38,6 +38,7 @@ protocol DuetModel: Codable, UUIDIdentifiable, Equatable {
   associatedtype ColumnName: CodingKey
   static func columnName(_ column: ColumnName) -> String
   static var tableName: String { get }
+  var insertValues: [String: Postgres.Data] { get }
 }
 
 extension DuetModel {
@@ -65,10 +66,6 @@ extension Array where Element: DuetModel {
     guard let first = self.first else { throw DbError.notFound }
     return first
   }
-}
-
-protocol DuetInsertable: DuetModel {
-  var insertValues: [String: Postgres.Data] { get }
 }
 
 protocol RandomEmptyInitializing {

@@ -10,7 +10,7 @@ extension Download: DuetModel {
   static let tableName = M1.tableName
 }
 
-extension Download: DuetInsertable {
+extension Download {
   var insertValues: [String: Postgres.Data] {
     [
       Self[.id]: .id(self),

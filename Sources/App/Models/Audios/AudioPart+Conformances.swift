@@ -10,7 +10,7 @@ extension AudioPart: DuetModel {
   static let tableName = M20.tableName
 }
 
-extension AudioPart: DuetInsertable {
+extension AudioPart {
   var insertValues: [String: Postgres.Data] {
     [
       Self[.id]: .id(self),

@@ -10,7 +10,7 @@ extension EditionChapter: DuetModel {
   static let tableName = M21.tableName
 }
 
-extension EditionChapter: DuetInsertable {
+extension EditionChapter {
   var insertValues: [String: Postgres.Data] {
     [
       Self[.id]: .id(self),

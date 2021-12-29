@@ -10,7 +10,7 @@ extension Order: DuetModel {
   static let tableName = M2.tableName
 }
 
-extension Order: DuetInsertable {
+extension Order {
   var insertValues: [String: Postgres.Data] {
     [
       Self[.id]: .id(self),

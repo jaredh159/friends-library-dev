@@ -4,7 +4,7 @@ import { Model, GlobalTypes } from '../types';
 
 export function insertData(model: Model, globalTypes: GlobalTypes): string {
   let code = stripIndent(/* swift */ `
-    extension __MODEL_NAME__: DuetInsertable {
+    extension __MODEL_NAME__ {
       var insertValues: [String: Postgres.Data] {
         [
           // VALUES_HERE

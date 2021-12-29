@@ -10,7 +10,7 @@ extension Isbn: DuetModel {
   static let tableName = M18.tableName
 }
 
-extension Isbn: DuetInsertable {
+extension Isbn {
   var insertValues: [String: Postgres.Data] {
     [
       Self[.id]: .id(self),

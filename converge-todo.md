@@ -1,6 +1,6 @@
 # Converge TODOs:
 
-- [ ] - remove DuetInsertable, make it part of DuetModel
+- [√] - remove DuetInsertable, make it part of DuetModel
 - [ ] - scaffold repository
 - [ ] - scaffold repository tests
 - [ ] - scaffold resolver

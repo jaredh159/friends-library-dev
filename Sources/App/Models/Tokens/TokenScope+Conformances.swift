@@ -10,7 +10,7 @@ extension TokenScope: DuetModel {
   static let tableName = M5.tableName
 }
 
-extension TokenScope: DuetInsertable {
+extension TokenScope {
   var insertValues: [String: Postgres.Data] {
     [
       Self[.id]: .id(self),

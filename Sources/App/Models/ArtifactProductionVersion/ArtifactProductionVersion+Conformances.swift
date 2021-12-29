@@ -10,7 +10,7 @@ extension ArtifactProductionVersion: DuetModel {
   static let tableName = M8.tableName
 }
 
-extension ArtifactProductionVersion: DuetInsertable {
+extension ArtifactProductionVersion {
   var insertValues: [String: Postgres.Data] {
     [
       Self[.id]: .id(self),

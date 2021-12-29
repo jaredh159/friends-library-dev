@@ -2,7 +2,7 @@ import FluentSQL
 import Vapor
 
 protocol Repository {
-  associatedtype Model: DuetInsertable
+  associatedtype Model: DuetModel
   func assign(client: inout DatabaseClient)
 }
 

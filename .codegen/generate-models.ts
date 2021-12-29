@@ -1,8 +1,8 @@
 import path from 'path';
 import fs from 'fs';
 import { sync as glob } from 'glob';
-import { extractGlobalTypes, extractModels } from './model-attrs';
-import { generateModelConformances } from './conformances';
+import { extractGlobalTypes, extractModels } from './lib/models/model-attrs';
+import { generateModelConformances } from './lib/models/model-conformances';
 
 const isDryRun = process.argv.includes(`--dry-run`);
 const appRoot = path.resolve(__dirname, `..`);

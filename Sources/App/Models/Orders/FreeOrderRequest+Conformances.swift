@@ -10,7 +10,7 @@ extension FreeOrderRequest: DuetModel {
   static let tableName = M6.tableName
 }
 
-extension FreeOrderRequest: DuetInsertable {
+extension FreeOrderRequest {
   var insertValues: [String: Postgres.Data] {
     [
       Self[.id]: .id(self),

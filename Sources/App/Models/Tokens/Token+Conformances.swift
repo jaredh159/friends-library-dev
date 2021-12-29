@@ -10,7 +10,7 @@ extension Token: DuetModel {
   static let tableName = M4.tableName
 }
 
-extension Token: DuetInsertable {
+extension Token {
   var insertValues: [String: Postgres.Data] {
     [
       Self[.id]: .id(self),

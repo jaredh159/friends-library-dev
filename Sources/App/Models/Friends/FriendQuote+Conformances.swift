@@ -10,7 +10,7 @@ extension FriendQuote: DuetModel {
   static let tableName = M12.tableName
 }
 
-extension FriendQuote: DuetInsertable {
+extension FriendQuote {
   var insertValues: [String: Postgres.Data] {
     [
       Self[.id]: .id(self),

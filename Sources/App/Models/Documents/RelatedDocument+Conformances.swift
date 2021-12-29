@@ -10,7 +10,7 @@ extension RelatedDocument: DuetModel {
   static let tableName = M22.tableName
 }
 
-extension RelatedDocument: DuetInsertable {
+extension RelatedDocument {
   var insertValues: [String: Postgres.Data] {
     [
       Self[.id]: .id(self),

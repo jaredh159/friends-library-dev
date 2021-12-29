@@ -10,7 +10,7 @@ extension DocumentTagModel: DuetModel {
   static let tableName = M14.tableName
 }
 
-extension DocumentTagModel: DuetInsertable {
+extension DocumentTagModel {
   var insertValues: [String: Postgres.Data] {
     [
       Self[.id]: .id(self),

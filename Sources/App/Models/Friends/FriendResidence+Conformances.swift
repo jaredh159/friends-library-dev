@@ -10,7 +10,7 @@ extension FriendResidence: DuetModel {
   static let tableName = M11.tableName
 }
 
-extension FriendResidence: DuetInsertable {
+extension FriendResidence {
   var insertValues: [String: Postgres.Data] {
     [
       Self[.id]: .id(self),

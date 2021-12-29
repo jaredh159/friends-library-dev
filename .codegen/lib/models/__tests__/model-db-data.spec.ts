@@ -39,7 +39,7 @@ describe(`insertData()`, () => {
     };
 
     const expected = stripIndent(/* swift */ `
-      extension Thing: DuetInsertable {
+      extension Thing {
         var insertValues: [String: Postgres.Data] {
           [
             Self[.id]: .id(self),

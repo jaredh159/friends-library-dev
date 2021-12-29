@@ -11,11 +11,11 @@ extension LiveRepository {
     _ = try await SQL.execute(prepared, on: db).all()
   }
 
-  func createRelation<Relation: DuetInsertable>(_ model: Relation) async throws {
+  func createRelation<Relation: DuetModel>(_ model: Relation) async throws {
     try await createRelations([model])
   }
 
-  func createRelations<Relation: DuetInsertable>(_ models: [Relation]) async throws {
+  func createRelations<Relation: DuetModel>(_ models: [Relation]) async throws {
     let prepared = try SQL.insert(into: Relation.tableName, values: models.map(\.insertValues))
     _ = try await SQL.execute(prepared, on: db).all()
   }

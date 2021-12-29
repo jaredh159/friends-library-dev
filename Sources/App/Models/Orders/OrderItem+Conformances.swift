@@ -10,7 +10,7 @@ extension OrderItem: DuetModel {
   static let tableName = "order_items"
 }
 
-extension OrderItem: DuetInsertable {
+extension OrderItem {
   var insertValues: [String: Postgres.Data] {
     [
       Self[.id]: .id(self),

@@ -10,7 +10,7 @@ extension EditionImpression: DuetModel {
   static let tableName = M17.tableName
 }
 
-extension EditionImpression: DuetInsertable {
+extension EditionImpression {
   var insertValues: [String: Postgres.Data] {
     [
       Self[.id]: .id(self),
