@@ -1,6 +1,6 @@
 import { isNotNull } from 'x-ts-utils';
 import stripIndent from 'strip-indent';
-import { Model, GlobalTypes } from './types';
+import { Model, GlobalTypes } from '../types';
 
 export function insertData(model: Model, globalTypes: GlobalTypes): string {
   let code = stripIndent(/* swift */ `

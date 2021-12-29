@@ -3,21 +3,6 @@ import Vapor
 
 struct FreeOrderRequestRepository {
   var db: SQLDatabase
-
-  func create(_ request: FreeOrderRequest) async throws {
-    try await insert(request)
-  }
-
-  func find(_ id: FreeOrderRequest.Id) async throws -> FreeOrderRequest {
-    let models = try await select(
-      .all,
-      from: FreeOrderRequest.self,
-      where: (FreeOrderRequest[.id], .equals, .uuid(id))
-    )
-
-    guard let first = models.first else { throw DbError.notFound }
-    return first
-  }
 }
 
 struct MockFreeOrderRequestRepository {
@@ -35,6 +20,8 @@ struct MockFreeOrderRequestRepository {
 /// extensions
 
 extension FreeOrderRequestRepository: LiveRepository {
+  typealias Model = FreeOrderRequest
+
   func assign(client: inout DatabaseClient) {
     client.createFreeOrderRequest = { try await create($0) }
     client.getFreeOrderRequest = { try await find($0) }
@@ -42,6 +29,8 @@ extension FreeOrderRequestRepository: LiveRepository {
 }
 
 extension MockFreeOrderRequestRepository: MockRepository {
+  typealias Model = FreeOrderRequest
+
   func assign(client: inout DatabaseClient) {
     client.createFreeOrderRequest = { try await create($0) }
     client.getFreeOrderRequest = { try await find($0) }

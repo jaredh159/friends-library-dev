@@ -1,5 +1,5 @@
 import { insertData } from './model-db-data';
-import { GlobalTypes, Model } from './types';
+import { GlobalTypes, Model } from '../types';
 
 export function generateModelConformances(
   model: Model,

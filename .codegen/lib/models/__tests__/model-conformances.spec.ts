@@ -1,6 +1,6 @@
 import { describe, it, test, expect } from '@jest/globals';
 import stripIndent from 'strip-indent';
-import { generateModelConformances } from '../conformances';
+import { generateModelConformances } from '../model-conformances';
 
 describe(`generateModelConformances()`, () => {
   const types = {

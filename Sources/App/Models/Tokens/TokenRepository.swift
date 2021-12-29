@@ -4,16 +4,9 @@ import Vapor
 struct TokenRepository {
   var db: SQLDatabase
 
-  func createToken(_ token: Token) async throws {
-    try await insert(token)
-  }
-
   func getTokenByValue(_ value: Token.Value) async throws -> Token {
-    let token = try await select(
-      .all,
-      from: Token.self,
-      where: (Token[.value], .equals, .uuid(value))
-    ).firstOrThrowNotFound()
+    let token = try await select(where: (Token[.value], .equals, .uuid(value)))
+      .firstOrThrowNotFound()
 
     let scopes = try await getTokenScopes(token.id)
     token.scopes = .loaded(scopes)
@@ -21,12 +14,11 @@ struct TokenRepository {
   }
 
   func createTokenScope(_ scope: TokenScope) async throws {
-    try await insert(scope)
+    try await createRelation(scope)
   }
 
   func getTokenScopes(_ tokenId: Token.Id) async throws -> [TokenScope] {
-    try await select(
-      .all,
+    try await selectRelation(
       from: TokenScope.self,
       where: (TokenScope[.tokenId], .equals, .uuid(tokenId))
     )
@@ -56,8 +48,10 @@ struct MockTokenRepository {
 /// extensions
 
 extension TokenRepository: LiveRepository {
+  typealias Model = Token
+
   func assign(client: inout DatabaseClient) {
-    client.createToken = { try await createToken($0) }
+    client.createToken = { try await create($0) }
     client.createTokenScope = { try await createTokenScope($0) }
     client.getTokenByValue = { try await getTokenByValue($0) }
     client.getTokenScopes = { try await getTokenScopes($0) }
@@ -65,6 +59,8 @@ extension TokenRepository: LiveRepository {
 }
 
 extension MockTokenRepository: MockRepository {
+  typealias Model = Token
+
   func assign(client: inout DatabaseClient) {
     client.createToken = { try await createToken($0) }
     client.createTokenScope = { try await createTokenScope($0) }

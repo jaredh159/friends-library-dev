@@ -1,4 +1,4 @@
-import { Model, File, GlobalTypes } from './types';
+import { Model, File, GlobalTypes } from '../types';
 
 export function extractModelAttrs({ source, path }: File): Model | undefined {
   if (

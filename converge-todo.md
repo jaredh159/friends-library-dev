@@ -1,18 +1,14 @@
 # Converge TODOs:
 
-```
-// √ examine multiple files
-// √ extract tablename migration for code gen
-// generate conformances
-// generate insert
-
-// scaffold repository
-// scaffold repository tests
-// scaffold resolver
-// scaffold resolver tests
-// scaffold Current.db vars
-```
-
+- [ ] - remove DuetInsertable, make it part of DuetModel
+- [ ] - scaffold repository
+- [ ] - scaffold repository tests
+- [ ] - scaffold resolver
+- [ ] - scaffold resolver tests
+- [ ] - generate .notImplemented
+- [ ] - generate assignment extensions
+- [ ] - generate graphql types
+- [ ] - generate mocks
 - [√] - take care of two models that didn't get converted
 - [ ] - redo insert db logic with protocol magic
 - [ ] - handle timestamps with special props or protocols

@@ -3,21 +3,6 @@ import Vapor
 
 struct DownloadRepository {
   var db: SQLDatabase
-
-  func create(_ download: Download) async throws {
-    throw Abort(.notImplemented)
-    // @TODO, FK issues with documents, do those first
-    // try insert(
-    //   into: Download.tableName,
-    //   values: [
-    //     Download[.id]: .id(download)
-    //   ]
-    // )
-  }
-
-  func find(_ id: Download.Id) async throws -> Download {
-    throw Abort(.notImplemented)
-  }
 }
 
 struct MockDownloadRepository {
@@ -35,6 +20,8 @@ struct MockDownloadRepository {
 /// extensions
 
 extension DownloadRepository: LiveRepository {
+  typealias Model = Download
+
   func assign(client: inout DatabaseClient) {
     client.createDownload = { try await create($0) }
     client.getDownload = { try await find($0) }
@@ -42,8 +29,9 @@ extension DownloadRepository: LiveRepository {
 }
 
 extension MockDownloadRepository: MockRepository {
-  func assign(client: inout DatabaseClient) {
+  typealias Model = Download
 
+  func assign(client: inout DatabaseClient) {
     client.createDownload = { try await create($0) }
     client.getDownload = { try await find($0) }
   }

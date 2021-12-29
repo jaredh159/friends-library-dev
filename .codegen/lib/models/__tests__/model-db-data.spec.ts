@@ -1,7 +1,7 @@
 import { describe, expect, it } from '@jest/globals';
 import stripIndent from 'strip-indent';
 import { insertData } from '../model-db-data';
-import { GlobalTypes } from '../types';
+import { GlobalTypes } from '../../types';
 
 describe(`insertData()`, () => {
   it(`can handle all types of columns`, () => {
