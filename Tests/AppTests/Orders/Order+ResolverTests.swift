@@ -133,7 +133,7 @@ final class OrderResolverTests: AppTestCase {
 
   func testUpdateOrder() async throws {
     let order = Order.empty
-    try await Current.db.createOrder(order)
+    try await Current.db.createOrderWithItems(order)
 
     let input: Map = .dictionary([
       "id": .string(order.id.uuidString),
@@ -161,8 +161,8 @@ final class OrderResolverTests: AppTestCase {
   func testUpdateOrders() async throws {
     let order1 = Order.empty
     let order2 = Order.empty
-    try await Current.db.createOrder(order1)
-    try await Current.db.createOrder(order2)
+    try await Current.db.createOrderWithItems(order1)
+    try await Current.db.createOrderWithItems(order2)
 
     let input: Map = .array([
       .dictionary([
@@ -191,7 +191,7 @@ final class OrderResolverTests: AppTestCase {
   func testGetOrderById() async throws {
     let order = Order.empty
     order.printJobId = 234432
-    try await Current.db.createOrder(order)
+    try await Current.db.createOrderWithItems(order)
 
     GraphQLTest(
       """
@@ -209,7 +209,7 @@ final class OrderResolverTests: AppTestCase {
   func testGetOrderByIdFailsWithWrongTokenScope() async throws {
     Current.auth = .live
     let order = Order.empty
-    try await Current.db.createOrder(order)
+    try await Current.db.createOrderWithItems(order)
     GraphQLTest(
       """
       query {
@@ -228,8 +228,8 @@ final class OrderResolverTests: AppTestCase {
     order1.printJobStatus = .bricked
     let order2 = Order.empty
     order2.printJobStatus = .bricked
-    try await Current.db.createOrder(order1)
-    try await Current.db.createOrder(order2)
+    try await Current.db.createOrderWithItems(order1)
+    try await Current.db.createOrderWithItems(order2)
 
     GraphQLTest(
       """

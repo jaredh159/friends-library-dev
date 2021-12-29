@@ -7,7 +7,6 @@ struct TokenRepository {
   func getTokenByValue(_ value: Token.Value) async throws -> Token {
     let token = try await select(where: (Token[.value], .equals, .uuid(value)))
       .firstOrThrowNotFound()
-
     let scopes = try await getTokenScopes(token.id)
     token.scopes = .loaded(scopes)
     return token
@@ -28,12 +27,8 @@ struct TokenRepository {
 struct MockTokenRepository {
   var db: MockDb
 
-  func createToken(_ token: Token) async throws {
-    db.add(token, to: \.tokens)
-  }
-
   func getTokenByValue(_ value: Token.Value) async throws -> Token {
-    try db.first(where: { $0.value == value }, in: \.tokens)
+    try await select(where: { $0.value == value }).firstOrThrowNotFound()
   }
 
   func createTokenScope(_ scope: TokenScope) async throws {
@@ -41,7 +36,7 @@ struct MockTokenRepository {
   }
 
   func getTokenScopes(_ tokenId: Token.Id) async throws -> [TokenScope] {
-    db.tokenScopes.values.filter { $0.tokenId == tokenId }
+    db.find(where: { $0.tokenId == tokenId }, in: \.tokenScopes)
   }
 }
 
@@ -60,9 +55,10 @@ extension TokenRepository: LiveRepository {
 
 extension MockTokenRepository: MockRepository {
   typealias Model = Token
+  var models: ModelsPath { \.tokens }
 
   func assign(client: inout DatabaseClient) {
-    client.createToken = { try await createToken($0) }
+    client.createToken = { try await create($0) }
     client.createTokenScope = { try await createTokenScope($0) }
     client.getTokenByValue = { try await getTokenByValue($0) }
     client.getTokenScopes = { try await getTokenScopes($0) }

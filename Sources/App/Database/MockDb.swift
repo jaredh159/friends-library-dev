@@ -1,5 +1,4 @@
 final class MockDb {
-  var things: [Thing.Id: Thing] = [:]
   var tokens: [Token.Id: Token] = [:]
   var tokenScopes: [TokenScope.Id: TokenScope] = [:]
   var orders: [Order.Id: Order] = [:]

@@ -85,7 +85,7 @@ extension Resolver {
     order.items = .loaded(items)
 
     return future(of: Order.self, on: req.eventLoop) {
-      try await Current.db.createOrder(order)
+      try await Current.db.createOrderWithItems(order)
       return order
     }
   }

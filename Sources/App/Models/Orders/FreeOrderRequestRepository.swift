@@ -1,26 +1,9 @@
 import FluentSQL
 import Vapor
 
-struct FreeOrderRequestRepository {
-  var db: SQLDatabase
-}
-
-struct MockFreeOrderRequestRepository {
-  var db: MockDb
-
-  func create(_ download: FreeOrderRequest) async throws {
-    db.add(download, to: \.freeOrderRequests)
-  }
-
-  func find(_ id: FreeOrderRequest.Id) async throws -> FreeOrderRequest {
-    try db.find(id, in: \.freeOrderRequests)
-  }
-}
-
-/// extensions
-
-extension FreeOrderRequestRepository: LiveRepository {
+struct FreeOrderRequestRepository: LiveRepository {
   typealias Model = FreeOrderRequest
+  var db: SQLDatabase
 
   func assign(client: inout DatabaseClient) {
     client.createFreeOrderRequest = { try await create($0) }
@@ -28,8 +11,10 @@ extension FreeOrderRequestRepository: LiveRepository {
   }
 }
 
-extension MockFreeOrderRequestRepository: MockRepository {
+struct MockFreeOrderRequestRepository: MockRepository {
   typealias Model = FreeOrderRequest
+  var db: MockDb
+  var models: ModelsPath { \.freeOrderRequests }
 
   func assign(client: inout DatabaseClient) {
     client.createFreeOrderRequest = { try await create($0) }

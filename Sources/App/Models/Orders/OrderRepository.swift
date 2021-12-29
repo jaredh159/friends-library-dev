@@ -44,16 +44,8 @@ struct OrderRepository {
 struct MockOrderRepository {
   var db: MockDb
 
-  func createOrder(_ order: Order) async throws {
-    db.add(order, to: \.orders)
-  }
-
-  func getOrder(_ id: Order.Id) async throws -> Order {
-    try db.find(id, in: \.orders)
-  }
-
   func getOrdersByPrintJobStatus(_ status: Order.PrintJobStatus) async throws -> [Order] {
-    db.find(where: { $0.printJobStatus == status }, in: \.orders)
+    try await select(where: { $0.printJobStatus == status })
   }
 
   func updateOrder(_ input: UpdateOrderInput) async throws -> Order {
@@ -66,10 +58,6 @@ struct MockOrderRepository {
     }
     return order
   }
-
-  func deleteAll() async throws {
-    db.orders = [:]
-  }
 }
 
 /// extensions
@@ -79,7 +67,7 @@ extension OrderRepository: LiveRepository {
 
   func assign(client: inout DatabaseClient) {
     client.deleteAllOrders = deleteAll
-    client.createOrder = { try await createOrderWithItems($0) }
+    client.createOrderWithItems = { try await createOrderWithItems($0) }
     client.getOrder = { try await find($0) }
     client.updateOrder = { try await updateOrder($0) }
     client.getOrdersByPrintJobStatus = { try await getOrdersByPrintJobStatus($0) }
@@ -88,11 +76,12 @@ extension OrderRepository: LiveRepository {
 
 extension MockOrderRepository: MockRepository {
   typealias Model = Order
+  var models: ModelsPath { \.orders }
 
   func assign(client: inout DatabaseClient) {
     client.deleteAllOrders = deleteAll
-    client.createOrder = { try await createOrder($0) }
-    client.getOrder = { try await getOrder($0) }
+    client.createOrderWithItems = { try await create($0) }
+    client.getOrder = { try await find($0) }
     client.updateOrder = { try await updateOrder($0) }
     client.getOrdersByPrintJobStatus = { try await getOrdersByPrintJobStatus($0) }
   }

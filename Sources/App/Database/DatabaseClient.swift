@@ -12,7 +12,7 @@ struct DatabaseClient {
 
   // orders
   var deleteAllOrders: () async throws -> Void
-  var createOrder: (Order) async throws -> Void
+  var createOrderWithItems: (Order) async throws -> Void
   var getOrder: (Order.Id) async throws -> Order
   var getOrdersByPrintJobStatus: (Order.PrintJobStatus) async throws -> [Order]
   var updateOrder: (UpdateOrderInput) async throws -> Order
@@ -40,7 +40,7 @@ extension DatabaseClient {
 
     // orders
     deleteAllOrders: { throw Abort(.notImplemented) },
-    createOrder: { _ in throw Abort(.notImplemented) },
+    createOrderWithItems: { _ in throw Abort(.notImplemented) },
     getOrder: { _ in throw Abort(.notImplemented) },
     getOrdersByPrintJobStatus: { _ in throw Abort(.notImplemented) },
     updateOrder: { _ in throw Abort(.notImplemented) },

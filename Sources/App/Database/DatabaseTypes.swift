@@ -12,7 +12,9 @@ protocol LiveRepository: Repository {
 }
 
 protocol MockRepository: Repository {
+  typealias ModelsPath = ReferenceWritableKeyPath<MockDb, [Model.IdValue: Model]>
   var db: MockDb { get }
+  var models: ModelsPath { get }
   init(db: MockDb)
 }
 

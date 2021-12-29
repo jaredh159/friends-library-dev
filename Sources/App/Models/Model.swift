@@ -32,15 +32,15 @@ protocol UUIDIdentifiable {
   var uuidId: UUID { get }
 }
 
-protocol DuetModel: Codable, UUIDIdentifiable {
-  associatedtype IdValue: RandomEmptyInitializing, UUIDStringable
+protocol DuetModel: Codable, UUIDIdentifiable, Equatable {
+  associatedtype IdValue: RandomEmptyInitializing, UUIDStringable, Hashable
   var id: IdValue { get set }
   associatedtype ColumnName: CodingKey
   static func columnName(_ column: ColumnName) -> String
   static var tableName: String { get }
 }
 
-extension DuetModel where IdValue: Equatable {
+extension DuetModel {
   static func == (lhs: Self, rhs: Self) -> Bool {
     return lhs.id == rhs.id
   }

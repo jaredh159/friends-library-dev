@@ -9,7 +9,7 @@ final class OrderRepositoryTests: AppTestCase {
     let inserted: Order = .empty
     inserted.addressName = "Bob"
 
-    try await Current.db.createOrder(inserted)
+    try await Current.db.createOrderWithItems(inserted)
     let retrieved = try await Current.db.getOrder(inserted.id)
 
     XCTAssertEqual(inserted, retrieved)
@@ -21,7 +21,7 @@ final class OrderRepositoryTests: AppTestCase {
     inserted.printJobId = 55
     inserted.addressStreet2 = "Apt #2"
 
-    try await Current.db.createOrder(inserted)
+    try await Current.db.createOrderWithItems(inserted)
     let retrieved = try await Current.db.getOrder(inserted.id)
 
     XCTAssertEqual(inserted, retrieved)
@@ -36,8 +36,8 @@ final class OrderRepositoryTests: AppTestCase {
     order1.printJobStatus = .accepted
     let order2 = Order.empty
     order2.printJobStatus = .pending
-    try await Current.db.createOrder(order1)
-    try await Current.db.createOrder(order2)
+    try await Current.db.createOrderWithItems(order1)
+    try await Current.db.createOrderWithItems(order2)
 
     let found = try await Current.db.getOrdersByPrintJobStatus(.accepted)
 
@@ -47,7 +47,7 @@ final class OrderRepositoryTests: AppTestCase {
 
   func testUpdateOrder() async throws {
     let order = Order.empty
-    try await Current.db.createOrder(order)
+    try await Current.db.createOrderWithItems(order)
 
     let input = UpdateOrderInput(id: order.id.rawValue, printJobStatus: .bricked, printJobId: 55)
     let updated = try await Current.db.updateOrder(input)
@@ -58,7 +58,7 @@ final class OrderRepositoryTests: AppTestCase {
 
   func testUpdateOrderOnlyPrintJobId() async throws {
     let order = Order.empty
-    try await Current.db.createOrder(order)
+    try await Current.db.createOrderWithItems(order)
 
     let input = UpdateOrderInput(id: order.id.rawValue, printJobStatus: nil, printJobId: 66)
     let updated = try await Current.db.updateOrder(input)
@@ -70,7 +70,7 @@ final class OrderRepositoryTests: AppTestCase {
   func testUpdateOrderOnlyPrintJobStatus() async throws {
     let order = Order.empty
     order.printJobId = 77
-    try await Current.db.createOrder(order)
+    try await Current.db.createOrderWithItems(order)
 
     let input = UpdateOrderInput(id: order.id.rawValue, printJobStatus: .canceled, printJobId: nil)
     let updated = try await Current.db.updateOrder(input)
@@ -83,7 +83,7 @@ final class OrderRepositoryTests: AppTestCase {
     let order = Order.empty
     order.printJobId = 88
     order.printJobStatus = .rejected
-    try await Current.db.createOrder(order)
+    try await Current.db.createOrderWithItems(order)
 
     let input = UpdateOrderInput(id: order.id.rawValue, printJobStatus: nil, printJobId: nil)
     let updated = try await Current.db.updateOrder(input)

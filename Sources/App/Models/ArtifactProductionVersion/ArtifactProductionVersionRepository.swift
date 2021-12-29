@@ -6,23 +6,19 @@ struct ArtifactProductionVersionRepository {
 
   func getLatest() async throws -> ArtifactProductionVersion {
     // @TODO implement ORDER BY and LIMIT
-    let models = try await select().sorted { $0.createdAt > $1.createdAt }
-    guard let first = models.first else { throw DbError.notFound }
-    return first
+    try await select()
+      .sorted { $0.createdAt > $1.createdAt }
+      .firstOrThrowNotFound()
   }
 }
 
 struct MockArtifactProductionVersionRepository {
   var db: MockDb
 
-  func create(_ model: ArtifactProductionVersion) async throws {
-    db.add(model, to: \.artifactProductionVersions)
-  }
-
   func getLatest() async throws -> ArtifactProductionVersion {
-    db.all(\.artifactProductionVersions)
+    try await select()
       .sorted { $0.createdAt > $1.createdAt }
-      .first!
+      .firstOrThrowNotFound()
   }
 }
 
@@ -39,6 +35,7 @@ extension ArtifactProductionVersionRepository: LiveRepository {
 
 extension MockArtifactProductionVersionRepository: MockRepository {
   typealias Model = ArtifactProductionVersion
+  var models: ModelsPath { \.artifactProductionVersions }
 
   func assign(client: inout DatabaseClient) {
     client.createArtifactProductionVersion = { try await create($0) }

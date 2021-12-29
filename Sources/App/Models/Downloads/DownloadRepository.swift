@@ -1,26 +1,9 @@
 import FluentSQL
 import Vapor
 
-struct DownloadRepository {
-  var db: SQLDatabase
-}
-
-struct MockDownloadRepository {
-  var db: MockDb
-
-  func create(_ download: Download) async throws {
-    db.add(download, to: \.downloads)
-  }
-
-  func find(_ id: Download.Id) async throws -> Download {
-    try db.find(id, in: \.downloads)
-  }
-}
-
-/// extensions
-
-extension DownloadRepository: LiveRepository {
+struct DownloadRepository: LiveRepository {
   typealias Model = Download
+  var db: SQLDatabase
 
   func assign(client: inout DatabaseClient) {
     client.createDownload = { try await create($0) }
@@ -28,8 +11,10 @@ extension DownloadRepository: LiveRepository {
   }
 }
 
-extension MockDownloadRepository: MockRepository {
+struct MockDownloadRepository: MockRepository {
   typealias Model = Download
+  var db: MockDb
+  var models: ModelsPath { \.downloads }
 
   func assign(client: inout DatabaseClient) {
     client.createDownload = { try await create($0) }
