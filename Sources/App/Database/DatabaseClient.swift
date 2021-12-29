@@ -72,14 +72,14 @@ extension DatabaseClient {
 }
 
 extension DatabaseClient {
-  static func mock(eventLoop el: EventLoop) -> DatabaseClient {
+  static var mock: DatabaseClient {
     let mockDb = MockDb()
     var client: DatabaseClient = .notImplemented
-    MockTokenRepository(db: mockDb, eventLoop: el).assign(client: &client)
-    MockOrderRepository(db: mockDb, eventLoop: el).assign(client: &client)
-    MockDownloadRepository(db: mockDb, eventLoop: el).assign(client: &client)
-    MockFreeOrderRequestRepository(db: mockDb, eventLoop: el).assign(client: &client)
-    MockArtifactProductionVersionRepository(db: mockDb, eventLoop: el).assign(client: &client)
+    MockTokenRepository(db: mockDb).assign(client: &client)
+    MockOrderRepository(db: mockDb).assign(client: &client)
+    MockDownloadRepository(db: mockDb).assign(client: &client)
+    MockFreeOrderRequestRepository(db: mockDb).assign(client: &client)
+    MockArtifactProductionVersionRepository(db: mockDb).assign(client: &client)
     return client
   }
 }

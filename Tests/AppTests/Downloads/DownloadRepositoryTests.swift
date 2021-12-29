@@ -8,7 +8,7 @@ final class DownloadRepositoryTests: AppTestCase {
   func testCreateAndGet() async throws {
     // temp, until FK issue
     let oldDb = Current.db
-    Current.db = .mock(eventLoop: Self.app.eventLoopGroup.next())
+    Current.db = .mock
 
     let inserted: Download = .mock
     try await Current.db.createDownload(inserted)

@@ -12,14 +12,7 @@ protocol LiveRepository: Repository {
 
 protocol MockRepository: Repository {
   var db: MockDb { get }
-  var eventLoop: EventLoop { get }
-  init(db: MockDb, eventLoop: EventLoop)
-}
-
-extension MockRepository {
-  func future<T>(_ value: T) -> Future<T> {
-    eventLoop.makeSucceededFuture(value)
-  }
+  init(db: MockDb)
 }
 
 enum DbError: Error {

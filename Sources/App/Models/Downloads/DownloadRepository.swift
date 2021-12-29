@@ -22,7 +22,6 @@ struct DownloadRepository {
 
 struct MockDownloadRepository {
   var db: MockDb
-  var eventLoop: EventLoop
 
   func create(_ download: Download) async throws {
     db.add(download, to: \.downloads)

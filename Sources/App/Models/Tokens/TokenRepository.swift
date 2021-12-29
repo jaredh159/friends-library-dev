@@ -35,7 +35,6 @@ struct TokenRepository {
 
 struct MockTokenRepository {
   var db: MockDb
-  var eventLoop: EventLoop
 
   func createToken(_ token: Token) async throws {
     db.add(token, to: \.tokens)

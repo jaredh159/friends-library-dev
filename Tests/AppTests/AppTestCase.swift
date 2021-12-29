@@ -19,7 +19,7 @@ class AppTestCase: XCTestCase {
   }
 
   override func setUp() {
-    Current.db = .mock(eventLoop: Self.app.db.eventLoop)
+    Current.db = .mock
     Current.auth = .mockWithAllScopes
   }
 }

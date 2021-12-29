@@ -8,7 +8,7 @@ final class DownloadResolverTests: AppTestCase {
   func testCreateDownload() throws {
     // temp, until FK issue
     let oldDb = Current.db
-    Current.db = .mock(eventLoop: Self.app.eventLoopGroup.next())
+    Current.db = .mock
 
     let input: Map = .dictionary([
       "documentId": .string("853e4e56-7a46-44a2-b689-b48458b588b0"),

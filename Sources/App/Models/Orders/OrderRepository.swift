@@ -55,7 +55,6 @@ struct OrderRepository {
 
 struct MockOrderRepository {
   var db: MockDb
-  var eventLoop: EventLoop
 
   func createOrder(_ order: Order) async throws {
     db.add(order, to: \.orders)

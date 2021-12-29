@@ -19,7 +19,6 @@ struct ArtifactProductionVersionRepository {
 
 struct MockArtifactProductionVersionRepository {
   var db: MockDb
-  var eventLoop: EventLoop
 
   func create(_ model: ArtifactProductionVersion) async throws {
     db.add(model, to: \.artifactProductionVersions)
