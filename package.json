@@ -28,7 +28,8 @@
     "test:watch:isolate": "watchexec --restart --watch Sources --watch Tests --exts swift npm run test:clear:isolate",
     "ci": "npm run lint && npm run test",
     "compile": "true # <-- keep manager automation script happy",
-    "generate:models": "fldev tsnode ./.codegen/generate-models.ts"
+    "generate:models": "fldev tsnode ./.codegen/generate-models.ts",
+    "scaffold:resolvers": "fldev tsnode ./.codegen/scaffold-resolvers.ts"
   },
   "keywords": [],
   "author": "",

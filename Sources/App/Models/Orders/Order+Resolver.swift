@@ -47,48 +47,48 @@ extension Resolver {
     let input: CreateOrderInput
   }
 
-  func createOrder(req: Req, args: CreateOrderArgs) throws -> Future<Order> {
-    try req.requirePermission(to: .mutateOrders)
-    let input = args.input
-    let order = Order(
-      id: .init(rawValue: input.id ?? UUID()),
-      lang: input.lang,
-      source: input.source,
-      paymentId: .init(rawValue: input.paymentId),
-      printJobStatus: input.printJobStatus,
-      amount: .init(rawValue: input.amount),
-      taxes: .init(rawValue: input.taxes),
-      ccFeeOffset: .init(rawValue: input.ccFeeOffset),
-      shipping: .init(rawValue: input.shipping),
-      shippingLevel: input.shippingLevel,
-      email: .init(rawValue: input.email),
-      addressName: input.addressName,
-      addressStreet: input.addressStreet,
-      addressStreet2: input.addressStreet2,
-      addressCity: input.addressCity,
-      addressState: input.addressState,
-      addressZip: input.addressZip,
-      addressCountry: input.addressCountry
-    )
+  // func createOrder(req: Req, args: CreateOrderArgs) throws -> Future<Order> {
+  //   try req.requirePermission(to: .mutateOrders)
+  //   let input = args.input
+  //   let order = Order(
+  //     id: .init(rawValue: input.id ?? UUID()),
+  //     lang: input.lang,
+  //     source: input.source,
+  //     paymentId: .init(rawValue: input.paymentId),
+  //     printJobStatus: input.printJobStatus,
+  //     amount: .init(rawValue: input.amount),
+  //     taxes: .init(rawValue: input.taxes),
+  //     ccFeeOffset: .init(rawValue: input.ccFeeOffset),
+  //     shipping: .init(rawValue: input.shipping),
+  //     shippingLevel: input.shippingLevel,
+  //     email: .init(rawValue: input.email),
+  //     addressName: input.addressName,
+  //     addressStreet: input.addressStreet,
+  //     addressStreet2: input.addressStreet2,
+  //     addressCity: input.addressCity,
+  //     addressState: input.addressState,
+  //     addressZip: input.addressZip,
+  //     addressCountry: input.addressCountry
+  //   )
 
-    let items = input.items.map { item in
-      OrderItem(
-        orderId: order.id,
-        documentId: .init(rawValue: item.documentId),
-        editionType: item.editionType,
-        title: item.title,
-        quantity: item.quantity,
-        unitPrice: .init(rawValue: item.unitPrice)
-      )
-    }
+  //   let items = input.items.map { item in
+  //     OrderItem(
+  //       orderId: order.id,
+  //       documentId: .init(rawValue: item.documentId),
+  //       editionType: item.editionType,
+  //       title: item.title,
+  //       quantity: item.quantity,
+  //       unitPrice: .init(rawValue: item.unitPrice)
+  //     )
+  //   }
 
-    order.items = .loaded(items)
+  //   order.items = .loaded(items)
 
-    return future(of: Order.self, on: req.eventLoop) {
-      try await Current.db.createOrderWithItems(order)
-      return order
-    }
-  }
+  //   return future(of: Order.self, on: req.eventLoop) {
+  //     try await Current.db.createOrderWithItems(order)
+  //     return order
+  //   }
+  // }
 
   func getOrder(req: Req, args: IdentifyEntityArgs) throws -> Future<Order> {
     try req.requirePermission(to: .queryOrders)
@@ -112,24 +112,70 @@ extension Resolver {
     let input: UpdateOrderInput
   }
 
-  func updateOrder(req: Req, args: UpdateOrderArgs) throws -> Future<Order> {
-    try req.requirePermission(to: .mutateOrders)
-    return future(of: Order.self, on: req.eventLoop) {
-      try await Current.db.updateOrder(args.input)
-    }
-  }
+  // func updateOrder(req: Req, args: UpdateOrderArgs) throws -> Future<Order> {
+  //   try req.requirePermission(to: .mutateOrders)
+  //   return future(of: Order.self, on: req.eventLoop) {
+  //     try await Current.db.updateOrder(args.input)
+  //   }
+  // }
 
   struct UpdateOrdersArgs: Codable {
     let input: [UpdateOrderInput]
   }
 
-  func updateOrders(req: Req, args: UpdateOrdersArgs) throws -> Future<[Order]> {
-    try req.requirePermission(to: .mutateOrders)
-    return args.input.map { input in
-      future(of: Order.self, on: req.eventLoop) {
-        try await Current.db.updateOrder(input)
-      }
-    }
-    .flatten(on: req.eventLoop)
+  // func updateOrders(req: Req, args: UpdateOrdersArgs) throws -> Future<[Order]> {
+  //   try req.requirePermission(to: .mutateOrders)
+  //   return args.input.map { input in
+  //     future(of: Order.self, on: req.eventLoop) {
+  //       try await Current.db.updateOrder(input)
+  //     }
+  //   }
+  //   .flatten(on: req.eventLoop)
+  // }
+}
+
+// below auto-generated
+extension Resolver {
+
+  func getOrders(
+    req: Req,
+    args: NoArgs
+  ) throws -> Future<[Order]> {
+    throw Abort(.notImplemented)
+  }
+
+  func createOrder(
+    req: Req,
+    args: Order.GraphQL.Request.Args.Create
+  ) throws -> Future<Order> {
+    throw Abort(.notImplemented)
+  }
+
+  func createOrders(
+    req: Req,
+    args: Order.GraphQL.Request.Args.CreateMany
+  ) throws -> Future<[Order]> {
+    throw Abort(.notImplemented)
+  }
+
+  func updateOrder(
+    req: Req,
+    args: Order.GraphQL.Request.Args.Update
+  ) throws -> Future<Order> {
+    throw Abort(.notImplemented)
+  }
+
+  func updateOrders(
+    req: Req,
+    args: Order.GraphQL.Request.Args.UpdateMany
+  ) throws -> Future<[Order]> {
+    throw Abort(.notImplemented)
+  }
+
+  func deleteOrder(
+    req: Req,
+    args: IdentifyEntityArgs
+  ) throws -> Future<Order> {
+    throw Abort(.notImplemented)
   }
 }

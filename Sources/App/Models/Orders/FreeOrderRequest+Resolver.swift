@@ -34,31 +34,31 @@ extension Resolver {
     let input: CreateFreeOrderRequestInput
   }
 
-  func createFreeOrderRequest(
-    req: Req,
-    args: CreateFreeOrderRequestArgs
-  ) throws -> Future<FreeOrderRequest> {
-    try req.requirePermission(to: .mutateOrders)
-    let order = FreeOrderRequest(
-      name: args.input.name,
-      email: .init(rawValue: args.input.email),
-      requestedBooks: args.input.requestedBooks,
-      aboutRequester: args.input.aboutRequester,
-      addressStreet: args.input.addressStreet,
-      addressStreet2: args.input.addressStreet2,
-      addressCity: args.input.addressCity,
-      addressState: args.input.addressState,
-      addressZip: args.input.addressZip,
-      addressCountry: args.input.addressCountry,
-      source: args.input.source
-    )
+  // func createFreeOrderRequest(
+  //   req: Req,
+  //   args: CreateFreeOrderRequestArgs
+  // ) throws -> Future<FreeOrderRequest> {
+  //   try req.requirePermission(to: .mutateOrders)
+  //   let order = FreeOrderRequest(
+  //     name: args.input.name,
+  //     email: .init(rawValue: args.input.email),
+  //     requestedBooks: args.input.requestedBooks,
+  //     aboutRequester: args.input.aboutRequester,
+  //     addressStreet: args.input.addressStreet,
+  //     addressStreet2: args.input.addressStreet2,
+  //     addressCity: args.input.addressCity,
+  //     addressState: args.input.addressState,
+  //     addressZip: args.input.addressZip,
+  //     addressCountry: args.input.addressCountry,
+  //     source: args.input.source
+  //   )
 
-    return future(of: FreeOrderRequest.self, on: req.eventLoop) {
-      try await Current.db.createFreeOrderRequest(order)
-      try await sendFreeOrderRequestNotifications(for: order, on: req).get()
-      return order
-    }
-  }
+  //   return future(of: FreeOrderRequest.self, on: req.eventLoop) {
+  //     try await Current.db.createFreeOrderRequest(order)
+  //     try await sendFreeOrderRequestNotifications(for: order, on: req).get()
+  //     return order
+  //   }
+  // }
 }
 
 private func sendFreeOrderRequestNotifications(
@@ -128,4 +128,56 @@ private func entry(_ key: String, _ value: String?) -> String {
       \(value.replacingOccurrences(of: "\n", with: "<br />"))
     </p>
     """
+}
+
+// below auto-generated
+extension Resolver {
+  // func getFreeOrderRequest(
+  //   req: Req,
+  //   args: IdentifyEntityArgs
+  // ) throws -> Future<FreeOrderRequest> {
+  //   throw Abort(.notImplemented)
+  // }
+
+  func getFreeOrderRequests(
+    req: Req,
+    args: NoArgs
+  ) throws -> Future<[FreeOrderRequest]> {
+    throw Abort(.notImplemented)
+  }
+
+  func createFreeOrderRequest(
+    req: Req,
+    args: FreeOrderRequest.GraphQL.Request.Args.Create
+  ) throws -> Future<FreeOrderRequest> {
+    throw Abort(.notImplemented)
+  }
+
+  func createFreeOrderRequests(
+    req: Req,
+    args: FreeOrderRequest.GraphQL.Request.Args.CreateMany
+  ) throws -> Future<[FreeOrderRequest]> {
+    throw Abort(.notImplemented)
+  }
+
+  func updateFreeOrderRequest(
+    req: Req,
+    args: FreeOrderRequest.GraphQL.Request.Args.Update
+  ) throws -> Future<FreeOrderRequest> {
+    throw Abort(.notImplemented)
+  }
+
+  func updateFreeOrderRequests(
+    req: Req,
+    args: FreeOrderRequest.GraphQL.Request.Args.UpdateMany
+  ) throws -> Future<[FreeOrderRequest]> {
+    throw Abort(.notImplemented)
+  }
+
+  func deleteFreeOrderRequest(
+    req: Req,
+    args: IdentifyEntityArgs
+  ) throws -> Future<FreeOrderRequest> {
+    throw Abort(.notImplemented)
+  }
 }

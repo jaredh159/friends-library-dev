@@ -59,4 +59,4 @@ extension Resolver {
     throw Abort(.notImplemented)
   }
 }
-`;
+`.trim();

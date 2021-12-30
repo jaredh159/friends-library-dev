@@ -32,8 +32,8 @@ export function generateModelGraphQLTypes(
 
   code = code.replace(
     `/* CONVENIENCE_INIT */`,
-    model.props
-      .map((prop) => prop.name)
+    model.init
+      .map((prop) => prop.propName)
       .filter((name) => !isTimestamp(name))
       .map((name) => `${name}: ${modelPropToInitArg(name, model, types)}`)
       .join(`,\n      `),
@@ -51,6 +51,14 @@ export function generateModelGraphQLTypes(
 
   code = code.replace(`/* FUNC_UPDATE */`, updateSetters.join(`\n    `));
   code = code.replace(/Thing/g, model.name);
+
+  if (!code.match(/ try\?? /)) {
+    code.replace(/ throws /g, ` `);
+  }
+
+  if (!code.match(/ NonEmpty< /)) {
+    code.replace(`import NonEmpty\n`, ``);
+  }
 
   return [
     `Sources/App/Models/${modelDir(model.name)}${model.name}+GraphQL.swift`,
@@ -100,10 +108,10 @@ export function modelTypeToGraphQLInputType(
     case `Seconds<Int>`:
       return `Int${opt}`;
     case `NonEmpty<[Int]>`:
-      return `[Int]`;
+      return `[Int]${opt}`;
   }
 
-  if (model.dbEnums[type]) {
+  if (model.dbEnums[type] || (model.name === `FriendResidence` && type === `Duration`)) {
     return `${model.name}.${type}${opt}`;
   }
 
@@ -129,7 +137,7 @@ export function modelPropToInitArg(
     model.taggedTypes[type] !== undefined ||
     types.taggedTypes[type] !== undefined ||
     [`Seconds<Double>`, `Cents<Int>`, `Seconds<Int>`].includes(type) ||
-    prop.type.endsWith(`.Id`);
+    type.endsWith(`.Id`);
 
   if (isTagged && isOptional) {
     return `input.${name} != nil ? .init(rawValue: input.${name}!) : nil`;
@@ -137,8 +145,13 @@ export function modelPropToInitArg(
     return `.init(rawValue: input.${name})`;
   }
 
-  if (type === `NonEmpty<Int>`) {
-    let nonEmpty = `try NonEmpty.fromArray(input.${name})`;
+  if (type === `NonEmpty<[Int]>`) {
+    let nonEmpty = `NonEmpty<[Int]>.fromArray(input.${name}`;
+    if (isOptional) {
+      return `try? ${nonEmpty} ?? [])`;
+    } else {
+      return `try ${nonEmpty})`;
+    }
   }
 
   return `input.${name}`;
@@ -157,7 +170,7 @@ function keyPath(
     type === `Id` ||
     model.taggedTypes[type] ||
     globalTypes.taggedTypes[type] ||
-    [`Cents<Int>`].includes(type) ||
+    [`Cents<Int>`, `NonEmpty<[Int]>`].includes(type) ||
     type.endsWith(`.Id`)
   ) {
     keyPath += `${isOptional ? `?` : ``}.rawValue`;
@@ -168,6 +181,7 @@ function keyPath(
 const GQL_PATTERN = /* swift */ `
 // auto-generated, do not edit
 import Graphiti
+import NonEmpty
 import Vapor
 
 extension Thing {
@@ -287,7 +301,7 @@ extension Thing {
     )
   }
 
-  func update(_ input: Thing.GraphQL.Request.Inputs.Update) {
+  func update(_ input: Thing.GraphQL.Request.Inputs.Update) throws {
     /* FUNC_UPDATE */
   }
 }

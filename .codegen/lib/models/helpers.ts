@@ -10,10 +10,11 @@ export function modelDir(modelName: string): string {
     case `EditionImpression`:
       return `Editions/`;
     case `DocumentTag`:
+    case `DocumentTagModel`:
     case `RelatedDocument`:
       return `Documents/`;
     case `AudioPart`:
-      return `Audio/`;
+      return `Audios/`;
     case `TokenScope`:
       return `Tokens/`;
     case `Isbn`:

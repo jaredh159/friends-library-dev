@@ -39,7 +39,10 @@ const model: Model = {
     { propName: `email`, hasDefault: false },
     { propName: `price`, hasDefault: false },
     { propName: `parentId`, hasDefault: false },
+    { propName: `optionalParentId`, hasDefault: false },
     { propName: `printJobId`, hasDefault: false },
+    { propName: `splits`, hasDefault: false },
+    { propName: `optionalSplits`, hasDefault: false },
   ],
   props: [
     { name: `id`, type: `Id` },
@@ -51,7 +54,10 @@ const model: Model = {
     { name: `email`, type: `EmailAddress` },
     { name: `price`, type: `Cents<Int>` },
     { name: `parentId`, type: `Parent.Id` },
+    { name: `optionalParentId`, type: `Parent.Id?` },
     { name: `printJobId`, type: `PrintJobId?` },
+    { name: `splits`, type: `NonEmpty<[Int]>` },
+    { name: `optionalSplits`, type: `NonEmpty<[Int]>?` },
     { name: `createdAt`, type: `Date` },
     { name: `updatedAt`, type: `Date` },
     { name: `deletedAt`, type: `Date?` },
@@ -95,6 +101,8 @@ describe(`modelPropToInitArg()`, () => {
     [`price`, `.init(rawValue: input.price)`],
     [`parentId`, `.init(rawValue: input.parentId)`],
     [`printJobId`, `input.printJobId != nil ? .init(rawValue: input.printJobId!) : nil`],
+    [`splits`, `try NonEmpty<[Int]>.fromArray(input.splits)`],
+    [`optionalSplits`, `try? NonEmpty<[Int]>.fromArray(input.optionalSplits ?? [])`],
   ];
 
   test.each(cases)(`%s -> %s`, (prop, initArg) => {
@@ -113,7 +121,10 @@ describe(`schemaTypeFieldPairs()`, () => {
     [`email`, `\\.email.rawValue`],
     [`price`, `\\.price.rawValue`],
     [`parentId`, `\\.parentId.rawValue`],
+    [`optionalParentId`, `\\.optionalParentId?.rawValue`],
     [`printJobId`, `\\.printJobId?.rawValue`],
+    [`splits`, `\\.splits.rawValue`],
+    [`optionalSplits`, `\\.optionalSplits?.rawValue`],
     [`createdAt`, `\\.createdAt`],
     [`updatedAt`, `\\.updatedAt`],
   ];
@@ -126,6 +137,7 @@ describe(`generateModelGraphQLTypes()`, () => {
     const expected = stripIndent(/* swift */ `
       // auto-generated, do not edit
       import Graphiti
+      import NonEmpty
       import Vapor
 
       extension Thing {
@@ -154,7 +166,10 @@ describe(`generateModelGraphQLTypes()`, () => {
             Field("email", at: \\.email.rawValue)
             Field("price", at: \\.price.rawValue)
             Field("parentId", at: \\.parentId.rawValue)
+            Field("optionalParentId", at: \\.optionalParentId?.rawValue)
             Field("printJobId", at: \\.printJobId?.rawValue)
+            Field("splits", at: \\.splits.rawValue)
+            Field("optionalSplits", at: \\.optionalSplits?.rawValue)
             Field("createdAt", at: \\.createdAt)
             Field("updatedAt", at: \\.updatedAt)
           }
@@ -172,7 +187,10 @@ describe(`generateModelGraphQLTypes()`, () => {
           let email: String
           let price: Int
           let parentId: UUID
+          let optionalParentId: UUID?
           let printJobId: Int?
+          let splits: [Int]
+          let optionalSplits: [Int]?
         }
 
         struct Update: Codable {
@@ -185,7 +203,10 @@ describe(`generateModelGraphQLTypes()`, () => {
           let email: String
           let price: Int
           let parentId: UUID
+          let optionalParentId: UUID?
           let printJobId: Int?
+          let splits: [Int]
+          let optionalSplits: [Int]?
         }
       }
 
@@ -219,7 +240,10 @@ describe(`generateModelGraphQLTypes()`, () => {
             InputField("email", at: \\.email)
             InputField("price", at: \\.price)
             InputField("parentId", at: \\.parentId)
+            InputField("optionalParentId", at: \\.optionalParentId)
             InputField("printJobId", at: \\.printJobId)
+            InputField("splits", at: \\.splits)
+            InputField("optionalSplits", at: \\.optionalSplits)
           }
         }
 
@@ -234,7 +258,10 @@ describe(`generateModelGraphQLTypes()`, () => {
             InputField("email", at: \\.email)
             InputField("price", at: \\.price)
             InputField("parentId", at: \\.parentId)
+            InputField("optionalParentId", at: \\.optionalParentId)
             InputField("printJobId", at: \\.printJobId)
+            InputField("splits", at: \\.splits)
+            InputField("optionalSplits", at: \\.optionalSplits)
           }
         }
       }
@@ -295,11 +322,14 @@ describe(`generateModelGraphQLTypes()`, () => {
             email: .init(rawValue: input.email),
             price: .init(rawValue: input.price),
             parentId: .init(rawValue: input.parentId),
-            printJobId: input.printJobId != nil ? .init(rawValue: input.printJobId!) : nil
+            optionalParentId: input.optionalParentId != nil ? .init(rawValue: input.optionalParentId!) : nil,
+            printJobId: input.printJobId != nil ? .init(rawValue: input.printJobId!) : nil,
+            splits: try NonEmpty<[Int]>.fromArray(input.splits),
+            optionalSplits: try? NonEmpty<[Int]>.fromArray(input.optionalSplits ?? [])
           )
         }
 
-        func update(_ input: Thing.GraphQL.Request.Inputs.Update) {
+        func update(_ input: Thing.GraphQL.Request.Inputs.Update) throws {
           self.name = input.name
           self.desc = input.desc
           self.fooBar = input.fooBar
@@ -308,7 +338,10 @@ describe(`generateModelGraphQLTypes()`, () => {
           self.email = .init(rawValue: input.email)
           self.price = .init(rawValue: input.price)
           self.parentId = .init(rawValue: input.parentId)
+          self.optionalParentId = input.optionalParentId != nil ? .init(rawValue: input.optionalParentId!) : nil
           self.printJobId = input.printJobId != nil ? .init(rawValue: input.printJobId!) : nil
+          self.splits = try NonEmpty<[Int]>.fromArray(input.splits)
+          self.optionalSplits = try? NonEmpty<[Int]>.fromArray(input.optionalSplits ?? [])
           self.updatedAt = Current.date()
         }
       }
