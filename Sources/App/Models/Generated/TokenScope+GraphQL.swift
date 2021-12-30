@@ -1,19 +1,14 @@
 // auto-generated, do not edit
 import Graphiti
-import NonEmpty
 import Vapor
 
 extension TokenScope {
   enum GraphQL {
     enum Schema {
-      enum Inputs {}
       enum Queries {}
       enum Mutations {}
     }
-    enum Request {
-      enum Inputs {}
-      enum Args {}
-    }
+    enum Request {}
   }
 }
 
@@ -28,49 +23,49 @@ extension TokenScope.GraphQL.Schema {
   }
 }
 
-extension TokenScope.GraphQL.Request.Inputs {
-  struct Create: Codable {
+extension TokenScope.GraphQL.Request {
+  struct CreateTokenScopeInput: Codable {
     let id: UUID?
     let scope: Scope
     let tokenId: UUID
   }
 
-  struct Update: Codable {
+  struct UpdateTokenScopeInput: Codable {
     let id: UUID
     let scope: Scope
     let tokenId: UUID
   }
 }
 
-extension TokenScope.GraphQL.Request.Args {
-  struct Create: Codable {
-    let input: TokenScope.GraphQL.Request.Inputs.Create
+extension TokenScope.GraphQL.Request {
+  struct CreateTokenScopeArgs: Codable {
+    let input: TokenScope.GraphQL.Request.CreateTokenScopeInput
   }
 
-  struct Update: Codable {
-    let input: TokenScope.GraphQL.Request.Inputs.Update
+  struct UpdateTokenScopeArgs: Codable {
+    let input: TokenScope.GraphQL.Request.UpdateTokenScopeInput
   }
 
-  struct UpdateMany: Codable {
-    let input: [TokenScope.GraphQL.Request.Inputs.Update]
+  struct CreateTokenScopesArgs: Codable {
+    let input: [TokenScope.GraphQL.Request.CreateTokenScopeInput]
   }
 
-  struct CreateMany: Codable {
-    let input: [TokenScope.GraphQL.Request.Inputs.Create]
+  struct UpdateTokenScopesArgs: Codable {
+    let input: [TokenScope.GraphQL.Request.UpdateTokenScopeInput]
   }
 }
 
-extension TokenScope.GraphQL.Schema.Inputs {
-  static var create: AppInput<TokenScope.GraphQL.Request.Inputs.Create> {
-    Input(TokenScope.GraphQL.Request.Inputs.Create.self) {
+extension TokenScope.GraphQL.Schema {
+  static var create: AppInput<TokenScope.GraphQL.Request.CreateTokenScopeInput> {
+    Input(TokenScope.GraphQL.Request.CreateTokenScopeInput.self) {
       InputField("id", at: \.id)
       InputField("scope", at: \.scope)
       InputField("tokenId", at: \.tokenId)
     }
   }
 
-  static var update: AppInput<TokenScope.GraphQL.Request.Inputs.Update> {
-    Input(TokenScope.GraphQL.Request.Inputs.Update.self) {
+  static var update: AppInput<TokenScope.GraphQL.Request.UpdateTokenScopeInput> {
+    Input(TokenScope.GraphQL.Request.UpdateTokenScopeInput.self) {
       InputField("id", at: \.id)
       InputField("scope", at: \.scope)
       InputField("tokenId", at: \.tokenId)
@@ -91,25 +86,25 @@ extension TokenScope.GraphQL.Schema.Queries {
 }
 
 extension TokenScope.GraphQL.Schema.Mutations {
-  static var create: AppField<TokenScope, TokenScope.GraphQL.Request.Args.Create> {
+  static var create: AppField<TokenScope, TokenScope.GraphQL.Request.CreateTokenScopeArgs> {
     Field("createTokenScope", at: Resolver.createTokenScope) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createMany: AppField<[TokenScope], TokenScope.GraphQL.Request.Args.CreateMany> {
+  static var createMany: AppField<[TokenScope], TokenScope.GraphQL.Request.CreateTokenScopesArgs> {
     Field("createTokenScope", at: Resolver.createTokenScopes) {
       Argument("input", at: \.input)
     }
   }
 
-  static var update: AppField<TokenScope, TokenScope.GraphQL.Request.Args.Update> {
+  static var update: AppField<TokenScope, TokenScope.GraphQL.Request.UpdateTokenScopeArgs> {
     Field("createTokenScope", at: Resolver.updateTokenScope) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateMany: AppField<[TokenScope], TokenScope.GraphQL.Request.Args.UpdateMany> {
+  static var updateMany: AppField<[TokenScope], TokenScope.GraphQL.Request.UpdateTokenScopesArgs> {
     Field("createTokenScope", at: Resolver.updateTokenScopes) {
       Argument("input", at: \.input)
     }
@@ -123,7 +118,7 @@ extension TokenScope.GraphQL.Schema.Mutations {
 }
 
 extension TokenScope {
-  convenience init(_ input: TokenScope.GraphQL.Request.Inputs.Create) throws {
+  convenience init(_ input: TokenScope.GraphQL.Request.CreateTokenScopeInput) {
     self.init(
       id: .init(rawValue: input.id ?? UUID()),
       tokenId: .init(rawValue: input.tokenId),
@@ -131,7 +126,7 @@ extension TokenScope {
     )
   }
 
-  func update(_ input: TokenScope.GraphQL.Request.Inputs.Update) throws {
+  func update(_ input: TokenScope.GraphQL.Request.UpdateTokenScopeInput) {
     self.scope = input.scope
     self.tokenId = .init(rawValue: input.tokenId)
   }

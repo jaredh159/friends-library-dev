@@ -1,19 +1,14 @@
 // auto-generated, do not edit
 import Graphiti
-import NonEmpty
 import Vapor
 
 extension ArtifactProductionVersion {
   enum GraphQL {
     enum Schema {
-      enum Inputs {}
       enum Queries {}
       enum Mutations {}
     }
-    enum Request {
-      enum Inputs {}
-      enum Args {}
-    }
+    enum Request {}
   }
 }
 
@@ -27,46 +22,46 @@ extension ArtifactProductionVersion.GraphQL.Schema {
   }
 }
 
-extension ArtifactProductionVersion.GraphQL.Request.Inputs {
-  struct Create: Codable {
+extension ArtifactProductionVersion.GraphQL.Request {
+  struct CreateArtifactProductionVersionInput: Codable {
     let id: UUID?
     let version: String
   }
 
-  struct Update: Codable {
+  struct UpdateArtifactProductionVersionInput: Codable {
     let id: UUID
     let version: String
   }
 }
 
-extension ArtifactProductionVersion.GraphQL.Request.Args {
-  struct Create: Codable {
-    let input: ArtifactProductionVersion.GraphQL.Request.Inputs.Create
+extension ArtifactProductionVersion.GraphQL.Request {
+  struct CreateArtifactProductionVersionArgs: Codable {
+    let input: ArtifactProductionVersion.GraphQL.Request.CreateArtifactProductionVersionInput
   }
 
-  struct Update: Codable {
-    let input: ArtifactProductionVersion.GraphQL.Request.Inputs.Update
+  struct UpdateArtifactProductionVersionArgs: Codable {
+    let input: ArtifactProductionVersion.GraphQL.Request.UpdateArtifactProductionVersionInput
   }
 
-  struct UpdateMany: Codable {
-    let input: [ArtifactProductionVersion.GraphQL.Request.Inputs.Update]
+  struct CreateArtifactProductionVersionsArgs: Codable {
+    let input: [ArtifactProductionVersion.GraphQL.Request.CreateArtifactProductionVersionInput]
   }
 
-  struct CreateMany: Codable {
-    let input: [ArtifactProductionVersion.GraphQL.Request.Inputs.Create]
+  struct UpdateArtifactProductionVersionsArgs: Codable {
+    let input: [ArtifactProductionVersion.GraphQL.Request.UpdateArtifactProductionVersionInput]
   }
 }
 
-extension ArtifactProductionVersion.GraphQL.Schema.Inputs {
-  static var create: AppInput<ArtifactProductionVersion.GraphQL.Request.Inputs.Create> {
-    Input(ArtifactProductionVersion.GraphQL.Request.Inputs.Create.self) {
+extension ArtifactProductionVersion.GraphQL.Schema {
+  static var create: AppInput<ArtifactProductionVersion.GraphQL.Request.CreateArtifactProductionVersionInput> {
+    Input(ArtifactProductionVersion.GraphQL.Request.CreateArtifactProductionVersionInput.self) {
       InputField("id", at: \.id)
       InputField("version", at: \.version)
     }
   }
 
-  static var update: AppInput<ArtifactProductionVersion.GraphQL.Request.Inputs.Update> {
-    Input(ArtifactProductionVersion.GraphQL.Request.Inputs.Update.self) {
+  static var update: AppInput<ArtifactProductionVersion.GraphQL.Request.UpdateArtifactProductionVersionInput> {
+    Input(ArtifactProductionVersion.GraphQL.Request.UpdateArtifactProductionVersionInput.self) {
       InputField("id", at: \.id)
       InputField("version", at: \.version)
     }
@@ -86,25 +81,25 @@ extension ArtifactProductionVersion.GraphQL.Schema.Queries {
 }
 
 extension ArtifactProductionVersion.GraphQL.Schema.Mutations {
-  static var create: AppField<ArtifactProductionVersion, ArtifactProductionVersion.GraphQL.Request.Args.Create> {
+  static var create: AppField<ArtifactProductionVersion, ArtifactProductionVersion.GraphQL.Request.CreateArtifactProductionVersionArgs> {
     Field("createArtifactProductionVersion", at: Resolver.createArtifactProductionVersion) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createMany: AppField<[ArtifactProductionVersion], ArtifactProductionVersion.GraphQL.Request.Args.CreateMany> {
+  static var createMany: AppField<[ArtifactProductionVersion], ArtifactProductionVersion.GraphQL.Request.CreateArtifactProductionVersionsArgs> {
     Field("createArtifactProductionVersion", at: Resolver.createArtifactProductionVersions) {
       Argument("input", at: \.input)
     }
   }
 
-  static var update: AppField<ArtifactProductionVersion, ArtifactProductionVersion.GraphQL.Request.Args.Update> {
+  static var update: AppField<ArtifactProductionVersion, ArtifactProductionVersion.GraphQL.Request.UpdateArtifactProductionVersionArgs> {
     Field("createArtifactProductionVersion", at: Resolver.updateArtifactProductionVersion) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateMany: AppField<[ArtifactProductionVersion], ArtifactProductionVersion.GraphQL.Request.Args.UpdateMany> {
+  static var updateMany: AppField<[ArtifactProductionVersion], ArtifactProductionVersion.GraphQL.Request.UpdateArtifactProductionVersionsArgs> {
     Field("createArtifactProductionVersion", at: Resolver.updateArtifactProductionVersions) {
       Argument("input", at: \.input)
     }
@@ -118,14 +113,14 @@ extension ArtifactProductionVersion.GraphQL.Schema.Mutations {
 }
 
 extension ArtifactProductionVersion {
-  convenience init(_ input: ArtifactProductionVersion.GraphQL.Request.Inputs.Create) throws {
+  convenience init(_ input: ArtifactProductionVersion.GraphQL.Request.CreateArtifactProductionVersionInput) {
     self.init(
       id: .init(rawValue: input.id ?? UUID()),
       version: .init(rawValue: input.version)
     )
   }
 
-  func update(_ input: ArtifactProductionVersion.GraphQL.Request.Inputs.Update) throws {
+  func update(_ input: ArtifactProductionVersion.GraphQL.Request.UpdateArtifactProductionVersionInput) {
     self.version = .init(rawValue: input.version)
   }
 }

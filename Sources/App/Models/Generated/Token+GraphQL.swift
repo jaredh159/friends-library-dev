@@ -1,19 +1,14 @@
 // auto-generated, do not edit
 import Graphiti
-import NonEmpty
 import Vapor
 
 extension Token {
   enum GraphQL {
     enum Schema {
-      enum Inputs {}
       enum Queries {}
       enum Mutations {}
     }
-    enum Request {
-      enum Inputs {}
-      enum Args {}
-    }
+    enum Request {}
   }
 }
 
@@ -28,49 +23,49 @@ extension Token.GraphQL.Schema {
   }
 }
 
-extension Token.GraphQL.Request.Inputs {
-  struct Create: Codable {
+extension Token.GraphQL.Request {
+  struct CreateTokenInput: Codable {
     let id: UUID?
     let value: UUID
     let description: String
   }
 
-  struct Update: Codable {
+  struct UpdateTokenInput: Codable {
     let id: UUID
     let value: UUID
     let description: String
   }
 }
 
-extension Token.GraphQL.Request.Args {
-  struct Create: Codable {
-    let input: Token.GraphQL.Request.Inputs.Create
+extension Token.GraphQL.Request {
+  struct CreateTokenArgs: Codable {
+    let input: Token.GraphQL.Request.CreateTokenInput
   }
 
-  struct Update: Codable {
-    let input: Token.GraphQL.Request.Inputs.Update
+  struct UpdateTokenArgs: Codable {
+    let input: Token.GraphQL.Request.UpdateTokenInput
   }
 
-  struct UpdateMany: Codable {
-    let input: [Token.GraphQL.Request.Inputs.Update]
+  struct CreateTokensArgs: Codable {
+    let input: [Token.GraphQL.Request.CreateTokenInput]
   }
 
-  struct CreateMany: Codable {
-    let input: [Token.GraphQL.Request.Inputs.Create]
+  struct UpdateTokensArgs: Codable {
+    let input: [Token.GraphQL.Request.UpdateTokenInput]
   }
 }
 
-extension Token.GraphQL.Schema.Inputs {
-  static var create: AppInput<Token.GraphQL.Request.Inputs.Create> {
-    Input(Token.GraphQL.Request.Inputs.Create.self) {
+extension Token.GraphQL.Schema {
+  static var create: AppInput<Token.GraphQL.Request.CreateTokenInput> {
+    Input(Token.GraphQL.Request.CreateTokenInput.self) {
       InputField("id", at: \.id)
       InputField("value", at: \.value)
       InputField("description", at: \.description)
     }
   }
 
-  static var update: AppInput<Token.GraphQL.Request.Inputs.Update> {
-    Input(Token.GraphQL.Request.Inputs.Update.self) {
+  static var update: AppInput<Token.GraphQL.Request.UpdateTokenInput> {
+    Input(Token.GraphQL.Request.UpdateTokenInput.self) {
       InputField("id", at: \.id)
       InputField("value", at: \.value)
       InputField("description", at: \.description)
@@ -91,25 +86,25 @@ extension Token.GraphQL.Schema.Queries {
 }
 
 extension Token.GraphQL.Schema.Mutations {
-  static var create: AppField<Token, Token.GraphQL.Request.Args.Create> {
+  static var create: AppField<Token, Token.GraphQL.Request.CreateTokenArgs> {
     Field("createToken", at: Resolver.createToken) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createMany: AppField<[Token], Token.GraphQL.Request.Args.CreateMany> {
+  static var createMany: AppField<[Token], Token.GraphQL.Request.CreateTokensArgs> {
     Field("createToken", at: Resolver.createTokens) {
       Argument("input", at: \.input)
     }
   }
 
-  static var update: AppField<Token, Token.GraphQL.Request.Args.Update> {
+  static var update: AppField<Token, Token.GraphQL.Request.UpdateTokenArgs> {
     Field("createToken", at: Resolver.updateToken) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateMany: AppField<[Token], Token.GraphQL.Request.Args.UpdateMany> {
+  static var updateMany: AppField<[Token], Token.GraphQL.Request.UpdateTokensArgs> {
     Field("createToken", at: Resolver.updateTokens) {
       Argument("input", at: \.input)
     }
@@ -123,7 +118,7 @@ extension Token.GraphQL.Schema.Mutations {
 }
 
 extension Token {
-  convenience init(_ input: Token.GraphQL.Request.Inputs.Create) throws {
+  convenience init(_ input: Token.GraphQL.Request.CreateTokenInput) {
     self.init(
       id: .init(rawValue: input.id ?? UUID()),
       value: .init(rawValue: input.value),
@@ -131,7 +126,7 @@ extension Token {
     )
   }
 
-  func update(_ input: Token.GraphQL.Request.Inputs.Update) throws {
+  func update(_ input: Token.GraphQL.Request.UpdateTokenInput) {
     self.value = .init(rawValue: input.value)
     self.description = input.description
   }

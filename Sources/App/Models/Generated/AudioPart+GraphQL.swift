@@ -6,14 +6,10 @@ import Vapor
 extension AudioPart {
   enum GraphQL {
     enum Schema {
-      enum Inputs {}
       enum Queries {}
       enum Mutations {}
     }
-    enum Request {
-      enum Inputs {}
-      enum Args {}
-    }
+    enum Request {}
   }
 }
 
@@ -36,8 +32,8 @@ extension AudioPart.GraphQL.Schema {
   }
 }
 
-extension AudioPart.GraphQL.Request.Inputs {
-  struct Create: Codable {
+extension AudioPart.GraphQL.Request {
+  struct CreateAudioPartInput: Codable {
     let id: UUID?
     let audioId: UUID
     let title: String
@@ -50,7 +46,7 @@ extension AudioPart.GraphQL.Request.Inputs {
     let externalIdLq: Int64
   }
 
-  struct Update: Codable {
+  struct UpdateAudioPartInput: Codable {
     let id: UUID
     let audioId: UUID
     let title: String
@@ -64,27 +60,27 @@ extension AudioPart.GraphQL.Request.Inputs {
   }
 }
 
-extension AudioPart.GraphQL.Request.Args {
-  struct Create: Codable {
-    let input: AudioPart.GraphQL.Request.Inputs.Create
+extension AudioPart.GraphQL.Request {
+  struct CreateAudioPartArgs: Codable {
+    let input: AudioPart.GraphQL.Request.CreateAudioPartInput
   }
 
-  struct Update: Codable {
-    let input: AudioPart.GraphQL.Request.Inputs.Update
+  struct UpdateAudioPartArgs: Codable {
+    let input: AudioPart.GraphQL.Request.UpdateAudioPartInput
   }
 
-  struct UpdateMany: Codable {
-    let input: [AudioPart.GraphQL.Request.Inputs.Update]
+  struct CreateAudioPartsArgs: Codable {
+    let input: [AudioPart.GraphQL.Request.CreateAudioPartInput]
   }
 
-  struct CreateMany: Codable {
-    let input: [AudioPart.GraphQL.Request.Inputs.Create]
+  struct UpdateAudioPartsArgs: Codable {
+    let input: [AudioPart.GraphQL.Request.UpdateAudioPartInput]
   }
 }
 
-extension AudioPart.GraphQL.Schema.Inputs {
-  static var create: AppInput<AudioPart.GraphQL.Request.Inputs.Create> {
-    Input(AudioPart.GraphQL.Request.Inputs.Create.self) {
+extension AudioPart.GraphQL.Schema {
+  static var create: AppInput<AudioPart.GraphQL.Request.CreateAudioPartInput> {
+    Input(AudioPart.GraphQL.Request.CreateAudioPartInput.self) {
       InputField("id", at: \.id)
       InputField("audioId", at: \.audioId)
       InputField("title", at: \.title)
@@ -98,8 +94,8 @@ extension AudioPart.GraphQL.Schema.Inputs {
     }
   }
 
-  static var update: AppInput<AudioPart.GraphQL.Request.Inputs.Update> {
-    Input(AudioPart.GraphQL.Request.Inputs.Update.self) {
+  static var update: AppInput<AudioPart.GraphQL.Request.UpdateAudioPartInput> {
+    Input(AudioPart.GraphQL.Request.UpdateAudioPartInput.self) {
       InputField("id", at: \.id)
       InputField("audioId", at: \.audioId)
       InputField("title", at: \.title)
@@ -127,25 +123,25 @@ extension AudioPart.GraphQL.Schema.Queries {
 }
 
 extension AudioPart.GraphQL.Schema.Mutations {
-  static var create: AppField<AudioPart, AudioPart.GraphQL.Request.Args.Create> {
+  static var create: AppField<AudioPart, AudioPart.GraphQL.Request.CreateAudioPartArgs> {
     Field("createAudioPart", at: Resolver.createAudioPart) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createMany: AppField<[AudioPart], AudioPart.GraphQL.Request.Args.CreateMany> {
+  static var createMany: AppField<[AudioPart], AudioPart.GraphQL.Request.CreateAudioPartsArgs> {
     Field("createAudioPart", at: Resolver.createAudioParts) {
       Argument("input", at: \.input)
     }
   }
 
-  static var update: AppField<AudioPart, AudioPart.GraphQL.Request.Args.Update> {
+  static var update: AppField<AudioPart, AudioPart.GraphQL.Request.UpdateAudioPartArgs> {
     Field("createAudioPart", at: Resolver.updateAudioPart) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateMany: AppField<[AudioPart], AudioPart.GraphQL.Request.Args.UpdateMany> {
+  static var updateMany: AppField<[AudioPart], AudioPart.GraphQL.Request.UpdateAudioPartsArgs> {
     Field("createAudioPart", at: Resolver.updateAudioParts) {
       Argument("input", at: \.input)
     }
@@ -159,7 +155,7 @@ extension AudioPart.GraphQL.Schema.Mutations {
 }
 
 extension AudioPart {
-  convenience init(_ input: AudioPart.GraphQL.Request.Inputs.Create) throws {
+  convenience init(_ input: AudioPart.GraphQL.Request.CreateAudioPartInput) throws {
     self.init(
       id: .init(rawValue: input.id ?? UUID()),
       audioId: .init(rawValue: input.audioId),
@@ -174,7 +170,7 @@ extension AudioPart {
     )
   }
 
-  func update(_ input: AudioPart.GraphQL.Request.Inputs.Update) throws {
+  func update(_ input: AudioPart.GraphQL.Request.UpdateAudioPartInput) throws {
     self.audioId = .init(rawValue: input.audioId)
     self.title = input.title
     self.duration = .init(rawValue: input.duration)

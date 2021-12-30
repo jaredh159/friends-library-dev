@@ -6,14 +6,10 @@ import Vapor
 extension EditionImpression {
   enum GraphQL {
     enum Schema {
-      enum Inputs {}
       enum Queries {}
       enum Mutations {}
     }
-    enum Request {
-      enum Inputs {}
-      enum Args {}
-    }
+    enum Request {}
   }
 }
 
@@ -32,8 +28,8 @@ extension EditionImpression.GraphQL.Schema {
   }
 }
 
-extension EditionImpression.GraphQL.Request.Inputs {
-  struct Create: Codable {
+extension EditionImpression.GraphQL.Request {
+  struct CreateEditionImpressionInput: Codable {
     let id: UUID?
     let editionId: UUID
     let adocLength: Int
@@ -43,7 +39,7 @@ extension EditionImpression.GraphQL.Request.Inputs {
     let productionToolchainRevision: String
   }
 
-  struct Update: Codable {
+  struct UpdateEditionImpressionInput: Codable {
     let id: UUID
     let editionId: UUID
     let adocLength: Int
@@ -54,27 +50,27 @@ extension EditionImpression.GraphQL.Request.Inputs {
   }
 }
 
-extension EditionImpression.GraphQL.Request.Args {
-  struct Create: Codable {
-    let input: EditionImpression.GraphQL.Request.Inputs.Create
+extension EditionImpression.GraphQL.Request {
+  struct CreateEditionImpressionArgs: Codable {
+    let input: EditionImpression.GraphQL.Request.CreateEditionImpressionInput
   }
 
-  struct Update: Codable {
-    let input: EditionImpression.GraphQL.Request.Inputs.Update
+  struct UpdateEditionImpressionArgs: Codable {
+    let input: EditionImpression.GraphQL.Request.UpdateEditionImpressionInput
   }
 
-  struct UpdateMany: Codable {
-    let input: [EditionImpression.GraphQL.Request.Inputs.Update]
+  struct CreateEditionImpressionsArgs: Codable {
+    let input: [EditionImpression.GraphQL.Request.CreateEditionImpressionInput]
   }
 
-  struct CreateMany: Codable {
-    let input: [EditionImpression.GraphQL.Request.Inputs.Create]
+  struct UpdateEditionImpressionsArgs: Codable {
+    let input: [EditionImpression.GraphQL.Request.UpdateEditionImpressionInput]
   }
 }
 
-extension EditionImpression.GraphQL.Schema.Inputs {
-  static var create: AppInput<EditionImpression.GraphQL.Request.Inputs.Create> {
-    Input(EditionImpression.GraphQL.Request.Inputs.Create.self) {
+extension EditionImpression.GraphQL.Schema {
+  static var create: AppInput<EditionImpression.GraphQL.Request.CreateEditionImpressionInput> {
+    Input(EditionImpression.GraphQL.Request.CreateEditionImpressionInput.self) {
       InputField("id", at: \.id)
       InputField("editionId", at: \.editionId)
       InputField("adocLength", at: \.adocLength)
@@ -85,8 +81,8 @@ extension EditionImpression.GraphQL.Schema.Inputs {
     }
   }
 
-  static var update: AppInput<EditionImpression.GraphQL.Request.Inputs.Update> {
-    Input(EditionImpression.GraphQL.Request.Inputs.Update.self) {
+  static var update: AppInput<EditionImpression.GraphQL.Request.UpdateEditionImpressionInput> {
+    Input(EditionImpression.GraphQL.Request.UpdateEditionImpressionInput.self) {
       InputField("id", at: \.id)
       InputField("editionId", at: \.editionId)
       InputField("adocLength", at: \.adocLength)
@@ -111,25 +107,25 @@ extension EditionImpression.GraphQL.Schema.Queries {
 }
 
 extension EditionImpression.GraphQL.Schema.Mutations {
-  static var create: AppField<EditionImpression, EditionImpression.GraphQL.Request.Args.Create> {
+  static var create: AppField<EditionImpression, EditionImpression.GraphQL.Request.CreateEditionImpressionArgs> {
     Field("createEditionImpression", at: Resolver.createEditionImpression) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createMany: AppField<[EditionImpression], EditionImpression.GraphQL.Request.Args.CreateMany> {
+  static var createMany: AppField<[EditionImpression], EditionImpression.GraphQL.Request.CreateEditionImpressionsArgs> {
     Field("createEditionImpression", at: Resolver.createEditionImpressions) {
       Argument("input", at: \.input)
     }
   }
 
-  static var update: AppField<EditionImpression, EditionImpression.GraphQL.Request.Args.Update> {
+  static var update: AppField<EditionImpression, EditionImpression.GraphQL.Request.UpdateEditionImpressionArgs> {
     Field("createEditionImpression", at: Resolver.updateEditionImpression) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateMany: AppField<[EditionImpression], EditionImpression.GraphQL.Request.Args.UpdateMany> {
+  static var updateMany: AppField<[EditionImpression], EditionImpression.GraphQL.Request.UpdateEditionImpressionsArgs> {
     Field("createEditionImpression", at: Resolver.updateEditionImpressions) {
       Argument("input", at: \.input)
     }
@@ -143,7 +139,7 @@ extension EditionImpression.GraphQL.Schema.Mutations {
 }
 
 extension EditionImpression {
-  convenience init(_ input: EditionImpression.GraphQL.Request.Inputs.Create) throws {
+  convenience init(_ input: EditionImpression.GraphQL.Request.CreateEditionImpressionInput) throws {
     self.init(
       id: .init(rawValue: input.id ?? UUID()),
       editionId: .init(rawValue: input.editionId),
@@ -155,7 +151,7 @@ extension EditionImpression {
     )
   }
 
-  func update(_ input: EditionImpression.GraphQL.Request.Inputs.Update) throws {
+  func update(_ input: EditionImpression.GraphQL.Request.UpdateEditionImpressionInput) throws {
     self.editionId = .init(rawValue: input.editionId)
     self.adocLength = input.adocLength
     self.paperbackSize = input.paperbackSize

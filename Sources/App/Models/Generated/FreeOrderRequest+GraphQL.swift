@@ -1,19 +1,14 @@
 // auto-generated, do not edit
 import Graphiti
-import NonEmpty
 import Vapor
 
 extension FreeOrderRequest {
   enum GraphQL {
     enum Schema {
-      enum Inputs {}
       enum Queries {}
       enum Mutations {}
     }
-    enum Request {
-      enum Inputs {}
-      enum Args {}
-    }
+    enum Request {}
   }
 }
 
@@ -38,8 +33,8 @@ extension FreeOrderRequest.GraphQL.Schema {
   }
 }
 
-extension FreeOrderRequest.GraphQL.Request.Inputs {
-  struct Create: Codable {
+extension FreeOrderRequest.GraphQL.Request {
+  struct CreateFreeOrderRequestInput: Codable {
     let id: UUID?
     let name: String
     let email: String
@@ -54,7 +49,7 @@ extension FreeOrderRequest.GraphQL.Request.Inputs {
     let source: String
   }
 
-  struct Update: Codable {
+  struct UpdateFreeOrderRequestInput: Codable {
     let id: UUID
     let name: String
     let email: String
@@ -70,27 +65,27 @@ extension FreeOrderRequest.GraphQL.Request.Inputs {
   }
 }
 
-extension FreeOrderRequest.GraphQL.Request.Args {
-  struct Create: Codable {
-    let input: FreeOrderRequest.GraphQL.Request.Inputs.Create
+extension FreeOrderRequest.GraphQL.Request {
+  struct CreateFreeOrderRequestArgs: Codable {
+    let input: FreeOrderRequest.GraphQL.Request.CreateFreeOrderRequestInput
   }
 
-  struct Update: Codable {
-    let input: FreeOrderRequest.GraphQL.Request.Inputs.Update
+  struct UpdateFreeOrderRequestArgs: Codable {
+    let input: FreeOrderRequest.GraphQL.Request.UpdateFreeOrderRequestInput
   }
 
-  struct UpdateMany: Codable {
-    let input: [FreeOrderRequest.GraphQL.Request.Inputs.Update]
+  struct CreateFreeOrderRequestsArgs: Codable {
+    let input: [FreeOrderRequest.GraphQL.Request.CreateFreeOrderRequestInput]
   }
 
-  struct CreateMany: Codable {
-    let input: [FreeOrderRequest.GraphQL.Request.Inputs.Create]
+  struct UpdateFreeOrderRequestsArgs: Codable {
+    let input: [FreeOrderRequest.GraphQL.Request.UpdateFreeOrderRequestInput]
   }
 }
 
-extension FreeOrderRequest.GraphQL.Schema.Inputs {
-  static var create: AppInput<FreeOrderRequest.GraphQL.Request.Inputs.Create> {
-    Input(FreeOrderRequest.GraphQL.Request.Inputs.Create.self) {
+extension FreeOrderRequest.GraphQL.Schema {
+  static var create: AppInput<FreeOrderRequest.GraphQL.Request.CreateFreeOrderRequestInput> {
+    Input(FreeOrderRequest.GraphQL.Request.CreateFreeOrderRequestInput.self) {
       InputField("id", at: \.id)
       InputField("name", at: \.name)
       InputField("email", at: \.email)
@@ -106,8 +101,8 @@ extension FreeOrderRequest.GraphQL.Schema.Inputs {
     }
   }
 
-  static var update: AppInput<FreeOrderRequest.GraphQL.Request.Inputs.Update> {
-    Input(FreeOrderRequest.GraphQL.Request.Inputs.Update.self) {
+  static var update: AppInput<FreeOrderRequest.GraphQL.Request.UpdateFreeOrderRequestInput> {
+    Input(FreeOrderRequest.GraphQL.Request.UpdateFreeOrderRequestInput.self) {
       InputField("id", at: \.id)
       InputField("name", at: \.name)
       InputField("email", at: \.email)
@@ -137,25 +132,25 @@ extension FreeOrderRequest.GraphQL.Schema.Queries {
 }
 
 extension FreeOrderRequest.GraphQL.Schema.Mutations {
-  static var create: AppField<FreeOrderRequest, FreeOrderRequest.GraphQL.Request.Args.Create> {
+  static var create: AppField<FreeOrderRequest, FreeOrderRequest.GraphQL.Request.CreateFreeOrderRequestArgs> {
     Field("createFreeOrderRequest", at: Resolver.createFreeOrderRequest) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createMany: AppField<[FreeOrderRequest], FreeOrderRequest.GraphQL.Request.Args.CreateMany> {
+  static var createMany: AppField<[FreeOrderRequest], FreeOrderRequest.GraphQL.Request.CreateFreeOrderRequestsArgs> {
     Field("createFreeOrderRequest", at: Resolver.createFreeOrderRequests) {
       Argument("input", at: \.input)
     }
   }
 
-  static var update: AppField<FreeOrderRequest, FreeOrderRequest.GraphQL.Request.Args.Update> {
+  static var update: AppField<FreeOrderRequest, FreeOrderRequest.GraphQL.Request.UpdateFreeOrderRequestArgs> {
     Field("createFreeOrderRequest", at: Resolver.updateFreeOrderRequest) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateMany: AppField<[FreeOrderRequest], FreeOrderRequest.GraphQL.Request.Args.UpdateMany> {
+  static var updateMany: AppField<[FreeOrderRequest], FreeOrderRequest.GraphQL.Request.UpdateFreeOrderRequestsArgs> {
     Field("createFreeOrderRequest", at: Resolver.updateFreeOrderRequests) {
       Argument("input", at: \.input)
     }
@@ -169,7 +164,7 @@ extension FreeOrderRequest.GraphQL.Schema.Mutations {
 }
 
 extension FreeOrderRequest {
-  convenience init(_ input: FreeOrderRequest.GraphQL.Request.Inputs.Create) throws {
+  convenience init(_ input: FreeOrderRequest.GraphQL.Request.CreateFreeOrderRequestInput) {
     self.init(
       id: .init(rawValue: input.id ?? UUID()),
       name: input.name,
@@ -186,7 +181,7 @@ extension FreeOrderRequest {
     )
   }
 
-  func update(_ input: FreeOrderRequest.GraphQL.Request.Inputs.Update) throws {
+  func update(_ input: FreeOrderRequest.GraphQL.Request.UpdateFreeOrderRequestInput) {
     self.name = input.name
     self.email = .init(rawValue: input.email)
     self.requestedBooks = input.requestedBooks

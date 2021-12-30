@@ -1,19 +1,14 @@
 // auto-generated, do not edit
 import Graphiti
-import NonEmpty
 import Vapor
 
 extension Document {
   enum GraphQL {
     enum Schema {
-      enum Inputs {}
       enum Queries {}
       enum Mutations {}
     }
-    enum Request {
-      enum Inputs {}
-      enum Args {}
-    }
+    enum Request {}
   }
 }
 
@@ -38,8 +33,8 @@ extension Document.GraphQL.Schema {
   }
 }
 
-extension Document.GraphQL.Request.Inputs {
-  struct Create: Codable {
+extension Document.GraphQL.Request {
+  struct CreateDocumentInput: Codable {
     let id: UUID?
     let friendId: UUID
     let altLanguageId: UUID?
@@ -54,7 +49,7 @@ extension Document.GraphQL.Request.Inputs {
     let featuredDescription: String?
   }
 
-  struct Update: Codable {
+  struct UpdateDocumentInput: Codable {
     let id: UUID
     let friendId: UUID
     let altLanguageId: UUID?
@@ -70,27 +65,27 @@ extension Document.GraphQL.Request.Inputs {
   }
 }
 
-extension Document.GraphQL.Request.Args {
-  struct Create: Codable {
-    let input: Document.GraphQL.Request.Inputs.Create
+extension Document.GraphQL.Request {
+  struct CreateDocumentArgs: Codable {
+    let input: Document.GraphQL.Request.CreateDocumentInput
   }
 
-  struct Update: Codable {
-    let input: Document.GraphQL.Request.Inputs.Update
+  struct UpdateDocumentArgs: Codable {
+    let input: Document.GraphQL.Request.UpdateDocumentInput
   }
 
-  struct UpdateMany: Codable {
-    let input: [Document.GraphQL.Request.Inputs.Update]
+  struct CreateDocumentsArgs: Codable {
+    let input: [Document.GraphQL.Request.CreateDocumentInput]
   }
 
-  struct CreateMany: Codable {
-    let input: [Document.GraphQL.Request.Inputs.Create]
+  struct UpdateDocumentsArgs: Codable {
+    let input: [Document.GraphQL.Request.UpdateDocumentInput]
   }
 }
 
-extension Document.GraphQL.Schema.Inputs {
-  static var create: AppInput<Document.GraphQL.Request.Inputs.Create> {
-    Input(Document.GraphQL.Request.Inputs.Create.self) {
+extension Document.GraphQL.Schema {
+  static var create: AppInput<Document.GraphQL.Request.CreateDocumentInput> {
+    Input(Document.GraphQL.Request.CreateDocumentInput.self) {
       InputField("id", at: \.id)
       InputField("friendId", at: \.friendId)
       InputField("altLanguageId", at: \.altLanguageId)
@@ -106,8 +101,8 @@ extension Document.GraphQL.Schema.Inputs {
     }
   }
 
-  static var update: AppInput<Document.GraphQL.Request.Inputs.Update> {
-    Input(Document.GraphQL.Request.Inputs.Update.self) {
+  static var update: AppInput<Document.GraphQL.Request.UpdateDocumentInput> {
+    Input(Document.GraphQL.Request.UpdateDocumentInput.self) {
       InputField("id", at: \.id)
       InputField("friendId", at: \.friendId)
       InputField("altLanguageId", at: \.altLanguageId)
@@ -137,25 +132,25 @@ extension Document.GraphQL.Schema.Queries {
 }
 
 extension Document.GraphQL.Schema.Mutations {
-  static var create: AppField<Document, Document.GraphQL.Request.Args.Create> {
+  static var create: AppField<Document, Document.GraphQL.Request.CreateDocumentArgs> {
     Field("createDocument", at: Resolver.createDocument) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createMany: AppField<[Document], Document.GraphQL.Request.Args.CreateMany> {
+  static var createMany: AppField<[Document], Document.GraphQL.Request.CreateDocumentsArgs> {
     Field("createDocument", at: Resolver.createDocuments) {
       Argument("input", at: \.input)
     }
   }
 
-  static var update: AppField<Document, Document.GraphQL.Request.Args.Update> {
+  static var update: AppField<Document, Document.GraphQL.Request.UpdateDocumentArgs> {
     Field("createDocument", at: Resolver.updateDocument) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateMany: AppField<[Document], Document.GraphQL.Request.Args.UpdateMany> {
+  static var updateMany: AppField<[Document], Document.GraphQL.Request.UpdateDocumentsArgs> {
     Field("createDocument", at: Resolver.updateDocuments) {
       Argument("input", at: \.input)
     }
@@ -169,7 +164,7 @@ extension Document.GraphQL.Schema.Mutations {
 }
 
 extension Document {
-  convenience init(_ input: Document.GraphQL.Request.Inputs.Create) throws {
+  convenience init(_ input: Document.GraphQL.Request.CreateDocumentInput) {
     self.init(
       id: .init(rawValue: input.id ?? UUID()),
       friendId: .init(rawValue: input.friendId),
@@ -186,7 +181,7 @@ extension Document {
     )
   }
 
-  func update(_ input: Document.GraphQL.Request.Inputs.Update) throws {
+  func update(_ input: Document.GraphQL.Request.UpdateDocumentInput) {
     self.friendId = .init(rawValue: input.friendId)
     self.altLanguageId = input.altLanguageId != nil ? .init(rawValue: input.altLanguageId!) : nil
     self.title = input.title

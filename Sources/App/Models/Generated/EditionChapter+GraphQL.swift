@@ -1,19 +1,14 @@
 // auto-generated, do not edit
 import Graphiti
-import NonEmpty
 import Vapor
 
 extension EditionChapter {
   enum GraphQL {
     enum Schema {
-      enum Inputs {}
       enum Queries {}
       enum Mutations {}
     }
-    enum Request {
-      enum Inputs {}
-      enum Args {}
-    }
+    enum Request {}
   }
 }
 
@@ -34,8 +29,8 @@ extension EditionChapter.GraphQL.Schema {
   }
 }
 
-extension EditionChapter.GraphQL.Request.Inputs {
-  struct Create: Codable {
+extension EditionChapter.GraphQL.Request {
+  struct CreateEditionChapterInput: Codable {
     let id: UUID?
     let editionId: UUID
     let order: Int
@@ -46,7 +41,7 @@ extension EditionChapter.GraphQL.Request.Inputs {
     let nonSequenceTitle: String?
   }
 
-  struct Update: Codable {
+  struct UpdateEditionChapterInput: Codable {
     let id: UUID
     let editionId: UUID
     let order: Int
@@ -58,27 +53,27 @@ extension EditionChapter.GraphQL.Request.Inputs {
   }
 }
 
-extension EditionChapter.GraphQL.Request.Args {
-  struct Create: Codable {
-    let input: EditionChapter.GraphQL.Request.Inputs.Create
+extension EditionChapter.GraphQL.Request {
+  struct CreateEditionChapterArgs: Codable {
+    let input: EditionChapter.GraphQL.Request.CreateEditionChapterInput
   }
 
-  struct Update: Codable {
-    let input: EditionChapter.GraphQL.Request.Inputs.Update
+  struct UpdateEditionChapterArgs: Codable {
+    let input: EditionChapter.GraphQL.Request.UpdateEditionChapterInput
   }
 
-  struct UpdateMany: Codable {
-    let input: [EditionChapter.GraphQL.Request.Inputs.Update]
+  struct CreateEditionChaptersArgs: Codable {
+    let input: [EditionChapter.GraphQL.Request.CreateEditionChapterInput]
   }
 
-  struct CreateMany: Codable {
-    let input: [EditionChapter.GraphQL.Request.Inputs.Create]
+  struct UpdateEditionChaptersArgs: Codable {
+    let input: [EditionChapter.GraphQL.Request.UpdateEditionChapterInput]
   }
 }
 
-extension EditionChapter.GraphQL.Schema.Inputs {
-  static var create: AppInput<EditionChapter.GraphQL.Request.Inputs.Create> {
-    Input(EditionChapter.GraphQL.Request.Inputs.Create.self) {
+extension EditionChapter.GraphQL.Schema {
+  static var create: AppInput<EditionChapter.GraphQL.Request.CreateEditionChapterInput> {
+    Input(EditionChapter.GraphQL.Request.CreateEditionChapterInput.self) {
       InputField("id", at: \.id)
       InputField("editionId", at: \.editionId)
       InputField("order", at: \.order)
@@ -90,8 +85,8 @@ extension EditionChapter.GraphQL.Schema.Inputs {
     }
   }
 
-  static var update: AppInput<EditionChapter.GraphQL.Request.Inputs.Update> {
-    Input(EditionChapter.GraphQL.Request.Inputs.Update.self) {
+  static var update: AppInput<EditionChapter.GraphQL.Request.UpdateEditionChapterInput> {
+    Input(EditionChapter.GraphQL.Request.UpdateEditionChapterInput.self) {
       InputField("id", at: \.id)
       InputField("editionId", at: \.editionId)
       InputField("order", at: \.order)
@@ -117,25 +112,25 @@ extension EditionChapter.GraphQL.Schema.Queries {
 }
 
 extension EditionChapter.GraphQL.Schema.Mutations {
-  static var create: AppField<EditionChapter, EditionChapter.GraphQL.Request.Args.Create> {
+  static var create: AppField<EditionChapter, EditionChapter.GraphQL.Request.CreateEditionChapterArgs> {
     Field("createEditionChapter", at: Resolver.createEditionChapter) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createMany: AppField<[EditionChapter], EditionChapter.GraphQL.Request.Args.CreateMany> {
+  static var createMany: AppField<[EditionChapter], EditionChapter.GraphQL.Request.CreateEditionChaptersArgs> {
     Field("createEditionChapter", at: Resolver.createEditionChapters) {
       Argument("input", at: \.input)
     }
   }
 
-  static var update: AppField<EditionChapter, EditionChapter.GraphQL.Request.Args.Update> {
+  static var update: AppField<EditionChapter, EditionChapter.GraphQL.Request.UpdateEditionChapterArgs> {
     Field("createEditionChapter", at: Resolver.updateEditionChapter) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateMany: AppField<[EditionChapter], EditionChapter.GraphQL.Request.Args.UpdateMany> {
+  static var updateMany: AppField<[EditionChapter], EditionChapter.GraphQL.Request.UpdateEditionChaptersArgs> {
     Field("createEditionChapter", at: Resolver.updateEditionChapters) {
       Argument("input", at: \.input)
     }
@@ -149,7 +144,7 @@ extension EditionChapter.GraphQL.Schema.Mutations {
 }
 
 extension EditionChapter {
-  convenience init(_ input: EditionChapter.GraphQL.Request.Inputs.Create) throws {
+  convenience init(_ input: EditionChapter.GraphQL.Request.CreateEditionChapterInput) {
     self.init(
       id: .init(rawValue: input.id ?? UUID()),
       editionId: .init(rawValue: input.editionId),
@@ -162,7 +157,7 @@ extension EditionChapter {
     )
   }
 
-  func update(_ input: EditionChapter.GraphQL.Request.Inputs.Update) throws {
+  func update(_ input: EditionChapter.GraphQL.Request.UpdateEditionChapterInput) {
     self.editionId = .init(rawValue: input.editionId)
     self.order = input.order
     self.shortHeading = input.shortHeading

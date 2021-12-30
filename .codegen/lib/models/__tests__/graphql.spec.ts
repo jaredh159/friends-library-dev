@@ -143,14 +143,10 @@ describe(`generateModelGraphQLTypes()`, () => {
       extension Thing {
         enum GraphQL {
           enum Schema {
-            enum Inputs {}
             enum Queries {}
             enum Mutations {}
           }
-          enum Request {
-            enum Inputs {}
-            enum Args {}
-          }
+          enum Request {}
         }
       }
 
@@ -176,8 +172,8 @@ describe(`generateModelGraphQLTypes()`, () => {
         }
       }
 
-      extension Thing.GraphQL.Request.Inputs {
-        struct Create: Codable {
+      extension Thing.GraphQL.Request {
+        struct CreateThingInput: Codable {
           let id: UUID?
           let name: String
           let desc: String?
@@ -193,7 +189,7 @@ describe(`generateModelGraphQLTypes()`, () => {
           let optionalSplits: [Int]?
         }
 
-        struct Update: Codable {
+        struct UpdateThingInput: Codable {
           let id: UUID
           let name: String
           let desc: String?
@@ -210,27 +206,27 @@ describe(`generateModelGraphQLTypes()`, () => {
         }
       }
 
-      extension Thing.GraphQL.Request.Args {
-        struct Create: Codable {
-          let input: Thing.GraphQL.Request.Inputs.Create
+      extension Thing.GraphQL.Request {
+        struct CreateThingArgs: Codable {
+          let input: Thing.GraphQL.Request.CreateThingInput
         }
 
-        struct Update: Codable {
-          let input: Thing.GraphQL.Request.Inputs.Update
+        struct UpdateThingArgs: Codable {
+          let input: Thing.GraphQL.Request.UpdateThingInput
         }
 
-        struct UpdateMany: Codable {
-          let input: [Thing.GraphQL.Request.Inputs.Update]
+        struct CreateThingsArgs: Codable {
+          let input: [Thing.GraphQL.Request.CreateThingInput]
         }
 
-        struct CreateMany: Codable {
-          let input: [Thing.GraphQL.Request.Inputs.Create]
+        struct UpdateThingsArgs: Codable {
+          let input: [Thing.GraphQL.Request.UpdateThingInput]
         }
       }
 
-      extension Thing.GraphQL.Schema.Inputs {
-        static var create: AppInput<Thing.GraphQL.Request.Inputs.Create> {
-          Input(Thing.GraphQL.Request.Inputs.Create.self) {
+      extension Thing.GraphQL.Schema {
+        static var create: AppInput<Thing.GraphQL.Request.CreateThingInput> {
+          Input(Thing.GraphQL.Request.CreateThingInput.self) {
             InputField("id", at: \\.id)
             InputField("name", at: \\.name)
             InputField("desc", at: \\.desc)
@@ -247,8 +243,8 @@ describe(`generateModelGraphQLTypes()`, () => {
           }
         }
 
-        static var update: AppInput<Thing.GraphQL.Request.Inputs.Update> {
-          Input(Thing.GraphQL.Request.Inputs.Update.self) {
+        static var update: AppInput<Thing.GraphQL.Request.UpdateThingInput> {
+          Input(Thing.GraphQL.Request.UpdateThingInput.self) {
             InputField("id", at: \\.id)
             InputField("name", at: \\.name)
             InputField("desc", at: \\.desc)
@@ -279,25 +275,25 @@ describe(`generateModelGraphQLTypes()`, () => {
       }
 
       extension Thing.GraphQL.Schema.Mutations {
-        static var create: AppField<Thing, Thing.GraphQL.Request.Args.Create> {
+        static var create: AppField<Thing, Thing.GraphQL.Request.CreateThingArgs> {
           Field("createThing", at: Resolver.createThing) {
             Argument("input", at: \\.input)
           }
         }
 
-        static var createMany: AppField<[Thing], Thing.GraphQL.Request.Args.CreateMany> {
+        static var createMany: AppField<[Thing], Thing.GraphQL.Request.CreateThingsArgs> {
           Field("createThing", at: Resolver.createThings) {
             Argument("input", at: \\.input)
           }
         }
 
-        static var update: AppField<Thing, Thing.GraphQL.Request.Args.Update> {
+        static var update: AppField<Thing, Thing.GraphQL.Request.UpdateThingArgs> {
           Field("createThing", at: Resolver.updateThing) {
             Argument("input", at: \\.input)
           }
         }
 
-        static var updateMany: AppField<[Thing], Thing.GraphQL.Request.Args.UpdateMany> {
+        static var updateMany: AppField<[Thing], Thing.GraphQL.Request.UpdateThingsArgs> {
           Field("createThing", at: Resolver.updateThings) {
             Argument("input", at: \\.input)
           }
@@ -311,7 +307,7 @@ describe(`generateModelGraphQLTypes()`, () => {
       }
 
       extension Thing {
-        convenience init(_ input: Thing.GraphQL.Request.Inputs.Create) throws {
+        convenience init(_ input: Thing.GraphQL.Request.CreateThingInput) throws {
           self.init(
             id: .init(rawValue: input.id ?? UUID()),
             name: input.name,
@@ -329,7 +325,7 @@ describe(`generateModelGraphQLTypes()`, () => {
           )
         }
 
-        func update(_ input: Thing.GraphQL.Request.Inputs.Update) throws {
+        func update(_ input: Thing.GraphQL.Request.UpdateThingInput) throws {
           self.name = input.name
           self.desc = input.desc
           self.fooBar = input.fooBar
@@ -348,7 +344,27 @@ describe(`generateModelGraphQLTypes()`, () => {
     `).trim();
 
     const [filepath, generated] = generateModelGraphQLTypes(model, types);
-    expect(filepath).toBe(`Sources/App/Models/Things/Thing+GraphQL.swift`);
+    expect(filepath).toBe(`Sources/App/Models/Generated/Thing+GraphQL.swift`);
     expect(generated).toBe(expected + `\n`);
+  });
+
+  it(`removes throws if no non-empty`, () => {
+    const model: Model = {
+      name: `Thing`,
+      filepath: `Sources/App/Models/Thing.swift`,
+      dbEnums: {},
+      taggedTypes: {},
+      init: [
+        { propName: `id`, hasDefault: true },
+        { propName: `name`, hasDefault: false },
+      ],
+      props: [
+        { name: `id`, type: `Id` },
+        { name: `name`, type: `String` },
+      ],
+    };
+
+    const [, generated] = generateModelGraphQLTypes(model, types);
+    expect(generated).not.toContain(` throws `);
   });
 });

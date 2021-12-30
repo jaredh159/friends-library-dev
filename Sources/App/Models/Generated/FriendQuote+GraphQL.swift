@@ -1,19 +1,14 @@
 // auto-generated, do not edit
 import Graphiti
-import NonEmpty
 import Vapor
 
 extension FriendQuote {
   enum GraphQL {
     enum Schema {
-      enum Inputs {}
       enum Queries {}
       enum Mutations {}
     }
-    enum Request {
-      enum Inputs {}
-      enum Args {}
-    }
+    enum Request {}
   }
 }
 
@@ -31,8 +26,8 @@ extension FriendQuote.GraphQL.Schema {
   }
 }
 
-extension FriendQuote.GraphQL.Request.Inputs {
-  struct Create: Codable {
+extension FriendQuote.GraphQL.Request {
+  struct CreateFriendQuoteInput: Codable {
     let id: UUID?
     let friendId: UUID
     let source: String
@@ -40,7 +35,7 @@ extension FriendQuote.GraphQL.Request.Inputs {
     let context: String?
   }
 
-  struct Update: Codable {
+  struct UpdateFriendQuoteInput: Codable {
     let id: UUID
     let friendId: UUID
     let source: String
@@ -49,27 +44,27 @@ extension FriendQuote.GraphQL.Request.Inputs {
   }
 }
 
-extension FriendQuote.GraphQL.Request.Args {
-  struct Create: Codable {
-    let input: FriendQuote.GraphQL.Request.Inputs.Create
+extension FriendQuote.GraphQL.Request {
+  struct CreateFriendQuoteArgs: Codable {
+    let input: FriendQuote.GraphQL.Request.CreateFriendQuoteInput
   }
 
-  struct Update: Codable {
-    let input: FriendQuote.GraphQL.Request.Inputs.Update
+  struct UpdateFriendQuoteArgs: Codable {
+    let input: FriendQuote.GraphQL.Request.UpdateFriendQuoteInput
   }
 
-  struct UpdateMany: Codable {
-    let input: [FriendQuote.GraphQL.Request.Inputs.Update]
+  struct CreateFriendQuotesArgs: Codable {
+    let input: [FriendQuote.GraphQL.Request.CreateFriendQuoteInput]
   }
 
-  struct CreateMany: Codable {
-    let input: [FriendQuote.GraphQL.Request.Inputs.Create]
+  struct UpdateFriendQuotesArgs: Codable {
+    let input: [FriendQuote.GraphQL.Request.UpdateFriendQuoteInput]
   }
 }
 
-extension FriendQuote.GraphQL.Schema.Inputs {
-  static var create: AppInput<FriendQuote.GraphQL.Request.Inputs.Create> {
-    Input(FriendQuote.GraphQL.Request.Inputs.Create.self) {
+extension FriendQuote.GraphQL.Schema {
+  static var create: AppInput<FriendQuote.GraphQL.Request.CreateFriendQuoteInput> {
+    Input(FriendQuote.GraphQL.Request.CreateFriendQuoteInput.self) {
       InputField("id", at: \.id)
       InputField("friendId", at: \.friendId)
       InputField("source", at: \.source)
@@ -78,8 +73,8 @@ extension FriendQuote.GraphQL.Schema.Inputs {
     }
   }
 
-  static var update: AppInput<FriendQuote.GraphQL.Request.Inputs.Update> {
-    Input(FriendQuote.GraphQL.Request.Inputs.Update.self) {
+  static var update: AppInput<FriendQuote.GraphQL.Request.UpdateFriendQuoteInput> {
+    Input(FriendQuote.GraphQL.Request.UpdateFriendQuoteInput.self) {
       InputField("id", at: \.id)
       InputField("friendId", at: \.friendId)
       InputField("source", at: \.source)
@@ -102,25 +97,25 @@ extension FriendQuote.GraphQL.Schema.Queries {
 }
 
 extension FriendQuote.GraphQL.Schema.Mutations {
-  static var create: AppField<FriendQuote, FriendQuote.GraphQL.Request.Args.Create> {
+  static var create: AppField<FriendQuote, FriendQuote.GraphQL.Request.CreateFriendQuoteArgs> {
     Field("createFriendQuote", at: Resolver.createFriendQuote) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createMany: AppField<[FriendQuote], FriendQuote.GraphQL.Request.Args.CreateMany> {
+  static var createMany: AppField<[FriendQuote], FriendQuote.GraphQL.Request.CreateFriendQuotesArgs> {
     Field("createFriendQuote", at: Resolver.createFriendQuotes) {
       Argument("input", at: \.input)
     }
   }
 
-  static var update: AppField<FriendQuote, FriendQuote.GraphQL.Request.Args.Update> {
+  static var update: AppField<FriendQuote, FriendQuote.GraphQL.Request.UpdateFriendQuoteArgs> {
     Field("createFriendQuote", at: Resolver.updateFriendQuote) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateMany: AppField<[FriendQuote], FriendQuote.GraphQL.Request.Args.UpdateMany> {
+  static var updateMany: AppField<[FriendQuote], FriendQuote.GraphQL.Request.UpdateFriendQuotesArgs> {
     Field("createFriendQuote", at: Resolver.updateFriendQuotes) {
       Argument("input", at: \.input)
     }
@@ -134,7 +129,7 @@ extension FriendQuote.GraphQL.Schema.Mutations {
 }
 
 extension FriendQuote {
-  convenience init(_ input: FriendQuote.GraphQL.Request.Inputs.Create) throws {
+  convenience init(_ input: FriendQuote.GraphQL.Request.CreateFriendQuoteInput) {
     self.init(
       id: .init(rawValue: input.id ?? UUID()),
       friendId: .init(rawValue: input.friendId),
@@ -144,7 +139,7 @@ extension FriendQuote {
     )
   }
 
-  func update(_ input: FriendQuote.GraphQL.Request.Inputs.Update) throws {
+  func update(_ input: FriendQuote.GraphQL.Request.UpdateFriendQuoteInput) {
     self.friendId = .init(rawValue: input.friendId)
     self.source = input.source
     self.order = input.order

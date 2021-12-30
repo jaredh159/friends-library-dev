@@ -6,14 +6,10 @@ import Vapor
 extension Edition {
   enum GraphQL {
     enum Schema {
-      enum Inputs {}
       enum Queries {}
       enum Mutations {}
     }
-    enum Request {
-      enum Inputs {}
-      enum Args {}
-    }
+    enum Request {}
   }
 }
 
@@ -33,8 +29,8 @@ extension Edition.GraphQL.Schema {
   }
 }
 
-extension Edition.GraphQL.Request.Inputs {
-  struct Create: Codable {
+extension Edition.GraphQL.Request {
+  struct CreateEditionInput: Codable {
     let id: UUID?
     let documentId: UUID
     let type: EditionType
@@ -44,7 +40,7 @@ extension Edition.GraphQL.Request.Inputs {
     let paperbackOverrideSize: PrintSizeVariant?
   }
 
-  struct Update: Codable {
+  struct UpdateEditionInput: Codable {
     let id: UUID
     let documentId: UUID
     let type: EditionType
@@ -55,27 +51,27 @@ extension Edition.GraphQL.Request.Inputs {
   }
 }
 
-extension Edition.GraphQL.Request.Args {
-  struct Create: Codable {
-    let input: Edition.GraphQL.Request.Inputs.Create
+extension Edition.GraphQL.Request {
+  struct CreateEditionArgs: Codable {
+    let input: Edition.GraphQL.Request.CreateEditionInput
   }
 
-  struct Update: Codable {
-    let input: Edition.GraphQL.Request.Inputs.Update
+  struct UpdateEditionArgs: Codable {
+    let input: Edition.GraphQL.Request.UpdateEditionInput
   }
 
-  struct UpdateMany: Codable {
-    let input: [Edition.GraphQL.Request.Inputs.Update]
+  struct CreateEditionsArgs: Codable {
+    let input: [Edition.GraphQL.Request.CreateEditionInput]
   }
 
-  struct CreateMany: Codable {
-    let input: [Edition.GraphQL.Request.Inputs.Create]
+  struct UpdateEditionsArgs: Codable {
+    let input: [Edition.GraphQL.Request.UpdateEditionInput]
   }
 }
 
-extension Edition.GraphQL.Schema.Inputs {
-  static var create: AppInput<Edition.GraphQL.Request.Inputs.Create> {
-    Input(Edition.GraphQL.Request.Inputs.Create.self) {
+extension Edition.GraphQL.Schema {
+  static var create: AppInput<Edition.GraphQL.Request.CreateEditionInput> {
+    Input(Edition.GraphQL.Request.CreateEditionInput.self) {
       InputField("id", at: \.id)
       InputField("documentId", at: \.documentId)
       InputField("type", at: \.type)
@@ -86,8 +82,8 @@ extension Edition.GraphQL.Schema.Inputs {
     }
   }
 
-  static var update: AppInput<Edition.GraphQL.Request.Inputs.Update> {
-    Input(Edition.GraphQL.Request.Inputs.Update.self) {
+  static var update: AppInput<Edition.GraphQL.Request.UpdateEditionInput> {
+    Input(Edition.GraphQL.Request.UpdateEditionInput.self) {
       InputField("id", at: \.id)
       InputField("documentId", at: \.documentId)
       InputField("type", at: \.type)
@@ -112,25 +108,25 @@ extension Edition.GraphQL.Schema.Queries {
 }
 
 extension Edition.GraphQL.Schema.Mutations {
-  static var create: AppField<Edition, Edition.GraphQL.Request.Args.Create> {
+  static var create: AppField<Edition, Edition.GraphQL.Request.CreateEditionArgs> {
     Field("createEdition", at: Resolver.createEdition) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createMany: AppField<[Edition], Edition.GraphQL.Request.Args.CreateMany> {
+  static var createMany: AppField<[Edition], Edition.GraphQL.Request.CreateEditionsArgs> {
     Field("createEdition", at: Resolver.createEditions) {
       Argument("input", at: \.input)
     }
   }
 
-  static var update: AppField<Edition, Edition.GraphQL.Request.Args.Update> {
+  static var update: AppField<Edition, Edition.GraphQL.Request.UpdateEditionArgs> {
     Field("createEdition", at: Resolver.updateEdition) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateMany: AppField<[Edition], Edition.GraphQL.Request.Args.UpdateMany> {
+  static var updateMany: AppField<[Edition], Edition.GraphQL.Request.UpdateEditionsArgs> {
     Field("createEdition", at: Resolver.updateEditions) {
       Argument("input", at: \.input)
     }
@@ -144,7 +140,7 @@ extension Edition.GraphQL.Schema.Mutations {
 }
 
 extension Edition {
-  convenience init(_ input: Edition.GraphQL.Request.Inputs.Create) throws {
+  convenience init(_ input: Edition.GraphQL.Request.CreateEditionInput) throws {
     self.init(
       id: .init(rawValue: input.id ?? UUID()),
       documentId: .init(rawValue: input.documentId),
@@ -156,7 +152,7 @@ extension Edition {
     )
   }
 
-  func update(_ input: Edition.GraphQL.Request.Inputs.Update) throws {
+  func update(_ input: Edition.GraphQL.Request.UpdateEditionInput) throws {
     self.documentId = .init(rawValue: input.documentId)
     self.type = input.type
     self.editor = input.editor

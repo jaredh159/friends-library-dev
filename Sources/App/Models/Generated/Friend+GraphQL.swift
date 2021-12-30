@@ -1,19 +1,14 @@
 // auto-generated, do not edit
 import Graphiti
-import NonEmpty
 import Vapor
 
 extension Friend {
   enum GraphQL {
     enum Schema {
-      enum Inputs {}
       enum Queries {}
       enum Mutations {}
     }
-    enum Request {
-      enum Inputs {}
-      enum Args {}
-    }
+    enum Request {}
   }
 }
 
@@ -35,8 +30,8 @@ extension Friend.GraphQL.Schema {
   }
 }
 
-extension Friend.GraphQL.Request.Inputs {
-  struct Create: Codable {
+extension Friend.GraphQL.Request {
+  struct CreateFriendInput: Codable {
     let id: UUID?
     let lang: Lang
     let name: String
@@ -48,7 +43,7 @@ extension Friend.GraphQL.Request.Inputs {
     let published: Date?
   }
 
-  struct Update: Codable {
+  struct UpdateFriendInput: Codable {
     let id: UUID
     let lang: Lang
     let name: String
@@ -61,27 +56,27 @@ extension Friend.GraphQL.Request.Inputs {
   }
 }
 
-extension Friend.GraphQL.Request.Args {
-  struct Create: Codable {
-    let input: Friend.GraphQL.Request.Inputs.Create
+extension Friend.GraphQL.Request {
+  struct CreateFriendArgs: Codable {
+    let input: Friend.GraphQL.Request.CreateFriendInput
   }
 
-  struct Update: Codable {
-    let input: Friend.GraphQL.Request.Inputs.Update
+  struct UpdateFriendArgs: Codable {
+    let input: Friend.GraphQL.Request.UpdateFriendInput
   }
 
-  struct UpdateMany: Codable {
-    let input: [Friend.GraphQL.Request.Inputs.Update]
+  struct CreateFriendsArgs: Codable {
+    let input: [Friend.GraphQL.Request.CreateFriendInput]
   }
 
-  struct CreateMany: Codable {
-    let input: [Friend.GraphQL.Request.Inputs.Create]
+  struct UpdateFriendsArgs: Codable {
+    let input: [Friend.GraphQL.Request.UpdateFriendInput]
   }
 }
 
-extension Friend.GraphQL.Schema.Inputs {
-  static var create: AppInput<Friend.GraphQL.Request.Inputs.Create> {
-    Input(Friend.GraphQL.Request.Inputs.Create.self) {
+extension Friend.GraphQL.Schema {
+  static var create: AppInput<Friend.GraphQL.Request.CreateFriendInput> {
+    Input(Friend.GraphQL.Request.CreateFriendInput.self) {
       InputField("id", at: \.id)
       InputField("lang", at: \.lang)
       InputField("name", at: \.name)
@@ -94,8 +89,8 @@ extension Friend.GraphQL.Schema.Inputs {
     }
   }
 
-  static var update: AppInput<Friend.GraphQL.Request.Inputs.Update> {
-    Input(Friend.GraphQL.Request.Inputs.Update.self) {
+  static var update: AppInput<Friend.GraphQL.Request.UpdateFriendInput> {
+    Input(Friend.GraphQL.Request.UpdateFriendInput.self) {
       InputField("id", at: \.id)
       InputField("lang", at: \.lang)
       InputField("name", at: \.name)
@@ -122,25 +117,25 @@ extension Friend.GraphQL.Schema.Queries {
 }
 
 extension Friend.GraphQL.Schema.Mutations {
-  static var create: AppField<Friend, Friend.GraphQL.Request.Args.Create> {
+  static var create: AppField<Friend, Friend.GraphQL.Request.CreateFriendArgs> {
     Field("createFriend", at: Resolver.createFriend) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createMany: AppField<[Friend], Friend.GraphQL.Request.Args.CreateMany> {
+  static var createMany: AppField<[Friend], Friend.GraphQL.Request.CreateFriendsArgs> {
     Field("createFriend", at: Resolver.createFriends) {
       Argument("input", at: \.input)
     }
   }
 
-  static var update: AppField<Friend, Friend.GraphQL.Request.Args.Update> {
+  static var update: AppField<Friend, Friend.GraphQL.Request.UpdateFriendArgs> {
     Field("createFriend", at: Resolver.updateFriend) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateMany: AppField<[Friend], Friend.GraphQL.Request.Args.UpdateMany> {
+  static var updateMany: AppField<[Friend], Friend.GraphQL.Request.UpdateFriendsArgs> {
     Field("createFriend", at: Resolver.updateFriends) {
       Argument("input", at: \.input)
     }
@@ -154,7 +149,7 @@ extension Friend.GraphQL.Schema.Mutations {
 }
 
 extension Friend {
-  convenience init(_ input: Friend.GraphQL.Request.Inputs.Create) throws {
+  convenience init(_ input: Friend.GraphQL.Request.CreateFriendInput) {
     self.init(
       id: .init(rawValue: input.id ?? UUID()),
       lang: input.lang,
@@ -168,7 +163,7 @@ extension Friend {
     )
   }
 
-  func update(_ input: Friend.GraphQL.Request.Inputs.Update) throws {
+  func update(_ input: Friend.GraphQL.Request.UpdateFriendInput) {
     self.lang = input.lang
     self.name = input.name
     self.slug = input.slug

@@ -1,5 +1,4 @@
 import Fluent
-// import GraphQlKit
 import XCTVapor
 import XCTVaporUtils
 
@@ -9,10 +8,10 @@ final class ArtifactProductionVersionResolverTests: AppTestCase {
 
   func testGetLatestRevision() async throws {
     let older = ArtifactProductionVersion.mockOld
-    _ = try await Current.db.createArtifactProductionVersion(older)
+    try await Current.db.createArtifactProductionVersion(older)
 
     let latest = ArtifactProductionVersion.mock
-    _ = try await Current.db.createArtifactProductionVersion(latest)
+    try await Current.db.createArtifactProductionVersion(latest)
 
     GraphQLTest(
       """

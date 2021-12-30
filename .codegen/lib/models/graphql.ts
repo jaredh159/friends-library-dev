@@ -52,12 +52,12 @@ export function generateModelGraphQLTypes(
   code = code.replace(`/* FUNC_UPDATE */`, updateSetters.join(`\n    `));
   code = code.replace(/Thing/g, model.name);
 
-  if (!code.match(/ try\?? /)) {
-    code.replace(/ throws /g, ` `);
+  if (code.match(/try\?? NonEmpty</m) === null) {
+    code = code.replace(/ throws /gm, ` `);
   }
 
-  if (!code.match(/ NonEmpty< /)) {
-    code.replace(`import NonEmpty\n`, ``);
+  if (!code.match(/ NonEmpty</)) {
+    code = code.replace(`import NonEmpty\n`, ``);
   }
 
   return [`Sources/App/Models/Generated/${model.name}+GraphQL.swift`, code + `\n`];
@@ -184,14 +184,10 @@ import Vapor
 extension Thing {
   enum GraphQL {
     enum Schema {
-      enum Inputs {}
       enum Queries {}
       enum Mutations {}
     }
-    enum Request {
-      enum Inputs {}
-      enum Args {}
-    }
+    enum Request {}
   }
 }
 
@@ -203,45 +199,45 @@ extension Thing.GraphQL.Schema {
   }
 }
 
-extension Thing.GraphQL.Request.Inputs {
-  struct Create: Codable {
+extension Thing.GraphQL.Request {
+  struct CreateThingInput: Codable {
     let id: UUID?
     /* GRAPHQL_REQUEST_INPUT_CREATE_UPDATE */
   }
 
-  struct Update: Codable {
+  struct UpdateThingInput: Codable {
     let id: UUID
     /* GRAPHQL_REQUEST_INPUT_CREATE_UPDATE */
   }
 }
 
-extension Thing.GraphQL.Request.Args {
-  struct Create: Codable {
-    let input: Thing.GraphQL.Request.Inputs.Create
+extension Thing.GraphQL.Request {
+  struct CreateThingArgs: Codable {
+    let input: Thing.GraphQL.Request.CreateThingInput
   }
 
-  struct Update: Codable {
-    let input: Thing.GraphQL.Request.Inputs.Update
+  struct UpdateThingArgs: Codable {
+    let input: Thing.GraphQL.Request.UpdateThingInput
   }
 
-  struct UpdateMany: Codable {
-    let input: [Thing.GraphQL.Request.Inputs.Update]
+  struct CreateThingsArgs: Codable {
+    let input: [Thing.GraphQL.Request.CreateThingInput]
   }
 
-  struct CreateMany: Codable {
-    let input: [Thing.GraphQL.Request.Inputs.Create]
+  struct UpdateThingsArgs: Codable {
+    let input: [Thing.GraphQL.Request.UpdateThingInput]
   }
 }
 
-extension Thing.GraphQL.Schema.Inputs {
-  static var create: AppInput<Thing.GraphQL.Request.Inputs.Create> {
-    Input(Thing.GraphQL.Request.Inputs.Create.self) {
+extension Thing.GraphQL.Schema {
+  static var create: AppInput<Thing.GraphQL.Request.CreateThingInput> {
+    Input(Thing.GraphQL.Request.CreateThingInput.self) {
       /* GRAPHQL_SCHEMA_INPUTS_CREATE_UPDATE */
     }
   }
 
-  static var update: AppInput<Thing.GraphQL.Request.Inputs.Update> {
-    Input(Thing.GraphQL.Request.Inputs.Update.self) {
+  static var update: AppInput<Thing.GraphQL.Request.UpdateThingInput> {
+    Input(Thing.GraphQL.Request.UpdateThingInput.self) {
       /* GRAPHQL_SCHEMA_INPUTS_CREATE_UPDATE */
     }
   }
@@ -260,25 +256,25 @@ extension Thing.GraphQL.Schema.Queries {
 }
 
 extension Thing.GraphQL.Schema.Mutations {
-  static var create: AppField<Thing, Thing.GraphQL.Request.Args.Create> {
+  static var create: AppField<Thing, Thing.GraphQL.Request.CreateThingArgs> {
     Field("createThing", at: Resolver.createThing) {
       Argument("input", at: \\.input)
     }
   }
 
-  static var createMany: AppField<[Thing], Thing.GraphQL.Request.Args.CreateMany> {
+  static var createMany: AppField<[Thing], Thing.GraphQL.Request.CreateThingsArgs> {
     Field("createThing", at: Resolver.createThings) {
       Argument("input", at: \\.input)
     }
   }
 
-  static var update: AppField<Thing, Thing.GraphQL.Request.Args.Update> {
+  static var update: AppField<Thing, Thing.GraphQL.Request.UpdateThingArgs> {
     Field("createThing", at: Resolver.updateThing) {
       Argument("input", at: \\.input)
     }
   }
 
-  static var updateMany: AppField<[Thing], Thing.GraphQL.Request.Args.UpdateMany> {
+  static var updateMany: AppField<[Thing], Thing.GraphQL.Request.UpdateThingsArgs> {
     Field("createThing", at: Resolver.updateThings) {
       Argument("input", at: \\.input)
     }
@@ -292,13 +288,13 @@ extension Thing.GraphQL.Schema.Mutations {
 }
 
 extension Thing {
-  convenience init(_ input: Thing.GraphQL.Request.Inputs.Create) throws {
+  convenience init(_ input: Thing.GraphQL.Request.CreateThingInput) throws {
     self.init(
       /* CONVENIENCE_INIT */
     )
   }
 
-  func update(_ input: Thing.GraphQL.Request.Inputs.Update) throws {
+  func update(_ input: Thing.GraphQL.Request.UpdateThingInput) throws {
     /* FUNC_UPDATE */
   }
 }

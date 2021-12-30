@@ -1,19 +1,14 @@
 // auto-generated, do not edit
 import Graphiti
-import NonEmpty
 import Vapor
 
 extension Order {
   enum GraphQL {
     enum Schema {
-      enum Inputs {}
       enum Queries {}
       enum Mutations {}
     }
-    enum Request {
-      enum Inputs {}
-      enum Args {}
-    }
+    enum Request {}
   }
 }
 
@@ -46,8 +41,8 @@ extension Order.GraphQL.Schema {
   }
 }
 
-extension Order.GraphQL.Request.Inputs {
-  struct Create: Codable {
+extension Order.GraphQL.Request {
+  struct CreateOrderInput: Codable {
     let id: UUID?
     let lang: Lang
     let source: Order.OrderSource
@@ -70,7 +65,7 @@ extension Order.GraphQL.Request.Inputs {
     let freeOrderRequestId: UUID?
   }
 
-  struct Update: Codable {
+  struct UpdateOrderInput: Codable {
     let id: UUID
     let lang: Lang
     let source: Order.OrderSource
@@ -94,27 +89,27 @@ extension Order.GraphQL.Request.Inputs {
   }
 }
 
-extension Order.GraphQL.Request.Args {
-  struct Create: Codable {
-    let input: Order.GraphQL.Request.Inputs.Create
+extension Order.GraphQL.Request {
+  struct CreateOrderArgs: Codable {
+    let input: Order.GraphQL.Request.CreateOrderInput
   }
 
-  struct Update: Codable {
-    let input: Order.GraphQL.Request.Inputs.Update
+  struct UpdateOrderArgs: Codable {
+    let input: Order.GraphQL.Request.UpdateOrderInput
   }
 
-  struct UpdateMany: Codable {
-    let input: [Order.GraphQL.Request.Inputs.Update]
+  struct CreateOrdersArgs: Codable {
+    let input: [Order.GraphQL.Request.CreateOrderInput]
   }
 
-  struct CreateMany: Codable {
-    let input: [Order.GraphQL.Request.Inputs.Create]
+  struct UpdateOrdersArgs: Codable {
+    let input: [Order.GraphQL.Request.UpdateOrderInput]
   }
 }
 
-extension Order.GraphQL.Schema.Inputs {
-  static var create: AppInput<Order.GraphQL.Request.Inputs.Create> {
-    Input(Order.GraphQL.Request.Inputs.Create.self) {
+extension Order.GraphQL.Schema {
+  static var create: AppInput<Order.GraphQL.Request.CreateOrderInput> {
+    Input(Order.GraphQL.Request.CreateOrderInput.self) {
       InputField("id", at: \.id)
       InputField("lang", at: \.lang)
       InputField("source", at: \.source)
@@ -138,8 +133,8 @@ extension Order.GraphQL.Schema.Inputs {
     }
   }
 
-  static var update: AppInput<Order.GraphQL.Request.Inputs.Update> {
-    Input(Order.GraphQL.Request.Inputs.Update.self) {
+  static var update: AppInput<Order.GraphQL.Request.UpdateOrderInput> {
+    Input(Order.GraphQL.Request.UpdateOrderInput.self) {
       InputField("id", at: \.id)
       InputField("lang", at: \.lang)
       InputField("source", at: \.source)
@@ -177,25 +172,25 @@ extension Order.GraphQL.Schema.Queries {
 }
 
 extension Order.GraphQL.Schema.Mutations {
-  static var create: AppField<Order, Order.GraphQL.Request.Args.Create> {
+  static var create: AppField<Order, Order.GraphQL.Request.CreateOrderArgs> {
     Field("createOrder", at: Resolver.createOrder) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createMany: AppField<[Order], Order.GraphQL.Request.Args.CreateMany> {
+  static var createMany: AppField<[Order], Order.GraphQL.Request.CreateOrdersArgs> {
     Field("createOrder", at: Resolver.createOrders) {
       Argument("input", at: \.input)
     }
   }
 
-  static var update: AppField<Order, Order.GraphQL.Request.Args.Update> {
+  static var update: AppField<Order, Order.GraphQL.Request.UpdateOrderArgs> {
     Field("createOrder", at: Resolver.updateOrder) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateMany: AppField<[Order], Order.GraphQL.Request.Args.UpdateMany> {
+  static var updateMany: AppField<[Order], Order.GraphQL.Request.UpdateOrdersArgs> {
     Field("createOrder", at: Resolver.updateOrders) {
       Argument("input", at: \.input)
     }
@@ -209,7 +204,7 @@ extension Order.GraphQL.Schema.Mutations {
 }
 
 extension Order {
-  convenience init(_ input: Order.GraphQL.Request.Inputs.Create) throws {
+  convenience init(_ input: Order.GraphQL.Request.CreateOrderInput) {
     self.init(
       id: .init(rawValue: input.id ?? UUID()),
       printJobId: input.printJobId != nil ? .init(rawValue: input.printJobId!) : nil,
@@ -234,7 +229,7 @@ extension Order {
     )
   }
 
-  func update(_ input: Order.GraphQL.Request.Inputs.Update) throws {
+  func update(_ input: Order.GraphQL.Request.UpdateOrderInput) {
     self.lang = input.lang
     self.source = input.source
     self.paymentId = .init(rawValue: input.paymentId)

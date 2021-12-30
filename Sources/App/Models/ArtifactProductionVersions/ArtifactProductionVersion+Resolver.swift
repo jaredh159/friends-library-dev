@@ -32,6 +32,7 @@ extension Resolver {
 }
 
 // below auto-generated
+
 extension Resolver {
   func getArtifactProductionVersion(
     req: Req,

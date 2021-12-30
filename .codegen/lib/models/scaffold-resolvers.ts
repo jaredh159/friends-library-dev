@@ -9,6 +9,7 @@ export function generateResolverScaffold(
 
 const RESOLVER_PATTERN = /* swift */ `
 // below auto-generated
+
 extension Resolver {
   func getThing(
     req: Req,
@@ -26,28 +27,28 @@ extension Resolver {
 
   func createThing(
     req: Req,
-    args: Thing.GraphQL.Request.Args.Create
+    args: Thing.GraphQL.Request.CreateThingArgs
   ) throws -> Future<Thing> {
     throw Abort(.notImplemented)
   }
 
   func createThings(
     req: Req,
-    args: Thing.GraphQL.Request.Args.CreateMany
+    args: Thing.GraphQL.Request.CreateThingsArgs
   ) throws -> Future<[Thing]> {
     throw Abort(.notImplemented)
   }
 
   func updateThing(
     req: Req,
-    args: Thing.GraphQL.Request.Args.Update
+    args: Thing.GraphQL.Request.UpdateThingArgs
   ) throws -> Future<Thing> {
     throw Abort(.notImplemented)
   }
 
   func updateThings(
     req: Req,
-    args: Thing.GraphQL.Request.Args.UpdateMany
+    args: Thing.GraphQL.Request.UpdateThingsArgs
   ) throws -> Future<[Thing]> {
     throw Abort(.notImplemented)
   }
