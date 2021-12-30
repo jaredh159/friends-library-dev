@@ -59,7 +59,7 @@ describe(`generateModelConformances()`, () => {
 
     const [path, code] = generateModelConformances(model, types);
     expect(code).toBe(expectedCode + `\n`);
-    expect(path).toBe(`Sources/App/Models/Thing+Conformances.swift`);
+    expect(path).toBe(`Sources/App/Models/Generated/Thing+Conformances.swift`);
   });
 
   it(`generates correct timestamp conformances`, () => {
@@ -112,6 +112,6 @@ describe(`generateModelConformances()`, () => {
 
     const [path, code] = generateModelConformances(model, types);
     expect(code).toBe(expectedCode + `\n`);
-    expect(path).toBe(`Sources/App/Models/Thing+Conformances.swift`);
+    expect(path).toBe(`Sources/App/Models/Generated/Thing+Conformances.swift`);
   });
 });

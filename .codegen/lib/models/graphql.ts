@@ -60,10 +60,7 @@ export function generateModelGraphQLTypes(
     code.replace(`import NonEmpty\n`, ``);
   }
 
-  return [
-    `Sources/App/Models/${modelDir(model.name)}${model.name}+GraphQL.swift`,
-    code + `\n`,
-  ];
+  return [`Sources/App/Models/Generated/${model.name}+GraphQL.swift`, code + `\n`];
 }
 
 function isTimestamp(name: string): boolean {

@@ -5,7 +5,7 @@ export function generateModelConformances(
   model: Model,
   globalTypes: GlobalTypes,
 ): [filepath: string, code: string] {
-  const { name, migrationNumber, filepath, props } = model;
+  const { name, migrationNumber, props } = model;
   let code = `// auto-generated, do not edit\nimport Foundation\n`;
 
   let needsIdAlias = false;
@@ -45,8 +45,7 @@ export function generateModelConformances(
     code += `extension ${name}: SoftDeletable {}\n`;
   }
 
-  const path = filepath.replace(`.swift`, `+Conformances.swift`);
-  return [path, code];
+  return [`Sources/App/Models/Generated/${model.name}+Conformances.swift`, code];
 }
 
 function pascalToSnake(str: string): string {
