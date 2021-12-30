@@ -2,18 +2,8 @@
 import Graphiti
 import Vapor
 
-extension RelatedDocument {
-  enum GraphQL {
-    enum Schema {
-      enum Queries {}
-      enum Mutations {}
-    }
-    enum Request {}
-  }
-}
-
-extension RelatedDocument.GraphQL.Schema {
-  static var type: AppType<RelatedDocument> {
+extension AppSchema {
+  static var RelatedDocumentType: AppType<RelatedDocument> {
     Type(RelatedDocument.self) {
       Field("id", at: \.id.rawValue)
       Field("description", at: \.description)
@@ -23,9 +13,7 @@ extension RelatedDocument.GraphQL.Schema {
       Field("updatedAt", at: \.updatedAt)
     }
   }
-}
 
-extension RelatedDocument.GraphQL.Request {
   struct CreateRelatedDocumentInput: Codable {
     let id: UUID?
     let description: String
@@ -39,29 +27,25 @@ extension RelatedDocument.GraphQL.Request {
     let documentId: UUID
     let parentDocumentId: UUID
   }
-}
 
-extension RelatedDocument.GraphQL.Request {
   struct CreateRelatedDocumentArgs: Codable {
-    let input: RelatedDocument.GraphQL.Request.CreateRelatedDocumentInput
+    let input: AppSchema.CreateRelatedDocumentInput
   }
 
   struct UpdateRelatedDocumentArgs: Codable {
-    let input: RelatedDocument.GraphQL.Request.UpdateRelatedDocumentInput
+    let input: AppSchema.UpdateRelatedDocumentInput
   }
 
   struct CreateRelatedDocumentsArgs: Codable {
-    let input: [RelatedDocument.GraphQL.Request.CreateRelatedDocumentInput]
+    let input: [AppSchema.CreateRelatedDocumentInput]
   }
 
   struct UpdateRelatedDocumentsArgs: Codable {
-    let input: [RelatedDocument.GraphQL.Request.UpdateRelatedDocumentInput]
+    let input: [AppSchema.UpdateRelatedDocumentInput]
   }
-}
 
-extension RelatedDocument.GraphQL.Schema {
-  static var create: AppInput<RelatedDocument.GraphQL.Request.CreateRelatedDocumentInput> {
-    Input(RelatedDocument.GraphQL.Request.CreateRelatedDocumentInput.self) {
+  static var CreateRelatedDocumentInputType: AppInput<AppSchema.CreateRelatedDocumentInput> {
+    Input(AppSchema.CreateRelatedDocumentInput.self) {
       InputField("id", at: \.id)
       InputField("description", at: \.description)
       InputField("documentId", at: \.documentId)
@@ -69,54 +53,50 @@ extension RelatedDocument.GraphQL.Schema {
     }
   }
 
-  static var update: AppInput<RelatedDocument.GraphQL.Request.UpdateRelatedDocumentInput> {
-    Input(RelatedDocument.GraphQL.Request.UpdateRelatedDocumentInput.self) {
+  static var UpdateRelatedDocumentInputType: AppInput<AppSchema.UpdateRelatedDocumentInput> {
+    Input(AppSchema.UpdateRelatedDocumentInput.self) {
       InputField("id", at: \.id)
       InputField("description", at: \.description)
       InputField("documentId", at: \.documentId)
       InputField("parentDocumentId", at: \.parentDocumentId)
     }
   }
-}
 
-extension RelatedDocument.GraphQL.Schema.Queries {
-  static var get: AppField<RelatedDocument, IdentifyEntityArgs> {
+  static var getRelatedDocument: AppField<RelatedDocument, IdentifyEntityArgs> {
     Field("getRelatedDocument", at: Resolver.getRelatedDocument) {
       Argument("id", at: \.id)
     }
   }
 
-  static var list: AppField<[RelatedDocument], NoArgs> {
+  static var getRelatedDocuments: AppField<[RelatedDocument], NoArgs> {
     Field("getRelatedDocuments", at: Resolver.getRelatedDocuments)
   }
-}
 
-extension RelatedDocument.GraphQL.Schema.Mutations {
-  static var create: AppField<RelatedDocument, RelatedDocument.GraphQL.Request.CreateRelatedDocumentArgs> {
+  static var createRelatedDocument: AppField<RelatedDocument, AppSchema.CreateRelatedDocumentArgs> {
     Field("createRelatedDocument", at: Resolver.createRelatedDocument) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createMany: AppField<[RelatedDocument], RelatedDocument.GraphQL.Request.CreateRelatedDocumentsArgs> {
-    Field("createRelatedDocument", at: Resolver.createRelatedDocuments) {
+  static var createRelatedDocuments: AppField<[RelatedDocument], AppSchema.CreateRelatedDocumentsArgs> {
+    Field("createRelatedDocuments", at: Resolver.createRelatedDocuments) {
       Argument("input", at: \.input)
     }
   }
 
-  static var update: AppField<RelatedDocument, RelatedDocument.GraphQL.Request.UpdateRelatedDocumentArgs> {
-    Field("createRelatedDocument", at: Resolver.updateRelatedDocument) {
+  static var updateRelatedDocument: AppField<RelatedDocument, AppSchema.UpdateRelatedDocumentArgs> {
+    Field("updateRelatedDocument", at: Resolver.updateRelatedDocument) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateMany: AppField<[RelatedDocument], RelatedDocument.GraphQL.Request.UpdateRelatedDocumentsArgs> {
-    Field("createRelatedDocument", at: Resolver.updateRelatedDocuments) {
+  static var updateRelatedDocuments: AppField<[RelatedDocument], AppSchema.UpdateRelatedDocumentsArgs> {
+    Field("updateRelatedDocuments", at: Resolver.updateRelatedDocuments) {
       Argument("input", at: \.input)
     }
   }
 
-  static var delete: AppField<RelatedDocument, IdentifyEntityArgs> {
+  static var deleteRelatedDocument: AppField<RelatedDocument, IdentifyEntityArgs> {
     Field("deleteRelatedDocument", at: Resolver.deleteRelatedDocument) {
       Argument("id", at: \.id)
     }
@@ -124,7 +104,7 @@ extension RelatedDocument.GraphQL.Schema.Mutations {
 }
 
 extension RelatedDocument {
-  convenience init(_ input: RelatedDocument.GraphQL.Request.CreateRelatedDocumentInput) {
+  convenience init(_ input: AppSchema.CreateRelatedDocumentInput) {
     self.init(
       id: .init(rawValue: input.id ?? UUID()),
       description: input.description,
@@ -133,7 +113,7 @@ extension RelatedDocument {
     )
   }
 
-  func update(_ input: RelatedDocument.GraphQL.Request.UpdateRelatedDocumentInput) {
+  func update(_ input: AppSchema.UpdateRelatedDocumentInput) {
     self.description = input.description
     self.documentId = .init(rawValue: input.documentId)
     self.parentDocumentId = .init(rawValue: input.parentDocumentId)

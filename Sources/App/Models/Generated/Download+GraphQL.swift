@@ -2,18 +2,8 @@
 import Graphiti
 import Vapor
 
-extension Download {
-  enum GraphQL {
-    enum Schema {
-      enum Queries {}
-      enum Mutations {}
-    }
-    enum Request {}
-  }
-}
-
-extension Download.GraphQL.Schema {
-  static var type: AppType<Download> {
+extension AppSchema {
+  static var DownloadType: AppType<Download> {
     Type(Download.self) {
       Field("id", at: \.id.rawValue)
       Field("documentId", at: \.documentId.rawValue)
@@ -38,9 +28,7 @@ extension Download.GraphQL.Schema {
       Field("createdAt", at: \.createdAt)
     }
   }
-}
 
-extension Download.GraphQL.Request {
   struct CreateDownloadInput: Codable {
     let id: UUID?
     let documentId: UUID
@@ -86,29 +74,25 @@ extension Download.GraphQL.Request {
     let latitude: String?
     let longitude: String?
   }
-}
 
-extension Download.GraphQL.Request {
   struct CreateDownloadArgs: Codable {
-    let input: Download.GraphQL.Request.CreateDownloadInput
+    let input: AppSchema.CreateDownloadInput
   }
 
   struct UpdateDownloadArgs: Codable {
-    let input: Download.GraphQL.Request.UpdateDownloadInput
+    let input: AppSchema.UpdateDownloadInput
   }
 
   struct CreateDownloadsArgs: Codable {
-    let input: [Download.GraphQL.Request.CreateDownloadInput]
+    let input: [AppSchema.CreateDownloadInput]
   }
 
   struct UpdateDownloadsArgs: Codable {
-    let input: [Download.GraphQL.Request.UpdateDownloadInput]
+    let input: [AppSchema.UpdateDownloadInput]
   }
-}
 
-extension Download.GraphQL.Schema {
-  static var create: AppInput<Download.GraphQL.Request.CreateDownloadInput> {
-    Input(Download.GraphQL.Request.CreateDownloadInput.self) {
+  static var CreateDownloadInputType: AppInput<AppSchema.CreateDownloadInput> {
+    Input(AppSchema.CreateDownloadInput.self) {
       InputField("id", at: \.id)
       InputField("documentId", at: \.documentId)
       InputField("editionType", at: \.editionType)
@@ -132,8 +116,8 @@ extension Download.GraphQL.Schema {
     }
   }
 
-  static var update: AppInput<Download.GraphQL.Request.UpdateDownloadInput> {
-    Input(Download.GraphQL.Request.UpdateDownloadInput.self) {
+  static var UpdateDownloadInputType: AppInput<AppSchema.UpdateDownloadInput> {
+    Input(AppSchema.UpdateDownloadInput.self) {
       InputField("id", at: \.id)
       InputField("documentId", at: \.documentId)
       InputField("editionType", at: \.editionType)
@@ -156,46 +140,42 @@ extension Download.GraphQL.Schema {
       InputField("longitude", at: \.longitude)
     }
   }
-}
 
-extension Download.GraphQL.Schema.Queries {
-  static var get: AppField<Download, IdentifyEntityArgs> {
+  static var getDownload: AppField<Download, IdentifyEntityArgs> {
     Field("getDownload", at: Resolver.getDownload) {
       Argument("id", at: \.id)
     }
   }
 
-  static var list: AppField<[Download], NoArgs> {
+  static var getDownloads: AppField<[Download], NoArgs> {
     Field("getDownloads", at: Resolver.getDownloads)
   }
-}
 
-extension Download.GraphQL.Schema.Mutations {
-  static var create: AppField<Download, Download.GraphQL.Request.CreateDownloadArgs> {
+  static var createDownload: AppField<Download, AppSchema.CreateDownloadArgs> {
     Field("createDownload", at: Resolver.createDownload) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createMany: AppField<[Download], Download.GraphQL.Request.CreateDownloadsArgs> {
-    Field("createDownload", at: Resolver.createDownloads) {
+  static var createDownloads: AppField<[Download], AppSchema.CreateDownloadsArgs> {
+    Field("createDownloads", at: Resolver.createDownloads) {
       Argument("input", at: \.input)
     }
   }
 
-  static var update: AppField<Download, Download.GraphQL.Request.UpdateDownloadArgs> {
-    Field("createDownload", at: Resolver.updateDownload) {
+  static var updateDownload: AppField<Download, AppSchema.UpdateDownloadArgs> {
+    Field("updateDownload", at: Resolver.updateDownload) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateMany: AppField<[Download], Download.GraphQL.Request.UpdateDownloadsArgs> {
-    Field("createDownload", at: Resolver.updateDownloads) {
+  static var updateDownloads: AppField<[Download], AppSchema.UpdateDownloadsArgs> {
+    Field("updateDownloads", at: Resolver.updateDownloads) {
       Argument("input", at: \.input)
     }
   }
 
-  static var delete: AppField<Download, IdentifyEntityArgs> {
+  static var deleteDownload: AppField<Download, IdentifyEntityArgs> {
     Field("deleteDownload", at: Resolver.deleteDownload) {
       Argument("id", at: \.id)
     }
@@ -203,7 +183,7 @@ extension Download.GraphQL.Schema.Mutations {
 }
 
 extension Download {
-  convenience init(_ input: Download.GraphQL.Request.CreateDownloadInput) {
+  convenience init(_ input: AppSchema.CreateDownloadInput) {
     self.init(
       id: .init(rawValue: input.id ?? UUID()),
       documentId: .init(rawValue: input.documentId),
@@ -228,7 +208,7 @@ extension Download {
     )
   }
 
-  func update(_ input: Download.GraphQL.Request.UpdateDownloadInput) {
+  func update(_ input: AppSchema.UpdateDownloadInput) {
     self.documentId = .init(rawValue: input.documentId)
     self.editionType = input.editionType
     self.format = input.format

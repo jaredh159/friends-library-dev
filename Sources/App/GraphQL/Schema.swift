@@ -18,19 +18,28 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   Enum(Order.OrderSource.self)
   Enum(Scope.self)
 
-  ArtifactProductionVersion.GraphQL.Schema.type
-  // ArtifactProductionVersion.GraphQL.Schema
+  AppSchema.ArtifactProductionVersionType
+  AppSchema.CreateArtifactProductionVersionInputType
 
-  Download.GraphQL.Schema.type
-  Download.GraphQL.Schema.Inputs.create
+  AppSchema.DownloadType
+  AppSchema.CreateDownloadInputType
+
+  AppSchema.TokenType
+  AppSchema.TokenScopeType
 
   Query {
-    ArtifactProductionVersion.GraphQL.Schema.Queries.get
+    Field("getLatestArtifactProductionVersion", at: Resolver.getArtifactProductionVersion)
+
+    Field("getTokenByValue", at: Resolver.getTokenByValue) {
+      Argument("value", at: \.value)
+    }
   }
 
   Mutation {
-    Download.GraphQL.Schema.Mutations.create
+    AppSchema.createDownload
+    AppSchema.createArtifactProductionVersion
   }
 
+  Types(TokenScope.self)
   // Types(OrderItem.self, TokenScope.self)
 }

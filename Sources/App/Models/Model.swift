@@ -4,7 +4,7 @@ import Tagged
 
 protocol AppModel: Codable, Equatable {}
 
-enum Children<C: AppModel> {
+enum Children<C: AppModel>: Codable {
   case notLoaded
   case loaded([C])
 }

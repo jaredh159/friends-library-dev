@@ -2,18 +2,8 @@
 import Graphiti
 import Vapor
 
-extension FriendResidence {
-  enum GraphQL {
-    enum Schema {
-      enum Queries {}
-      enum Mutations {}
-    }
-    enum Request {}
-  }
-}
-
-extension FriendResidence.GraphQL.Schema {
-  static var type: AppType<FriendResidence> {
+extension AppSchema {
+  static var FriendResidenceType: AppType<FriendResidence> {
     Type(FriendResidence.self) {
       Field("id", at: \.id.rawValue)
       Field("friendId", at: \.friendId.rawValue)
@@ -24,9 +14,7 @@ extension FriendResidence.GraphQL.Schema {
       Field("updatedAt", at: \.updatedAt)
     }
   }
-}
 
-extension FriendResidence.GraphQL.Request {
   struct CreateFriendResidenceInput: Codable {
     let id: UUID?
     let friendId: UUID
@@ -42,29 +30,25 @@ extension FriendResidence.GraphQL.Request {
     let region: String
     let duration: FriendResidence.Duration?
   }
-}
 
-extension FriendResidence.GraphQL.Request {
   struct CreateFriendResidenceArgs: Codable {
-    let input: FriendResidence.GraphQL.Request.CreateFriendResidenceInput
+    let input: AppSchema.CreateFriendResidenceInput
   }
 
   struct UpdateFriendResidenceArgs: Codable {
-    let input: FriendResidence.GraphQL.Request.UpdateFriendResidenceInput
+    let input: AppSchema.UpdateFriendResidenceInput
   }
 
   struct CreateFriendResidencesArgs: Codable {
-    let input: [FriendResidence.GraphQL.Request.CreateFriendResidenceInput]
+    let input: [AppSchema.CreateFriendResidenceInput]
   }
 
   struct UpdateFriendResidencesArgs: Codable {
-    let input: [FriendResidence.GraphQL.Request.UpdateFriendResidenceInput]
+    let input: [AppSchema.UpdateFriendResidenceInput]
   }
-}
 
-extension FriendResidence.GraphQL.Schema {
-  static var create: AppInput<FriendResidence.GraphQL.Request.CreateFriendResidenceInput> {
-    Input(FriendResidence.GraphQL.Request.CreateFriendResidenceInput.self) {
+  static var CreateFriendResidenceInputType: AppInput<AppSchema.CreateFriendResidenceInput> {
+    Input(AppSchema.CreateFriendResidenceInput.self) {
       InputField("id", at: \.id)
       InputField("friendId", at: \.friendId)
       InputField("city", at: \.city)
@@ -73,8 +57,8 @@ extension FriendResidence.GraphQL.Schema {
     }
   }
 
-  static var update: AppInput<FriendResidence.GraphQL.Request.UpdateFriendResidenceInput> {
-    Input(FriendResidence.GraphQL.Request.UpdateFriendResidenceInput.self) {
+  static var UpdateFriendResidenceInputType: AppInput<AppSchema.UpdateFriendResidenceInput> {
+    Input(AppSchema.UpdateFriendResidenceInput.self) {
       InputField("id", at: \.id)
       InputField("friendId", at: \.friendId)
       InputField("city", at: \.city)
@@ -82,46 +66,42 @@ extension FriendResidence.GraphQL.Schema {
       InputField("duration", at: \.duration)
     }
   }
-}
 
-extension FriendResidence.GraphQL.Schema.Queries {
-  static var get: AppField<FriendResidence, IdentifyEntityArgs> {
+  static var getFriendResidence: AppField<FriendResidence, IdentifyEntityArgs> {
     Field("getFriendResidence", at: Resolver.getFriendResidence) {
       Argument("id", at: \.id)
     }
   }
 
-  static var list: AppField<[FriendResidence], NoArgs> {
+  static var getFriendResidences: AppField<[FriendResidence], NoArgs> {
     Field("getFriendResidences", at: Resolver.getFriendResidences)
   }
-}
 
-extension FriendResidence.GraphQL.Schema.Mutations {
-  static var create: AppField<FriendResidence, FriendResidence.GraphQL.Request.CreateFriendResidenceArgs> {
+  static var createFriendResidence: AppField<FriendResidence, AppSchema.CreateFriendResidenceArgs> {
     Field("createFriendResidence", at: Resolver.createFriendResidence) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createMany: AppField<[FriendResidence], FriendResidence.GraphQL.Request.CreateFriendResidencesArgs> {
-    Field("createFriendResidence", at: Resolver.createFriendResidences) {
+  static var createFriendResidences: AppField<[FriendResidence], AppSchema.CreateFriendResidencesArgs> {
+    Field("createFriendResidences", at: Resolver.createFriendResidences) {
       Argument("input", at: \.input)
     }
   }
 
-  static var update: AppField<FriendResidence, FriendResidence.GraphQL.Request.UpdateFriendResidenceArgs> {
-    Field("createFriendResidence", at: Resolver.updateFriendResidence) {
+  static var updateFriendResidence: AppField<FriendResidence, AppSchema.UpdateFriendResidenceArgs> {
+    Field("updateFriendResidence", at: Resolver.updateFriendResidence) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateMany: AppField<[FriendResidence], FriendResidence.GraphQL.Request.UpdateFriendResidencesArgs> {
-    Field("createFriendResidence", at: Resolver.updateFriendResidences) {
+  static var updateFriendResidences: AppField<[FriendResidence], AppSchema.UpdateFriendResidencesArgs> {
+    Field("updateFriendResidences", at: Resolver.updateFriendResidences) {
       Argument("input", at: \.input)
     }
   }
 
-  static var delete: AppField<FriendResidence, IdentifyEntityArgs> {
+  static var deleteFriendResidence: AppField<FriendResidence, IdentifyEntityArgs> {
     Field("deleteFriendResidence", at: Resolver.deleteFriendResidence) {
       Argument("id", at: \.id)
     }
@@ -129,7 +109,7 @@ extension FriendResidence.GraphQL.Schema.Mutations {
 }
 
 extension FriendResidence {
-  convenience init(_ input: FriendResidence.GraphQL.Request.CreateFriendResidenceInput) {
+  convenience init(_ input: AppSchema.CreateFriendResidenceInput) {
     self.init(
       id: .init(rawValue: input.id ?? UUID()),
       friendId: .init(rawValue: input.friendId),
@@ -139,7 +119,7 @@ extension FriendResidence {
     )
   }
 
-  func update(_ input: FriendResidence.GraphQL.Request.UpdateFriendResidenceInput) {
+  func update(_ input: AppSchema.UpdateFriendResidenceInput) {
     self.friendId = .init(rawValue: input.friendId)
     self.city = input.city
     self.region = input.region

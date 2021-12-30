@@ -2,18 +2,8 @@
 import Graphiti
 import Vapor
 
-extension Audio {
-  enum GraphQL {
-    enum Schema {
-      enum Queries {}
-      enum Mutations {}
-    }
-    enum Request {}
-  }
-}
-
-extension Audio.GraphQL.Schema {
-  static var type: AppType<Audio> {
+extension AppSchema {
+  static var AudioType: AppType<Audio> {
     Type(Audio.self) {
       Field("id", at: \.id.rawValue)
       Field("editionId", at: \.editionId.rawValue)
@@ -29,9 +19,7 @@ extension Audio.GraphQL.Schema {
       Field("updatedAt", at: \.updatedAt)
     }
   }
-}
 
-extension Audio.GraphQL.Request {
   struct CreateAudioInput: Codable {
     let id: UUID?
     let editionId: UUID
@@ -57,29 +45,25 @@ extension Audio.GraphQL.Request {
     let externalPlaylistIdHq: Int64?
     let externalPlaylistIdLq: Int64?
   }
-}
 
-extension Audio.GraphQL.Request {
   struct CreateAudioArgs: Codable {
-    let input: Audio.GraphQL.Request.CreateAudioInput
+    let input: AppSchema.CreateAudioInput
   }
 
   struct UpdateAudioArgs: Codable {
-    let input: Audio.GraphQL.Request.UpdateAudioInput
+    let input: AppSchema.UpdateAudioInput
   }
 
   struct CreateAudiosArgs: Codable {
-    let input: [Audio.GraphQL.Request.CreateAudioInput]
+    let input: [AppSchema.CreateAudioInput]
   }
 
   struct UpdateAudiosArgs: Codable {
-    let input: [Audio.GraphQL.Request.UpdateAudioInput]
+    let input: [AppSchema.UpdateAudioInput]
   }
-}
 
-extension Audio.GraphQL.Schema {
-  static var create: AppInput<Audio.GraphQL.Request.CreateAudioInput> {
-    Input(Audio.GraphQL.Request.CreateAudioInput.self) {
+  static var CreateAudioInputType: AppInput<AppSchema.CreateAudioInput> {
+    Input(AppSchema.CreateAudioInput.self) {
       InputField("id", at: \.id)
       InputField("editionId", at: \.editionId)
       InputField("reader", at: \.reader)
@@ -93,8 +77,8 @@ extension Audio.GraphQL.Schema {
     }
   }
 
-  static var update: AppInput<Audio.GraphQL.Request.UpdateAudioInput> {
-    Input(Audio.GraphQL.Request.UpdateAudioInput.self) {
+  static var UpdateAudioInputType: AppInput<AppSchema.UpdateAudioInput> {
+    Input(AppSchema.UpdateAudioInput.self) {
       InputField("id", at: \.id)
       InputField("editionId", at: \.editionId)
       InputField("reader", at: \.reader)
@@ -107,46 +91,42 @@ extension Audio.GraphQL.Schema {
       InputField("externalPlaylistIdLq", at: \.externalPlaylistIdLq)
     }
   }
-}
 
-extension Audio.GraphQL.Schema.Queries {
-  static var get: AppField<Audio, IdentifyEntityArgs> {
+  static var getAudio: AppField<Audio, IdentifyEntityArgs> {
     Field("getAudio", at: Resolver.getAudio) {
       Argument("id", at: \.id)
     }
   }
 
-  static var list: AppField<[Audio], NoArgs> {
+  static var getAudios: AppField<[Audio], NoArgs> {
     Field("getAudios", at: Resolver.getAudios)
   }
-}
 
-extension Audio.GraphQL.Schema.Mutations {
-  static var create: AppField<Audio, Audio.GraphQL.Request.CreateAudioArgs> {
+  static var createAudio: AppField<Audio, AppSchema.CreateAudioArgs> {
     Field("createAudio", at: Resolver.createAudio) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createMany: AppField<[Audio], Audio.GraphQL.Request.CreateAudiosArgs> {
-    Field("createAudio", at: Resolver.createAudios) {
+  static var createAudios: AppField<[Audio], AppSchema.CreateAudiosArgs> {
+    Field("createAudios", at: Resolver.createAudios) {
       Argument("input", at: \.input)
     }
   }
 
-  static var update: AppField<Audio, Audio.GraphQL.Request.UpdateAudioArgs> {
-    Field("createAudio", at: Resolver.updateAudio) {
+  static var updateAudio: AppField<Audio, AppSchema.UpdateAudioArgs> {
+    Field("updateAudio", at: Resolver.updateAudio) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateMany: AppField<[Audio], Audio.GraphQL.Request.UpdateAudiosArgs> {
-    Field("createAudio", at: Resolver.updateAudios) {
+  static var updateAudios: AppField<[Audio], AppSchema.UpdateAudiosArgs> {
+    Field("updateAudios", at: Resolver.updateAudios) {
       Argument("input", at: \.input)
     }
   }
 
-  static var delete: AppField<Audio, IdentifyEntityArgs> {
+  static var deleteAudio: AppField<Audio, IdentifyEntityArgs> {
     Field("deleteAudio", at: Resolver.deleteAudio) {
       Argument("id", at: \.id)
     }
@@ -154,7 +134,7 @@ extension Audio.GraphQL.Schema.Mutations {
 }
 
 extension Audio {
-  convenience init(_ input: Audio.GraphQL.Request.CreateAudioInput) {
+  convenience init(_ input: AppSchema.CreateAudioInput) {
     self.init(
       id: .init(rawValue: input.id ?? UUID()),
       editionId: .init(rawValue: input.editionId),
@@ -169,7 +149,7 @@ extension Audio {
     )
   }
 
-  func update(_ input: Audio.GraphQL.Request.UpdateAudioInput) {
+  func update(_ input: AppSchema.UpdateAudioInput) {
     self.editionId = .init(rawValue: input.editionId)
     self.reader = input.reader
     self.isIncomplete = input.isIncomplete

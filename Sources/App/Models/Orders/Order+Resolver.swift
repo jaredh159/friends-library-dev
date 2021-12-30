@@ -133,3 +133,56 @@ extension Resolver {
   //   .flatten(on: req.eventLoop)
   // }
 }
+
+// below auto-generated
+
+extension Resolver {
+  // func getOrder(
+  //   req: Req,
+  //   args: IdentifyEntityArgs
+  // ) throws -> Future<Order> {
+  //   throw Abort(.notImplemented)
+  // }
+
+  func getOrders(
+    req: Req,
+    args: NoArgs
+  ) throws -> Future<[Order]> {
+    throw Abort(.notImplemented)
+  }
+
+  func createOrder(
+    req: Req,
+    args: AppSchema.CreateOrderArgs
+  ) throws -> Future<Order> {
+    throw Abort(.notImplemented)
+  }
+
+  func createOrders(
+    req: Req,
+    args: AppSchema.CreateOrdersArgs
+  ) throws -> Future<[Order]> {
+    throw Abort(.notImplemented)
+  }
+
+  func updateOrder(
+    req: Req,
+    args: AppSchema.UpdateOrderArgs
+  ) throws -> Future<Order> {
+    throw Abort(.notImplemented)
+  }
+
+  func updateOrders(
+    req: Req,
+    args: AppSchema.UpdateOrdersArgs
+  ) throws -> Future<[Order]> {
+    throw Abort(.notImplemented)
+  }
+
+  func deleteOrder(
+    req: Req,
+    args: IdentifyEntityArgs
+  ) throws -> Future<Order> {
+    throw Abort(.notImplemented)
+  }
+}

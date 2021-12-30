@@ -2,27 +2,15 @@
 import Graphiti
 import Vapor
 
-extension DocumentTagModel {
-  enum GraphQL {
-    enum Schema {
-      enum Queries {}
-      enum Mutations {}
-    }
-    enum Request {}
-  }
-}
-
-extension DocumentTagModel.GraphQL.Schema {
-  static var type: AppType<DocumentTagModel> {
+extension AppSchema {
+  static var DocumentTagModelType: AppType<DocumentTagModel> {
     Type(DocumentTagModel.self) {
       Field("id", at: \.id.rawValue)
       Field("slug", at: \.slug)
       Field("createdAt", at: \.createdAt)
     }
   }
-}
 
-extension DocumentTagModel.GraphQL.Request {
   struct CreateDocumentTagModelInput: Codable {
     let id: UUID?
     let slug: DocumentTag
@@ -32,80 +20,72 @@ extension DocumentTagModel.GraphQL.Request {
     let id: UUID
     let slug: DocumentTag
   }
-}
 
-extension DocumentTagModel.GraphQL.Request {
   struct CreateDocumentTagModelArgs: Codable {
-    let input: DocumentTagModel.GraphQL.Request.CreateDocumentTagModelInput
+    let input: AppSchema.CreateDocumentTagModelInput
   }
 
   struct UpdateDocumentTagModelArgs: Codable {
-    let input: DocumentTagModel.GraphQL.Request.UpdateDocumentTagModelInput
+    let input: AppSchema.UpdateDocumentTagModelInput
   }
 
   struct CreateDocumentTagModelsArgs: Codable {
-    let input: [DocumentTagModel.GraphQL.Request.CreateDocumentTagModelInput]
+    let input: [AppSchema.CreateDocumentTagModelInput]
   }
 
   struct UpdateDocumentTagModelsArgs: Codable {
-    let input: [DocumentTagModel.GraphQL.Request.UpdateDocumentTagModelInput]
+    let input: [AppSchema.UpdateDocumentTagModelInput]
   }
-}
 
-extension DocumentTagModel.GraphQL.Schema {
-  static var create: AppInput<DocumentTagModel.GraphQL.Request.CreateDocumentTagModelInput> {
-    Input(DocumentTagModel.GraphQL.Request.CreateDocumentTagModelInput.self) {
+  static var CreateDocumentTagModelInputType: AppInput<AppSchema.CreateDocumentTagModelInput> {
+    Input(AppSchema.CreateDocumentTagModelInput.self) {
       InputField("id", at: \.id)
       InputField("slug", at: \.slug)
     }
   }
 
-  static var update: AppInput<DocumentTagModel.GraphQL.Request.UpdateDocumentTagModelInput> {
-    Input(DocumentTagModel.GraphQL.Request.UpdateDocumentTagModelInput.self) {
+  static var UpdateDocumentTagModelInputType: AppInput<AppSchema.UpdateDocumentTagModelInput> {
+    Input(AppSchema.UpdateDocumentTagModelInput.self) {
       InputField("id", at: \.id)
       InputField("slug", at: \.slug)
     }
   }
-}
 
-extension DocumentTagModel.GraphQL.Schema.Queries {
-  static var get: AppField<DocumentTagModel, IdentifyEntityArgs> {
+  static var getDocumentTagModel: AppField<DocumentTagModel, IdentifyEntityArgs> {
     Field("getDocumentTagModel", at: Resolver.getDocumentTagModel) {
       Argument("id", at: \.id)
     }
   }
 
-  static var list: AppField<[DocumentTagModel], NoArgs> {
+  static var getDocumentTagModels: AppField<[DocumentTagModel], NoArgs> {
     Field("getDocumentTagModels", at: Resolver.getDocumentTagModels)
   }
-}
 
-extension DocumentTagModel.GraphQL.Schema.Mutations {
-  static var create: AppField<DocumentTagModel, DocumentTagModel.GraphQL.Request.CreateDocumentTagModelArgs> {
+  static var createDocumentTagModel: AppField<DocumentTagModel, AppSchema.CreateDocumentTagModelArgs> {
     Field("createDocumentTagModel", at: Resolver.createDocumentTagModel) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createMany: AppField<[DocumentTagModel], DocumentTagModel.GraphQL.Request.CreateDocumentTagModelsArgs> {
-    Field("createDocumentTagModel", at: Resolver.createDocumentTagModels) {
+  static var createDocumentTagModels: AppField<[DocumentTagModel], AppSchema.CreateDocumentTagModelsArgs> {
+    Field("createDocumentTagModels", at: Resolver.createDocumentTagModels) {
       Argument("input", at: \.input)
     }
   }
 
-  static var update: AppField<DocumentTagModel, DocumentTagModel.GraphQL.Request.UpdateDocumentTagModelArgs> {
-    Field("createDocumentTagModel", at: Resolver.updateDocumentTagModel) {
+  static var updateDocumentTagModel: AppField<DocumentTagModel, AppSchema.UpdateDocumentTagModelArgs> {
+    Field("updateDocumentTagModel", at: Resolver.updateDocumentTagModel) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateMany: AppField<[DocumentTagModel], DocumentTagModel.GraphQL.Request.UpdateDocumentTagModelsArgs> {
-    Field("createDocumentTagModel", at: Resolver.updateDocumentTagModels) {
+  static var updateDocumentTagModels: AppField<[DocumentTagModel], AppSchema.UpdateDocumentTagModelsArgs> {
+    Field("updateDocumentTagModels", at: Resolver.updateDocumentTagModels) {
       Argument("input", at: \.input)
     }
   }
 
-  static var delete: AppField<DocumentTagModel, IdentifyEntityArgs> {
+  static var deleteDocumentTagModel: AppField<DocumentTagModel, IdentifyEntityArgs> {
     Field("deleteDocumentTagModel", at: Resolver.deleteDocumentTagModel) {
       Argument("id", at: \.id)
     }
@@ -113,14 +93,14 @@ extension DocumentTagModel.GraphQL.Schema.Mutations {
 }
 
 extension DocumentTagModel {
-  convenience init(_ input: DocumentTagModel.GraphQL.Request.CreateDocumentTagModelInput) {
+  convenience init(_ input: AppSchema.CreateDocumentTagModelInput) {
     self.init(
       id: .init(rawValue: input.id ?? UUID()),
       slug: input.slug
     )
   }
 
-  func update(_ input: DocumentTagModel.GraphQL.Request.UpdateDocumentTagModelInput) {
+  func update(_ input: AppSchema.UpdateDocumentTagModelInput) {
     self.slug = input.slug
   }
 }

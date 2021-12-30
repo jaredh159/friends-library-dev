@@ -2,18 +2,8 @@
 import Graphiti
 import Vapor
 
-extension Isbn {
-  enum GraphQL {
-    enum Schema {
-      enum Queries {}
-      enum Mutations {}
-    }
-    enum Request {}
-  }
-}
-
-extension Isbn.GraphQL.Schema {
-  static var type: AppType<Isbn> {
+extension AppSchema {
+  static var IsbnType: AppType<Isbn> {
     Type(Isbn.self) {
       Field("id", at: \.id.rawValue)
       Field("code", at: \.code.rawValue)
@@ -22,9 +12,7 @@ extension Isbn.GraphQL.Schema {
       Field("updatedAt", at: \.updatedAt)
     }
   }
-}
 
-extension Isbn.GraphQL.Request {
   struct CreateIsbnInput: Codable {
     let id: UUID?
     let code: String
@@ -36,82 +24,74 @@ extension Isbn.GraphQL.Request {
     let code: String
     let editionId: UUID?
   }
-}
 
-extension Isbn.GraphQL.Request {
   struct CreateIsbnArgs: Codable {
-    let input: Isbn.GraphQL.Request.CreateIsbnInput
+    let input: AppSchema.CreateIsbnInput
   }
 
   struct UpdateIsbnArgs: Codable {
-    let input: Isbn.GraphQL.Request.UpdateIsbnInput
+    let input: AppSchema.UpdateIsbnInput
   }
 
   struct CreateIsbnsArgs: Codable {
-    let input: [Isbn.GraphQL.Request.CreateIsbnInput]
+    let input: [AppSchema.CreateIsbnInput]
   }
 
   struct UpdateIsbnsArgs: Codable {
-    let input: [Isbn.GraphQL.Request.UpdateIsbnInput]
+    let input: [AppSchema.UpdateIsbnInput]
   }
-}
 
-extension Isbn.GraphQL.Schema {
-  static var create: AppInput<Isbn.GraphQL.Request.CreateIsbnInput> {
-    Input(Isbn.GraphQL.Request.CreateIsbnInput.self) {
+  static var CreateIsbnInputType: AppInput<AppSchema.CreateIsbnInput> {
+    Input(AppSchema.CreateIsbnInput.self) {
       InputField("id", at: \.id)
       InputField("code", at: \.code)
       InputField("editionId", at: \.editionId)
     }
   }
 
-  static var update: AppInput<Isbn.GraphQL.Request.UpdateIsbnInput> {
-    Input(Isbn.GraphQL.Request.UpdateIsbnInput.self) {
+  static var UpdateIsbnInputType: AppInput<AppSchema.UpdateIsbnInput> {
+    Input(AppSchema.UpdateIsbnInput.self) {
       InputField("id", at: \.id)
       InputField("code", at: \.code)
       InputField("editionId", at: \.editionId)
     }
   }
-}
 
-extension Isbn.GraphQL.Schema.Queries {
-  static var get: AppField<Isbn, IdentifyEntityArgs> {
+  static var getIsbn: AppField<Isbn, IdentifyEntityArgs> {
     Field("getIsbn", at: Resolver.getIsbn) {
       Argument("id", at: \.id)
     }
   }
 
-  static var list: AppField<[Isbn], NoArgs> {
+  static var getIsbns: AppField<[Isbn], NoArgs> {
     Field("getIsbns", at: Resolver.getIsbns)
   }
-}
 
-extension Isbn.GraphQL.Schema.Mutations {
-  static var create: AppField<Isbn, Isbn.GraphQL.Request.CreateIsbnArgs> {
+  static var createIsbn: AppField<Isbn, AppSchema.CreateIsbnArgs> {
     Field("createIsbn", at: Resolver.createIsbn) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createMany: AppField<[Isbn], Isbn.GraphQL.Request.CreateIsbnsArgs> {
-    Field("createIsbn", at: Resolver.createIsbns) {
+  static var createIsbns: AppField<[Isbn], AppSchema.CreateIsbnsArgs> {
+    Field("createIsbns", at: Resolver.createIsbns) {
       Argument("input", at: \.input)
     }
   }
 
-  static var update: AppField<Isbn, Isbn.GraphQL.Request.UpdateIsbnArgs> {
-    Field("createIsbn", at: Resolver.updateIsbn) {
+  static var updateIsbn: AppField<Isbn, AppSchema.UpdateIsbnArgs> {
+    Field("updateIsbn", at: Resolver.updateIsbn) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateMany: AppField<[Isbn], Isbn.GraphQL.Request.UpdateIsbnsArgs> {
-    Field("createIsbn", at: Resolver.updateIsbns) {
+  static var updateIsbns: AppField<[Isbn], AppSchema.UpdateIsbnsArgs> {
+    Field("updateIsbns", at: Resolver.updateIsbns) {
       Argument("input", at: \.input)
     }
   }
 
-  static var delete: AppField<Isbn, IdentifyEntityArgs> {
+  static var deleteIsbn: AppField<Isbn, IdentifyEntityArgs> {
     Field("deleteIsbn", at: Resolver.deleteIsbn) {
       Argument("id", at: \.id)
     }
@@ -119,7 +99,7 @@ extension Isbn.GraphQL.Schema.Mutations {
 }
 
 extension Isbn {
-  convenience init(_ input: Isbn.GraphQL.Request.CreateIsbnInput) {
+  convenience init(_ input: AppSchema.CreateIsbnInput) {
     self.init(
       id: .init(rawValue: input.id ?? UUID()),
       code: .init(rawValue: input.code),
@@ -127,7 +107,7 @@ extension Isbn {
     )
   }
 
-  func update(_ input: Isbn.GraphQL.Request.UpdateIsbnInput) {
+  func update(_ input: AppSchema.UpdateIsbnInput) {
     self.code = .init(rawValue: input.code)
     self.editionId = input.editionId != nil ? .init(rawValue: input.editionId!) : nil
     self.updatedAt = Current.date()

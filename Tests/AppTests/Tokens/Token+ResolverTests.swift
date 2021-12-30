@@ -18,9 +18,9 @@ final class TokenResolverTests: AppTestCase {
           id
           value
           description
-          scopes {
-            scope
-          }
+          #scopes {
+            #scope
+          #}
         }
       }
       """,
@@ -28,7 +28,7 @@ final class TokenResolverTests: AppTestCase {
         "id": token.id.uuidString,
         "value": token.value.uuidString,
         "description": "test",
-        "scope": "queryOrders",
+          // "scope": "queryOrders",
       ])
     ).run(Self.app)
   }

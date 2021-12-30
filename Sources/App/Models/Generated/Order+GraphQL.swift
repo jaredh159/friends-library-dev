@@ -2,18 +2,8 @@
 import Graphiti
 import Vapor
 
-extension Order {
-  enum GraphQL {
-    enum Schema {
-      enum Queries {}
-      enum Mutations {}
-    }
-    enum Request {}
-  }
-}
-
-extension Order.GraphQL.Schema {
-  static var type: AppType<Order> {
+extension AppSchema {
+  static var OrderType: AppType<Order> {
     Type(Order.self) {
       Field("id", at: \.id.rawValue)
       Field("lang", at: \.lang)
@@ -39,9 +29,7 @@ extension Order.GraphQL.Schema {
       Field("updatedAt", at: \.updatedAt)
     }
   }
-}
 
-extension Order.GraphQL.Request {
   struct CreateOrderInput: Codable {
     let id: UUID?
     let lang: Lang
@@ -87,29 +75,25 @@ extension Order.GraphQL.Request {
     let addressCountry: String
     let freeOrderRequestId: UUID?
   }
-}
 
-extension Order.GraphQL.Request {
   struct CreateOrderArgs: Codable {
-    let input: Order.GraphQL.Request.CreateOrderInput
+    let input: AppSchema.CreateOrderInput
   }
 
   struct UpdateOrderArgs: Codable {
-    let input: Order.GraphQL.Request.UpdateOrderInput
+    let input: AppSchema.UpdateOrderInput
   }
 
   struct CreateOrdersArgs: Codable {
-    let input: [Order.GraphQL.Request.CreateOrderInput]
+    let input: [AppSchema.CreateOrderInput]
   }
 
   struct UpdateOrdersArgs: Codable {
-    let input: [Order.GraphQL.Request.UpdateOrderInput]
+    let input: [AppSchema.UpdateOrderInput]
   }
-}
 
-extension Order.GraphQL.Schema {
-  static var create: AppInput<Order.GraphQL.Request.CreateOrderInput> {
-    Input(Order.GraphQL.Request.CreateOrderInput.self) {
+  static var CreateOrderInputType: AppInput<AppSchema.CreateOrderInput> {
+    Input(AppSchema.CreateOrderInput.self) {
       InputField("id", at: \.id)
       InputField("lang", at: \.lang)
       InputField("source", at: \.source)
@@ -133,8 +117,8 @@ extension Order.GraphQL.Schema {
     }
   }
 
-  static var update: AppInput<Order.GraphQL.Request.UpdateOrderInput> {
-    Input(Order.GraphQL.Request.UpdateOrderInput.self) {
+  static var UpdateOrderInputType: AppInput<AppSchema.UpdateOrderInput> {
+    Input(AppSchema.UpdateOrderInput.self) {
       InputField("id", at: \.id)
       InputField("lang", at: \.lang)
       InputField("source", at: \.source)
@@ -157,46 +141,42 @@ extension Order.GraphQL.Schema {
       InputField("freeOrderRequestId", at: \.freeOrderRequestId)
     }
   }
-}
 
-extension Order.GraphQL.Schema.Queries {
-  static var get: AppField<Order, IdentifyEntityArgs> {
+  static var getOrder: AppField<Order, IdentifyEntityArgs> {
     Field("getOrder", at: Resolver.getOrder) {
       Argument("id", at: \.id)
     }
   }
 
-  static var list: AppField<[Order], NoArgs> {
+  static var getOrders: AppField<[Order], NoArgs> {
     Field("getOrders", at: Resolver.getOrders)
   }
-}
 
-extension Order.GraphQL.Schema.Mutations {
-  static var create: AppField<Order, Order.GraphQL.Request.CreateOrderArgs> {
+  static var createOrder: AppField<Order, AppSchema.CreateOrderArgs> {
     Field("createOrder", at: Resolver.createOrder) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createMany: AppField<[Order], Order.GraphQL.Request.CreateOrdersArgs> {
-    Field("createOrder", at: Resolver.createOrders) {
+  static var createOrders: AppField<[Order], AppSchema.CreateOrdersArgs> {
+    Field("createOrders", at: Resolver.createOrders) {
       Argument("input", at: \.input)
     }
   }
 
-  static var update: AppField<Order, Order.GraphQL.Request.UpdateOrderArgs> {
-    Field("createOrder", at: Resolver.updateOrder) {
+  static var updateOrder: AppField<Order, AppSchema.UpdateOrderArgs> {
+    Field("updateOrder", at: Resolver.updateOrder) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateMany: AppField<[Order], Order.GraphQL.Request.UpdateOrdersArgs> {
-    Field("createOrder", at: Resolver.updateOrders) {
+  static var updateOrders: AppField<[Order], AppSchema.UpdateOrdersArgs> {
+    Field("updateOrders", at: Resolver.updateOrders) {
       Argument("input", at: \.input)
     }
   }
 
-  static var delete: AppField<Order, IdentifyEntityArgs> {
+  static var deleteOrder: AppField<Order, IdentifyEntityArgs> {
     Field("deleteOrder", at: Resolver.deleteOrder) {
       Argument("id", at: \.id)
     }
@@ -204,7 +184,7 @@ extension Order.GraphQL.Schema.Mutations {
 }
 
 extension Order {
-  convenience init(_ input: Order.GraphQL.Request.CreateOrderInput) {
+  convenience init(_ input: AppSchema.CreateOrderInput) {
     self.init(
       id: .init(rawValue: input.id ?? UUID()),
       printJobId: input.printJobId != nil ? .init(rawValue: input.printJobId!) : nil,
@@ -229,7 +209,7 @@ extension Order {
     )
   }
 
-  func update(_ input: Order.GraphQL.Request.UpdateOrderInput) {
+  func update(_ input: AppSchema.UpdateOrderInput) {
     self.lang = input.lang
     self.source = input.source
     self.paymentId = .init(rawValue: input.paymentId)

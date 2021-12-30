@@ -2,18 +2,8 @@
 import Graphiti
 import Vapor
 
-extension OrderItem {
-  enum GraphQL {
-    enum Schema {
-      enum Queries {}
-      enum Mutations {}
-    }
-    enum Request {}
-  }
-}
-
-extension OrderItem.GraphQL.Schema {
-  static var type: AppType<OrderItem> {
+extension AppSchema {
+  static var OrderItemType: AppType<OrderItem> {
     Type(OrderItem.self) {
       Field("id", at: \.id.rawValue)
       Field("orderId", at: \.orderId.rawValue)
@@ -25,9 +15,7 @@ extension OrderItem.GraphQL.Schema {
       Field("createdAt", at: \.createdAt)
     }
   }
-}
 
-extension OrderItem.GraphQL.Request {
   struct CreateOrderItemInput: Codable {
     let id: UUID?
     let orderId: UUID
@@ -47,29 +35,25 @@ extension OrderItem.GraphQL.Request {
     let quantity: Int
     let unitPrice: Int
   }
-}
 
-extension OrderItem.GraphQL.Request {
   struct CreateOrderItemArgs: Codable {
-    let input: OrderItem.GraphQL.Request.CreateOrderItemInput
+    let input: AppSchema.CreateOrderItemInput
   }
 
   struct UpdateOrderItemArgs: Codable {
-    let input: OrderItem.GraphQL.Request.UpdateOrderItemInput
+    let input: AppSchema.UpdateOrderItemInput
   }
 
   struct CreateOrderItemsArgs: Codable {
-    let input: [OrderItem.GraphQL.Request.CreateOrderItemInput]
+    let input: [AppSchema.CreateOrderItemInput]
   }
 
   struct UpdateOrderItemsArgs: Codable {
-    let input: [OrderItem.GraphQL.Request.UpdateOrderItemInput]
+    let input: [AppSchema.UpdateOrderItemInput]
   }
-}
 
-extension OrderItem.GraphQL.Schema {
-  static var create: AppInput<OrderItem.GraphQL.Request.CreateOrderItemInput> {
-    Input(OrderItem.GraphQL.Request.CreateOrderItemInput.self) {
+  static var CreateOrderItemInputType: AppInput<AppSchema.CreateOrderItemInput> {
+    Input(AppSchema.CreateOrderItemInput.self) {
       InputField("id", at: \.id)
       InputField("orderId", at: \.orderId)
       InputField("documentId", at: \.documentId)
@@ -80,8 +64,8 @@ extension OrderItem.GraphQL.Schema {
     }
   }
 
-  static var update: AppInput<OrderItem.GraphQL.Request.UpdateOrderItemInput> {
-    Input(OrderItem.GraphQL.Request.UpdateOrderItemInput.self) {
+  static var UpdateOrderItemInputType: AppInput<AppSchema.UpdateOrderItemInput> {
+    Input(AppSchema.UpdateOrderItemInput.self) {
       InputField("id", at: \.id)
       InputField("orderId", at: \.orderId)
       InputField("documentId", at: \.documentId)
@@ -91,46 +75,42 @@ extension OrderItem.GraphQL.Schema {
       InputField("unitPrice", at: \.unitPrice)
     }
   }
-}
 
-extension OrderItem.GraphQL.Schema.Queries {
-  static var get: AppField<OrderItem, IdentifyEntityArgs> {
+  static var getOrderItem: AppField<OrderItem, IdentifyEntityArgs> {
     Field("getOrderItem", at: Resolver.getOrderItem) {
       Argument("id", at: \.id)
     }
   }
 
-  static var list: AppField<[OrderItem], NoArgs> {
+  static var getOrderItems: AppField<[OrderItem], NoArgs> {
     Field("getOrderItems", at: Resolver.getOrderItems)
   }
-}
 
-extension OrderItem.GraphQL.Schema.Mutations {
-  static var create: AppField<OrderItem, OrderItem.GraphQL.Request.CreateOrderItemArgs> {
+  static var createOrderItem: AppField<OrderItem, AppSchema.CreateOrderItemArgs> {
     Field("createOrderItem", at: Resolver.createOrderItem) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createMany: AppField<[OrderItem], OrderItem.GraphQL.Request.CreateOrderItemsArgs> {
-    Field("createOrderItem", at: Resolver.createOrderItems) {
+  static var createOrderItems: AppField<[OrderItem], AppSchema.CreateOrderItemsArgs> {
+    Field("createOrderItems", at: Resolver.createOrderItems) {
       Argument("input", at: \.input)
     }
   }
 
-  static var update: AppField<OrderItem, OrderItem.GraphQL.Request.UpdateOrderItemArgs> {
-    Field("createOrderItem", at: Resolver.updateOrderItem) {
+  static var updateOrderItem: AppField<OrderItem, AppSchema.UpdateOrderItemArgs> {
+    Field("updateOrderItem", at: Resolver.updateOrderItem) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateMany: AppField<[OrderItem], OrderItem.GraphQL.Request.UpdateOrderItemsArgs> {
-    Field("createOrderItem", at: Resolver.updateOrderItems) {
+  static var updateOrderItems: AppField<[OrderItem], AppSchema.UpdateOrderItemsArgs> {
+    Field("updateOrderItems", at: Resolver.updateOrderItems) {
       Argument("input", at: \.input)
     }
   }
 
-  static var delete: AppField<OrderItem, IdentifyEntityArgs> {
+  static var deleteOrderItem: AppField<OrderItem, IdentifyEntityArgs> {
     Field("deleteOrderItem", at: Resolver.deleteOrderItem) {
       Argument("id", at: \.id)
     }
@@ -138,7 +118,7 @@ extension OrderItem.GraphQL.Schema.Mutations {
 }
 
 extension OrderItem {
-  convenience init(_ input: OrderItem.GraphQL.Request.CreateOrderItemInput) {
+  convenience init(_ input: AppSchema.CreateOrderItemInput) {
     self.init(
       id: .init(rawValue: input.id ?? UUID()),
       orderId: .init(rawValue: input.orderId),
@@ -150,7 +130,7 @@ extension OrderItem {
     )
   }
 
-  func update(_ input: OrderItem.GraphQL.Request.UpdateOrderItemInput) {
+  func update(_ input: AppSchema.UpdateOrderItemInput) {
     self.orderId = .init(rawValue: input.orderId)
     self.documentId = .init(rawValue: input.documentId)
     self.editionType = input.editionType

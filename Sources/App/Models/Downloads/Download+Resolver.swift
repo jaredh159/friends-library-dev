@@ -6,7 +6,7 @@ import Vapor
 extension Resolver {
   func createDownload(
     req: Req,
-    args: Download.GraphQL.Request.CreateDownloadArgs
+    args: AppSchema.CreateDownloadArgs
   ) throws -> Future<Download> {
     try req.requirePermission(to: .mutateDownloads)
     let download = Download(args.input)
@@ -14,5 +14,51 @@ extension Resolver {
       try await Current.db.createDownload(download)
       return download
     }
+  }
+}
+
+// below auto-generated
+
+extension Resolver {
+  func getDownload(
+    req: Req,
+    args: IdentifyEntityArgs
+  ) throws -> Future<Download> {
+    throw Abort(.notImplemented)
+  }
+
+  func getDownloads(
+    req: Req,
+    args: NoArgs
+  ) throws -> Future<[Download]> {
+    throw Abort(.notImplemented)
+  }
+
+  func createDownloads(
+    req: Req,
+    args: AppSchema.CreateDownloadsArgs
+  ) throws -> Future<[Download]> {
+    throw Abort(.notImplemented)
+  }
+
+  func updateDownload(
+    req: Req,
+    args: AppSchema.UpdateDownloadArgs
+  ) throws -> Future<Download> {
+    throw Abort(.notImplemented)
+  }
+
+  func updateDownloads(
+    req: Req,
+    args: AppSchema.UpdateDownloadsArgs
+  ) throws -> Future<[Download]> {
+    throw Abort(.notImplemented)
+  }
+
+  func deleteDownload(
+    req: Req,
+    args: IdentifyEntityArgs
+  ) throws -> Future<Download> {
+    throw Abort(.notImplemented)
   }
 }

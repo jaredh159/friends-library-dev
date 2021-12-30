@@ -3,18 +3,8 @@ import Graphiti
 import NonEmpty
 import Vapor
 
-extension Edition {
-  enum GraphQL {
-    enum Schema {
-      enum Queries {}
-      enum Mutations {}
-    }
-    enum Request {}
-  }
-}
-
-extension Edition.GraphQL.Schema {
-  static var type: AppType<Edition> {
+extension AppSchema {
+  static var EditionType: AppType<Edition> {
     Type(Edition.self) {
       Field("id", at: \.id.rawValue)
       Field("documentId", at: \.documentId.rawValue)
@@ -27,9 +17,7 @@ extension Edition.GraphQL.Schema {
       Field("updatedAt", at: \.updatedAt)
     }
   }
-}
 
-extension Edition.GraphQL.Request {
   struct CreateEditionInput: Codable {
     let id: UUID?
     let documentId: UUID
@@ -49,29 +37,25 @@ extension Edition.GraphQL.Request {
     let paperbackSplits: [Int]?
     let paperbackOverrideSize: PrintSizeVariant?
   }
-}
 
-extension Edition.GraphQL.Request {
   struct CreateEditionArgs: Codable {
-    let input: Edition.GraphQL.Request.CreateEditionInput
+    let input: AppSchema.CreateEditionInput
   }
 
   struct UpdateEditionArgs: Codable {
-    let input: Edition.GraphQL.Request.UpdateEditionInput
+    let input: AppSchema.UpdateEditionInput
   }
 
   struct CreateEditionsArgs: Codable {
-    let input: [Edition.GraphQL.Request.CreateEditionInput]
+    let input: [AppSchema.CreateEditionInput]
   }
 
   struct UpdateEditionsArgs: Codable {
-    let input: [Edition.GraphQL.Request.UpdateEditionInput]
+    let input: [AppSchema.UpdateEditionInput]
   }
-}
 
-extension Edition.GraphQL.Schema {
-  static var create: AppInput<Edition.GraphQL.Request.CreateEditionInput> {
-    Input(Edition.GraphQL.Request.CreateEditionInput.self) {
+  static var CreateEditionInputType: AppInput<AppSchema.CreateEditionInput> {
+    Input(AppSchema.CreateEditionInput.self) {
       InputField("id", at: \.id)
       InputField("documentId", at: \.documentId)
       InputField("type", at: \.type)
@@ -82,8 +66,8 @@ extension Edition.GraphQL.Schema {
     }
   }
 
-  static var update: AppInput<Edition.GraphQL.Request.UpdateEditionInput> {
-    Input(Edition.GraphQL.Request.UpdateEditionInput.self) {
+  static var UpdateEditionInputType: AppInput<AppSchema.UpdateEditionInput> {
+    Input(AppSchema.UpdateEditionInput.self) {
       InputField("id", at: \.id)
       InputField("documentId", at: \.documentId)
       InputField("type", at: \.type)
@@ -93,46 +77,42 @@ extension Edition.GraphQL.Schema {
       InputField("paperbackOverrideSize", at: \.paperbackOverrideSize)
     }
   }
-}
 
-extension Edition.GraphQL.Schema.Queries {
-  static var get: AppField<Edition, IdentifyEntityArgs> {
+  static var getEdition: AppField<Edition, IdentifyEntityArgs> {
     Field("getEdition", at: Resolver.getEdition) {
       Argument("id", at: \.id)
     }
   }
 
-  static var list: AppField<[Edition], NoArgs> {
+  static var getEditions: AppField<[Edition], NoArgs> {
     Field("getEditions", at: Resolver.getEditions)
   }
-}
 
-extension Edition.GraphQL.Schema.Mutations {
-  static var create: AppField<Edition, Edition.GraphQL.Request.CreateEditionArgs> {
+  static var createEdition: AppField<Edition, AppSchema.CreateEditionArgs> {
     Field("createEdition", at: Resolver.createEdition) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createMany: AppField<[Edition], Edition.GraphQL.Request.CreateEditionsArgs> {
-    Field("createEdition", at: Resolver.createEditions) {
+  static var createEditions: AppField<[Edition], AppSchema.CreateEditionsArgs> {
+    Field("createEditions", at: Resolver.createEditions) {
       Argument("input", at: \.input)
     }
   }
 
-  static var update: AppField<Edition, Edition.GraphQL.Request.UpdateEditionArgs> {
-    Field("createEdition", at: Resolver.updateEdition) {
+  static var updateEdition: AppField<Edition, AppSchema.UpdateEditionArgs> {
+    Field("updateEdition", at: Resolver.updateEdition) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateMany: AppField<[Edition], Edition.GraphQL.Request.UpdateEditionsArgs> {
-    Field("createEdition", at: Resolver.updateEditions) {
+  static var updateEditions: AppField<[Edition], AppSchema.UpdateEditionsArgs> {
+    Field("updateEditions", at: Resolver.updateEditions) {
       Argument("input", at: \.input)
     }
   }
 
-  static var delete: AppField<Edition, IdentifyEntityArgs> {
+  static var deleteEdition: AppField<Edition, IdentifyEntityArgs> {
     Field("deleteEdition", at: Resolver.deleteEdition) {
       Argument("id", at: \.id)
     }
@@ -140,7 +120,7 @@ extension Edition.GraphQL.Schema.Mutations {
 }
 
 extension Edition {
-  convenience init(_ input: Edition.GraphQL.Request.CreateEditionInput) throws {
+  convenience init(_ input: AppSchema.CreateEditionInput) throws {
     self.init(
       id: .init(rawValue: input.id ?? UUID()),
       documentId: .init(rawValue: input.documentId),
@@ -152,7 +132,7 @@ extension Edition {
     )
   }
 
-  func update(_ input: Edition.GraphQL.Request.UpdateEditionInput) throws {
+  func update(_ input: AppSchema.UpdateEditionInput) throws {
     self.documentId = .init(rawValue: input.documentId)
     self.type = input.type
     self.editor = input.editor

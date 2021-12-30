@@ -2,27 +2,15 @@
 import Graphiti
 import Vapor
 
-extension ArtifactProductionVersion {
-  enum GraphQL {
-    enum Schema {
-      enum Queries {}
-      enum Mutations {}
-    }
-    enum Request {}
-  }
-}
-
-extension ArtifactProductionVersion.GraphQL.Schema {
-  static var type: AppType<ArtifactProductionVersion> {
+extension AppSchema {
+  static var ArtifactProductionVersionType: AppType<ArtifactProductionVersion> {
     Type(ArtifactProductionVersion.self) {
       Field("id", at: \.id.rawValue)
       Field("version", at: \.version.rawValue)
       Field("createdAt", at: \.createdAt)
     }
   }
-}
 
-extension ArtifactProductionVersion.GraphQL.Request {
   struct CreateArtifactProductionVersionInput: Codable {
     let id: UUID?
     let version: String
@@ -32,80 +20,72 @@ extension ArtifactProductionVersion.GraphQL.Request {
     let id: UUID
     let version: String
   }
-}
 
-extension ArtifactProductionVersion.GraphQL.Request {
   struct CreateArtifactProductionVersionArgs: Codable {
-    let input: ArtifactProductionVersion.GraphQL.Request.CreateArtifactProductionVersionInput
+    let input: AppSchema.CreateArtifactProductionVersionInput
   }
 
   struct UpdateArtifactProductionVersionArgs: Codable {
-    let input: ArtifactProductionVersion.GraphQL.Request.UpdateArtifactProductionVersionInput
+    let input: AppSchema.UpdateArtifactProductionVersionInput
   }
 
   struct CreateArtifactProductionVersionsArgs: Codable {
-    let input: [ArtifactProductionVersion.GraphQL.Request.CreateArtifactProductionVersionInput]
+    let input: [AppSchema.CreateArtifactProductionVersionInput]
   }
 
   struct UpdateArtifactProductionVersionsArgs: Codable {
-    let input: [ArtifactProductionVersion.GraphQL.Request.UpdateArtifactProductionVersionInput]
+    let input: [AppSchema.UpdateArtifactProductionVersionInput]
   }
-}
 
-extension ArtifactProductionVersion.GraphQL.Schema {
-  static var create: AppInput<ArtifactProductionVersion.GraphQL.Request.CreateArtifactProductionVersionInput> {
-    Input(ArtifactProductionVersion.GraphQL.Request.CreateArtifactProductionVersionInput.self) {
+  static var CreateArtifactProductionVersionInputType: AppInput<AppSchema.CreateArtifactProductionVersionInput> {
+    Input(AppSchema.CreateArtifactProductionVersionInput.self) {
       InputField("id", at: \.id)
       InputField("version", at: \.version)
     }
   }
 
-  static var update: AppInput<ArtifactProductionVersion.GraphQL.Request.UpdateArtifactProductionVersionInput> {
-    Input(ArtifactProductionVersion.GraphQL.Request.UpdateArtifactProductionVersionInput.self) {
+  static var UpdateArtifactProductionVersionInputType: AppInput<AppSchema.UpdateArtifactProductionVersionInput> {
+    Input(AppSchema.UpdateArtifactProductionVersionInput.self) {
       InputField("id", at: \.id)
       InputField("version", at: \.version)
     }
   }
-}
 
-extension ArtifactProductionVersion.GraphQL.Schema.Queries {
-  static var get: AppField<ArtifactProductionVersion, IdentifyEntityArgs> {
+  static var getArtifactProductionVersion: AppField<ArtifactProductionVersion, IdentifyEntityArgs> {
     Field("getArtifactProductionVersion", at: Resolver.getArtifactProductionVersion) {
       Argument("id", at: \.id)
     }
   }
 
-  static var list: AppField<[ArtifactProductionVersion], NoArgs> {
+  static var getArtifactProductionVersions: AppField<[ArtifactProductionVersion], NoArgs> {
     Field("getArtifactProductionVersions", at: Resolver.getArtifactProductionVersions)
   }
-}
 
-extension ArtifactProductionVersion.GraphQL.Schema.Mutations {
-  static var create: AppField<ArtifactProductionVersion, ArtifactProductionVersion.GraphQL.Request.CreateArtifactProductionVersionArgs> {
+  static var createArtifactProductionVersion: AppField<ArtifactProductionVersion, AppSchema.CreateArtifactProductionVersionArgs> {
     Field("createArtifactProductionVersion", at: Resolver.createArtifactProductionVersion) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createMany: AppField<[ArtifactProductionVersion], ArtifactProductionVersion.GraphQL.Request.CreateArtifactProductionVersionsArgs> {
-    Field("createArtifactProductionVersion", at: Resolver.createArtifactProductionVersions) {
+  static var createArtifactProductionVersions: AppField<[ArtifactProductionVersion], AppSchema.CreateArtifactProductionVersionsArgs> {
+    Field("createArtifactProductionVersions", at: Resolver.createArtifactProductionVersions) {
       Argument("input", at: \.input)
     }
   }
 
-  static var update: AppField<ArtifactProductionVersion, ArtifactProductionVersion.GraphQL.Request.UpdateArtifactProductionVersionArgs> {
-    Field("createArtifactProductionVersion", at: Resolver.updateArtifactProductionVersion) {
+  static var updateArtifactProductionVersion: AppField<ArtifactProductionVersion, AppSchema.UpdateArtifactProductionVersionArgs> {
+    Field("updateArtifactProductionVersion", at: Resolver.updateArtifactProductionVersion) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateMany: AppField<[ArtifactProductionVersion], ArtifactProductionVersion.GraphQL.Request.UpdateArtifactProductionVersionsArgs> {
-    Field("createArtifactProductionVersion", at: Resolver.updateArtifactProductionVersions) {
+  static var updateArtifactProductionVersions: AppField<[ArtifactProductionVersion], AppSchema.UpdateArtifactProductionVersionsArgs> {
+    Field("updateArtifactProductionVersions", at: Resolver.updateArtifactProductionVersions) {
       Argument("input", at: \.input)
     }
   }
 
-  static var delete: AppField<ArtifactProductionVersion, IdentifyEntityArgs> {
+  static var deleteArtifactProductionVersion: AppField<ArtifactProductionVersion, IdentifyEntityArgs> {
     Field("deleteArtifactProductionVersion", at: Resolver.deleteArtifactProductionVersion) {
       Argument("id", at: \.id)
     }
@@ -113,14 +93,14 @@ extension ArtifactProductionVersion.GraphQL.Schema.Mutations {
 }
 
 extension ArtifactProductionVersion {
-  convenience init(_ input: ArtifactProductionVersion.GraphQL.Request.CreateArtifactProductionVersionInput) {
+  convenience init(_ input: AppSchema.CreateArtifactProductionVersionInput) {
     self.init(
       id: .init(rawValue: input.id ?? UUID()),
       version: .init(rawValue: input.version)
     )
   }
 
-  func update(_ input: ArtifactProductionVersion.GraphQL.Request.UpdateArtifactProductionVersionInput) {
+  func update(_ input: AppSchema.UpdateArtifactProductionVersionInput) {
     self.version = .init(rawValue: input.version)
   }
 }

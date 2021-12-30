@@ -129,3 +129,56 @@ private func entry(_ key: String, _ value: String?) -> String {
     </p>
     """
 }
+
+// below auto-generated
+
+extension Resolver {
+  // func getFreeOrderRequest(
+  //   req: Req,
+  //   args: IdentifyEntityArgs
+  // ) throws -> Future<FreeOrderRequest> {
+  //   throw Abort(.notImplemented)
+  // }
+
+  func getFreeOrderRequests(
+    req: Req,
+    args: NoArgs
+  ) throws -> Future<[FreeOrderRequest]> {
+    throw Abort(.notImplemented)
+  }
+
+  func createFreeOrderRequest(
+    req: Req,
+    args: AppSchema.CreateFreeOrderRequestArgs
+  ) throws -> Future<FreeOrderRequest> {
+    throw Abort(.notImplemented)
+  }
+
+  func createFreeOrderRequests(
+    req: Req,
+    args: AppSchema.CreateFreeOrderRequestsArgs
+  ) throws -> Future<[FreeOrderRequest]> {
+    throw Abort(.notImplemented)
+  }
+
+  func updateFreeOrderRequest(
+    req: Req,
+    args: AppSchema.UpdateFreeOrderRequestArgs
+  ) throws -> Future<FreeOrderRequest> {
+    throw Abort(.notImplemented)
+  }
+
+  func updateFreeOrderRequests(
+    req: Req,
+    args: AppSchema.UpdateFreeOrderRequestsArgs
+  ) throws -> Future<[FreeOrderRequest]> {
+    throw Abort(.notImplemented)
+  }
+
+  func deleteFreeOrderRequest(
+    req: Req,
+    args: IdentifyEntityArgs
+  ) throws -> Future<FreeOrderRequest> {
+    throw Abort(.notImplemented)
+  }
+}
