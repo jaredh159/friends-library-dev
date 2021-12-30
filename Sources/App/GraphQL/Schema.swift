@@ -3,7 +3,7 @@ import Foundation
 import Graphiti
 import Vapor
 
-let AppSchema = try! Graphiti.Schema<Resolver, Request> {
+let appSchema = try! Graphiti.Schema<Resolver, Request> {
   Scalar(UUID.self)
   DateScalar(formatter: ISO8601DateFormatter())
 
@@ -19,7 +19,7 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
   Enum(Scope.self)
 
   ArtifactProductionVersion.GraphQL.Schema.type
-  ArtifactProductionVersion.GraphQL.Schema.Inputs.create
+  // ArtifactProductionVersion.GraphQL.Schema
 
   Download.GraphQL.Schema.type
   Download.GraphQL.Schema.Inputs.create

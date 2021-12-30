@@ -7,6 +7,8 @@ typealias AppField<FieldType, Args: Decodable> = Field<Resolver, Request, FieldT
 typealias AppType<Model: AppModel> = Type<Resolver, Request, Model>
 typealias AppInput<InputObjectType: Decodable> = Input<Resolver, Request, InputObjectType>
 
+enum AppSchema {}
+
 struct ModelsCounts: Codable {
   let downloads: Int
   let orders: Int

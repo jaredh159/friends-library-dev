@@ -10,7 +10,7 @@ extension Resolver {
 
   func createArtifactProductionVersion(
     req: Req,
-    args: ArtifactProductionVersion.GraphQL.Request.Args.Create
+    args: ArtifactProductionVersion.GraphQL.Request.CreateArtifactProductionVersionArgs
   ) throws -> Future<ArtifactProductionVersion> {
     try req.requirePermission(to: .mutateArtifactProductionVersions)
     let version = ArtifactProductionVersion(version: .init(rawValue: args.input.version))
@@ -29,50 +29,4 @@ extension Resolver {
     }
   }
 
-}
-
-// below auto-generated
-
-extension Resolver {
-  func getArtifactProductionVersion(
-    req: Req,
-    args: IdentifyEntityArgs
-  ) throws -> Future<ArtifactProductionVersion> {
-    throw Abort(.notImplemented)
-  }
-
-  func getArtifactProductionVersions(
-    req: Req,
-    args: NoArgs
-  ) throws -> Future<[ArtifactProductionVersion]> {
-    throw Abort(.notImplemented)
-  }
-
-  func createArtifactProductionVersions(
-    req: Req,
-    args: ArtifactProductionVersion.GraphQL.Request.Args.CreateMany
-  ) throws -> Future<[ArtifactProductionVersion]> {
-    throw Abort(.notImplemented)
-  }
-
-  func updateArtifactProductionVersion(
-    req: Req,
-    args: ArtifactProductionVersion.GraphQL.Request.Args.Update
-  ) throws -> Future<ArtifactProductionVersion> {
-    throw Abort(.notImplemented)
-  }
-
-  func updateArtifactProductionVersions(
-    req: Req,
-    args: ArtifactProductionVersion.GraphQL.Request.Args.UpdateMany
-  ) throws -> Future<[ArtifactProductionVersion]> {
-    throw Abort(.notImplemented)
-  }
-
-  func deleteArtifactProductionVersion(
-    req: Req,
-    args: IdentifyEntityArgs
-  ) throws -> Future<ArtifactProductionVersion> {
-    throw Abort(.notImplemented)
-  }
 }

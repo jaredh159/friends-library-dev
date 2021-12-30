@@ -6,7 +6,7 @@ import Vapor
 extension Resolver {
   func createDownload(
     req: Req,
-    args: Download.GraphQL.Request.Args.Create
+    args: Download.GraphQL.Request.CreateDownloadArgs
   ) throws -> Future<Download> {
     try req.requirePermission(to: .mutateDownloads)
     let download = Download(args.input)

@@ -27,28 +27,28 @@ extension Resolver {
 
   func createThing(
     req: Req,
-    args: Thing.GraphQL.Request.CreateThingArgs
+    args: AppSchema.CreateThingArgs
   ) throws -> Future<Thing> {
     throw Abort(.notImplemented)
   }
 
   func createThings(
     req: Req,
-    args: Thing.GraphQL.Request.CreateThingsArgs
+    args: AppSchema.CreateThingsArgs
   ) throws -> Future<[Thing]> {
     throw Abort(.notImplemented)
   }
 
   func updateThing(
     req: Req,
-    args: Thing.GraphQL.Request.UpdateThingArgs
+    args: AppSchema.UpdateThingArgs
   ) throws -> Future<Thing> {
     throw Abort(.notImplemented)
   }
 
   func updateThings(
     req: Req,
-    args: Thing.GraphQL.Request.UpdateThingsArgs
+    args: AppSchema.UpdateThingsArgs
   ) throws -> Future<[Thing]> {
     throw Abort(.notImplemented)
   }

@@ -140,18 +140,8 @@ describe(`generateModelGraphQLTypes()`, () => {
       import NonEmpty
       import Vapor
 
-      extension Thing {
-        enum GraphQL {
-          enum Schema {
-            enum Queries {}
-            enum Mutations {}
-          }
-          enum Request {}
-        }
-      }
-
-      extension Thing.GraphQL.Schema {
-        static var type: AppType<Thing> {
+      extension AppSchema {
+        static var ThingType: AppType<Thing> {
           Type(Thing.self) {
             Field("id", at: \\.id.rawValue)
             Field("name", at: \\.name)
@@ -170,9 +160,7 @@ describe(`generateModelGraphQLTypes()`, () => {
             Field("updatedAt", at: \\.updatedAt)
           }
         }
-      }
 
-      extension Thing.GraphQL.Request {
         struct CreateThingInput: Codable {
           let id: UUID?
           let name: String
@@ -204,29 +192,25 @@ describe(`generateModelGraphQLTypes()`, () => {
           let splits: [Int]
           let optionalSplits: [Int]?
         }
-      }
 
-      extension Thing.GraphQL.Request {
         struct CreateThingArgs: Codable {
-          let input: Thing.GraphQL.Request.CreateThingInput
+          let input: AppSchema.CreateThingInput
         }
 
         struct UpdateThingArgs: Codable {
-          let input: Thing.GraphQL.Request.UpdateThingInput
+          let input: AppSchema.UpdateThingInput
         }
 
         struct CreateThingsArgs: Codable {
-          let input: [Thing.GraphQL.Request.CreateThingInput]
+          let input: [AppSchema.CreateThingInput]
         }
 
         struct UpdateThingsArgs: Codable {
-          let input: [Thing.GraphQL.Request.UpdateThingInput]
+          let input: [AppSchema.UpdateThingInput]
         }
-      }
 
-      extension Thing.GraphQL.Schema {
-        static var create: AppInput<Thing.GraphQL.Request.CreateThingInput> {
-          Input(Thing.GraphQL.Request.CreateThingInput.self) {
+        static var CreateThingInputType: AppInput<AppSchema.CreateThingInput> {
+          Input(AppSchema.CreateThingInput.self) {
             InputField("id", at: \\.id)
             InputField("name", at: \\.name)
             InputField("desc", at: \\.desc)
@@ -243,8 +227,8 @@ describe(`generateModelGraphQLTypes()`, () => {
           }
         }
 
-        static var update: AppInput<Thing.GraphQL.Request.UpdateThingInput> {
-          Input(Thing.GraphQL.Request.UpdateThingInput.self) {
+        static var UpdateThingInputType: AppInput<AppSchema.UpdateThingInput> {
+          Input(AppSchema.UpdateThingInput.self) {
             InputField("id", at: \\.id)
             InputField("name", at: \\.name)
             InputField("desc", at: \\.desc)
@@ -260,46 +244,42 @@ describe(`generateModelGraphQLTypes()`, () => {
             InputField("optionalSplits", at: \\.optionalSplits)
           }
         }
-      }
 
-      extension Thing.GraphQL.Schema.Queries {
-        static var get: AppField<Thing, IdentifyEntityArgs> {
+        static var getThing: AppField<Thing, IdentifyEntityArgs> {
           Field("getThing", at: Resolver.getThing) {
             Argument("id", at: \\.id)
           }
         }
 
-        static var list: AppField<[Thing], NoArgs> {
+        static var getThings: AppField<[Thing], NoArgs> {
           Field("getThings", at: Resolver.getThings)
         }
-      }
 
-      extension Thing.GraphQL.Schema.Mutations {
-        static var create: AppField<Thing, Thing.GraphQL.Request.CreateThingArgs> {
+        static var createThing: AppField<Thing, AppSchema.CreateThingArgs> {
           Field("createThing", at: Resolver.createThing) {
             Argument("input", at: \\.input)
           }
         }
 
-        static var createMany: AppField<[Thing], Thing.GraphQL.Request.CreateThingsArgs> {
-          Field("createThing", at: Resolver.createThings) {
+        static var createThings: AppField<[Thing], AppSchema.CreateThingsArgs> {
+          Field("createThings", at: Resolver.createThings) {
             Argument("input", at: \\.input)
           }
         }
 
-        static var update: AppField<Thing, Thing.GraphQL.Request.UpdateThingArgs> {
-          Field("createThing", at: Resolver.updateThing) {
+        static var updateThing: AppField<Thing, AppSchema.UpdateThingArgs> {
+          Field("updateThing", at: Resolver.updateThing) {
             Argument("input", at: \\.input)
           }
         }
 
-        static var updateMany: AppField<[Thing], Thing.GraphQL.Request.UpdateThingsArgs> {
-          Field("createThing", at: Resolver.updateThings) {
+        static var updateThings: AppField<[Thing], AppSchema.UpdateThingsArgs> {
+          Field("updateThings", at: Resolver.updateThings) {
             Argument("input", at: \\.input)
           }
         }
 
-        static var delete: AppField<Thing, IdentifyEntityArgs> {
+        static var deleteThing: AppField<Thing, IdentifyEntityArgs> {
           Field("deleteThing", at: Resolver.deleteThing) {
             Argument("id", at: \\.id)
           }
@@ -307,7 +287,7 @@ describe(`generateModelGraphQLTypes()`, () => {
       }
 
       extension Thing {
-        convenience init(_ input: Thing.GraphQL.Request.CreateThingInput) throws {
+        convenience init(_ input: AppSchema.CreateThingInput) throws {
           self.init(
             id: .init(rawValue: input.id ?? UUID()),
             name: input.name,
@@ -325,7 +305,7 @@ describe(`generateModelGraphQLTypes()`, () => {
           )
         }
 
-        func update(_ input: Thing.GraphQL.Request.UpdateThingInput) throws {
+        func update(_ input: AppSchema.UpdateThingInput) throws {
           self.name = input.name
           self.desc = input.desc
           self.fooBar = input.fooBar

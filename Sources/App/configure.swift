@@ -30,7 +30,7 @@ public func configure(_ app: Application) throws {
 
   app
     .grouped(UserAuthenticator())
-    .register(graphQLSchema: AppSchema, withResolver: Resolver())
+    .register(graphQLSchema: appSchema, withResolver: Resolver())
 
   if app.environment == .production {
     try configureScheduledJobs(app)
