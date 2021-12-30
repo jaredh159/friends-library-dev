@@ -3,16 +3,21 @@ import Foundation
 import Graphiti
 import Vapor
 
+typealias AppField<FieldType, Args: Decodable> = Field<Resolver, Request, FieldType, Args>
+typealias AppType<Model: AppModel> = Type<Resolver, Request, Model>
+typealias AppInput<InputObjectType: Decodable> = Input<Resolver, Request, InputObjectType>
+
 struct ModelsCounts: Codable {
   let downloads: Int
   let orders: Int
   let orderItems: Int
 }
 
+struct IdentifyEntityArgs: Codable {
+  let id: UUID
+}
+
 final class Resolver {
-  struct IdentifyEntityArgs: Codable {
-    let id: UUID
-  }
 
   // this func is used by an automated hourly "up" checker, ensuring that the
   // whole API (including the db) is up and running correctly

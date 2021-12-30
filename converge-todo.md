@@ -1,17 +1,11 @@
 # Converge TODOs:
 
-- [√] - remove DuetInsertable, make it part of DuetModel
 - [ ] - scaffold repository
 - [ ] - scaffold repository tests
 - [ ] - scaffold resolver
 - [ ] - scaffold resolver tests
 - [ ] - generate .notImplemented
 - [ ] - generate assignment extensions
-- [ ] - generate graphql types
-- [√] - generate mocks
-- [√] - take care of two models that didn't get converted
-- [√] - redo insert db logic with protocol magic
-- [√] - handle timestamps with special props or protocols
 - [ ] - migrate `order_items` to store Edition.Id instead of Document.Id AND edition type
 - [ ] - fix migration 14 (insert doc tags w DB somehow... 🤔)
 
@@ -19,6 +13,16 @@
 
 ## done...
 
+- [√] - generate mocks
+- [√] - take care of two models that didn't get converted
+- [√] - redo insert db logic with protocol magic
+- [√] - handle timestamps with special props or protocols
+- [√] - generate Order.GraphQL.Inputs.create
+- [√] - generate Order.GraphQL.Schema.type
+- [√] - generate Order.GraphQL.Schema.createInput
+- [√] - generate Order.GraphQL.Args.create
+- [√] - generate convenience init (createInput)
+- [√] - remove DuetInsertable, make it part of DuetModel
 - [√] - remove force try!s in current live impl
 - [√] - separate out live/mock into sub-repos, or something else
 - [√] - change dep of live to be SQLDatabase
