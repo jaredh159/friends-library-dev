@@ -8,8 +8,8 @@ extension AppSchema {
       Field("id", at: \.id.rawValue)
       Field("value", at: \.value.rawValue)
       Field("description", at: \.description)
-      Field("scopes", at: \.scopes)
       Field("createdAt", at: \.createdAt)
+      Field("scopes", with: \.scopes)
     }
   }
 
