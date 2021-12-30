@@ -27,12 +27,14 @@ const types: GlobalTypes = {
 const model: Model = {
   name: `Thing`,
   filepath: `Sources/App/Models/Thing.swift`,
-  dbEnums: {},
+  dbEnums: { FooBar: [`foo`, `bar`], JimJam: [`jim`, `jam`] },
   taggedTypes: { Value: `UUID`, PrintJobId: `Int` },
   init: [
     { propName: `id`, hasDefault: true },
     { propName: `name`, hasDefault: false },
     { propName: `desc`, hasDefault: false },
+    { propName: `fooBar`, hasDefault: false },
+    { propName: `jimJam`, hasDefault: false },
     { propName: `value`, hasDefault: false },
     { propName: `email`, hasDefault: false },
     { propName: `price`, hasDefault: false },
@@ -43,6 +45,8 @@ const model: Model = {
     { name: `id`, type: `Id` },
     { name: `name`, type: `String` },
     { name: `desc`, type: `String?` },
+    { name: `fooBar`, type: `FooBar` },
+    { name: `jimJam`, type: `JimJam?` },
     { name: `value`, type: `Value` },
     { name: `email`, type: `EmailAddress` },
     { name: `price`, type: `Cents<Int>` },
@@ -70,6 +74,10 @@ describe(`modelTypeToGraphQLInputType()`, () => {
     [`PrintJobId?`, `Int?`],
     [`Date`, `Date`],
     [`Date?`, `Date?`],
+    [`FooBar`, `Thing.FooBar`],
+    [`FooBar?`, `Thing.FooBar?`],
+    [`JimJam`, `Thing.JimJam`],
+    [`JimJam?`, `Thing.JimJam?`],
   ];
 
   test.each(cases)(`%s -> %s`, (modelType, gqlType) => {
@@ -99,6 +107,8 @@ describe(`schemaTypeFieldPairs()`, () => {
     [`id`, `\\.id.rawValue`],
     [`name`, `\\.name`],
     [`desc`, `\\.desc`],
+    [`fooBar`, `\\.fooBar`],
+    [`jimJam`, `\\.jimJam`],
     [`value`, `\\.value.rawValue`],
     [`email`, `\\.email.rawValue`],
     [`price`, `\\.price.rawValue`],
@@ -115,6 +125,9 @@ describe(`generateModelGraphQLTypes()`, () => {
   it(`generates graphql types`, () => {
     const expected = stripIndent(/* swift */ `
       // auto-generated, do not edit
+      import Graphiti
+      import Vapor
+
       extension Thing {
         enum GraphQL {
           enum Schema {
@@ -135,6 +148,8 @@ describe(`generateModelGraphQLTypes()`, () => {
             Field("id", at: \\.id.rawValue)
             Field("name", at: \\.name)
             Field("desc", at: \\.desc)
+            Field("fooBar", at: \\.fooBar)
+            Field("jimJam", at: \\.jimJam)
             Field("value", at: \\.value.rawValue)
             Field("email", at: \\.email.rawValue)
             Field("price", at: \\.price.rawValue)
@@ -151,6 +166,8 @@ describe(`generateModelGraphQLTypes()`, () => {
           let id: UUID?
           let name: String
           let desc: String?
+          let fooBar: Thing.FooBar
+          let jimJam: Thing.JimJam?
           let value: UUID
           let email: String
           let price: Int
@@ -162,6 +179,8 @@ describe(`generateModelGraphQLTypes()`, () => {
           let id: UUID
           let name: String
           let desc: String?
+          let fooBar: Thing.FooBar
+          let jimJam: Thing.JimJam?
           let value: UUID
           let email: String
           let price: Int
@@ -194,6 +213,8 @@ describe(`generateModelGraphQLTypes()`, () => {
             InputField("id", at: \\.id)
             InputField("name", at: \\.name)
             InputField("desc", at: \\.desc)
+            InputField("fooBar", at: \\.fooBar)
+            InputField("jimJam", at: \\.jimJam)
             InputField("value", at: \\.value)
             InputField("email", at: \\.email)
             InputField("price", at: \\.price)
@@ -207,6 +228,8 @@ describe(`generateModelGraphQLTypes()`, () => {
             InputField("id", at: \\.id)
             InputField("name", at: \\.name)
             InputField("desc", at: \\.desc)
+            InputField("fooBar", at: \\.fooBar)
+            InputField("jimJam", at: \\.jimJam)
             InputField("value", at: \\.value)
             InputField("email", at: \\.email)
             InputField("price", at: \\.price)
@@ -219,7 +242,7 @@ describe(`generateModelGraphQLTypes()`, () => {
       extension Thing.GraphQL.Schema.Queries {
         static var get: AppField<Thing, IdentifyEntityArgs> {
           Field("getThing", at: Resolver.getThing) {
-            Argument("id", at: \.id)
+            Argument("id", at: \\.id)
           }
         }
 
@@ -231,31 +254,31 @@ describe(`generateModelGraphQLTypes()`, () => {
       extension Thing.GraphQL.Schema.Mutations {
         static var create: AppField<Thing, Thing.GraphQL.Request.Args.Create> {
           Field("createThing", at: Resolver.createThing) {
-            Argument("input", at: \.input)
+            Argument("input", at: \\.input)
           }
         }
 
         static var createMany: AppField<[Thing], Thing.GraphQL.Request.Args.CreateMany> {
           Field("createThing", at: Resolver.createThings) {
-            Argument("input", at: \.input)
+            Argument("input", at: \\.input)
           }
         }
 
         static var update: AppField<Thing, Thing.GraphQL.Request.Args.Update> {
           Field("createThing", at: Resolver.updateThing) {
-            Argument("input", at: \.input)
+            Argument("input", at: \\.input)
           }
         }
 
         static var updateMany: AppField<[Thing], Thing.GraphQL.Request.Args.UpdateMany> {
           Field("createThing", at: Resolver.updateThings) {
-            Argument("input", at: \.input)
+            Argument("input", at: \\.input)
           }
         }
 
         static var delete: AppField<Thing, IdentifyEntityArgs> {
           Field("deleteThing", at: Resolver.deleteThing) {
-            Argument("id", at: \.id)
+            Argument("id", at: \\.id)
           }
         }
       }
@@ -266,6 +289,8 @@ describe(`generateModelGraphQLTypes()`, () => {
             id: .init(rawValue: input.id ?? UUID()),
             name: input.name,
             desc: input.desc,
+            fooBar: input.fooBar,
+            jimJam: input.jimJam,
             value: .init(rawValue: input.value),
             email: .init(rawValue: input.email),
             price: .init(rawValue: input.price),
@@ -275,20 +300,22 @@ describe(`generateModelGraphQLTypes()`, () => {
         }
 
         func update(_ input: Thing.GraphQL.Request.Inputs.Update) {
-          self.name = input.name,
-          self.desc = input.desc,
-          self.value = .init(rawValue: input.value),
-          self.email = .init(rawValue: input.email),
-          self.price = .init(rawValue: input.price),
-          self.parentId = .init(rawValue: input.parentId),
-          self.printJobId = input.printJobId != nil ? .init(rawValue: input.printJobId!) : nil,
+          self.name = input.name
+          self.desc = input.desc
+          self.fooBar = input.fooBar
+          self.jimJam = input.jimJam
+          self.value = .init(rawValue: input.value)
+          self.email = .init(rawValue: input.email)
+          self.price = .init(rawValue: input.price)
+          self.parentId = .init(rawValue: input.parentId)
+          self.printJobId = input.printJobId != nil ? .init(rawValue: input.printJobId!) : nil
           self.updatedAt = Current.date()
         }
       }
     `).trim();
 
     const [filepath, generated] = generateModelGraphQLTypes(model, types);
-    expect(filepath).toBe(`Sources/App/Models/Thing+GraphQL.swift`);
-    expect(generated).toBe(expected);
+    expect(filepath).toBe(`Sources/App/Models/Things/Thing+GraphQL.swift`);
+    expect(generated).toBe(expected + `\n`);
   });
 });

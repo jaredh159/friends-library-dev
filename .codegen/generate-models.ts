@@ -4,6 +4,7 @@ import { sync as glob } from 'glob';
 import { extractGlobalTypes, extractModels } from './lib/models/model-attrs';
 import { generateModelConformances } from './lib/models/model-conformances';
 import { generateModelMocks } from './lib/models/model-mocks';
+import { generateModelGraphQLTypes } from './lib/models/graphql';
 
 const isDryRun = process.argv.includes(`--dry-run`);
 const appRoot = path.resolve(__dirname, `..`);
@@ -45,5 +46,16 @@ for (const model of models) {
       fs.mkdirSync(testDir);
     }
     fs.writeFileSync(`${appRoot}/${mocksPath}`, mocksCode);
+  }
+
+  const [graphqlPath, graphqlCode] = generateModelGraphQLTypes(model, globalTypes);
+  if (isDryRun) {
+    console.log(`Write to filepath: "${graphqlPath}":`);
+    console.log(`\n`);
+    console.log(graphqlCode);
+    console.log(`\n`);
+    console.log(`\n`);
+  } else {
+    fs.writeFileSync(`${appRoot}/${graphqlPath}`, graphqlCode);
   }
 }

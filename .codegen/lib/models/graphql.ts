@@ -1,5 +1,5 @@
 import { GlobalTypes, Model } from '../types';
-import stripIndent from 'strip-indent';
+import { modelDir } from './helpers';
 
 export function generateModelGraphQLTypes(
   model: Model,
@@ -49,10 +49,13 @@ export function generateModelGraphQLTypes(
     updateSetters.push(`self.updatedAt = Current.date()`);
   }
 
-  code = code.replace(`/* FUNC_UPDATE */`, updateSetters.join(`,\n    `));
+  code = code.replace(`/* FUNC_UPDATE */`, updateSetters.join(`\n    `));
   code = code.replace(/Thing/g, model.name);
 
-  return [`Sources/App/Models/${model.name}+GraphQL.swift`, code];
+  return [
+    `Sources/App/Models/${modelDir(model.name)}${model.name}+GraphQL.swift`,
+    code + `\n`,
+  ];
 }
 
 function isTimestamp(name: string): boolean {
@@ -99,6 +102,11 @@ export function modelTypeToGraphQLInputType(
     case `NonEmpty<[Int]>`:
       return `[Int]`;
   }
+
+  if (model.dbEnums[type]) {
+    return `${model.name}.${type}${opt}`;
+  }
+
   return `${type}${opt}`;
 }
 
@@ -159,6 +167,9 @@ function keyPath(
 
 const GQL_PATTERN = /* swift */ `
 // auto-generated, do not edit
+import Graphiti
+import Vapor
+
 extension Thing {
   enum GraphQL {
     enum Schema {
@@ -228,7 +239,7 @@ extension Thing.GraphQL.Schema.Inputs {
 extension Thing.GraphQL.Schema.Queries {
   static var get: AppField<Thing, IdentifyEntityArgs> {
     Field("getThing", at: Resolver.getThing) {
-      Argument("id", at: \.id)
+      Argument("id", at: \\.id)
     }
   }
 
@@ -240,31 +251,31 @@ extension Thing.GraphQL.Schema.Queries {
 extension Thing.GraphQL.Schema.Mutations {
   static var create: AppField<Thing, Thing.GraphQL.Request.Args.Create> {
     Field("createThing", at: Resolver.createThing) {
-      Argument("input", at: \.input)
+      Argument("input", at: \\.input)
     }
   }
 
   static var createMany: AppField<[Thing], Thing.GraphQL.Request.Args.CreateMany> {
     Field("createThing", at: Resolver.createThings) {
-      Argument("input", at: \.input)
+      Argument("input", at: \\.input)
     }
   }
 
   static var update: AppField<Thing, Thing.GraphQL.Request.Args.Update> {
     Field("createThing", at: Resolver.updateThing) {
-      Argument("input", at: \.input)
+      Argument("input", at: \\.input)
     }
   }
 
   static var updateMany: AppField<[Thing], Thing.GraphQL.Request.Args.UpdateMany> {
     Field("createThing", at: Resolver.updateThings) {
-      Argument("input", at: \.input)
+      Argument("input", at: \\.input)
     }
   }
 
   static var delete: AppField<Thing, IdentifyEntityArgs> {
     Field("deleteThing", at: Resolver.deleteThing) {
-      Argument("id", at: \.id)
+      Argument("id", at: \\.id)
     }
   }
 }
@@ -281,56 +292,3 @@ extension Thing {
   }
 }
 `.trim();
-
-const RESOLVER_PATTERN = /* swift */ `
-extension Resolver {
-  func getThing(
-    req: Req,
-    args: IdentifyEntityArgs
-  ) throws -> Future<Thing> {
-    throw Abort(.notImplemented)
-  }
-
-  func getThings(
-    req: Req,
-    args: NoArgs
-  ) throws -> Future<[Thing]> {
-    throw Abort(.notImplemented)
-  }
-
-  func createThing(
-    req: Req,
-    args: Thing.GraphQL.Request.Args.Create
-  ) throws -> Future<Thing> {
-    throw Abort(.notImplemented)
-  }
-
-  func createThings(
-    req: Req,
-    args: Thing.GraphQL.Request.Args.CreateMany
-  ) throws -> Future<[Thing]> {
-    throw Abort(.notImplemented)
-  }
-
-  func updateThing(
-    req: Req,
-    args: Thing.GraphQL.Request.Args.Update
-  ) throws -> Future<Thing> {
-    throw Abort(.notImplemented)
-  }
-
-  func updateThings(
-    req: Req,
-    args: Thing.GraphQL.Request.Args.UpdateMany
-  ) throws -> Future<[Thing]> {
-    throw Abort(.notImplemented)
-  }
-
-  func deleteThing(
-    req: Req,
-    args: IdentifyEntityArgs
-  ) throws -> Future<Thing> {
-    throw Abort(.notImplemented)
-  }
-}
-`;
