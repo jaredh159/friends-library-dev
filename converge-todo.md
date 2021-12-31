@@ -1,11 +1,6 @@
 # Converge TODOs:
 
-- [ ] - scaffold repository
-- [ ] - scaffold repository tests
-- [ ] - scaffold resolver
 - [ ] - scaffold resolver tests
-- [ ] - generate .notImplemented
-- [ ] - generate assignment extensions
 - [ ] - migrate `order_items` to store Edition.Id instead of Document.Id AND edition type
 - [ ] - fix migration 14 (insert doc tags w DB somehow... 🤔)
 
@@ -13,6 +8,8 @@
 
 ## done...
 
+- [√] - scaffold repository
+- [√] - scaffold resolver
 - [√] - generate mocks
 - [√] - take care of two models that didn't get converted
 - [√] - redo insert db logic with protocol magic

@@ -15,30 +15,6 @@ struct OrderRepository {
   func getOrdersByPrintJobStatus(_ status: Order.PrintJobStatus) async throws -> [Order] {
     try await select(where: (Order[.printJobStatus], .equals, .enum(status)))
   }
-
-  // func updateOrder(_ input: UpdateOrderInput) async throws -> Order {
-  //   if input.printJobStatus == nil && input.printJobId == nil {
-  //     return try await find(.init(rawValue: input.id))
-  //   }
-
-  //   var setPairs: [String: Postgres.Data] = [
-  //     Order[.updatedAt]: .currentTimestamp
-  //   ]
-
-  //   if let status = input.printJobStatus {
-  //     setPairs[Order[.printJobStatus]] = .enum(status)
-  //   }
-
-  //   if let printJobId = input.printJobId {
-  //     setPairs[Order[.printJobId]] = .int(printJobId)
-  //   }
-
-  //   return try await updateReturning(
-  //     Order.self,
-  //     set: setPairs,
-  //     where: (Order[.id], .equals, .uuid(input.id))
-  //   ).firstOrThrowNotFound()
-  // }
 }
 
 struct MockOrderRepository {
@@ -47,17 +23,6 @@ struct MockOrderRepository {
   func getOrdersByPrintJobStatus(_ status: Order.PrintJobStatus) async throws -> [Order] {
     try await select(where: { $0.printJobStatus == status })
   }
-
-  // func updateOrder(_ input: UpdateOrderInput) async throws -> Order {
-  //   let order = try db.find(.init(rawValue: input.id), in: \.orders)
-  //   if let printJobId = input.printJobId {
-  //     order.printJobId = .init(rawValue: printJobId)
-  //   }
-  //   if let printJobStatus = input.printJobStatus {
-  //     order.printJobStatus = printJobStatus
-  //   }
-  //   return order
-  // }
 }
 
 /// extensions
