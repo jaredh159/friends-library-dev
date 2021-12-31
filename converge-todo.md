@@ -1,6 +1,5 @@
 # Converge TODOs:
 
-- [ ] - scaffold resolver tests
 - [ ] - migrate `order_items` to store Edition.Id instead of Document.Id AND edition type
 - [ ] - fix migration 14 (insert doc tags w DB somehow... 🤔)
 
@@ -8,6 +7,7 @@
 
 ## done...
 
+- [√] - scaffold resolver tests
 - [√] - scaffold repository
 - [√] - scaffold resolver
 - [√] - generate mocks
