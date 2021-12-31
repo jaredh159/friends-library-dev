@@ -1,4 +1,6 @@
 // auto-generated, do not edit
+import GraphQL
+
 @testable import App
 
 extension Order {
@@ -60,11 +62,38 @@ extension Order {
       email: .init(rawValue: "@random".random),
       addressName: "@random".random,
       addressStreet: "@random".random,
-      addressStreet2: nil,
+      addressStreet2: Bool.random() ? "@random".random : nil,
       addressCity: "@random".random,
       addressState: "@random".random,
       addressZip: "@random".random,
       addressCountry: "@random".random
     )
+  }
+
+  func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
+    var map: GraphQL.Map = .dictionary([
+      "id": .string(id.rawValue.uuidString),
+      "lang": .string(lang.rawValue),
+      "source": .string(source.rawValue),
+      "paymentId": .string(paymentId.rawValue),
+      "printJobId": printJobId != nil ? .number(Number(printJobId!.rawValue)) : .null,
+      "printJobStatus": .string(printJobStatus.rawValue),
+      "amount": .number(Number(amount.rawValue)),
+      "taxes": .number(Number(taxes.rawValue)),
+      "ccFeeOffset": .number(Number(ccFeeOffset.rawValue)),
+      "shipping": .number(Number(shipping.rawValue)),
+      "shippingLevel": .string(shippingLevel.rawValue),
+      "email": .string(email.rawValue),
+      "addressName": .string(addressName),
+      "addressStreet": .string(addressStreet),
+      "addressStreet2": addressStreet2 != nil ? .string(addressStreet2!) : .null,
+      "addressCity": .string(addressCity),
+      "addressState": .string(addressState),
+      "addressZip": .string(addressZip),
+      "addressCountry": .string(addressCountry),
+      "freeOrderRequestId": freeOrderRequestId != nil ? .string(freeOrderRequestId!.rawValue.uuidString) : .null,
+    ])
+    omitting.forEach { try? map.remove($0) }
+    return map
   }
 }

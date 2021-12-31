@@ -50,6 +50,13 @@ export function generateModelMocks(
     code = code.replace(`import GraphQL`, `import GraphQL\nimport NonEmpty`);
   }
 
+  if (code.includes(`Date()`)) {
+    code = code.replace(`import GraphQL`, `import Foundation\nimport GraphQL`);
+  }
+
+  code = code.replace(/ Document /g, ` App.Document `);
+  code = code.replace(/ Token /g, ` App.Token `);
+
   return [`Tests/AppTests/Mocks/${model.name}+Mocks.swift`, code];
 }
 
@@ -69,7 +76,7 @@ function mapValue(name: string, type: string, model: Model, types: GlobalTypes):
       type.replace(/\?$/, ``),
       model,
       types,
-    ).replace(/\)$/, `!)`)} : .null`;
+    ).replace(name, `${name}!`)} : .null`;
   }
 
   const isTaggedUUID =
@@ -84,27 +91,35 @@ function mapValue(name: string, type: string, model: Model, types: GlobalTypes):
 
   const taggedType = model.taggedTypes[type] || types.taggedTypes[type];
   if (taggedType) {
-    return mapValue(name, taggedType, model, types).replace(/\)$/, `.rawValue)`);
+    return mapValue(name, taggedType, model, types).replace(/(\)?\))$/, `.rawValue$1`);
   }
 
   switch (type) {
     case `Int`:
     case `Double`:
     case `Int64`:
-      return `.number(${name})`;
+      return `.number(Number(${name}))`;
     case `Bool`:
       return `.bool(${name})`;
+    case `Date`:
+      return `.string(${name}.isoString)`;
     case `String`:
       return `.string(${name})`;
+    case `Cents<Int>`:
     case `Seconds<Double>`:
-      return `.number(${name}.rawValue)`;
+      return `.number(Number(${name}.rawValue))`;
     case `NonEmpty<[Int]>`:
-      return `(${name} as! [Number]).map { .number($0) }`;
+      return `.array(${name}.array.map { .number(Number($0)) })`;
     case `EmailAddress`:
     case `GitCommitSha`:
       return `.string(${name}.rawValue)`;
   }
-  return `LOL`;
+
+  if (model.name === `FriendResidence` && type === `Duration`) {
+    return `.string(${name}.jsonString!)`;
+  }
+
+  throw new Error(`Unhandled mapValue type: ${type} on ${model.name}.${name}`);
 }
 
 function params(
@@ -172,6 +187,8 @@ function mockValue(
       };
     case `Bool`:
       return { mock: `true`, empty: `false`, random: `Bool.random()` };
+    case `Date`:
+      return { mock: `Date()`, empty: `Date()`, random: `Date()` };
     case `EmailAddress`:
       return {
         mock: `"mock@mock.com"`,
@@ -198,7 +215,9 @@ function mockValue(
       if (type.endsWith(`.Id`) || type === `UUID`) {
         return { mock: `.init()`, empty: `.init()`, random: `.init()` };
       }
-      throw new Error(`Unhandled init param mock value type: ${type}`);
+      throw new Error(
+        `Unhandled init param mock value type: ${type} at ${model.name}.${propName}`,
+      );
     }
   }
 }

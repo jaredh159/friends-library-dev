@@ -1,4 +1,5 @@
 // auto-generated, do not edit
+import GraphQL
 import NonEmpty
 
 @testable import App
@@ -35,5 +36,19 @@ extension EditionImpression {
       publishedRevision: .init(rawValue: "@random".random),
       productionToolchainRevision: .init(rawValue: "@random".random)
     )
+  }
+
+  func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
+    var map: GraphQL.Map = .dictionary([
+      "id": .string(id.rawValue.uuidString),
+      "editionId": .string(editionId.rawValue.uuidString),
+      "adocLength": .number(Number(adocLength)),
+      "paperbackSize": .string(paperbackSize.rawValue),
+      "paperbackVolumes": .array(paperbackVolumes.array.map { .number(Number($0)) }),
+      "publishedRevision": .string(publishedRevision.rawValue),
+      "productionToolchainRevision": .string(productionToolchainRevision.rawValue),
+    ])
+    omitting.forEach { try? map.remove($0) }
+    return map
   }
 }

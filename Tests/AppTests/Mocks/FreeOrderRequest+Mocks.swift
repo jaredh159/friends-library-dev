@@ -1,4 +1,6 @@
 // auto-generated, do not edit
+import GraphQL
+
 @testable import App
 
 extension FreeOrderRequest {
@@ -41,12 +43,31 @@ extension FreeOrderRequest {
       requestedBooks: "@random".random,
       aboutRequester: "@random".random,
       addressStreet: "@random".random,
-      addressStreet2: nil,
+      addressStreet2: Bool.random() ? "@random".random : nil,
       addressCity: "@random".random,
       addressState: "@random".random,
       addressZip: "@random".random,
       addressCountry: "@random".random,
       source: "@random".random
     )
+  }
+
+  func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
+    var map: GraphQL.Map = .dictionary([
+      "id": .string(id.rawValue.uuidString),
+      "name": .string(name),
+      "email": .string(email.rawValue),
+      "requestedBooks": .string(requestedBooks),
+      "aboutRequester": .string(aboutRequester),
+      "addressStreet": .string(addressStreet),
+      "addressStreet2": addressStreet2 != nil ? .string(addressStreet2!) : .null,
+      "addressCity": .string(addressCity),
+      "addressState": .string(addressState),
+      "addressZip": .string(addressZip),
+      "addressCountry": .string(addressCountry),
+      "source": .string(source),
+    ])
+    omitting.forEach { try? map.remove($0) }
+    return map
   }
 }
