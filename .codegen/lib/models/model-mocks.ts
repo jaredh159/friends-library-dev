@@ -1,4 +1,5 @@
 import { GlobalTypes } from '../types';
+import { isTimestamp } from './graphql';
 import Model from './Model';
 
 export function generateModelMocks(
@@ -7,6 +8,7 @@ export function generateModelMocks(
 ): [filepath: string, code: string] {
   const mockParams = params(model, globalTypes, `mock`);
   let code = ``;
+  code += `// auto-generated, do not edit\nimport GraphQL\n\n`;
   code += `@testable import App\n\nextension ${model.name} {\n  `;
   code += `static var mock: ${model.name} {\n    ${model.name}(`;
   if (mockParams.join(`, `).length < 80) {
@@ -33,22 +35,76 @@ export function generateModelMocks(
   const randomParams = params(model, globalTypes, `random`);
   if (randomParams.join(`, `).length < 80) {
     code += randomParams.join(`, `);
-    code += `)\n  }`;
+    code += `)\n  }\n`;
   } else {
     code += `\n      `;
     code += randomParams.join(`,\n      `);
-    code += `\n    )\n  }`;
+    code += `\n    )\n  }\n`;
   }
+
+  code += generateMapFn(model, globalTypes);
 
   code += `\n}\n`;
 
   if (code.includes(`NonEmpty<`)) {
-    code = `// auto-generated, do not edit\nimport NonEmpty\n\n${code}`;
-  } else {
-    code = `// auto-generated, do not edit\n${code}`;
+    code = code.replace(`import GraphQL`, `import GraphQL\nimport NonEmpty`);
   }
 
   return [`Tests/AppTests/Mocks/${model.name}+Mocks.swift`, code];
+}
+
+function generateMapFn(model: Model, types: GlobalTypes): string {
+  const lines = model.props
+    .filter((p) => !isTimestamp(p.name))
+    .map((prop) => {
+      return `"${prop.name}": ${mapValue(prop.name, prop.type, model, types)}`;
+    });
+  return `\n  ` + MAP_FN_PATTERN.replace(`/* MAP_ITEMS */`, lines.join(`,\n      `));
+}
+
+function mapValue(name: string, type: string, model: Model, types: GlobalTypes): string {
+  if (type.endsWith(`?`)) {
+    return `${name} != nil ? ${mapValue(
+      name,
+      type.replace(/\?$/, ``),
+      model,
+      types,
+    ).replace(/\)$/, `!)`)} : .null`;
+  }
+
+  const isTaggedUUID =
+    model.taggedTypes[type] === `UUID` || types.taggedTypes[type] === `UUID`;
+  if (type === `Id` || type.endsWith(`.Id`) || isTaggedUUID) {
+    return `.string(${name}.rawValue.uuidString)`;
+  }
+
+  if (model.dbEnums[type] || types.dbEnums[type]) {
+    return `.string(${name}.rawValue)`;
+  }
+
+  const taggedType = model.taggedTypes[type] || types.taggedTypes[type];
+  if (taggedType) {
+    return mapValue(name, taggedType, model, types).replace(/\)$/, `.rawValue)`);
+  }
+
+  switch (type) {
+    case `Int`:
+    case `Double`:
+    case `Int64`:
+      return `.number(${name})`;
+    case `Bool`:
+      return `.bool(${name})`;
+    case `String`:
+      return `.string(${name})`;
+    case `Seconds<Double>`:
+      return `.number(${name}.rawValue)`;
+    case `NonEmpty<[Int]>`:
+      return `(${name} as! [Number]).map { .number($0) }`;
+    case `EmailAddress`:
+    case `GitCommitSha`:
+      return `.string(${name}.rawValue)`;
+  }
+  return `LOL`;
 }
 
 function params(
@@ -72,13 +128,19 @@ function mockValue(
   type: string,
   propName: string,
   model: Model,
-  globalTypes: GlobalTypes,
+  types: GlobalTypes,
 ): { mock: string; empty: string; random: string } {
   if (type.endsWith(`?`)) {
-    return { mock: `nil`, empty: `nil`, random: `nil` };
+    return {
+      mock: `nil`,
+      empty: `nil`,
+      random: `Bool.random() ? ${
+        mockValue(type.replace(/\?$/, ``), propName, model, types).random
+      } : nil`,
+    };
   }
 
-  const dbEnum = model.dbEnums[type] || globalTypes.dbEnums[type];
+  const dbEnum = model.dbEnums[type] || types.dbEnums[type];
   if (dbEnum) {
     return {
       mock: `.${dbEnum[0]}`,
@@ -123,14 +185,9 @@ function mockValue(
         random: `.init(rawValue: "@random".random)`,
       };
     default: {
-      const taggedType = model.taggedTypes[type] || globalTypes.taggedTypes[type];
+      const taggedType = model.taggedTypes[type] || types.taggedTypes[type];
       if (taggedType) {
-        const { mock, empty, random } = mockValue(
-          taggedType,
-          propName,
-          model,
-          globalTypes,
-        );
+        const { mock, empty, random } = mockValue(taggedType, propName, model, types);
         return {
           mock: `.init(rawValue: ${mock})`,
           empty: `.init(rawValue: ${empty})`,
@@ -145,3 +202,13 @@ function mockValue(
     }
   }
 }
+
+const MAP_FN_PATTERN = /* swift */ `
+  func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
+    var map: GraphQL.Map = .dictionary([
+      /* MAP_ITEMS */,
+    ])
+    omitting.forEach { try? map.remove($0) }
+    return map
+  }
+`.trim();

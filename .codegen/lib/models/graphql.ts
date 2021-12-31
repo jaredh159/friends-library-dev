@@ -63,7 +63,7 @@ export function generateModelGraphQLTypes(
   return [`Sources/App/Models/Generated/${model.name}+GraphQL.swift`, code + `\n`];
 }
 
-function isTimestamp(name: string): boolean {
+export function isTimestamp(name: string): boolean {
   return [`createdAt`, `updatedAt`, `deletedAt`].includes(name);
 }
 
