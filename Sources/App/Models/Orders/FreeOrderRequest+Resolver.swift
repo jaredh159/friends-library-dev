@@ -4,20 +4,6 @@ import Graphiti
 import Vapor
 import VaporUtils
 
-struct CreateFreeOrderRequestInput: Codable {
-  let name: String
-  let email: String
-  let requestedBooks: String
-  let aboutRequester: String
-  let addressStreet: String
-  let addressStreet2: String?
-  let addressCity: String
-  let addressState: String
-  let addressZip: String
-  let addressCountry: String
-  let source: String
-}
-
 extension Resolver {
 
   func getFreeOrderRequest(
@@ -30,35 +16,18 @@ extension Resolver {
     }
   }
 
-  struct CreateFreeOrderRequestArgs: Codable {
-    let input: CreateFreeOrderRequestInput
+  func createFreeOrderRequest(
+    req: Req,
+    args: AppSchema.CreateFreeOrderRequestArgs
+  ) throws -> Future<FreeOrderRequest> {
+    try req.requirePermission(to: .mutateOrders)
+    let order = FreeOrderRequest(args.input)
+    return future(of: FreeOrderRequest.self, on: req.eventLoop) {
+      try await Current.db.createFreeOrderRequest(order)
+      try await sendFreeOrderRequestNotifications(for: order, on: req).get()
+      return order
+    }
   }
-
-  // func createFreeOrderRequest(
-  //   req: Req,
-  //   args: CreateFreeOrderRequestArgs
-  // ) throws -> Future<FreeOrderRequest> {
-  //   try req.requirePermission(to: .mutateOrders)
-  //   let order = FreeOrderRequest(
-  //     name: args.input.name,
-  //     email: .init(rawValue: args.input.email),
-  //     requestedBooks: args.input.requestedBooks,
-  //     aboutRequester: args.input.aboutRequester,
-  //     addressStreet: args.input.addressStreet,
-  //     addressStreet2: args.input.addressStreet2,
-  //     addressCity: args.input.addressCity,
-  //     addressState: args.input.addressState,
-  //     addressZip: args.input.addressZip,
-  //     addressCountry: args.input.addressCountry,
-  //     source: args.input.source
-  //   )
-
-  //   return future(of: FreeOrderRequest.self, on: req.eventLoop) {
-  //     try await Current.db.createFreeOrderRequest(order)
-  //     try await sendFreeOrderRequestNotifications(for: order, on: req).get()
-  //     return order
-  //   }
-  // }
 }
 
 private func sendFreeOrderRequestNotifications(
@@ -133,24 +102,11 @@ private func entry(_ key: String, _ value: String?) -> String {
 // below auto-generated
 
 extension Resolver {
-  // func getFreeOrderRequest(
-  //   req: Req,
-  //   args: IdentifyEntityArgs
-  // ) throws -> Future<FreeOrderRequest> {
-  //   throw Abort(.notImplemented)
-  // }
 
   func getFreeOrderRequests(
     req: Req,
     args: NoArgs
   ) throws -> Future<[FreeOrderRequest]> {
-    throw Abort(.notImplemented)
-  }
-
-  func createFreeOrderRequest(
-    req: Req,
-    args: AppSchema.CreateFreeOrderRequestArgs
-  ) throws -> Future<FreeOrderRequest> {
     throw Abort(.notImplemented)
   }
 

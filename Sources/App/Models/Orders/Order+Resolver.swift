@@ -42,81 +42,42 @@ extension Resolver {
     }
   }
 
-  // struct UpdateOrderArgs: Codable {
-  //   let input: UpdateOrderInput
-  // }
+  func updateOrder(req: Req, args: AppSchema.UpdateOrderArgs) throws -> Future<Order> {
+    try req.requirePermission(to: .mutateOrders)
+    return future(of: Order.self, on: req.eventLoop) {
+      try await Current.db.updateOrder(Order(args.input))
+    }
+  }
 
-  // func updateOrder(req: Req, args: UpdateOrderArgs) throws -> Future<Order> {
-  //   try req.requirePermission(to: .mutateOrders)
-  //   return future(of: Order.self, on: req.eventLoop) {
-  //     try await Current.db.updateOrder(args.input)
-  //   }
-  // }
+  func updateOrders(req: Req, args: AppSchema.UpdateOrdersArgs) throws -> Future<[Order]> {
+    try req.requirePermission(to: .mutateOrders)
+    return args.input.map { input in
+      future(of: Order.self, on: req.eventLoop) {
+        try await Current.db.updateOrder(Order(input))
+      }
+    }
+    .flatten(on: req.eventLoop)
+  }
 
-  // struct UpdateOrdersArgs: Codable {
-  //   let input: [UpdateOrderInput]
-  // }
-
-  // func updateOrders(req: Req, args: UpdateOrdersArgs) throws -> Future<[Order]> {
-  //   try req.requirePermission(to: .mutateOrders)
-  //   return args.input.map { input in
-  //     future(of: Order.self, on: req.eventLoop) {
-  //       try await Current.db.updateOrder(input)
-  //     }
-  //   }
-  //   .flatten(on: req.eventLoop)
-  // }
 }
 
 // below auto-generated
 
 extension Resolver {
-  // func getOrder(
-  //   req: Req,
-  //   args: IdentifyEntityArgs
-  // ) throws -> Future<Order> {
-  //   throw Abort(.notImplemented)
-  // }
 
-  func getOrders(
-    req: Req,
-    args: NoArgs
-  ) throws -> Future<[Order]> {
+  func getOrders(req: Req, args: NoArgs) throws -> Future<[Order]> {
     throw Abort(.notImplemented)
   }
 
-  func createOrder(
-    req: Req,
-    args: AppSchema.CreateOrderArgs
-  ) throws -> Future<Order> {
+  func createOrder(req: Req, args: AppSchema.CreateOrderArgs) throws -> Future<Order> {
     throw Abort(.notImplemented)
   }
 
-  func createOrders(
-    req: Req,
-    args: AppSchema.CreateOrdersArgs
-  ) throws -> Future<[Order]> {
+  func createOrders(req: Req, args: AppSchema.CreateOrdersArgs) throws -> Future<[Order]> {
     throw Abort(.notImplemented)
   }
 
-  func updateOrder(
-    req: Req,
-    args: AppSchema.UpdateOrderArgs
-  ) throws -> Future<Order> {
-    throw Abort(.notImplemented)
-  }
-
-  func updateOrders(
-    req: Req,
-    args: AppSchema.UpdateOrdersArgs
-  ) throws -> Future<[Order]> {
-    throw Abort(.notImplemented)
-  }
-
-  func deleteOrder(
-    req: Req,
-    args: IdentifyEntityArgs
-  ) throws -> Future<Order> {
+  func deleteOrder(req: Req, args: IdentifyEntityArgs) throws -> Future<Order> {
     throw Abort(.notImplemented)
   }
 }

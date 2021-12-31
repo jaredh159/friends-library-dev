@@ -100,6 +100,13 @@ extension ArtifactProductionVersion {
     )
   }
 
+  convenience init(_ input: AppSchema.UpdateArtifactProductionVersionInput) {
+    self.init(
+      id: .init(rawValue: input.id),
+      version: .init(rawValue: input.version)
+    )
+  }
+
   func update(_ input: AppSchema.UpdateArtifactProductionVersionInput) {
     self.version = .init(rawValue: input.version)
   }

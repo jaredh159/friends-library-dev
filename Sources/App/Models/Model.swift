@@ -45,6 +45,23 @@ extension DuetModel {
   static func == (lhs: Self, rhs: Self) -> Bool {
     return lhs.id == rhs.id
   }
+
+  var updateValues: [String: Postgres.Data] {
+    var insert = insertValues
+    insert["id"] = nil
+    insert["createdAt"] = nil
+    return insert
+  }
+}
+
+extension DuetModel where Self: Touchable {
+  var updateValues: [String: Postgres.Data] {
+    var insert = insertValues
+    insert["id"] = nil
+    insert["createdAt"] = nil
+    insert["updatedAt"] = .date(Current.date())
+    return insert
+  }
 }
 
 extension DuetModel where ColumnName: RawRepresentable, ColumnName.RawValue == String {

@@ -132,6 +132,18 @@ extension Edition {
     )
   }
 
+  convenience init(_ input: AppSchema.UpdateEditionInput) throws {
+    self.init(
+      id: .init(rawValue: input.id),
+      documentId: .init(rawValue: input.documentId),
+      type: input.type,
+      editor: input.editor,
+      isDraft: input.isDraft,
+      paperbackSplits: try? NonEmpty<[Int]>.fromArray(input.paperbackSplits ?? []),
+      paperbackOverrideSize: input.paperbackOverrideSize
+    )
+  }
+
   func update(_ input: AppSchema.UpdateEditionInput) throws {
     self.documentId = .init(rawValue: input.documentId)
     self.type = input.type

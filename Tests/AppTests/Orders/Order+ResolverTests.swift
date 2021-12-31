@@ -7,36 +7,11 @@ import XCTVaporUtils
 final class OrderResolverTests: AppTestCase {
 
   func testCreateOrder() throws {
-    let orderId = UUID()
-    let order: Map = .dictionary([
-      "id": .string(orderId.uuidString),
-      "paymentId": .string("stripe-123"),
-      "printJobStatus": .string("presubmit"),
-      "shippingLevel": .string("mail"),
-      "amount": .int(33),
-      "shipping": .int(33),
-      "taxes": .int(33),
-      "ccFeeOffset": .int(33),
-      "email": .string("jared@netrivet.com"),
-      "addressName": .string("Jared Henderson"),
-      "addressStreet": .string("123 Magnolia Lane"),
-      "addressCity": .string("New York"),
-      "addressState": .string("NY"),
-      "addressZip": .string("90210"),
-      "addressCountry": .string("US"),
-      "lang": .string("en"),
-      "source": .string("website"),
-    ])
-    let items: Map = .array([
-      .dictionary([
-        "orderId": .string(orderId.uuidString),
-        "title": .string("Journal of George Fox"),
-        "documentId": .string("9050edba-197e-498f-9fb8-61c36abae59e"),
-        "editionType": .string("original"),
-        "quantity": .int(1),
-        "unitPrice": .int(333),
-      ])
-    ])
+    let order = Order.random
+    let item = OrderItem.random
+    item.orderId = order.id
+    let orderMap = order.gqlMap()
+    let itemMap = item.gqlMap()
 
     GraphQLTest(
       """
@@ -65,84 +40,58 @@ final class OrderResolverTests: AppTestCase {
       }
       """,
       expectedData: .containsKVPs([
-        "paymentId": "stripe-123",
-        "printJobStatus": "presubmit",
-        "shippingLevel": "mail",
-        "email": "jared@netrivet.com",
-        "addressName": "Jared Henderson",
-        "addressStreet": "123 Magnolia Lane",
-        "addressCity": "New York",
-        "addressState": "NY",
-        "addressZip": "90210",
-        "addressCountry": "US",
-        "lang": "en",
-        "source": "website",
-        "title": "Journal of George Fox",
-        "documentId": "9050EDBA-197E-498F-9FB8-61C36ABAE59E",
-        "editionType": "original",
-        "quantity": 1,
-        "unitPrice": 333,
+        "paymentId": orderMap["paymentId"],
+        "printJobStatus": orderMap["printJobStatus"],
+        "shippingLevel": orderMap["shippingLevel"],
+        "email": orderMap["email"],
+        "addressName": orderMap["addressName"],
+        "addressStreet": orderMap["addressStreet"],
+        "addressCity": orderMap["addressCity"],
+        "addressState": orderMap["addressState"],
+        "addressZip": orderMap["addressZip"],
+        "addressCountry": orderMap["addressCountry"],
+        "lang": orderMap["lang"],
+        "source": orderMap["source"],
+        "title": itemMap["title"],
+        "documentId": itemMap["documentId"],
+        "editionType": itemMap["editionType"],
+        "quantity": itemMap["quantity"],
+        "unitPrice": itemMap["unitPrice"],
       ]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["order": order, "items": items])
+    ).run(Self.app, variables: ["order": orderMap, "items": .array([itemMap])])
   }
 
   // @TODO
-  // func skip_testCreateOrderWithFreeRequestId() throws {
-  //   let freeOrderRequest = FreeOrderRequest.createFixture(on: app.db)
-  //   let order: Map = .dictionary([
-  //     "freeOrderRequestId": .string(freeOrderRequest.id!.uuidString),
-  //     "paymentId": .string("stripe-123"),
-  //     "printJobStatus": .string("presubmit"),
-  //     "shippingLevel": .string("mail"),
-  //     "amount": .int(33),
-  //     "shipping": .int(33),
-  //     "taxes": .int(33),
-  //     "ccFeeOffset": .int(33),
-  //     "email": .string("jared@netrivet.com"),
-  //     "addressName": .string("Jared Henderson"),
-  //     "addressStreet": .string("123 Magnolia Lane"),
-  //     "addressCity": .string("New York"),
-  //     "addressState": .string("NY"),
-  //     "addressZip": .string("90210"),
-  //     "addressCountry": .string("US"),
-  //     "lang": .string("en"),
-  //     "source": .string("website"),
-  //     "items": .array([
-  //       .dictionary([
-  //         "title": .string("Journal of George Fox"),
-  //         "documentId": .string("9050edba-197e-498f-9fb8-61c36abae59e"),
-  //         "editionType": .string("original"),
-  //         "quantity": .int(1),
-  //         "unitPrice": .int(333),
-  //       ])
-  //     ]),
-  //   ])
+  func testCreateOrderWithFreeRequestId() throws {
+    let req = FreeOrderRequest.random
+    let order = Order.random
+    order.freeOrderRequestId = req.id
+    let item = OrderItem.random
+    item.orderId = order.id
 
-  //   GraphQLTest(
-  //     """
-  //     mutation CreateOrder($input: CreateOrderInput!) {
-  //       order: createOrder(input: $input) {
-  //         freeOrderRequest {
-  //           id
-  //         }
-  //       }
-  //     }
-  //     """,
-  //     expectedData: .containsKVPs(["id": freeOrderRequest.id!.uuidString]),
-  //     headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-  //   ).run(self, variables: ["input": order])
-  // }
+    GraphQLTest(
+      """
+      mutation CreateOrderWithItems($order: CreateOrderInput!, $items: [CreateOrderItemInput!]!) {
+        order: createOrderWithItems(order: $order, items: $items) {
+          freeOrderRequest {
+            id
+          }
+        }
+      }
+      """,
+      expectedData: .containsKVPs(["id": req.id.uuidString]),
+      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
+    ).run(Self.app, variables: ["order": order.gqlMap(), "items": [item.gqlMap()]])
+  }
 
-  func skip_testUpdateOrder() async throws {
+  func testUpdateOrder() async throws {
     let order = Order.empty
     try await Current.db.createOrderWithItems(order)
 
-    let input: Map = .dictionary([
-      "id": .string(order.id.uuidString),
-      "printJobId": .number(12345),
-      "printJobStatus": .string("accepted"),
-    ])
+    // now update
+    order.printJobId = 12345
+    order.printJobStatus = .accepted
 
     GraphQLTest(
       """
@@ -158,25 +107,18 @@ final class OrderResolverTests: AppTestCase {
         "printJobStatus": "accepted",
       ]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": input])
+    ).run(Self.app, variables: ["input": order.gqlMap()])
   }
 
-  func skip_testUpdateOrders() async throws {
+  func testUpdateOrders() async throws {
     let order1 = Order.empty
     let order2 = Order.empty
     try await Current.db.createOrderWithItems(order1)
     try await Current.db.createOrderWithItems(order2)
 
-    let input: Map = .array([
-      .dictionary([
-        "id": .string(order1.id.uuidString),
-        "printJobId": .number(5555),
-      ]),
-      .dictionary([
-        "id": .string(order2.id.uuidString),
-        "printJobId": .number(3333),
-      ]),
-    ])
+    // now update
+    order1.printJobId = 5555
+    order2.printJobId = 3333
 
     GraphQLTest(
       """
@@ -188,7 +130,7 @@ final class OrderResolverTests: AppTestCase {
       """,
       expectedData: .containsAll(["5555", "3333"]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": input])
+    ).run(Self.app, variables: ["input": .array([order1.gqlMap(), order2.gqlMap()])])
   }
 
   func testGetOrderById() async throws {

@@ -69,7 +69,8 @@ extension OrderRepository: LiveRepository {
     client.deleteAllOrders = deleteAll
     client.createOrderWithItems = { try await createOrderWithItems($0) }
     client.getOrder = { try await find($0) }
-    // client.updateOrder = { try await updateOrder($0) }
+    client.updateOrder = { try await update($0) }
+    client.updateOrders = { try await update($0) }
     client.getOrdersByPrintJobStatus = { try await getOrdersByPrintJobStatus($0) }
   }
 }
@@ -82,7 +83,8 @@ extension MockOrderRepository: MockRepository {
     client.deleteAllOrders = deleteAll
     client.createOrderWithItems = { try await create($0) }
     client.getOrder = { try await find($0) }
-    // client.updateOrder = { try await updateOrder($0) }
+    client.updateOrder = { try await update($0) }
+    client.updateOrders = { try await update($0) }
     client.getOrdersByPrintJobStatus = { try await getOrdersByPrintJobStatus($0) }
   }
 }

@@ -210,6 +210,31 @@ extension Order {
     )
   }
 
+  convenience init(_ input: AppSchema.UpdateOrderInput) {
+    self.init(
+      id: .init(rawValue: input.id),
+      printJobId: input.printJobId != nil ? .init(rawValue: input.printJobId!) : nil,
+      lang: input.lang,
+      source: input.source,
+      paymentId: .init(rawValue: input.paymentId),
+      printJobStatus: input.printJobStatus,
+      amount: .init(rawValue: input.amount),
+      taxes: .init(rawValue: input.taxes),
+      ccFeeOffset: .init(rawValue: input.ccFeeOffset),
+      shipping: .init(rawValue: input.shipping),
+      shippingLevel: input.shippingLevel,
+      email: .init(rawValue: input.email),
+      addressName: input.addressName,
+      addressStreet: input.addressStreet,
+      addressStreet2: input.addressStreet2,
+      addressCity: input.addressCity,
+      addressState: input.addressState,
+      addressZip: input.addressZip,
+      addressCountry: input.addressCountry,
+      freeOrderRequestId: input.freeOrderRequestId != nil ? .init(rawValue: input.freeOrderRequestId!) : nil
+    )
+  }
+
   func update(_ input: AppSchema.UpdateOrderInput) {
     self.lang = input.lang
     self.source = input.source

@@ -150,6 +150,21 @@ extension AudioPart {
     )
   }
 
+  convenience init(_ input: AppSchema.UpdateAudioPartInput) throws {
+    self.init(
+      id: .init(rawValue: input.id),
+      audioId: .init(rawValue: input.audioId),
+      title: input.title,
+      duration: .init(rawValue: input.duration),
+      chapters: try NonEmpty<[Int]>.fromArray(input.chapters),
+      order: input.order,
+      mp3SizeHq: .init(rawValue: input.mp3SizeHq),
+      mp3SizeLq: .init(rawValue: input.mp3SizeLq),
+      externalIdHq: .init(rawValue: input.externalIdHq),
+      externalIdLq: .init(rawValue: input.externalIdLq)
+    )
+  }
+
   func update(_ input: AppSchema.UpdateAudioPartInput) throws {
     self.audioId = .init(rawValue: input.audioId)
     self.title = input.title

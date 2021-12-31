@@ -146,6 +146,20 @@ extension Friend {
     )
   }
 
+  convenience init(_ input: AppSchema.UpdateFriendInput) {
+    self.init(
+      id: .init(rawValue: input.id),
+      lang: input.lang,
+      name: input.name,
+      slug: input.slug,
+      gender: input.gender,
+      description: input.description,
+      born: input.born,
+      died: input.died,
+      published: input.published
+    )
+  }
+
   func update(_ input: AppSchema.UpdateFriendInput) {
     self.lang = input.lang
     self.name = input.name

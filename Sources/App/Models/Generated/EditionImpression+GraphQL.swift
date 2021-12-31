@@ -131,6 +131,18 @@ extension EditionImpression {
     )
   }
 
+  convenience init(_ input: AppSchema.UpdateEditionImpressionInput) throws {
+    self.init(
+      id: .init(rawValue: input.id),
+      editionId: .init(rawValue: input.editionId),
+      adocLength: input.adocLength,
+      paperbackSize: input.paperbackSize,
+      paperbackVolumes: try NonEmpty<[Int]>.fromArray(input.paperbackVolumes),
+      publishedRevision: .init(rawValue: input.publishedRevision),
+      productionToolchainRevision: .init(rawValue: input.productionToolchainRevision)
+    )
+  }
+
   func update(_ input: AppSchema.UpdateEditionImpressionInput) throws {
     self.editionId = .init(rawValue: input.editionId)
     self.adocLength = input.adocLength

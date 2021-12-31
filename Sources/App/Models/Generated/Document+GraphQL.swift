@@ -162,6 +162,23 @@ extension Document {
     )
   }
 
+  convenience init(_ input: AppSchema.UpdateDocumentInput) {
+    self.init(
+      id: .init(rawValue: input.id),
+      friendId: .init(rawValue: input.friendId),
+      altLanguageId: input.altLanguageId != nil ? .init(rawValue: input.altLanguageId!) : nil,
+      title: input.title,
+      slug: input.slug,
+      filename: input.filename,
+      published: input.published,
+      originalTitle: input.originalTitle,
+      incomplete: input.incomplete,
+      description: input.description,
+      partialDescription: input.partialDescription,
+      featuredDescription: input.featuredDescription
+    )
+  }
+
   func update(_ input: AppSchema.UpdateDocumentInput) {
     self.friendId = .init(rawValue: input.friendId)
     self.altLanguageId = input.altLanguageId != nil ? .init(rawValue: input.altLanguageId!) : nil

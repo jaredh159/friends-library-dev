@@ -31,11 +31,20 @@ export function generateModelGraphQLTypes(
   );
 
   code = code.replace(
-    `/* CONVENIENCE_INIT */`,
+    `/* CONVENIENCE_INIT_CREATE */`,
     model.init
       .map((prop) => prop.propName)
       .filter((name) => !isTimestamp(name))
-      .map((name) => `${name}: ${modelPropToInitArg(name, model, types)}`)
+      .map((name) => `${name}: ${modelPropToInitArg(name, model, types, `create`)}`)
+      .join(`,\n      `),
+  );
+
+  code = code.replace(
+    `/* CONVENIENCE_INIT_UPDATE */`,
+    model.init
+      .map((prop) => prop.propName)
+      .filter((name) => !isTimestamp(name))
+      .map((name) => `${name}: ${modelPropToInitArg(name, model, types, `update`)}`)
       .join(`,\n      `),
   );
 
@@ -43,7 +52,7 @@ export function generateModelGraphQLTypes(
     .map((prop) => prop.name)
     .filter((name) => !isTimestamp(name))
     .filter((name) => name != `id`)
-    .map((name) => `self.${name} = ${modelPropToInitArg(name, model, types)}`);
+    .map((name) => `self.${name} = ${modelPropToInitArg(name, model, types, `create`)}`);
 
   if (model.props.find((p) => p.name === `updatedAt`)) {
     updateSetters.push(`self.updatedAt = Current.date()`);
@@ -127,6 +136,7 @@ export function modelPropToInitArg(
   name: string,
   model: Model,
   types: GlobalTypes,
+  mode: 'create' | 'update',
 ): string {
   const prop = model.props.find((p) => p.name === name);
   if (!prop) {
@@ -135,7 +145,9 @@ export function modelPropToInitArg(
   const isOptional = prop.type.endsWith(`?`);
   const type = prop.type.replace(/\?$/, ``);
   if (name == `id`) {
-    return `.init(rawValue: input.id ?? UUID())`;
+    return mode === `create`
+      ? `.init(rawValue: input.id ?? UUID())`
+      : `.init(rawValue: input.id)`;
   }
 
   const isTagged =
@@ -278,7 +290,13 @@ extension AppSchema {
 extension Thing {
   convenience init(_ input: AppSchema.CreateThingInput) throws {
     self.init(
-      /* CONVENIENCE_INIT */
+      /* CONVENIENCE_INIT_CREATE */
+    )
+  }
+
+  convenience init(_ input: AppSchema.UpdateThingInput) throws {
+    self.init(
+      /* CONVENIENCE_INIT_UPDATE */
     )
   }
 

@@ -100,6 +100,13 @@ extension DocumentTagModel {
     )
   }
 
+  convenience init(_ input: AppSchema.UpdateDocumentTagModelInput) {
+    self.init(
+      id: .init(rawValue: input.id),
+      slug: input.slug
+    )
+  }
+
   func update(_ input: AppSchema.UpdateDocumentTagModelInput) {
     self.slug = input.slug
   }

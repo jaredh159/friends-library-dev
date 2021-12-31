@@ -23,6 +23,19 @@ extension MockRepository {
 
   // UPDATE
 
+  func update(_ model: Model) async throws -> Model {
+    _ = try await find(model.id)
+    try await create(model)
+    return model
+  }
+
+  func update(_ models: [Model]) async throws -> [Model] {
+    for model in models {
+      _ = try await update(model)
+    }
+    return models
+  }
+
   // DELETE
 
   func delete(_ id: Model.IdValue) async throws {

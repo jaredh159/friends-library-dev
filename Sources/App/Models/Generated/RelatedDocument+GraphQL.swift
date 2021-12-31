@@ -113,6 +113,15 @@ extension RelatedDocument {
     )
   }
 
+  convenience init(_ input: AppSchema.UpdateRelatedDocumentInput) {
+    self.init(
+      id: .init(rawValue: input.id),
+      description: input.description,
+      documentId: .init(rawValue: input.documentId),
+      parentDocumentId: .init(rawValue: input.parentDocumentId)
+    )
+  }
+
   func update(_ input: AppSchema.UpdateRelatedDocumentInput) {
     self.description = input.description
     self.documentId = .init(rawValue: input.documentId)

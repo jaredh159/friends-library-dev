@@ -161,6 +161,23 @@ extension FreeOrderRequest {
     )
   }
 
+  convenience init(_ input: AppSchema.UpdateFreeOrderRequestInput) {
+    self.init(
+      id: .init(rawValue: input.id),
+      name: input.name,
+      email: .init(rawValue: input.email),
+      requestedBooks: input.requestedBooks,
+      aboutRequester: input.aboutRequester,
+      addressStreet: input.addressStreet,
+      addressStreet2: input.addressStreet2,
+      addressCity: input.addressCity,
+      addressState: input.addressState,
+      addressZip: input.addressZip,
+      addressCountry: input.addressCountry,
+      source: input.source
+    )
+  }
+
   func update(_ input: AppSchema.UpdateFreeOrderRequestInput) {
     self.name = input.name
     self.email = .init(rawValue: input.email)

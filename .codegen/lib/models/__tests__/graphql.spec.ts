@@ -105,7 +105,7 @@ describe(`modelPropToInitArg()`, () => {
   ];
 
   test.each(cases)(`%s -> %s`, (prop, initArg) => {
-    expect(modelPropToInitArg(prop, model, types)).toBe(initArg);
+    expect(modelPropToInitArg(prop, model, types, `create`)).toBe(initArg);
   });
 });
 
@@ -291,6 +291,24 @@ describe(`generateModelGraphQLTypes()`, () => {
         convenience init(_ input: AppSchema.CreateThingInput) throws {
           self.init(
             id: .init(rawValue: input.id ?? UUID()),
+            name: input.name,
+            desc: input.desc,
+            fooBar: input.fooBar,
+            jimJam: input.jimJam,
+            value: .init(rawValue: input.value),
+            email: .init(rawValue: input.email),
+            price: .init(rawValue: input.price),
+            parentId: .init(rawValue: input.parentId),
+            optionalParentId: input.optionalParentId != nil ? .init(rawValue: input.optionalParentId!) : nil,
+            printJobId: input.printJobId != nil ? .init(rawValue: input.printJobId!) : nil,
+            splits: try NonEmpty<[Int]>.fromArray(input.splits),
+            optionalSplits: try? NonEmpty<[Int]>.fromArray(input.optionalSplits ?? [])
+          )
+        }
+
+        convenience init(_ input: AppSchema.UpdateThingInput) throws {
+          self.init(
+            id: .init(rawValue: input.id),
             name: input.name,
             desc: input.desc,
             fooBar: input.fooBar,

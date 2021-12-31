@@ -149,6 +149,21 @@ extension Audio {
     )
   }
 
+  convenience init(_ input: AppSchema.UpdateAudioInput) {
+    self.init(
+      id: .init(rawValue: input.id),
+      editionId: .init(rawValue: input.editionId),
+      reader: input.reader,
+      mp3ZipSizeHq: .init(rawValue: input.mp3ZipSizeHq),
+      mp3ZipSizeLq: .init(rawValue: input.mp3ZipSizeLq),
+      m4bSizeHq: .init(rawValue: input.m4bSizeHq),
+      m4bSizeLq: .init(rawValue: input.m4bSizeLq),
+      externalPlaylistIdHq: input.externalPlaylistIdHq != nil ? .init(rawValue: input.externalPlaylistIdHq!) : nil,
+      externalPlaylistIdLq: input.externalPlaylistIdLq != nil ? .init(rawValue: input.externalPlaylistIdLq!) : nil,
+      isIncomplete: input.isIncomplete
+    )
+  }
+
   func update(_ input: AppSchema.UpdateAudioInput) {
     self.editionId = .init(rawValue: input.editionId)
     self.reader = input.reader

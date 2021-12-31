@@ -119,6 +119,16 @@ extension FriendResidence {
     )
   }
 
+  convenience init(_ input: AppSchema.UpdateFriendResidenceInput) {
+    self.init(
+      id: .init(rawValue: input.id),
+      friendId: .init(rawValue: input.friendId),
+      city: input.city,
+      region: input.region,
+      duration: input.duration
+    )
+  }
+
   func update(_ input: AppSchema.UpdateFriendResidenceInput) {
     self.friendId = .init(rawValue: input.friendId)
     self.city = input.city

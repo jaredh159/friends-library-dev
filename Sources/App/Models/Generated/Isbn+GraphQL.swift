@@ -107,6 +107,14 @@ extension Isbn {
     )
   }
 
+  convenience init(_ input: AppSchema.UpdateIsbnInput) {
+    self.init(
+      id: .init(rawValue: input.id),
+      code: .init(rawValue: input.code),
+      editionId: input.editionId != nil ? .init(rawValue: input.editionId!) : nil
+    )
+  }
+
   func update(_ input: AppSchema.UpdateIsbnInput) {
     self.code = .init(rawValue: input.code)
     self.editionId = input.editionId != nil ? .init(rawValue: input.editionId!) : nil

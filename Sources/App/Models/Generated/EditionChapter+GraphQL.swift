@@ -137,6 +137,19 @@ extension EditionChapter {
     )
   }
 
+  convenience init(_ input: AppSchema.UpdateEditionChapterInput) {
+    self.init(
+      id: .init(rawValue: input.id),
+      editionId: .init(rawValue: input.editionId),
+      order: input.order,
+      shortHeading: input.shortHeading,
+      isIntermediateTitle: input.isIntermediateTitle,
+      customId: input.customId,
+      sequenceNumber: input.sequenceNumber,
+      nonSequenceTitle: input.nonSequenceTitle
+    )
+  }
+
   func update(_ input: AppSchema.UpdateEditionChapterInput) {
     self.editionId = .init(rawValue: input.editionId)
     self.order = input.order

@@ -106,6 +106,14 @@ extension TokenScope {
     )
   }
 
+  convenience init(_ input: AppSchema.UpdateTokenScopeInput) {
+    self.init(
+      id: .init(rawValue: input.id),
+      tokenId: .init(rawValue: input.tokenId),
+      scope: input.scope
+    )
+  }
+
   func update(_ input: AppSchema.UpdateTokenScopeInput) {
     self.scope = input.scope
     self.tokenId = .init(rawValue: input.tokenId)

@@ -49,19 +49,29 @@ extension LiveRepository {
 
   // UPDATE
 
-  func updateReturning(
-    _ model: Model.Type,
-    set values: [String: Postgres.Data],
-    where constraint: SQL.WhereConstraint? = nil
-  ) async throws -> [Model] {
+  func update(_ model: Model) async throws -> Model {
     let prepared = SQL.update(
-      model.tableName,
-      set: values,
-      where: constraint,
+      Model.tableName,
+      set: model.updateValues,
+      where: ("id", .equals, .id(model)),
       returning: .all
     )
-    let rows = try await SQL.execute(prepared, on: db).all()
-    return try rows.compactMap { try $0.decode(model) }
+    return try await SQL.execute(prepared, on: db).all()
+      .compactMap { try $0.decode(Model.self) }
+      .firstOrThrowNotFound()
+  }
+
+  func update(_ models: [Model]) async throws -> [Model] {
+    try await withThrowingTaskGroup(of: Model.self) { group in
+      for model in models {
+        group.addTask { try await update(model) }
+      }
+      var updated: [Model] = []
+      for try await updatedModel in group {
+        updated.append(updatedModel)
+      }
+      return updated
+    }
   }
 
   // DELETE

@@ -208,6 +208,31 @@ extension Download {
     )
   }
 
+  convenience init(_ input: AppSchema.UpdateDownloadInput) {
+    self.init(
+      id: .init(rawValue: input.id),
+      documentId: .init(rawValue: input.documentId),
+      editionType: input.editionType,
+      format: input.format,
+      source: input.source,
+      isMobile: input.isMobile,
+      audioQuality: input.audioQuality,
+      audioPartNumber: input.audioPartNumber,
+      userAgent: input.userAgent,
+      os: input.os,
+      browser: input.browser,
+      platform: input.platform,
+      referrer: input.referrer,
+      ip: input.ip,
+      city: input.city,
+      region: input.region,
+      postalCode: input.postalCode,
+      country: input.country,
+      latitude: input.latitude,
+      longitude: input.longitude
+    )
+  }
+
   func update(_ input: AppSchema.UpdateDownloadInput) {
     self.documentId = .init(rawValue: input.documentId)
     self.editionType = input.editionType

@@ -130,6 +130,18 @@ extension OrderItem {
     )
   }
 
+  convenience init(_ input: AppSchema.UpdateOrderItemInput) {
+    self.init(
+      id: .init(rawValue: input.id),
+      orderId: .init(rawValue: input.orderId),
+      documentId: .init(rawValue: input.documentId),
+      editionType: input.editionType,
+      title: input.title,
+      quantity: input.quantity,
+      unitPrice: .init(rawValue: input.unitPrice)
+    )
+  }
+
   func update(_ input: AppSchema.UpdateOrderItemInput) {
     self.orderId = .init(rawValue: input.orderId)
     self.documentId = .init(rawValue: input.documentId)

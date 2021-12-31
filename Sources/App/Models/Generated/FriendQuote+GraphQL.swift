@@ -119,6 +119,16 @@ extension FriendQuote {
     )
   }
 
+  convenience init(_ input: AppSchema.UpdateFriendQuoteInput) {
+    self.init(
+      id: .init(rawValue: input.id),
+      friendId: .init(rawValue: input.friendId),
+      source: input.source,
+      order: input.order,
+      context: input.context
+    )
+  }
+
   func update(_ input: AppSchema.UpdateFriendQuoteInput) {
     self.friendId = .init(rawValue: input.friendId)
     self.source = input.source
