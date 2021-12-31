@@ -19,6 +19,7 @@ extension AppSchema {
       Field("featuredDescription", at: \.featuredDescription)
       Field("createdAt", at: \.createdAt)
       Field("updatedAt", at: \.updatedAt)
+      Field("altLanguageDocument", with: \.altLanguageDocument)
       Field("relatedDocuments", with: \.relatedDocuments)
     }
   }

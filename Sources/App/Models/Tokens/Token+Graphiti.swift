@@ -9,14 +9,12 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
   ) where FieldType == [TypeRef<TokenScope>] {
     self.init(
       name.description,
-      at: resolveChildren { token, eventLoop -> Future<[TokenScope]> in
+      at: resolveChildren { (token) async throws -> [TokenScope] in
         switch token.scopes {
           case .notLoaded:
-            return future(of: [TokenScope].self, on: eventLoop) {
-              try await Current.db.getTokenScopes(token.id)
-            }
+            return try await Current.db.getTokenScopes(token.id)
           case let .loaded(tokenChildren):
-            return eventLoop.makeSucceededFuture(tokenChildren)
+            return tokenChildren
         }
       },
       as: [TypeRef<TokenScope>].self)

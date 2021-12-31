@@ -9,14 +9,12 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
   ) where FieldType == [TypeRef<Document>] {
     self.init(
       name.description,
-      at: resolveChildren { friend, eventLoop -> Future<[Document]> in
+      at: resolveChildren { (friend) async throws -> [Document] in
         switch friend.documents {
           case .notLoaded:
-            return future(of: [Document].self, on: eventLoop) {
-              fatalError("not implemented")
-            }
+            fatalError("not implemented")
           case let .loaded(friendChildren):
-            return eventLoop.makeSucceededFuture(friendChildren)
+            return friendChildren
         }
       },
       as: [TypeRef<Document>].self)
@@ -30,14 +28,12 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
   ) where FieldType == [TypeRef<FriendResidence>] {
     self.init(
       name.description,
-      at: resolveChildren { friend, eventLoop -> Future<[FriendResidence]> in
+      at: resolveChildren { (friend) async throws -> [FriendResidence] in
         switch friend.residences {
           case .notLoaded:
-            return future(of: [FriendResidence].self, on: eventLoop) {
-              fatalError("not implemented")
-            }
+            fatalError("not implemented")
           case let .loaded(friendChildren):
-            return eventLoop.makeSucceededFuture(friendChildren)
+            return friendChildren
         }
       },
       as: [TypeRef<FriendResidence>].self)
@@ -51,14 +47,12 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
   ) where FieldType == [TypeRef<FriendQuote>] {
     self.init(
       name.description,
-      at: resolveChildren { friend, eventLoop -> Future<[FriendQuote]> in
+      at: resolveChildren { (friend) async throws -> [FriendQuote] in
         switch friend.quotes {
           case .notLoaded:
-            return future(of: [FriendQuote].self, on: eventLoop) {
-              fatalError("not implemented")
-            }
+            fatalError("not implemented")
           case let .loaded(friendChildren):
-            return eventLoop.makeSucceededFuture(friendChildren)
+            return friendChildren
         }
       },
       as: [TypeRef<FriendQuote>].self)

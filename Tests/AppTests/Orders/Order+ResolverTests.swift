@@ -62,9 +62,9 @@ final class OrderResolverTests: AppTestCase {
     ).run(Self.app, variables: ["order": orderMap, "items": .array([itemMap])])
   }
 
-  // @TODO
-  func testCreateOrderWithFreeRequestId() throws {
+  func testCreateOrderWithFreeRequestId() async throws {
     let req = FreeOrderRequest.random
+    try await Current.db.createFreeOrderRequest(req)
     let order = Order.random
     order.freeOrderRequestId = req.id
     let item = OrderItem.random

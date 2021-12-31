@@ -9,17 +9,31 @@ function main() {
     process.exit(1);
   }
 
+  let extensions: string[] = [];
   let children = Object.entries(model.relations).filter(
     ([, { relationType }]) => relationType === `Children`,
   );
 
-  let extensions: string[] = [];
+  let optionalParents = Object.entries(model.relations).filter(
+    ([, { relationType }]) => relationType === `OptionalParent`,
+  );
+
   for (const [name, { type }] of children) {
     let extension = CHILDREN_PATTERN.replace(/ThingChild/g, type)
       .replace(/thing\.children/g, `${model.camelCaseName}.${name}`)
       .replace(/thing/g, model.camelCaseName)
       .replace(/Thing/g, model.name)
       .replace(/thingChildren/g, name);
+    extensions.push(extension);
+  }
+
+  for (const [name, { type }] of optionalParents) {
+    let extension = OPTIONAL_PARENT_PATTERN.replace(/ThingParent/g, type)
+      .replace(/thing\.parent/g, `${model.camelCaseName}.${name}`)
+      .replace(/Thing/g, model.name)
+      .replace(/thingParentId/g, `${name}Id`)
+      .replace(/parent/g, name)
+      .replace(/thing/g, model.camelCaseName);
     extensions.push(extension);
   }
 
@@ -46,17 +60,37 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
   ) where FieldType == [TypeRef<ThingChild>] {
     self.init(
       name.description,
-      at: resolveChildren { thing, eventLoop -> Future<[ThingChild]> in
+      at: resolveChildren { (thing) async throws -> [ThingChild] in
         switch thing.children {
           case .notLoaded:
-            return future(of: [ThingChild].self, on: eventLoop) {
-              fatalError("not implemented")
-            }
+            fatalError("Thing -> Children<[ThingChild]> not implemented")
           case let .loaded(thingChildren):
-            return eventLoop.makeSucceededFuture(thingChildren)
+            return thingChildren
         }
       },
       as: [TypeRef<ThingChild>].self)
+  }
+}
+`;
+
+const OPTIONAL_PARENT_PATTERN = /* swift */ `
+extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: Thing {
+  convenience init(
+    _ name: FieldKey,
+    with keyPath: ToOptionalParent<ThingParent>
+  ) where FieldType == TypeRef<ThingParent>? {
+    self.init(
+      name.description,
+      at: resolveOptionalParent { (thing) async throws -> ThingParent? in
+        switch thing.parent {
+          case .notLoaded:
+            // guard let thingParentId = thing.thingParentId else { return nil }
+            fatalError("Thing -> OptionalParent<ThingParent> not implemented")
+          case let .loaded(parent):
+            return parent
+        }
+      },
+      as: TypeReference<ThingParent>?.self)
   }
 }
 `;

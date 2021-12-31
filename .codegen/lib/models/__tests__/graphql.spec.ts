@@ -28,7 +28,10 @@ const types: GlobalTypes = {
 const model = Model.mock();
 model.dbEnums = { FooBar: [`foo`, `bar`], JimJam: [`jim`, `jam`] };
 model.taggedTypes = { Value: `UUID`, PrintJobId: `Int` };
-model.relations = { kids: { type: `Kid`, relationType: `Children` } };
+model.relations = {
+  kids: { type: `Kid`, relationType: `Children` },
+  parent: { type: `Parent`, relationType: `OptionalParent` },
+};
 model.init = [
   { propName: `id`, hasDefault: true },
   { propName: `name`, hasDefault: false },
@@ -127,6 +130,7 @@ describe(`schemaTypeFieldParts()`, () => {
     [`createdAt`, `at`, `\\.createdAt`],
     [`updatedAt`, `at`, `\\.updatedAt`],
     [`kids`, `with`, `\\.kids`],
+    [`parent`, `with`, `\\.parent`],
   ];
 
   expect(schemaTypeFieldParts(model, types)).toEqual(expected);
@@ -159,6 +163,7 @@ describe(`generateModelGraphQLTypes()`, () => {
             Field("createdAt", at: \\.createdAt)
             Field("updatedAt", at: \\.updatedAt)
             Field("kids", with: \\.kids)
+            Field("parent", with: \\.parent)
           }
         }
 

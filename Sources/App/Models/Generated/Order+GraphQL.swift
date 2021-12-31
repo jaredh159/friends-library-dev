@@ -28,6 +28,7 @@ extension AppSchema {
       Field("createdAt", at: \.createdAt)
       Field("updatedAt", at: \.updatedAt)
       Field("items", with: \.items)
+      Field("freeOrderRequest", with: \.freeOrderRequest)
     }
   }
 

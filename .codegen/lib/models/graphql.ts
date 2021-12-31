@@ -85,7 +85,7 @@ export function schemaTypeFieldParts(
     .map(({ name, type }) => [name, `at`, keyPath(name, type, model, types)]);
 
   for (const [name, { relationType }] of Object.entries(model.relations)) {
-    if (relationType === `Children`) {
+    if ([`Children`, `OptionalParent`].includes(relationType)) {
       parts.push([name, `with`, `\\.${name}`]);
     }
   }
