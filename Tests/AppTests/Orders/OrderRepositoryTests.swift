@@ -45,50 +45,50 @@ final class OrderRepositoryTests: AppTestCase {
     XCTAssertEqual(found.first, order1)
   }
 
-  func testUpdateOrder() async throws {
-    let order = Order.empty
-    try await Current.db.createOrderWithItems(order)
+  // func testUpdateOrder() async throws {
+  //   let order = Order.empty
+  //   try await Current.db.createOrderWithItems(order)
 
-    let input = UpdateOrderInput(id: order.id.rawValue, printJobStatus: .bricked, printJobId: 55)
-    let updated = try await Current.db.updateOrder(input)
+  //   let input = UpdateOrderInput(id: order.id.rawValue, printJobStatus: .bricked, printJobId: 55)
+  //   let updated = try await Current.db.updateOrder(input)
 
-    XCTAssertEqual(updated.printJobId, 55)
-    XCTAssertEqual(updated.printJobStatus, .bricked)
-  }
+  //   XCTAssertEqual(updated.printJobId, 55)
+  //   XCTAssertEqual(updated.printJobStatus, .bricked)
+  // }
 
-  func testUpdateOrderOnlyPrintJobId() async throws {
-    let order = Order.empty
-    try await Current.db.createOrderWithItems(order)
+  // func testUpdateOrderOnlyPrintJobId() async throws {
+  //   let order = Order.empty
+  //   try await Current.db.createOrderWithItems(order)
 
-    let input = UpdateOrderInput(id: order.id.rawValue, printJobStatus: nil, printJobId: 66)
-    let updated = try await Current.db.updateOrder(input)
+  //   let input = UpdateOrderInput(id: order.id.rawValue, printJobStatus: nil, printJobId: 66)
+  //   let updated = try await Current.db.updateOrder(input)
 
-    XCTAssertEqual(updated.printJobId, 66)
-    XCTAssertEqual(updated.printJobStatus, order.printJobStatus)
-  }
+  //   XCTAssertEqual(updated.printJobId, 66)
+  //   XCTAssertEqual(updated.printJobStatus, order.printJobStatus)
+  // }
 
-  func testUpdateOrderOnlyPrintJobStatus() async throws {
-    let order = Order.empty
-    order.printJobId = 77
-    try await Current.db.createOrderWithItems(order)
+  // func testUpdateOrderOnlyPrintJobStatus() async throws {
+  //   let order = Order.empty
+  //   order.printJobId = 77
+  //   try await Current.db.createOrderWithItems(order)
 
-    let input = UpdateOrderInput(id: order.id.rawValue, printJobStatus: .canceled, printJobId: nil)
-    let updated = try await Current.db.updateOrder(input)
+  //   let input = UpdateOrderInput(id: order.id.rawValue, printJobStatus: .canceled, printJobId: nil)
+  //   let updated = try await Current.db.updateOrder(input)
 
-    XCTAssertEqual(updated.printJobId, 77)
-    XCTAssertEqual(updated.printJobStatus, .canceled)
-  }
+  //   XCTAssertEqual(updated.printJobId, 77)
+  //   XCTAssertEqual(updated.printJobStatus, .canceled)
+  // }
 
-  func testUpdateOrderBothNil() async throws {
-    let order = Order.empty
-    order.printJobId = 88
-    order.printJobStatus = .rejected
-    try await Current.db.createOrderWithItems(order)
+  // func testUpdateOrderBothNil() async throws {
+  //   let order = Order.empty
+  //   order.printJobId = 88
+  //   order.printJobStatus = .rejected
+  //   try await Current.db.createOrderWithItems(order)
 
-    let input = UpdateOrderInput(id: order.id.rawValue, printJobStatus: nil, printJobId: nil)
-    let updated = try await Current.db.updateOrder(input)
+  //   let input = UpdateOrderInput(id: order.id.rawValue, printJobStatus: nil, printJobId: nil)
+  //   let updated = try await Current.db.updateOrder(input)
 
-    XCTAssertEqual(updated.printJobId, 88)
-    XCTAssertEqual(updated.printJobStatus, .rejected)
-  }
+  //   XCTAssertEqual(updated.printJobId, 88)
+  //   XCTAssertEqual(updated.printJobStatus, .rejected)
+  // }
 }

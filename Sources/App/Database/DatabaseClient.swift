@@ -15,7 +15,7 @@ struct DatabaseClient {
   var createOrderWithItems: (Order) async throws -> Void
   var getOrder: (Order.Id) async throws -> Order
   var getOrdersByPrintJobStatus: (Order.PrintJobStatus) async throws -> [Order]
-  var updateOrder: (UpdateOrderInput) async throws -> Order
+  // var updateOrder: (UpdateOrderInput) async throws -> Order
 
   // free order requests
   var createFreeOrderRequest: (FreeOrderRequest) async throws -> Void
@@ -43,7 +43,7 @@ extension DatabaseClient {
     createOrderWithItems: { _ in throw Abort(.notImplemented) },
     getOrder: { _ in throw Abort(.notImplemented) },
     getOrdersByPrintJobStatus: { _ in throw Abort(.notImplemented) },
-    updateOrder: { _ in throw Abort(.notImplemented) },
+    // updateOrder: { _ in throw Abort(.notImplemented) },
 
     // free order requests
     createFreeOrderRequest: { _ in throw Abort(.notImplemented) },

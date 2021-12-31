@@ -27,19 +27,33 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.TokenType
   AppSchema.TokenScopeType
 
+  AppSchema.OrderType
+  AppSchema.OrderItemType
+  AppSchema.CreateOrderInputType
+  AppSchema.CreateOrderItemInputType
+
   Query {
-    Field("getLatestArtifactProductionVersion", at: Resolver.getArtifactProductionVersion)
+    Field("getLatestArtifactProductionVersion", at: Resolver.getLatestArtifactProductionVersion)
 
     Field("getTokenByValue", at: Resolver.getTokenByValue) {
       Argument("value", at: \.value)
+    }
+
+    AppSchema.getOrder
+    Field("getOrdersByPrintJobStatus", at: Resolver.getOrdersByPrintJobStatus) {
+      Argument("printJobStatus", at: \.printJobStatus)
     }
   }
 
   Mutation {
     AppSchema.createDownload
     AppSchema.createArtifactProductionVersion
+
+    Field("createOrderWithItems", at: Resolver.createOrderWithItems) {
+      Argument("order", at: \.order)
+      Argument("items", at: \.items)
+    }
   }
 
-  Types(TokenScope.self)
-  // Types(OrderItem.self, TokenScope.self)
+  Types(OrderItem.self, TokenScope.self)
 }
