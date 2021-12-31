@@ -1,6 +1,7 @@
 import { describe, expect, it } from '@jest/globals';
 import stripIndent from 'strip-indent';
 import { generateModelMocks } from '../model-mocks';
+import Model from '../Model';
 
 describe(`generateModelMocks()`, () => {
   const globalTypes = {
@@ -9,21 +10,16 @@ describe(`generateModelMocks()`, () => {
   };
 
   it(`can handle a short list of init params`, () => {
-    const model = {
-      name: `Thing`,
-      filepath: `/`,
-      relations: {},
-      taggedTypes: { FooId: `Int`, PaymentId: `String` },
-      dbEnums: {},
-      props: [
-        { name: `id`, type: `Id` },
-        { name: `name`, type: `String` },
-      ],
-      init: [
-        { propName: `id`, hasDefault: true },
-        { propName: `name`, hasDefault: false },
-      ],
-    };
+    const model = Model.mock();
+    model.taggedTypes = { FooId: `Int`, PaymentId: `String` };
+    model.props = [
+      { name: `id`, type: `Id` },
+      { name: `name`, type: `String` },
+    ];
+    model.init = [
+      { propName: `id`, hasDefault: true },
+      { propName: `name`, hasDefault: false },
+    ];
 
     const expectedMocks = stripIndent(/* swift */ `
       // auto-generated, do not edit
@@ -46,43 +42,39 @@ describe(`generateModelMocks()`, () => {
   });
 
   it(`can handle a long list of init params`, () => {
-    const model = {
-      name: `Thing`,
-      filepath: `/`,
-      relations: {},
-      dbEnums: { JimJam: [`jim`, `jam`] },
-      taggedTypes: { FooId: `Int`, PaymentId: `String` },
-      props: [
-        { name: `id`, type: `Id` },
-        { name: `name`, type: `String` },
-        { name: `someInt`, type: `Int` },
-        { name: `someBool`, type: `Bool` },
-        { name: `someEmail`, type: `EmailAddress` },
-        { name: `someSha`, type: `GitCommitSha` },
-        { name: `someNil`, type: `Rofl?` },
-        { name: `fooId`, type: `FooId` },
-        { name: `relationId`, type: `Relation.Id` },
-        { name: `seconds`, type: `Seconds<Double>` },
-        { name: `nonEmptyInt`, type: `NonEmpty<[Int]>` },
-        { name: `someFoo`, type: `FooEnum` },
-        { name: `jimJam`, type: `JimJam` },
-      ],
-      init: [
-        { propName: `id`, hasDefault: true },
-        { propName: `name`, hasDefault: false },
-        { propName: `someInt`, hasDefault: false },
-        { propName: `someBool`, hasDefault: false },
-        { propName: `someEmail`, hasDefault: false },
-        { propName: `someSha`, hasDefault: false },
-        { propName: `someNil`, hasDefault: false },
-        { propName: `fooId`, hasDefault: false },
-        { propName: `relationId`, hasDefault: false },
-        { propName: `seconds`, hasDefault: false },
-        { propName: `nonEmptyInt`, hasDefault: false },
-        { propName: `someFoo`, hasDefault: false },
-        { propName: `jimJam`, hasDefault: false },
-      ],
-    };
+    const model = Model.mock();
+    model.dbEnums = { JimJam: [`jim`, `jam`] };
+    model.taggedTypes = { FooId: `Int`, PaymentId: `String` };
+    model.props = [
+      { name: `id`, type: `Id` },
+      { name: `name`, type: `String` },
+      { name: `someInt`, type: `Int` },
+      { name: `someBool`, type: `Bool` },
+      { name: `someEmail`, type: `EmailAddress` },
+      { name: `someSha`, type: `GitCommitSha` },
+      { name: `someNil`, type: `Rofl?` },
+      { name: `fooId`, type: `FooId` },
+      { name: `relationId`, type: `Relation.Id` },
+      { name: `seconds`, type: `Seconds<Double>` },
+      { name: `nonEmptyInt`, type: `NonEmpty<[Int]>` },
+      { name: `someFoo`, type: `FooEnum` },
+      { name: `jimJam`, type: `JimJam` },
+    ];
+    model.init = [
+      { propName: `id`, hasDefault: true },
+      { propName: `name`, hasDefault: false },
+      { propName: `someInt`, hasDefault: false },
+      { propName: `someBool`, hasDefault: false },
+      { propName: `someEmail`, hasDefault: false },
+      { propName: `someSha`, hasDefault: false },
+      { propName: `someNil`, hasDefault: false },
+      { propName: `fooId`, hasDefault: false },
+      { propName: `relationId`, hasDefault: false },
+      { propName: `seconds`, hasDefault: false },
+      { propName: `nonEmptyInt`, hasDefault: false },
+      { propName: `someFoo`, hasDefault: false },
+      { propName: `jimJam`, hasDefault: false },
+    ];
 
     const expectedMocks = stripIndent(/* swift */ `
       // auto-generated, do not edit

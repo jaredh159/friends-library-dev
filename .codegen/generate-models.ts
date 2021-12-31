@@ -3,7 +3,7 @@ import fs from 'fs';
 import { generateModelConformances } from './lib/models/model-conformances';
 import { generateModelMocks } from './lib/models/model-mocks';
 import { generateModelGraphQLTypes } from './lib/models/graphql';
-import { scriptData } from './lib/script-helpers';
+import { scriptData, printCode } from './lib/script-helpers';
 
 const { models, appRoot, isDryRun, types } = scriptData();
 
@@ -32,12 +32,4 @@ for (const model of models) {
   } else {
     fs.writeFileSync(`${appRoot}/${graphqlPath}`, graphqlCode);
   }
-}
-
-function printCode(identifier: string, path: string, code: string): void {
-  console.log(`Write generated ${identifier} to filepath: "${path}":`);
-  console.log(`\n`);
-  console.log(code);
-  console.log(`\n`);
-  console.log(`\n`);
 }

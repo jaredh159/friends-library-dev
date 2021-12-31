@@ -6,7 +6,7 @@ const { models } = scriptData();
 
 // @TODO, selective
 for (const model of models) {
-  const [path, code] = generateResolverScaffold(model.name);
+  const [path, code] = generateResolverScaffold(model);
 
   if (fs.existsSync(path)) {
     const contents = fs.readFileSync(path, `utf-8`);

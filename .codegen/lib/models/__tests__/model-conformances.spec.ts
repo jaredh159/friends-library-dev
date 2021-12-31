@@ -1,6 +1,7 @@
-import { describe, it, test, expect } from '@jest/globals';
+import { describe, it, expect } from '@jest/globals';
 import stripIndent from 'strip-indent';
 import { generateModelConformances } from '../model-conformances';
+import Model from '../Model';
 
 describe(`generateModelConformances()`, () => {
   const types = {
@@ -9,20 +10,13 @@ describe(`generateModelConformances()`, () => {
   };
 
   it(`generates correct conformances for models`, () => {
-    const model = {
-      name: `Thing`,
-      filepath: `Sources/App/Models/Thing.swift`,
-      migrationNumber: 8,
-      relations: {},
-      dbEnums: {},
-      props: [
-        { name: `id`, type: `Id` },
-        { name: `name`, type: `String` },
-        { name: `version`, type: `GitCommitSha` },
-      ],
-      taggedTypes: {},
-      init: [],
-    };
+    const model = Model.mock();
+    model.migrationNumber = 8;
+    model.props = [
+      { name: `id`, type: `Id` },
+      { name: `name`, type: `String` },
+      { name: `version`, type: `GitCommitSha` },
+    ];
 
     const expectedCode = stripIndent(/* swift */ `
       // auto-generated, do not edit
@@ -64,19 +58,12 @@ describe(`generateModelConformances()`, () => {
   });
 
   it(`generates correct timestamp conformances`, () => {
-    const model = {
-      name: `Thing`,
-      filepath: `Sources/App/Models/Thing.swift`,
-      taggedTypes: {},
-      relations: {},
-      init: [],
-      dbEnums: {},
-      props: [
-        { name: `createdAt`, type: `Date` },
-        { name: `updatedAt`, type: `Date` },
-        { name: `deletedAt`, type: `Date?` },
-      ],
-    };
+    const model = Model.mock();
+    model.props = [
+      { name: `createdAt`, type: `Date` },
+      { name: `updatedAt`, type: `Date` },
+      { name: `deletedAt`, type: `Date?` },
+    ];
 
     const expectedCode = stripIndent(/* swift */ `
       // auto-generated, do not edit

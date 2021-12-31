@@ -1,12 +1,13 @@
 import { describe, expect, it } from '@jest/globals';
 import stripIndent from 'strip-indent';
-import { GlobalTypes, Model } from '../../types';
+import { GlobalTypes } from '../../types';
 import {
   generateModelGraphQLTypes,
   schemaTypeFieldParts,
   modelTypeToGraphQLInputType,
   modelPropToInitArg,
 } from '../graphql';
+import Model from '../Model';
 
 const types: GlobalTypes = {
   dbEnums: {},
@@ -24,46 +25,43 @@ const types: GlobalTypes = {
   },
 };
 
-const model: Model = {
-  name: `Thing`,
-  filepath: `Sources/App/Models/Thing.swift`,
-  dbEnums: { FooBar: [`foo`, `bar`], JimJam: [`jim`, `jam`] },
-  taggedTypes: { Value: `UUID`, PrintJobId: `Int` },
-  relations: { kids: { type: `Kid`, relationType: `Children` } },
-  init: [
-    { propName: `id`, hasDefault: true },
-    { propName: `name`, hasDefault: false },
-    { propName: `desc`, hasDefault: false },
-    { propName: `fooBar`, hasDefault: false },
-    { propName: `jimJam`, hasDefault: false },
-    { propName: `value`, hasDefault: false },
-    { propName: `email`, hasDefault: false },
-    { propName: `price`, hasDefault: false },
-    { propName: `parentId`, hasDefault: false },
-    { propName: `optionalParentId`, hasDefault: false },
-    { propName: `printJobId`, hasDefault: false },
-    { propName: `splits`, hasDefault: false },
-    { propName: `optionalSplits`, hasDefault: false },
-  ],
-  props: [
-    { name: `id`, type: `Id` },
-    { name: `name`, type: `String` },
-    { name: `desc`, type: `String?` },
-    { name: `fooBar`, type: `FooBar` },
-    { name: `jimJam`, type: `JimJam?` },
-    { name: `value`, type: `Value` },
-    { name: `email`, type: `EmailAddress` },
-    { name: `price`, type: `Cents<Int>` },
-    { name: `parentId`, type: `Parent.Id` },
-    { name: `optionalParentId`, type: `Parent.Id?` },
-    { name: `printJobId`, type: `PrintJobId?` },
-    { name: `splits`, type: `NonEmpty<[Int]>` },
-    { name: `optionalSplits`, type: `NonEmpty<[Int]>?` },
-    { name: `createdAt`, type: `Date` },
-    { name: `updatedAt`, type: `Date` },
-    { name: `deletedAt`, type: `Date?` },
-  ],
-};
+const model = Model.mock();
+model.dbEnums = { FooBar: [`foo`, `bar`], JimJam: [`jim`, `jam`] };
+model.taggedTypes = { Value: `UUID`, PrintJobId: `Int` };
+model.relations = { kids: { type: `Kid`, relationType: `Children` } };
+model.init = [
+  { propName: `id`, hasDefault: true },
+  { propName: `name`, hasDefault: false },
+  { propName: `desc`, hasDefault: false },
+  { propName: `fooBar`, hasDefault: false },
+  { propName: `jimJam`, hasDefault: false },
+  { propName: `value`, hasDefault: false },
+  { propName: `email`, hasDefault: false },
+  { propName: `price`, hasDefault: false },
+  { propName: `parentId`, hasDefault: false },
+  { propName: `optionalParentId`, hasDefault: false },
+  { propName: `printJobId`, hasDefault: false },
+  { propName: `splits`, hasDefault: false },
+  { propName: `optionalSplits`, hasDefault: false },
+];
+model.props = [
+  { name: `id`, type: `Id` },
+  { name: `name`, type: `String` },
+  { name: `desc`, type: `String?` },
+  { name: `fooBar`, type: `FooBar` },
+  { name: `jimJam`, type: `JimJam?` },
+  { name: `value`, type: `Value` },
+  { name: `email`, type: `EmailAddress` },
+  { name: `price`, type: `Cents<Int>` },
+  { name: `parentId`, type: `Parent.Id` },
+  { name: `optionalParentId`, type: `Parent.Id?` },
+  { name: `printJobId`, type: `PrintJobId?` },
+  { name: `splits`, type: `NonEmpty<[Int]>` },
+  { name: `optionalSplits`, type: `NonEmpty<[Int]>?` },
+  { name: `createdAt`, type: `Date` },
+  { name: `updatedAt`, type: `Date` },
+  { name: `deletedAt`, type: `Date?` },
+];
 
 describe(`modelTypeToGraphQLInputType()`, () => {
   const cases: Array<[string, string]> = [
@@ -332,21 +330,15 @@ describe(`generateModelGraphQLTypes()`, () => {
   });
 
   it(`removes throws if no non-empty`, () => {
-    const model: Model = {
-      name: `Thing`,
-      filepath: `Sources/App/Models/Thing.swift`,
-      dbEnums: {},
-      relations: {},
-      taggedTypes: {},
-      init: [
-        { propName: `id`, hasDefault: true },
-        { propName: `name`, hasDefault: false },
-      ],
-      props: [
-        { name: `id`, type: `Id` },
-        { name: `name`, type: `String` },
-      ],
-    };
+    const model = Model.mock();
+    model.init = [
+      { propName: `id`, hasDefault: true },
+      { propName: `name`, hasDefault: false },
+    ];
+    model.props = [
+      { name: `id`, type: `Id` },
+      { name: `name`, type: `String` },
+    ];
 
     const [, generated] = generateModelGraphQLTypes(model, types);
     expect(generated).not.toContain(` throws `);

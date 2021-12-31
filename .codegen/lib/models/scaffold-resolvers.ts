@@ -1,10 +1,8 @@
-import { modelDir } from './helpers';
+import Model from './Model';
 
-export function generateResolverScaffold(
-  modelName: string,
-): [filepath: string, code: string] {
-  const code = RESOLVER_PATTERN.replace(/Thing/g, modelName);
-  return [`Sources/App/Models/${modelDir(modelName)}${modelName}+Resolver.swift`, code];
+export function generateResolverScaffold(model: Model): [filepath: string, code: string] {
+  const code = RESOLVER_PATTERN.replace(/Thing/g, model.name);
+  return [`${model.dir}/${model.name}+Resolver.swift`, code];
 }
 
 const RESOLVER_PATTERN = /* swift */ `

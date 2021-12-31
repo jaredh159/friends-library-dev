@@ -1,4 +1,5 @@
-import { Model, File, GlobalTypes } from '../types';
+import { File, GlobalTypes } from '../types';
+import Model from './Model';
 
 export function extractModelAttrs({ source, path }: File): Model | undefined {
   if (
@@ -26,15 +27,7 @@ export function extractModelAttrs({ source, path }: File): Model | undefined {
 }
 
 function parseClassInterior(name: string, path: string, lines: string[]): Model {
-  const model: Model = {
-    name: name,
-    filepath: path,
-    relations: {},
-    props: [],
-    taggedTypes: {},
-    init: [],
-    dbEnums: {},
-  };
+  const model = new Model(name, path);
 
   while (lines.length) {
     const line = lines.shift()!;
