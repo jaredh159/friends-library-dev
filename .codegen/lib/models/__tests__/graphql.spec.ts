@@ -3,7 +3,7 @@ import stripIndent from 'strip-indent';
 import { GlobalTypes, Model } from '../../types';
 import {
   generateModelGraphQLTypes,
-  schemaTypeFieldPairs,
+  schemaTypeFieldParts,
   modelTypeToGraphQLInputType,
   modelPropToInitArg,
 } from '../graphql';
@@ -29,6 +29,7 @@ const model: Model = {
   filepath: `Sources/App/Models/Thing.swift`,
   dbEnums: { FooBar: [`foo`, `bar`], JimJam: [`jim`, `jam`] },
   taggedTypes: { Value: `UUID`, PrintJobId: `Int` },
+  relations: { kids: { type: `Kid`, relationType: `Children` } },
   init: [
     { propName: `id`, hasDefault: true },
     { propName: `name`, hasDefault: false },
@@ -110,26 +111,27 @@ describe(`modelPropToInitArg()`, () => {
   });
 });
 
-describe(`schemaTypeFieldPairs()`, () => {
+describe(`schemaTypeFieldParts()`, () => {
   const expected = [
-    [`id`, `\\.id.rawValue`],
-    [`name`, `\\.name`],
-    [`desc`, `\\.desc`],
-    [`fooBar`, `\\.fooBar`],
-    [`jimJam`, `\\.jimJam`],
-    [`value`, `\\.value.rawValue`],
-    [`email`, `\\.email.rawValue`],
-    [`price`, `\\.price.rawValue`],
-    [`parentId`, `\\.parentId.rawValue`],
-    [`optionalParentId`, `\\.optionalParentId?.rawValue`],
-    [`printJobId`, `\\.printJobId?.rawValue`],
-    [`splits`, `\\.splits.rawValue`],
-    [`optionalSplits`, `\\.optionalSplits?.rawValue`],
-    [`createdAt`, `\\.createdAt`],
-    [`updatedAt`, `\\.updatedAt`],
+    [`id`, `at`, `\\.id.rawValue`],
+    [`name`, `at`, `\\.name`],
+    [`desc`, `at`, `\\.desc`],
+    [`fooBar`, `at`, `\\.fooBar`],
+    [`jimJam`, `at`, `\\.jimJam`],
+    [`value`, `at`, `\\.value.rawValue`],
+    [`email`, `at`, `\\.email.rawValue`],
+    [`price`, `at`, `\\.price.rawValue`],
+    [`parentId`, `at`, `\\.parentId.rawValue`],
+    [`optionalParentId`, `at`, `\\.optionalParentId?.rawValue`],
+    [`printJobId`, `at`, `\\.printJobId?.rawValue`],
+    [`splits`, `at`, `\\.splits.rawValue`],
+    [`optionalSplits`, `at`, `\\.optionalSplits?.rawValue`],
+    [`createdAt`, `at`, `\\.createdAt`],
+    [`updatedAt`, `at`, `\\.updatedAt`],
+    [`kids`, `with`, `\\.kids`],
   ];
 
-  expect(schemaTypeFieldPairs(model, types)).toEqual(expected);
+  expect(schemaTypeFieldParts(model, types)).toEqual(expected);
 });
 
 describe(`generateModelGraphQLTypes()`, () => {
@@ -158,6 +160,7 @@ describe(`generateModelGraphQLTypes()`, () => {
             Field("optionalSplits", at: \\.optionalSplits?.rawValue)
             Field("createdAt", at: \\.createdAt)
             Field("updatedAt", at: \\.updatedAt)
+            Field("kids", with: \\.kids)
           }
         }
 
@@ -333,6 +336,7 @@ describe(`generateModelGraphQLTypes()`, () => {
       name: `Thing`,
       filepath: `Sources/App/Models/Thing.swift`,
       dbEnums: {},
+      relations: {},
       taggedTypes: {},
       init: [
         { propName: `id`, hasDefault: true },

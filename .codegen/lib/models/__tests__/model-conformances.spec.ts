@@ -13,6 +13,7 @@ describe(`generateModelConformances()`, () => {
       name: `Thing`,
       filepath: `Sources/App/Models/Thing.swift`,
       migrationNumber: 8,
+      relations: {},
       dbEnums: {},
       props: [
         { name: `id`, type: `Id` },
@@ -67,6 +68,7 @@ describe(`generateModelConformances()`, () => {
       name: `Thing`,
       filepath: `Sources/App/Models/Thing.swift`,
       taggedTypes: {},
+      relations: {},
       init: [],
       dbEnums: {},
       props: [

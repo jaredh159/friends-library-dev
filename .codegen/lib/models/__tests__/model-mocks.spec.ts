@@ -12,6 +12,7 @@ describe(`generateModelMocks()`, () => {
     const model = {
       name: `Thing`,
       filepath: `/`,
+      relations: {},
       taggedTypes: { FooId: `Int`, PaymentId: `String` },
       dbEnums: {},
       props: [
@@ -48,6 +49,7 @@ describe(`generateModelMocks()`, () => {
     const model = {
       name: `Thing`,
       filepath: `/`,
+      relations: {},
       dbEnums: { JimJam: [`jim`, `jam`] },
       taggedTypes: { FooId: `Int`, PaymentId: `String` },
       props: [

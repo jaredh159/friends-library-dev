@@ -1,4 +1,4 @@
-import { describe, it, test, expect } from '@jest/globals';
+import { describe, it, expect } from '@jest/globals';
 import stripIndent from 'strip-indent';
 import { extractGlobalTypes, extractModelAttrs, extractModels } from '../model-attrs';
 
@@ -39,6 +39,9 @@ describe(`extractModelAttrs()`, () => {
       filepath: `/Models/Thing.swift`,
       taggedTypes: {},
       dbEnums: {},
+      relations: {
+        kids: { type: `Person`, relationType: `Children` },
+      },
       props: [
         { name: `id`, type: `Id` },
         { name: `name`, type: `String` },
@@ -144,6 +147,7 @@ describe(`extractModels()`, () => {
         migrationNumber: 13,
         taggedTypes: {},
         dbEnums: {},
+        relations: {},
         init: [
           { propName: `id`, hasDefault: true },
           { propName: `age`, hasDefault: false },
@@ -186,6 +190,7 @@ describe(`extractModels()`, () => {
         migrationNumber: 12,
         taggedTypes: {},
         dbEnums: {},
+        relations: {},
         init: [],
         props: [{ name: `id`, type: `UUID` }],
       },

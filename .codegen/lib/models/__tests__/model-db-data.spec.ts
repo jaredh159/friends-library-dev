@@ -13,6 +13,7 @@ describe(`insertData()`, () => {
     const model = {
       name: `Thing`,
       filepath: `/`,
+      relations: {},
       taggedTypes: { FooId: `Int`, PaymentId: `String` },
       dbEnums: {},
       props: [

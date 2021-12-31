@@ -29,6 +29,7 @@ function parseClassInterior(name: string, path: string, lines: string[]): Model 
   const model: Model = {
     name: name,
     filepath: path,
+    relations: {},
     props: [],
     taggedTypes: {},
     init: [],
@@ -52,7 +53,10 @@ function parseClassInterior(name: string, path: string, lines: string[]): Model 
     }
 
     // relations
-    if (line.endsWith(`.notLoaded`)) {
+    const relationMatch = line.match(/\s+var ([^ ]+) = ([^ <]+)<([^>]+)>.notLoaded/);
+    if (relationMatch) {
+      const [, name = ``, relationType = ``, type = ``] = relationMatch;
+      model.relations[name] = { relationType: relationType, type };
       continue;
     }
 

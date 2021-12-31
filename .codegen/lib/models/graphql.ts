@@ -1,5 +1,4 @@
 import { GlobalTypes, Model } from '../types';
-import { modelDir } from './helpers';
 
 export function generateModelGraphQLTypes(
   model: Model,
@@ -9,8 +8,8 @@ export function generateModelGraphQLTypes(
 
   code = code.replace(
     `/* GRAPHQL_SCHEMA_TYPE */`,
-    schemaTypeFieldPairs(model, types)
-      .map(([prop, path]) => `Field("${prop}", at: ${path})`)
+    schemaTypeFieldParts(model, types)
+      .map(([prop, label, path]) => `Field("${prop}", ${label}: ${path})`)
       .join(`\n      `),
   );
 
@@ -67,13 +66,21 @@ function isTimestamp(name: string): boolean {
   return [`createdAt`, `updatedAt`, `deletedAt`].includes(name);
 }
 
-export function schemaTypeFieldPairs(
+export function schemaTypeFieldParts(
   model: Model,
   types: GlobalTypes,
-): Array<[string, string]> {
-  return model.props
+): Array<[string, string, string]> {
+  const parts: Array<[string, string, string]> = model.props
     .filter((p) => p.name !== `deletedAt`)
-    .map(({ name, type }) => [name, keyPath(name, type, model, types)]);
+    .map(({ name, type }) => [name, `at`, keyPath(name, type, model, types)]);
+
+  for (const [name, { relationType }] of Object.entries(model.relations)) {
+    if (relationType === `Children`) {
+      parts.push([name, `with`, `\\.${name}`]);
+    }
+  }
+
+  return parts;
 }
 
 function requestInputPairs(model: Model, types: GlobalTypes): Array<[string, string]> {

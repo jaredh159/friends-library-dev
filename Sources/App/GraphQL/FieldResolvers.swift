@@ -7,6 +7,16 @@ extension Graphiti.Field {
   typealias ToChildren<M: AppModel> = KeyPath<ObjectType, Children<M>>
 }
 
+func resolveChildren<P: AppModel, C: AppModel>(
+  _ f: @escaping (P, EventLoop) throws -> Future<[C]>
+) -> (P) -> (Req, NoArgs, EventLoopGroup) throws -> Future<[C]> {
+  { parent in
+    { _, _, elg in
+      try f(parent, elg.next())
+    }
+  }
+}
+
 extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: Token {
   convenience init(
     _ name: FieldKey,
@@ -44,15 +54,5 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
         }
       },
       as: [TypeRef<OrderItem>].self)
-  }
-}
-
-private func resolveChildren<P: AppModel, C: AppModel>(
-  _ f: @escaping (P, EventLoop) throws -> Future<[C]>
-) -> (P) -> (Req, NoArgs, EventLoopGroup) throws -> Future<[C]> {
-  { parent in
-    { _, _, elg in
-      try f(parent, elg.next())
-    }
   }
 }

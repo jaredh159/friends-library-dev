@@ -16,6 +16,9 @@ extension AppSchema {
       Field("published", at: \.published)
       Field("createdAt", at: \.createdAt)
       Field("updatedAt", at: \.updatedAt)
+      Field("documents", with: \.documents)
+      Field("residences", with: \.residences)
+      Field("quotes", with: \.quotes)
     }
   }
 
