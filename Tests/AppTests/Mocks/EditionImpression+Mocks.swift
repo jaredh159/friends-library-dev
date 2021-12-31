@@ -25,4 +25,15 @@ extension EditionImpression {
       productionToolchainRevision: ""
     )
   }
+
+  static var random: EditionImpression {
+    EditionImpression(
+      editionId: .init(),
+      adocLength: Int.random,
+      paperbackSize: PrintSizeVariant.allCases.shuffled().first!,
+      paperbackVolumes: NonEmpty<[Int]>(Int.random),
+      publishedRevision: .init(rawValue: "@random".random),
+      productionToolchainRevision: .init(rawValue: "@random".random)
+    )
+  }
 }

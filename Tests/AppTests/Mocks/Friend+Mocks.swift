@@ -27,4 +27,17 @@ extension Friend {
       published: nil
     )
   }
+
+  static var random: Friend {
+    Friend(
+      lang: Lang.allCases.shuffled().first!,
+      name: "@random".random,
+      slug: "@random".random,
+      gender: Gender.allCases.shuffled().first!,
+      description: "@random".random,
+      born: nil,
+      died: nil,
+      published: nil
+    )
+  }
 }

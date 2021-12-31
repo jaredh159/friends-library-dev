@@ -33,4 +33,20 @@ extension FreeOrderRequest {
       source: ""
     )
   }
+
+  static var random: FreeOrderRequest {
+    FreeOrderRequest(
+      name: "@random".random,
+      email: .init(rawValue: "@random".random),
+      requestedBooks: "@random".random,
+      aboutRequester: "@random".random,
+      addressStreet: "@random".random,
+      addressStreet2: nil,
+      addressCity: "@random".random,
+      addressState: "@random".random,
+      addressZip: "@random".random,
+      addressCountry: "@random".random,
+      source: "@random".random
+    )
+  }
 }

@@ -31,4 +31,18 @@ extension AudioPart {
       externalIdLq: .init(rawValue: 0)
     )
   }
+
+  static var random: AudioPart {
+    AudioPart(
+      audioId: .init(),
+      title: "@random".random,
+      duration: .init(rawValue: Double.random(in: 100...999)),
+      chapters: NonEmpty<[Int]>(Int.random),
+      order: Int.random,
+      mp3SizeHq: .init(rawValue: Int.random),
+      mp3SizeLq: .init(rawValue: Int.random),
+      externalIdHq: .init(rawValue: Int64.random),
+      externalIdLq: .init(rawValue: Int64.random)
+    )
+  }
 }

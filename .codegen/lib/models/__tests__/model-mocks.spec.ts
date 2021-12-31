@@ -33,6 +33,10 @@ describe(`generateModelMocks()`, () => {
         static var empty: Thing {
           Thing(name: "")
         }
+
+        static var random: Thing {
+          Thing(name: "@random".random)
+        }
       }
     `).trim();
 
@@ -114,6 +118,23 @@ describe(`generateModelMocks()`, () => {
             nonEmptyInt: NonEmpty<[Int]>(0),
             someFoo: .foo,
             jimJam: .jim
+          )
+        }
+
+        static var random: Thing {
+          Thing(
+            name: "@random".random,
+            someInt: Int.random,
+            someBool: Bool.random(),
+            someEmail: .init(rawValue: "@random".random),
+            someSha: .init(rawValue: "@random".random),
+            someNil: nil,
+            fooId: .init(rawValue: Int.random),
+            relationId: .init(),
+            seconds: .init(rawValue: Double.random(in: 100...999)),
+            nonEmptyInt: NonEmpty<[Int]>(Int.random),
+            someFoo: FooEnum.allCases.shuffled().first!,
+            jimJam: JimJam.allCases.shuffled().first!
           )
         }
       }

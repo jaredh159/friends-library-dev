@@ -23,4 +23,15 @@ extension OrderItem {
       unitPrice: 0
     )
   }
+
+  static var random: OrderItem {
+    OrderItem(
+      orderId: .init(),
+      documentId: .init(),
+      editionType: EditionType.allCases.shuffled().first!,
+      title: "@random".random,
+      quantity: Int.random,
+      unitPrice: .init(rawValue: Int.random)
+    )
+  }
 }

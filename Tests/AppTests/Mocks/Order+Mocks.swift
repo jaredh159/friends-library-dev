@@ -45,4 +45,26 @@ extension Order {
       addressCountry: ""
     )
   }
+
+  static var random: Order {
+    Order(
+      lang: Lang.allCases.shuffled().first!,
+      source: OrderSource.allCases.shuffled().first!,
+      paymentId: .init(rawValue: "@random".random),
+      printJobStatus: PrintJobStatus.allCases.shuffled().first!,
+      amount: .init(rawValue: Int.random),
+      taxes: .init(rawValue: Int.random),
+      ccFeeOffset: .init(rawValue: Int.random),
+      shipping: .init(rawValue: Int.random),
+      shippingLevel: ShippingLevel.allCases.shuffled().first!,
+      email: .init(rawValue: "@random".random),
+      addressName: "@random".random,
+      addressStreet: "@random".random,
+      addressStreet2: nil,
+      addressCity: "@random".random,
+      addressState: "@random".random,
+      addressZip: "@random".random,
+      addressCountry: "@random".random
+    )
+  }
 }

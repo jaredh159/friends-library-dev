@@ -29,6 +29,17 @@ export function generateModelMocks(
     code += `\n    )\n  }`;
   }
 
+  code += `\n\n  static var random: ${model.name} {\n    ${model.name}(`;
+  const randomParams = params(model, globalTypes, `random`);
+  if (randomParams.join(`, `).length < 80) {
+    code += randomParams.join(`, `);
+    code += `)\n  }`;
+  } else {
+    code += `\n      `;
+    code += randomParams.join(`,\n      `);
+    code += `\n    )\n  }`;
+  }
+
   code += `\n}\n`;
 
   if (code.includes(`NonEmpty<`)) {
@@ -43,7 +54,7 @@ export function generateModelMocks(
 function params(
   model: Model,
   globalTypes: GlobalTypes,
-  type: 'empty' | 'mock',
+  type: 'empty' | 'mock' | 'random',
 ): string[] {
   return model.init
     .filter((p) => !p.hasDefault)
@@ -52,10 +63,8 @@ function params(
       if (!prop) {
         throw new Error(`Error resolving init param type for ${model.name}.${propName}`);
       }
-      const value = mockValue(prop.type, propName, model, globalTypes)[
-        type === `mock` ? 0 : 1
-      ];
-      return `${propName}: ${value}`;
+      const values = mockValue(prop.type, propName, model, globalTypes);
+      return `${propName}: ${values[type]}`;
     });
 }
 
@@ -64,41 +73,73 @@ function mockValue(
   propName: string,
   model: Model,
   globalTypes: GlobalTypes,
-): [mock: string, empty: string] {
+): { mock: string; empty: string; random: string } {
   if (type.endsWith(`?`)) {
-    return [`nil`, `nil`];
+    return { mock: `nil`, empty: `nil`, random: `nil` };
   }
 
   const dbEnum = model.dbEnums[type] || globalTypes.dbEnums[type];
   if (dbEnum) {
-    return [`.${dbEnum[0]}`, `.${dbEnum[0]}`];
+    return {
+      mock: `.${dbEnum[0]}`,
+      empty: `.${dbEnum[0]}`,
+      random: `${type}.allCases.shuffled().first!`,
+    };
   }
 
   switch (type) {
     case `String`:
-      return [`"@mock ${propName}"`, `""`];
+      return { mock: `"@mock ${propName}"`, empty: `""`, random: `"@random".random` };
     case `Int`:
+      return { mock: `42`, empty: `0`, random: `Int.random` };
     case `Int64`:
+      return { mock: `42`, empty: `0`, random: `Int64.random` };
     case `Seconds<Double>`:
+      return {
+        mock: `42`,
+        empty: `0`,
+        random: `.init(rawValue: Double.random(in: 100...999))`,
+      };
     case `Cents<Int>`:
-      return [`42`, `0`];
+      return { mock: `42`, empty: `0`, random: `.init(rawValue: Int.random)` };
     case `NonEmpty<[Int]>`:
-      return [`NonEmpty<[Int]>(42)`, `NonEmpty<[Int]>(0)`];
+      return {
+        mock: `NonEmpty<[Int]>(42)`,
+        empty: `NonEmpty<[Int]>(0)`,
+        random: `NonEmpty<[Int]>(Int.random)`,
+      };
     case `Bool`:
-      return [`true`, `false`];
+      return { mock: `true`, empty: `false`, random: `Bool.random()` };
     case `EmailAddress`:
-      return [`"mock@mock.com"`, `""`];
+      return {
+        mock: `"mock@mock.com"`,
+        empty: `""`,
+        random: `.init(rawValue: "@random".random)`,
+      };
     case `GitCommitSha`:
-      return [`"@mock ${propName}"`, `""`];
+      return {
+        mock: `"@mock ${propName}"`,
+        empty: `""`,
+        random: `.init(rawValue: "@random".random)`,
+      };
     default: {
       const taggedType = model.taggedTypes[type] || globalTypes.taggedTypes[type];
       if (taggedType) {
-        const [mock, empty] = mockValue(taggedType, propName, model, globalTypes);
-        return [`.init(rawValue: ${mock})`, `.init(rawValue: ${empty})`];
+        const { mock, empty, random } = mockValue(
+          taggedType,
+          propName,
+          model,
+          globalTypes,
+        );
+        return {
+          mock: `.init(rawValue: ${mock})`,
+          empty: `.init(rawValue: ${empty})`,
+          random: `.init(rawValue: ${random})`,
+        };
       }
 
-      if (type.endsWith(`.Id`)) {
-        return [`.init()`, `.init()`];
+      if (type.endsWith(`.Id`) || type === `UUID`) {
+        return { mock: `.init()`, empty: `.init()`, random: `.init()` };
       }
       throw new Error(`Unhandled init param mock value type: ${type}`);
     }

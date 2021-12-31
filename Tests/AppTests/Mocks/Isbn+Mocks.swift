@@ -9,4 +9,8 @@ extension Isbn {
   static var empty: Isbn {
     Isbn(code: .init(rawValue: ""), editionId: nil)
   }
+
+  static var random: Isbn {
+    Isbn(code: .init(rawValue: "@random".random), editionId: nil)
+  }
 }

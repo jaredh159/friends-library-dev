@@ -9,4 +9,8 @@ extension FriendResidence {
   static var empty: FriendResidence {
     FriendResidence(friendId: .init(), city: "", region: "")
   }
+
+  static var random: FriendResidence {
+    FriendResidence(friendId: .init(), city: "@random".random, region: "@random".random)
+  }
 }

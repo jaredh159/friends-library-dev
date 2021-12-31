@@ -9,4 +9,8 @@ extension DocumentTagModel {
   static var empty: DocumentTagModel {
     DocumentTagModel(slug: .journal)
   }
+
+  static var random: DocumentTagModel {
+    DocumentTagModel(slug: DocumentTag.allCases.shuffled().first!)
+  }
 }

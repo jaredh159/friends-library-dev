@@ -23,4 +23,15 @@ extension Audio {
       m4bSizeLq: .init(rawValue: 0)
     )
   }
+
+  static var random: Audio {
+    Audio(
+      editionId: .init(),
+      reader: "@random".random,
+      mp3ZipSizeHq: .init(rawValue: Int.random),
+      mp3ZipSizeLq: .init(rawValue: Int.random),
+      m4bSizeHq: .init(rawValue: Int.random),
+      m4bSizeLq: .init(rawValue: Int.random)
+    )
+  }
 }

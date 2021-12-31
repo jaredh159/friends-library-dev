@@ -9,4 +9,8 @@ extension Edition {
   static var empty: Edition {
     Edition(documentId: .init(), type: .updated, editor: nil)
   }
+
+  static var random: Edition {
+    Edition(documentId: .init(), type: EditionType.allCases.shuffled().first!, editor: nil)
+  }
 }

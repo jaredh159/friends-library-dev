@@ -21,4 +21,14 @@ extension Download {
       isMobile: false
     )
   }
+
+  static var random: Download {
+    Download(
+      documentId: .init(),
+      editionType: EditionType.allCases.shuffled().first!,
+      format: Format.allCases.shuffled().first!,
+      source: DownloadSource.allCases.shuffled().first!,
+      isMobile: Bool.random()
+    )
+  }
 }

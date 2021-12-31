@@ -9,4 +9,8 @@ extension Token {
   static var empty: Token {
     Token(description: "")
   }
+
+  static var random: Token {
+    Token(description: "@random".random)
+  }
 }

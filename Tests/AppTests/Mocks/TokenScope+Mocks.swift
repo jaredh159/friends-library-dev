@@ -9,4 +9,8 @@ extension TokenScope {
   static var empty: TokenScope {
     TokenScope(tokenId: .init(), scope: .queryDownloads)
   }
+
+  static var random: TokenScope {
+    TokenScope(tokenId: .init(), scope: Scope.allCases.shuffled().first!)
+  }
 }

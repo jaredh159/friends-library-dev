@@ -9,4 +9,8 @@ extension ArtifactProductionVersion {
   static var empty: ArtifactProductionVersion {
     ArtifactProductionVersion(version: "")
   }
+
+  static var random: ArtifactProductionVersion {
+    ArtifactProductionVersion(version: .init(rawValue: "@random".random))
+  }
 }

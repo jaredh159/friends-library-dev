@@ -33,4 +33,20 @@ extension Document {
       featuredDescription: nil
     )
   }
+
+  static var random: Document {
+    Document(
+      friendId: .init(),
+      altLanguageId: nil,
+      title: "@random".random,
+      slug: "@random".random,
+      filename: "@random".random,
+      published: nil,
+      originalTitle: nil,
+      incomplete: Bool.random(),
+      description: "@random".random,
+      partialDescription: "@random".random,
+      featuredDescription: nil
+    )
+  }
 }

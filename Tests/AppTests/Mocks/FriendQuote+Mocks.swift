@@ -9,4 +9,8 @@ extension FriendQuote {
   static var empty: FriendQuote {
     FriendQuote(friendId: .init(), source: "", order: 0)
   }
+
+  static var random: FriendQuote {
+    FriendQuote(friendId: .init(), source: "@random".random, order: Int.random)
+  }
 }
