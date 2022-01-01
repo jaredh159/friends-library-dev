@@ -1,6 +1,10 @@
 import Foundation
 
 extension Date {
+  enum StringConversionError: Error {
+    case invalidDateString
+  }
+
   static func createByAdding(days numDays: Int, to begin: Date) -> Date {
     let calendar = Calendar.current
     let days = DateComponents(day: numDays)
@@ -13,6 +17,11 @@ extension Date {
     }
     let formatter = cachedFormatter ?? createFormatter()
     return formatter.date(from: string)
+  }
+
+  static func fromISO(_ string: String) throws -> Date {
+    guard let date = fromISOString(string) else { throw StringConversionError.invalidDateString }
+    return date
   }
 
   static func fromISOString(_ string: String?, or fallback: Date) -> Date {

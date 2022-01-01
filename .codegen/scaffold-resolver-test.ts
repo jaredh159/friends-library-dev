@@ -1,14 +1,9 @@
 import path from 'path';
 import fs from 'fs';
-import { scriptData, printCode } from './lib/script-helpers';
+import { scriptData, printCode, requireModel } from './lib/script-helpers';
 
 function main() {
-  const { appRoot, isDryRun, model } = scriptData();
-
-  if (!model) {
-    console.log(`No model selected. --model Thing`);
-    process.exit(1);
-  }
+  const { appRoot, isDryRun, model } = requireModel(scriptData());
 
   let code = TEST_PATTERN.replace(/Thing/g, model.name)
     .replace(/thing/g, model.camelCaseName)
@@ -58,7 +53,7 @@ final class ThingResolverTests: AppTestCase {
       }
       """,
       expectedData: .containsKVPs(["id": map["id"]]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
+      headers: [.authorization: "Bearer \\(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": map])
   }
 
@@ -69,13 +64,13 @@ final class ThingResolverTests: AppTestCase {
     GraphQLTest(
       """
       query GetThing {
-        thing: getThing(id: "\(thing.id.uuidString)") {
+        thing: getThing(id: "\\(thing.id.uuidString)") {
           id
         }
       }
       """,
       expectedData: .containsKVPs(["id": thing.id.uuidString]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
+      headers: [.authorization: "Bearer \\(Seeded.tokens.allScopes)"]
     ).run(Self.app)
   }
 
@@ -95,7 +90,7 @@ final class ThingResolverTests: AppTestCase {
       }
       """,
       expectedData: .containsKVPs(["someProp": "new value"]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
+      headers: [.authorization: "Bearer \\(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": thing.gqlMap()])
   }
 
@@ -106,13 +101,13 @@ final class ThingResolverTests: AppTestCase {
     GraphQLTest(
       """
       mutation DeleteThing {
-        thing: deleteThing(id: "\(thing.id.uuidString)") {
+        thing: deleteThing(id: "\\(thing.id.uuidString)") {
           id
         }
       }
       """,
       expectedData: .containsKVPs(["id": thing.id.uuidString]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
+      headers: [.authorization: "Bearer \\(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": thing.gqlMap()])
 
     let retrieved = try? await Current.db.getThing(thing.id)

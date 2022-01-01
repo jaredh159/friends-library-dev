@@ -1,13 +1,8 @@
 import fs from 'fs';
-import { scriptData, printCode } from './lib/script-helpers';
+import { scriptData, printCode, requireModel } from './lib/script-helpers';
 
 function main() {
-  const { appRoot, isDryRun, model } = scriptData();
-
-  if (!model) {
-    console.log(`No model selected. --model Thing`);
-    process.exit(1);
-  }
+  const { appRoot, isDryRun, model } = requireModel(scriptData());
 
   let extensions: string[] = [];
   let children = Object.entries(model.relations).filter(

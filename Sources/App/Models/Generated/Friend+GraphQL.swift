@@ -31,7 +31,7 @@ extension AppSchema {
     let description: String
     let born: Int?
     let died: Int?
-    let published: Date?
+    let published: String?
   }
 
   struct UpdateFriendInput: Codable {
@@ -43,7 +43,7 @@ extension AppSchema {
     let description: String
     let born: Int?
     let died: Int?
-    let published: Date?
+    let published: String?
   }
 
   struct CreateFriendArgs: Codable {
@@ -132,7 +132,7 @@ extension AppSchema {
 }
 
 extension Friend {
-  convenience init(_ input: AppSchema.CreateFriendInput) {
+  convenience init(_ input: AppSchema.CreateFriendInput) throws {
     self.init(
       id: .init(rawValue: input.id ?? UUID()),
       lang: input.lang,
@@ -142,11 +142,11 @@ extension Friend {
       description: input.description,
       born: input.born,
       died: input.died,
-      published: input.published
+      published: input.published != nil ? try Date.fromISO(input.published!) : nil
     )
   }
 
-  convenience init(_ input: AppSchema.UpdateFriendInput) {
+  convenience init(_ input: AppSchema.UpdateFriendInput) throws {
     self.init(
       id: .init(rawValue: input.id),
       lang: input.lang,
@@ -156,11 +156,11 @@ extension Friend {
       description: input.description,
       born: input.born,
       died: input.died,
-      published: input.published
+      published: input.published != nil ? try Date.fromISO(input.published!) : nil
     )
   }
 
-  func update(_ input: AppSchema.UpdateFriendInput) {
+  func update(_ input: AppSchema.UpdateFriendInput) throws {
     self.lang = input.lang
     self.name = input.name
     self.slug = input.slug
@@ -168,7 +168,7 @@ extension Friend {
     self.description = input.description
     self.born = input.born
     self.died = input.died
-    self.published = input.published
+    self.published = input.published != nil ? try Date.fromISO(input.published!) : nil
     self.updatedAt = Current.date()
   }
 }

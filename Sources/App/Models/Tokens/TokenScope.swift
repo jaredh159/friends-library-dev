@@ -6,6 +6,20 @@ enum Scope: String, Codable, CaseIterable, Equatable {
   case queryOrders
   case mutateOrders
   case mutateArtifactProductionVersions
+  case mutateFriends
+  case queryFriends
+  case mutateDocuments
+  case queryDocuments
+  case mutateEditionImpressions
+  case queryEditionImpressions
+  case mutateAudios
+  case queryAudios
+  case queryArtifactProductionVersions
+  case mutateIsbns
+  case queryIsbns
+  case mutateEditionChapters
+  case queryEditionChapters
+  case queryCoverProps
 }
 
 final class TokenScope: Codable {

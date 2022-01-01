@@ -17,6 +17,7 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   Enum(Order.ShippingLevel.self)
   Enum(Order.OrderSource.self)
   Enum(Scope.self)
+  Enum(Friend.Gender.self)
 
   AppSchema.ArtifactProductionVersionType
   AppSchema.CreateArtifactProductionVersionInputType
@@ -36,7 +37,15 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.FreeOrderRequestType
   AppSchema.CreateFreeOrderRequestInputType
 
+  // friend types
+  AppSchema.FriendType
+  AppSchema.CreateFriendInputType
+  AppSchema.UpdateFriendInputType
+
   Query {
+    // friend queries
+    AppSchema.getFriend
+
     Field("getLatestArtifactProductionVersion", at: Resolver.getLatestArtifactProductionVersion)
 
     Field("getTokenByValue", at: Resolver.getTokenByValue) {
@@ -54,6 +63,11 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   Mutation {
     AppSchema.createDownload
     AppSchema.createArtifactProductionVersion
+
+    // friend mutations
+    AppSchema.createFriend
+    AppSchema.updateFriend
+    AppSchema.deleteFriend
 
     // order mutations
     AppSchema.updateOrder

@@ -6,18 +6,33 @@ import { extractGlobalTypes, extractModels } from './models/model-attrs';
 import Model from './models/Model';
 import { extractClientProps, repositories } from './db-client';
 
-export function scriptData(): {
+type ScriptData = {
   isDryRun: boolean;
   appRoot: string;
   appDir: string;
   files: Array<{ path: string; source: string }>;
   types: GlobalTypes;
   models: Model[];
-  model?: Model;
   dbClientProps: DbClientProps;
   repositories: string[];
-} {
-  const isDryRun = process.argv.includes(`--dry-run`);
+};
+
+export function requireModel(
+  data: ReturnType<typeof scriptData>,
+): ScriptData & { model: Model } {
+  const { model, ...rest } = data;
+  if (!model) {
+    console.log(`No model selected. --model Thing`);
+    process.exit(1);
+  }
+  return {
+    ...rest,
+    model,
+  };
+}
+
+export function scriptData(): ScriptData & { model?: Model } {
+  const isDryRun = !process.argv.includes(`--perform`) && !process.argv.includes(`-p`);
   const appRoot = path.resolve(__dirname, `..`, `..`);
   const appDir = path.resolve(appRoot, `Sources`, `App`);
 

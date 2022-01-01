@@ -26,6 +26,16 @@ struct DatabaseClient {
   var createDownload: (Download) async throws -> Void
   var getDownload: (Download.Id) async throws -> Download
 
+  // friends
+  var createFriend: (Friend) async throws -> Void
+  var createFriends: ([Friend]) async throws -> Void
+  var getFriend: (Friend.Id) async throws -> Friend
+  var getFriends: () async throws -> [Friend]
+  var updateFriend: (Friend) async throws -> Friend
+  var updateFriends: ([Friend]) async throws -> [Friend]
+  var deleteFriend: (Friend.Id) async throws -> Void
+  var deleteAll: () async throws -> Void
+
   // documents
   var createDocumentTagModels: ([DocumentTagModel]) async throws -> Void
 

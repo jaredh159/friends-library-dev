@@ -7,6 +7,7 @@ extension DatabaseClient {
     var client: DatabaseClient = .notImplemented
     OrderRepository(db: db).assign(client: &client)
     TokenRepository(db: db).assign(client: &client)
+    FriendRepository(db: db).assign(client: &client)
     DownloadRepository(db: db).assign(client: &client)
     DocumentTagModelRepository(db: db).assign(client: &client)
     FreeOrderRequestRepository(db: db).assign(client: &client)
@@ -19,6 +20,7 @@ extension DatabaseClient {
     var client: DatabaseClient = .notImplemented
     MockOrderRepository(db: mockDb).assign(client: &client)
     MockTokenRepository(db: mockDb).assign(client: &client)
+    MockFriendRepository(db: mockDb).assign(client: &client)
     MockDownloadRepository(db: mockDb).assign(client: &client)
     MockDocumentTagModelRepository(db: mockDb).assign(client: &client)
     MockFreeOrderRequestRepository(db: mockDb).assign(client: &client)
@@ -68,6 +70,30 @@ extension DatabaseClient {
     },
     getDownload: { _ in
       throw Abort(.notImplemented, reason: "db.getDownload")
+    },
+    createFriend: { _ in
+      throw Abort(.notImplemented, reason: "db.createFriend")
+    },
+    createFriends: { _ in
+      throw Abort(.notImplemented, reason: "db.createFriends")
+    },
+    getFriend: { _ in
+      throw Abort(.notImplemented, reason: "db.getFriend")
+    },
+    getFriends: {
+      throw Abort(.notImplemented, reason: "db.getFriends")
+    },
+    updateFriend: { _ in
+      throw Abort(.notImplemented, reason: "db.updateFriend")
+    },
+    updateFriends: { _ in
+      throw Abort(.notImplemented, reason: "db.updateFriends")
+    },
+    deleteFriend: { _ in
+      throw Abort(.notImplemented, reason: "db.deleteFriend")
+    },
+    deleteAll: {
+      throw Abort(.notImplemented, reason: "db.deleteAll")
     },
     createDocumentTagModels: { _ in
       throw Abort(.notImplemented, reason: "db.createDocumentTagModels")

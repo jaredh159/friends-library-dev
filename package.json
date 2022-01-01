@@ -33,7 +33,7 @@
     "scaffold:repo": "fldev tsnode ./.codegen/scaffold-repository.ts",
     "scaffold:resolver-test": "fldev tsnode ./.codegen/scaffold-resolver-test.ts",
     "scaffold:graphiti": "fldev tsnode ./.codegen/scaffold-graphiti.ts",
-    "scaffold:resolvers": "fldev tsnode ./.codegen/scaffold-resolvers.ts"
+    "scaffold:resolver": "fldev tsnode ./.codegen/scaffold-resolver.ts"
   },
   "keywords": [],
   "author": "",

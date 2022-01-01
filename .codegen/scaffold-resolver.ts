@@ -1,13 +1,13 @@
 import fs from 'fs';
 import { generateResolverScaffold } from './lib/models/scaffold-resolvers';
-import { scriptData } from './lib/script-helpers';
+import { requireModel, scriptData, printCode } from './lib/script-helpers';
 
-const { models } = scriptData();
+const { model, isDryRun } = requireModel(scriptData());
+const [path, code] = generateResolverScaffold(model);
 
-// @TODO, selective
-for (const model of models) {
-  const [path, code] = generateResolverScaffold(model);
-
+if (isDryRun) {
+  printCode(`resolver`, path, code);
+} else {
   if (fs.existsSync(path)) {
     const contents = fs.readFileSync(path, `utf-8`);
     if (!contents.includes(`below auto-generated`)) {

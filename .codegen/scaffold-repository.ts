@@ -1,13 +1,8 @@
 import fs from 'fs';
-import { scriptData, printCode } from './lib/script-helpers';
+import { scriptData, printCode, requireModel } from './lib/script-helpers';
 
 function main() {
-  const { appRoot, isDryRun, model } = scriptData();
-
-  if (!model) {
-    console.log(`No model selected. --model Thing`);
-    process.exit(1);
-  }
+  const { appRoot, isDryRun, model } = requireModel(scriptData());
 
   let code = REPO_PATTERN.replace(/Thing/g, model.name).replace(
     /\.things/g,
@@ -38,11 +33,11 @@ struct ThingRepository: LiveRepository {
     client.createThing = { try await create($0) }
     client.createThings = { try await create($0) }
     client.getThing = { try await find($0) }
-    client.getThings = { try await select($0) }
+    client.getThings = { try await select() }
     client.updateThing = { try await update($0) }
     client.updateThings = { try await update($0) }
     client.deleteThing = { try await delete($0) }
-    client.deleteAll = { try await deleteAll($0) }
+    client.deleteAll = { try await deleteAll() }
   }
 }
 
@@ -55,11 +50,11 @@ struct MockThingRepository: MockRepository {
     client.createThing = { try await create($0) }
     client.createThings = { try await create($0) }
     client.getThing = { try await find($0) }
-    client.getThings = { try await select($0) }
+    client.getThings = { try await select() }
     client.updateThing = { try await update($0) }
     client.updateThings = { try await update($0) }
     client.deleteThing = { try await delete($0) }
-    client.deleteAll = { try await deleteAll($0) }
+    client.deleteAll = { try await deleteAll() }
   }
 }
 `;

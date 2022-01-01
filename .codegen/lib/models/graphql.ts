@@ -61,7 +61,7 @@ export function generateModelGraphQLTypes(
   code = code.replace(`/* FUNC_UPDATE */`, updateSetters.join(`\n    `));
   code = code.replace(/Thing/g, model.name);
 
-  if (code.match(/try\?? NonEmpty</m) === null) {
+  if (code.match(/try\?? (NonEmpty<|Date.fromISO\()/m) === null) {
     code = code.replace(/ throws /gm, ` `);
   }
 
@@ -123,6 +123,8 @@ export function modelTypeToGraphQLInputType(
       return `Int${opt}`;
     case `NonEmpty<[Int]>`:
       return `[Int]${opt}`;
+    case `Date`:
+      return `String${opt}`;
   }
 
   if (model.dbEnums[type] || (model.name === `FriendResidence` && type === `Duration`)) {
@@ -169,6 +171,12 @@ export function modelPropToInitArg(
     } else {
       return `try ${nonEmpty})`;
     }
+  }
+
+  if (type === `Date` && isOptional) {
+    return `input.${name} != nil ? try Date.fromISO(input.${name}!) : nil`;
+  } else if (type === `Date`) {
+    return `try Date.fromISO(input.${name})`;
   }
 
   return `input.${name}`;
