@@ -1,8 +1,8 @@
 import fs from 'fs';
-import { scriptData, printCode } from './lib/script-helpers';
+import { scriptData } from './lib/script-helpers';
 
 function main() {
-  const { dbClientProps, isDryRun, repositories, appRoot } = scriptData();
+  const { dbClientProps, repositories, appRoot } = scriptData();
   let code = PATTERN.replace(
     `/* NOT_IMPLEMENTED_INIT_ARGS */`,
     dbClientProps
@@ -27,11 +27,7 @@ function main() {
   );
 
   const generatedPath = `${appRoot}/Sources/App/Database/DatabaseClient+Generated.swift`;
-  if (isDryRun) {
-    printCode(`db client`, generatedPath, code);
-  } else {
-    fs.writeFileSync(generatedPath, code + `\n`);
-  }
+  fs.writeFileSync(generatedPath, code + `\n`);
 }
 
 function closureArgs(numArgs: number): string {

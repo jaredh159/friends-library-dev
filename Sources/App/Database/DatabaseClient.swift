@@ -34,9 +34,19 @@ struct DatabaseClient {
   var updateFriend: (Friend) async throws -> Friend
   var updateFriends: ([Friend]) async throws -> [Friend]
   var deleteFriend: (Friend.Id) async throws -> Void
-  var deleteAll: () async throws -> Void
+  var deleteAllFriends: () async throws -> Void
 
   // documents
+  var createDocument: (Document) async throws -> Void
+  var createDocuments: ([Document]) async throws -> Void
+  var getDocument: (Document.Id) async throws -> Document
+  var getDocuments: () async throws -> [Document]
+  var updateDocument: (Document) async throws -> Document
+  var updateDocuments: ([Document]) async throws -> [Document]
+  var deleteDocument: (Document.Id) async throws -> Void
+  var deleteAllDocuments: () async throws -> Void
+
+  // document tags
   var createDocumentTagModels: ([DocumentTagModel]) async throws -> Void
 
   // artifact production versions

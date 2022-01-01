@@ -42,9 +42,14 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.CreateFriendInputType
   AppSchema.UpdateFriendInputType
 
+  // document types
+  AppSchema.DocumentType
+  AppSchema.CreateDocumentInputType
+  AppSchema.UpdateDocumentInputType
+
   Query {
-    // friend queries
     AppSchema.getFriend
+    AppSchema.getDocument
 
     Field("getLatestArtifactProductionVersion", at: Resolver.getLatestArtifactProductionVersion)
 
@@ -68,6 +73,11 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
     AppSchema.createFriend
     AppSchema.updateFriend
     AppSchema.deleteFriend
+
+    // document mutations
+    AppSchema.createDocument
+    AppSchema.updateDocument
+    AppSchema.deleteDocument
 
     // order mutations
     AppSchema.updateOrder

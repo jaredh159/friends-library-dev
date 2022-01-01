@@ -8,6 +8,7 @@ extension DatabaseClient {
     OrderRepository(db: db).assign(client: &client)
     TokenRepository(db: db).assign(client: &client)
     FriendRepository(db: db).assign(client: &client)
+    DocumentRepository(db: db).assign(client: &client)
     DownloadRepository(db: db).assign(client: &client)
     DocumentTagModelRepository(db: db).assign(client: &client)
     FreeOrderRequestRepository(db: db).assign(client: &client)
@@ -21,6 +22,7 @@ extension DatabaseClient {
     MockOrderRepository(db: mockDb).assign(client: &client)
     MockTokenRepository(db: mockDb).assign(client: &client)
     MockFriendRepository(db: mockDb).assign(client: &client)
+    MockDocumentRepository(db: mockDb).assign(client: &client)
     MockDownloadRepository(db: mockDb).assign(client: &client)
     MockDocumentTagModelRepository(db: mockDb).assign(client: &client)
     MockFreeOrderRequestRepository(db: mockDb).assign(client: &client)
@@ -92,8 +94,32 @@ extension DatabaseClient {
     deleteFriend: { _ in
       throw Abort(.notImplemented, reason: "db.deleteFriend")
     },
-    deleteAll: {
-      throw Abort(.notImplemented, reason: "db.deleteAll")
+    deleteAllFriends: {
+      throw Abort(.notImplemented, reason: "db.deleteAllFriends")
+    },
+    createDocument: { _ in
+      throw Abort(.notImplemented, reason: "db.createDocument")
+    },
+    createDocuments: { _ in
+      throw Abort(.notImplemented, reason: "db.createDocuments")
+    },
+    getDocument: { _ in
+      throw Abort(.notImplemented, reason: "db.getDocument")
+    },
+    getDocuments: {
+      throw Abort(.notImplemented, reason: "db.getDocuments")
+    },
+    updateDocument: { _ in
+      throw Abort(.notImplemented, reason: "db.updateDocument")
+    },
+    updateDocuments: { _ in
+      throw Abort(.notImplemented, reason: "db.updateDocuments")
+    },
+    deleteDocument: { _ in
+      throw Abort(.notImplemented, reason: "db.deleteDocument")
+    },
+    deleteAllDocuments: {
+      throw Abort(.notImplemented, reason: "db.deleteAllDocuments")
     },
     createDocumentTagModels: { _ in
       throw Abort(.notImplemented, reason: "db.createDocumentTagModels")

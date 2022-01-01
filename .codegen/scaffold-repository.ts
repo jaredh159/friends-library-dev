@@ -37,7 +37,7 @@ struct ThingRepository: LiveRepository {
     client.updateThing = { try await update($0) }
     client.updateThings = { try await update($0) }
     client.deleteThing = { try await delete($0) }
-    client.deleteAll = { try await deleteAll() }
+    client.deleteAllThings = { try await deleteAll() }
   }
 }
 
@@ -54,7 +54,7 @@ struct MockThingRepository: MockRepository {
     client.updateThing = { try await update($0) }
     client.updateThings = { try await update($0) }
     client.deleteThing = { try await delete($0) }
-    client.deleteAll = { try await deleteAll() }
+    client.deleteAllThings = { try await deleteAll() }
   }
 }
 `;

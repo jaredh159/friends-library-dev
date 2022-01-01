@@ -13,7 +13,7 @@ struct FriendRepository: LiveRepository {
     client.updateFriend = { try await update($0) }
     client.updateFriends = { try await update($0) }
     client.deleteFriend = { try await delete($0) }
-    client.deleteAll = { try await deleteAll() }
+    client.deleteAllFriends = { try await deleteAll() }
   }
 }
 
@@ -30,6 +30,6 @@ struct MockFriendRepository: MockRepository {
     client.updateFriend = { try await update($0) }
     client.updateFriends = { try await update($0) }
     client.deleteFriend = { try await delete($0) }
-    client.deleteAll = { try await deleteAll() }
+    client.deleteAllFriends = { try await deleteAll() }
   }
 }
