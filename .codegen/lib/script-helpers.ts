@@ -1,9 +1,10 @@
-import { GlobalTypes } from './types';
+import { DbClientProps, GlobalTypes } from './types';
 import path from 'path';
 import fs from 'fs';
 import { sync as glob } from 'glob';
 import { extractGlobalTypes, extractModels } from './models/model-attrs';
 import Model from './models/Model';
+import { extractClientProps, repositories } from './db-client';
 
 export function scriptData(): {
   isDryRun: boolean;
@@ -13,6 +14,8 @@ export function scriptData(): {
   types: GlobalTypes;
   models: Model[];
   model?: Model;
+  dbClientProps: DbClientProps;
+  repositories: string[];
 } {
   const isDryRun = process.argv.includes(`--dry-run`);
   const appRoot = path.resolve(__dirname, `..`, `..`);
@@ -25,6 +28,7 @@ export function scriptData(): {
 
   const types = extractGlobalTypes(files.map((f) => f.source));
   const models = extractModels(files);
+  const dbClientProps = extractClientProps(files);
 
   let modelArgIndex = process.argv.indexOf(`--model`);
   if (modelArgIndex === -1) {
@@ -41,6 +45,8 @@ export function scriptData(): {
     types,
     models,
     model,
+    dbClientProps,
+    repositories: repositories(files),
   };
 }
 

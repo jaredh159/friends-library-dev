@@ -29,6 +29,7 @@
     "ci": "npm run lint && npm run test",
     "compile": "true # <-- keep manager automation script happy",
     "generate:models": "fldev tsnode ./.codegen/generate-models.ts",
+    "generate:db": "fldev tsnode ./.codegen/generate-db.ts",
     "scaffold:repo": "fldev tsnode ./.codegen/scaffold-repository.ts",
     "scaffold:resolver-test": "fldev tsnode ./.codegen/scaffold-resolver-test.ts",
     "scaffold:graphiti": "fldev tsnode ./.codegen/scaffold-graphiti.ts",

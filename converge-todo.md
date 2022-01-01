@@ -7,6 +7,7 @@
 
 ## done...
 
+- [√] - generate throwing db and client extensions
 - [√] - rename migrations numbers
 - [√] - generate edition id map (from ts/cli land)
 - [√] - write adding non-foreign key, nullable field migration
