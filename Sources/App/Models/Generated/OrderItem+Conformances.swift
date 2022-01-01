@@ -7,7 +7,7 @@ extension OrderItem: AppModel {
 }
 
 extension OrderItem: DuetModel {
-  static let tableName = "order_items"
+  static let tableName = M3.tableName
 }
 
 extension OrderItem {
@@ -15,9 +15,7 @@ extension OrderItem {
     [
       Self[.id]: .id(self),
       Self[.orderId]: .uuid(orderId),
-      Self[.documentId]: .uuid(documentId),
-      Self[.editionType]: .enum(editionType),
-      Self[.title]: .string(title),
+      Self[.editionId]: .uuid(editionId),
       Self[.quantity]: .int(quantity),
       Self[.unitPrice]: .int(unitPrice.rawValue),
       Self[.createdAt]: .currentTimestamp,
@@ -31,9 +29,7 @@ extension OrderItem {
   enum CodingKeys: String, CodingKey {
     case id
     case orderId
-    case documentId
-    case editionType
-    case title
+    case editionId
     case quantity
     case unitPrice
     case createdAt

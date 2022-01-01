@@ -1,11 +1,8 @@
 import Foundation
 
-// @TODO, do a migration to remove DocumentId / EditionType combo, replace with Edition.Id
-
 final class Download: Codable {
   var id: Id
-  var documentId: Document.Id
-  var editionType: EditionType
+  var editionId: Edition.Id
   var format: Format
   var source: DownloadSource
   var audioQuality: AudioQuality?
@@ -25,10 +22,11 @@ final class Download: Codable {
   var longitude: String?
   var createdAt = Current.date()
 
+  var edition = Parent<Edition>.notLoaded
+
   init(
     id: Id = .init(),
-    documentId: Document.Id,
-    editionType: EditionType,
+    editionId: Edition.Id,
     format: Format,
     source: DownloadSource,
     isMobile: Bool,
@@ -48,8 +46,7 @@ final class Download: Codable {
     longitude: String? = nil
   ) {
     self.id = id
-    self.documentId = documentId
-    self.editionType = editionType
+    self.editionId = editionId
     self.format = format
     self.source = source
     self.audioQuality = audioQuality
@@ -68,7 +65,6 @@ final class Download: Codable {
     self.latitude = latitude
     self.longitude = longitude
   }
-
 }
 
 // extensions

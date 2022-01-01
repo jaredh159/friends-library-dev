@@ -53,6 +53,7 @@ private func addMigrations(to app: Application) {
   app.migrations.add(AddOrderRequestId())
   app.migrations.add(CreateArtifactProductionVersion())
   app.migrations.add(AddMutateArtifactProductionVersionScope())
+  app.migrations.add(HandleEditionIds())
   app.migrations.add(CreateFriends())
   app.migrations.add(CreateFriendResidences())
   app.migrations.add(CreateFriendQuotes())

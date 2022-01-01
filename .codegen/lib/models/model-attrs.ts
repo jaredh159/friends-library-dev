@@ -3,7 +3,7 @@ import Model from './Model';
 
 export function extractModelAttrs({ source, path }: File): Model | undefined {
   if (
-    !path.includes(`/Models/`) ||
+    (!path.includes(`/Models/`) && !path.includes(`/Migrations/`)) ||
     path.includes(`+`) ||
     path.includes(`Repository`) ||
     path.includes(`Resolver`)

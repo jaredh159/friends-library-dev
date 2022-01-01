@@ -7,9 +7,7 @@ extension AppSchema {
     Type(OrderItem.self) {
       Field("id", at: \.id.rawValue)
       Field("orderId", at: \.orderId.rawValue)
-      Field("documentId", at: \.documentId.rawValue)
-      Field("editionType", at: \.editionType)
-      Field("title", at: \.title)
+      Field("editionId", at: \.editionId.rawValue)
       Field("quantity", at: \.quantity)
       Field("unitPrice", at: \.unitPrice.rawValue)
       Field("createdAt", at: \.createdAt)
@@ -19,9 +17,7 @@ extension AppSchema {
   struct CreateOrderItemInput: Codable {
     let id: UUID?
     let orderId: UUID
-    let documentId: UUID
-    let editionType: EditionType
-    let title: String
+    let editionId: UUID
     let quantity: Int
     let unitPrice: Int
   }
@@ -29,9 +25,7 @@ extension AppSchema {
   struct UpdateOrderItemInput: Codable {
     let id: UUID
     let orderId: UUID
-    let documentId: UUID
-    let editionType: EditionType
-    let title: String
+    let editionId: UUID
     let quantity: Int
     let unitPrice: Int
   }
@@ -56,9 +50,7 @@ extension AppSchema {
     Input(AppSchema.CreateOrderItemInput.self) {
       InputField("id", at: \.id)
       InputField("orderId", at: \.orderId)
-      InputField("documentId", at: \.documentId)
-      InputField("editionType", at: \.editionType)
-      InputField("title", at: \.title)
+      InputField("editionId", at: \.editionId)
       InputField("quantity", at: \.quantity)
       InputField("unitPrice", at: \.unitPrice)
     }
@@ -68,9 +60,7 @@ extension AppSchema {
     Input(AppSchema.UpdateOrderItemInput.self) {
       InputField("id", at: \.id)
       InputField("orderId", at: \.orderId)
-      InputField("documentId", at: \.documentId)
-      InputField("editionType", at: \.editionType)
-      InputField("title", at: \.title)
+      InputField("editionId", at: \.editionId)
       InputField("quantity", at: \.quantity)
       InputField("unitPrice", at: \.unitPrice)
     }
@@ -122,9 +112,7 @@ extension OrderItem {
     self.init(
       id: .init(rawValue: input.id ?? UUID()),
       orderId: .init(rawValue: input.orderId),
-      documentId: .init(rawValue: input.documentId),
-      editionType: input.editionType,
-      title: input.title,
+      editionId: .init(rawValue: input.editionId),
       quantity: input.quantity,
       unitPrice: .init(rawValue: input.unitPrice)
     )
@@ -134,9 +122,7 @@ extension OrderItem {
     self.init(
       id: .init(rawValue: input.id),
       orderId: .init(rawValue: input.orderId),
-      documentId: .init(rawValue: input.documentId),
-      editionType: input.editionType,
-      title: input.title,
+      editionId: .init(rawValue: input.editionId),
       quantity: input.quantity,
       unitPrice: .init(rawValue: input.unitPrice)
     )
@@ -144,9 +130,7 @@ extension OrderItem {
 
   func update(_ input: AppSchema.UpdateOrderItemInput) {
     self.orderId = .init(rawValue: input.orderId)
-    self.documentId = .init(rawValue: input.documentId)
-    self.editionType = input.editionType
-    self.title = input.title
+    self.editionId = .init(rawValue: input.editionId)
     self.quantity = input.quantity
     self.unitPrice = .init(rawValue: input.unitPrice)
   }

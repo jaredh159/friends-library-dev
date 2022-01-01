@@ -5,33 +5,17 @@ import GraphQL
 
 extension OrderItem {
   static var mock: OrderItem {
-    OrderItem(
-      orderId: .init(),
-      documentId: .init(),
-      editionType: .updated,
-      title: "@mock title",
-      quantity: 42,
-      unitPrice: 42
-    )
+    OrderItem(orderId: .init(), editionId: .init(), quantity: 42, unitPrice: 42)
   }
 
   static var empty: OrderItem {
-    OrderItem(
-      orderId: .init(),
-      documentId: .init(),
-      editionType: .updated,
-      title: "",
-      quantity: 0,
-      unitPrice: 0
-    )
+    OrderItem(orderId: .init(), editionId: .init(), quantity: 0, unitPrice: 0)
   }
 
   static var random: OrderItem {
     OrderItem(
       orderId: .init(),
-      documentId: .init(),
-      editionType: EditionType.allCases.shuffled().first!,
-      title: "@random".random,
+      editionId: .init(),
       quantity: Int.random,
       unitPrice: .init(rawValue: Int.random)
     )
@@ -41,9 +25,7 @@ extension OrderItem {
     var map: GraphQL.Map = .dictionary([
       "id": .string(id.rawValue.uuidString),
       "orderId": .string(orderId.rawValue.uuidString),
-      "documentId": .string(documentId.rawValue.uuidString),
-      "editionType": .string(editionType.rawValue),
-      "title": .string(title),
+      "editionId": .string(editionId.rawValue.uuidString),
       "quantity": .number(Number(quantity)),
       "unitPrice": .number(Number(unitPrice.rawValue)),
     ])

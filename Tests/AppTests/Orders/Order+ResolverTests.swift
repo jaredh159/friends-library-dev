@@ -30,9 +30,6 @@ final class OrderResolverTests: AppTestCase {
           lang
           source
           items {
-            title
-            documentId
-            editionType
             quantity
             unitPrice
           }
@@ -52,9 +49,6 @@ final class OrderResolverTests: AppTestCase {
         "addressCountry": orderMap["addressCountry"],
         "lang": orderMap["lang"],
         "source": orderMap["source"],
-        "title": itemMap["title"],
-        "documentId": itemMap["documentId"],
-        "editionType": itemMap["editionType"],
         "quantity": itemMap["quantity"],
         "unitPrice": itemMap["unitPrice"],
       ]),

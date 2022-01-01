@@ -74,6 +74,7 @@ extension DatabaseClient {
     OrderRepository(db: db).assign(client: &client)
     DownloadRepository(db: db).assign(client: &client)
     FreeOrderRequestRepository(db: db).assign(client: &client)
+    DocumentTagModelRepository(db: db).assign(client: &client)
     ArtifactProductionVersionRepository(db: db).assign(client: &client)
     return client
   }
@@ -88,6 +89,7 @@ extension DatabaseClient {
     MockDownloadRepository(db: mockDb).assign(client: &client)
     MockFreeOrderRequestRepository(db: mockDb).assign(client: &client)
     MockArtifactProductionVersionRepository(db: mockDb).assign(client: &client)
+    MockDocumentTagModelRepository(db: mockDb).assign(client: &client)
     return client
   }
 }

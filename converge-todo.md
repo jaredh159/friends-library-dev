@@ -1,28 +1,16 @@
 # Converge TODOs:
 
-## db baby steps
-
-- add non-foreign, nullable key field to order items, downloads
-- populate it with the generated map
-- add non null constraint
-- remove the unneeded columns
-- run rest of migrations
-- do yaml import migration
-- add foreign keys
-
-- [ ] - rename migrations numbers
-- [ ] - generate edition id map (from ts/cli land) (it should be used internally, as well
-    as generating swift code)
-- [ ] - write adding non-foreign key, nullable field migration
-- [ ] - write yaml import migration (shells out...)
-- [ ] - add foreign key migration
-
-- [ ] - migrate `order_items` to store Edition.Id instead of Document.Id AND edition type
+- [ ] - write yaml import migration after all new migrations (shells out...)
+- [ ] - add foreign key migration to connect Download/OrderItem FK's AND Order->EditionId
 
 - [ ] - ANOTHER_TODO
 
 ## done...
 
+- [√] - rename migrations numbers
+- [√] - generate edition id map (from ts/cli land)
+- [√] - write adding non-foreign key, nullable field migration
+- [√] - migrate `order_items` to store Edition.Id instead of Document.Id AND edition type
 - [√] - scaffold resolver tests
 - [√] - scaffold repository
 - [√] - scaffold resolver

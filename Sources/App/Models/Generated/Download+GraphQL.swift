@@ -6,8 +6,7 @@ extension AppSchema {
   static var DownloadType: AppType<Download> {
     Type(Download.self) {
       Field("id", at: \.id.rawValue)
-      Field("documentId", at: \.documentId.rawValue)
-      Field("editionType", at: \.editionType)
+      Field("editionId", at: \.editionId.rawValue)
       Field("format", at: \.format)
       Field("source", at: \.source)
       Field("audioQuality", at: \.audioQuality)
@@ -31,8 +30,7 @@ extension AppSchema {
 
   struct CreateDownloadInput: Codable {
     let id: UUID?
-    let documentId: UUID
-    let editionType: EditionType
+    let editionId: UUID
     let format: Download.Format
     let source: Download.DownloadSource
     let audioQuality: Download.AudioQuality?
@@ -54,8 +52,7 @@ extension AppSchema {
 
   struct UpdateDownloadInput: Codable {
     let id: UUID
-    let documentId: UUID
-    let editionType: EditionType
+    let editionId: UUID
     let format: Download.Format
     let source: Download.DownloadSource
     let audioQuality: Download.AudioQuality?
@@ -94,8 +91,7 @@ extension AppSchema {
   static var CreateDownloadInputType: AppInput<AppSchema.CreateDownloadInput> {
     Input(AppSchema.CreateDownloadInput.self) {
       InputField("id", at: \.id)
-      InputField("documentId", at: \.documentId)
-      InputField("editionType", at: \.editionType)
+      InputField("editionId", at: \.editionId)
       InputField("format", at: \.format)
       InputField("source", at: \.source)
       InputField("audioQuality", at: \.audioQuality)
@@ -119,8 +115,7 @@ extension AppSchema {
   static var UpdateDownloadInputType: AppInput<AppSchema.UpdateDownloadInput> {
     Input(AppSchema.UpdateDownloadInput.self) {
       InputField("id", at: \.id)
-      InputField("documentId", at: \.documentId)
-      InputField("editionType", at: \.editionType)
+      InputField("editionId", at: \.editionId)
       InputField("format", at: \.format)
       InputField("source", at: \.source)
       InputField("audioQuality", at: \.audioQuality)
@@ -186,8 +181,7 @@ extension Download {
   convenience init(_ input: AppSchema.CreateDownloadInput) {
     self.init(
       id: .init(rawValue: input.id ?? UUID()),
-      documentId: .init(rawValue: input.documentId),
-      editionType: input.editionType,
+      editionId: .init(rawValue: input.editionId),
       format: input.format,
       source: input.source,
       isMobile: input.isMobile,
@@ -211,8 +205,7 @@ extension Download {
   convenience init(_ input: AppSchema.UpdateDownloadInput) {
     self.init(
       id: .init(rawValue: input.id),
-      documentId: .init(rawValue: input.documentId),
-      editionType: input.editionType,
+      editionId: .init(rawValue: input.editionId),
       format: input.format,
       source: input.source,
       isMobile: input.isMobile,
@@ -234,8 +227,7 @@ extension Download {
   }
 
   func update(_ input: AppSchema.UpdateDownloadInput) {
-    self.documentId = .init(rawValue: input.documentId)
-    self.editionType = input.editionType
+    self.editionId = .init(rawValue: input.editionId)
     self.format = input.format
     self.source = input.source
     self.audioQuality = input.audioQuality

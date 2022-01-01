@@ -5,29 +5,16 @@ import GraphQL
 
 extension Download {
   static var mock: Download {
-    Download(
-      documentId: .init(),
-      editionType: .updated,
-      format: .epub,
-      source: .website,
-      isMobile: true
-    )
+    Download(editionId: .init(), format: .epub, source: .website, isMobile: true)
   }
 
   static var empty: Download {
-    Download(
-      documentId: .init(),
-      editionType: .updated,
-      format: .epub,
-      source: .website,
-      isMobile: false
-    )
+    Download(editionId: .init(), format: .epub, source: .website, isMobile: false)
   }
 
   static var random: Download {
     Download(
-      documentId: .init(),
-      editionType: EditionType.allCases.shuffled().first!,
+      editionId: .init(),
       format: Format.allCases.shuffled().first!,
       source: DownloadSource.allCases.shuffled().first!,
       isMobile: Bool.random()
@@ -37,8 +24,7 @@ extension Download {
   func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
     var map: GraphQL.Map = .dictionary([
       "id": .string(id.rawValue.uuidString),
-      "documentId": .string(documentId.rawValue.uuidString),
-      "editionType": .string(editionType.rawValue),
+      "editionId": .string(editionId.rawValue.uuidString),
       "format": .string(format.rawValue),
       "source": .string(source.rawValue),
       "audioQuality": audioQuality != nil ? .string(audioQuality!.rawValue) : .null,

@@ -14,8 +14,7 @@ extension Download {
   var insertValues: [String: Postgres.Data] {
     [
       Self[.id]: .id(self),
-      Self[.documentId]: .uuid(documentId),
-      Self[.editionType]: .enum(editionType),
+      Self[.editionId]: .uuid(editionId),
       Self[.format]: .enum(format),
       Self[.source]: .enum(source),
       Self[.audioQuality]: .enum(audioQuality),
@@ -43,8 +42,7 @@ extension Download {
 
   enum CodingKeys: String, CodingKey {
     case id
-    case documentId
-    case editionType
+    case editionId
     case format
     case source
     case audioQuality
