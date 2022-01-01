@@ -8,6 +8,7 @@ extension DatabaseClient {
     OrderRepository(db: db).assign(client: &client)
     TokenRepository(db: db).assign(client: &client)
     FriendRepository(db: db).assign(client: &client)
+    EditionRepository(db: db).assign(client: &client)
     DocumentRepository(db: db).assign(client: &client)
     DownloadRepository(db: db).assign(client: &client)
     DocumentTagModelRepository(db: db).assign(client: &client)
@@ -22,6 +23,7 @@ extension DatabaseClient {
     MockOrderRepository(db: mockDb).assign(client: &client)
     MockTokenRepository(db: mockDb).assign(client: &client)
     MockFriendRepository(db: mockDb).assign(client: &client)
+    MockEditionRepository(db: mockDb).assign(client: &client)
     MockDocumentRepository(db: mockDb).assign(client: &client)
     MockDownloadRepository(db: mockDb).assign(client: &client)
     MockDocumentTagModelRepository(db: mockDb).assign(client: &client)
@@ -120,6 +122,30 @@ extension DatabaseClient {
     },
     deleteAllDocuments: {
       throw Abort(.notImplemented, reason: "db.deleteAllDocuments")
+    },
+    createEdition: { _ in
+      throw Abort(.notImplemented, reason: "db.createEdition")
+    },
+    createEditions: { _ in
+      throw Abort(.notImplemented, reason: "db.createEditions")
+    },
+    getEdition: { _ in
+      throw Abort(.notImplemented, reason: "db.getEdition")
+    },
+    getEditions: {
+      throw Abort(.notImplemented, reason: "db.getEditions")
+    },
+    updateEdition: { _ in
+      throw Abort(.notImplemented, reason: "db.updateEdition")
+    },
+    updateEditions: { _ in
+      throw Abort(.notImplemented, reason: "db.updateEditions")
+    },
+    deleteEdition: { _ in
+      throw Abort(.notImplemented, reason: "db.deleteEdition")
+    },
+    deleteAllEditions: {
+      throw Abort(.notImplemented, reason: "db.deleteAllEditions")
     },
     createDocumentTagModels: { _ in
       throw Abort(.notImplemented, reason: "db.createDocumentTagModels")

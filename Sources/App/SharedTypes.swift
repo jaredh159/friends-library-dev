@@ -26,7 +26,7 @@ enum PrintSizeVariant: String, Codable, CaseIterable {
   case s
   case m
   case xl
-  case xlCondensed = "xl--condensed"
+  case xlCondensed
 }
 
 typealias GitCommitSha = Tagged<(tagged: (), sha: ()), String>

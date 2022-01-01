@@ -46,6 +46,16 @@ struct DatabaseClient {
   var deleteDocument: (Document.Id) async throws -> Void
   var deleteAllDocuments: () async throws -> Void
 
+  // editions
+  var createEdition: (Edition) async throws -> Void
+  var createEditions: ([Edition]) async throws -> Void
+  var getEdition: (Edition.Id) async throws -> Edition
+  var getEditions: () async throws -> [Edition]
+  var updateEdition: (Edition) async throws -> Edition
+  var updateEditions: ([Edition]) async throws -> [Edition]
+  var deleteEdition: (Edition.Id) async throws -> Void
+  var deleteAllEditions: () async throws -> Void
+
   // document tags
   var createDocumentTagModels: ([DocumentTagModel]) async throws -> Void
 

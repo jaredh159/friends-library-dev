@@ -8,6 +8,8 @@ enum Scope: String, Codable, CaseIterable, Equatable {
   case mutateArtifactProductionVersions
   case mutateFriends
   case queryFriends
+  case mutateEditions
+  case queryEditions
   case mutateDocuments
   case queryDocuments
   case mutateEditionImpressions

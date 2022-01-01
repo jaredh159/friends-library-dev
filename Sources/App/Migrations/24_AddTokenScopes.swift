@@ -11,6 +11,8 @@ struct AddTokenScopes: AsyncMigration {
       .case(TokenScope.M24.Scope.caseQueryDocuments)
       .case(TokenScope.M24.Scope.caseMutateEditionImpressions)
       .case(TokenScope.M24.Scope.caseQueryEditionImpressions)
+      .case(TokenScope.M24.Scope.caseMutateEditions)
+      .case(TokenScope.M24.Scope.caseQueryEditions)
       .case(TokenScope.M24.Scope.caseMutateAudios)
       .case(TokenScope.M24.Scope.caseQueryAudios)
       .case(TokenScope.M24.Scope.caseQueryArtifactProductionVersions)
@@ -41,6 +43,8 @@ extension TokenScope {
       static let caseQueryArtifactProductionVersions = "queryArtifactProductionVersions"
       static let caseMutateIsbns = "mutateIsbns"
       static let caseQueryIsbns = "queryIsbns"
+      static let caseMutateEditions = "mutateEditions"
+      static let caseQueryEditions = "queryEditions"
       static let caseMutateEditionChapters = "mutateEditionChapters"
       static let caseQueryEditionChapters = "queryEditionChapters"
       static let caseQueryCoverProps = "queryCoverProps"

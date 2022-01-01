@@ -18,6 +18,7 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   Enum(Order.OrderSource.self)
   Enum(Scope.self)
   Enum(Friend.Gender.self)
+  Enum(PrintSizeVariant.self)
 
   AppSchema.ArtifactProductionVersionType
   AppSchema.CreateArtifactProductionVersionInputType
@@ -47,9 +48,15 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.CreateDocumentInputType
   AppSchema.UpdateDocumentInputType
 
+  // edition types
+  AppSchema.EditionType
+  AppSchema.CreateEditionInputType
+  AppSchema.UpdateEditionInputType
+
   Query {
     AppSchema.getFriend
     AppSchema.getDocument
+    AppSchema.getEdition
 
     Field("getLatestArtifactProductionVersion", at: Resolver.getLatestArtifactProductionVersion)
 
@@ -78,6 +85,11 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
     AppSchema.createDocument
     AppSchema.updateDocument
     AppSchema.deleteDocument
+
+    // edition mutations
+    AppSchema.createEdition
+    AppSchema.updateEdition
+    AppSchema.deleteEdition
 
     // order mutations
     AppSchema.updateOrder
