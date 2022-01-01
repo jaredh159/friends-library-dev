@@ -1,7 +1,7 @@
 import Fluent
 
 extension EditionChapter {
-  enum M21 {
+  enum M22 {
     static let tableName = "edition_chapters"
     static let editionId = FieldKey("edition_id")
     static let order = FieldKey("order")

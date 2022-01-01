@@ -2,32 +2,32 @@ import Fluent
 
 struct CreateDocumentTagsPivot: Migration {
   func prepare(on database: Database) -> Future<Void> {
-    return database.schema(M15.tableName)
+    return database.schema(M16.tableName)
       .id()
       .field(
-        M15.documentTagId,
+        M16.documentTagId,
         .uuid,
         .required,
-        .references(DocumentTagModel.M14.tableName, .id, onDelete: .cascade)
+        .references(DocumentTagModel.M15.tableName, .id, onDelete: .cascade)
       )
       .field(
-        M15.documentId,
+        M16.documentId,
         .uuid,
         .required,
-        .references(Document.M13.tableName, .id, onDelete: .cascade)
+        .references(Document.M14.tableName, .id, onDelete: .cascade)
       )
       .field(.createdAt, .datetime, .required)
-      .unique(on: M15.documentTagId, M15.documentId)
+      .unique(on: M16.documentTagId, M16.documentId)
       .create()
   }
 
   func revert(on database: Database) -> Future<Void> {
-    return database.schema(M15.tableName).delete()
+    return database.schema(M16.tableName).delete()
   }
 }
 
 extension CreateDocumentTagsPivot {
-  enum M15 {
+  enum M16 {
     static let tableName = "documents_tags_pivot"
     static let documentTagId = FieldKey("document_tag_id")
     static let documentId = FieldKey("document_id")

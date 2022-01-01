@@ -7,7 +7,7 @@ extension Friend: AppModel {
 }
 
 extension Friend: DuetModel {
-  static let tableName = M10.tableName
+  static let tableName = M11.tableName
 }
 
 extension Friend {

@@ -1,7 +1,7 @@
 import Fluent
 
 extension Audio {
-  enum M19 {
+  enum M20 {
     static let tableName = "edition_audios"
     static let editionId = FieldKey("edition_id")
     static let reader = FieldKey("reader")

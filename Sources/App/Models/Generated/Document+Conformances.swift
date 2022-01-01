@@ -7,7 +7,7 @@ extension Document: AppModel {
 }
 
 extension Document: DuetModel {
-  static let tableName = M13.tableName
+  static let tableName = M14.tableName
 }
 
 extension Document {

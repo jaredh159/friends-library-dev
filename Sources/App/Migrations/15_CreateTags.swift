@@ -2,25 +2,25 @@ import Fluent
 import Foundation
 
 struct CreateTags: AsyncMigration {
-  private typealias M14 = DocumentTagModel.M14
+  private typealias M15 = DocumentTagModel.M15
 
   func prepare(on database: Database) async throws {
-    let tags = try await database.enum(M14.DocumentTagEnum.name)
-      .case(M14.DocumentTagEnum.caseJournal)
-      .case(M14.DocumentTagEnum.caseLetters)
-      .case(M14.DocumentTagEnum.caseExhortation)
-      .case(M14.DocumentTagEnum.caseDoctrinal)
-      .case(M14.DocumentTagEnum.caseTreatise)
-      .case(M14.DocumentTagEnum.caseHistory)
-      .case(M14.DocumentTagEnum.caseAllegory)
-      .case(M14.DocumentTagEnum.caseSpiritualLife)
+    let tags = try await database.enum(M15.DocumentTagEnum.name)
+      .case(M15.DocumentTagEnum.caseJournal)
+      .case(M15.DocumentTagEnum.caseLetters)
+      .case(M15.DocumentTagEnum.caseExhortation)
+      .case(M15.DocumentTagEnum.caseDoctrinal)
+      .case(M15.DocumentTagEnum.caseTreatise)
+      .case(M15.DocumentTagEnum.caseHistory)
+      .case(M15.DocumentTagEnum.caseAllegory)
+      .case(M15.DocumentTagEnum.caseSpiritualLife)
       .create()
 
-    try await database.schema(M14.tableName)
+    try await database.schema(M15.tableName)
       .id()
-      .field(M14.slug, tags, .required)
+      .field(M15.slug, tags, .required)
       .field(.createdAt, .datetime, .required)
-      .unique(on: M14.slug)
+      .unique(on: M15.slug)
       .create()
 
     let models = DocumentTag.allCases.map { tag in
@@ -31,7 +31,7 @@ struct CreateTags: AsyncMigration {
   }
 
   func revert(on database: Database) async throws {
-    try await database.schema(M14.tableName).delete()
+    try await database.schema(M15.tableName).delete()
   }
 }
 
@@ -59,7 +59,7 @@ extension DocumentTag {
 }
 
 extension DocumentTagModel {
-  enum M14 {
+  enum M15 {
     static let tableName = "document_tags"
     static let slug = FieldKey("slug")
     enum DocumentTagEnum {
@@ -78,6 +78,6 @@ extension DocumentTagModel {
 
 extension DocumentTag: PostgresEnum {
   var dataType: String {
-    DocumentTagModel.M14.DocumentTagEnum.name
+    DocumentTagModel.M15.DocumentTagEnum.name
   }
 }

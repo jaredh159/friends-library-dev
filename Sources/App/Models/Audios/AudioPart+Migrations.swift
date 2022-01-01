@@ -1,7 +1,7 @@
 import Fluent
 
 extension AudioPart {
-  enum M20 {
+  enum M21 {
     static let tableName = "edition_audio_parts"
     static let audioId = FieldKey("audio_id")
     static let title = FieldKey("title")

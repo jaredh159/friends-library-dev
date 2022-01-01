@@ -7,7 +7,7 @@ extension DocumentTagModel: AppModel {
 }
 
 extension DocumentTagModel: DuetModel {
-  static let tableName = M14.tableName
+  static let tableName = M15.tableName
 }
 
 extension DocumentTagModel {

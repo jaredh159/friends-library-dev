@@ -7,7 +7,7 @@ extension AudioPart: AppModel {
 }
 
 extension AudioPart: DuetModel {
-  static let tableName = M20.tableName
+  static let tableName = M21.tableName
 }
 
 extension AudioPart {

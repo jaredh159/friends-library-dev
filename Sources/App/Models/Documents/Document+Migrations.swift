@@ -1,7 +1,7 @@
 import Fluent
 
 extension Document {
-  enum M13 {
+  enum M14 {
     static let tableName = "documents"
     static let friendId = FieldKey("friend_id")
     static let altLanguageId = FieldKey("alt_language_id")

@@ -1,24 +1,24 @@
 import Fluent
 
 struct CreateIsbns: Migration {
-  private typealias M18 = Isbn.M18
+  private typealias M19 = Isbn.M19
 
   func prepare(on database: Database) -> Future<Void> {
-    database.schema(M18.tableName)
+    database.schema(M19.tableName)
       .id()
-      .field(M18.code, .string, .required)
+      .field(M19.code, .string, .required)
       .field(
-        M18.editionId,
+        M19.editionId,
         .uuid,
-        .references(Edition.M16.tableName, .id, onDelete: .cascade)
+        .references(Edition.M17.tableName, .id, onDelete: .cascade)
       )
       .field(.createdAt, .datetime, .required)
       .field(.updatedAt, .datetime, .required)
-      .unique(on: M18.code)
+      .unique(on: M19.code)
       .create()
   }
 
   func revert(on database: Database) -> Future<Void> {
-    database.schema(M18.tableName).delete()
+    database.schema(M19.tableName).delete()
   }
 }

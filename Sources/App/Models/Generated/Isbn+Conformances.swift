@@ -7,7 +7,7 @@ extension Isbn: AppModel {
 }
 
 extension Isbn: DuetModel {
-  static let tableName = M18.tableName
+  static let tableName = M19.tableName
 }
 
 extension Isbn {

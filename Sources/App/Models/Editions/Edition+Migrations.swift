@@ -1,7 +1,7 @@
 import Fluent
 
 extension Edition {
-  enum M16 {
+  enum M17 {
     static let tableName = "editions"
     static let documentId = FieldKey("document_id")
     static let type = FieldKey("type")
@@ -21,6 +21,6 @@ extension Edition {
 
 extension PrintSizeVariant: PostgresEnum {
   var dataType: String {
-    Edition.M16.PrintSizeVariantEnum.name
+    Edition.M17.PrintSizeVariantEnum.name
   }
 }

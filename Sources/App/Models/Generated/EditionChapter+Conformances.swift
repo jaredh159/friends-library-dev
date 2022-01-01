@@ -7,7 +7,7 @@ extension EditionChapter: AppModel {
 }
 
 extension EditionChapter: DuetModel {
-  static let tableName = M21.tableName
+  static let tableName = M22.tableName
 }
 
 extension EditionChapter {

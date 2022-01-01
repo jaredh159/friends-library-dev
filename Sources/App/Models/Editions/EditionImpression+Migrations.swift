@@ -1,7 +1,7 @@
 import Fluent
 
 extension EditionImpression {
-  enum M17 {
+  enum M18 {
     static let tableName = "edition_impressions"
     static let editionId = FieldKey("edition_id")
     static let adocLength = FieldKey("adoc_length")

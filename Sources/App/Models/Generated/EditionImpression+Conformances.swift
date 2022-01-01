@@ -7,7 +7,7 @@ extension EditionImpression: AppModel {
 }
 
 extension EditionImpression: DuetModel {
-  static let tableName = M17.tableName
+  static let tableName = M18.tableName
 }
 
 extension EditionImpression {

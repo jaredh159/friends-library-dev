@@ -5,20 +5,20 @@ struct AddTokenScopes: AsyncMigration {
 
   func prepare(on database: Database) async throws {
     _ = try await database.enum(TokenScope.M5.dbEnumName)
-      .case(TokenScope.M23.Scope.caseMutateFriends)
-      .case(TokenScope.M23.Scope.caseQueryFriends)
-      .case(TokenScope.M23.Scope.caseMutateDocuments)
-      .case(TokenScope.M23.Scope.caseQueryDocuments)
-      .case(TokenScope.M23.Scope.caseMutateEditionImpressions)
-      .case(TokenScope.M23.Scope.caseQueryEditionImpressions)
-      .case(TokenScope.M23.Scope.caseMutateAudios)
-      .case(TokenScope.M23.Scope.caseQueryAudios)
-      .case(TokenScope.M23.Scope.caseQueryArtifactProductionVersions)
-      .case(TokenScope.M23.Scope.caseMutateIsbns)
-      .case(TokenScope.M23.Scope.caseQueryIsbns)
-      .case(TokenScope.M23.Scope.caseMutateEditionChapters)
-      .case(TokenScope.M23.Scope.caseQueryEditionChapters)
-      .case(TokenScope.M23.Scope.caseQueryCoverProps)
+      .case(TokenScope.M24.Scope.caseMutateFriends)
+      .case(TokenScope.M24.Scope.caseQueryFriends)
+      .case(TokenScope.M24.Scope.caseMutateDocuments)
+      .case(TokenScope.M24.Scope.caseQueryDocuments)
+      .case(TokenScope.M24.Scope.caseMutateEditionImpressions)
+      .case(TokenScope.M24.Scope.caseQueryEditionImpressions)
+      .case(TokenScope.M24.Scope.caseMutateAudios)
+      .case(TokenScope.M24.Scope.caseQueryAudios)
+      .case(TokenScope.M24.Scope.caseQueryArtifactProductionVersions)
+      .case(TokenScope.M24.Scope.caseMutateIsbns)
+      .case(TokenScope.M24.Scope.caseQueryIsbns)
+      .case(TokenScope.M24.Scope.caseMutateEditionChapters)
+      .case(TokenScope.M24.Scope.caseQueryEditionChapters)
+      .case(TokenScope.M24.Scope.caseQueryCoverProps)
       .update()
   }
 
@@ -28,7 +28,7 @@ struct AddTokenScopes: AsyncMigration {
 }
 
 extension TokenScope {
-  enum M23 {
+  enum M24 {
     enum Scope {
       static let caseMutateFriends = "mutateFriends"
       static let caseQueryFriends = "queryFriends"

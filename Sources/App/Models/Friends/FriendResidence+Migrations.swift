@@ -1,7 +1,7 @@
 import Fluent
 
 extension FriendResidence {
-  enum M11 {
+  enum M12 {
     static let tableName = "friend_residences"
     static let id = FieldKey("id")
     static let city = FieldKey("city")
