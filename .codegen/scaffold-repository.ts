@@ -49,7 +49,7 @@ struct ThingRepository: LiveRepository {
 struct MockThingRepository: MockRepository {
   typealias Model = Thing
   var db: MockDb
-  var models: ModelsPath { \.things }
+  var models: ModelsPath { \\.things }
 
   func assign(client: inout DatabaseClient) {
     client.createThing = { try await create($0) }

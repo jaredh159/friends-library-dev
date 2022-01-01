@@ -6,6 +6,7 @@ final class MockDb {
   var downloads: [Download.Id: Download] = [:]
   var orderItems: [OrderItem.Id: OrderItem] = [:]
   var artifactProductionVersions: [ArtifactProductionVersion.Id: ArtifactProductionVersion] = [:]
+  var documentTagModels: [DocumentTagModel.Id: DocumentTagModel] = [:]
 
   func find<M: DuetModel>(
     _ id: M.IdValue,

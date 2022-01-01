@@ -26,6 +26,9 @@ struct DatabaseClient {
   var createDownload: (Download) async throws -> Void
   var getDownload: (Download.Id) async throws -> Download
 
+  // documents
+  var createDocumentTagModels: ([DocumentTagModel]) async throws -> Void
+
   // artifact production versions
   var createArtifactProductionVersion: (ArtifactProductionVersion) async throws -> Void
   var getLatestArtifactProductionVersion: () async throws -> ArtifactProductionVersion
@@ -54,6 +57,9 @@ extension DatabaseClient {
     // downloads
     createDownload: { _ in throw Abort(.notImplemented) },
     getDownload: { _ in throw Abort(.notImplemented) },
+
+    // documents
+    createDocumentTagModels: { _ in throw Abort(.notImplemented) },
 
     // artifact production versions
     createArtifactProductionVersion: { _ in throw Abort(.notImplemented) },

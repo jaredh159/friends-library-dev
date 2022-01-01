@@ -5,9 +5,6 @@ struct CreateDownloads: Migration {
   private typealias M1 = Download.M1
 
   func prepare(on database: Database) -> Future<Void> {
-    // let foo = NonEmpty<[Int]>(1)
-    // let bar: [Int] = [foo.first] + foo.dropFirst()
-
     let editionTypeFuture = database.enum(M1.EditionTypeEnum.name)
       .case(M1.EditionTypeEnum.caseUpdated)
       .case(M1.EditionTypeEnum.caseModernized)

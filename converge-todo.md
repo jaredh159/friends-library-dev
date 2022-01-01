@@ -1,7 +1,6 @@
 # Converge TODOs:
 
 - [ ] - migrate `order_items` to store Edition.Id instead of Document.Id AND edition type
-- [ ] - fix migration 14 (insert doc tags w DB somehow... 🤔)
 
 - [ ] - ANOTHER_TODO
 
@@ -31,6 +30,8 @@
 - [√] - look at all migrations since 10, thinking through `unique(on:)` constraints
 - [√] - pivot table for document tags
 - [√] - table for isbns, with optional FK to edition 👍
+- [√] - add new token scopes
+- [√] - fix migration 14 (insert doc tags w DB somehow... 🤔)
 
 ## rando notes
 
@@ -40,23 +41,6 @@
   belongs there
 
 - [ ] - ANOTHER_TODO
-
-## what new SCOPES do we need?
-
-- mutateFriends
-- queryFriends
-- mutateDocuments
-- queryDocuments
-- mutateEditionImpressions
-- queryEditionImpressions
-- mutateAudios
-- queryAudios
-- queryArtifactProductionVersions (symmetry)
-- mutateIsbns
-- queryIsbns
-- mutateEditionChapters
-- queryEditionChapters
-- queryCoverProps
 
 ## what operations do we need?
 

@@ -1,11 +1,11 @@
 import Fluent
 import Foundation
 
-struct CreateTags: Migration {
+struct CreateTags: AsyncMigration {
   private typealias M14 = DocumentTagModel.M14
 
-  func prepare(on database: Database) -> Future<Void> {
-    database.enum(M14.DocumentTagEnum.name)
+  func prepare(on database: Database) async throws {
+    let tags = try await database.enum(M14.DocumentTagEnum.name)
       .case(M14.DocumentTagEnum.caseJournal)
       .case(M14.DocumentTagEnum.caseLetters)
       .case(M14.DocumentTagEnum.caseExhortation)
@@ -15,21 +15,23 @@ struct CreateTags: Migration {
       .case(M14.DocumentTagEnum.caseAllegory)
       .case(M14.DocumentTagEnum.caseSpiritualLife)
       .create()
-      .flatMap { tags in
-        database.schema(M14.tableName)
-          .id()
-          .field(M14.slug, tags, .required)
-          .field(.createdAt, .datetime, .required)
-          .unique(on: M14.slug)
-          .create()
-        // }.flatMap {
-        //   DocumentTag.allCases.map { tag in DocumentTagModel(id: .init(rawValue: tag.id), slug: tag) }
-        //     .create(on: database)
-      }
+
+    try await database.schema(M14.tableName)
+      .id()
+      .field(M14.slug, tags, .required)
+      .field(.createdAt, .datetime, .required)
+      .unique(on: M14.slug)
+      .create()
+
+    let models = DocumentTag.allCases.map { tag in
+      DocumentTagModel(id: .init(rawValue: tag.id), slug: tag)
+    }
+
+    try await Current.db.createDocumentTagModels(models)
   }
 
-  func revert(on database: Database) -> Future<Void> {
-    return database.schema(M14.tableName).delete()
+  func revert(on database: Database) async throws {
+    try await database.schema(M14.tableName).delete()
   }
 }
 
@@ -53,5 +55,29 @@ extension DocumentTag {
       case .spiritualLife:
         return UUID(uuidString: "fa070ac4-ccf2-4524-ac10-c4f1e1adb92f")!
     }
+  }
+}
+
+extension DocumentTagModel {
+  enum M14 {
+    static let tableName = "document_tags"
+    static let slug = FieldKey("slug")
+    enum DocumentTagEnum {
+      static let name = "document_tags_enum"
+      static let caseJournal = "journal"
+      static let caseLetters = "letters"
+      static let caseExhortation = "exhortation"
+      static let caseDoctrinal = "doctrinal"
+      static let caseTreatise = "treatise"
+      static let caseHistory = "history"
+      static let caseAllegory = "allegory"
+      static let caseSpiritualLife = "spiritualLife"
+    }
+  }
+}
+
+extension DocumentTag: PostgresEnum {
+  var dataType: String {
+    DocumentTagModel.M14.DocumentTagEnum.name
   }
 }
