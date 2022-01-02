@@ -5,6 +5,7 @@ import Vapor
 extension DatabaseClient {
   static func live(db: SQLDatabase) -> DatabaseClient {
     var client: DatabaseClient = .notImplemented
+    IsbnRepository(db: db).assign(client: &client)
     OrderRepository(db: db).assign(client: &client)
     TokenRepository(db: db).assign(client: &client)
     FriendRepository(db: db).assign(client: &client)
@@ -20,6 +21,7 @@ extension DatabaseClient {
   static var mock: DatabaseClient {
     let mockDb = MockDb()
     var client: DatabaseClient = .notImplemented
+    MockIsbnRepository(db: mockDb).assign(client: &client)
     MockOrderRepository(db: mockDb).assign(client: &client)
     MockTokenRepository(db: mockDb).assign(client: &client)
     MockFriendRepository(db: mockDb).assign(client: &client)
@@ -146,6 +148,30 @@ extension DatabaseClient {
     },
     deleteAllEditions: {
       throw Abort(.notImplemented, reason: "db.deleteAllEditions")
+    },
+    createIsbn: { _ in
+      throw Abort(.notImplemented, reason: "db.createIsbn")
+    },
+    createIsbns: { _ in
+      throw Abort(.notImplemented, reason: "db.createIsbns")
+    },
+    getIsbn: { _ in
+      throw Abort(.notImplemented, reason: "db.getIsbn")
+    },
+    getIsbns: {
+      throw Abort(.notImplemented, reason: "db.getIsbns")
+    },
+    updateIsbn: { _ in
+      throw Abort(.notImplemented, reason: "db.updateIsbn")
+    },
+    updateIsbns: { _ in
+      throw Abort(.notImplemented, reason: "db.updateIsbns")
+    },
+    deleteIsbn: { _ in
+      throw Abort(.notImplemented, reason: "db.deleteIsbn")
+    },
+    deleteAllIsbns: {
+      throw Abort(.notImplemented, reason: "db.deleteAllIsbns")
     },
     createDocumentTagModels: { _ in
       throw Abort(.notImplemented, reason: "db.createDocumentTagModels")

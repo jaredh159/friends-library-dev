@@ -38,6 +38,11 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.FreeOrderRequestType
   AppSchema.CreateFreeOrderRequestInputType
 
+  // isbn types
+  AppSchema.IsbnType
+  AppSchema.CreateIsbnInputType
+  AppSchema.UpdateIsbnInputType
+
   // friend types
   AppSchema.FriendType
   AppSchema.CreateFriendInputType
@@ -57,6 +62,7 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
     AppSchema.getFriend
     AppSchema.getDocument
     AppSchema.getEdition
+    AppSchema.getIsbn
 
     Field("getLatestArtifactProductionVersion", at: Resolver.getLatestArtifactProductionVersion)
 
@@ -75,6 +81,11 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   Mutation {
     AppSchema.createDownload
     AppSchema.createArtifactProductionVersion
+
+    // isbn mutations
+    AppSchema.createIsbn
+    AppSchema.updateIsbn
+    AppSchema.deleteIsbn
 
     // friend mutations
     AppSchema.createFriend

@@ -1,6 +1,7 @@
 final class MockDb {
   var tokens: [Token.Id: Token] = [:]
   var friends: [Friend.Id: Friend] = [:]
+  var isbns: [Isbn.Id: Isbn] = [:]
   var editions: [Edition.Id: Edition] = [:]
   var documents: [Document.Id: Document] = [:]
   var tokenScopes: [TokenScope.Id: TokenScope] = [:]

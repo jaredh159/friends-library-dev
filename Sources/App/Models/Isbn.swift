@@ -9,11 +9,7 @@ final class Isbn: Codable {
 
   var edition = OptionalParent<Edition>.notLoaded
 
-  init(
-    id: Id = .init(),
-    code: ISBN,
-    editionId: Edition.Id?
-  ) {
+  init(id: Id = .init(), code: ISBN, editionId: Edition.Id?) {
     self.id = id
     self.code = code
     self.editionId = editionId
