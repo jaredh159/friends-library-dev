@@ -14,6 +14,7 @@ extension DatabaseClient {
     DownloadRepository(db: db).assign(client: &client)
     DocumentTagModelRepository(db: db).assign(client: &client)
     FreeOrderRequestRepository(db: db).assign(client: &client)
+    EditionImpressionRepository(db: db).assign(client: &client)
     ArtifactProductionVersionRepository(db: db).assign(client: &client)
     return client
   }
@@ -30,6 +31,7 @@ extension DatabaseClient {
     MockDownloadRepository(db: mockDb).assign(client: &client)
     MockDocumentTagModelRepository(db: mockDb).assign(client: &client)
     MockFreeOrderRequestRepository(db: mockDb).assign(client: &client)
+    MockEditionImpressionRepository(db: mockDb).assign(client: &client)
     MockArtifactProductionVersionRepository(db: mockDb).assign(client: &client)
     return client
   }
@@ -148,6 +150,30 @@ extension DatabaseClient {
     },
     deleteAllEditions: {
       throw Abort(.notImplemented, reason: "db.deleteAllEditions")
+    },
+    createEditionImpression: { _ in
+      throw Abort(.notImplemented, reason: "db.createEditionImpression")
+    },
+    createEditionImpressions: { _ in
+      throw Abort(.notImplemented, reason: "db.createEditionImpressions")
+    },
+    getEditionImpression: { _ in
+      throw Abort(.notImplemented, reason: "db.getEditionImpression")
+    },
+    getEditionImpressions: {
+      throw Abort(.notImplemented, reason: "db.getEditionImpressions")
+    },
+    updateEditionImpression: { _ in
+      throw Abort(.notImplemented, reason: "db.updateEditionImpression")
+    },
+    updateEditionImpressions: { _ in
+      throw Abort(.notImplemented, reason: "db.updateEditionImpressions")
+    },
+    deleteEditionImpression: { _ in
+      throw Abort(.notImplemented, reason: "db.deleteEditionImpression")
+    },
+    deleteAllEditionImpressions: {
+      throw Abort(.notImplemented, reason: "db.deleteAllEditionImpressions")
     },
     createIsbn: { _ in
       throw Abort(.notImplemented, reason: "db.createIsbn")

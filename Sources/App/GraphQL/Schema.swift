@@ -58,10 +58,16 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.CreateEditionInputType
   AppSchema.UpdateEditionInputType
 
+  // edition impression types
+  AppSchema.EditionImpressionType
+  AppSchema.CreateEditionImpressionInputType
+  AppSchema.UpdateEditionImpressionInputType
+
   Query {
     AppSchema.getFriend
     AppSchema.getDocument
     AppSchema.getEdition
+    AppSchema.getEditionImpression
     AppSchema.getIsbn
 
     Field("getLatestArtifactProductionVersion", at: Resolver.getLatestArtifactProductionVersion)
@@ -101,6 +107,11 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
     AppSchema.createEdition
     AppSchema.updateEdition
     AppSchema.deleteEdition
+
+    // edition impression mutations
+    AppSchema.createEditionImpression
+    AppSchema.updateEditionImpression
+    AppSchema.deleteEditionImpression
 
     // order mutations
     AppSchema.updateOrder
