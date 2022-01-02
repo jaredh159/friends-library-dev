@@ -66,6 +66,16 @@ struct DatabaseClient {
   var deleteEditionImpression: (EditionImpression.Id) async throws -> Void
   var deleteAllEditionImpressions: () async throws -> Void
 
+  // edition chapters
+  var createEditionChapter: (EditionChapter) async throws -> Void
+  var createEditionChapters: ([EditionChapter]) async throws -> Void
+  var getEditionChapter: (EditionChapter.Id) async throws -> EditionChapter
+  var getEditionChapters: () async throws -> [EditionChapter]
+  var updateEditionChapter: (EditionChapter) async throws -> EditionChapter
+  var updateEditionChapters: ([EditionChapter]) async throws -> [EditionChapter]
+  var deleteEditionChapter: (EditionChapter.Id) async throws -> Void
+  var deleteAllEditionChapters: () async throws -> Void
+
   // isbns
   var createIsbn: (Isbn) async throws -> Void
   var createIsbns: ([Isbn]) async throws -> Void

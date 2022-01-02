@@ -12,6 +12,7 @@ extension DatabaseClient {
     EditionRepository(db: db).assign(client: &client)
     DocumentRepository(db: db).assign(client: &client)
     DownloadRepository(db: db).assign(client: &client)
+    EditionChapterRepository(db: db).assign(client: &client)
     DocumentTagModelRepository(db: db).assign(client: &client)
     FreeOrderRequestRepository(db: db).assign(client: &client)
     EditionImpressionRepository(db: db).assign(client: &client)
@@ -29,6 +30,7 @@ extension DatabaseClient {
     MockEditionRepository(db: mockDb).assign(client: &client)
     MockDocumentRepository(db: mockDb).assign(client: &client)
     MockDownloadRepository(db: mockDb).assign(client: &client)
+    MockEditionChapterRepository(db: mockDb).assign(client: &client)
     MockDocumentTagModelRepository(db: mockDb).assign(client: &client)
     MockFreeOrderRequestRepository(db: mockDb).assign(client: &client)
     MockEditionImpressionRepository(db: mockDb).assign(client: &client)
@@ -174,6 +176,30 @@ extension DatabaseClient {
     },
     deleteAllEditionImpressions: {
       throw Abort(.notImplemented, reason: "db.deleteAllEditionImpressions")
+    },
+    createEditionChapter: { _ in
+      throw Abort(.notImplemented, reason: "db.createEditionChapter")
+    },
+    createEditionChapters: { _ in
+      throw Abort(.notImplemented, reason: "db.createEditionChapters")
+    },
+    getEditionChapter: { _ in
+      throw Abort(.notImplemented, reason: "db.getEditionChapter")
+    },
+    getEditionChapters: {
+      throw Abort(.notImplemented, reason: "db.getEditionChapters")
+    },
+    updateEditionChapter: { _ in
+      throw Abort(.notImplemented, reason: "db.updateEditionChapter")
+    },
+    updateEditionChapters: { _ in
+      throw Abort(.notImplemented, reason: "db.updateEditionChapters")
+    },
+    deleteEditionChapter: { _ in
+      throw Abort(.notImplemented, reason: "db.deleteEditionChapter")
+    },
+    deleteAllEditionChapters: {
+      throw Abort(.notImplemented, reason: "db.deleteAllEditionChapters")
     },
     createIsbn: { _ in
       throw Abort(.notImplemented, reason: "db.createIsbn")
