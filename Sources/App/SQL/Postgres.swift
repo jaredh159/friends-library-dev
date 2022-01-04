@@ -85,7 +85,7 @@ enum Postgres {
         case let .double(double):
           return nullable(double)
         case let .intArray(ints):
-          guard let ints = ints else { return "'{}'" }
+          guard let ints = ints else { return "NULL" }
           return "'{\(ints.map(String.init).joined(separator: ","))}'"
         case let .id(model):
           return "'\(model.uuidId.uuidString)'"
