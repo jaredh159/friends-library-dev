@@ -10,7 +10,6 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
 
   Enum(EditionType.self)
   Enum(Lang.self)
-
   Enum(Download.Format.self)
   Enum(Download.AudioQuality.self)
   Enum(Download.DownloadSource.self)
@@ -20,6 +19,11 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   Enum(Scope.self)
   Enum(Friend.Gender.self)
   Enum(PrintSizeVariant.self)
+
+  // isbn types
+  AppSchema.IsbnType
+  AppSchema.CreateIsbnInputType
+  AppSchema.UpdateIsbnInputType
 
   AppSchema.ArtifactProductionVersionType
   AppSchema.CreateArtifactProductionVersionInputType
@@ -38,11 +42,6 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.UpdateOrderInputType
   AppSchema.FreeOrderRequestType
   AppSchema.CreateFreeOrderRequestInputType
-
-  // isbn types
-  AppSchema.IsbnType
-  AppSchema.CreateIsbnInputType
-  AppSchema.UpdateIsbnInputType
 
   // friend types
   AppSchema.FriendType

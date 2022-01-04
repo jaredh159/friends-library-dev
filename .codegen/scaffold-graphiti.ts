@@ -13,6 +13,10 @@ function main() {
     ([, { relationType }]) => relationType === `Parent`,
   );
 
+  let optionalChilds = Object.entries(model.relations).filter(
+    ([, { relationType }]) => relationType === `OptionalChild`,
+  );
+
   let optionalParents = Object.entries(model.relations).filter(
     ([, { relationType }]) => relationType === `OptionalParent`,
   );
@@ -23,6 +27,15 @@ function main() {
       .replace(/thing/g, model.camelCaseName)
       .replace(/Thing/g, model.name)
       .replace(/thingChildren/g, name);
+    extensions.push(extension);
+  }
+
+  for (const [name, { type }] of optionalChilds) {
+    let extension = OPTIONAL_CHILD_PATTERN.replace(/ThingChild/g, type)
+      .replace(/thing\.child/g, `${model.camelCaseName}.${name}`)
+      .replace(/thing/g, model.camelCaseName)
+      .replace(/Thing/g, model.name)
+      .replace(/\bchild\b/g, name);
     extensions.push(extension);
   }
 
@@ -78,6 +91,27 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
         }
       },
       as: [TypeRef<ThingChild>].self)
+  }
+}
+`;
+
+const OPTIONAL_CHILD_PATTERN = /* swift */ `
+extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: Thing {
+  convenience init(
+    _ name: FieldKey,
+    with keyPath: ToOptionalChild<ThingChild>
+  ) where FieldType == TypeRef<ThingChild>? {
+    self.init(
+      name.description,
+      at: resolveOptionalChild { (thing) async throws -> ThingChild? in
+        switch thing.child {
+          case .notLoaded:
+            fatalError("Thing -> OptionalChild<ThingChild> not implemented")
+          case let .loaded(child):
+            return child
+        }
+      },
+      as: TypeRef<ThingChild>?.self)
   }
 }
 `;

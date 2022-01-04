@@ -74,12 +74,6 @@ export function insertData(model: Model, globalTypes: GlobalTypes): string {
           }
         }
 
-        // special case... if there are more than one of these consider a special
-        // protocol that can be extracted and analyzed for less grossness
-        if (model.name === `FriendResidence` && ident === `duration`) {
-          return [ident, `.json(${ident}?.jsonString)`];
-        }
-
         return [ident, `.enum(${ident})`];
     }
   });

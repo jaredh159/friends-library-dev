@@ -16,6 +16,8 @@ extension AppSchema {
       Field("createdAt", at: \.createdAt)
       Field("updatedAt", at: \.updatedAt)
       Field("document", with: \.document)
+      Field("impression", with: \.impression)
+      Field("isbn", with: \.isbn)
     }
   }
 

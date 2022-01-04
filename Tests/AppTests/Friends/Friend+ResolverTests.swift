@@ -44,9 +44,9 @@ final class FriendResolverTests: AppTestCase {
             documentId: id
             editions {
               editionId: id
-              #isbn {
-                #isbnCode: code
-              #}
+              isbn {
+                isbnCode: code
+              }
             }
             friend {
               friendId: id
@@ -60,7 +60,7 @@ final class FriendResolverTests: AppTestCase {
         "friendId": friend.id.uuidString,
         "editionId": edition.id.uuidString,
         "documentId": document.id.uuidString,
-          // "isbnCode": isbn.code.rawValue,
+        "isbnCode": isbn.code.rawValue,
       ]),
       headers: [.authorization: "Bearer (Seeded.tokens.allScopes)"]
     ).run(Self.app)

@@ -118,6 +118,7 @@ struct DatabaseClient {
   var createEdition: (Edition) async throws -> Edition
   var createEditions: ([Edition]) async throws -> [Edition]
   var getEdition: (Edition.Id) async throws -> Edition
+  var getEditionIsbn: (Edition.Id) async throws -> Isbn?
   var getEditions: () async throws -> [Edition]
   var updateEdition: (Edition) async throws -> Edition
   var updateEditions: ([Edition]) async throws -> [Edition]

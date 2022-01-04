@@ -84,10 +84,8 @@ export function schemaTypeFieldParts(
     .filter((p) => p.name !== `deletedAt`)
     .map(({ name, type }) => [name, `at`, keyPath(name, type, model, types)]);
 
-  for (const [name, { relationType }] of Object.entries(model.relations)) {
-    if ([`Children`, `OptionalParent`, `Parent`].includes(relationType)) {
-      parts.push([name, `with`, `\\.${name}`]);
-    }
+  for (const [name] of Object.entries(model.relations)) {
+    parts.push([name, `with`, `\\.${name}`]);
   }
 
   return parts;

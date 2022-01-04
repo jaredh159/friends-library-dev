@@ -4,6 +4,7 @@ import Vapor
 extension Graphiti.Field {
   typealias TypeRef = TypeReference
   typealias ToChildren<M: AppModel> = KeyPath<ObjectType, Children<M>>
+  typealias ToOptionalChild<M: AppModel> = KeyPath<ObjectType, OptionalChild<M>>
   typealias ToOptionalParent<M: AppModel> = KeyPath<ObjectType, OptionalParent<M>>
   typealias ToParent<M: AppModel> = KeyPath<ObjectType, Parent<M>>
 }
@@ -14,6 +15,18 @@ func resolveChildren<P: AppModel, C: AppModel>(
   { parent in
     { _, _, elg in
       return future(of: [C].self, on: elg.next()) {
+        try await f(parent)
+      }
+    }
+  }
+}
+
+func resolveOptionalChild<Parent: AppModel, Child: AppModel>(
+  _ f: @escaping (Parent) async throws -> Child?
+) -> (Parent) -> (Req, NoArgs, EventLoopGroup) throws -> Future<Child?> {
+  { parent in
+    { _, _, elg in
+      return future(of: Child?.self, on: elg.next()) {
         try await f(parent)
       }
     }

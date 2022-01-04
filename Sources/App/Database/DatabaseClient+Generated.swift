@@ -304,6 +304,9 @@ extension DatabaseClient {
     getEdition: { _ in
       throw Abort(.notImplemented, reason: "db.getEdition")
     },
+    getEditionIsbn: { _ in
+      throw Abort(.notImplemented, reason: "db.getEditionIsbn")
+    },
     getEditions: {
       throw Abort(.notImplemented, reason: "db.getEditions")
     },
