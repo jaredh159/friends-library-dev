@@ -57,8 +57,7 @@ final class OrderResolverTests: AppTestCase {
   }
 
   func testCreateOrderWithFreeRequestId() async throws {
-    let req = FreeOrderRequest.random
-    try await Current.db.createFreeOrderRequest(req)
+    let req = try await Current.db.createFreeOrderRequest(.random)
     let order = Order.random
     order.freeOrderRequestId = req.id
     let item = OrderItem.random
@@ -80,8 +79,7 @@ final class OrderResolverTests: AppTestCase {
   }
 
   func testUpdateOrder() async throws {
-    let order = Order.empty
-    try await Current.db.createOrderWithItems(order)
+    let order = try await Current.db.createOrderWithItems(.empty)
 
     // now update
     order.printJobId = 12345
@@ -105,10 +103,8 @@ final class OrderResolverTests: AppTestCase {
   }
 
   func testUpdateOrders() async throws {
-    let order1 = Order.empty
-    let order2 = Order.empty
-    try await Current.db.createOrderWithItems(order1)
-    try await Current.db.createOrderWithItems(order2)
+    let order1 = try await Current.db.createOrderWithItems(.empty)
+    let order2 = try await Current.db.createOrderWithItems(.empty)
 
     // now update
     order1.printJobId = 5555
@@ -130,7 +126,7 @@ final class OrderResolverTests: AppTestCase {
   func testGetOrderById() async throws {
     let order = Order.empty
     order.printJobId = 234432
-    try await Current.db.createOrderWithItems(order)
+    _ = try await Current.db.createOrderWithItems(order)
 
     GraphQLTest(
       """
@@ -147,8 +143,7 @@ final class OrderResolverTests: AppTestCase {
 
   func testGetOrderByIdFailsWithWrongTokenScope() async throws {
     Current.auth = .live
-    let order = Order.empty
-    try await Current.db.createOrderWithItems(order)
+    let order = try await Current.db.createOrderWithItems(.empty)
     GraphQLTest(
       """
       query {
@@ -167,8 +162,8 @@ final class OrderResolverTests: AppTestCase {
     order1.printJobStatus = .bricked
     let order2 = Order.empty
     order2.printJobStatus = .bricked
-    try await Current.db.createOrderWithItems(order1)
-    try await Current.db.createOrderWithItems(order2)
+    _ = try await Current.db.createOrderWithItems(order1)
+    _ = try await Current.db.createOrderWithItems(order2)
 
     GraphQLTest(
       """

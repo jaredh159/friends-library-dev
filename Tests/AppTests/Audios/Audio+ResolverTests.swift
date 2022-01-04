@@ -22,9 +22,8 @@ final class AudioResolverTests: AppTestCase {
     ).run(Self.app, variables: ["input": map])
   }
 
-  func skip_testGetAudio() async throws {
-    let audio = Audio.random
-    try await Current.db.createAudio(audio)
+  func testGetAudio() async throws {
+    let audio = try await Current.db.createAudio(.random)
 
     GraphQLTest(
       """
@@ -39,9 +38,8 @@ final class AudioResolverTests: AppTestCase {
     ).run(Self.app)
   }
 
-  func skip_testUpdateAudio() async throws {
-    let audio = Audio.random
-    try await Current.db.createAudio(audio)
+  func testUpdateAudio() async throws {
+    let audio = try await Current.db.createAudio(.random)
 
     // do some updates here ---vvv
     audio.reader = "new value"
@@ -59,9 +57,8 @@ final class AudioResolverTests: AppTestCase {
     ).run(Self.app, variables: ["input": audio.gqlMap()])
   }
 
-  func skip_testDeleteAudio() async throws {
-    let audio = Audio.random
-    try await Current.db.createAudio(audio)
+  func testDeleteAudio() async throws {
+    let audio = try await Current.db.createAudio(.random)
 
     GraphQLTest(
       """

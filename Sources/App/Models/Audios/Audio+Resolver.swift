@@ -1,64 +1,52 @@
 import Vapor
 
 extension Resolver {
-  // 👋 start here, implementing CRUD for audio
-  // then do audio part
-  // then do FriendResidence
-  // then do FriendQuote
-  // then hook up all relations
-  func createAudio(
-    req: Req,
-    args: AppSchema.CreateAudioArgs
-  ) throws -> Future<Audio> {
+  func createAudio(req: Req, args: AppSchema.CreateAudioArgs) throws -> Future<Audio> {
     try req.requirePermission(to: .mutateAudios)
     return future(of: Audio.self, on: req.eventLoop) {
       try await Current.db.createAudio(Audio(args.input))
     }
   }
-}
 
-// below auto-generated
-
-extension Resolver {
-  func getAudio(
-    req: Req,
-    args: IdentifyEntityArgs
-  ) throws -> Future<Audio> {
-    throw Abort(.notImplemented, reason: "Resolver.getAudio")
+  func getAudio(req: Req, args: IdentifyEntityArgs) throws -> Future<Audio> {
+    try req.requirePermission(to: .queryAudios)
+    return future(of: Audio.self, on: req.eventLoop) {
+      try await Current.db.getAudio(.init(rawValue: args.id))
+    }
   }
 
-  func getAudios(
-    req: Req,
-    args: NoArgs
-  ) throws -> Future<[Audio]> {
-    throw Abort(.notImplemented, reason: "Resolver.getAudios")
+  func updateAudio(req: Req, args: AppSchema.UpdateAudioArgs) throws -> Future<Audio> {
+    try req.requirePermission(to: .mutateAudios)
+    return future(of: Audio.self, on: req.eventLoop) {
+      try await Current.db.updateAudio(Audio(args.input))
+    }
   }
 
-  func createAudios(
-    req: Req,
-    args: AppSchema.CreateAudiosArgs
-  ) throws -> Future<[Audio]> {
-    throw Abort(.notImplemented, reason: "Resolver.createAudios")
+  func deleteAudio(req: Req, args: IdentifyEntityArgs) throws -> Future<Audio> {
+    try req.requirePermission(to: .mutateAudios)
+    return future(of: Audio.self, on: req.eventLoop) {
+      try await Current.db.deleteAudio(.init(rawValue: args.id))
+    }
   }
 
-  func updateAudio(
-    req: Req,
-    args: AppSchema.UpdateAudioArgs
-  ) throws -> Future<Audio> {
-    throw Abort(.notImplemented, reason: "Resolver.updateAudio")
+  func getAudios(req: Req, args: NoArgs) throws -> Future<[Audio]> {
+    try req.requirePermission(to: .queryAudios)
+    return future(of: [Audio].self, on: req.eventLoop) {
+      try await Current.db.getAudios()
+    }
   }
 
-  func updateAudios(
-    req: Req,
-    args: AppSchema.UpdateAudiosArgs
-  ) throws -> Future<[Audio]> {
-    throw Abort(.notImplemented, reason: "Resolver.updateAudios")
+  func createAudios(req: Req, args: AppSchema.CreateAudiosArgs) throws -> Future<[Audio]> {
+    try req.requirePermission(to: .mutateAudios)
+    return future(of: [Audio].self, on: req.eventLoop) {
+      try await Current.db.createAudios(args.input.map(Audio.init))
+    }
   }
 
-  func deleteAudio(
-    req: Req,
-    args: IdentifyEntityArgs
-  ) throws -> Future<Audio> {
-    throw Abort(.notImplemented, reason: "Resolver.deleteAudio")
+  func updateAudios(req: Req, args: AppSchema.UpdateAudiosArgs) throws -> Future<[Audio]> {
+    try req.requirePermission(to: .mutateAudios)
+    return future(of: [Audio].self, on: req.eventLoop) {
+      try await Current.db.updateAudios(args.input.map(Audio.init))
+    }
   }
 }

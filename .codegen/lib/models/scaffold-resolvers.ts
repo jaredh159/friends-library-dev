@@ -13,49 +13,70 @@ extension Resolver {
     req: Req,
     args: IdentifyEntityArgs
   ) throws -> Future<Thing> {
-    throw Abort(.notImplemented, reason: "Resolver.getThing")
+    try req.requirePermission(to: .queryThings)
+    return future(of: Thing.self, on: req.eventLoop) {
+      try await Current.db.getThing(Thing(args.input))
+    }
   }
 
   func getThings(
     req: Req,
     args: NoArgs
   ) throws -> Future<[Thing]> {
-    throw Abort(.notImplemented, reason: "Resolver.getThings")
+    try req.requirePermission(to: .queryThings)
+    return future(of: [Thing].self, on: req.eventLoop) {
+      try await Current.db.getThings()
+    }
   }
 
   func createThing(
     req: Req,
     args: AppSchema.CreateThingArgs
   ) throws -> Future<Thing> {
-    throw Abort(.notImplemented, reason: "Resolver.createThing")
+    try req.requirePermission(to: .mutateThings)
+    return future(of: Thing.self, on: req.eventLoop) {
+      try await Current.db.createThing(Thing(args.input))
+    }
   }
 
   func createThings(
     req: Req,
     args: AppSchema.CreateThingsArgs
   ) throws -> Future<[Thing]> {
-    throw Abort(.notImplemented, reason: "Resolver.createThings")
+    try req.requirePermission(to: .mutateThings)
+    return future(of: [Thing].self, on: req.eventLoop) {
+      try await Current.db.createThings(args.input.map(Thing.init))
+    }
   }
 
   func updateThing(
     req: Req,
     args: AppSchema.UpdateThingArgs
   ) throws -> Future<Thing> {
-    throw Abort(.notImplemented, reason: "Resolver.updateThing")
+    try req.requirePermission(to: .mutateThings)
+    return future(of: Thing.self, on: req.eventLoop) {
+      try await Current.db.updateThing(Thing(args.input))
+    }
   }
 
   func updateThings(
     req: Req,
     args: AppSchema.UpdateThingsArgs
   ) throws -> Future<[Thing]> {
-    throw Abort(.notImplemented, reason: "Resolver.updateThings")
+    try req.requirePermission(to: .mutateThings)
+    return future(of: [Thing].self, on: req.eventLoop) {
+      try await Current.db.updateThings(args.input.map(Thing.init))
+    }
   }
 
   func deleteThing(
     req: Req,
     args: IdentifyEntityArgs
   ) throws -> Future<Thing> {
-    throw Abort(.notImplemented, reason: "Resolver.deleteThing")
+    try req.requirePermission(to: .mutateThings)
+    return future(of: Thing.self, on: req.eventLoop) {
+      try await Current.db.deleteThing(.init(rawValue: args.id))
+    }
   }
 }
 `.trim();

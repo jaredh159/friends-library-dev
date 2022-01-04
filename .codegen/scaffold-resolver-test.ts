@@ -58,8 +58,7 @@ final class ThingResolverTests: AppTestCase {
   }
 
   func skip_testGetThing() async throws {
-    let thing = Thing.random
-    try await Current.db.createThing(thing)
+    let thing = try await Current.db.createThing(.random)
 
     GraphQLTest(
       """
@@ -75,8 +74,7 @@ final class ThingResolverTests: AppTestCase {
   }
 
   func skip_testUpdateThing() async throws {
-    let thing = Thing.random
-    try await Current.db.createThing(thing)
+    let thing = try await Current.db.createThing(.random)
 
     // do some updates here ---vvv
     thing.someProp = "new value"
@@ -95,8 +93,7 @@ final class ThingResolverTests: AppTestCase {
   }
 
   func skip_testDeleteThing() async throws {
-    let thing = Thing.random
-    try await Current.db.createThing(thing)
+    let thing = try await Current.db.createThing(.random)
 
     GraphQLTest(
       """

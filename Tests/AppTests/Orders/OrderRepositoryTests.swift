@@ -9,7 +9,7 @@ final class OrderRepositoryTests: AppTestCase {
     let inserted: Order = .empty
     inserted.addressName = "Bob"
 
-    try await Current.db.createOrderWithItems(inserted)
+    _ = try await Current.db.createOrderWithItems(inserted)
     let retrieved = try await Current.db.getOrder(inserted.id)
 
     XCTAssertEqual(inserted, retrieved)
@@ -21,7 +21,7 @@ final class OrderRepositoryTests: AppTestCase {
     inserted.printJobId = 55
     inserted.addressStreet2 = "Apt #2"
 
-    try await Current.db.createOrderWithItems(inserted)
+    _ = try await Current.db.createOrderWithItems(inserted)
     let retrieved = try await Current.db.getOrder(inserted.id)
 
     XCTAssertEqual(inserted, retrieved)
@@ -36,8 +36,8 @@ final class OrderRepositoryTests: AppTestCase {
     order1.printJobStatus = .accepted
     let order2 = Order.empty
     order2.printJobStatus = .pending
-    try await Current.db.createOrderWithItems(order1)
-    try await Current.db.createOrderWithItems(order2)
+    _ = try await Current.db.createOrderWithItems(order1)
+    _ = try await Current.db.createOrderWithItems(order2)
 
     let found = try await Current.db.getOrdersByPrintJobStatus(.accepted)
 
