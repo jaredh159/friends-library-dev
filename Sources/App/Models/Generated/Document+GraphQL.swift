@@ -20,6 +20,7 @@ extension AppSchema {
       Field("createdAt", at: \.createdAt)
       Field("updatedAt", at: \.updatedAt)
       Field("friend", with: \.friend)
+      Field("editions", with: \.editions)
       Field("altLanguageDocument", with: \.altLanguageDocument)
       Field("relatedDocuments", with: \.relatedDocuments)
     }

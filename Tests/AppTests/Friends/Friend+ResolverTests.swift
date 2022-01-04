@@ -28,6 +28,12 @@ final class FriendResolverTests: AppTestCase {
     document.altLanguageId = nil
     document.friendId = friend.id
     _ = try await Current.db.createDocument(document)
+    let edition: Edition = .random
+    edition.documentId = document.id
+    _ = try await Current.db.createEdition(edition)
+    let isbn: Isbn = .random
+    isbn.editionId = edition.id
+    _ = try await Current.db.createIsbn(isbn)
 
     GraphQLTest(
       """
@@ -36,6 +42,12 @@ final class FriendResolverTests: AppTestCase {
           id
           documents {
             documentId: id
+            editions {
+              editionId: id
+              #isbn {
+                #isbnCode: code
+              #}
+            }
             friend {
               friendId: id
             }
@@ -46,7 +58,9 @@ final class FriendResolverTests: AppTestCase {
       expectedData: .containsKVPs([
         "id": friend.id.uuidString,
         "friendId": friend.id.uuidString,
+        "editionId": edition.id.uuidString,
         "documentId": document.id.uuidString,
+          // "isbnCode": isbn.code.rawValue,
       ]),
       headers: [.authorization: "Bearer (Seeded.tokens.allScopes)"]
     ).run(Self.app)

@@ -253,6 +253,9 @@ extension DatabaseClient {
     getDocument: { _ in
       throw Abort(.notImplemented, reason: "db.getDocument")
     },
+    getDocumentEditions: { _ in
+      throw Abort(.notImplemented, reason: "db.getDocumentEditions")
+    },
     getDocuments: {
       throw Abort(.notImplemented, reason: "db.getDocuments")
     },

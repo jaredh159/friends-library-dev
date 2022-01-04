@@ -97,6 +97,7 @@ struct DatabaseClient {
   var createDocument: (Document) async throws -> Document
   var createDocuments: ([Document]) async throws -> [Document]
   var getDocument: (Document.Id) async throws -> Document
+  var getDocumentEditions: (Document.Id) async throws -> [Edition]
   var getDocuments: () async throws -> [Document]
   var updateDocument: (Document) async throws -> Document
   var updateDocuments: ([Document]) async throws -> [Document]
