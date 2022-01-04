@@ -5,9 +5,7 @@ extension Resolver {
   func createDocument(req: Req, args: AppSchema.CreateDocumentArgs) throws -> Future<Document> {
     try req.requirePermission(to: .mutateDocuments)
     return future(of: Document.self, on: req.eventLoop) {
-      let document = Document(args.input)
-      try await Current.db.createDocument(document)
-      return document
+      try await Current.db.createDocument(Document(args.input))
     }
   }
 
@@ -28,9 +26,7 @@ extension Resolver {
   func deleteDocument(req: Req, args: IdentifyEntityArgs) throws -> Future<Document> {
     try req.requirePermission(to: .mutateDocuments)
     return future(of: Document.self, on: req.eventLoop) {
-      let document = try await Current.db.getDocument(.init(rawValue: args.id))
-      try await Current.db.deleteDocument(document.id)
-      return document
+      try await Current.db.deleteDocument(.init(rawValue: args.id))
     }
   }
 }

@@ -12,9 +12,7 @@ extension Resolver {
   ) throws -> Future<Audio> {
     try req.requirePermission(to: .mutateAudios)
     return future(of: Audio.self, on: req.eventLoop) {
-      let audio = Audio(args.input)
-      try await Current.db.createAudio(audio)
-      return audio
+      try await Current.db.createAudio(Audio(args.input))
     }
   }
 }

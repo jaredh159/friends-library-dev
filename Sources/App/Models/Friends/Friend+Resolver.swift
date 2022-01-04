@@ -11,9 +11,7 @@ extension Resolver {
   func createFriend(req: Req, args: AppSchema.CreateFriendArgs) throws -> Future<Friend> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: Friend.self, on: req.eventLoop) {
-      let friend = try Friend(args.input)
-      try await Current.db.createFriend(friend)
-      return friend
+      try await Current.db.createFriend(Friend(args.input))
     }
   }
 

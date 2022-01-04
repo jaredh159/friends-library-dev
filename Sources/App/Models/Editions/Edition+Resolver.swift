@@ -4,9 +4,7 @@ extension Resolver {
   func createEdition(req: Req, args: AppSchema.CreateEditionArgs) throws -> Future<Edition> {
     try req.requirePermission(to: .mutateEditions)
     return future(of: Edition.self, on: req.eventLoop) {
-      let edition = try Edition(args.input)
-      try await Current.db.createEdition(edition)
-      return edition
+      try await Current.db.createEdition(Edition(args.input))
     }
   }
 
@@ -27,9 +25,7 @@ extension Resolver {
   func deleteEdition(req: Req, args: IdentifyEntityArgs) throws -> Future<Edition> {
     try req.requirePermission(to: .mutateEditions)
     return future(of: Edition.self, on: req.eventLoop) {
-      let edition = try await Current.db.getEdition(.init(rawValue: args.id))
-      try await Current.db.deleteEdition(edition.id)
-      return edition
+      try await Current.db.deleteEdition(.init(rawValue: args.id))
     }
   }
 }

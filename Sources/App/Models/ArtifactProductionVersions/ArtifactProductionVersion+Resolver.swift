@@ -13,10 +13,9 @@ extension Resolver {
     args: AppSchema.CreateArtifactProductionVersionArgs
   ) throws -> Future<ArtifactProductionVersion> {
     try req.requirePermission(to: .mutateArtifactProductionVersions)
-    let version = ArtifactProductionVersion(version: .init(rawValue: args.input.version))
     return future(of: ArtifactProductionVersion.self, on: req.eventLoop) {
-      try await Current.db.createArtifactProductionVersion(version)
-      return version
+      let version = ArtifactProductionVersion(version: .init(rawValue: args.input.version))
+      return try await Current.db.createArtifactProductionVersion(version)
     }
   }
 

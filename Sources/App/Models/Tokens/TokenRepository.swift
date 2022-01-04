@@ -12,7 +12,7 @@ struct TokenRepository {
     return token
   }
 
-  func createTokenScope(_ scope: TokenScope) async throws {
+  func createTokenScope(_ scope: TokenScope) async throws -> TokenScope {
     try await createRelation(scope)
   }
 
@@ -31,7 +31,7 @@ struct MockTokenRepository {
     try await select(where: { $0.value == value }).firstOrThrowNotFound()
   }
 
-  func createTokenScope(_ scope: TokenScope) async throws {
+  func createTokenScope(_ scope: TokenScope) async throws -> TokenScope {
     db.add(scope, to: \.tokenScopes)
   }
 

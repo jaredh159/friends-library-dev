@@ -21,9 +21,8 @@ extension Resolver {
     args: AppSchema.CreateFreeOrderRequestArgs
   ) throws -> Future<FreeOrderRequest> {
     try req.requirePermission(to: .mutateOrders)
-    let order = FreeOrderRequest(args.input)
     return future(of: FreeOrderRequest.self, on: req.eventLoop) {
-      try await Current.db.createFreeOrderRequest(order)
+      let order = try await Current.db.createFreeOrderRequest(FreeOrderRequest(args.input))
       try await sendFreeOrderRequestNotifications(for: order, on: req).get()
       return order
     }

@@ -2,22 +2,33 @@ extension LiveRepository {
 
   // CREATE
 
-  func create(_ model: Model) async throws {
+  @discardableResult
+  func create(_ model: Model) async throws -> Model {
     try await create([model])
+    return model
   }
 
-  func create(_ models: [Model]) async throws {
+  @discardableResult
+  func create(_ models: [Model]) async throws -> [Model] {
     let prepared = try SQL.insert(into: Model.tableName, values: models.map(\.insertValues))
     _ = try await SQL.execute(prepared, on: db).all()
+    return models
   }
 
-  func createRelation<Relation: DuetModel>(_ model: Relation) async throws {
-    try await createRelations([model])
+  @discardableResult
+  func createRelation<Relation: DuetModel>(_ relation: Relation) async throws -> Relation {
+    try await createRelations([relation])
+    return relation
   }
 
-  func createRelations<Relation: DuetModel>(_ models: [Relation]) async throws {
-    let prepared = try SQL.insert(into: Relation.tableName, values: models.map(\.insertValues))
+  @discardableResult
+  func createRelations<Relation: DuetModel>(_ relations: [Relation]) async throws -> [Relation] {
+    let prepared = try SQL.insert(
+      into: Relation.tableName,
+      values: relations.map(\.insertValues)
+    )
     _ = try await SQL.execute(prepared, on: db).all()
+    return relations
   }
 
   // READ
@@ -76,8 +87,10 @@ extension LiveRepository {
 
   // DELETE
 
-  func delete(_ id: Model.IdValue) async throws {
-    fatalError("not implemented")
+  @discardableResult
+  func delete(_ id: Model.IdValue) async throws -> Model {
+    // let model = try await find(id)
+    fatalError("LiveRepository+CRUD.delete() not implemented")
   }
 
   func deleteAll() async throws {

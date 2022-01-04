@@ -17,7 +17,6 @@ extension Resolver {
     order.items = .loaded(args.items.map(OrderItem.init))
     return future(of: Order.self, on: req.eventLoop) {
       try await Current.db.createOrderWithItems(order)
-      return order
     }
   }
 

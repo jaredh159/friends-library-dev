@@ -47,7 +47,12 @@ final class MockDb {
     return model
   }
 
-  func add<M: DuetModel>(_ model: M, to keyPath: ReferenceWritableKeyPath<MockDb, [M.IdValue: M]>) {
+  @discardableResult
+  func add<M: DuetModel>(
+    _ model: M,
+    to keyPath: ReferenceWritableKeyPath<MockDb, [M.IdValue: M]>
+  ) -> M {
     self[keyPath: keyPath][model.id] = model
+    return model
   }
 }

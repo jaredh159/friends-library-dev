@@ -7,9 +7,7 @@ extension Resolver {
   ) throws -> Future<EditionImpression> {
     try req.requirePermission(to: .mutateEditionImpressions)
     return future(of: EditionImpression.self, on: req.eventLoop) {
-      let impression = try EditionImpression(args.input)
-      try await Current.db.createEditionImpression(impression)
-      return impression
+      try await Current.db.createEditionImpression(EditionImpression(args.input))
     }
   }
 
@@ -39,9 +37,7 @@ extension Resolver {
   ) throws -> Future<EditionImpression> {
     try req.requirePermission(to: .mutateEditionImpressions)
     return future(of: EditionImpression.self, on: req.eventLoop) {
-      let impression = try await Current.db.getEditionImpression(.init(rawValue: args.id))
-      try await Current.db.deleteEditionImpression(impression.id)
-      return impression
+      try await Current.db.deleteEditionImpression(.init(rawValue: args.id))
     }
   }
 }

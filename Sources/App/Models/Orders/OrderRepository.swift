@@ -4,12 +4,13 @@ import Vapor
 struct OrderRepository {
   var db: SQLDatabase
 
-  func createOrderWithItems(_ order: Order) async throws {
+  func createOrderWithItems(_ order: Order) async throws -> Order {
     try await create(order)
     guard case let .loaded(items) = order.items, !items.isEmpty else {
-      return
+      return order
     }
     try await createRelations(items)
+    return order
   }
 
   func getOrdersByPrintJobStatus(_ status: Order.PrintJobStatus) async throws -> [Order] {

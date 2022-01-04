@@ -5,9 +5,7 @@ extension Resolver {
   func createIsbn(req: Req, args: AppSchema.CreateIsbnArgs) throws -> Future<Isbn> {
     try req.requirePermission(to: .mutateIsbns)
     return future(of: Isbn.self, on: req.eventLoop) {
-      let isbn = Isbn(args.input)
-      try await Current.db.createIsbn(isbn)
-      return isbn
+      try await Current.db.createIsbn(Isbn(args.input))
     }
   }
 
@@ -28,9 +26,7 @@ extension Resolver {
   func deleteIsbn(req: Req, args: IdentifyEntityArgs) throws -> Future<Isbn> {
     try req.requirePermission(to: .mutateIsbns)
     return future(of: Isbn.self, on: req.eventLoop) {
-      let isbn = try await Current.db.getIsbn(.init(rawValue: args.id))
-      try await Current.db.deleteIsbn(isbn.id)
-      return isbn
+      try await Current.db.deleteIsbn(.init(rawValue: args.id))
     }
   }
 }

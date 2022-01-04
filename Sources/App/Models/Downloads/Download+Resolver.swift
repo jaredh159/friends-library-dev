@@ -9,10 +9,8 @@ extension Resolver {
     args: AppSchema.CreateDownloadArgs
   ) throws -> Future<Download> {
     try req.requirePermission(to: .mutateDownloads)
-    let download = Download(args.input)
     return future(of: Download.self, on: req.eventLoop) {
-      try await Current.db.createDownload(download)
-      return download
+      try await Current.db.createDownload(Download(args.input))
     }
   }
 }
