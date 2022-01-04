@@ -36,6 +36,7 @@ model.init = [
   { propName: `id`, hasDefault: true },
   { propName: `name`, hasDefault: false },
   { propName: `desc`, hasDefault: false },
+  { propName: `seconds`, hasDefault: false },
   { propName: `fooBar`, hasDefault: false },
   { propName: `jimJam`, hasDefault: false },
   { propName: `value`, hasDefault: false },
@@ -53,6 +54,7 @@ model.props = [
   { name: `id`, type: `Id` },
   { name: `name`, type: `String` },
   { name: `desc`, type: `String?` },
+  { name: `seconds`, type: `Seconds<Double>` },
   { name: `fooBar`, type: `FooBar` },
   { name: `jimJam`, type: `JimJam?` },
   { name: `value`, type: `Value` },
@@ -121,6 +123,7 @@ describe(`schemaTypeFieldParts()`, () => {
     [`id`, `at`, `\\.id.rawValue`],
     [`name`, `at`, `\\.name`],
     [`desc`, `at`, `\\.desc`],
+    [`seconds`, `at`, `\\.seconds.rawValue`],
     [`fooBar`, `at`, `\\.fooBar`],
     [`jimJam`, `at`, `\\.jimJam`],
     [`value`, `at`, `\\.value.rawValue`],
@@ -131,13 +134,15 @@ describe(`schemaTypeFieldParts()`, () => {
     [`printJobId`, `at`, `\\.printJobId?.rawValue`],
     [`splits`, `at`, `\\.splits.rawValue`],
     [`optionalSplits`, `at`, `\\.optionalSplits?.rawValue`],
+    [`requiredDate`, `at`, `\\.requiredDate`],
+    [`published`, `at`, `\\.published`],
     [`createdAt`, `at`, `\\.createdAt`],
     [`updatedAt`, `at`, `\\.updatedAt`],
     [`kids`, `with`, `\\.kids`],
     [`parent`, `with`, `\\.parent`],
   ];
 
-  it.skip(`generates correct parts`, () => {
+  it(`generates correct parts`, () => {
     expect(schemaTypeFieldParts(model, types)).toEqual(expected);
   });
 });
@@ -156,6 +161,7 @@ describe(`generateModelGraphQLTypes()`, () => {
             Field("id", at: \\.id.rawValue)
             Field("name", at: \\.name)
             Field("desc", at: \\.desc)
+            Field("seconds", at: \\.seconds.rawValue)
             Field("fooBar", at: \\.fooBar)
             Field("jimJam", at: \\.jimJam)
             Field("value", at: \\.value.rawValue)
@@ -179,6 +185,7 @@ describe(`generateModelGraphQLTypes()`, () => {
           let id: UUID?
           let name: String
           let desc: String?
+          let seconds: Double
           let fooBar: Thing.FooBar
           let jimJam: Thing.JimJam?
           let value: UUID
@@ -197,6 +204,7 @@ describe(`generateModelGraphQLTypes()`, () => {
           let id: UUID
           let name: String
           let desc: String?
+          let seconds: Double
           let fooBar: Thing.FooBar
           let jimJam: Thing.JimJam?
           let value: UUID
@@ -232,6 +240,7 @@ describe(`generateModelGraphQLTypes()`, () => {
             InputField("id", at: \\.id)
             InputField("name", at: \\.name)
             InputField("desc", at: \\.desc)
+            InputField("seconds", at: \\.seconds)
             InputField("fooBar", at: \\.fooBar)
             InputField("jimJam", at: \\.jimJam)
             InputField("value", at: \\.value)
@@ -252,6 +261,7 @@ describe(`generateModelGraphQLTypes()`, () => {
             InputField("id", at: \\.id)
             InputField("name", at: \\.name)
             InputField("desc", at: \\.desc)
+            InputField("seconds", at: \\.seconds)
             InputField("fooBar", at: \\.fooBar)
             InputField("jimJam", at: \\.jimJam)
             InputField("value", at: \\.value)
@@ -314,6 +324,7 @@ describe(`generateModelGraphQLTypes()`, () => {
             id: .init(rawValue: input.id ?? UUID()),
             name: input.name,
             desc: input.desc,
+            seconds: .init(rawValue: input.seconds),
             fooBar: input.fooBar,
             jimJam: input.jimJam,
             value: .init(rawValue: input.value),
@@ -334,6 +345,7 @@ describe(`generateModelGraphQLTypes()`, () => {
             id: .init(rawValue: input.id),
             name: input.name,
             desc: input.desc,
+            seconds: .init(rawValue: input.seconds),
             fooBar: input.fooBar,
             jimJam: input.jimJam,
             value: .init(rawValue: input.value),
@@ -352,6 +364,7 @@ describe(`generateModelGraphQLTypes()`, () => {
         func update(_ input: AppSchema.UpdateThingInput) throws {
           self.name = input.name
           self.desc = input.desc
+          self.seconds = .init(rawValue: input.seconds)
           self.fooBar = input.fooBar
           self.jimJam = input.jimJam
           self.value = .init(rawValue: input.value)

@@ -6,6 +6,7 @@ extension DatabaseClient {
   static func live(db: SQLDatabase) -> DatabaseClient {
     var client: DatabaseClient = .notImplemented
     IsbnRepository(db: db).assign(client: &client)
+    AudioRepository(db: db).assign(client: &client)
     OrderRepository(db: db).assign(client: &client)
     TokenRepository(db: db).assign(client: &client)
     FriendRepository(db: db).assign(client: &client)
@@ -24,6 +25,7 @@ extension DatabaseClient {
     let mockDb = MockDb()
     var client: DatabaseClient = .notImplemented
     MockIsbnRepository(db: mockDb).assign(client: &client)
+    MockAudioRepository(db: mockDb).assign(client: &client)
     MockOrderRepository(db: mockDb).assign(client: &client)
     MockTokenRepository(db: mockDb).assign(client: &client)
     MockFriendRepository(db: mockDb).assign(client: &client)
@@ -200,6 +202,30 @@ extension DatabaseClient {
     },
     deleteAllEditionChapters: {
       throw Abort(.notImplemented, reason: "db.deleteAllEditionChapters")
+    },
+    createAudio: { _ in
+      throw Abort(.notImplemented, reason: "db.createAudio")
+    },
+    createAudios: { _ in
+      throw Abort(.notImplemented, reason: "db.createAudios")
+    },
+    getAudio: { _ in
+      throw Abort(.notImplemented, reason: "db.getAudio")
+    },
+    getAudios: {
+      throw Abort(.notImplemented, reason: "db.getAudios")
+    },
+    updateAudio: { _ in
+      throw Abort(.notImplemented, reason: "db.updateAudio")
+    },
+    updateAudios: { _ in
+      throw Abort(.notImplemented, reason: "db.updateAudios")
+    },
+    deleteAudio: { _ in
+      throw Abort(.notImplemented, reason: "db.deleteAudio")
+    },
+    deleteAllAudios: {
+      throw Abort(.notImplemented, reason: "db.deleteAllAudios")
     },
     createIsbn: { _ in
       throw Abort(.notImplemented, reason: "db.createIsbn")

@@ -9,7 +9,7 @@ extension AppSchema {
       Field("id", at: \.id.rawValue)
       Field("audioId", at: \.audioId.rawValue)
       Field("title", at: \.title)
-      Field("duration", at: \.duration)
+      Field("duration", at: \.duration.rawValue)
       Field("chapters", at: \.chapters.rawValue)
       Field("order", at: \.order)
       Field("mp3SizeHq", at: \.mp3SizeHq.rawValue)

@@ -5,6 +5,7 @@ import Vapor
 
 let appSchema = try! Graphiti.Schema<Resolver, Request> {
   Scalar(UUID.self)
+  Scalar(Int64.self)
   DateScalar(formatter: ISO8601DateFormatter())
 
   Enum(EditionType.self)
@@ -68,6 +69,14 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.CreateEditionChapterInputType
   AppSchema.UpdateEditionChapterInputType
 
+  // audio types
+  AppSchema.AudioType
+  AppSchema.CreateAudioInputType
+  AppSchema.UpdateAudioInputType
+  AppSchema.AudioPartType
+  AppSchema.CreateAudioPartInputType
+  AppSchema.UpdateAudioPartInputType
+
   Query {
     AppSchema.getFriend
     AppSchema.getDocument
@@ -75,6 +84,8 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
     AppSchema.getEditionImpression
     AppSchema.getIsbn
     AppSchema.getEditionChapter
+    AppSchema.getAudio
+    AppSchema.getAudioPart
 
     Field("getLatestArtifactProductionVersion", at: Resolver.getLatestArtifactProductionVersion)
 
@@ -123,6 +134,14 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
     AppSchema.createEditionChapter
     AppSchema.updateEditionChapter
     AppSchema.deleteEditionChapter
+
+    // audio mutations
+    AppSchema.createAudio
+    AppSchema.updateAudio
+    AppSchema.deleteAudio
+    AppSchema.createAudioPart
+    AppSchema.updateAudioPart
+    AppSchema.deleteAudioPart
 
     // order mutations
     AppSchema.updateOrder

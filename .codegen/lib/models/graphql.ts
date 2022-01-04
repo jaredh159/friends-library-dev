@@ -195,7 +195,7 @@ function keyPath(
     type === `Id` ||
     model.taggedTypes[type] ||
     globalTypes.taggedTypes[type] ||
-    [`Cents<Int>`, `NonEmpty<[Int]>`].includes(type) ||
+    [`Seconds<Int>`, `Seconds<Double>`, `Cents<Int>`, `NonEmpty<[Int]>`].includes(type) ||
     type.endsWith(`.Id`)
   ) {
     keyPath += `${isOptional ? `?` : ``}.rawValue`;

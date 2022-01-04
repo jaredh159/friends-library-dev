@@ -1,6 +1,6 @@
 # Converge TODOs:
 
-- [ ] - write basic crud stuff for all models
+- [ ] - write basic crud stuff for all models (don't forget FriendResidence/Quote!)
 - [ ] - hook up relations for all models (augmenting resolver tests)
 - [ ] - write yaml import migration after all new migrations (shells out...)
 - [ ] - add foreign key migration to connect Download/OrderItem FK's AND Order->EditionId

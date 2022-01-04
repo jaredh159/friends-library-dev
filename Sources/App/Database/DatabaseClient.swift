@@ -76,6 +76,16 @@ struct DatabaseClient {
   var deleteEditionChapter: (EditionChapter.Id) async throws -> Void
   var deleteAllEditionChapters: () async throws -> Void
 
+  // audios
+  var createAudio: (Audio) async throws -> Void
+  var createAudios: ([Audio]) async throws -> Void
+  var getAudio: (Audio.Id) async throws -> Audio
+  var getAudios: () async throws -> [Audio]
+  var updateAudio: (Audio) async throws -> Audio
+  var updateAudios: ([Audio]) async throws -> [Audio]
+  var deleteAudio: (Audio.Id) async throws -> Void
+  var deleteAllAudios: () async throws -> Void
+
   // isbns
   var createIsbn: (Isbn) async throws -> Void
   var createIsbns: ([Isbn]) async throws -> Void
