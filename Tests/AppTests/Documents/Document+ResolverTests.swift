@@ -23,8 +23,7 @@ final class DocumentResolverTests: AppTestCase {
   }
 
   func testGetDocument() async throws {
-    let document = Document.random
-    try await Current.db.createDocument(document)
+    let document = try await Current.db.createDocument(.random)
 
     GraphQLTest(
       """
@@ -40,8 +39,7 @@ final class DocumentResolverTests: AppTestCase {
   }
 
   func testUpdateDocument() async throws {
-    let document = Document.random
-    try await Current.db.createDocument(document)
+    let document = try await Current.db.createDocument(.random)
 
     // do some updates here ---vvv
     document.title = "new value"
@@ -60,8 +58,7 @@ final class DocumentResolverTests: AppTestCase {
   }
 
   func testDeleteDocument() async throws {
-    let document = Document.random
-    try await Current.db.createDocument(document)
+    let document = try await Current.db.createDocument(.random)
 
     GraphQLTest(
       """

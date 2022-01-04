@@ -35,6 +35,7 @@ function modelDir(modelName: string): string {
       return `/Orders`;
     case `FriendQuote`:
     case `FriendResidence`:
+    case `FriendResidenceDuration`:
       return `/Friends`;
     case `EditionChapter`:
     case `EditionImpression`:

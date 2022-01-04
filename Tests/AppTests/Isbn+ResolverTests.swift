@@ -23,8 +23,7 @@ final class IsbnResolverTests: AppTestCase {
   }
 
   func testGetIsbn() async throws {
-    let isbn = Isbn.random
-    try await Current.db.createIsbn(isbn)
+    let isbn = try await Current.db.createIsbn(.random)
 
     GraphQLTest(
       """
@@ -40,8 +39,7 @@ final class IsbnResolverTests: AppTestCase {
   }
 
   func testUpdateIsbn() async throws {
-    let isbn = Isbn.random
-    try await Current.db.createIsbn(isbn)
+    let isbn = try await Current.db.createIsbn(.random)
 
     // do some updates here ---vvv
     isbn.code = "new value"
@@ -60,8 +58,7 @@ final class IsbnResolverTests: AppTestCase {
   }
 
   func testDeleteIsbn() async throws {
-    let isbn = Isbn.random
-    try await Current.db.createIsbn(isbn)
+    let isbn = try await Current.db.createIsbn(.random)
 
     GraphQLTest(
       """

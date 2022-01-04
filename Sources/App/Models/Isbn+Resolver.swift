@@ -1,6 +1,21 @@
 import Vapor
 
+// below auto-generated
+
 extension Resolver {
+  func getIsbn(req: Req, args: IdentifyEntityArgs) throws -> Future<Isbn> {
+    try req.requirePermission(to: .queryIsbns)
+    return future(of: Isbn.self, on: req.eventLoop) {
+      try await Current.db.getIsbn(.init(rawValue: args.id))
+    }
+  }
+
+  func getIsbns(req: Req, args: NoArgs) throws -> Future<[Isbn]> {
+    try req.requirePermission(to: .queryIsbns)
+    return future(of: [Isbn].self, on: req.eventLoop) {
+      try await Current.db.getIsbns()
+    }
+  }
 
   func createIsbn(req: Req, args: AppSchema.CreateIsbnArgs) throws -> Future<Isbn> {
     try req.requirePermission(to: .mutateIsbns)
@@ -9,10 +24,10 @@ extension Resolver {
     }
   }
 
-  func getIsbn(req: Req, args: IdentifyEntityArgs) throws -> Future<Isbn> {
-    try req.requirePermission(to: .queryIsbns)
-    return future(of: Isbn.self, on: req.eventLoop) {
-      try await Current.db.getIsbn(.init(rawValue: args.id))
+  func createIsbns(req: Req, args: AppSchema.CreateIsbnsArgs) throws -> Future<[Isbn]> {
+    try req.requirePermission(to: .mutateIsbns)
+    return future(of: [Isbn].self, on: req.eventLoop) {
+      try await Current.db.createIsbns(args.input.map(Isbn.init))
     }
   }
 
@@ -23,26 +38,17 @@ extension Resolver {
     }
   }
 
+  func updateIsbns(req: Req, args: AppSchema.UpdateIsbnsArgs) throws -> Future<[Isbn]> {
+    try req.requirePermission(to: .mutateIsbns)
+    return future(of: [Isbn].self, on: req.eventLoop) {
+      try await Current.db.updateIsbns(args.input.map(Isbn.init))
+    }
+  }
+
   func deleteIsbn(req: Req, args: IdentifyEntityArgs) throws -> Future<Isbn> {
     try req.requirePermission(to: .mutateIsbns)
     return future(of: Isbn.self, on: req.eventLoop) {
       try await Current.db.deleteIsbn(.init(rawValue: args.id))
     }
-  }
-}
-
-// below auto-generated
-
-extension Resolver {
-  func getIsbns(req: Req, args: NoArgs) throws -> Future<[Isbn]> {
-    throw Abort(.notImplemented, reason: "Resolver.getIsbns")
-  }
-
-  func createIsbns(req: Req, args: AppSchema.CreateIsbnsArgs) throws -> Future<[Isbn]> {
-    throw Abort(.notImplemented, reason: "Resolver.createIsbns")
-  }
-
-  func updateIsbns(req: Req, args: AppSchema.UpdateIsbnsArgs) throws -> Future<[Isbn]> {
-    throw Abort(.notImplemented, reason: "Resolver.updateIsbns")
   }
 }

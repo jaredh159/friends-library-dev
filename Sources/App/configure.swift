@@ -68,6 +68,7 @@ private func addMigrations(to app: Application) {
   app.migrations.add(CreateEditionChapters())
   app.migrations.add(CreateRelatedDocuments())
   app.migrations.add(AddTokenScopes())
+  app.migrations.add(CreateFriendResidenceDurations())
 
   if Env.get("SEED_DB") == "true" || app.environment == .testing {
     app.migrations.add(Seed())

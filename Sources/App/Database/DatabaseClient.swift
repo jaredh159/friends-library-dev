@@ -11,12 +11,26 @@ struct DatabaseClient {
   var getTokenScopes: (Token.Id) async throws -> [TokenScope]
 
   // orders
-  var deleteAllOrders: () async throws -> Void
-  var createOrderWithItems: (Order) async throws -> Order
   var getOrder: (Order.Id) async throws -> Order
+  var getOrders: () async throws -> [Order]
   var getOrdersByPrintJobStatus: (Order.PrintJobStatus) async throws -> [Order]
   var updateOrder: (Order) async throws -> Order
   var updateOrders: ([Order]) async throws -> [Order]
+  var createOrder: (Order) async throws -> Order
+  var createOrders: ([Order]) async throws -> [Order]
+  var createOrderWithItems: (Order) async throws -> Order
+  var deleteOrder: (Order.Id) async throws -> Order
+  var deleteAllOrders: () async throws -> Void
+
+  // order items
+  var createOrderItem: (OrderItem) async throws -> OrderItem
+  var createOrderItems: ([OrderItem]) async throws -> [OrderItem]
+  var getOrderItem: (OrderItem.Id) async throws -> OrderItem
+  var getOrderItems: () async throws -> [OrderItem]
+  var updateOrderItem: (OrderItem) async throws -> OrderItem
+  var updateOrderItems: ([OrderItem]) async throws -> [OrderItem]
+  var deleteOrderItem: (OrderItem.Id) async throws -> OrderItem
+  var deleteAllOrderItems: () async throws -> Void
 
   // free order requests
   var createFreeOrderRequest: (FreeOrderRequest) async throws -> FreeOrderRequest
@@ -24,7 +38,13 @@ struct DatabaseClient {
 
   // downloads
   var createDownload: (Download) async throws -> Download
+  var createDownloads: ([Download]) async throws -> [Download]
   var getDownload: (Download.Id) async throws -> Download
+  var getDownloads: () async throws -> [Download]
+  var updateDownload: (Download) async throws -> Download
+  var updateDownloads: ([Download]) async throws -> [Download]
+  var deleteDownload: (Download.Id) async throws -> Download
+  var deleteAllDownloads: () async throws -> Void
 
   // friends
   var createFriend: (Friend) async throws -> Friend
@@ -36,6 +56,42 @@ struct DatabaseClient {
   var deleteFriend: (Friend.Id) async throws -> Friend
   var deleteAllFriends: () async throws -> Void
 
+  // friend quotes
+  var createFriendQuote: (FriendQuote) async throws -> FriendQuote
+  var createFriendQuotes: ([FriendQuote]) async throws -> [FriendQuote]
+  var getFriendQuote: (FriendQuote.Id) async throws -> FriendQuote
+  var getFriendQuotes: () async throws -> [FriendQuote]
+  var updateFriendQuote: (FriendQuote) async throws -> FriendQuote
+  var updateFriendQuotes: ([FriendQuote]) async throws -> [FriendQuote]
+  var deleteFriendQuote: (FriendQuote.Id) async throws -> FriendQuote
+  var deleteAllFriendQuotes: () async throws -> Void
+
+  // friend residences
+  var createFriendResidence: (FriendResidence) async throws -> FriendResidence
+  var createFriendResidences: ([FriendResidence]) async throws -> [FriendResidence]
+  var getFriendResidence: (FriendResidence.Id) async throws -> FriendResidence
+  var getFriendResidences: () async throws -> [FriendResidence]
+  var updateFriendResidence: (FriendResidence) async throws -> FriendResidence
+  var updateFriendResidences: ([FriendResidence]) async throws -> [FriendResidence]
+  var deleteFriendResidence: (FriendResidence.Id) async throws -> FriendResidence
+  var deleteAllFriendResidences: () async throws -> Void
+
+  // friend residence durations
+  var createFriendResidenceDuration:
+    (FriendResidenceDuration) async throws -> FriendResidenceDuration
+  var createFriendResidenceDurations:
+    ([FriendResidenceDuration]) async throws -> [FriendResidenceDuration]
+  var getFriendResidenceDuration:
+    (FriendResidenceDuration.Id) async throws -> FriendResidenceDuration
+  var getFriendResidenceDurations: () async throws -> [FriendResidenceDuration]
+  var updateFriendResidenceDuration:
+    (FriendResidenceDuration) async throws -> FriendResidenceDuration
+  var updateFriendResidenceDurations:
+    ([FriendResidenceDuration]) async throws -> [FriendResidenceDuration]
+  var deleteFriendResidenceDuration:
+    (FriendResidenceDuration.Id) async throws -> FriendResidenceDuration
+  var deleteAllFriendResidenceDurations: () async throws -> Void
+
   // documents
   var createDocument: (Document) async throws -> Document
   var createDocuments: ([Document]) async throws -> [Document]
@@ -45,6 +101,16 @@ struct DatabaseClient {
   var updateDocuments: ([Document]) async throws -> [Document]
   var deleteDocument: (Document.Id) async throws -> Document
   var deleteAllDocuments: () async throws -> Void
+
+  // related documents
+  var createRelatedDocument: (RelatedDocument) async throws -> RelatedDocument
+  var createRelatedDocuments: ([RelatedDocument]) async throws -> [RelatedDocument]
+  var getRelatedDocument: (RelatedDocument.Id) async throws -> RelatedDocument
+  var getRelatedDocuments: () async throws -> [RelatedDocument]
+  var updateRelatedDocument: (RelatedDocument) async throws -> RelatedDocument
+  var updateRelatedDocuments: ([RelatedDocument]) async throws -> [RelatedDocument]
+  var deleteRelatedDocument: (RelatedDocument.Id) async throws -> RelatedDocument
+  var deleteAllRelatedDocuments: () async throws -> Void
 
   // editions
   var createEdition: (Edition) async throws -> Edition

@@ -127,10 +127,6 @@ export function modelTypeToGraphQLInputType(
       return `String${opt}`;
   }
 
-  if (model.dbEnums[type] || (model.name === `FriendResidence` && type === `Duration`)) {
-    return `${model.name}.${type}${opt}`;
-  }
-
   return `${type}${opt}`;
 }
 

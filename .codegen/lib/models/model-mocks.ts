@@ -115,10 +115,6 @@ function mapValue(name: string, type: string, model: Model, types: GlobalTypes):
       return `.string(${name}.rawValue)`;
   }
 
-  if (model.name === `FriendResidence` && type === `Duration`) {
-    return `.string(${name}.jsonString!)`;
-  }
-
   throw new Error(`Unhandled mapValue type: ${type} on ${model.name}.${name}`);
 }
 

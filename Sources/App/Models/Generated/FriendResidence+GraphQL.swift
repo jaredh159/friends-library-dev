@@ -9,9 +9,9 @@ extension AppSchema {
       Field("friendId", at: \.friendId.rawValue)
       Field("city", at: \.city)
       Field("region", at: \.region)
-      Field("duration", at: \.duration)
       Field("createdAt", at: \.createdAt)
       Field("updatedAt", at: \.updatedAt)
+      Field("durations", with: \.durations)
     }
   }
 
@@ -20,7 +20,6 @@ extension AppSchema {
     let friendId: UUID
     let city: String
     let region: String
-    let duration: FriendResidence.Duration?
   }
 
   struct UpdateFriendResidenceInput: Codable {
@@ -28,7 +27,6 @@ extension AppSchema {
     let friendId: UUID
     let city: String
     let region: String
-    let duration: FriendResidence.Duration?
   }
 
   struct CreateFriendResidenceArgs: Codable {
@@ -53,7 +51,6 @@ extension AppSchema {
       InputField("friendId", at: \.friendId)
       InputField("city", at: \.city)
       InputField("region", at: \.region)
-      InputField("duration", at: \.duration)
     }
   }
 
@@ -63,7 +60,6 @@ extension AppSchema {
       InputField("friendId", at: \.friendId)
       InputField("city", at: \.city)
       InputField("region", at: \.region)
-      InputField("duration", at: \.duration)
     }
   }
 
@@ -114,8 +110,7 @@ extension FriendResidence {
       id: .init(rawValue: input.id ?? UUID()),
       friendId: .init(rawValue: input.friendId),
       city: input.city,
-      region: input.region,
-      duration: input.duration
+      region: input.region
     )
   }
 
@@ -124,8 +119,7 @@ extension FriendResidence {
       id: .init(rawValue: input.id),
       friendId: .init(rawValue: input.friendId),
       city: input.city,
-      region: input.region,
-      duration: input.duration
+      region: input.region
     )
   }
 
@@ -133,7 +127,6 @@ extension FriendResidence {
     self.friendId = .init(rawValue: input.friendId)
     self.city = input.city
     self.region = input.region
-    self.duration = input.duration
     self.updatedAt = Current.date()
   }
 }

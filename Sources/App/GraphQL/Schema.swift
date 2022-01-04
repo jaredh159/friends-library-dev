@@ -48,6 +48,15 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.FriendType
   AppSchema.CreateFriendInputType
   AppSchema.UpdateFriendInputType
+  AppSchema.FriendQuoteType
+  AppSchema.CreateFriendQuoteInputType
+  AppSchema.UpdateFriendQuoteInputType
+  AppSchema.FriendResidenceType
+  AppSchema.CreateFriendResidenceInputType
+  AppSchema.UpdateFriendResidenceInputType
+  AppSchema.FriendResidenceDurationType
+  AppSchema.CreateFriendResidenceDurationInputType
+  AppSchema.UpdateFriendResidenceDurationInputType
 
   // document types
   AppSchema.DocumentType
@@ -79,6 +88,9 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
 
   Query {
     AppSchema.getFriend
+    AppSchema.getFriendQuote
+    AppSchema.getFriendResidence
+    AppSchema.getFriendResidenceDuration
     AppSchema.getDocument
     AppSchema.getEdition
     AppSchema.getEditionImpression
@@ -114,6 +126,15 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
     AppSchema.createFriend
     AppSchema.updateFriend
     AppSchema.deleteFriend
+    AppSchema.createFriendQuote
+    AppSchema.updateFriendQuote
+    AppSchema.deleteFriendQuote
+    AppSchema.createFriendResidence
+    AppSchema.updateFriendResidence
+    AppSchema.deleteFriendResidence
+    AppSchema.createFriendResidenceDuration
+    AppSchema.updateFriendResidenceDuration
+    AppSchema.deleteFriendResidenceDuration
 
     // document mutations
     AppSchema.createDocument

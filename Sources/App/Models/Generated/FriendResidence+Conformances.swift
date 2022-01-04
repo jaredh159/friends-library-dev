@@ -17,7 +17,6 @@ extension FriendResidence {
       Self[.friendId]: .uuid(friendId),
       Self[.city]: .string(city),
       Self[.region]: .string(region),
-      Self[.duration]: .json(duration?.jsonString),
       Self[.createdAt]: .currentTimestamp,
       Self[.updatedAt]: .currentTimestamp,
     ]
@@ -32,7 +31,6 @@ extension FriendResidence {
     case friendId
     case city
     case region
-    case duration
     case createdAt
     case updatedAt
   }

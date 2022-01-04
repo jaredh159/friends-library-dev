@@ -22,7 +22,6 @@ extension FriendResidence {
       "friendId": .string(friendId.rawValue.uuidString),
       "city": .string(city),
       "region": .string(region),
-      "duration": duration != nil ? .string(duration!.jsonString!) : .null,
     ])
     omitting.forEach { try? map.remove($0) }
     return map

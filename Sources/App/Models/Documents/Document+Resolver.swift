@@ -1,6 +1,21 @@
 import Vapor
 
+// below auto-generated
+
 extension Resolver {
+  func getDocument(req: Req, args: IdentifyEntityArgs) throws -> Future<Document> {
+    try req.requirePermission(to: .queryDocuments)
+    return future(of: Document.self, on: req.eventLoop) {
+      try await Current.db.getDocument(.init(rawValue: args.id))
+    }
+  }
+
+  func getDocuments(req: Req, args: NoArgs) throws -> Future<[Document]> {
+    try req.requirePermission(to: .queryDocuments)
+    return future(of: [Document].self, on: req.eventLoop) {
+      try await Current.db.getDocuments()
+    }
+  }
 
   func createDocument(req: Req, args: AppSchema.CreateDocumentArgs) throws -> Future<Document> {
     try req.requirePermission(to: .mutateDocuments)
@@ -9,10 +24,10 @@ extension Resolver {
     }
   }
 
-  func getDocument(req: Req, args: IdentifyEntityArgs) throws -> Future<Document> {
-    try req.requirePermission(to: .queryDocuments)
-    return future(of: Document.self, on: req.eventLoop) {
-      try await Current.db.getDocument(.init(rawValue: args.id))
+  func createDocuments(req: Req, args: AppSchema.CreateDocumentsArgs) throws -> Future<[Document]> {
+    try req.requirePermission(to: .mutateDocuments)
+    return future(of: [Document].self, on: req.eventLoop) {
+      try await Current.db.createDocuments(args.input.map(Document.init))
     }
   }
 
@@ -23,27 +38,17 @@ extension Resolver {
     }
   }
 
+  func updateDocuments(req: Req, args: AppSchema.UpdateDocumentsArgs) throws -> Future<[Document]> {
+    try req.requirePermission(to: .mutateDocuments)
+    return future(of: [Document].self, on: req.eventLoop) {
+      try await Current.db.updateDocuments(args.input.map(Document.init))
+    }
+  }
+
   func deleteDocument(req: Req, args: IdentifyEntityArgs) throws -> Future<Document> {
     try req.requirePermission(to: .mutateDocuments)
     return future(of: Document.self, on: req.eventLoop) {
       try await Current.db.deleteDocument(.init(rawValue: args.id))
     }
-  }
-}
-
-// below auto-generated
-
-extension Resolver {
-
-  func getDocuments(req: Req, args: NoArgs) throws -> Future<[Document]> {
-    throw Abort(.notImplemented, reason: "Resolver.getDocuments")
-  }
-
-  func createDocuments(req: Req, args: AppSchema.CreateDocumentsArgs) throws -> Future<[Document]> {
-    throw Abort(.notImplemented, reason: "Resolver.createDocuments")
-  }
-
-  func updateDocuments(req: Req, args: AppSchema.UpdateDocumentsArgs) throws -> Future<[Document]> {
-    throw Abort(.notImplemented, reason: "Resolver.updateDocuments")
   }
 }
