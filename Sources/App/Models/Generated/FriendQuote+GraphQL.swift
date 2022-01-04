@@ -12,6 +12,7 @@ extension AppSchema {
       Field("context", at: \.context)
       Field("createdAt", at: \.createdAt)
       Field("updatedAt", at: \.updatedAt)
+      Field("friend", with: \.friend)
     }
   }
 

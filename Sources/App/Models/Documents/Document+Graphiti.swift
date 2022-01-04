@@ -24,6 +24,25 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
 extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: Document {
   convenience init(
     _ name: FieldKey,
+    with keyPath: ToParent<Friend>
+  ) where FieldType == TypeRef<Friend> {
+    self.init(
+      name.description,
+      at: resolveParent { (document) async throws -> Friend in
+        switch document.friend {
+          case .notLoaded:
+            return try await Current.db.getFriend(document.friendId)
+          case let .loaded(friend):
+            return friend
+        }
+      },
+      as: TypeReference<Friend>.self)
+  }
+}
+
+extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: Document {
+  convenience init(
+    _ name: FieldKey,
     with keyPath: ToOptionalParent<Document>
   ) where FieldType == TypeRef<Document>? {
     self.init(
@@ -31,8 +50,8 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
       at: resolveOptionalParent { (document) async throws -> Document? in
         switch document.altLanguageDocument {
           case .notLoaded:
-            // guard let altLanguageDocumentId = document.altLanguageId else { return nil }
-            fatalError("not implemented")
+            guard let altLanguageDocumentId = document.altLanguageId else { return nil }
+            return try await Current.db.getDocument(altLanguageDocumentId)
           case let .loaded(altLanguageDocument):
             return altLanguageDocument
         }

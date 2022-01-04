@@ -9,6 +9,10 @@ function main() {
     ([, { relationType }]) => relationType === `Children`,
   );
 
+  let parents = Object.entries(model.relations).filter(
+    ([, { relationType }]) => relationType === `Parent`,
+  );
+
   let optionalParents = Object.entries(model.relations).filter(
     ([, { relationType }]) => relationType === `OptionalParent`,
   );
@@ -19,6 +23,16 @@ function main() {
       .replace(/thing/g, model.camelCaseName)
       .replace(/Thing/g, model.name)
       .replace(/thingChildren/g, name);
+    extensions.push(extension);
+  }
+
+  for (const [name, { type }] of parents) {
+    let extension = PARENT_PATTERN.replace(/ThingParent/g, type)
+      .replace(/thing\.parent/g, `${model.camelCaseName}.${name}`)
+      .replace(/Thing/g, model.name)
+      .replace(/thingParentId/g, `${name}Id`)
+      .replace(/parent/g, name)
+      .replace(/thing/g, model.camelCaseName);
     extensions.push(extension);
   }
 
@@ -86,6 +100,27 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
         }
       },
       as: TypeReference<ThingParent>?.self)
+  }
+}
+`;
+
+const PARENT_PATTERN = /* swift */ `
+extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: Thing {
+  convenience init(
+    _ name: FieldKey,
+    with keyPath: ToParent<ThingParent>
+  ) where FieldType == TypeRef<ThingParent> {
+    self.init(
+      name.description,
+      at: resolveParent { (thing) async throws -> ThingParent in
+        switch thing.parent {
+          case .notLoaded:
+            fatalError("Thing -> Parent<ThingParent> not implemented")
+          case let .loaded(parent):
+            return parent
+        }
+      },
+      as: TypeReference<ThingParent>.self)
   }
 }
 `;

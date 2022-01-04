@@ -14,6 +14,7 @@ extension AppSchema {
       Field("publishedRevision", at: \.publishedRevision.rawValue)
       Field("productionToolchainRevision", at: \.productionToolchainRevision.rawValue)
       Field("createdAt", at: \.createdAt)
+      Field("edition", with: \.edition)
     }
   }
 

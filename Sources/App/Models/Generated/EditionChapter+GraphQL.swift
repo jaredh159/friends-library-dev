@@ -15,6 +15,7 @@ extension AppSchema {
       Field("nonSequenceTitle", at: \.nonSequenceTitle)
       Field("createdAt", at: \.createdAt)
       Field("updatedAt", at: \.updatedAt)
+      Field("edition", with: \.edition)
     }
   }
 

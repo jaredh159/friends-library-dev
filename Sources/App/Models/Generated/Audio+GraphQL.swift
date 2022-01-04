@@ -17,6 +17,7 @@ extension AppSchema {
       Field("externalPlaylistIdLq", at: \.externalPlaylistIdLq?.rawValue)
       Field("createdAt", at: \.createdAt)
       Field("updatedAt", at: \.updatedAt)
+      Field("edition", with: \.edition)
     }
   }
 

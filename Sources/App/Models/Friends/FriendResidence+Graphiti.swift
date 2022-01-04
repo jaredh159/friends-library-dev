@@ -2,7 +2,6 @@ import Fluent
 import Graphiti
 import Vapor
 
-
 extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: FriendResidence {
   convenience init(
     _ name: FieldKey,
@@ -22,3 +21,21 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
   }
 }
 
+extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: FriendResidence {
+  convenience init(
+    _ name: FieldKey,
+    with keyPath: ToParent<Friend>
+  ) where FieldType == TypeRef<Friend> {
+    self.init(
+      name.description,
+      at: resolveParent { (friendResidence) async throws -> Friend in
+        switch friendResidence.friend {
+          case .notLoaded:
+            fatalError("FriendResidence -> Parent<Friend> not implemented")
+          case let .loaded(friend):
+            return friend
+        }
+      },
+      as: TypeReference<Friend>.self)
+  }
+}

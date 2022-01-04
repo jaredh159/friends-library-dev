@@ -7,7 +7,7 @@ extension FriendResidenceDuration: AppModel {
 }
 
 extension FriendResidenceDuration: DuetModel {
-  static let tableName = "friend_residence_durations"
+  static let tableName = M25.tableName
 }
 
 extension FriendResidenceDuration {

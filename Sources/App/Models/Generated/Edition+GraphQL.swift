@@ -15,6 +15,7 @@ extension AppSchema {
       Field("paperbackOverrideSize", at: \.paperbackOverrideSize)
       Field("createdAt", at: \.createdAt)
       Field("updatedAt", at: \.updatedAt)
+      Field("document", with: \.document)
     }
   }
 

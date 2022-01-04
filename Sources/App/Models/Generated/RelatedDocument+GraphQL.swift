@@ -11,6 +11,8 @@ extension AppSchema {
       Field("parentDocumentId", at: \.parentDocumentId.rawValue)
       Field("createdAt", at: \.createdAt)
       Field("updatedAt", at: \.updatedAt)
+      Field("document", with: \.document)
+      Field("parentDocument", with: \.parentDocument)
     }
   }
 

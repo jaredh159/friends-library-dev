@@ -9,6 +9,7 @@ extension AppSchema {
       Field("scope", at: \.scope)
       Field("tokenId", at: \.tokenId.rawValue)
       Field("createdAt", at: \.createdAt)
+      Field("token", with: \.token)
     }
   }
 

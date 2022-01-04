@@ -36,16 +36,16 @@ final class FriendResolverTests: AppTestCase {
           id
           documents {
             documentId: id
-            #friend {
-              #friendId: id
-            #}
+            friend {
+              friendId: id
+            }
           }
         }
       }
       """,
       expectedData: .containsKVPs([
         "id": friend.id.uuidString,
-        // "friendId": friend.id.uuidString,
+        "friendId": friend.id.uuidString,
         "documentId": document.id.uuidString,
       ]),
       headers: [.authorization: "Bearer (Seeded.tokens.allScopes)"]

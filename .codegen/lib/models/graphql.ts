@@ -85,7 +85,7 @@ export function schemaTypeFieldParts(
     .map(({ name, type }) => [name, `at`, keyPath(name, type, model, types)]);
 
   for (const [name, { relationType }] of Object.entries(model.relations)) {
-    if ([`Children`, `OptionalParent`].includes(relationType)) {
+    if ([`Children`, `OptionalParent`, `Parent`].includes(relationType)) {
       parts.push([name, `with`, `\\.${name}`]);
     }
   }
@@ -125,6 +125,10 @@ export function modelTypeToGraphQLInputType(
       return `[Int]${opt}`;
     case `Date`:
       return `String${opt}`;
+  }
+
+  if (model.dbEnums[type]) {
+    return `${model.name}.${type}${opt}`;
   }
 
   return `${type}${opt}`;
