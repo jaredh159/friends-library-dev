@@ -23,8 +23,7 @@ final class EditionImpressionResolverTests: AppTestCase {
   }
 
   func testGetEditionImpression() async throws {
-    let editionImpression = EditionImpression.random
-    try await Current.db.createEditionImpression(editionImpression)
+    let editionImpression = try await Current.db.createEditionImpression(.random)
 
     GraphQLTest(
       """
@@ -40,8 +39,7 @@ final class EditionImpressionResolverTests: AppTestCase {
   }
 
   func testUpdateEditionImpression() async throws {
-    let editionImpression = EditionImpression.random
-    try await Current.db.createEditionImpression(editionImpression)
+    let editionImpression = try await Current.db.createEditionImpression(.random)
 
     // do some updates here ---vvv
     editionImpression.adocLength = 333
@@ -60,8 +58,7 @@ final class EditionImpressionResolverTests: AppTestCase {
   }
 
   func testDeleteEditionImpression() async throws {
-    let editionImpression = EditionImpression.random
-    try await Current.db.createEditionImpression(editionImpression)
+    let editionImpression = try await Current.db.createEditionImpression(.random)
 
     GraphQLTest(
       """

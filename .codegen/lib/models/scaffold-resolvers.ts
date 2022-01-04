@@ -15,7 +15,7 @@ extension Resolver {
   ) throws -> Future<Thing> {
     try req.requirePermission(to: .queryThings)
     return future(of: Thing.self, on: req.eventLoop) {
-      try await Current.db.getThing(Thing(args.input))
+      try await Current.db.getThing(.init(rawValue: args.id))
     }
   }
 

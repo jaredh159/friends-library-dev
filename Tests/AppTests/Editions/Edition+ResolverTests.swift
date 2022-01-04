@@ -23,8 +23,7 @@ final class EditionResolverTests: AppTestCase {
   }
 
   func testGetEdition() async throws {
-    let edition = Edition.random
-    try await Current.db.createEdition(edition)
+    let edition = try await Current.db.createEdition(.random)
 
     GraphQLTest(
       """
@@ -40,8 +39,7 @@ final class EditionResolverTests: AppTestCase {
   }
 
   func testUpdateEdition() async throws {
-    let edition = Edition.random
-    try await Current.db.createEdition(edition)
+    let edition = try await Current.db.createEdition(.random)
 
     // do some updates here ---vvv
     edition.editor = "new value"
@@ -60,8 +58,7 @@ final class EditionResolverTests: AppTestCase {
   }
 
   func testDeleteEdition() async throws {
-    let edition = Edition.random
-    try await Current.db.createEdition(edition)
+    let edition = try await Current.db.createEdition(.random)
 
     GraphQLTest(
       """

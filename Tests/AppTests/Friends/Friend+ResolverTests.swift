@@ -23,8 +23,7 @@ final class FriendResolverTests: AppTestCase {
   }
 
   func testGetFriend() async throws {
-    let friend = Friend.random
-    try await Current.db.createFriend(friend)
+    let friend = try await Current.db.createFriend(.random)
 
     GraphQLTest(
       """
@@ -40,8 +39,7 @@ final class FriendResolverTests: AppTestCase {
   }
 
   func testUpdateFriend() async throws {
-    let friend = Friend.random
-    try await Current.db.createFriend(friend)
+    let friend = try await Current.db.createFriend(.random)
 
     // do some updates here ---vvv
     friend.name = "Bob"
@@ -60,8 +58,7 @@ final class FriendResolverTests: AppTestCase {
   }
 
   func testDeleteFriend() async throws {
-    let friend = Friend.random
-    try await Current.db.createFriend(friend)
+    let friend = try await Current.db.createFriend(.random)
 
     GraphQLTest(
       """

@@ -27,7 +27,7 @@ struct CreateTags: AsyncMigration {
       DocumentTagModel(id: .init(rawValue: tag.id), slug: tag)
     }
 
-    try await Current.db.createDocumentTagModels(models)
+    _ = try await Current.db.createDocumentTagModels(models)
   }
 
   func revert(on database: Database) async throws {

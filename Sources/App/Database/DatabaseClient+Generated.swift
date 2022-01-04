@@ -13,6 +13,7 @@ extension DatabaseClient {
     EditionRepository(db: db).assign(client: &client)
     DocumentRepository(db: db).assign(client: &client)
     DownloadRepository(db: db).assign(client: &client)
+    AudioPartRepository(db: db).assign(client: &client)
     EditionChapterRepository(db: db).assign(client: &client)
     DocumentTagModelRepository(db: db).assign(client: &client)
     FreeOrderRequestRepository(db: db).assign(client: &client)
@@ -32,6 +33,7 @@ extension DatabaseClient {
     MockEditionRepository(db: mockDb).assign(client: &client)
     MockDocumentRepository(db: mockDb).assign(client: &client)
     MockDownloadRepository(db: mockDb).assign(client: &client)
+    MockAudioPartRepository(db: mockDb).assign(client: &client)
     MockEditionChapterRepository(db: mockDb).assign(client: &client)
     MockDocumentTagModelRepository(db: mockDb).assign(client: &client)
     MockFreeOrderRequestRepository(db: mockDb).assign(client: &client)
@@ -226,6 +228,30 @@ extension DatabaseClient {
     },
     deleteAllAudios: {
       throw Abort(.notImplemented, reason: "db.deleteAllAudios")
+    },
+    createAudioPart: { _ in
+      throw Abort(.notImplemented, reason: "db.createAudioPart")
+    },
+    createAudioParts: { _ in
+      throw Abort(.notImplemented, reason: "db.createAudioParts")
+    },
+    getAudioPart: { _ in
+      throw Abort(.notImplemented, reason: "db.getAudioPart")
+    },
+    getAudioParts: {
+      throw Abort(.notImplemented, reason: "db.getAudioParts")
+    },
+    updateAudioPart: { _ in
+      throw Abort(.notImplemented, reason: "db.updateAudioPart")
+    },
+    updateAudioParts: { _ in
+      throw Abort(.notImplemented, reason: "db.updateAudioParts")
+    },
+    deleteAudioPart: { _ in
+      throw Abort(.notImplemented, reason: "db.deleteAudioPart")
+    },
+    deleteAllAudioParts: {
+      throw Abort(.notImplemented, reason: "db.deleteAllAudioParts")
     },
     createIsbn: { _ in
       throw Abort(.notImplemented, reason: "db.createIsbn")

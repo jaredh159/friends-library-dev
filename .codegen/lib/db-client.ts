@@ -31,11 +31,17 @@ export function extractClientProps(files: File[]): DbClientProps {
 function parseClientInner(lines: string[]): DbClientProps {
   const props: DbClientProps = [];
   while (lines.length) {
-    const line = lines.shift()!;
+    let line = lines.shift()!;
     if (line === `}`) {
       return props;
     }
-    const match = line.match(/  var ([^ :]+): \(([^)]*)\)/);
+
+    // handle long declarations where swift-format breaks to two lines
+    if (line.match(/  var ([^ :]+):$/)) {
+      line += lines.shift()!;
+    }
+
+    const match = line.match(/  var ([^ :]+):\s+\(([^)]*)\)/);
     if (!match) {
       continue;
     }

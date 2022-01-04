@@ -86,6 +86,16 @@ struct DatabaseClient {
   var deleteAudio: (Audio.Id) async throws -> Audio
   var deleteAllAudios: () async throws -> Void
 
+  // audio parts
+  var createAudioPart: (AudioPart) async throws -> AudioPart
+  var createAudioParts: ([AudioPart]) async throws -> [AudioPart]
+  var getAudioPart: (AudioPart.Id) async throws -> AudioPart
+  var getAudioParts: () async throws -> [AudioPart]
+  var updateAudioPart: (AudioPart) async throws -> AudioPart
+  var updateAudioParts: ([AudioPart]) async throws -> [AudioPart]
+  var deleteAudioPart: (AudioPart.Id) async throws -> AudioPart
+  var deleteAllAudioParts: () async throws -> Void
+
   // isbns
   var createIsbn: (Isbn) async throws -> Isbn
   var createIsbns: ([Isbn]) async throws -> [Isbn]

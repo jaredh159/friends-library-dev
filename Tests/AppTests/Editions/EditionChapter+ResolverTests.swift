@@ -23,8 +23,7 @@ final class EditionChapterResolverTests: AppTestCase {
   }
 
   func testGetEditionChapter() async throws {
-    let editionChapter = EditionChapter.random
-    try await Current.db.createEditionChapter(editionChapter)
+    let editionChapter = try await Current.db.createEditionChapter(.random)
 
     GraphQLTest(
       """
@@ -40,8 +39,7 @@ final class EditionChapterResolverTests: AppTestCase {
   }
 
   func testUpdateEditionChapter() async throws {
-    let editionChapter = EditionChapter.random
-    try await Current.db.createEditionChapter(editionChapter)
+    let editionChapter = try await Current.db.createEditionChapter(.random)
 
     // do some updates here ---vvv
     editionChapter.shortHeading = "new value"
@@ -60,8 +58,7 @@ final class EditionChapterResolverTests: AppTestCase {
   }
 
   func testDeleteEditionChapter() async throws {
-    let editionChapter = EditionChapter.random
-    try await Current.db.createEditionChapter(editionChapter)
+    let editionChapter = try await Current.db.createEditionChapter(.random)
 
     GraphQLTest(
       """
