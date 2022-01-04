@@ -4,12 +4,12 @@
 - [ ] - hook up relations for all models (augmenting resolver tests)
 - [ ] - write yaml import migration after all new migrations (shells out...)
 - [ ] - add foreign key migration to connect Download/OrderItem FK's AND Order->EditionId
-- [ ] - handle soft deletes (query, delete)
 
 - [ ] - ANOTHER_TODO
 
 ## done...
 
+- [√] - handle soft deletes (query, delete)
 - [√] - generate throwing db and client extensions
 - [√] - rename migrations numbers
 - [√] - generate edition id map (from ts/cli land)

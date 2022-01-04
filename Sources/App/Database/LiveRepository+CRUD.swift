@@ -34,12 +34,23 @@ extension LiveRepository {
   // READ
 
   func find(_ id: Model.IdValue) async throws -> Model {
+    try await _find(id)
+  }
+
+  func select(
+    _ columns: Postgres.Columns = .all,
+    where: SQL.WhereConstraint? = nil
+  ) async throws -> [Model] {
+    try await _select(columns, where: `where`)
+  }
+
+  private func _find(_ id: Model.IdValue) async throws -> Model {
     let prepared = SQL.select(.all, from: Model.tableName, where: ("id", .equals, .uuid(id)))
     let rows = try await SQL.execute(prepared, on: db).all()
     return try rows.compactMap { try $0.decode(Model.self) }.firstOrThrowNotFound()
   }
 
-  func select(
+  private func _select(
     _ columns: Postgres.Columns = .all,
     where: SQL.WhereConstraint? = nil
   ) async throws -> [Model] {
@@ -89,11 +100,66 @@ extension LiveRepository {
 
   @discardableResult
   func delete(_ id: Model.IdValue) async throws -> Model {
-    // let model = try await find(id)
-    fatalError("LiveRepository+CRUD.delete() not implemented")
+    try await _delete(id)
   }
 
   func deleteAll() async throws {
+    try await _deleteAll()
+  }
+
+  private func _delete(_ id: Model.IdValue) async throws -> Model {
+    let model = try await find(id)
+    _ = try await db.raw("DELETE FROM \(table: Model.self) WHERE id = '\(raw: id.uuidString)'")
+      .all()
+      .get()
+    return model
+  }
+
+  private func _deleteAll() async throws {
     _ = try await db.raw("DELETE FROM \(table: Model.self)").all().get()
+  }
+
+}
+
+extension LiveRepository where Model: SoftDeletable {
+  @discardableResult
+  func delete(_ id: Model.IdValue, force: Bool = false) async throws -> Model {
+    let model = try await find(id)
+
+    if force {
+      return try await _delete(id)
+    }
+
+    let prepared = SQL.update(
+      Model.tableName,
+      set: ["deleted_at": .currentTimestamp],
+      where: ("id", .equals, .id(model)),
+      returning: .all
+    )
+    _ = try await SQL.execute(prepared, on: db).all()
+    return model
+  }
+
+  func deleteAll(force: Bool = false) async throws {
+    if force {
+      return try await _deleteAll()
+    }
+
+    let prepared = SQL.update(Model.tableName, set: ["deleted_at": .currentTimestamp])
+    _ = try await SQL.execute(prepared, on: db).all()
+  }
+
+  func find(_ id: Model.IdValue) async throws -> Model {
+    let model = try await _find(id)
+    guard model.deletedAt == nil else { throw DbError.notFound }
+    return model
+  }
+
+  func select(
+    _ columns: Postgres.Columns = .all,
+    where: SQL.WhereConstraint? = nil
+  ) async throws -> [Model] {
+    try await _select(columns, where: `where`)
+      .filter { $0.deletedAt == nil }
   }
 }
