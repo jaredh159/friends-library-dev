@@ -12,7 +12,7 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
       at: resolveChildren { (friend) async throws -> [Document] in
         switch friend.documents {
           case .notLoaded:
-            fatalError("not implemented")
+            return try await Current.db.getFriendDocuments(friend.id)
           case let .loaded(friendChildren):
             return friendChildren
         }

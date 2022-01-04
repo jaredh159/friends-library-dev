@@ -51,6 +51,7 @@ struct DatabaseClient {
   var createFriends: ([Friend]) async throws -> [Friend]
   var getFriend: (Friend.Id) async throws -> Friend
   var getFriends: () async throws -> [Friend]
+  var getFriendDocuments: (Friend.Id) async throws -> [Document]
   var updateFriend: (Friend) async throws -> Friend
   var updateFriends: ([Friend]) async throws -> [Friend]
   var deleteFriend: (Friend.Id) async throws -> Friend

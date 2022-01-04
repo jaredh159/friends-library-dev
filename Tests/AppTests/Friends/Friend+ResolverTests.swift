@@ -24,16 +24,30 @@ final class FriendResolverTests: AppTestCase {
 
   func testGetFriend() async throws {
     let friend = try await Current.db.createFriend(.random)
+    let document: Document = .random
+    document.altLanguageId = nil
+    document.friendId = friend.id
+    _ = try await Current.db.createDocument(document)
 
     GraphQLTest(
       """
       query GetFriend {
         friend: getFriend(id: "\(friend.id.uuidString)") {
           id
+          documents {
+            documentId: id
+            #friend {
+              #friendId: id
+            #}
+          }
         }
       }
       """,
-      expectedData: .containsKVPs(["id": friend.id.uuidString]),
+      expectedData: .containsKVPs([
+        "id": friend.id.uuidString,
+        // "friendId": friend.id.uuidString,
+        "documentId": document.id.uuidString,
+      ]),
       headers: [.authorization: "Bearer (Seeded.tokens.allScopes)"]
     ).run(Self.app)
   }

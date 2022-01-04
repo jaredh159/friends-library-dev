@@ -37,6 +37,12 @@ extension LiveRepository {
     try await _find(id)
   }
 
+  func findChildren<Child: DuetModel>(_ id: Model.IdValue, fk: String) async throws -> [Child] {
+    let prepared = SQL.select(.all, from: Child.tableName, where: (fk, .equals, .uuid(id)))
+    let rows = try await SQL.execute(prepared, on: db).all()
+    return try rows.compactMap { try $0.decode(Child.self) }
+  }
+
   func select(
     _ columns: Postgres.Columns = .all,
     where: SQL.WhereConstraint? = nil

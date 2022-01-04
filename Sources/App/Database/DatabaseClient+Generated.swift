@@ -157,6 +157,9 @@ extension DatabaseClient {
     getFriends: {
       throw Abort(.notImplemented, reason: "db.getFriends")
     },
+    getFriendDocuments: { _ in
+      throw Abort(.notImplemented, reason: "db.getFriendDocuments")
+    },
     updateFriend: { _ in
       throw Abort(.notImplemented, reason: "db.updateFriend")
     },
