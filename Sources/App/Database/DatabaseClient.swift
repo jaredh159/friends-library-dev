@@ -8,7 +8,7 @@ struct DatabaseClient {
   var createToken: (Token) async throws -> Token
   var getTokenByValue: (Token.Value) async throws -> Token
   var createTokenScope: (TokenScope) async throws -> TokenScope
-  var getTokenScopes: (Token.Id) async throws -> [TokenScope]
+  var getTokenTokenScopes: (Token.Id) async throws -> [TokenScope]
 
   // orders
   var getOrder: (Order.Id) async throws -> Order
@@ -30,7 +30,6 @@ struct DatabaseClient {
   var updateOrderItem: (OrderItem) async throws -> OrderItem
   var updateOrderItems: ([OrderItem]) async throws -> [OrderItem]
   var deleteOrderItem: (OrderItem.Id) async throws -> OrderItem
-  var deleteAllOrderItems: () async throws -> Void
 
   // free order requests
   var createFreeOrderRequest: (FreeOrderRequest) async throws -> FreeOrderRequest

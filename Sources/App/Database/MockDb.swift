@@ -11,6 +11,7 @@ final class MockDb {
   var editionChapters: [EditionChapter.Id: EditionChapter] = [:]
   var editionImpressions: [EditionImpression.Id: EditionImpression] = [:]
   var documents: [Document.Id: Document] = [:]
+  var relatedDocuments: [RelatedDocument.Id: RelatedDocument] = [:]
   var tokenScopes: [TokenScope.Id: TokenScope] = [:]
   var orders: [Order.Id: Order] = [:]
   var freeOrderRequests: [FreeOrderRequest.Id: FreeOrderRequest] = [:]

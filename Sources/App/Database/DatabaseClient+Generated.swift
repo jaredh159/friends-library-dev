@@ -5,46 +5,342 @@ import Vapor
 extension DatabaseClient {
   static func live(db: SQLDatabase) -> DatabaseClient {
     var client: DatabaseClient = .notImplemented
-    IsbnRepository(db: db).assign(client: &client)
-    AudioRepository(db: db).assign(client: &client)
-    OrderRepository(db: db).assign(client: &client)
-    TokenRepository(db: db).assign(client: &client)
-    FriendRepository(db: db).assign(client: &client)
-    EditionRepository(db: db).assign(client: &client)
-    DocumentRepository(db: db).assign(client: &client)
-    DownloadRepository(db: db).assign(client: &client)
-    AudioPartRepository(db: db).assign(client: &client)
-    FriendQuoteRepository(db: db).assign(client: &client)
-    EditionChapterRepository(db: db).assign(client: &client)
-    FriendResidenceRepository(db: db).assign(client: &client)
-    DocumentTagModelRepository(db: db).assign(client: &client)
-    FreeOrderRequestRepository(db: db).assign(client: &client)
-    EditionImpressionRepository(db: db).assign(client: &client)
-    FriendResidenceDurationRepository(db: db).assign(client: &client)
-    ArtifactProductionVersionRepository(db: db).assign(client: &client)
+    let artifactProductionVersions = Repository<ArtifactProductionVersion>(db: db)
+    let audios = Repository<Audio>(db: db)
+    let audioParts = Repository<AudioPart>(db: db)
+    let documents = Repository<Document>(db: db)
+    let documentTagModels = Repository<DocumentTagModel>(db: db)
+    let relatedDocuments = Repository<RelatedDocument>(db: db)
+    let downloads = Repository<Download>(db: db)
+    let editions = Repository<Edition>(db: db)
+    let editionChapters = Repository<EditionChapter>(db: db)
+    let editionImpressions = Repository<EditionImpression>(db: db)
+    let friends = Repository<Friend>(db: db)
+    let friendQuotes = Repository<FriendQuote>(db: db)
+    let friendResidences = Repository<FriendResidence>(db: db)
+    let friendResidenceDurations = Repository<FriendResidenceDuration>(db: db)
+    let isbns = Repository<Isbn>(db: db)
+    let freeOrderRequests = Repository<FreeOrderRequest>(db: db)
+    let orders = Repository<Order>(db: db)
+    let orderItems = Repository<OrderItem>(db: db)
+    let tokens = Repository<Token>(db: db)
+    let tokenScopes = Repository<TokenScope>(db: db)
+    client.createToken = { try await tokens.create($0) }
+    client.createTokenScope = { try await tokenScopes.create($0) }
+    client.getOrder = { try await orders.find($0) }
+    client.getOrders = { try await orders.findAll() }
+    client.updateOrder = { try await orders.update($0) }
+    client.updateOrders = { try await orders.update($0) }
+    client.createOrder = { try await orders.create($0) }
+    client.createOrders = { try await orders.create($0) }
+    client.deleteOrder = { try await orders.delete($0) }
+    client.deleteAllOrders = { try await orders.deleteAll() }
+    client.createOrderItem = { try await orderItems.create($0) }
+    client.createOrderItems = { try await orderItems.create($0) }
+    client.getOrderItem = { try await orderItems.find($0) }
+    client.getOrderItems = { try await orderItems.findAll() }
+    client.updateOrderItem = { try await orderItems.update($0) }
+    client.updateOrderItems = { try await orderItems.update($0) }
+    client.deleteOrderItem = { try await orderItems.delete($0) }
+    client.createFreeOrderRequest = { try await freeOrderRequests.create($0) }
+    client.getFreeOrderRequest = { try await freeOrderRequests.find($0) }
+    client.createDownload = { try await downloads.create($0) }
+    client.createDownloads = { try await downloads.create($0) }
+    client.getDownload = { try await downloads.find($0) }
+    client.getDownloads = { try await downloads.findAll() }
+    client.updateDownload = { try await downloads.update($0) }
+    client.updateDownloads = { try await downloads.update($0) }
+    client.deleteDownload = { try await downloads.delete($0) }
+    client.deleteAllDownloads = { try await downloads.deleteAll() }
+    client.createFriend = { try await friends.create($0) }
+    client.createFriends = { try await friends.create($0) }
+    client.getFriend = { try await friends.find($0) }
+    client.getFriends = { try await friends.findAll() }
+    client.updateFriend = { try await friends.update($0) }
+    client.updateFriends = { try await friends.update($0) }
+    client.deleteFriend = { try await friends.delete($0) }
+    client.deleteAllFriends = { try await friends.deleteAll() }
+    client.createFriendQuote = { try await friendQuotes.create($0) }
+    client.createFriendQuotes = { try await friendQuotes.create($0) }
+    client.getFriendQuote = { try await friendQuotes.find($0) }
+    client.getFriendQuotes = { try await friendQuotes.findAll() }
+    client.updateFriendQuote = { try await friendQuotes.update($0) }
+    client.updateFriendQuotes = { try await friendQuotes.update($0) }
+    client.deleteFriendQuote = { try await friendQuotes.delete($0) }
+    client.deleteAllFriendQuotes = { try await friendQuotes.deleteAll() }
+    client.createFriendResidence = { try await friendResidences.create($0) }
+    client.createFriendResidences = { try await friendResidences.create($0) }
+    client.getFriendResidence = { try await friendResidences.find($0) }
+    client.getFriendResidences = { try await friendResidences.findAll() }
+    client.updateFriendResidence = { try await friendResidences.update($0) }
+    client.updateFriendResidences = { try await friendResidences.update($0) }
+    client.deleteFriendResidence = { try await friendResidences.delete($0) }
+    client.deleteAllFriendResidences = { try await friendResidences.deleteAll() }
+    client.createFriendResidenceDuration = { try await friendResidenceDurations.create($0) }
+    client.createFriendResidenceDurations = { try await friendResidenceDurations.create($0) }
+    client.getFriendResidenceDuration = { try await friendResidenceDurations.find($0) }
+    client.getFriendResidenceDurations = { try await friendResidenceDurations.findAll() }
+    client.updateFriendResidenceDuration = { try await friendResidenceDurations.update($0) }
+    client.updateFriendResidenceDurations = { try await friendResidenceDurations.update($0) }
+    client.deleteFriendResidenceDuration = { try await friendResidenceDurations.delete($0) }
+    client.deleteAllFriendResidenceDurations = { try await friendResidenceDurations.deleteAll() }
+    client.createDocument = { try await documents.create($0) }
+    client.createDocuments = { try await documents.create($0) }
+    client.getDocument = { try await documents.find($0) }
+    client.getDocuments = { try await documents.findAll() }
+    client.updateDocument = { try await documents.update($0) }
+    client.updateDocuments = { try await documents.update($0) }
+    client.deleteDocument = { try await documents.delete($0) }
+    client.deleteAllDocuments = { try await documents.deleteAll() }
+    client.createRelatedDocument = { try await relatedDocuments.create($0) }
+    client.createRelatedDocuments = { try await relatedDocuments.create($0) }
+    client.getRelatedDocument = { try await relatedDocuments.find($0) }
+    client.getRelatedDocuments = { try await relatedDocuments.findAll() }
+    client.updateRelatedDocument = { try await relatedDocuments.update($0) }
+    client.updateRelatedDocuments = { try await relatedDocuments.update($0) }
+    client.deleteRelatedDocument = { try await relatedDocuments.delete($0) }
+    client.deleteAllRelatedDocuments = { try await relatedDocuments.deleteAll() }
+    client.createEdition = { try await editions.create($0) }
+    client.createEditions = { try await editions.create($0) }
+    client.getEdition = { try await editions.find($0) }
+    client.getEditions = { try await editions.findAll() }
+    client.updateEdition = { try await editions.update($0) }
+    client.updateEditions = { try await editions.update($0) }
+    client.deleteEdition = { try await editions.delete($0) }
+    client.deleteAllEditions = { try await editions.deleteAll() }
+    client.createEditionImpression = { try await editionImpressions.create($0) }
+    client.createEditionImpressions = { try await editionImpressions.create($0) }
+    client.getEditionImpression = { try await editionImpressions.find($0) }
+    client.getEditionImpressions = { try await editionImpressions.findAll() }
+    client.updateEditionImpression = { try await editionImpressions.update($0) }
+    client.updateEditionImpressions = { try await editionImpressions.update($0) }
+    client.deleteEditionImpression = { try await editionImpressions.delete($0) }
+    client.deleteAllEditionImpressions = { try await editionImpressions.deleteAll() }
+    client.createEditionChapter = { try await editionChapters.create($0) }
+    client.createEditionChapters = { try await editionChapters.create($0) }
+    client.getEditionChapter = { try await editionChapters.find($0) }
+    client.getEditionChapters = { try await editionChapters.findAll() }
+    client.updateEditionChapter = { try await editionChapters.update($0) }
+    client.updateEditionChapters = { try await editionChapters.update($0) }
+    client.deleteEditionChapter = { try await editionChapters.delete($0) }
+    client.deleteAllEditionChapters = { try await editionChapters.deleteAll() }
+    client.createAudio = { try await audios.create($0) }
+    client.createAudios = { try await audios.create($0) }
+    client.getAudio = { try await audios.find($0) }
+    client.getAudios = { try await audios.findAll() }
+    client.updateAudio = { try await audios.update($0) }
+    client.updateAudios = { try await audios.update($0) }
+    client.deleteAudio = { try await audios.delete($0) }
+    client.deleteAllAudios = { try await audios.deleteAll() }
+    client.createAudioPart = { try await audioParts.create($0) }
+    client.createAudioParts = { try await audioParts.create($0) }
+    client.getAudioPart = { try await audioParts.find($0) }
+    client.getAudioParts = { try await audioParts.findAll() }
+    client.updateAudioPart = { try await audioParts.update($0) }
+    client.updateAudioParts = { try await audioParts.update($0) }
+    client.deleteAudioPart = { try await audioParts.delete($0) }
+    client.deleteAllAudioParts = { try await audioParts.deleteAll() }
+    client.createIsbn = { try await isbns.create($0) }
+    client.createIsbns = { try await isbns.create($0) }
+    client.getIsbn = { try await isbns.find($0) }
+    client.getIsbns = { try await isbns.findAll() }
+    client.updateIsbn = { try await isbns.update($0) }
+    client.updateIsbns = { try await isbns.update($0) }
+    client.deleteIsbn = { try await isbns.delete($0) }
+    client.deleteAllIsbns = { try await isbns.deleteAll() }
+    client.createDocumentTagModels = { try await documentTagModels.create($0) }
+    client.createArtifactProductionVersion = { try await artifactProductionVersions.create($0) }
+    artifactProductionVersions.assign(client: &client)
+    audios.assign(client: &client)
+    audioParts.assign(client: &client)
+    documents.assign(client: &client)
+    documentTagModels.assign(client: &client)
+    relatedDocuments.assign(client: &client)
+    downloads.assign(client: &client)
+    editions.assign(client: &client)
+    editionChapters.assign(client: &client)
+    editionImpressions.assign(client: &client)
+    friends.assign(client: &client)
+    friendQuotes.assign(client: &client)
+    friendResidences.assign(client: &client)
+    friendResidenceDurations.assign(client: &client)
+    isbns.assign(client: &client)
+    freeOrderRequests.assign(client: &client)
+    orders.assign(client: &client)
+    orderItems.assign(client: &client)
+    tokens.assign(client: &client)
+    tokenScopes.assign(client: &client)
     return client
   }
 
   static var mock: DatabaseClient {
-    let mockDb = MockDb()
+    let db = MockDb()
     var client: DatabaseClient = .notImplemented
-    MockIsbnRepository(db: mockDb).assign(client: &client)
-    MockAudioRepository(db: mockDb).assign(client: &client)
-    MockOrderRepository(db: mockDb).assign(client: &client)
-    MockTokenRepository(db: mockDb).assign(client: &client)
-    MockFriendRepository(db: mockDb).assign(client: &client)
-    MockEditionRepository(db: mockDb).assign(client: &client)
-    MockDocumentRepository(db: mockDb).assign(client: &client)
-    MockDownloadRepository(db: mockDb).assign(client: &client)
-    MockAudioPartRepository(db: mockDb).assign(client: &client)
-    MockFriendQuoteRepository(db: mockDb).assign(client: &client)
-    MockEditionChapterRepository(db: mockDb).assign(client: &client)
-    MockFriendResidenceRepository(db: mockDb).assign(client: &client)
-    MockDocumentTagModelRepository(db: mockDb).assign(client: &client)
-    MockFreeOrderRequestRepository(db: mockDb).assign(client: &client)
-    MockEditionImpressionRepository(db: mockDb).assign(client: &client)
-    MockFriendResidenceDurationRepository(db: mockDb).assign(client: &client)
-    MockArtifactProductionVersionRepository(db: mockDb).assign(client: &client)
+    let artifactProductionVersions = MockRepository<ArtifactProductionVersion>(db: db, models: \.artifactProductionVersions)
+    let audios = MockRepository<Audio>(db: db, models: \.audios)
+    let audioParts = MockRepository<AudioPart>(db: db, models: \.audioParts)
+    let documents = MockRepository<Document>(db: db, models: \.documents)
+    let documentTagModels = MockRepository<DocumentTagModel>(db: db, models: \.documentTagModels)
+    let relatedDocuments = MockRepository<RelatedDocument>(db: db, models: \.relatedDocuments)
+    let downloads = MockRepository<Download>(db: db, models: \.downloads)
+    let editions = MockRepository<Edition>(db: db, models: \.editions)
+    let editionChapters = MockRepository<EditionChapter>(db: db, models: \.editionChapters)
+    let editionImpressions = MockRepository<EditionImpression>(db: db, models: \.editionImpressions)
+    let friends = MockRepository<Friend>(db: db, models: \.friends)
+    let friendQuotes = MockRepository<FriendQuote>(db: db, models: \.friendQuotes)
+    let friendResidences = MockRepository<FriendResidence>(db: db, models: \.friendResidences)
+    let friendResidenceDurations = MockRepository<FriendResidenceDuration>(db: db, models: \.friendResidenceDurations)
+    let isbns = MockRepository<Isbn>(db: db, models: \.isbns)
+    let freeOrderRequests = MockRepository<FreeOrderRequest>(db: db, models: \.freeOrderRequests)
+    let orders = MockRepository<Order>(db: db, models: \.orders)
+    let orderItems = MockRepository<OrderItem>(db: db, models: \.orderItems)
+    let tokens = MockRepository<Token>(db: db, models: \.tokens)
+    let tokenScopes = MockRepository<TokenScope>(db: db, models: \.tokenScopes)
+    client.createToken = { try await tokens.create($0) }
+    client.createTokenScope = { try await tokenScopes.create($0) }
+    client.getOrder = { try await orders.find($0) }
+    client.getOrders = { try await orders.findAll() }
+    client.updateOrder = { try await orders.update($0) }
+    client.updateOrders = { try await orders.update($0) }
+    client.createOrder = { try await orders.create($0) }
+    client.createOrders = { try await orders.create($0) }
+    client.deleteOrder = { try await orders.delete($0) }
+    client.deleteAllOrders = { try await orders.deleteAll() }
+    client.createOrderItem = { try await orderItems.create($0) }
+    client.createOrderItems = { try await orderItems.create($0) }
+    client.getOrderItem = { try await orderItems.find($0) }
+    client.getOrderItems = { try await orderItems.findAll() }
+    client.updateOrderItem = { try await orderItems.update($0) }
+    client.updateOrderItems = { try await orderItems.update($0) }
+    client.deleteOrderItem = { try await orderItems.delete($0) }
+    client.createFreeOrderRequest = { try await freeOrderRequests.create($0) }
+    client.getFreeOrderRequest = { try await freeOrderRequests.find($0) }
+    client.createDownload = { try await downloads.create($0) }
+    client.createDownloads = { try await downloads.create($0) }
+    client.getDownload = { try await downloads.find($0) }
+    client.getDownloads = { try await downloads.findAll() }
+    client.updateDownload = { try await downloads.update($0) }
+    client.updateDownloads = { try await downloads.update($0) }
+    client.deleteDownload = { try await downloads.delete($0) }
+    client.deleteAllDownloads = { try await downloads.deleteAll() }
+    client.createFriend = { try await friends.create($0) }
+    client.createFriends = { try await friends.create($0) }
+    client.getFriend = { try await friends.find($0) }
+    client.getFriends = { try await friends.findAll() }
+    client.updateFriend = { try await friends.update($0) }
+    client.updateFriends = { try await friends.update($0) }
+    client.deleteFriend = { try await friends.delete($0) }
+    client.deleteAllFriends = { try await friends.deleteAll() }
+    client.createFriendQuote = { try await friendQuotes.create($0) }
+    client.createFriendQuotes = { try await friendQuotes.create($0) }
+    client.getFriendQuote = { try await friendQuotes.find($0) }
+    client.getFriendQuotes = { try await friendQuotes.findAll() }
+    client.updateFriendQuote = { try await friendQuotes.update($0) }
+    client.updateFriendQuotes = { try await friendQuotes.update($0) }
+    client.deleteFriendQuote = { try await friendQuotes.delete($0) }
+    client.deleteAllFriendQuotes = { try await friendQuotes.deleteAll() }
+    client.createFriendResidence = { try await friendResidences.create($0) }
+    client.createFriendResidences = { try await friendResidences.create($0) }
+    client.getFriendResidence = { try await friendResidences.find($0) }
+    client.getFriendResidences = { try await friendResidences.findAll() }
+    client.updateFriendResidence = { try await friendResidences.update($0) }
+    client.updateFriendResidences = { try await friendResidences.update($0) }
+    client.deleteFriendResidence = { try await friendResidences.delete($0) }
+    client.deleteAllFriendResidences = { try await friendResidences.deleteAll() }
+    client.createFriendResidenceDuration = { try await friendResidenceDurations.create($0) }
+    client.createFriendResidenceDurations = { try await friendResidenceDurations.create($0) }
+    client.getFriendResidenceDuration = { try await friendResidenceDurations.find($0) }
+    client.getFriendResidenceDurations = { try await friendResidenceDurations.findAll() }
+    client.updateFriendResidenceDuration = { try await friendResidenceDurations.update($0) }
+    client.updateFriendResidenceDurations = { try await friendResidenceDurations.update($0) }
+    client.deleteFriendResidenceDuration = { try await friendResidenceDurations.delete($0) }
+    client.deleteAllFriendResidenceDurations = { try await friendResidenceDurations.deleteAll() }
+    client.createDocument = { try await documents.create($0) }
+    client.createDocuments = { try await documents.create($0) }
+    client.getDocument = { try await documents.find($0) }
+    client.getDocuments = { try await documents.findAll() }
+    client.updateDocument = { try await documents.update($0) }
+    client.updateDocuments = { try await documents.update($0) }
+    client.deleteDocument = { try await documents.delete($0) }
+    client.deleteAllDocuments = { try await documents.deleteAll() }
+    client.createRelatedDocument = { try await relatedDocuments.create($0) }
+    client.createRelatedDocuments = { try await relatedDocuments.create($0) }
+    client.getRelatedDocument = { try await relatedDocuments.find($0) }
+    client.getRelatedDocuments = { try await relatedDocuments.findAll() }
+    client.updateRelatedDocument = { try await relatedDocuments.update($0) }
+    client.updateRelatedDocuments = { try await relatedDocuments.update($0) }
+    client.deleteRelatedDocument = { try await relatedDocuments.delete($0) }
+    client.deleteAllRelatedDocuments = { try await relatedDocuments.deleteAll() }
+    client.createEdition = { try await editions.create($0) }
+    client.createEditions = { try await editions.create($0) }
+    client.getEdition = { try await editions.find($0) }
+    client.getEditions = { try await editions.findAll() }
+    client.updateEdition = { try await editions.update($0) }
+    client.updateEditions = { try await editions.update($0) }
+    client.deleteEdition = { try await editions.delete($0) }
+    client.deleteAllEditions = { try await editions.deleteAll() }
+    client.createEditionImpression = { try await editionImpressions.create($0) }
+    client.createEditionImpressions = { try await editionImpressions.create($0) }
+    client.getEditionImpression = { try await editionImpressions.find($0) }
+    client.getEditionImpressions = { try await editionImpressions.findAll() }
+    client.updateEditionImpression = { try await editionImpressions.update($0) }
+    client.updateEditionImpressions = { try await editionImpressions.update($0) }
+    client.deleteEditionImpression = { try await editionImpressions.delete($0) }
+    client.deleteAllEditionImpressions = { try await editionImpressions.deleteAll() }
+    client.createEditionChapter = { try await editionChapters.create($0) }
+    client.createEditionChapters = { try await editionChapters.create($0) }
+    client.getEditionChapter = { try await editionChapters.find($0) }
+    client.getEditionChapters = { try await editionChapters.findAll() }
+    client.updateEditionChapter = { try await editionChapters.update($0) }
+    client.updateEditionChapters = { try await editionChapters.update($0) }
+    client.deleteEditionChapter = { try await editionChapters.delete($0) }
+    client.deleteAllEditionChapters = { try await editionChapters.deleteAll() }
+    client.createAudio = { try await audios.create($0) }
+    client.createAudios = { try await audios.create($0) }
+    client.getAudio = { try await audios.find($0) }
+    client.getAudios = { try await audios.findAll() }
+    client.updateAudio = { try await audios.update($0) }
+    client.updateAudios = { try await audios.update($0) }
+    client.deleteAudio = { try await audios.delete($0) }
+    client.deleteAllAudios = { try await audios.deleteAll() }
+    client.createAudioPart = { try await audioParts.create($0) }
+    client.createAudioParts = { try await audioParts.create($0) }
+    client.getAudioPart = { try await audioParts.find($0) }
+    client.getAudioParts = { try await audioParts.findAll() }
+    client.updateAudioPart = { try await audioParts.update($0) }
+    client.updateAudioParts = { try await audioParts.update($0) }
+    client.deleteAudioPart = { try await audioParts.delete($0) }
+    client.deleteAllAudioParts = { try await audioParts.deleteAll() }
+    client.createIsbn = { try await isbns.create($0) }
+    client.createIsbns = { try await isbns.create($0) }
+    client.getIsbn = { try await isbns.find($0) }
+    client.getIsbns = { try await isbns.findAll() }
+    client.updateIsbn = { try await isbns.update($0) }
+    client.updateIsbns = { try await isbns.update($0) }
+    client.deleteIsbn = { try await isbns.delete($0) }
+    client.deleteAllIsbns = { try await isbns.deleteAll() }
+    client.createDocumentTagModels = { try await documentTagModels.create($0) }
+    client.createArtifactProductionVersion = { try await artifactProductionVersions.create($0) }
+    artifactProductionVersions.assign(client: &client)
+    audios.assign(client: &client)
+    audioParts.assign(client: &client)
+    documents.assign(client: &client)
+    documentTagModels.assign(client: &client)
+    relatedDocuments.assign(client: &client)
+    downloads.assign(client: &client)
+    editions.assign(client: &client)
+    editionChapters.assign(client: &client)
+    editionImpressions.assign(client: &client)
+    friends.assign(client: &client)
+    friendQuotes.assign(client: &client)
+    friendResidences.assign(client: &client)
+    friendResidenceDurations.assign(client: &client)
+    isbns.assign(client: &client)
+    freeOrderRequests.assign(client: &client)
+    orders.assign(client: &client)
+    orderItems.assign(client: &client)
+    tokens.assign(client: &client)
+    tokenScopes.assign(client: &client)
     return client
   }
 
@@ -58,8 +354,8 @@ extension DatabaseClient {
     createTokenScope: { _ in
       throw Abort(.notImplemented, reason: "db.createTokenScope")
     },
-    getTokenScopes: { _ in
-      throw Abort(.notImplemented, reason: "db.getTokenScopes")
+    getTokenTokenScopes: { _ in
+      throw Abort(.notImplemented, reason: "db.getTokenTokenScopes")
     },
     getOrder: { _ in
       throw Abort(.notImplemented, reason: "db.getOrder")
@@ -111,9 +407,6 @@ extension DatabaseClient {
     },
     deleteOrderItem: { _ in
       throw Abort(.notImplemented, reason: "db.deleteOrderItem")
-    },
-    deleteAllOrderItems: {
-      throw Abort(.notImplemented, reason: "db.deleteAllOrderItems")
     },
     createFreeOrderRequest: { _ in
       throw Abort(.notImplemented, reason: "db.createFreeOrderRequest")

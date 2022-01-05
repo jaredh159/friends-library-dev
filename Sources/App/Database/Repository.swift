@@ -1,4 +1,8 @@
-extension LiveRepository {
+import FluentSQL
+import Vapor
+
+struct Repository<Model: DuetModel> {
+  let db: SQLDatabase
 
   // CREATE
 
@@ -49,11 +53,8 @@ extension LiveRepository {
     return try rows.compactMap { try $0.decode(Child.self) }.first ?? nil
   }
 
-  func select(
-    _ columns: Postgres.Columns = .all,
-    where: SQL.WhereConstraint? = nil
-  ) async throws -> [Model] {
-    try await _select(columns, where: `where`)
+  func findAll(where: SQL.WhereConstraint? = nil) async throws -> [Model] {
+    try await _findAll(where: `where`)
   }
 
   private func _find(_ id: Model.IdValue) async throws -> Model {
@@ -62,11 +63,8 @@ extension LiveRepository {
     return try rows.compactMap { try $0.decode(Model.self) }.firstOrThrowNotFound()
   }
 
-  private func _select(
-    _ columns: Postgres.Columns = .all,
-    where: SQL.WhereConstraint? = nil
-  ) async throws -> [Model] {
-    let prepared = SQL.select(columns, from: Model.tableName, where: `where`)
+  private func _findAll(where: SQL.WhereConstraint? = nil) async throws -> [Model] {
+    let prepared = SQL.select(.all, from: Model.tableName, where: `where`)
     let rows = try await SQL.execute(prepared, on: db).all()
     return try rows.compactMap { try $0.decode(Model.self) }
   }
@@ -131,9 +129,12 @@ extension LiveRepository {
     _ = try await db.raw("DELETE FROM \(table: Model.self)").all().get()
   }
 
+  func assign(client: inout DatabaseClient) {
+    // no-op customization point
+  }
 }
 
-extension LiveRepository where Model: SoftDeletable {
+extension Repository where Model: SoftDeletable {
   @discardableResult
   func delete(_ id: Model.IdValue, force: Bool = false) async throws -> Model {
     let model = try await find(id)
@@ -167,11 +168,8 @@ extension LiveRepository where Model: SoftDeletable {
     return model
   }
 
-  func select(
-    _ columns: Postgres.Columns = .all,
-    where: SQL.WhereConstraint? = nil
-  ) async throws -> [Model] {
-    try await _select(columns, where: `where`)
+  func findAll(where: SQL.WhereConstraint? = nil) async throws -> [Model] {
+    try await _findAll(where: `where`)
       .filter { $0.deletedAt == nil }
   }
 }

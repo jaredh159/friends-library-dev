@@ -1,4 +1,6 @@
-extension MockRepository {
+struct MockRepository<Model: DuetModel> {
+  let db: MockDb
+  let models: ReferenceWritableKeyPath<MockDb, [Model.IdValue: Model]>
 
   // CREATE
 
@@ -20,7 +22,7 @@ extension MockRepository {
     try db.find(id, in: models)
   }
 
-  func select(where predicate: ((Model) -> Bool)? = nil) async throws -> [Model] {
+  func findAll(where predicate: ((Model) -> Bool)? = nil) async throws -> [Model] {
     guard let predicate = predicate else { return db.all(models) }
     return db.find(where: predicate, in: models)
   }
@@ -53,5 +55,9 @@ extension MockRepository {
 
   func deleteAll() async throws {
     db[keyPath: models] = [:]
+  }
+
+  func assign(client: inout DatabaseClient) {
+    // no-op customization point
   }
 }

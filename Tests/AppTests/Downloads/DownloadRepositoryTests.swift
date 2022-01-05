@@ -10,8 +10,7 @@ final class DownloadRepositoryTests: AppTestCase {
     let oldDb = Current.db
     Current.db = .mock
 
-    let inserted: Download = .mock
-    try await Current.db.createDownload(inserted)
+    let inserted = try await Current.db.createDownload(.mock)
     let retrieved = try await Current.db.getDownload(inserted.id)
 
     XCTAssertEqual(inserted, retrieved)
