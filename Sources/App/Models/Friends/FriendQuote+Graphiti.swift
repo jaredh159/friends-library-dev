@@ -12,6 +12,7 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
       at: resolveParent { (friendQuote) async throws -> Friend in
         switch friendQuote.friend {
           case .notLoaded:
+            // @NEXT
             fatalError("FriendQuote -> Parent<Friend> not implemented")
           case let .loaded(friend):
             return friend

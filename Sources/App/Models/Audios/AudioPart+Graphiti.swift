@@ -12,7 +12,7 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
       at: resolveParent { (audioPart) async throws -> Audio in
         switch audioPart.audio {
           case .notLoaded:
-            fatalError("AudioPart -> Parent<Audio> not implemented")
+            return try await Current.db.getAudio(audioPart.audioId)
           case let .loaded(audio):
             return audio
         }

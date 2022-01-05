@@ -12,7 +12,7 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
       at: resolveParent { (editionImpression) async throws -> Edition in
         switch editionImpression.edition {
           case .notLoaded:
-            fatalError("EditionImpression -> Parent<Edition> not implemented")
+            return try await Current.db.getEdition(editionImpression.editionId)
           case let .loaded(edition):
             return edition
         }

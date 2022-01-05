@@ -18,6 +18,7 @@ extension AppSchema {
       Field("createdAt", at: \.createdAt)
       Field("updatedAt", at: \.updatedAt)
       Field("edition", with: \.edition)
+      Field("parts", with: \.parts)
     }
   }
 

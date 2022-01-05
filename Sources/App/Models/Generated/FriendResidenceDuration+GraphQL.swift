@@ -10,7 +10,7 @@ extension AppSchema {
       Field("start", at: \.start)
       Field("end", at: \.end)
       Field("createdAt", at: \.createdAt)
-      Field("friendResidence", with: \.friendResidence)
+      Field("residence", with: \.residence)
     }
   }
 

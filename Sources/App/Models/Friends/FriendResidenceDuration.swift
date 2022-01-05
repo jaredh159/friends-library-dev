@@ -7,7 +7,7 @@ final class FriendResidenceDuration: Codable {
   var end: Int
   var createdAt = Current.date()
 
-  var friendResidence = Parent<FriendResidence>.notLoaded
+  var residence = Parent<FriendResidence>.notLoaded
 
   init(
     id: Id = .init(),

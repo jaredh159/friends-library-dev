@@ -49,6 +49,7 @@ struct DatabaseClient {
   var createFriend: (Friend) async throws -> Friend
   var createFriends: ([Friend]) async throws -> [Friend]
   var getFriend: (Friend.Id) async throws -> Friend
+  var getFriendFriendResidences: (Friend.Id) async throws -> [FriendResidence]
   var getFriends: () async throws -> [Friend]
   var getFriendDocuments: (Friend.Id) async throws -> [Document]
   var updateFriend: (Friend) async throws -> Friend
@@ -70,6 +71,8 @@ struct DatabaseClient {
   var createFriendResidence: (FriendResidence) async throws -> FriendResidence
   var createFriendResidences: ([FriendResidence]) async throws -> [FriendResidence]
   var getFriendResidence: (FriendResidence.Id) async throws -> FriendResidence
+  var getFriendResidenceFriendResidenceDurations:
+    (FriendResidence.Id) async throws -> [FriendResidenceDuration]
   var getFriendResidences: () async throws -> [FriendResidence]
   var updateFriendResidence: (FriendResidence) async throws -> FriendResidence
   var updateFriendResidences: ([FriendResidence]) async throws -> [FriendResidence]
@@ -118,6 +121,8 @@ struct DatabaseClient {
   var createEditions: ([Edition]) async throws -> [Edition]
   var getEdition: (Edition.Id) async throws -> Edition
   var getEditionIsbn: (Edition.Id) async throws -> Isbn?
+  var getEditionAudio: (Edition.Id) async throws -> Audio?
+  var getEditionEditionImpression: (Edition.Id) async throws -> EditionImpression?
   var getEditions: () async throws -> [Edition]
   var updateEdition: (Edition) async throws -> Edition
   var updateEditions: ([Edition]) async throws -> [Edition]
@@ -148,6 +153,7 @@ struct DatabaseClient {
   var createAudio: (Audio) async throws -> Audio
   var createAudios: ([Audio]) async throws -> [Audio]
   var getAudio: (Audio.Id) async throws -> Audio
+  var getAudioAudioParts: (Audio.Id) async throws -> [AudioPart]
   var getAudios: () async throws -> [Audio]
   var updateAudio: (Audio) async throws -> Audio
   var updateAudios: ([Audio]) async throws -> [Audio]

@@ -18,6 +18,7 @@ extension AppSchema {
       Field("document", with: \.document)
       Field("impression", with: \.impression)
       Field("isbn", with: \.isbn)
+      Field("audio", with: \.audio)
     }
   }
 

@@ -14,7 +14,7 @@ extension Edition {
       static let caseS = "s"
       static let caseM = "m"
       static let caseXl = "xl"
-      static let caseXlCondensed = "xl--condensed"
+      static let caseXlCondensed = "xlCondensed"
     }
   }
 }

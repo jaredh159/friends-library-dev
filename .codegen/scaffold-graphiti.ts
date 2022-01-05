@@ -85,7 +85,7 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
       at: resolveChildren { (thing) async throws -> [ThingChild] in
         switch thing.children {
           case .notLoaded:
-            fatalError("Thing -> Children<[ThingChild]> not implemented")
+            throw Abort(.notImplemented, reason: "Thing -> Children<[ThingChild]> not implemented")
           case let .loaded(thingChildren):
             return thingChildren
         }
@@ -106,7 +106,7 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
       at: resolveOptionalChild { (thing) async throws -> ThingChild? in
         switch thing.child {
           case .notLoaded:
-            fatalError("Thing -> OptionalChild<ThingChild> not implemented")
+            throw Abort(.notImplemented, reason: "Thing -> OptionalChild<ThingChild> not implemented")
           case let .loaded(child):
             return child
         }
@@ -128,7 +128,7 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
         switch thing.parent {
           case .notLoaded:
             // guard let thingParentId = thing.thingParentId else { return nil }
-            fatalError("Thing -> OptionalParent<ThingParent> not implemented")
+            throw Abort(.notImplemented, reason: "Thing -> OptionalParent<ThingParent> not implemented")
           case let .loaded(parent):
             return parent
         }
@@ -149,7 +149,7 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
       at: resolveParent { (thing) async throws -> ThingParent in
         switch thing.parent {
           case .notLoaded:
-            fatalError("Thing -> Parent<ThingParent> not implemented")
+            throw Abort(.notImplemented, reason: "Thing -> Parent<ThingParent> not implemented")
           case let .loaded(parent):
             return parent
         }

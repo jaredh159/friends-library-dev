@@ -6,8 +6,18 @@ extension Repository where Model == Edition {
     try await findOptionalChild(id, fk: Isbn[.editionId])
   }
 
+  func getAudio(_ id: Edition.Id) async throws -> Audio? {
+    try await findOptionalChild(id, fk: Audio[.editionId])
+  }
+
+  func getImpression(_ id: Edition.Id) async throws -> EditionImpression? {
+    try await findOptionalChild(id, fk: EditionImpression[.editionId])
+  }
+
   func assign(client: inout DatabaseClient) {
     client.getEditionIsbn = { try await getIsbn($0) }
+    client.getEditionAudio = { try await getAudio($0) }
+    client.getEditionEditionImpression = { try await getImpression($0) }
   }
 }
 
@@ -16,7 +26,17 @@ extension MockRepository where Model == Edition {
     db.find(where: { $0.editionId == id }, in: \.isbns).first ?? nil
   }
 
+  func getAudio(_ id: Edition.Id) async throws -> Audio? {
+    db.find(where: { $0.editionId == id }, in: \.audios).first ?? nil
+  }
+
+  func getImpression(_ id: Edition.Id) async throws -> EditionImpression? {
+    db.find(where: { $0.editionId == id }, in: \.editionImpressions).first ?? nil
+  }
+
   func assign(client: inout DatabaseClient) {
     client.getEditionIsbn = { try await getIsbn($0) }
+    client.getEditionAudio = { try await getAudio($0) }
+    client.getEditionEditionImpression = { try await getImpression($0) }
   }
 }

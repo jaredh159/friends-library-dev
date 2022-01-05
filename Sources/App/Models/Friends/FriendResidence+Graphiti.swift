@@ -12,7 +12,8 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
       at: resolveChildren { (friendResidence) async throws -> [FriendResidenceDuration] in
         switch friendResidence.durations {
           case .notLoaded:
-            fatalError("FriendResidence -> Children<[FriendResidenceDuration]> not implemented")
+            return try await Current.db.getFriendResidenceFriendResidenceDurations(
+              friendResidence.id)
           case let .loaded(friendResidenceChildren):
             return friendResidenceChildren
         }
@@ -31,7 +32,7 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
       at: resolveParent { (friendResidence) async throws -> Friend in
         switch friendResidence.friend {
           case .notLoaded:
-            fatalError("FriendResidence -> Parent<Friend> not implemented")
+            return try await Current.db.getFriend(friendResidence.friendId)
           case let .loaded(friend):
             return friend
         }

@@ -12,7 +12,7 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
       at: resolveParent { (edition) async throws -> Document in
         switch edition.document {
           case .notLoaded:
-            fatalError("Edition -> Parent<Document> not implemented")
+            return try await Current.db.getDocument(edition.documentId)
           case let .loaded(document):
             return document
         }
@@ -31,7 +31,7 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
       at: resolveOptionalChild { (edition) async throws -> EditionImpression? in
         switch edition.impression {
           case .notLoaded:
-            fatalError("Edition -> OptionalChild<EditionImpression> not implemented")
+            return try await Current.db.getEditionEditionImpression(edition.id)
           case let .loaded(impression):
             return impression
         }
@@ -56,5 +56,24 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
         }
       },
       as: TypeRef<Isbn>?.self)
+  }
+}
+
+extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: Edition {
+  convenience init(
+    _ name: FieldKey,
+    with keyPath: ToOptionalChild<Audio>
+  ) where FieldType == TypeRef<Audio>? {
+    self.init(
+      name.description,
+      at: resolveOptionalChild { (edition) async throws -> Audio? in
+        switch edition.audio {
+          case .notLoaded:
+            return try await Current.db.getEditionAudio(edition.id)
+          case let .loaded(audio):
+            return audio
+        }
+      },
+      as: TypeRef<Audio>?.self)
   }
 }

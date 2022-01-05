@@ -31,7 +31,7 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
       at: resolveChildren { (friend) async throws -> [FriendResidence] in
         switch friend.residences {
           case .notLoaded:
-            fatalError("not implemented")
+            return try await Current.db.getFriendFriendResidences(friend.id)
           case let .loaded(friendChildren):
             return friendChildren
         }
@@ -50,6 +50,7 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
       at: resolveChildren { (friend) async throws -> [FriendQuote] in
         switch friend.quotes {
           case .notLoaded:
+            // @NEXT
             fatalError("not implemented")
           case let .loaded(friendChildren):
             return friendChildren

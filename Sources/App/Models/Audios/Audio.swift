@@ -15,6 +15,7 @@ final class Audio: Codable {
   var updatedAt = Current.date()
 
   var edition = Parent<Edition>.notLoaded
+  var parts = Children<AudioPart>.notLoaded
 
   init(
     id: Id = .init(),

@@ -11,11 +11,12 @@ where Arguments == NoArgs, Context == Req, ObjectType: FriendResidenceDuration {
     self.init(
       name.description,
       at: resolveParent { (friendResidenceDuration) async throws -> FriendResidence in
-        switch friendResidenceDuration.friendResidence {
+        switch friendResidenceDuration.residence {
           case .notLoaded:
-            fatalError("FriendResidenceDuration -> Parent<FriendResidence> not implemented")
-          case let .loaded(friendResidence):
-            return friendResidence
+            return try await Current.db.getFriendResidence(
+              friendResidenceDuration.friendResidenceId)
+          case let .loaded(residence):
+            return residence
         }
       },
       as: TypeReference<FriendResidence>.self)

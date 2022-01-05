@@ -447,6 +447,9 @@ extension DatabaseClient {
     getFriend: { _ in
       throw Abort(.notImplemented, reason: "db.getFriend")
     },
+    getFriendFriendResidences: { _ in
+      throw Abort(.notImplemented, reason: "db.getFriendFriendResidences")
+    },
     getFriends: {
       throw Abort(.notImplemented, reason: "db.getFriends")
     },
@@ -497,6 +500,9 @@ extension DatabaseClient {
     },
     getFriendResidence: { _ in
       throw Abort(.notImplemented, reason: "db.getFriendResidence")
+    },
+    getFriendResidenceFriendResidenceDurations: { _ in
+      throw Abort(.notImplemented, reason: "db.getFriendResidenceFriendResidenceDurations")
     },
     getFriendResidences: {
       throw Abort(.notImplemented, reason: "db.getFriendResidences")
@@ -600,6 +606,12 @@ extension DatabaseClient {
     getEditionIsbn: { _ in
       throw Abort(.notImplemented, reason: "db.getEditionIsbn")
     },
+    getEditionAudio: { _ in
+      throw Abort(.notImplemented, reason: "db.getEditionAudio")
+    },
+    getEditionEditionImpression: { _ in
+      throw Abort(.notImplemented, reason: "db.getEditionEditionImpression")
+    },
     getEditions: {
       throw Abort(.notImplemented, reason: "db.getEditions")
     },
@@ -671,6 +683,9 @@ extension DatabaseClient {
     },
     getAudio: { _ in
       throw Abort(.notImplemented, reason: "db.getAudio")
+    },
+    getAudioAudioParts: { _ in
+      throw Abort(.notImplemented, reason: "db.getAudioAudioParts")
     },
     getAudios: {
       throw Abort(.notImplemented, reason: "db.getAudios")
