@@ -6,18 +6,13 @@ import XCTVaporUtils
 
 final class DownloadResolverTests: AppTestCase {
 
-  // @TODO after all FK things
-  func testCreateDownload() throws {
-    XCTAssertEqual(true, true)
-  }
-
-  func skip_actualTest() throws {
-    let oldDb = Current.db
-    Current.db = .mock
-    let edition = Edition.random
-    // try await Current.db.create
-    let insert = Download.random
-    insert.editionId = edition.id
+  func testCreateDownload() async throws {
+    let entities = await Entities.create()
+    let insert: Download = .random
+    insert.audioQuality = .lq
+    insert.audioPartNumber = 33
+    insert.editionId = entities.edition.id
+    let map = insert.gqlMap()
 
     GraphQLTest(
       """
@@ -25,6 +20,10 @@ final class DownloadResolverTests: AppTestCase {
         download: createDownload(input: $input) {
           edition {
             id
+            editionType: type
+            document {
+              documentId: id
+            }
           }
           format
           source
@@ -47,29 +46,15 @@ final class DownloadResolverTests: AppTestCase {
       }
       """,
       expectedData: .containsKVPs([
-        "documentId": "853E4E56-7A46-44A2-B689-B48458B588B0",
-        "editionType": "updated",
-        "format": "mp3",
-        "source": "website",
-        "isMobile": true,
-        "audioQuality": "lq",
-        "audioPartNumber": 2,
-        "userAgent": "Brave Browser",
-        "os": "Mac",
-        "browser": "Brave",
-        "platform": "not sure",
-        "referrer": "rad-link",
-        "ip": "1.2.3.4",
-        "city": "Wadsworth",
-        "region": "OH",
-        "postalCode": "44281",
-        "country": "US",
-        "latitude": "6",
-        "longitude": "7",
+        "documentId": entities.document.id.uuidString,
+        "editionType": entities.edition.type.rawValue,
+        "format": map["format"],
+        "source": map["source"],
+        "isMobile": map["isMobile"],
+        "audioQuality": map["audioQuality"],
+        "audioPartNumber": map["audioPartNumber"],
       ]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": insert.gqlMap()])
-
-    Current.db = oldDb
   }
 }

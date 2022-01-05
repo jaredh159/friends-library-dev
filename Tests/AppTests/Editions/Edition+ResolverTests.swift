@@ -6,7 +6,10 @@ import XCTVaporUtils
 final class EditionResolverTests: AppTestCase {
 
   func testCreateEdition() async throws {
-    let edition = Edition.random
+    let entities = await Entities.create()
+    _ = try await Current.db.deleteEdition(entities.edition.id)
+    let edition: Edition = .random
+    edition.documentId = entities.document.id
     let map = edition.gqlMap()
 
     GraphQLTest(
@@ -23,7 +26,7 @@ final class EditionResolverTests: AppTestCase {
   }
 
   func testGetEdition() async throws {
-    let edition = try await Current.db.createEdition(.random)
+    let edition = await Entities.create().edition
 
     GraphQLTest(
       """
@@ -39,7 +42,7 @@ final class EditionResolverTests: AppTestCase {
   }
 
   func testUpdateEdition() async throws {
-    let edition = try await Current.db.createEdition(.random)
+    let edition = await Entities.create().edition
 
     // do some updates here ---vvv
     edition.editor = "new value"
@@ -58,7 +61,7 @@ final class EditionResolverTests: AppTestCase {
   }
 
   func testDeleteEdition() async throws {
-    let edition = try await Current.db.createEdition(.random)
+    let edition = await Entities.create().edition
 
     GraphQLTest(
       """

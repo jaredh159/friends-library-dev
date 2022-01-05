@@ -4,8 +4,10 @@ struct Entities {
   var friend: Friend
   var friendResidence: FriendResidence
   var friendResidenceDuration: FriendResidenceDuration
+  var friendQuote: FriendQuote
   var document: Document
   var edition: Edition
+  var editionChapter: EditionChapter
   var editionImpression: EditionImpression
   var isbn: Isbn
   var audio: Audio
@@ -20,12 +22,18 @@ struct Entities {
     let friendResidenceDuration: FriendResidenceDuration = .random
     friendResidenceDuration.friendResidenceId = friendResidence.id
 
+    let friendQuote: FriendQuote = .random
+    friendQuote.friendId = friend.id
+
     let document: Document = .random
     document.altLanguageId = nil
     document.friendId = friend.id
 
     let edition: Edition = .random
     edition.documentId = document.id
+
+    let editionChapter: EditionChapter = .random
+    editionChapter.editionId = edition.id
 
     let editionImpression: EditionImpression = .random
     editionImpression.editionId = edition.id
@@ -43,8 +51,10 @@ struct Entities {
       friend: friend,
       friendResidence: friendResidence,
       friendResidenceDuration: friendResidenceDuration,
+      friendQuote: friendQuote,
       document: document,
       edition: edition,
+      editionChapter: editionChapter,
       editionImpression: editionImpression,
       isbn: isbn,
       audio: audio,
@@ -54,10 +64,12 @@ struct Entities {
     beforePersist(&entities)
 
     _ = try! await Current.db.createFriend(friend)
+    _ = try! await Current.db.createFriendQuote(friendQuote)
     _ = try! await Current.db.createFriendResidence(friendResidence)
     _ = try! await Current.db.createFriendResidenceDuration(friendResidenceDuration)
     _ = try! await Current.db.createDocument(document)
     _ = try! await Current.db.createEdition(edition)
+    _ = try! await Current.db.createEditionChapter(editionChapter)
     _ = try! await Current.db.createEditionImpression(editionImpression)
     _ = try! await Current.db.createIsbn(isbn)
     _ = try! await Current.db.createAudio(audio)

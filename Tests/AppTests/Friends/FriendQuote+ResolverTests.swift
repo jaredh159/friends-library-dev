@@ -6,7 +6,9 @@ import XCTVaporUtils
 final class FriendQuoteResolverTests: AppTestCase {
 
   func testCreateFriendQuote() async throws {
+    let entities = await Entities.create()
     let friendQuote = FriendQuote.random
+    friendQuote.friendId = entities.friend.id
     let map = friendQuote.gqlMap()
 
     GraphQLTest(
@@ -23,7 +25,7 @@ final class FriendQuoteResolverTests: AppTestCase {
   }
 
   func testGetFriendQuote() async throws {
-    let friendQuote = try await Current.db.createFriendQuote(.random)
+    let friendQuote = await Entities.create().friendQuote
 
     GraphQLTest(
       """
@@ -39,7 +41,7 @@ final class FriendQuoteResolverTests: AppTestCase {
   }
 
   func testUpdateFriendQuote() async throws {
-    let friendQuote = try await Current.db.createFriendQuote(.random)
+    let friendQuote = await Entities.create().friendQuote
 
     // do some updates here ---vvv
     friendQuote.source = "new value"
@@ -58,7 +60,7 @@ final class FriendQuoteResolverTests: AppTestCase {
   }
 
   func testDeleteFriendQuote() async throws {
-    let friendQuote = try await Current.db.createFriendQuote(.random)
+    let friendQuote = await Entities.create().friendQuote
 
     GraphQLTest(
       """

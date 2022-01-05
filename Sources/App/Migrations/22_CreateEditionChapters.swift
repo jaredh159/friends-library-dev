@@ -15,7 +15,7 @@ struct CreateEditionChapters: Migration {
       .field(M22.order, .int, .required)
       .field(M22.customId, .string)
       .field(M22.shortHeading, .string, .required)
-      .field(M22.isIntermediateTitle, .string, .required)
+      .field(M22.isIntermediateTitle, .bool, .required)
       .field(M22.sequenceNumber, .int)
       .field(M22.nonSequenceTitle, .string)
       .field(.createdAt, .datetime, .required)

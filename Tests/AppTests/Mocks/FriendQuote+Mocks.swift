@@ -5,15 +5,20 @@ import GraphQL
 
 extension FriendQuote {
   static var mock: FriendQuote {
-    FriendQuote(friendId: .init(), source: "@mock source", order: 42)
+    FriendQuote(friendId: .init(), source: "@mock source", text: "@mock text", order: 42)
   }
 
   static var empty: FriendQuote {
-    FriendQuote(friendId: .init(), source: "", order: 0)
+    FriendQuote(friendId: .init(), source: "", text: "", order: 0)
   }
 
   static var random: FriendQuote {
-    FriendQuote(friendId: .init(), source: "@random".random, order: Int.random)
+    FriendQuote(
+      friendId: .init(),
+      source: "@random".random,
+      text: "@random".random,
+      order: Int.random
+    )
   }
 
   func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
@@ -21,6 +26,7 @@ extension FriendQuote {
       "id": .string(id.rawValue.uuidString),
       "friendId": .string(friendId.rawValue.uuidString),
       "source": .string(source),
+      "text": .string(text),
       "order": .number(Number(order)),
       "context": context != nil ? .string(context!) : .null,
     ])

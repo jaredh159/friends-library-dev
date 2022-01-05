@@ -7,6 +7,7 @@ final class IsbnResolverTests: AppTestCase {
 
   func testCreateIsbn() async throws {
     let isbn = Isbn.random
+    isbn.editionId = nil
     let map = isbn.gqlMap()
 
     GraphQLTest(
@@ -23,7 +24,9 @@ final class IsbnResolverTests: AppTestCase {
   }
 
   func testGetIsbn() async throws {
-    let isbn = try await Current.db.createIsbn(.random)
+    let isbn = Isbn.random
+    isbn.editionId = nil
+    _ = try await Current.db.createIsbn(isbn)
 
     GraphQLTest(
       """
@@ -39,10 +42,12 @@ final class IsbnResolverTests: AppTestCase {
   }
 
   func testUpdateIsbn() async throws {
-    let isbn = try await Current.db.createIsbn(.random)
+    let isbn = Isbn.random
+    isbn.editionId = nil
+    _ = try await Current.db.createIsbn(isbn)
 
     // do some updates here ---vvv
-    isbn.code = "new value"
+    isbn.code = .init(rawValue: "new value".random)
 
     GraphQLTest(
       """
@@ -52,13 +57,15 @@ final class IsbnResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["code": "new value"]),
+      expectedData: .containsKVPs(["code": isbn.code.rawValue]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": isbn.gqlMap()])
   }
 
   func testDeleteIsbn() async throws {
-    let isbn = try await Current.db.createIsbn(.random)
+    let isbn = Isbn.random
+    isbn.editionId = nil
+    _ = try await Current.db.createIsbn(isbn)
 
     GraphQLTest(
       """

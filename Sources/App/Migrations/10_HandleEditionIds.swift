@@ -33,6 +33,7 @@ struct HandleEditionIds: AsyncMigration {
     try await database.schema(OrderItem.M3.tableName)
       .deleteField(OrderItem.M3.documentId)
       .deleteField(OrderItem.M3.editionType)
+      .deleteField(OrderItem.M3.title)
       .update()
   }
 

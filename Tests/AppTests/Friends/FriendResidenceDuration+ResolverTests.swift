@@ -6,7 +6,9 @@ import XCTVaporUtils
 final class FriendResidenceDurationResolverTests: AppTestCase {
 
   func testCreateFriendResidenceDuration() async throws {
-    let friendResidenceDuration = FriendResidenceDuration.random
+    let friendResidence = await Entities.create().friendResidence
+    let friendResidenceDuration: FriendResidenceDuration = .random
+    friendResidenceDuration.friendResidenceId = friendResidence.id
     let map = friendResidenceDuration.gqlMap()
 
     GraphQLTest(
@@ -23,7 +25,7 @@ final class FriendResidenceDurationResolverTests: AppTestCase {
   }
 
   func testGetFriendResidenceDuration() async throws {
-    let friendResidenceDuration = try await Current.db.createFriendResidenceDuration(.random)
+    let friendResidenceDuration = await Entities.create().friendResidenceDuration
 
     GraphQLTest(
       """
@@ -39,7 +41,7 @@ final class FriendResidenceDurationResolverTests: AppTestCase {
   }
 
   func testUpdateFriendResidenceDuration() async throws {
-    let friendResidenceDuration = try await Current.db.createFriendResidenceDuration(.random)
+    let friendResidenceDuration = await Entities.create().friendResidenceDuration
 
     // do some updates here ---vvv
     friendResidenceDuration.start = 1699
@@ -58,7 +60,7 @@ final class FriendResidenceDurationResolverTests: AppTestCase {
   }
 
   func testDeleteFriendResidenceDuration() async throws {
-    let friendResidenceDuration = try await Current.db.createFriendResidenceDuration(.random)
+    let friendResidenceDuration = await Entities.create().friendResidenceDuration
 
     GraphQLTest(
       """

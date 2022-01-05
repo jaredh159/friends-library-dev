@@ -6,7 +6,9 @@ import XCTVaporUtils
 final class EditionChapterResolverTests: AppTestCase {
 
   func testCreateEditionChapter() async throws {
+    let edition = await Entities.create().edition
     let editionChapter = EditionChapter.random
+    editionChapter.editionId = edition.id
     let map = editionChapter.gqlMap()
 
     GraphQLTest(
@@ -23,7 +25,7 @@ final class EditionChapterResolverTests: AppTestCase {
   }
 
   func testGetEditionChapter() async throws {
-    let editionChapter = try await Current.db.createEditionChapter(.random)
+    let editionChapter = await Entities.create().editionChapter
 
     GraphQLTest(
       """
@@ -39,7 +41,7 @@ final class EditionChapterResolverTests: AppTestCase {
   }
 
   func testUpdateEditionChapter() async throws {
-    let editionChapter = try await Current.db.createEditionChapter(.random)
+    let editionChapter = await Entities.create().editionChapter
 
     // do some updates here ---vvv
     editionChapter.shortHeading = "new value"
@@ -58,7 +60,7 @@ final class EditionChapterResolverTests: AppTestCase {
   }
 
   func testDeleteEditionChapter() async throws {
-    let editionChapter = try await Current.db.createEditionChapter(.random)
+    let editionChapter = await Entities.create().editionChapter
 
     GraphQLTest(
       """

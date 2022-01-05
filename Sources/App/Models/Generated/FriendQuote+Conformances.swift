@@ -16,6 +16,7 @@ extension FriendQuote {
       Self[.id]: .id(self),
       Self[.friendId]: .uuid(friendId),
       Self[.source]: .string(source),
+      Self[.text]: .string(text),
       Self[.order]: .int(order),
       Self[.context]: .string(context),
       Self[.createdAt]: .currentTimestamp,
@@ -31,6 +32,7 @@ extension FriendQuote {
     case id
     case friendId
     case source
+    case text
     case order
     case context
     case createdAt

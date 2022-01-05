@@ -6,7 +6,10 @@ import XCTVaporUtils
 final class DocumentResolverTests: AppTestCase {
 
   func testCreateDocument() async throws {
-    let document = Document.random
+    let entities = await Entities.create()
+    let document: Document = .random
+    document.altLanguageId = nil
+    document.friendId = entities.friend.id
     let map = document.gqlMap()
 
     GraphQLTest(
@@ -23,7 +26,7 @@ final class DocumentResolverTests: AppTestCase {
   }
 
   func testGetDocument() async throws {
-    let document = try await Current.db.createDocument(.random)
+    let document = await Entities.create().document
 
     GraphQLTest(
       """
@@ -39,10 +42,10 @@ final class DocumentResolverTests: AppTestCase {
   }
 
   func testUpdateDocument() async throws {
-    let document = try await Current.db.createDocument(.random)
+    let document = await Entities.create().document
 
     // do some updates here ---vvv
-    document.title = "new value"
+    document.title = "new value".random
 
     GraphQLTest(
       """
@@ -52,13 +55,13 @@ final class DocumentResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["title": "new value"]),
+      expectedData: .containsKVPs(["title": document.title]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": document.gqlMap()])
   }
 
   func testDeleteDocument() async throws {
-    let document = try await Current.db.createDocument(.random)
+    let document = await Entities.create().document
 
     GraphQLTest(
       """

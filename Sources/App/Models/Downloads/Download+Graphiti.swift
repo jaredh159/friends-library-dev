@@ -12,8 +12,7 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
       at: resolveParent { (download) async throws -> Edition in
         switch download.edition {
           case .notLoaded:
-            // @NEXT
-            fatalError("Download -> Parent<Edition> not implemented")
+            return try await Current.db.getEdition(download.editionId)
           case let .loaded(edition):
             return edition
         }

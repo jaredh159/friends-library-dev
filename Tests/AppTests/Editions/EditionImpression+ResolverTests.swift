@@ -6,7 +6,10 @@ import XCTVaporUtils
 final class EditionImpressionResolverTests: AppTestCase {
 
   func testCreateEditionImpression() async throws {
+    let entities = await Entities.create()
+    _ = try await Current.db.deleteEditionImpression(entities.editionImpression.id)
     let editionImpression = EditionImpression.random
+    editionImpression.editionId = entities.edition.id
     let map = editionImpression.gqlMap()
 
     GraphQLTest(
@@ -23,7 +26,7 @@ final class EditionImpressionResolverTests: AppTestCase {
   }
 
   func testGetEditionImpression() async throws {
-    let editionImpression = try await Current.db.createEditionImpression(.random)
+    let editionImpression = await Entities.create().editionImpression
 
     GraphQLTest(
       """
@@ -39,7 +42,7 @@ final class EditionImpressionResolverTests: AppTestCase {
   }
 
   func testUpdateEditionImpression() async throws {
-    let editionImpression = try await Current.db.createEditionImpression(.random)
+    let editionImpression = await Entities.create().editionImpression
 
     // do some updates here ---vvv
     editionImpression.adocLength = 333
@@ -58,7 +61,7 @@ final class EditionImpressionResolverTests: AppTestCase {
   }
 
   func testDeleteEditionImpression() async throws {
-    let editionImpression = try await Current.db.createEditionImpression(.random)
+    let editionImpression = await Entities.create().editionImpression
 
     GraphQLTest(
       """

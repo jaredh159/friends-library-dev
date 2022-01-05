@@ -6,7 +6,10 @@ import XCTVaporUtils
 final class AudioResolverTests: AppTestCase {
 
   func testCreateAudio() async throws {
+    let entities = await Entities.create()
+    _ = try await Current.db.deleteAudio(entities.audio.id)
     let audio = Audio.random
+    audio.editionId = entities.edition.id
     let map = audio.gqlMap()
 
     GraphQLTest(
@@ -23,7 +26,7 @@ final class AudioResolverTests: AppTestCase {
   }
 
   func testGetAudio() async throws {
-    let audio = try await Current.db.createAudio(.random)
+    let audio = await Entities.create().audio
 
     GraphQLTest(
       """
@@ -39,7 +42,7 @@ final class AudioResolverTests: AppTestCase {
   }
 
   func testUpdateAudio() async throws {
-    let audio = try await Current.db.createAudio(.random)
+    let audio = await Entities.create().audio
 
     // do some updates here ---vvv
     audio.reader = "new value"
@@ -58,7 +61,7 @@ final class AudioResolverTests: AppTestCase {
   }
 
   func testDeleteAudio() async throws {
-    let audio = try await Current.db.createAudio(.random)
+    let audio = await Entities.create().audio
 
     GraphQLTest(
       """

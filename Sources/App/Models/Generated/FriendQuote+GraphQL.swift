@@ -8,6 +8,7 @@ extension AppSchema {
       Field("id", at: \.id.rawValue)
       Field("friendId", at: \.friendId.rawValue)
       Field("source", at: \.source)
+      Field("text", at: \.text)
       Field("order", at: \.order)
       Field("context", at: \.context)
       Field("createdAt", at: \.createdAt)
@@ -20,6 +21,7 @@ extension AppSchema {
     let id: UUID?
     let friendId: UUID
     let source: String
+    let text: String
     let order: Int
     let context: String?
   }
@@ -28,6 +30,7 @@ extension AppSchema {
     let id: UUID
     let friendId: UUID
     let source: String
+    let text: String
     let order: Int
     let context: String?
   }
@@ -53,6 +56,7 @@ extension AppSchema {
       InputField("id", at: \.id)
       InputField("friendId", at: \.friendId)
       InputField("source", at: \.source)
+      InputField("text", at: \.text)
       InputField("order", at: \.order)
       InputField("context", at: \.context)
     }
@@ -63,6 +67,7 @@ extension AppSchema {
       InputField("id", at: \.id)
       InputField("friendId", at: \.friendId)
       InputField("source", at: \.source)
+      InputField("text", at: \.text)
       InputField("order", at: \.order)
       InputField("context", at: \.context)
     }
@@ -115,6 +120,7 @@ extension FriendQuote {
       id: .init(rawValue: input.id ?? UUID()),
       friendId: .init(rawValue: input.friendId),
       source: input.source,
+      text: input.text,
       order: input.order,
       context: input.context
     )
@@ -125,6 +131,7 @@ extension FriendQuote {
       id: .init(rawValue: input.id),
       friendId: .init(rawValue: input.friendId),
       source: input.source,
+      text: input.text,
       order: input.order,
       context: input.context
     )
@@ -133,6 +140,7 @@ extension FriendQuote {
   func update(_ input: AppSchema.UpdateFriendQuoteInput) {
     self.friendId = .init(rawValue: input.friendId)
     self.source = input.source
+    self.text = input.text
     self.order = input.order
     self.context = input.context
     self.updatedAt = Current.date()
