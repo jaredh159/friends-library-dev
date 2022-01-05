@@ -20,12 +20,16 @@ final class TokenResolverTests: AppTestCase {
           description
           scopes {
             scope
+            token {
+              scopeTokenId: id
+            }
           }
         }
       }
       """,
       expectedData: .containsKVPs([
         "id": token.id.uuidString,
+        "scopeTokenId": token.id.uuidString,
         "value": token.value.uuidString,
         "description": "test",
         "scope": "queryOrders",

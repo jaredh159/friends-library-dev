@@ -12,8 +12,7 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
       at: resolveParent { (tokenScope) async throws -> Token in
         switch tokenScope.token {
           case .notLoaded:
-            // @NEXT
-            fatalError("TokenScope -> Parent<Token> not implemented")
+            return try await Current.db.getToken(tokenScope.tokenId)
           case let .loaded(token):
             return token
         }

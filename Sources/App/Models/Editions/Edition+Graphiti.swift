@@ -77,3 +77,22 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
       as: TypeRef<Audio>?.self)
   }
 }
+
+extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: Edition {
+  convenience init(
+    _ name: FieldKey,
+    with keyPath: ToChildren<EditionChapter>
+  ) where FieldType == [TypeRef<EditionChapter>] {
+    self.init(
+      name.description,
+      at: resolveChildren { (edition) async throws -> [EditionChapter] in
+        switch edition.chapters {
+          case .notLoaded:
+            return try await Current.db.getEditionEditionChapters(edition.id)
+          case let .loaded(editionChildren):
+            return editionChildren
+        }
+      },
+      as: [TypeRef<EditionChapter>].self)
+  }
+}

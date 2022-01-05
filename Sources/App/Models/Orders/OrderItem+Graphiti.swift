@@ -12,8 +12,7 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
       at: resolveParent { (orderItem) async throws -> Order in
         switch orderItem.order {
           case .notLoaded:
-            // @NEXT
-            fatalError("OrderItem -> Parent<Order> not implemented")
+            return try await Current.db.getOrder(orderItem.orderId)
           case let .loaded(order):
             return order
         }
@@ -32,8 +31,7 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
       at: resolveParent { (orderItem) async throws -> Edition in
         switch orderItem.edition {
           case .notLoaded:
-            // @NEXT
-            fatalError("OrderItem -> Parent<Edition> not implemented")
+            return try await Current.db.getEdition(orderItem.editionId)
           case let .loaded(edition):
             return edition
         }

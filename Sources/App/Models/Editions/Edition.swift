@@ -17,6 +17,7 @@ final class Edition: Codable {
   var impression = OptionalChild<EditionImpression>.notLoaded
   var isbn = OptionalChild<Isbn>.notLoaded
   var audio = OptionalChild<Audio>.notLoaded
+  var chapters = Children<EditionChapter>.notLoaded
 
   init(
     id: Id = .init(),

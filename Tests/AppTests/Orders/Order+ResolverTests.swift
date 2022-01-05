@@ -6,15 +6,16 @@ import XCTVaporUtils
 
 final class OrderResolverTests: AppTestCase {
 
-  func testCreateOrder() throws {
+  func testCreateOrder() async throws {
+    let entities = await Entities.create()
     let order = Order.random
     let item = OrderItem.random
     item.orderId = order.id
+    item.editionId = entities.edition.id
     let orderMap = order.gqlMap()
     let itemMap = item.gqlMap()
 
-    GraphQLTest(
-      """
+    let query = """
       mutation CreateOrderWithItems($order: CreateOrderInput!, $items: [CreateOrderItemInput!]!) {
         order: createOrderWithItems(order: $order, items: $items) {
           paymentId
@@ -32,26 +33,39 @@ final class OrderResolverTests: AppTestCase {
           items {
             quantity
             unitPrice
+            order {
+              itemOrderId: id
+            }
+            edition {
+              itemEditionId: id
+            }
           }
         }
       }
-      """,
-      expectedData: .containsKVPs([
-        "paymentId": orderMap["paymentId"],
-        "printJobStatus": orderMap["printJobStatus"],
-        "shippingLevel": orderMap["shippingLevel"],
-        "email": orderMap["email"],
-        "addressName": orderMap["addressName"],
-        "addressStreet": orderMap["addressStreet"],
-        "addressCity": orderMap["addressCity"],
-        "addressState": orderMap["addressState"],
-        "addressZip": orderMap["addressZip"],
-        "addressCountry": orderMap["addressCountry"],
-        "lang": orderMap["lang"],
-        "source": orderMap["source"],
-        "quantity": itemMap["quantity"],
-        "unitPrice": itemMap["unitPrice"],
-      ]),
+      """
+
+    let expectedData = GraphQLTest.ExpectedData.containsKVPs([
+      "paymentId": orderMap["paymentId"],
+      "itemOrderId": orderMap["id"],
+      "itemEditionId": entities.edition.id.uuidString,
+      "printJobStatus": orderMap["printJobStatus"],
+      "shippingLevel": orderMap["shippingLevel"],
+      "email": orderMap["email"],
+      "addressName": orderMap["addressName"],
+      "addressStreet": orderMap["addressStreet"],
+      "addressCity": orderMap["addressCity"],
+      "addressState": orderMap["addressState"],
+      "addressZip": orderMap["addressZip"],
+      "addressCountry": orderMap["addressCountry"],
+      "lang": orderMap["lang"],
+      "source": orderMap["source"],
+      "quantity": itemMap["quantity"],
+      "unitPrice": itemMap["unitPrice"],
+    ])
+
+    GraphQLTest(
+      query,
+      expectedData: expectedData,
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["order": orderMap, "items": .array([itemMap])])
   }

@@ -26,6 +26,7 @@ extension DatabaseClient {
     let tokens = Repository<Token>(db: db)
     let tokenScopes = Repository<TokenScope>(db: db)
     client.createToken = { try await tokens.create($0) }
+    client.getToken = { try await tokens.find($0) }
     client.createTokenScope = { try await tokenScopes.create($0) }
     client.getOrder = { try await orders.find($0) }
     client.getOrders = { try await orders.findAll() }
@@ -197,6 +198,7 @@ extension DatabaseClient {
     let tokens = MockRepository<Token>(db: db, models: \.tokens)
     let tokenScopes = MockRepository<TokenScope>(db: db, models: \.tokenScopes)
     client.createToken = { try await tokens.create($0) }
+    client.getToken = { try await tokens.find($0) }
     client.createTokenScope = { try await tokenScopes.create($0) }
     client.getOrder = { try await orders.find($0) }
     client.getOrders = { try await orders.findAll() }
@@ -348,6 +350,9 @@ extension DatabaseClient {
     createToken: { _ in
       throw Abort(.notImplemented, reason: "db.createToken")
     },
+    getToken: { _ in
+      throw Abort(.notImplemented, reason: "db.getToken")
+    },
     getTokenByValue: { _ in
       throw Abort(.notImplemented, reason: "db.getTokenByValue")
     },
@@ -455,6 +460,9 @@ extension DatabaseClient {
     },
     getFriendDocuments: { _ in
       throw Abort(.notImplemented, reason: "db.getFriendDocuments")
+    },
+    getFriendFriendQuotes: { _ in
+      throw Abort(.notImplemented, reason: "db.getFriendFriendQuotes")
     },
     updateFriend: { _ in
       throw Abort(.notImplemented, reason: "db.updateFriend")
@@ -605,6 +613,9 @@ extension DatabaseClient {
     },
     getEditionIsbn: { _ in
       throw Abort(.notImplemented, reason: "db.getEditionIsbn")
+    },
+    getEditionEditionChapters: { _ in
+      throw Abort(.notImplemented, reason: "db.getEditionEditionChapters")
     },
     getEditionAudio: { _ in
       throw Abort(.notImplemented, reason: "db.getEditionAudio")

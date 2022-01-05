@@ -25,11 +25,16 @@ final class FriendResolverTests: AppTestCase {
   func testGetFriend() async throws {
     let entities = await Entities.create()
 
-    GraphQLTest(
-      """
+    let query = """
       query GetFriend {
         friend: getFriend(id: "\(entities.friend.id.uuidString)") {
           id
+          quotes {
+            quoteId: id
+            friend {
+              quoteFriendId: id
+            }
+          }
           residences {
             city
             durations {
@@ -54,7 +59,13 @@ final class FriendResolverTests: AppTestCase {
                 edition {
                   editionImpressionEditionId: id
                 }
-              } 
+              }
+              chapters {
+                chapterId: id
+                edition {
+                  chapterEditionId: id
+                }
+              }
               document {
                 editionDocumentId: id
               }
@@ -80,25 +91,33 @@ final class FriendResolverTests: AppTestCase {
           }
         }
       }
-      """,
-      expectedData: .containsKVPs([
-        "id": entities.friend.id.uuidString,
-        "friendResidenceFriendId": entities.friend.id.uuidString,
-        "documentFriendId": entities.friend.id.uuidString,
-        "city": entities.friendResidence.city,
-        "residenceDurationResidenceId": entities.friendResidence.id.uuidString,
-        "editionId": entities.edition.id.uuidString,
-        "audioEditionId": entities.edition.id.uuidString,
-        "isbnEditionId": entities.edition.id.uuidString,
-        "editionImpressionEditionId": entities.edition.id.uuidString,
-        "editionImpressionId": entities.editionImpression.id.uuidString,
-        "documentId": entities.document.id.uuidString,
-        "editionDocumentId": entities.document.id.uuidString,
-        "reader": entities.audio.reader,
-        "audioPartAudioId": entities.audio.id.uuidString,
-        "audioPartTitle": entities.audioPart.title,
-        "isbnCode": entities.isbn.code.rawValue,
-      ]),
+      """
+
+    let expectedData = GraphQLTest.ExpectedData.containsKVPs([
+      "id": entities.friend.id.uuidString,
+      "quoteId": entities.friendQuote.id.uuidString,
+      "quoteFriendId": entities.friend.id,
+      "friendResidenceFriendId": entities.friend.id.uuidString,
+      "documentFriendId": entities.friend.id.uuidString,
+      "city": entities.friendResidence.city,
+      "residenceDurationResidenceId": entities.friendResidence.id.uuidString,
+      "editionId": entities.edition.id.uuidString,
+      "chapterEditionId": entities.edition.id.uuidString,
+      "audioEditionId": entities.edition.id.uuidString,
+      "isbnEditionId": entities.edition.id.uuidString,
+      "editionImpressionEditionId": entities.edition.id.uuidString,
+      "editionImpressionId": entities.editionImpression.id.uuidString,
+      "documentId": entities.document.id.uuidString,
+      "editionDocumentId": entities.document.id.uuidString,
+      "reader": entities.audio.reader,
+      "audioPartAudioId": entities.audio.id.uuidString,
+      "audioPartTitle": entities.audioPart.title,
+      "isbnCode": entities.isbn.code.rawValue,
+    ])
+
+    GraphQLTest(
+      query,
+      expectedData: expectedData,
       headers: [.authorization: "Bearer (Seeded.tokens.allScopes)"]
     ).run(Self.app)
   }

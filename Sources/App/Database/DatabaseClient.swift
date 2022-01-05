@@ -6,6 +6,7 @@ import Vapor
 struct DatabaseClient {
   // tokens
   var createToken: (Token) async throws -> Token
+  var getToken: (Token.Id) async throws -> Token
   var getTokenByValue: (Token.Value) async throws -> Token
   var createTokenScope: (TokenScope) async throws -> TokenScope
   var getTokenTokenScopes: (Token.Id) async throws -> [TokenScope]
@@ -52,6 +53,7 @@ struct DatabaseClient {
   var getFriendFriendResidences: (Friend.Id) async throws -> [FriendResidence]
   var getFriends: () async throws -> [Friend]
   var getFriendDocuments: (Friend.Id) async throws -> [Document]
+  var getFriendFriendQuotes: (Friend.Id) async throws -> [FriendQuote]
   var updateFriend: (Friend) async throws -> Friend
   var updateFriends: ([Friend]) async throws -> [Friend]
   var deleteFriend: (Friend.Id) async throws -> Friend
@@ -121,6 +123,7 @@ struct DatabaseClient {
   var createEditions: ([Edition]) async throws -> [Edition]
   var getEdition: (Edition.Id) async throws -> Edition
   var getEditionIsbn: (Edition.Id) async throws -> Isbn?
+  var getEditionEditionChapters: (Edition.Id) async throws -> [EditionChapter]
   var getEditionAudio: (Edition.Id) async throws -> Audio?
   var getEditionEditionImpression: (Edition.Id) async throws -> EditionImpression?
   var getEditions: () async throws -> [Edition]
