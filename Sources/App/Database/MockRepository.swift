@@ -27,6 +27,12 @@ struct MockRepository<Model: DuetModel> {
     return db.find(where: predicate, in: models)
   }
 
+  // func findAll(where constraint: SQL.WhereConstraint? = nil) async throws -> [Model] {
+  //   // guard let predicate = predicate else { return db.all(models) }
+  //   // return db.find(where: predicate, in: models)
+  //   fatalError()
+  // }
+
   // UPDATE
 
   func update(_ model: Model) async throws -> Model {

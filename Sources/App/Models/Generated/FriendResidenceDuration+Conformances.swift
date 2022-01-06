@@ -34,4 +34,23 @@ extension FriendResidenceDuration {
   }
 }
 
+extension FriendResidenceDuration: SQLInspectable {
+  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+    switch constraint.column {
+      case "id":
+        return .id(self) == constraint.value
+      case "friendResidenceId":
+        return .uuid(friendResidenceId) == constraint.value
+      case "start":
+        return .int(start) == constraint.value
+      case "end":
+        return .int(end) == constraint.value
+      case "createdAt":
+        return .date(createdAt) == constraint.value
+      default:
+        return false
+    }
+  }
+}
+
 extension FriendResidenceDuration: Auditable {}

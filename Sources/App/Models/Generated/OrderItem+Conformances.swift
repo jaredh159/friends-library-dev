@@ -36,4 +36,25 @@ extension OrderItem {
   }
 }
 
+extension OrderItem: SQLInspectable {
+  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+    switch constraint.column {
+      case "id":
+        return .id(self) == constraint.value
+      case "orderId":
+        return .uuid(orderId) == constraint.value
+      case "editionId":
+        return .uuid(editionId) == constraint.value
+      case "quantity":
+        return .int(quantity) == constraint.value
+      case "unitPrice":
+        return .int(unitPrice.rawValue) == constraint.value
+      case "createdAt":
+        return .date(createdAt) == constraint.value
+      default:
+        return false
+    }
+  }
+}
+
 extension OrderItem: Auditable {}

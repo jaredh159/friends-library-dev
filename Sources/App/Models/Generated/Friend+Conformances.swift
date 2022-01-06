@@ -46,5 +46,36 @@ extension Friend {
   }
 }
 
+extension Friend: SQLInspectable {
+  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+    switch constraint.column {
+      case "id":
+        return .id(self) == constraint.value
+      case "lang":
+        return .enum(lang) == constraint.value
+      case "name":
+        return .string(name) == constraint.value
+      case "slug":
+        return .string(slug) == constraint.value
+      case "gender":
+        return .enum(gender) == constraint.value
+      case "description":
+        return .string(description) == constraint.value
+      case "born":
+        return .int(born) == constraint.value
+      case "died":
+        return .int(died) == constraint.value
+      case "published":
+        return .date(published) == constraint.value
+      case "createdAt":
+        return .date(createdAt) == constraint.value
+      case "updatedAt":
+        return .date(updatedAt) == constraint.value
+      default:
+        return false
+    }
+  }
+}
+
 extension Friend: Auditable {}
 extension Friend: Touchable {}

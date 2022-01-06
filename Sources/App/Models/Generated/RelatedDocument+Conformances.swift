@@ -36,5 +36,26 @@ extension RelatedDocument {
   }
 }
 
+extension RelatedDocument: SQLInspectable {
+  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+    switch constraint.column {
+      case "id":
+        return .id(self) == constraint.value
+      case "description":
+        return .string(description) == constraint.value
+      case "documentId":
+        return .uuid(documentId) == constraint.value
+      case "parentDocumentId":
+        return .uuid(parentDocumentId) == constraint.value
+      case "createdAt":
+        return .date(createdAt) == constraint.value
+      case "updatedAt":
+        return .date(updatedAt) == constraint.value
+      default:
+        return false
+    }
+  }
+}
+
 extension RelatedDocument: Auditable {}
 extension RelatedDocument: Touchable {}

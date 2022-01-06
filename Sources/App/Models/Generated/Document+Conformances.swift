@@ -53,5 +53,44 @@ extension Document {
   }
 }
 
+extension Document: SQLInspectable {
+  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+    switch constraint.column {
+      case "id":
+        return .id(self) == constraint.value
+      case "friendId":
+        return .uuid(friendId) == constraint.value
+      case "altLanguageId":
+        return .uuid(altLanguageId) == constraint.value
+      case "title":
+        return .string(title) == constraint.value
+      case "slug":
+        return .string(slug) == constraint.value
+      case "filename":
+        return .string(filename) == constraint.value
+      case "published":
+        return .int(published) == constraint.value
+      case "originalTitle":
+        return .string(originalTitle) == constraint.value
+      case "incomplete":
+        return .bool(incomplete) == constraint.value
+      case "description":
+        return .string(description) == constraint.value
+      case "partialDescription":
+        return .string(partialDescription) == constraint.value
+      case "featuredDescription":
+        return .string(featuredDescription) == constraint.value
+      case "createdAt":
+        return .date(createdAt) == constraint.value
+      case "updatedAt":
+        return .date(updatedAt) == constraint.value
+      case "deletedAt":
+        return .date(deletedAt) == constraint.value
+      default:
+        return false
+    }
+  }
+}
+
 extension Document: Auditable {}
 extension Document: Touchable {}

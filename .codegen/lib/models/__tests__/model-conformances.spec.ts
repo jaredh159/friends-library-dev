@@ -50,6 +50,21 @@ describe(`generateModelConformances()`, () => {
           case version
         }
       }
+
+      extension TokenScope: SQLInspectable {
+        func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+          switch constraint.column {
+            case "id":
+              return .id(self) == constraint.value
+            case "name":
+              return .string(name) == constraint.value
+            case "version":
+              return .string(version.rawValue) == constraint.value
+            default:
+              return false
+          }
+        }
+      }
     `).trim();
 
     const [path, code] = generateModelConformances(model, types);
@@ -91,6 +106,21 @@ describe(`generateModelConformances()`, () => {
           case createdAt
           case updatedAt
           case deletedAt
+        }
+      }
+
+      extension TokenScope: SQLInspectable {
+        func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+          switch constraint.column {
+            case "createdAt":
+              return .date(createdAt) == constraint.value
+            case "updatedAt":
+              return .date(updatedAt) == constraint.value
+            case "deletedAt":
+              return .date(deletedAt) == constraint.value
+            default:
+              return false
+          }
         }
       }
 

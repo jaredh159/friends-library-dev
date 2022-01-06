@@ -85,6 +85,10 @@ extension Array where Element: DuetModel {
   }
 }
 
+protocol SQLInspectable {
+  func satisfies(constraint: SQL.WhereConstraint) -> Bool
+}
+
 protocol RandomEmptyInitializing {
   init()
 }

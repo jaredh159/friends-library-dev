@@ -40,5 +40,30 @@ extension FriendQuote {
   }
 }
 
+extension FriendQuote: SQLInspectable {
+  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+    switch constraint.column {
+      case "id":
+        return .id(self) == constraint.value
+      case "friendId":
+        return .uuid(friendId) == constraint.value
+      case "source":
+        return .string(source) == constraint.value
+      case "text":
+        return .string(text) == constraint.value
+      case "order":
+        return .int(order) == constraint.value
+      case "context":
+        return .string(context) == constraint.value
+      case "createdAt":
+        return .date(createdAt) == constraint.value
+      case "updatedAt":
+        return .date(updatedAt) == constraint.value
+      default:
+        return false
+    }
+  }
+}
+
 extension FriendQuote: Auditable {}
 extension FriendQuote: Touchable {}

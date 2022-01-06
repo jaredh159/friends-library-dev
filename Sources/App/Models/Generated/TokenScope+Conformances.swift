@@ -32,4 +32,21 @@ extension TokenScope {
   }
 }
 
+extension TokenScope: SQLInspectable {
+  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+    switch constraint.column {
+      case "id":
+        return .id(self) == constraint.value
+      case "scope":
+        return .enum(scope) == constraint.value
+      case "tokenId":
+        return .uuid(tokenId) == constraint.value
+      case "createdAt":
+        return .date(createdAt) == constraint.value
+      default:
+        return false
+    }
+  }
+}
+
 extension TokenScope: Auditable {}

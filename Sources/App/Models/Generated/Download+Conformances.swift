@@ -64,4 +64,53 @@ extension Download {
   }
 }
 
+extension Download: SQLInspectable {
+  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+    switch constraint.column {
+      case "id":
+        return .id(self) == constraint.value
+      case "editionId":
+        return .uuid(editionId) == constraint.value
+      case "format":
+        return .enum(format) == constraint.value
+      case "source":
+        return .enum(source) == constraint.value
+      case "audioQuality":
+        return .enum(audioQuality) == constraint.value
+      case "audioPartNumber":
+        return .int(audioPartNumber) == constraint.value
+      case "isMobile":
+        return .bool(isMobile) == constraint.value
+      case "userAgent":
+        return .string(userAgent) == constraint.value
+      case "os":
+        return .string(os) == constraint.value
+      case "browser":
+        return .string(browser) == constraint.value
+      case "platform":
+        return .string(platform) == constraint.value
+      case "referrer":
+        return .string(referrer) == constraint.value
+      case "ip":
+        return .string(ip) == constraint.value
+      case "city":
+        return .string(city) == constraint.value
+      case "region":
+        return .string(region) == constraint.value
+      case "postalCode":
+        return .string(postalCode) == constraint.value
+      case "country":
+        return .string(country) == constraint.value
+      case "latitude":
+        return .string(latitude) == constraint.value
+      case "longitude":
+        return .string(longitude) == constraint.value
+      case "createdAt":
+        return .date(createdAt) == constraint.value
+      default:
+        return false
+    }
+  }
+}
+
 extension Download: Auditable {}

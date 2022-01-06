@@ -163,3 +163,7 @@ extension Sequence where Element == String {
     "\"\(self.joined(separator: "\", \""))\""
   }
 }
+
+func == (lhs: String, rhs: Postgres.Data) -> SQL.WhereConstraint {
+  (lhs, .equals, rhs)
+}

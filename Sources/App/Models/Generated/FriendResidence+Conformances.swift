@@ -36,5 +36,26 @@ extension FriendResidence {
   }
 }
 
+extension FriendResidence: SQLInspectable {
+  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+    switch constraint.column {
+      case "id":
+        return .id(self) == constraint.value
+      case "friendId":
+        return .uuid(friendId) == constraint.value
+      case "city":
+        return .string(city) == constraint.value
+      case "region":
+        return .string(region) == constraint.value
+      case "createdAt":
+        return .date(createdAt) == constraint.value
+      case "updatedAt":
+        return .date(updatedAt) == constraint.value
+      default:
+        return false
+    }
+  }
+}
+
 extension FriendResidence: Auditable {}
 extension FriendResidence: Touchable {}

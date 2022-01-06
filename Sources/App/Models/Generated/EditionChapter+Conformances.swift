@@ -44,5 +44,34 @@ extension EditionChapter {
   }
 }
 
+extension EditionChapter: SQLInspectable {
+  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+    switch constraint.column {
+      case "id":
+        return .id(self) == constraint.value
+      case "editionId":
+        return .uuid(editionId) == constraint.value
+      case "order":
+        return .int(order) == constraint.value
+      case "shortHeading":
+        return .string(shortHeading) == constraint.value
+      case "isIntermediateTitle":
+        return .bool(isIntermediateTitle) == constraint.value
+      case "customId":
+        return .string(customId) == constraint.value
+      case "sequenceNumber":
+        return .int(sequenceNumber) == constraint.value
+      case "nonSequenceTitle":
+        return .string(nonSequenceTitle) == constraint.value
+      case "createdAt":
+        return .date(createdAt) == constraint.value
+      case "updatedAt":
+        return .date(updatedAt) == constraint.value
+      default:
+        return false
+    }
+  }
+}
+
 extension EditionChapter: Auditable {}
 extension EditionChapter: Touchable {}

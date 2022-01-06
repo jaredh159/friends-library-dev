@@ -52,5 +52,42 @@ extension FreeOrderRequest {
   }
 }
 
+extension FreeOrderRequest: SQLInspectable {
+  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+    switch constraint.column {
+      case "id":
+        return .id(self) == constraint.value
+      case "name":
+        return .string(name) == constraint.value
+      case "email":
+        return .string(email.rawValue) == constraint.value
+      case "requestedBooks":
+        return .string(requestedBooks) == constraint.value
+      case "aboutRequester":
+        return .string(aboutRequester) == constraint.value
+      case "addressStreet":
+        return .string(addressStreet) == constraint.value
+      case "addressStreet2":
+        return .string(addressStreet2) == constraint.value
+      case "addressCity":
+        return .string(addressCity) == constraint.value
+      case "addressState":
+        return .string(addressState) == constraint.value
+      case "addressZip":
+        return .string(addressZip) == constraint.value
+      case "addressCountry":
+        return .string(addressCountry) == constraint.value
+      case "source":
+        return .string(source) == constraint.value
+      case "createdAt":
+        return .date(createdAt) == constraint.value
+      case "updatedAt":
+        return .date(updatedAt) == constraint.value
+      default:
+        return false
+    }
+  }
+}
+
 extension FreeOrderRequest: Auditable {}
 extension FreeOrderRequest: Touchable {}

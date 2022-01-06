@@ -1,4 +1,4 @@
-import { insertData } from './model-db-data';
+import { insertData, toPostgresData } from './model-db-data';
 import { GlobalTypes } from '../types';
 import Model from './Model';
 
@@ -36,6 +36,21 @@ export function generateModelConformances(
   code += props.map((p) => `case ${p.name}`).join(`\n    `);
   code += `\n  }\n}\n`;
 
+  code += INSPECTABLE_PATTERN.replace(`Thing`, model.name).replace(
+    `// CASES_HERE`,
+    model.props
+      .flatMap((prop) => [
+        `case "${prop.name}":`,
+        `  return ${toPostgresData(
+          prop,
+          model,
+          globalTypes,
+          `forInspect`,
+        )} == constraint.value`,
+      ])
+      .join(`\n      `),
+  );
+
   if (props.some((p) => p.name == `createdAt` && p.type === `Date`)) {
     code += `\nextension ${name}: Auditable {}\n`;
   }
@@ -56,3 +71,15 @@ function pascalToSnake(str: string): string {
     .join('_')
     .toLowerCase();
 }
+
+const INSPECTABLE_PATTERN = /* swift */ `
+extension Thing: SQLInspectable {
+  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+    switch constraint.column {
+      // CASES_HERE
+      default:
+        return false
+    }
+  }
+}
+`;

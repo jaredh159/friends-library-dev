@@ -30,4 +30,19 @@ extension DocumentTagModel {
   }
 }
 
+extension DocumentTagModel: SQLInspectable {
+  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+    switch constraint.column {
+      case "id":
+        return .id(self) == constraint.value
+      case "slug":
+        return .enum(slug) == constraint.value
+      case "createdAt":
+        return .date(createdAt) == constraint.value
+      default:
+        return false
+    }
+  }
+}
+
 extension DocumentTagModel: Auditable {}

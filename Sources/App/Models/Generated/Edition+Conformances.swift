@@ -43,5 +43,34 @@ extension Edition {
   }
 }
 
+extension Edition: SQLInspectable {
+  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+    switch constraint.column {
+      case "id":
+        return .id(self) == constraint.value
+      case "documentId":
+        return .uuid(documentId) == constraint.value
+      case "type":
+        return .enum(type) == constraint.value
+      case "editor":
+        return .string(editor) == constraint.value
+      case "isDraft":
+        return .bool(isDraft) == constraint.value
+      case "paperbackSplits":
+        return .intArray(paperbackSplits?.array) == constraint.value
+      case "paperbackOverrideSize":
+        return .enum(paperbackOverrideSize) == constraint.value
+      case "createdAt":
+        return .date(createdAt) == constraint.value
+      case "updatedAt":
+        return .date(updatedAt) == constraint.value
+      case "deletedAt":
+        return .date(deletedAt) == constraint.value
+      default:
+        return false
+    }
+  }
+}
+
 extension Edition: Auditable {}
 extension Edition: Touchable {}

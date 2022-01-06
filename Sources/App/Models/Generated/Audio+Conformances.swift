@@ -48,5 +48,38 @@ extension Audio {
   }
 }
 
+extension Audio: SQLInspectable {
+  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+    switch constraint.column {
+      case "id":
+        return .id(self) == constraint.value
+      case "editionId":
+        return .uuid(editionId) == constraint.value
+      case "reader":
+        return .string(reader) == constraint.value
+      case "isIncomplete":
+        return .bool(isIncomplete) == constraint.value
+      case "mp3ZipSizeHq":
+        return .int(mp3ZipSizeHq.rawValue) == constraint.value
+      case "mp3ZipSizeLq":
+        return .int(mp3ZipSizeLq.rawValue) == constraint.value
+      case "m4bSizeHq":
+        return .int(m4bSizeHq.rawValue) == constraint.value
+      case "m4bSizeLq":
+        return .int(m4bSizeLq.rawValue) == constraint.value
+      case "externalPlaylistIdHq":
+        return .int64(externalPlaylistIdHq?.rawValue) == constraint.value
+      case "externalPlaylistIdLq":
+        return .int64(externalPlaylistIdLq?.rawValue) == constraint.value
+      case "createdAt":
+        return .date(createdAt) == constraint.value
+      case "updatedAt":
+        return .date(updatedAt) == constraint.value
+      default:
+        return false
+    }
+  }
+}
+
 extension Audio: Auditable {}
 extension Audio: Touchable {}

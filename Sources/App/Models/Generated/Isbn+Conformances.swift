@@ -34,5 +34,24 @@ extension Isbn {
   }
 }
 
+extension Isbn: SQLInspectable {
+  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+    switch constraint.column {
+      case "id":
+        return .id(self) == constraint.value
+      case "code":
+        return .string(code.rawValue) == constraint.value
+      case "editionId":
+        return .uuid(editionId) == constraint.value
+      case "createdAt":
+        return .date(createdAt) == constraint.value
+      case "updatedAt":
+        return .date(updatedAt) == constraint.value
+      default:
+        return false
+    }
+  }
+}
+
 extension Isbn: Auditable {}
 extension Isbn: Touchable {}

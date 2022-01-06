@@ -3,7 +3,7 @@ import stripIndent from 'strip-indent';
 import { GlobalTypes } from '../types';
 import Model from './Model';
 
-export function insertData(model: Model, globalTypes: GlobalTypes): string {
+export function insertData(model: Model, types: GlobalTypes): string {
   let code = stripIndent(/* swift */ `
     extension __MODEL_NAME__ {
       var insertValues: [String: Postgres.Data] {
@@ -14,75 +14,82 @@ export function insertData(model: Model, globalTypes: GlobalTypes): string {
     } 
   `).trim();
 
-  const values: Array<[name: string, value: string] | null> = model.props.map((prop) => {
-    const { name: ident, type } = prop;
-    if (ident === `deletedAt`) {
-      return null;
-    }
+  const values = model.props
+    .filter((p) => p.name != `deletedAt`)
+    .map((prop) => [prop.name, toPostgresData(prop, model, types, `forInsert`)]);
 
-    if (type === `Date` && [`createdAt`, `updatedAt`].includes(ident)) {
-      return [ident, `.currentTimestamp`];
-    }
+  return code
+    .replace(`__MODEL_NAME__`, model.name)
+    .replace(
+      `// VALUES_HERE`,
+      values.map(([ident, value]) => `Self[.${ident}]: ${value},`).join(`\n      `),
+    );
+}
 
-    if (type.match(/.+\.Id\??$/)) {
-      return [ident, `.uuid(${ident})`];
-    }
+export function toPostgresData(
+  prop: { name: string; type: string },
+  model: Model,
+  types: GlobalTypes,
+  purpose: 'forInsert' | 'forInspect',
+): string {
+  const { name: ident, type } = prop;
+  if (
+    type === `Date` &&
+    [`createdAt`, `updatedAt`].includes(ident) &&
+    purpose === `forInsert`
+  ) {
+    return `.currentTimestamp`;
+  }
 
-    switch (type) {
-      case `Id`:
-        return [ident, `.id(self)`];
-      case `NonEmpty<[Int]>`:
-        return [ident, `.intArray(${ident}.array)`];
-      case `NonEmpty<[Int]>?`:
-        return [ident, `.intArray(${ident}?.array)`];
-      case `Seconds<Double>`:
-        return [ident, `.double(${ident}.rawValue)`];
-      case `Cents<Int>`:
-        return [ident, `.int(${ident}.rawValue)`];
-      case `Date`:
-      case `Date?`:
-        return [ident, `.date(${ident})`];
-      case `Int64`:
-      case `Int64?`:
-        return [ident, `.int64(${ident})`];
-      case `Int`:
-      case `Int?`:
-        return [ident, `.int(${ident})`];
-      case `Bool`:
-      case `Bool?`:
-        return [ident, `.bool(${ident})`];
-      case `String`:
-      case `String?`:
-        return [ident, `.string(${ident})`];
-      default:
-        const chain = type.endsWith(`?`) ? `?.` : `.`;
-        const honestType = type.replace(/\?$/, ``);
-        const taggedType =
-          model.taggedTypes[honestType] || globalTypes.taggedTypes[honestType];
-        if (taggedType) {
-          switch (taggedType) {
-            case `Int`:
-              return [ident, `.int(${ident}${chain}rawValue)`];
-            case `Int64`:
-              return [ident, `.int64(${ident}${chain}rawValue)`];
-            case `UUID`:
-              return [ident, `.uuid(${ident})`];
-            case `String`:
-              return [ident, `.string(${ident}${chain}rawValue)`];
-            default:
-              throw new Error(`Tagged subtype ${taggedType} not implemented`);
-          }
+  if (type.match(/.+\.Id\??$/)) {
+    return `.uuid(${ident})`;
+  }
+
+  switch (type) {
+    case `Id`:
+      return `.id(self)`;
+    case `NonEmpty<[Int]>`:
+      return `.intArray(${ident}.array)`;
+    case `NonEmpty<[Int]>?`:
+      return `.intArray(${ident}?.array)`;
+    case `Seconds<Double>`:
+      return `.double(${ident}.rawValue)`;
+    case `Cents<Int>`:
+      return `.int(${ident}.rawValue)`;
+    case `Date`:
+    case `Date?`:
+      return `.date(${ident})`;
+    case `Int64`:
+    case `Int64?`:
+      return `.int64(${ident})`;
+    case `Int`:
+    case `Int?`:
+      return `.int(${ident})`;
+    case `Bool`:
+    case `Bool?`:
+      return `.bool(${ident})`;
+    case `String`:
+    case `String?`:
+      return `.string(${ident})`;
+    default:
+      const chain = type.endsWith(`?`) ? `?.` : `.`;
+      const honestType = type.replace(/\?$/, ``);
+      const taggedType = model.taggedTypes[honestType] || types.taggedTypes[honestType];
+      if (taggedType) {
+        switch (taggedType) {
+          case `Int`:
+            return `.int(${ident}${chain}rawValue)`;
+          case `Int64`:
+            return `.int64(${ident}${chain}rawValue)`;
+          case `UUID`:
+            return `.uuid(${ident})`;
+          case `String`:
+            return `.string(${ident}${chain}rawValue)`;
+          default:
+            throw new Error(`Tagged subtype ${taggedType} not implemented`);
         }
+      }
 
-        return [ident, `.enum(${ident})`];
-    }
-  });
-
-  return code.replace(`__MODEL_NAME__`, model.name).replace(
-    `// VALUES_HERE`,
-    values
-      .filter(isNotNull)
-      .map(([ident, value]) => `Self[.${ident}]: ${value},`)
-      .join(`\n      `),
-  );
+      return `.enum(${ident})`;
+  }
 }
