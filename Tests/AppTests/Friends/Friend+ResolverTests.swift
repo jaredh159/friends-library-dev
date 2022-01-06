@@ -52,6 +52,12 @@ final class FriendResolverTests: AppTestCase {
             friend {
               documentFriendId: id
             }
+            tags {
+              tagId: id
+              document {
+                documentTagDocumentId: id
+              }
+            }
             editions {
               editionId: id
               impression {
@@ -96,6 +102,8 @@ final class FriendResolverTests: AppTestCase {
     let expectedData = GraphQLTest.ExpectedData.containsKVPs([
       "id": entities.friend.id.uuidString,
       "quoteId": entities.friendQuote.id.uuidString,
+      "tagId": entities.documentTag.id.uuidString,
+      "documentTagDocumentId": entities.document.id.uuidString,
       "quoteFriendId": entities.friend.id,
       "friendResidenceFriendId": entities.friend.id.uuidString,
       "documentFriendId": entities.friend.id.uuidString,

@@ -1,6 +1,7 @@
 # Converge TODOs:
 
 - [ ] - figure out related documents weirdness...
+- [ ] - fix gap in migrations number (removed doc tag pivot)
 - [ ] - write yaml import migration after all new migrations (shells out...)
 - [ ] - add foreign key migration to connect Download/OrderItem FK's AND Order->EditionId
 

@@ -9,7 +9,7 @@ extension DatabaseClient {
     let audios = Repository<Audio>(db: db)
     let audioParts = Repository<AudioPart>(db: db)
     let documents = Repository<Document>(db: db)
-    let documentTagModels = Repository<DocumentTagModel>(db: db)
+    let documentTags = Repository<DocumentTag>(db: db)
     let relatedDocuments = Repository<RelatedDocument>(db: db)
     let downloads = Repository<Download>(db: db)
     let editions = Repository<Edition>(db: db)
@@ -150,13 +150,14 @@ extension DatabaseClient {
     client.updateIsbns = { try await isbns.update($0) }
     client.deleteIsbn = { try await isbns.delete($0) }
     client.deleteAllIsbns = { try await isbns.deleteAll() }
-    client.createDocumentTagModels = { try await documentTagModels.create($0) }
+    client.createDocumentTag = { try await documentTags.create($0) }
+    client.getDocumentTags = { try await documentTags.findAll(where: $0) }
     client.createArtifactProductionVersion = { try await artifactProductionVersions.create($0) }
     artifactProductionVersions.assign(client: &client)
     audios.assign(client: &client)
     audioParts.assign(client: &client)
     documents.assign(client: &client)
-    documentTagModels.assign(client: &client)
+    documentTags.assign(client: &client)
     relatedDocuments.assign(client: &client)
     downloads.assign(client: &client)
     editions.assign(client: &client)
@@ -182,7 +183,7 @@ extension DatabaseClient {
     let audios = MockRepository<Audio>(db: db, models: \.audios)
     let audioParts = MockRepository<AudioPart>(db: db, models: \.audioParts)
     let documents = MockRepository<Document>(db: db, models: \.documents)
-    let documentTagModels = MockRepository<DocumentTagModel>(db: db, models: \.documentTagModels)
+    let documentTags = MockRepository<DocumentTag>(db: db, models: \.documentTags)
     let relatedDocuments = MockRepository<RelatedDocument>(db: db, models: \.relatedDocuments)
     let downloads = MockRepository<Download>(db: db, models: \.downloads)
     let editions = MockRepository<Edition>(db: db, models: \.editions)
@@ -323,13 +324,14 @@ extension DatabaseClient {
     client.updateIsbns = { try await isbns.update($0) }
     client.deleteIsbn = { try await isbns.delete($0) }
     client.deleteAllIsbns = { try await isbns.deleteAll() }
-    client.createDocumentTagModels = { try await documentTagModels.create($0) }
+    client.createDocumentTag = { try await documentTags.create($0) }
+    client.getDocumentTags = { try await documentTags.findAll(where: $0) }
     client.createArtifactProductionVersion = { try await artifactProductionVersions.create($0) }
     artifactProductionVersions.assign(client: &client)
     audios.assign(client: &client)
     audioParts.assign(client: &client)
     documents.assign(client: &client)
-    documentTagModels.assign(client: &client)
+    documentTags.assign(client: &client)
     relatedDocuments.assign(client: &client)
     downloads.assign(client: &client)
     editions.assign(client: &client)
@@ -742,8 +744,11 @@ extension DatabaseClient {
     deleteAllIsbns: {
       throw Abort(.notImplemented, reason: "db.deleteAllIsbns")
     },
-    createDocumentTagModels: { _ in
-      throw Abort(.notImplemented, reason: "db.createDocumentTagModels")
+    createDocumentTag: { _ in
+      throw Abort(.notImplemented, reason: "db.createDocumentTag")
+    },
+    getDocumentTags: { _ in
+      throw Abort(.notImplemented, reason: "db.getDocumentTags")
     },
     createArtifactProductionVersion: { _ in
       throw Abort(.notImplemented, reason: "db.createArtifactProductionVersion")

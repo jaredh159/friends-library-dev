@@ -11,17 +11,6 @@ enum EditionType: String, Codable, CaseIterable {
   case modernized
 }
 
-enum DocumentTag: String, Codable, CaseIterable {
-  case journal
-  case letters
-  case exhortation
-  case doctrinal
-  case treatise
-  case history
-  case allegory
-  case spiritualLife
-}
-
 enum PrintSizeVariant: String, Codable, CaseIterable {
   case s
   case m

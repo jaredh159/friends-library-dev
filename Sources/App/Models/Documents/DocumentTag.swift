@@ -1,12 +1,31 @@
 import Foundation
 
-final class DocumentTagModel: Codable {
+final class DocumentTag: Codable {
   var id: Id
-  var slug: DocumentTag
+  var documentId: Document.Id
+  var type: TagType
   var createdAt = Current.date()
 
-  init(id: Id = .init(), slug: DocumentTag) {
+  var document = Parent<Document>.notLoaded
+
+  init(id: Id = .init(), documentId: Document.Id, type: TagType) {
     self.id = id
-    self.slug = slug
+    self.documentId = documentId
+    self.type = type
+  }
+}
+
+// extensions
+
+extension DocumentTag {
+  enum TagType: String, Codable, CaseIterable {
+    case journal
+    case letters
+    case exhortation
+    case doctrinal
+    case treatise
+    case history
+    case allegory
+    case spiritualLife
   }
 }

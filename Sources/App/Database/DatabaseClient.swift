@@ -176,7 +176,8 @@ struct DatabaseClient {
   var deleteAllIsbns: () async throws -> Void
 
   // document tags
-  var createDocumentTagModels: ([DocumentTagModel]) async throws -> [DocumentTagModel]
+  var createDocumentTag: (DocumentTag) async throws -> DocumentTag
+  var getDocumentTags: (SQL.WhereConstraint?) async throws -> [DocumentTag]
 
   // artifact production versions
   var createArtifactProductionVersion:

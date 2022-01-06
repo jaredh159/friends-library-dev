@@ -2,41 +2,45 @@
 import Foundation
 import Tagged
 
-extension DocumentTagModel: AppModel {
-  typealias Id = Tagged<DocumentTagModel, UUID>
+extension DocumentTag: AppModel {
+  typealias Id = Tagged<DocumentTag, UUID>
 }
 
-extension DocumentTagModel: DuetModel {
+extension DocumentTag: DuetModel {
   static let tableName = M15.tableName
 }
 
-extension DocumentTagModel {
+extension DocumentTag {
   var insertValues: [String: Postgres.Data] {
     [
       Self[.id]: .id(self),
-      Self[.slug]: .enum(slug),
+      Self[.documentId]: .uuid(documentId),
+      Self[.type]: .enum(type),
       Self[.createdAt]: .currentTimestamp,
     ]
   }
 }
 
-extension DocumentTagModel {
+extension DocumentTag {
   typealias ColumnName = CodingKeys
 
   enum CodingKeys: String, CodingKey {
     case id
-    case slug
+    case documentId
+    case type
     case createdAt
   }
 }
 
-extension DocumentTagModel: SQLInspectable {
+extension DocumentTag: SQLInspectable {
   func satisfies(constraint: SQL.WhereConstraint) -> Bool {
     switch constraint.column {
       case "id":
         return .id(self) == constraint.value
-      case "slug":
-        return .enum(slug) == constraint.value
+      case "document_id":
+        return .uuid(documentId) == constraint.value
+      case "type":
+        return .enum(type) == constraint.value
       case "created_at":
         return .date(createdAt) == constraint.value
       default:
@@ -45,4 +49,4 @@ extension DocumentTagModel: SQLInspectable {
   }
 }
 
-extension DocumentTagModel: Auditable {}
+extension DocumentTag: Auditable {}

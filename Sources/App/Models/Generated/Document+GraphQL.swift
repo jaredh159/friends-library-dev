@@ -23,6 +23,7 @@ extension AppSchema {
       Field("editions", with: \.editions)
       Field("altLanguageDocument", with: \.altLanguageDocument)
       Field("relatedDocuments", with: \.relatedDocuments)
+      Field("tags", with: \.tags)
     }
   }
 

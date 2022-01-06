@@ -49,6 +49,10 @@ private func loadParent<Child: DuetModel, P: DuetModel>(
       let document = child as! Document
       parent = try await db.getFriend(document.friendId) as! P
 
+    case \DocumentTag.document:
+      let tag = child as! DocumentTag
+      parent = try await db.getDocument(tag.documentId) as! P
+
     case \FriendQuote.friend:
       let quote = child as! FriendQuote
       parent = try await db.getFriend(quote.friendId) as! P

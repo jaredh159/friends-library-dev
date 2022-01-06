@@ -6,6 +6,7 @@ struct Entities {
   var friendResidenceDuration: FriendResidenceDuration
   var friendQuote: FriendQuote
   var document: Document
+  var documentTag: DocumentTag
   var edition: Edition
   var editionChapter: EditionChapter
   var editionImpression: EditionImpression
@@ -28,6 +29,9 @@ struct Entities {
     let document: Document = .random
     document.altLanguageId = nil
     document.friendId = friend.id
+
+    let documentTag: DocumentTag = .random
+    documentTag.documentId = document.id
 
     let edition: Edition = .random
     edition.documentId = document.id
@@ -53,6 +57,7 @@ struct Entities {
       friendResidenceDuration: friendResidenceDuration,
       friendQuote: friendQuote,
       document: document,
+      documentTag: documentTag,
       edition: edition,
       editionChapter: editionChapter,
       editionImpression: editionImpression,
@@ -68,6 +73,7 @@ struct Entities {
     _ = try! await Current.db.createFriendResidence(friendResidence)
     _ = try! await Current.db.createFriendResidenceDuration(friendResidenceDuration)
     _ = try! await Current.db.createDocument(document)
+    _ = try! await Current.db.createDocumentTag(documentTag)
     _ = try! await Current.db.createEdition(edition)
     _ = try! await Current.db.createEditionChapter(editionChapter)
     _ = try! await Current.db.createEditionImpression(editionImpression)

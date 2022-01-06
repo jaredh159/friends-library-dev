@@ -59,7 +59,6 @@ private func addMigrations(to app: Application) {
   app.migrations.add(CreateFriendQuotes())
   app.migrations.add(CreateDocuments())
   app.migrations.add(CreateTags())
-  app.migrations.add(CreateDocumentTagsPivot())
   app.migrations.add(CreateEditions())
   app.migrations.add(CreateEditionImpressions())
   app.migrations.add(CreateIsbns())

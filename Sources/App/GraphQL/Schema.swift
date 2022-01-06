@@ -16,6 +16,7 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   Enum(Order.PrintJobStatus.self)
   Enum(Order.ShippingLevel.self)
   Enum(Order.OrderSource.self)
+  Enum(DocumentTag.TagType.self)
   Enum(Scope.self)
   Enum(Friend.Gender.self)
   Enum(PrintSizeVariant.self)
@@ -61,6 +62,7 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.DocumentType
   AppSchema.CreateDocumentInputType
   AppSchema.UpdateDocumentInputType
+  AppSchema.DocumentTagType
 
   // edition types
   AppSchema.EditionType
@@ -91,6 +93,7 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
     AppSchema.getFriendResidence
     AppSchema.getFriendResidenceDuration
     AppSchema.getDocument
+    AppSchema.getDocumentTag
     AppSchema.getEdition
     AppSchema.getEditionImpression
     AppSchema.getIsbn

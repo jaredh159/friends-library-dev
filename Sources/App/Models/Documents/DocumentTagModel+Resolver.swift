@@ -3,52 +3,52 @@ import Vapor
 // below auto-generated
 
 extension Resolver {
-  func getDocumentTagModel(
+  func getDocumentTag(
     req: Req,
     args: IdentifyEntityArgs
-  ) throws -> Future<DocumentTagModel> {
+  ) throws -> Future<DocumentTag> {
     throw Abort(.notImplemented)
   }
 
-  func getDocumentTagModels(
+  func getDocumentTags(
     req: Req,
     args: NoArgs
-  ) throws -> Future<[DocumentTagModel]> {
+  ) throws -> Future<[DocumentTag]> {
     throw Abort(.notImplemented)
   }
 
-  func createDocumentTagModel(
+  func createDocumentTag(
     req: Req,
-    args: AppSchema.CreateDocumentTagModelArgs
-  ) throws -> Future<DocumentTagModel> {
+    args: AppSchema.CreateDocumentTagArgs
+  ) throws -> Future<DocumentTag> {
     throw Abort(.notImplemented)
   }
 
-  func createDocumentTagModels(
+  func createDocumentTags(
     req: Req,
-    args: AppSchema.CreateDocumentTagModelsArgs
-  ) throws -> Future<[DocumentTagModel]> {
+    args: AppSchema.CreateDocumentTagsArgs
+  ) throws -> Future<[DocumentTag]> {
     throw Abort(.notImplemented)
   }
 
-  func updateDocumentTagModel(
+  func updateDocumentTag(
     req: Req,
-    args: AppSchema.UpdateDocumentTagModelArgs
-  ) throws -> Future<DocumentTagModel> {
+    args: AppSchema.UpdateDocumentTagArgs
+  ) throws -> Future<DocumentTag> {
     throw Abort(.notImplemented)
   }
 
-  func updateDocumentTagModels(
+  func updateDocumentTags(
     req: Req,
-    args: AppSchema.UpdateDocumentTagModelsArgs
-  ) throws -> Future<[DocumentTagModel]> {
+    args: AppSchema.UpdateDocumentTagsArgs
+  ) throws -> Future<[DocumentTag]> {
     throw Abort(.notImplemented)
   }
 
-  func deleteDocumentTagModel(
+  func deleteDocumentTag(
     req: Req,
     args: IdentifyEntityArgs
-  ) throws -> Future<DocumentTagModel> {
+  ) throws -> Future<DocumentTag> {
     throw Abort(.notImplemented)
   }
 }

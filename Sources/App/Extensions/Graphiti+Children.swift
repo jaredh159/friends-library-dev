@@ -51,6 +51,9 @@ private func loadChildren<Parent: DuetModel, Child: DuetModel>(
     case \Document.editions:
       children = try await db.getEditions(Edition[.documentId] == .id(parent)) as! [Child]
 
+    case \Document.tags:
+      children = try await db.getDocumentTags(DocumentTag[.documentId] == .id(parent)) as! [Child]
+
     case \Audio.parts:
       children = try await db.getAudioParts(AudioPart[.audioId] == .id(parent)) as! [Child]
 

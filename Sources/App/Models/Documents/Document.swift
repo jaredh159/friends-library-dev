@@ -21,6 +21,7 @@ final class Document: Codable {
   var editions = Children<Edition>.notLoaded
   var altLanguageDocument = OptionalParent<Document>.notLoaded
   var relatedDocuments = Children<Document>.notLoaded
+  var tags = Children<DocumentTag>.notLoaded
 
   init(
     id: Id = .init(),
