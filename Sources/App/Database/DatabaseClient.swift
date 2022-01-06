@@ -9,11 +9,11 @@ struct DatabaseClient {
   var getToken: (Token.Id) async throws -> Token
   var getTokenByValue: (Token.Value) async throws -> Token
   var createTokenScope: (TokenScope) async throws -> TokenScope
-  var getTokenTokenScopes: (Token.Id) async throws -> [TokenScope]
+  var getTokenScopes: (SQL.WhereConstraint?) async throws -> [TokenScope]
 
   // orders
   var getOrder: (Order.Id) async throws -> Order
-  var getOrders: () async throws -> [Order]
+  var getOrders: (SQL.WhereConstraint?) async throws -> [Order]
   var getOrdersByPrintJobStatus: (Order.PrintJobStatus) async throws -> [Order]
   var updateOrder: (Order) async throws -> Order
   var updateOrders: ([Order]) async throws -> [Order]
@@ -27,7 +27,7 @@ struct DatabaseClient {
   var createOrderItem: (OrderItem) async throws -> OrderItem
   var createOrderItems: ([OrderItem]) async throws -> [OrderItem]
   var getOrderItem: (OrderItem.Id) async throws -> OrderItem
-  var getOrderItems: () async throws -> [OrderItem]
+  var getOrderItems: (SQL.WhereConstraint?) async throws -> [OrderItem]
   var updateOrderItem: (OrderItem) async throws -> OrderItem
   var updateOrderItems: ([OrderItem]) async throws -> [OrderItem]
   var deleteOrderItem: (OrderItem.Id) async throws -> OrderItem
@@ -40,7 +40,7 @@ struct DatabaseClient {
   var createDownload: (Download) async throws -> Download
   var createDownloads: ([Download]) async throws -> [Download]
   var getDownload: (Download.Id) async throws -> Download
-  var getDownloads: () async throws -> [Download]
+  var getDownloads: (SQL.WhereConstraint?) async throws -> [Download]
   var updateDownload: (Download) async throws -> Download
   var updateDownloads: ([Download]) async throws -> [Download]
   var deleteDownload: (Download.Id) async throws -> Download
@@ -50,10 +50,7 @@ struct DatabaseClient {
   var createFriend: (Friend) async throws -> Friend
   var createFriends: ([Friend]) async throws -> [Friend]
   var getFriend: (Friend.Id) async throws -> Friend
-  var getFriendFriendResidences: (Friend.Id) async throws -> [FriendResidence]
-  var getFriends: () async throws -> [Friend]
-  var getFriendDocuments: (Friend.Id) async throws -> [Document]
-  var getFriendFriendQuotes: (Friend.Id) async throws -> [FriendQuote]
+  var getFriends: (SQL.WhereConstraint?) async throws -> [Friend]
   var updateFriend: (Friend) async throws -> Friend
   var updateFriends: ([Friend]) async throws -> [Friend]
   var deleteFriend: (Friend.Id) async throws -> Friend
@@ -63,7 +60,7 @@ struct DatabaseClient {
   var createFriendQuote: (FriendQuote) async throws -> FriendQuote
   var createFriendQuotes: ([FriendQuote]) async throws -> [FriendQuote]
   var getFriendQuote: (FriendQuote.Id) async throws -> FriendQuote
-  var getFriendQuotes: () async throws -> [FriendQuote]
+  var getFriendQuotes: (SQL.WhereConstraint?) async throws -> [FriendQuote]
   var updateFriendQuote: (FriendQuote) async throws -> FriendQuote
   var updateFriendQuotes: ([FriendQuote]) async throws -> [FriendQuote]
   var deleteFriendQuote: (FriendQuote.Id) async throws -> FriendQuote
@@ -73,9 +70,7 @@ struct DatabaseClient {
   var createFriendResidence: (FriendResidence) async throws -> FriendResidence
   var createFriendResidences: ([FriendResidence]) async throws -> [FriendResidence]
   var getFriendResidence: (FriendResidence.Id) async throws -> FriendResidence
-  var getFriendResidenceFriendResidenceDurations:
-    (FriendResidence.Id) async throws -> [FriendResidenceDuration]
-  var getFriendResidences: () async throws -> [FriendResidence]
+  var getFriendResidences: (SQL.WhereConstraint?) async throws -> [FriendResidence]
   var updateFriendResidence: (FriendResidence) async throws -> FriendResidence
   var updateFriendResidences: ([FriendResidence]) async throws -> [FriendResidence]
   var deleteFriendResidence: (FriendResidence.Id) async throws -> FriendResidence
@@ -88,7 +83,7 @@ struct DatabaseClient {
     ([FriendResidenceDuration]) async throws -> [FriendResidenceDuration]
   var getFriendResidenceDuration:
     (FriendResidenceDuration.Id) async throws -> FriendResidenceDuration
-  var getFriendResidenceDurations: () async throws -> [FriendResidenceDuration]
+  var getFriendResidenceDurations: (SQL.WhereConstraint?) async throws -> [FriendResidenceDuration]
   var updateFriendResidenceDuration:
     (FriendResidenceDuration) async throws -> FriendResidenceDuration
   var updateFriendResidenceDurations:
@@ -101,8 +96,7 @@ struct DatabaseClient {
   var createDocument: (Document) async throws -> Document
   var createDocuments: ([Document]) async throws -> [Document]
   var getDocument: (Document.Id) async throws -> Document
-  var getDocumentEditions: (Document.Id) async throws -> [Edition]
-  var getDocuments: () async throws -> [Document]
+  var getDocuments: (SQL.WhereConstraint?) async throws -> [Document]
   var updateDocument: (Document) async throws -> Document
   var updateDocuments: ([Document]) async throws -> [Document]
   var deleteDocument: (Document.Id) async throws -> Document
@@ -112,7 +106,7 @@ struct DatabaseClient {
   var createRelatedDocument: (RelatedDocument) async throws -> RelatedDocument
   var createRelatedDocuments: ([RelatedDocument]) async throws -> [RelatedDocument]
   var getRelatedDocument: (RelatedDocument.Id) async throws -> RelatedDocument
-  var getRelatedDocuments: () async throws -> [RelatedDocument]
+  var getRelatedDocuments: (SQL.WhereConstraint?) async throws -> [RelatedDocument]
   var updateRelatedDocument: (RelatedDocument) async throws -> RelatedDocument
   var updateRelatedDocuments: ([RelatedDocument]) async throws -> [RelatedDocument]
   var deleteRelatedDocument: (RelatedDocument.Id) async throws -> RelatedDocument
@@ -122,11 +116,13 @@ struct DatabaseClient {
   var createEdition: (Edition) async throws -> Edition
   var createEditions: ([Edition]) async throws -> [Edition]
   var getEdition: (Edition.Id) async throws -> Edition
+  // TODO
   var getEditionIsbn: (Edition.Id) async throws -> Isbn?
-  var getEditionEditionChapters: (Edition.Id) async throws -> [EditionChapter]
+  // TODO
   var getEditionAudio: (Edition.Id) async throws -> Audio?
+  // TODO
   var getEditionEditionImpression: (Edition.Id) async throws -> EditionImpression?
-  var getEditions: () async throws -> [Edition]
+  var getEditions: (SQL.WhereConstraint?) async throws -> [Edition]
   var updateEdition: (Edition) async throws -> Edition
   var updateEditions: ([Edition]) async throws -> [Edition]
   var deleteEdition: (Edition.Id) async throws -> Edition
@@ -136,7 +132,7 @@ struct DatabaseClient {
   var createEditionImpression: (EditionImpression) async throws -> EditionImpression
   var createEditionImpressions: ([EditionImpression]) async throws -> [EditionImpression]
   var getEditionImpression: (EditionImpression.Id) async throws -> EditionImpression
-  var getEditionImpressions: () async throws -> [EditionImpression]
+  var getEditionImpressions: (SQL.WhereConstraint?) async throws -> [EditionImpression]
   var updateEditionImpression: (EditionImpression) async throws -> EditionImpression
   var updateEditionImpressions: ([EditionImpression]) async throws -> [EditionImpression]
   var deleteEditionImpression: (EditionImpression.Id) async throws -> EditionImpression
@@ -146,7 +142,7 @@ struct DatabaseClient {
   var createEditionChapter: (EditionChapter) async throws -> EditionChapter
   var createEditionChapters: ([EditionChapter]) async throws -> [EditionChapter]
   var getEditionChapter: (EditionChapter.Id) async throws -> EditionChapter
-  var getEditionChapters: () async throws -> [EditionChapter]
+  var getEditionChapters: (SQL.WhereConstraint?) async throws -> [EditionChapter]
   var updateEditionChapter: (EditionChapter) async throws -> EditionChapter
   var updateEditionChapters: ([EditionChapter]) async throws -> [EditionChapter]
   var deleteEditionChapter: (EditionChapter.Id) async throws -> EditionChapter
@@ -156,8 +152,7 @@ struct DatabaseClient {
   var createAudio: (Audio) async throws -> Audio
   var createAudios: ([Audio]) async throws -> [Audio]
   var getAudio: (Audio.Id) async throws -> Audio
-  var getAudioAudioParts: (Audio.Id) async throws -> [AudioPart]
-  var getAudios: () async throws -> [Audio]
+  var getAudios: (SQL.WhereConstraint?) async throws -> [Audio]
   var updateAudio: (Audio) async throws -> Audio
   var updateAudios: ([Audio]) async throws -> [Audio]
   var deleteAudio: (Audio.Id) async throws -> Audio
@@ -167,7 +162,7 @@ struct DatabaseClient {
   var createAudioPart: (AudioPart) async throws -> AudioPart
   var createAudioParts: ([AudioPart]) async throws -> [AudioPart]
   var getAudioPart: (AudioPart.Id) async throws -> AudioPart
-  var getAudioParts: () async throws -> [AudioPart]
+  var getAudioParts: (SQL.WhereConstraint?) async throws -> [AudioPart]
   var updateAudioPart: (AudioPart) async throws -> AudioPart
   var updateAudioParts: ([AudioPart]) async throws -> [AudioPart]
   var deleteAudioPart: (AudioPart.Id) async throws -> AudioPart
@@ -177,7 +172,7 @@ struct DatabaseClient {
   var createIsbn: (Isbn) async throws -> Isbn
   var createIsbns: ([Isbn]) async throws -> [Isbn]
   var getIsbn: (Isbn.Id) async throws -> Isbn
-  var getIsbns: () async throws -> [Isbn]
+  var getIsbns: (SQL.WhereConstraint?) async throws -> [Isbn]
   var updateIsbn: (Isbn) async throws -> Isbn
   var updateIsbns: ([Isbn]) async throws -> [Isbn]
   var deleteIsbn: (Isbn.Id) async throws -> Isbn

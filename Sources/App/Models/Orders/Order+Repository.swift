@@ -23,7 +23,7 @@ extension Repository where Model == Order {
 
 extension MockRepository where Model == Order {
   func getOrdersByPrintJobStatus(_ status: Order.PrintJobStatus) async throws -> [Order] {
-    try await findAll(where: { $0.printJobStatus == status })
+    try await findAll(where: Order[.printJobStatus] == .enum(status))
   }
 
   func assign(client: inout DatabaseClient) {

@@ -41,15 +41,15 @@ extension OrderItem: SQLInspectable {
     switch constraint.column {
       case "id":
         return .id(self) == constraint.value
-      case "orderId":
+      case "order_id":
         return .uuid(orderId) == constraint.value
-      case "editionId":
+      case "edition_id":
         return .uuid(editionId) == constraint.value
       case "quantity":
         return .int(quantity) == constraint.value
-      case "unitPrice":
+      case "unit_price":
         return .int(unitPrice.rawValue) == constraint.value
-      case "createdAt":
+      case "created_at":
         return .date(createdAt) == constraint.value
       default:
         return false

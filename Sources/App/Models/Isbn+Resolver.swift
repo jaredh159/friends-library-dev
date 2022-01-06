@@ -13,7 +13,7 @@ extension Resolver {
   func getIsbns(req: Req, args: NoArgs) throws -> Future<[Isbn]> {
     try req.requirePermission(to: .queryIsbns)
     return future(of: [Isbn].self, on: req.eventLoop) {
-      try await Current.db.getIsbns()
+      try await Current.db.getIsbns(nil)
     }
   }
 

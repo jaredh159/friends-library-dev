@@ -12,7 +12,7 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
       at: resolveChildren { (friend) async throws -> [Document] in
         switch friend.documents {
           case .notLoaded:
-            return try await Current.db.getFriendDocuments(friend.id)
+            return try await Current.db.getDocuments(Document[.friendId] == .id(friend))
           case let .loaded(friendChildren):
             return friendChildren
         }
@@ -31,7 +31,8 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
       at: resolveChildren { (friend) async throws -> [FriendResidence] in
         switch friend.residences {
           case .notLoaded:
-            return try await Current.db.getFriendFriendResidences(friend.id)
+            return try await Current.db.getFriendResidences(
+              FriendResidence[.friendId] == .id(friend))
           case let .loaded(friendChildren):
             return friendChildren
         }
@@ -50,7 +51,7 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
       at: resolveChildren { (friend) async throws -> [FriendQuote] in
         switch friend.quotes {
           case .notLoaded:
-            return try await Current.db.getFriendFriendQuotes(friend.id)
+            return try await Current.db.getFriendQuotes(FriendQuote[.friendId] == .id(friend))
           case let .loaded(friendChildren):
             return friendChildren
         }

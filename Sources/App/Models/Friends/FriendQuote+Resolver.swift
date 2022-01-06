@@ -13,7 +13,7 @@ extension Resolver {
   func getFriendQuotes(req: Req, args: NoArgs) throws -> Future<[FriendQuote]> {
     try req.requirePermission(to: .queryFriends)
     return future(of: [FriendQuote].self, on: req.eventLoop) {
-      try await Current.db.getFriendQuotes()
+      try await Current.db.getFriendQuotes(nil)
     }
   }
 

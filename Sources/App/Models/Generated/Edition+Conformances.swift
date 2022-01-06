@@ -48,23 +48,23 @@ extension Edition: SQLInspectable {
     switch constraint.column {
       case "id":
         return .id(self) == constraint.value
-      case "documentId":
+      case "document_id":
         return .uuid(documentId) == constraint.value
       case "type":
         return .enum(type) == constraint.value
       case "editor":
         return .string(editor) == constraint.value
-      case "isDraft":
+      case "is_draft":
         return .bool(isDraft) == constraint.value
-      case "paperbackSplits":
+      case "paperback_splits":
         return .intArray(paperbackSplits?.array) == constraint.value
-      case "paperbackOverrideSize":
+      case "paperback_override_size":
         return .enum(paperbackOverrideSize) == constraint.value
-      case "createdAt":
+      case "created_at":
         return .date(createdAt) == constraint.value
-      case "updatedAt":
+      case "updated_at":
         return .date(updatedAt) == constraint.value
-      case "deletedAt":
+      case "deleted_at":
         return .date(deletedAt) == constraint.value
       default:
         return false

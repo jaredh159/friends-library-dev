@@ -41,6 +41,10 @@ struct Repository<Model: DuetModel> {
     try await _find(id)
   }
 
+  func find(where constraint: SQL.WhereConstraint) async throws -> Model {
+    try await _findAll(where: constraint).firstOrThrowNotFound()
+  }
+
   func findChildren<Child: DuetModel>(_ id: Model.IdValue, fk: String) async throws -> [Child] {
     let prepared = SQL.select(.all, from: Child.tableName, where: (fk, .equals, .uuid(id)))
     let rows = try await SQL.execute(prepared, on: db).all()

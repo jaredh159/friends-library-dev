@@ -28,8 +28,9 @@ extension DatabaseClient {
     client.createToken = { try await tokens.create($0) }
     client.getToken = { try await tokens.find($0) }
     client.createTokenScope = { try await tokenScopes.create($0) }
+    client.getTokenScopes = { try await tokenScopes.findAll(where: $0) }
     client.getOrder = { try await orders.find($0) }
-    client.getOrders = { try await orders.findAll() }
+    client.getOrders = { try await orders.findAll(where: $0) }
     client.updateOrder = { try await orders.update($0) }
     client.updateOrders = { try await orders.update($0) }
     client.createOrder = { try await orders.create($0) }
@@ -39,7 +40,7 @@ extension DatabaseClient {
     client.createOrderItem = { try await orderItems.create($0) }
     client.createOrderItems = { try await orderItems.create($0) }
     client.getOrderItem = { try await orderItems.find($0) }
-    client.getOrderItems = { try await orderItems.findAll() }
+    client.getOrderItems = { try await orderItems.findAll(where: $0) }
     client.updateOrderItem = { try await orderItems.update($0) }
     client.updateOrderItems = { try await orderItems.update($0) }
     client.deleteOrderItem = { try await orderItems.delete($0) }
@@ -48,7 +49,7 @@ extension DatabaseClient {
     client.createDownload = { try await downloads.create($0) }
     client.createDownloads = { try await downloads.create($0) }
     client.getDownload = { try await downloads.find($0) }
-    client.getDownloads = { try await downloads.findAll() }
+    client.getDownloads = { try await downloads.findAll(where: $0) }
     client.updateDownload = { try await downloads.update($0) }
     client.updateDownloads = { try await downloads.update($0) }
     client.deleteDownload = { try await downloads.delete($0) }
@@ -56,7 +57,7 @@ extension DatabaseClient {
     client.createFriend = { try await friends.create($0) }
     client.createFriends = { try await friends.create($0) }
     client.getFriend = { try await friends.find($0) }
-    client.getFriends = { try await friends.findAll() }
+    client.getFriends = { try await friends.findAll(where: $0) }
     client.updateFriend = { try await friends.update($0) }
     client.updateFriends = { try await friends.update($0) }
     client.deleteFriend = { try await friends.delete($0) }
@@ -64,7 +65,7 @@ extension DatabaseClient {
     client.createFriendQuote = { try await friendQuotes.create($0) }
     client.createFriendQuotes = { try await friendQuotes.create($0) }
     client.getFriendQuote = { try await friendQuotes.find($0) }
-    client.getFriendQuotes = { try await friendQuotes.findAll() }
+    client.getFriendQuotes = { try await friendQuotes.findAll(where: $0) }
     client.updateFriendQuote = { try await friendQuotes.update($0) }
     client.updateFriendQuotes = { try await friendQuotes.update($0) }
     client.deleteFriendQuote = { try await friendQuotes.delete($0) }
@@ -72,7 +73,7 @@ extension DatabaseClient {
     client.createFriendResidence = { try await friendResidences.create($0) }
     client.createFriendResidences = { try await friendResidences.create($0) }
     client.getFriendResidence = { try await friendResidences.find($0) }
-    client.getFriendResidences = { try await friendResidences.findAll() }
+    client.getFriendResidences = { try await friendResidences.findAll(where: $0) }
     client.updateFriendResidence = { try await friendResidences.update($0) }
     client.updateFriendResidences = { try await friendResidences.update($0) }
     client.deleteFriendResidence = { try await friendResidences.delete($0) }
@@ -80,7 +81,7 @@ extension DatabaseClient {
     client.createFriendResidenceDuration = { try await friendResidenceDurations.create($0) }
     client.createFriendResidenceDurations = { try await friendResidenceDurations.create($0) }
     client.getFriendResidenceDuration = { try await friendResidenceDurations.find($0) }
-    client.getFriendResidenceDurations = { try await friendResidenceDurations.findAll() }
+    client.getFriendResidenceDurations = { try await friendResidenceDurations.findAll(where: $0) }
     client.updateFriendResidenceDuration = { try await friendResidenceDurations.update($0) }
     client.updateFriendResidenceDurations = { try await friendResidenceDurations.update($0) }
     client.deleteFriendResidenceDuration = { try await friendResidenceDurations.delete($0) }
@@ -88,7 +89,7 @@ extension DatabaseClient {
     client.createDocument = { try await documents.create($0) }
     client.createDocuments = { try await documents.create($0) }
     client.getDocument = { try await documents.find($0) }
-    client.getDocuments = { try await documents.findAll() }
+    client.getDocuments = { try await documents.findAll(where: $0) }
     client.updateDocument = { try await documents.update($0) }
     client.updateDocuments = { try await documents.update($0) }
     client.deleteDocument = { try await documents.delete($0) }
@@ -96,7 +97,7 @@ extension DatabaseClient {
     client.createRelatedDocument = { try await relatedDocuments.create($0) }
     client.createRelatedDocuments = { try await relatedDocuments.create($0) }
     client.getRelatedDocument = { try await relatedDocuments.find($0) }
-    client.getRelatedDocuments = { try await relatedDocuments.findAll() }
+    client.getRelatedDocuments = { try await relatedDocuments.findAll(where: $0) }
     client.updateRelatedDocument = { try await relatedDocuments.update($0) }
     client.updateRelatedDocuments = { try await relatedDocuments.update($0) }
     client.deleteRelatedDocument = { try await relatedDocuments.delete($0) }
@@ -104,7 +105,7 @@ extension DatabaseClient {
     client.createEdition = { try await editions.create($0) }
     client.createEditions = { try await editions.create($0) }
     client.getEdition = { try await editions.find($0) }
-    client.getEditions = { try await editions.findAll() }
+    client.getEditions = { try await editions.findAll(where: $0) }
     client.updateEdition = { try await editions.update($0) }
     client.updateEditions = { try await editions.update($0) }
     client.deleteEdition = { try await editions.delete($0) }
@@ -112,7 +113,7 @@ extension DatabaseClient {
     client.createEditionImpression = { try await editionImpressions.create($0) }
     client.createEditionImpressions = { try await editionImpressions.create($0) }
     client.getEditionImpression = { try await editionImpressions.find($0) }
-    client.getEditionImpressions = { try await editionImpressions.findAll() }
+    client.getEditionImpressions = { try await editionImpressions.findAll(where: $0) }
     client.updateEditionImpression = { try await editionImpressions.update($0) }
     client.updateEditionImpressions = { try await editionImpressions.update($0) }
     client.deleteEditionImpression = { try await editionImpressions.delete($0) }
@@ -120,7 +121,7 @@ extension DatabaseClient {
     client.createEditionChapter = { try await editionChapters.create($0) }
     client.createEditionChapters = { try await editionChapters.create($0) }
     client.getEditionChapter = { try await editionChapters.find($0) }
-    client.getEditionChapters = { try await editionChapters.findAll() }
+    client.getEditionChapters = { try await editionChapters.findAll(where: $0) }
     client.updateEditionChapter = { try await editionChapters.update($0) }
     client.updateEditionChapters = { try await editionChapters.update($0) }
     client.deleteEditionChapter = { try await editionChapters.delete($0) }
@@ -128,7 +129,7 @@ extension DatabaseClient {
     client.createAudio = { try await audios.create($0) }
     client.createAudios = { try await audios.create($0) }
     client.getAudio = { try await audios.find($0) }
-    client.getAudios = { try await audios.findAll() }
+    client.getAudios = { try await audios.findAll(where: $0) }
     client.updateAudio = { try await audios.update($0) }
     client.updateAudios = { try await audios.update($0) }
     client.deleteAudio = { try await audios.delete($0) }
@@ -136,7 +137,7 @@ extension DatabaseClient {
     client.createAudioPart = { try await audioParts.create($0) }
     client.createAudioParts = { try await audioParts.create($0) }
     client.getAudioPart = { try await audioParts.find($0) }
-    client.getAudioParts = { try await audioParts.findAll() }
+    client.getAudioParts = { try await audioParts.findAll(where: $0) }
     client.updateAudioPart = { try await audioParts.update($0) }
     client.updateAudioParts = { try await audioParts.update($0) }
     client.deleteAudioPart = { try await audioParts.delete($0) }
@@ -144,7 +145,7 @@ extension DatabaseClient {
     client.createIsbn = { try await isbns.create($0) }
     client.createIsbns = { try await isbns.create($0) }
     client.getIsbn = { try await isbns.find($0) }
-    client.getIsbns = { try await isbns.findAll() }
+    client.getIsbns = { try await isbns.findAll(where: $0) }
     client.updateIsbn = { try await isbns.update($0) }
     client.updateIsbns = { try await isbns.update($0) }
     client.deleteIsbn = { try await isbns.delete($0) }
@@ -200,8 +201,9 @@ extension DatabaseClient {
     client.createToken = { try await tokens.create($0) }
     client.getToken = { try await tokens.find($0) }
     client.createTokenScope = { try await tokenScopes.create($0) }
+    client.getTokenScopes = { try await tokenScopes.findAll(where: $0) }
     client.getOrder = { try await orders.find($0) }
-    client.getOrders = { try await orders.findAll() }
+    client.getOrders = { try await orders.findAll(where: $0) }
     client.updateOrder = { try await orders.update($0) }
     client.updateOrders = { try await orders.update($0) }
     client.createOrder = { try await orders.create($0) }
@@ -211,7 +213,7 @@ extension DatabaseClient {
     client.createOrderItem = { try await orderItems.create($0) }
     client.createOrderItems = { try await orderItems.create($0) }
     client.getOrderItem = { try await orderItems.find($0) }
-    client.getOrderItems = { try await orderItems.findAll() }
+    client.getOrderItems = { try await orderItems.findAll(where: $0) }
     client.updateOrderItem = { try await orderItems.update($0) }
     client.updateOrderItems = { try await orderItems.update($0) }
     client.deleteOrderItem = { try await orderItems.delete($0) }
@@ -220,7 +222,7 @@ extension DatabaseClient {
     client.createDownload = { try await downloads.create($0) }
     client.createDownloads = { try await downloads.create($0) }
     client.getDownload = { try await downloads.find($0) }
-    client.getDownloads = { try await downloads.findAll() }
+    client.getDownloads = { try await downloads.findAll(where: $0) }
     client.updateDownload = { try await downloads.update($0) }
     client.updateDownloads = { try await downloads.update($0) }
     client.deleteDownload = { try await downloads.delete($0) }
@@ -228,7 +230,7 @@ extension DatabaseClient {
     client.createFriend = { try await friends.create($0) }
     client.createFriends = { try await friends.create($0) }
     client.getFriend = { try await friends.find($0) }
-    client.getFriends = { try await friends.findAll() }
+    client.getFriends = { try await friends.findAll(where: $0) }
     client.updateFriend = { try await friends.update($0) }
     client.updateFriends = { try await friends.update($0) }
     client.deleteFriend = { try await friends.delete($0) }
@@ -236,7 +238,7 @@ extension DatabaseClient {
     client.createFriendQuote = { try await friendQuotes.create($0) }
     client.createFriendQuotes = { try await friendQuotes.create($0) }
     client.getFriendQuote = { try await friendQuotes.find($0) }
-    client.getFriendQuotes = { try await friendQuotes.findAll() }
+    client.getFriendQuotes = { try await friendQuotes.findAll(where: $0) }
     client.updateFriendQuote = { try await friendQuotes.update($0) }
     client.updateFriendQuotes = { try await friendQuotes.update($0) }
     client.deleteFriendQuote = { try await friendQuotes.delete($0) }
@@ -244,7 +246,7 @@ extension DatabaseClient {
     client.createFriendResidence = { try await friendResidences.create($0) }
     client.createFriendResidences = { try await friendResidences.create($0) }
     client.getFriendResidence = { try await friendResidences.find($0) }
-    client.getFriendResidences = { try await friendResidences.findAll() }
+    client.getFriendResidences = { try await friendResidences.findAll(where: $0) }
     client.updateFriendResidence = { try await friendResidences.update($0) }
     client.updateFriendResidences = { try await friendResidences.update($0) }
     client.deleteFriendResidence = { try await friendResidences.delete($0) }
@@ -252,7 +254,7 @@ extension DatabaseClient {
     client.createFriendResidenceDuration = { try await friendResidenceDurations.create($0) }
     client.createFriendResidenceDurations = { try await friendResidenceDurations.create($0) }
     client.getFriendResidenceDuration = { try await friendResidenceDurations.find($0) }
-    client.getFriendResidenceDurations = { try await friendResidenceDurations.findAll() }
+    client.getFriendResidenceDurations = { try await friendResidenceDurations.findAll(where: $0) }
     client.updateFriendResidenceDuration = { try await friendResidenceDurations.update($0) }
     client.updateFriendResidenceDurations = { try await friendResidenceDurations.update($0) }
     client.deleteFriendResidenceDuration = { try await friendResidenceDurations.delete($0) }
@@ -260,7 +262,7 @@ extension DatabaseClient {
     client.createDocument = { try await documents.create($0) }
     client.createDocuments = { try await documents.create($0) }
     client.getDocument = { try await documents.find($0) }
-    client.getDocuments = { try await documents.findAll() }
+    client.getDocuments = { try await documents.findAll(where: $0) }
     client.updateDocument = { try await documents.update($0) }
     client.updateDocuments = { try await documents.update($0) }
     client.deleteDocument = { try await documents.delete($0) }
@@ -268,7 +270,7 @@ extension DatabaseClient {
     client.createRelatedDocument = { try await relatedDocuments.create($0) }
     client.createRelatedDocuments = { try await relatedDocuments.create($0) }
     client.getRelatedDocument = { try await relatedDocuments.find($0) }
-    client.getRelatedDocuments = { try await relatedDocuments.findAll() }
+    client.getRelatedDocuments = { try await relatedDocuments.findAll(where: $0) }
     client.updateRelatedDocument = { try await relatedDocuments.update($0) }
     client.updateRelatedDocuments = { try await relatedDocuments.update($0) }
     client.deleteRelatedDocument = { try await relatedDocuments.delete($0) }
@@ -276,7 +278,7 @@ extension DatabaseClient {
     client.createEdition = { try await editions.create($0) }
     client.createEditions = { try await editions.create($0) }
     client.getEdition = { try await editions.find($0) }
-    client.getEditions = { try await editions.findAll() }
+    client.getEditions = { try await editions.findAll(where: $0) }
     client.updateEdition = { try await editions.update($0) }
     client.updateEditions = { try await editions.update($0) }
     client.deleteEdition = { try await editions.delete($0) }
@@ -284,7 +286,7 @@ extension DatabaseClient {
     client.createEditionImpression = { try await editionImpressions.create($0) }
     client.createEditionImpressions = { try await editionImpressions.create($0) }
     client.getEditionImpression = { try await editionImpressions.find($0) }
-    client.getEditionImpressions = { try await editionImpressions.findAll() }
+    client.getEditionImpressions = { try await editionImpressions.findAll(where: $0) }
     client.updateEditionImpression = { try await editionImpressions.update($0) }
     client.updateEditionImpressions = { try await editionImpressions.update($0) }
     client.deleteEditionImpression = { try await editionImpressions.delete($0) }
@@ -292,7 +294,7 @@ extension DatabaseClient {
     client.createEditionChapter = { try await editionChapters.create($0) }
     client.createEditionChapters = { try await editionChapters.create($0) }
     client.getEditionChapter = { try await editionChapters.find($0) }
-    client.getEditionChapters = { try await editionChapters.findAll() }
+    client.getEditionChapters = { try await editionChapters.findAll(where: $0) }
     client.updateEditionChapter = { try await editionChapters.update($0) }
     client.updateEditionChapters = { try await editionChapters.update($0) }
     client.deleteEditionChapter = { try await editionChapters.delete($0) }
@@ -300,7 +302,7 @@ extension DatabaseClient {
     client.createAudio = { try await audios.create($0) }
     client.createAudios = { try await audios.create($0) }
     client.getAudio = { try await audios.find($0) }
-    client.getAudios = { try await audios.findAll() }
+    client.getAudios = { try await audios.findAll(where: $0) }
     client.updateAudio = { try await audios.update($0) }
     client.updateAudios = { try await audios.update($0) }
     client.deleteAudio = { try await audios.delete($0) }
@@ -308,7 +310,7 @@ extension DatabaseClient {
     client.createAudioPart = { try await audioParts.create($0) }
     client.createAudioParts = { try await audioParts.create($0) }
     client.getAudioPart = { try await audioParts.find($0) }
-    client.getAudioParts = { try await audioParts.findAll() }
+    client.getAudioParts = { try await audioParts.findAll(where: $0) }
     client.updateAudioPart = { try await audioParts.update($0) }
     client.updateAudioParts = { try await audioParts.update($0) }
     client.deleteAudioPart = { try await audioParts.delete($0) }
@@ -316,7 +318,7 @@ extension DatabaseClient {
     client.createIsbn = { try await isbns.create($0) }
     client.createIsbns = { try await isbns.create($0) }
     client.getIsbn = { try await isbns.find($0) }
-    client.getIsbns = { try await isbns.findAll() }
+    client.getIsbns = { try await isbns.findAll(where: $0) }
     client.updateIsbn = { try await isbns.update($0) }
     client.updateIsbns = { try await isbns.update($0) }
     client.deleteIsbn = { try await isbns.delete($0) }
@@ -359,13 +361,13 @@ extension DatabaseClient {
     createTokenScope: { _ in
       throw Abort(.notImplemented, reason: "db.createTokenScope")
     },
-    getTokenTokenScopes: { _ in
-      throw Abort(.notImplemented, reason: "db.getTokenTokenScopes")
+    getTokenScopes: { _ in
+      throw Abort(.notImplemented, reason: "db.getTokenScopes")
     },
     getOrder: { _ in
       throw Abort(.notImplemented, reason: "db.getOrder")
     },
-    getOrders: {
+    getOrders: { _ in
       throw Abort(.notImplemented, reason: "db.getOrders")
     },
     getOrdersByPrintJobStatus: { _ in
@@ -401,7 +403,7 @@ extension DatabaseClient {
     getOrderItem: { _ in
       throw Abort(.notImplemented, reason: "db.getOrderItem")
     },
-    getOrderItems: {
+    getOrderItems: { _ in
       throw Abort(.notImplemented, reason: "db.getOrderItems")
     },
     updateOrderItem: { _ in
@@ -428,7 +430,7 @@ extension DatabaseClient {
     getDownload: { _ in
       throw Abort(.notImplemented, reason: "db.getDownload")
     },
-    getDownloads: {
+    getDownloads: { _ in
       throw Abort(.notImplemented, reason: "db.getDownloads")
     },
     updateDownload: { _ in
@@ -452,17 +454,8 @@ extension DatabaseClient {
     getFriend: { _ in
       throw Abort(.notImplemented, reason: "db.getFriend")
     },
-    getFriendFriendResidences: { _ in
-      throw Abort(.notImplemented, reason: "db.getFriendFriendResidences")
-    },
-    getFriends: {
+    getFriends: { _ in
       throw Abort(.notImplemented, reason: "db.getFriends")
-    },
-    getFriendDocuments: { _ in
-      throw Abort(.notImplemented, reason: "db.getFriendDocuments")
-    },
-    getFriendFriendQuotes: { _ in
-      throw Abort(.notImplemented, reason: "db.getFriendFriendQuotes")
     },
     updateFriend: { _ in
       throw Abort(.notImplemented, reason: "db.updateFriend")
@@ -485,7 +478,7 @@ extension DatabaseClient {
     getFriendQuote: { _ in
       throw Abort(.notImplemented, reason: "db.getFriendQuote")
     },
-    getFriendQuotes: {
+    getFriendQuotes: { _ in
       throw Abort(.notImplemented, reason: "db.getFriendQuotes")
     },
     updateFriendQuote: { _ in
@@ -509,10 +502,7 @@ extension DatabaseClient {
     getFriendResidence: { _ in
       throw Abort(.notImplemented, reason: "db.getFriendResidence")
     },
-    getFriendResidenceFriendResidenceDurations: { _ in
-      throw Abort(.notImplemented, reason: "db.getFriendResidenceFriendResidenceDurations")
-    },
-    getFriendResidences: {
+    getFriendResidences: { _ in
       throw Abort(.notImplemented, reason: "db.getFriendResidences")
     },
     updateFriendResidence: { _ in
@@ -536,7 +526,7 @@ extension DatabaseClient {
     getFriendResidenceDuration: { _ in
       throw Abort(.notImplemented, reason: "db.getFriendResidenceDuration")
     },
-    getFriendResidenceDurations: {
+    getFriendResidenceDurations: { _ in
       throw Abort(.notImplemented, reason: "db.getFriendResidenceDurations")
     },
     updateFriendResidenceDuration: { _ in
@@ -560,10 +550,7 @@ extension DatabaseClient {
     getDocument: { _ in
       throw Abort(.notImplemented, reason: "db.getDocument")
     },
-    getDocumentEditions: { _ in
-      throw Abort(.notImplemented, reason: "db.getDocumentEditions")
-    },
-    getDocuments: {
+    getDocuments: { _ in
       throw Abort(.notImplemented, reason: "db.getDocuments")
     },
     updateDocument: { _ in
@@ -587,7 +574,7 @@ extension DatabaseClient {
     getRelatedDocument: { _ in
       throw Abort(.notImplemented, reason: "db.getRelatedDocument")
     },
-    getRelatedDocuments: {
+    getRelatedDocuments: { _ in
       throw Abort(.notImplemented, reason: "db.getRelatedDocuments")
     },
     updateRelatedDocument: { _ in
@@ -614,16 +601,13 @@ extension DatabaseClient {
     getEditionIsbn: { _ in
       throw Abort(.notImplemented, reason: "db.getEditionIsbn")
     },
-    getEditionEditionChapters: { _ in
-      throw Abort(.notImplemented, reason: "db.getEditionEditionChapters")
-    },
     getEditionAudio: { _ in
       throw Abort(.notImplemented, reason: "db.getEditionAudio")
     },
     getEditionEditionImpression: { _ in
       throw Abort(.notImplemented, reason: "db.getEditionEditionImpression")
     },
-    getEditions: {
+    getEditions: { _ in
       throw Abort(.notImplemented, reason: "db.getEditions")
     },
     updateEdition: { _ in
@@ -647,7 +631,7 @@ extension DatabaseClient {
     getEditionImpression: { _ in
       throw Abort(.notImplemented, reason: "db.getEditionImpression")
     },
-    getEditionImpressions: {
+    getEditionImpressions: { _ in
       throw Abort(.notImplemented, reason: "db.getEditionImpressions")
     },
     updateEditionImpression: { _ in
@@ -671,7 +655,7 @@ extension DatabaseClient {
     getEditionChapter: { _ in
       throw Abort(.notImplemented, reason: "db.getEditionChapter")
     },
-    getEditionChapters: {
+    getEditionChapters: { _ in
       throw Abort(.notImplemented, reason: "db.getEditionChapters")
     },
     updateEditionChapter: { _ in
@@ -695,10 +679,7 @@ extension DatabaseClient {
     getAudio: { _ in
       throw Abort(.notImplemented, reason: "db.getAudio")
     },
-    getAudioAudioParts: { _ in
-      throw Abort(.notImplemented, reason: "db.getAudioAudioParts")
-    },
-    getAudios: {
+    getAudios: { _ in
       throw Abort(.notImplemented, reason: "db.getAudios")
     },
     updateAudio: { _ in
@@ -722,7 +703,7 @@ extension DatabaseClient {
     getAudioPart: { _ in
       throw Abort(.notImplemented, reason: "db.getAudioPart")
     },
-    getAudioParts: {
+    getAudioParts: { _ in
       throw Abort(.notImplemented, reason: "db.getAudioParts")
     },
     updateAudioPart: { _ in
@@ -746,7 +727,7 @@ extension DatabaseClient {
     getIsbn: { _ in
       throw Abort(.notImplemented, reason: "db.getIsbn")
     },
-    getIsbns: {
+    getIsbns: { _ in
       throw Abort(.notImplemented, reason: "db.getIsbns")
     },
     updateIsbn: { _ in

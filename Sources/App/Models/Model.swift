@@ -32,7 +32,7 @@ protocol UUIDIdentifiable {
   var uuidId: UUID { get }
 }
 
-protocol DuetModel: Codable, UUIDIdentifiable, Equatable {
+protocol DuetModel: Codable, UUIDIdentifiable, Equatable, SQLInspectable {
   associatedtype IdValue: RandomEmptyInitializing, UUIDStringable, Hashable
   var id: IdValue { get set }
   associatedtype ColumnName: CodingKey

@@ -12,10 +12,10 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
       at: resolveChildren { (friendResidence) async throws -> [FriendResidenceDuration] in
         switch friendResidence.durations {
           case .notLoaded:
-            return try await Current.db.getFriendResidenceFriendResidenceDurations(
-              friendResidence.id)
-          case let .loaded(friendResidenceChildren):
-            return friendResidenceChildren
+            return try await Current.db.getFriendResidenceDurations(
+              FriendResidenceDuration[.friendResidenceId] == .id(friendResidence))
+          case let .loaded(durations):
+            return durations
         }
       },
       as: [TypeRef<FriendResidenceDuration>].self)

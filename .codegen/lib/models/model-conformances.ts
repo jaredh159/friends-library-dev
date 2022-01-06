@@ -1,3 +1,4 @@
+import { snakeCase } from 'snake-case';
 import { insertData, toPostgresData } from './model-db-data';
 import { GlobalTypes } from '../types';
 import Model from './Model';
@@ -40,7 +41,7 @@ export function generateModelConformances(
     `// CASES_HERE`,
     model.props
       .flatMap((prop) => [
-        `case "${prop.name}":`,
+        `case "${snakeCase(prop.name)}":`,
         `  return ${toPostgresData(
           prop,
           model,

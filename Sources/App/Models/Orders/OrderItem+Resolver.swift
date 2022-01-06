@@ -19,7 +19,7 @@ extension Resolver {
   ) throws -> Future<[OrderItem]> {
     try req.requirePermission(to: .queryOrders)
     return future(of: [OrderItem].self, on: req.eventLoop) {
-      try await Current.db.getOrderItems()
+      try await Current.db.getOrderItems(nil)
     }
   }
 

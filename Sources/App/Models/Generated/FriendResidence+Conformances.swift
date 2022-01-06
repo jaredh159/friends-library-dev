@@ -41,15 +41,15 @@ extension FriendResidence: SQLInspectable {
     switch constraint.column {
       case "id":
         return .id(self) == constraint.value
-      case "friendId":
+      case "friend_id":
         return .uuid(friendId) == constraint.value
       case "city":
         return .string(city) == constraint.value
       case "region":
         return .string(region) == constraint.value
-      case "createdAt":
+      case "created_at":
         return .date(createdAt) == constraint.value
-      case "updatedAt":
+      case "updated_at":
         return .date(updatedAt) == constraint.value
       default:
         return false

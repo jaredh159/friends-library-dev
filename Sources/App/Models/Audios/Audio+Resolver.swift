@@ -32,7 +32,7 @@ extension Resolver {
   func getAudios(req: Req, args: NoArgs) throws -> Future<[Audio]> {
     try req.requirePermission(to: .queryAudios)
     return future(of: [Audio].self, on: req.eventLoop) {
-      try await Current.db.getAudios()
+      try await Current.db.getAudios(nil)
     }
   }
 

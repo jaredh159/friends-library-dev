@@ -63,7 +63,7 @@ extension Resolver {
   func getOrders(req: Req, args: NoArgs) throws -> Future<[Order]> {
     try req.requirePermission(to: .queryOrders)
     return future(of: [Order].self, on: req.eventLoop) {
-      try await Current.db.getOrders()
+      try await Current.db.getOrders(nil)
     }
   }
 

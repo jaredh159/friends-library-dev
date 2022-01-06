@@ -22,16 +22,14 @@ struct MockRepository<Model: DuetModel> {
     try db.find(id, in: models)
   }
 
-  func findAll(where predicate: ((Model) -> Bool)? = nil) async throws -> [Model] {
-    guard let predicate = predicate else { return db.all(models) }
-    return db.find(where: predicate, in: models)
+  func find(where constraint: SQL.WhereConstraint) async throws -> Model {
+    try await findAll(where: constraint).firstOrThrowNotFound()
   }
 
-  // func findAll(where constraint: SQL.WhereConstraint? = nil) async throws -> [Model] {
-  //   // guard let predicate = predicate else { return db.all(models) }
-  //   // return db.find(where: predicate, in: models)
-  //   fatalError()
-  // }
+  func findAll(where constraint: SQL.WhereConstraint? = nil) async throws -> [Model] {
+    guard let constraint = constraint else { return db.all(models) }
+    return db.find(where: { $0.satisfies(constraint: constraint) }, in: models)
+  }
 
   // UPDATE
 

@@ -45,7 +45,7 @@ extension FriendQuote: SQLInspectable {
     switch constraint.column {
       case "id":
         return .id(self) == constraint.value
-      case "friendId":
+      case "friend_id":
         return .uuid(friendId) == constraint.value
       case "source":
         return .string(source) == constraint.value
@@ -55,9 +55,9 @@ extension FriendQuote: SQLInspectable {
         return .int(order) == constraint.value
       case "context":
         return .string(context) == constraint.value
-      case "createdAt":
+      case "created_at":
         return .date(createdAt) == constraint.value
-      case "updatedAt":
+      case "updated_at":
         return .date(updatedAt) == constraint.value
       default:
         return false

@@ -88,7 +88,8 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
       at: resolveChildren { (edition) async throws -> [EditionChapter] in
         switch edition.chapters {
           case .notLoaded:
-            return try await Current.db.getEditionEditionChapters(edition.id)
+            return try await Current.db.getEditionChapters(
+              EditionChapter[.editionId] == .id(edition))
           case let .loaded(editionChildren):
             return editionChildren
         }

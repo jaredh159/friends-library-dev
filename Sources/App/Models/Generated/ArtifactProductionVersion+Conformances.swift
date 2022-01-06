@@ -37,7 +37,7 @@ extension ArtifactProductionVersion: SQLInspectable {
         return .id(self) == constraint.value
       case "version":
         return .string(version.rawValue) == constraint.value
-      case "createdAt":
+      case "created_at":
         return .date(createdAt) == constraint.value
       default:
         return false

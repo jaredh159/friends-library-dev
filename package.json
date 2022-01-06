@@ -49,6 +49,7 @@
   "dependencies": {
     "@types/glob": "^7.2.0",
     "glob": "^7.2.0",
+    "snake-case": "^3.0.4",
     "strip-indent": "^3.0.0",
     "x-ts-utils": "^1.2.0"
   }

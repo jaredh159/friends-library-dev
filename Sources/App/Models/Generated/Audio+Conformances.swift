@@ -53,27 +53,27 @@ extension Audio: SQLInspectable {
     switch constraint.column {
       case "id":
         return .id(self) == constraint.value
-      case "editionId":
+      case "edition_id":
         return .uuid(editionId) == constraint.value
       case "reader":
         return .string(reader) == constraint.value
-      case "isIncomplete":
+      case "is_incomplete":
         return .bool(isIncomplete) == constraint.value
-      case "mp3ZipSizeHq":
+      case "mp3_zip_size_hq":
         return .int(mp3ZipSizeHq.rawValue) == constraint.value
-      case "mp3ZipSizeLq":
+      case "mp3_zip_size_lq":
         return .int(mp3ZipSizeLq.rawValue) == constraint.value
-      case "m4bSizeHq":
+      case "m4b_size_hq":
         return .int(m4bSizeHq.rawValue) == constraint.value
-      case "m4bSizeLq":
+      case "m4b_size_lq":
         return .int(m4bSizeLq.rawValue) == constraint.value
-      case "externalPlaylistIdHq":
+      case "external_playlist_id_hq":
         return .int64(externalPlaylistIdHq?.rawValue) == constraint.value
-      case "externalPlaylistIdLq":
+      case "external_playlist_id_lq":
         return .int64(externalPlaylistIdLq?.rawValue) == constraint.value
-      case "createdAt":
+      case "created_at":
         return .date(createdAt) == constraint.value
-      case "updatedAt":
+      case "updated_at":
         return .date(updatedAt) == constraint.value
       default:
         return false

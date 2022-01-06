@@ -69,19 +69,19 @@ extension Download: SQLInspectable {
     switch constraint.column {
       case "id":
         return .id(self) == constraint.value
-      case "editionId":
+      case "edition_id":
         return .uuid(editionId) == constraint.value
       case "format":
         return .enum(format) == constraint.value
       case "source":
         return .enum(source) == constraint.value
-      case "audioQuality":
+      case "audio_quality":
         return .enum(audioQuality) == constraint.value
-      case "audioPartNumber":
+      case "audio_part_number":
         return .int(audioPartNumber) == constraint.value
-      case "isMobile":
+      case "is_mobile":
         return .bool(isMobile) == constraint.value
-      case "userAgent":
+      case "user_agent":
         return .string(userAgent) == constraint.value
       case "os":
         return .string(os) == constraint.value
@@ -97,7 +97,7 @@ extension Download: SQLInspectable {
         return .string(city) == constraint.value
       case "region":
         return .string(region) == constraint.value
-      case "postalCode":
+      case "postal_code":
         return .string(postalCode) == constraint.value
       case "country":
         return .string(country) == constraint.value
@@ -105,7 +105,7 @@ extension Download: SQLInspectable {
         return .string(latitude) == constraint.value
       case "longitude":
         return .string(longitude) == constraint.value
-      case "createdAt":
+      case "created_at":
         return .date(createdAt) == constraint.value
       default:
         return false

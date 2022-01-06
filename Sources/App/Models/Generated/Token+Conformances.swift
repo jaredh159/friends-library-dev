@@ -41,7 +41,7 @@ extension Token: SQLInspectable {
         return .uuid(value) == constraint.value
       case "description":
         return .string(description) == constraint.value
-      case "createdAt":
+      case "created_at":
         return .date(createdAt) == constraint.value
       default:
         return false

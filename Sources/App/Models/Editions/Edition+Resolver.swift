@@ -13,7 +13,7 @@ extension Resolver {
   func getEditions(req: Req, args: NoArgs) throws -> Future<[Edition]> {
     try req.requirePermission(to: .queryEditions)
     return future(of: [Edition].self, on: req.eventLoop) {
-      try await Current.db.getEditions()
+      try await Current.db.getEditions(nil)
     }
   }
 

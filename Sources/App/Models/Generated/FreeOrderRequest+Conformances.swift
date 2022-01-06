@@ -61,27 +61,27 @@ extension FreeOrderRequest: SQLInspectable {
         return .string(name) == constraint.value
       case "email":
         return .string(email.rawValue) == constraint.value
-      case "requestedBooks":
+      case "requested_books":
         return .string(requestedBooks) == constraint.value
-      case "aboutRequester":
+      case "about_requester":
         return .string(aboutRequester) == constraint.value
-      case "addressStreet":
+      case "address_street":
         return .string(addressStreet) == constraint.value
-      case "addressStreet2":
+      case "address_street2":
         return .string(addressStreet2) == constraint.value
-      case "addressCity":
+      case "address_city":
         return .string(addressCity) == constraint.value
-      case "addressState":
+      case "address_state":
         return .string(addressState) == constraint.value
-      case "addressZip":
+      case "address_zip":
         return .string(addressZip) == constraint.value
-      case "addressCountry":
+      case "address_country":
         return .string(addressCountry) == constraint.value
       case "source":
         return .string(source) == constraint.value
-      case "createdAt":
+      case "created_at":
         return .date(createdAt) == constraint.value
-      case "updatedAt":
+      case "updated_at":
         return .date(updatedAt) == constraint.value
       default:
         return false

@@ -13,7 +13,7 @@ extension Resolver {
   func getDownloads(req: Req, args: NoArgs) throws -> Future<[Download]> {
     try req.requirePermission(to: .queryDownloads)
     return future(of: [Download].self, on: req.eventLoop) {
-      try await Current.db.getDownloads()
+      try await Current.db.getDownloads(nil)
     }
   }
 

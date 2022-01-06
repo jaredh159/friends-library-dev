@@ -12,9 +12,9 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
       at: resolveChildren { (document) async throws -> [Edition] in
         switch document.editions {
           case .notLoaded:
-            return try await Current.db.getDocumentEditions(document.id)
-          case let .loaded(documentChildren):
-            return documentChildren
+            return try await Current.db.getEditions(Edition[.documentId] == .id(document))
+          case let .loaded(editions):
+            return editions
         }
       },
       as: [TypeRef<Edition>].self)

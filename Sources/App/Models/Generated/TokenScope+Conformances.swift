@@ -39,9 +39,9 @@ extension TokenScope: SQLInspectable {
         return .id(self) == constraint.value
       case "scope":
         return .enum(scope) == constraint.value
-      case "tokenId":
+      case "token_id":
         return .uuid(tokenId) == constraint.value
-      case "createdAt":
+      case "created_at":
         return .date(createdAt) == constraint.value
       default:
         return false

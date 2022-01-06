@@ -37,7 +37,7 @@ extension DocumentTagModel: SQLInspectable {
         return .id(self) == constraint.value
       case "slug":
         return .enum(slug) == constraint.value
-      case "createdAt":
+      case "created_at":
         return .date(createdAt) == constraint.value
       default:
         return false

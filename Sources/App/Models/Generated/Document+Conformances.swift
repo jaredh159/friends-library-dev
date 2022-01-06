@@ -58,9 +58,9 @@ extension Document: SQLInspectable {
     switch constraint.column {
       case "id":
         return .id(self) == constraint.value
-      case "friendId":
+      case "friend_id":
         return .uuid(friendId) == constraint.value
-      case "altLanguageId":
+      case "alt_language_id":
         return .uuid(altLanguageId) == constraint.value
       case "title":
         return .string(title) == constraint.value
@@ -70,21 +70,21 @@ extension Document: SQLInspectable {
         return .string(filename) == constraint.value
       case "published":
         return .int(published) == constraint.value
-      case "originalTitle":
+      case "original_title":
         return .string(originalTitle) == constraint.value
       case "incomplete":
         return .bool(incomplete) == constraint.value
       case "description":
         return .string(description) == constraint.value
-      case "partialDescription":
+      case "partial_description":
         return .string(partialDescription) == constraint.value
-      case "featuredDescription":
+      case "featured_description":
         return .string(featuredDescription) == constraint.value
-      case "createdAt":
+      case "created_at":
         return .date(createdAt) == constraint.value
-      case "updatedAt":
+      case "updated_at":
         return .date(updatedAt) == constraint.value
-      case "deletedAt":
+      case "deleted_at":
         return .date(deletedAt) == constraint.value
       default:
         return false

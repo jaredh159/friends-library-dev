@@ -19,7 +19,7 @@ extension Resolver {
   ) throws -> Future<[EditionImpression]> {
     try req.requirePermission(to: .queryEditionImpressions)
     return future(of: [EditionImpression].self, on: req.eventLoop) {
-      try await Current.db.getEditionImpressions()
+      try await Current.db.getEditionImpressions(nil)
     }
   }
 

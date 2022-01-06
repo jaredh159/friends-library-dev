@@ -49,23 +49,23 @@ extension EditionChapter: SQLInspectable {
     switch constraint.column {
       case "id":
         return .id(self) == constraint.value
-      case "editionId":
+      case "edition_id":
         return .uuid(editionId) == constraint.value
       case "order":
         return .int(order) == constraint.value
-      case "shortHeading":
+      case "short_heading":
         return .string(shortHeading) == constraint.value
-      case "isIntermediateTitle":
+      case "is_intermediate_title":
         return .bool(isIntermediateTitle) == constraint.value
-      case "customId":
+      case "custom_id":
         return .string(customId) == constraint.value
-      case "sequenceNumber":
+      case "sequence_number":
         return .int(sequenceNumber) == constraint.value
-      case "nonSequenceTitle":
+      case "non_sequence_title":
         return .string(nonSequenceTitle) == constraint.value
-      case "createdAt":
+      case "created_at":
         return .date(createdAt) == constraint.value
-      case "updatedAt":
+      case "updated_at":
         return .date(updatedAt) == constraint.value
       default:
         return false

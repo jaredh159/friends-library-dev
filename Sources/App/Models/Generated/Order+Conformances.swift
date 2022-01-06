@@ -77,43 +77,43 @@ extension Order: SQLInspectable {
         return .enum(lang) == constraint.value
       case "source":
         return .enum(source) == constraint.value
-      case "paymentId":
+      case "payment_id":
         return .string(paymentId.rawValue) == constraint.value
-      case "printJobId":
+      case "print_job_id":
         return .int(printJobId?.rawValue) == constraint.value
-      case "printJobStatus":
+      case "print_job_status":
         return .enum(printJobStatus) == constraint.value
       case "amount":
         return .int(amount.rawValue) == constraint.value
       case "taxes":
         return .int(taxes.rawValue) == constraint.value
-      case "ccFeeOffset":
+      case "cc_fee_offset":
         return .int(ccFeeOffset.rawValue) == constraint.value
       case "shipping":
         return .int(shipping.rawValue) == constraint.value
-      case "shippingLevel":
+      case "shipping_level":
         return .enum(shippingLevel) == constraint.value
       case "email":
         return .string(email.rawValue) == constraint.value
-      case "addressName":
+      case "address_name":
         return .string(addressName) == constraint.value
-      case "addressStreet":
+      case "address_street":
         return .string(addressStreet) == constraint.value
-      case "addressStreet2":
+      case "address_street2":
         return .string(addressStreet2) == constraint.value
-      case "addressCity":
+      case "address_city":
         return .string(addressCity) == constraint.value
-      case "addressState":
+      case "address_state":
         return .string(addressState) == constraint.value
-      case "addressZip":
+      case "address_zip":
         return .string(addressZip) == constraint.value
-      case "addressCountry":
+      case "address_country":
         return .string(addressCountry) == constraint.value
-      case "freeOrderRequestId":
+      case "free_order_request_id":
         return .uuid(freeOrderRequestId) == constraint.value
-      case "createdAt":
+      case "created_at":
         return .date(createdAt) == constraint.value
-      case "updatedAt":
+      case "updated_at":
         return .date(updatedAt) == constraint.value
       default:
         return false

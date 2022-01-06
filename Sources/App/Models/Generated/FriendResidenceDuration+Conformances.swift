@@ -39,13 +39,13 @@ extension FriendResidenceDuration: SQLInspectable {
     switch constraint.column {
       case "id":
         return .id(self) == constraint.value
-      case "friendResidenceId":
+      case "friend_residence_id":
         return .uuid(friendResidenceId) == constraint.value
       case "start":
         return .int(start) == constraint.value
       case "end":
         return .int(end) == constraint.value
-      case "createdAt":
+      case "created_at":
         return .date(createdAt) == constraint.value
       default:
         return false

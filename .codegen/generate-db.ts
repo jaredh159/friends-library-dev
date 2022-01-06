@@ -43,7 +43,7 @@ function main() {
         const isPlural = s === `s`;
         switch (`${verb}--${isPlural}`) {
           case `get--true`:
-            return `client.${fn} = { try await ${model.camelCaseName}s.findAll() }`;
+            return `client.${fn} = { try await ${model.camelCaseName}s.findAll(where: $0) }`;
           case `get--false`:
             return `client.${fn} = { try await ${model.camelCaseName}s.find($0) }`;
           case `create--true`:

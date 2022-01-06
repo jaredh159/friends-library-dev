@@ -43,13 +43,13 @@ extension RelatedDocument: SQLInspectable {
         return .id(self) == constraint.value
       case "description":
         return .string(description) == constraint.value
-      case "documentId":
+      case "document_id":
         return .uuid(documentId) == constraint.value
-      case "parentDocumentId":
+      case "parent_document_id":
         return .uuid(parentDocumentId) == constraint.value
-      case "createdAt":
+      case "created_at":
         return .date(createdAt) == constraint.value
-      case "updatedAt":
+      case "updated_at":
         return .date(updatedAt) == constraint.value
       default:
         return false

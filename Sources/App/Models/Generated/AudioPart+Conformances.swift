@@ -53,7 +53,7 @@ extension AudioPart: SQLInspectable {
     switch constraint.column {
       case "id":
         return .id(self) == constraint.value
-      case "audioId":
+      case "audio_id":
         return .uuid(audioId) == constraint.value
       case "title":
         return .string(title) == constraint.value
@@ -63,17 +63,17 @@ extension AudioPart: SQLInspectable {
         return .intArray(chapters.array) == constraint.value
       case "order":
         return .int(order) == constraint.value
-      case "mp3SizeHq":
+      case "mp3_size_hq":
         return .int(mp3SizeHq.rawValue) == constraint.value
-      case "mp3SizeLq":
+      case "mp3_size_lq":
         return .int(mp3SizeLq.rawValue) == constraint.value
-      case "externalIdHq":
+      case "external_id_hq":
         return .int64(externalIdHq.rawValue) == constraint.value
-      case "externalIdLq":
+      case "external_id_lq":
         return .int64(externalIdLq.rawValue) == constraint.value
-      case "createdAt":
+      case "created_at":
         return .date(createdAt) == constraint.value
-      case "updatedAt":
+      case "updated_at":
         return .date(updatedAt) == constraint.value
       default:
         return false

@@ -19,7 +19,7 @@ extension Resolver {
   ) throws -> Future<[FriendResidenceDuration]> {
     try req.requirePermission(to: .queryFriends)
     return future(of: [FriendResidenceDuration].self, on: req.eventLoop) {
-      try await Current.db.getFriendResidenceDurations()
+      try await Current.db.getFriendResidenceDurations(nil)
     }
   }
 

@@ -45,19 +45,19 @@ extension EditionImpression: SQLInspectable {
     switch constraint.column {
       case "id":
         return .id(self) == constraint.value
-      case "editionId":
+      case "edition_id":
         return .uuid(editionId) == constraint.value
-      case "adocLength":
+      case "adoc_length":
         return .int(adocLength) == constraint.value
-      case "paperbackSize":
+      case "paperback_size":
         return .enum(paperbackSize) == constraint.value
-      case "paperbackVolumes":
+      case "paperback_volumes":
         return .intArray(paperbackVolumes.array) == constraint.value
-      case "publishedRevision":
+      case "published_revision":
         return .string(publishedRevision.rawValue) == constraint.value
-      case "productionToolchainRevision":
+      case "production_toolchain_revision":
         return .string(productionToolchainRevision.rawValue) == constraint.value
-      case "createdAt":
+      case "created_at":
         return .date(createdAt) == constraint.value
       default:
         return false

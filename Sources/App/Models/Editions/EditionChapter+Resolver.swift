@@ -13,7 +13,7 @@ extension Resolver {
   func getEditionChapters(req: Req, args: NoArgs) throws -> Future<[EditionChapter]> {
     try req.requirePermission(to: .queryEditionChapters)
     return future(of: [EditionChapter].self, on: req.eventLoop) {
-      try await Current.db.getEditionChapters()
+      try await Current.db.getEditionChapters(nil)
     }
   }
 

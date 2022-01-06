@@ -41,11 +41,11 @@ extension Isbn: SQLInspectable {
         return .id(self) == constraint.value
       case "code":
         return .string(code.rawValue) == constraint.value
-      case "editionId":
+      case "edition_id":
         return .uuid(editionId) == constraint.value
-      case "createdAt":
+      case "created_at":
         return .date(createdAt) == constraint.value
-      case "updatedAt":
+      case "updated_at":
         return .date(updatedAt) == constraint.value
       default:
         return false

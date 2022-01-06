@@ -13,7 +13,7 @@ extension Resolver {
   func getDocuments(req: Req, args: NoArgs) throws -> Future<[Document]> {
     try req.requirePermission(to: .queryDocuments)
     return future(of: [Document].self, on: req.eventLoop) {
-      try await Current.db.getDocuments()
+      try await Current.db.getDocuments(nil)
     }
   }
 

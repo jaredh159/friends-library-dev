@@ -67,9 +67,9 @@ extension Friend: SQLInspectable {
         return .int(died) == constraint.value
       case "published":
         return .date(published) == constraint.value
-      case "createdAt":
+      case "created_at":
         return .date(createdAt) == constraint.value
-      case "updatedAt":
+      case "updated_at":
         return .date(updatedAt) == constraint.value
       default:
         return false
