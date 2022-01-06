@@ -33,7 +33,6 @@
     "generate": "npm run generate:models && npm run generate:db",
     "scaffold:repo": "fldev tsnode ./.codegen/scaffold-repository.ts",
     "scaffold:resolver-test": "fldev tsnode ./.codegen/scaffold-resolver-test.ts",
-    "scaffold:graphiti": "fldev tsnode ./.codegen/scaffold-graphiti.ts",
     "scaffold:resolver": "fldev tsnode ./.codegen/scaffold-resolver.ts"
   },
   "keywords": [],

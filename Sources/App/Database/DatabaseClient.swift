@@ -116,11 +116,8 @@ struct DatabaseClient {
   var createEdition: (Edition) async throws -> Edition
   var createEditions: ([Edition]) async throws -> [Edition]
   var getEdition: (Edition.Id) async throws -> Edition
-  // TODO
   var getEditionIsbn: (Edition.Id) async throws -> Isbn?
-  // TODO
   var getEditionAudio: (Edition.Id) async throws -> Audio?
-  // TODO
   var getEditionEditionImpression: (Edition.Id) async throws -> EditionImpression?
   var getEditions: (SQL.WhereConstraint?) async throws -> [Edition]
   var updateEdition: (Edition) async throws -> Edition
