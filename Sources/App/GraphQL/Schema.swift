@@ -63,6 +63,7 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.CreateDocumentInputType
   AppSchema.UpdateDocumentInputType
   AppSchema.DocumentTagType
+  AppSchema.RelatedDocumentType
 
   // edition types
   AppSchema.EditionType
@@ -176,5 +177,5 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
     }
   }
 
-  Types(OrderItem.self, TokenScope.self)
+  Types(OrderItem.self, TokenScope.self, RelatedDocument.self)
 }

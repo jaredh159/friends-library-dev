@@ -49,6 +49,14 @@ private func loadParent<Child: DuetModel, P: DuetModel>(
       let document = child as! Document
       parent = try await db.getFriend(document.friendId) as! P
 
+    case \RelatedDocument.parentDocument:
+      let relatedDocument = child as! RelatedDocument
+      parent = try await db.getDocument(relatedDocument.parentDocumentId) as! P
+
+    case \RelatedDocument.document:
+      let relatedDocument = child as! RelatedDocument
+      parent = try await db.getDocument(relatedDocument.documentId) as! P
+
     case \DocumentTag.document:
       let tag = child as! DocumentTag
       parent = try await db.getDocument(tag.documentId) as! P
@@ -81,8 +89,12 @@ private func loadParent<Child: DuetModel, P: DuetModel>(
       let item = child as! OrderItem
       parent = try await db.getOrder(item.orderId) as! P
 
+    case \TokenScope.token:
+      let scope = child as! TokenScope
+      parent = try await db.getToken(scope.tokenId) as! P
+
     default:
-      throw Abort(.notImplemented, reason: "\(keyPath) not handled for OptionalChild<M> relation")
+      throw Abort(.notImplemented, reason: "\(keyPath) not handled for Parent<M> relation")
   }
 
   var child = child

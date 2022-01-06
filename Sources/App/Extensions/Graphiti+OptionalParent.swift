@@ -45,7 +45,7 @@ private func loadOptionalParent<Child: DuetModel, Parent: DuetModel>(
       parent = try? await db.getFreeOrderRequest(freeOrderRequestId) as! Parent?
 
     default:
-      throw Abort(.notImplemented, reason: "\(keyPath) not handled for OptionalChild<M> relation")
+      throw Abort(.notImplemented, reason: "\(keyPath) not handled for OptionalParent<M> relation")
   }
 
   var child = child

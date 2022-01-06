@@ -1,6 +1,5 @@
 # Converge TODOs:
 
-- [ ] - figure out related documents weirdness...
 - [ ] - fix gap in migrations number (removed doc tag pivot)
 - [ ] - write yaml import migration after all new migrations (shells out...)
 - [ ] - add foreign key migration to connect Download/OrderItem FK's AND Order->EditionId
@@ -9,6 +8,7 @@
 
 ## done...
 
+- [√] - figure out related documents weirdness...
 - [√] - hook up relations for all models (augmenting resolver tests)
 - [√] - write basic crud stuff for all models (don't forget FriendResidence/Quote!)
 - [√] - handle soft deletes (query, delete)

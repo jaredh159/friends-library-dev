@@ -102,15 +102,13 @@ struct DatabaseClient {
   var deleteDocument: (Document.Id) async throws -> Document
   var deleteAllDocuments: () async throws -> Void
 
+  // document tags
+  var createDocumentTag: (DocumentTag) async throws -> DocumentTag
+  var getDocumentTags: (SQL.WhereConstraint?) async throws -> [DocumentTag]
+
   // related documents
   var createRelatedDocument: (RelatedDocument) async throws -> RelatedDocument
-  var createRelatedDocuments: ([RelatedDocument]) async throws -> [RelatedDocument]
-  var getRelatedDocument: (RelatedDocument.Id) async throws -> RelatedDocument
   var getRelatedDocuments: (SQL.WhereConstraint?) async throws -> [RelatedDocument]
-  var updateRelatedDocument: (RelatedDocument) async throws -> RelatedDocument
-  var updateRelatedDocuments: ([RelatedDocument]) async throws -> [RelatedDocument]
-  var deleteRelatedDocument: (RelatedDocument.Id) async throws -> RelatedDocument
-  var deleteAllRelatedDocuments: () async throws -> Void
 
   // editions
   var createEdition: (Edition) async throws -> Edition
@@ -174,10 +172,6 @@ struct DatabaseClient {
   var updateIsbns: ([Isbn]) async throws -> [Isbn]
   var deleteIsbn: (Isbn.Id) async throws -> Isbn
   var deleteAllIsbns: () async throws -> Void
-
-  // document tags
-  var createDocumentTag: (DocumentTag) async throws -> DocumentTag
-  var getDocumentTags: (SQL.WhereConstraint?) async throws -> [DocumentTag]
 
   // artifact production versions
   var createArtifactProductionVersion:

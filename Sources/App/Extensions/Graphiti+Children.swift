@@ -51,6 +51,11 @@ private func loadChildren<Parent: DuetModel, Child: DuetModel>(
     case \Document.editions:
       children = try await db.getEditions(Edition[.documentId] == .id(parent)) as! [Child]
 
+    case \Document.relatedDocuments:
+      children =
+        try await db.getRelatedDocuments(RelatedDocument[.parentDocumentId] == .id(parent))
+        as! [Child]
+
     case \Document.tags:
       children = try await db.getDocumentTags(DocumentTag[.documentId] == .id(parent)) as! [Child]
 
@@ -64,7 +69,7 @@ private func loadChildren<Parent: DuetModel, Child: DuetModel>(
       children = try await db.getTokenScopes(TokenScope[.tokenId] == .id(parent)) as! [Child]
 
     default:
-      throw Abort(.notImplemented, reason: "\(keyPath) not handled for OptionalChild<M> relation")
+      throw Abort(.notImplemented, reason: "\(keyPath) not handled for Children<M> relation")
   }
 
   var parent = parent

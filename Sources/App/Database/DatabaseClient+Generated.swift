@@ -94,14 +94,10 @@ extension DatabaseClient {
     client.updateDocuments = { try await documents.update($0) }
     client.deleteDocument = { try await documents.delete($0) }
     client.deleteAllDocuments = { try await documents.deleteAll() }
+    client.createDocumentTag = { try await documentTags.create($0) }
+    client.getDocumentTags = { try await documentTags.findAll(where: $0) }
     client.createRelatedDocument = { try await relatedDocuments.create($0) }
-    client.createRelatedDocuments = { try await relatedDocuments.create($0) }
-    client.getRelatedDocument = { try await relatedDocuments.find($0) }
     client.getRelatedDocuments = { try await relatedDocuments.findAll(where: $0) }
-    client.updateRelatedDocument = { try await relatedDocuments.update($0) }
-    client.updateRelatedDocuments = { try await relatedDocuments.update($0) }
-    client.deleteRelatedDocument = { try await relatedDocuments.delete($0) }
-    client.deleteAllRelatedDocuments = { try await relatedDocuments.deleteAll() }
     client.createEdition = { try await editions.create($0) }
     client.createEditions = { try await editions.create($0) }
     client.getEdition = { try await editions.find($0) }
@@ -150,8 +146,6 @@ extension DatabaseClient {
     client.updateIsbns = { try await isbns.update($0) }
     client.deleteIsbn = { try await isbns.delete($0) }
     client.deleteAllIsbns = { try await isbns.deleteAll() }
-    client.createDocumentTag = { try await documentTags.create($0) }
-    client.getDocumentTags = { try await documentTags.findAll(where: $0) }
     client.createArtifactProductionVersion = { try await artifactProductionVersions.create($0) }
     artifactProductionVersions.assign(client: &client)
     audios.assign(client: &client)
@@ -268,14 +262,10 @@ extension DatabaseClient {
     client.updateDocuments = { try await documents.update($0) }
     client.deleteDocument = { try await documents.delete($0) }
     client.deleteAllDocuments = { try await documents.deleteAll() }
+    client.createDocumentTag = { try await documentTags.create($0) }
+    client.getDocumentTags = { try await documentTags.findAll(where: $0) }
     client.createRelatedDocument = { try await relatedDocuments.create($0) }
-    client.createRelatedDocuments = { try await relatedDocuments.create($0) }
-    client.getRelatedDocument = { try await relatedDocuments.find($0) }
     client.getRelatedDocuments = { try await relatedDocuments.findAll(where: $0) }
-    client.updateRelatedDocument = { try await relatedDocuments.update($0) }
-    client.updateRelatedDocuments = { try await relatedDocuments.update($0) }
-    client.deleteRelatedDocument = { try await relatedDocuments.delete($0) }
-    client.deleteAllRelatedDocuments = { try await relatedDocuments.deleteAll() }
     client.createEdition = { try await editions.create($0) }
     client.createEditions = { try await editions.create($0) }
     client.getEdition = { try await editions.find($0) }
@@ -324,8 +314,6 @@ extension DatabaseClient {
     client.updateIsbns = { try await isbns.update($0) }
     client.deleteIsbn = { try await isbns.delete($0) }
     client.deleteAllIsbns = { try await isbns.deleteAll() }
-    client.createDocumentTag = { try await documentTags.create($0) }
-    client.getDocumentTags = { try await documentTags.findAll(where: $0) }
     client.createArtifactProductionVersion = { try await artifactProductionVersions.create($0) }
     artifactProductionVersions.assign(client: &client)
     audios.assign(client: &client)
@@ -567,29 +555,17 @@ extension DatabaseClient {
     deleteAllDocuments: {
       throw Abort(.notImplemented, reason: "db.deleteAllDocuments")
     },
+    createDocumentTag: { _ in
+      throw Abort(.notImplemented, reason: "db.createDocumentTag")
+    },
+    getDocumentTags: { _ in
+      throw Abort(.notImplemented, reason: "db.getDocumentTags")
+    },
     createRelatedDocument: { _ in
       throw Abort(.notImplemented, reason: "db.createRelatedDocument")
     },
-    createRelatedDocuments: { _ in
-      throw Abort(.notImplemented, reason: "db.createRelatedDocuments")
-    },
-    getRelatedDocument: { _ in
-      throw Abort(.notImplemented, reason: "db.getRelatedDocument")
-    },
     getRelatedDocuments: { _ in
       throw Abort(.notImplemented, reason: "db.getRelatedDocuments")
-    },
-    updateRelatedDocument: { _ in
-      throw Abort(.notImplemented, reason: "db.updateRelatedDocument")
-    },
-    updateRelatedDocuments: { _ in
-      throw Abort(.notImplemented, reason: "db.updateRelatedDocuments")
-    },
-    deleteRelatedDocument: { _ in
-      throw Abort(.notImplemented, reason: "db.deleteRelatedDocument")
-    },
-    deleteAllRelatedDocuments: {
-      throw Abort(.notImplemented, reason: "db.deleteAllRelatedDocuments")
     },
     createEdition: { _ in
       throw Abort(.notImplemented, reason: "db.createEdition")
@@ -743,12 +719,6 @@ extension DatabaseClient {
     },
     deleteAllIsbns: {
       throw Abort(.notImplemented, reason: "db.deleteAllIsbns")
-    },
-    createDocumentTag: { _ in
-      throw Abort(.notImplemented, reason: "db.createDocumentTag")
-    },
-    getDocumentTags: { _ in
-      throw Abort(.notImplemented, reason: "db.getDocumentTags")
     },
     createArtifactProductionVersion: { _ in
       throw Abort(.notImplemented, reason: "db.createArtifactProductionVersion")

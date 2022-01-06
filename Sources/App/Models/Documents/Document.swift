@@ -20,7 +20,7 @@ final class Document: Codable {
   var friend = Parent<Friend>.notLoaded
   var editions = Children<Edition>.notLoaded
   var altLanguageDocument = OptionalParent<Document>.notLoaded
-  var relatedDocuments = Children<Document>.notLoaded
+  var relatedDocuments = Children<RelatedDocument>.notLoaded
   var tags = Children<DocumentTag>.notLoaded
 
   init(
