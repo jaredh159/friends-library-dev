@@ -1,13 +1,15 @@
 # Converge TODOs:
 
+- [ ] - FriendResidenceDuration might be better as an OptionalChild, since i don't think
+    we ever want more than one... or do we? think
 - [ ] - fix gap in migrations number (removed doc tag pivot)
-- [ ] - write yaml import migration after all new migrations (shells out...)
-- [ ] - add foreign key migration to connect Download/OrderItem FK's AND Order->EditionId
 
 - [ ] - ANOTHER_TODO
 
 ## done...
 
+- [√] - write yaml import migration after all new migrations (shells out...)
+- [√] - add foreign key migration to connect Download/OrderItem FK's AND Order->EditionId
 - [√] - figure out related documents weirdness...
 - [√] - hook up relations for all models (augmenting resolver tests)
 - [√] - write basic crud stuff for all models (don't forget FriendResidence/Quote!)
