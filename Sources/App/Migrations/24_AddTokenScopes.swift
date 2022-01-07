@@ -5,6 +5,7 @@ struct AddTokenScopes: AsyncMigration {
 
   func prepare(on database: Database) async throws {
     _ = try await database.enum(TokenScope.M5.dbEnumName)
+      .case(TokenScope.M24.Scope.caseAll)
       .case(TokenScope.M24.Scope.caseMutateFriends)
       .case(TokenScope.M24.Scope.caseQueryFriends)
       .case(TokenScope.M24.Scope.caseMutateDocuments)
@@ -32,6 +33,7 @@ struct AddTokenScopes: AsyncMigration {
 extension TokenScope {
   enum M24 {
     enum Scope {
+      static let caseAll = "all"
       static let caseMutateFriends = "mutateFriends"
       static let caseQueryFriends = "queryFriends"
       static let caseMutateDocuments = "mutateDocuments"

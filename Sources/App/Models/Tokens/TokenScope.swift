@@ -1,6 +1,7 @@
 import Foundation
 
 enum Scope: String, Codable, CaseIterable, Equatable {
+  case all
   case queryDownloads
   case mutateDownloads
   case queryOrders

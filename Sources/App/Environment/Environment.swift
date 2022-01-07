@@ -6,6 +6,7 @@ struct Environment {
   var date: () -> Date = Date.init
   var db: DatabaseClient = .notImplemented
   var auth: Auth = .live
+  var logger = Logger(label: "api.friendslibrary")
 }
 
 var Current = Environment()
@@ -13,5 +14,3 @@ var Current = Environment()
 extension UUID {
   static let mock = UUID("3EFC3511-999E-4385-A071-E5B0965C4AFD")!
 }
-
-

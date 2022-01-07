@@ -11,6 +11,7 @@ class AppTestCase: XCTestCase {
     try! app.autoRevert().wait()
     try! app.autoMigrate().wait()
     try! configure(app)
+    Current.logger = .null
   }
 
   override static func tearDown() {
