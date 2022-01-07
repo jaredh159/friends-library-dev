@@ -51,7 +51,7 @@ describe(`generateModelConformances()`, () => {
         }
       }
 
-      extension TokenScope: SQLInspectable {
+      extension Thing: SQLInspectable {
         func satisfies(constraint: SQL.WhereConstraint) -> Bool {
           switch constraint.column {
             case "id":
@@ -109,14 +109,14 @@ describe(`generateModelConformances()`, () => {
         }
       }
 
-      extension TokenScope: SQLInspectable {
+      extension Thing: SQLInspectable {
         func satisfies(constraint: SQL.WhereConstraint) -> Bool {
           switch constraint.column {
-            case "createdAt":
+            case "created_at":
               return .date(createdAt) == constraint.value
-            case "updatedAt":
+            case "updated_at":
               return .date(updatedAt) == constraint.value
-            case "deletedAt":
+            case "deleted_at":
               return .date(deletedAt) == constraint.value
             default:
               return false

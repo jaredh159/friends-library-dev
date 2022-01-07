@@ -1,3 +1,8 @@
+export type Prop = {
+  name: string;
+  type: string;
+};
+
 export default class Model {
   public name: string;
   public filepath: string;
@@ -5,7 +10,8 @@ export default class Model {
   public taggedTypes: Record<string, string> = {};
   public dbEnums: Record<string, string[]> = {};
   public relations: Record<string, { type: string; relationType: string }> = {};
-  public props: Array<{ name: string; type: string }> = [];
+  public props: Prop[] = [];
+  public computedProps: Prop[] = [];
   public init: Array<{ propName: string; hasDefault: boolean }> = [];
 
   public constructor(name: string = ``, filepath: string = ``) {

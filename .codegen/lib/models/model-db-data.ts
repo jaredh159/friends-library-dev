@@ -1,7 +1,7 @@
 import { isNotNull } from 'x-ts-utils';
 import stripIndent from 'strip-indent';
 import { GlobalTypes } from '../types';
-import Model from './Model';
+import Model, { Prop } from './Model';
 
 export function insertData(model: Model, types: GlobalTypes): string {
   let code = stripIndent(/* swift */ `
@@ -27,7 +27,7 @@ export function insertData(model: Model, types: GlobalTypes): string {
 }
 
 export function toPostgresData(
-  prop: { name: string; type: string },
+  prop: Prop,
   model: Model,
   types: GlobalTypes,
   purpose: 'forInsert' | 'forInspect',

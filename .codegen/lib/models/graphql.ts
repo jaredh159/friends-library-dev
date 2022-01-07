@@ -84,6 +84,11 @@ export function schemaTypeFieldParts(
     .filter((p) => p.name !== `deletedAt`)
     .map(({ name, type }) => [name, `at`, keyPath(name, type, model, types)]);
 
+  for (const { name, type } of model.computedProps) {
+    const fieldName = type === `Cents<Int>` ? `${name}InCents` : name;
+    parts.push([fieldName, `at`, keyPath(name, type, model, types)]);
+  }
+
   for (const [name] of Object.entries(model.relations)) {
     parts.push([name, `with`, `\\.${name}`]);
   }

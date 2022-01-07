@@ -1,5 +1,6 @@
 import Foundation
 import NonEmpty
+import TaggedMoney
 
 final class EditionImpression: Codable {
   var id: Id
@@ -12,6 +13,10 @@ final class EditionImpression: Codable {
   var createdAt = Current.date()
 
   var edition = Parent<Edition>.notLoaded
+
+  var paperbackPrice: Cents<Int> {
+    Lulu.paperbackPrice(size: paperbackSize, volumes: paperbackVolumes)
+  }
 
   init(
     id: Id = .init(),

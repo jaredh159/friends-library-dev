@@ -17,7 +17,7 @@ final class LuluTests: XCTestCase {
     ]
 
     for (size, pages, expected) in cases {
-      XCTAssertEqual(paperbackPrice(size: size, volumes: pages), expected)
+      XCTAssertEqual(Lulu.paperbackPrice(size: size, volumes: pages), expected)
     }
   }
 }

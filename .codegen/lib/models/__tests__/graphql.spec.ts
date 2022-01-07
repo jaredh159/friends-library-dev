@@ -50,6 +50,16 @@ model.init = [
   { propName: `requiredDate`, hasDefault: false },
   { propName: `published`, hasDefault: false },
 ];
+model.computedProps = [
+  { name: `computedBool`, type: `Bool` },
+  { name: `computedInt`, type: `Int` },
+  { name: `computedNonEmptyInts`, type: `NonEmpty<[Int]>` },
+  { name: `computedPrice`, type: `Cents<Int>` },
+  { name: `computedPrintJobId`, type: `PrintJobId` },
+  { name: `computedOptionalPrintJobId`, type: `PrintJobId?` },
+  { name: `computedFooBar`, type: `FooBar` },
+  { name: `computedSha`, type: `GitCommitSha` },
+];
 model.props = [
   { name: `id`, type: `Id` },
   { name: `name`, type: `String` },
@@ -138,6 +148,14 @@ describe(`schemaTypeFieldParts()`, () => {
     [`published`, `at`, `\\.published`],
     [`createdAt`, `at`, `\\.createdAt`],
     [`updatedAt`, `at`, `\\.updatedAt`],
+    [`computedBool`, `at`, `\\.computedBool`],
+    [`computedInt`, `at`, `\\.computedInt`],
+    [`computedNonEmptyInts`, `at`, `\\.computedNonEmptyInts.rawValue`],
+    [`computedPriceInCents`, `at`, `\\.computedPrice.rawValue`],
+    [`computedPrintJobId`, `at`, `\\.computedPrintJobId.rawValue`],
+    [`computedOptionalPrintJobId`, `at`, `\\.computedOptionalPrintJobId?.rawValue`],
+    [`computedFooBar`, `at`, `\\.computedFooBar`],
+    [`computedSha`, `at`, `\\.computedSha.rawValue`],
     [`kids`, `with`, `\\.kids`],
     [`parent`, `with`, `\\.parent`],
   ];
@@ -176,6 +194,14 @@ describe(`generateModelGraphQLTypes()`, () => {
             Field("published", at: \\.published)
             Field("createdAt", at: \\.createdAt)
             Field("updatedAt", at: \\.updatedAt)
+            Field("computedBool", at: \\.computedBool)
+            Field("computedInt", at: \\.computedInt)
+            Field("computedNonEmptyInts", at: \\.computedNonEmptyInts.rawValue)
+            Field("computedPriceInCents", at: \\.computedPrice.rawValue)
+            Field("computedPrintJobId", at: \\.computedPrintJobId.rawValue)
+            Field("computedOptionalPrintJobId", at: \\.computedOptionalPrintJobId?.rawValue)
+            Field("computedFooBar", at: \\.computedFooBar)
+            Field("computedSha", at: \\.computedSha.rawValue)
             Field("kids", with: \\.kids)
             Field("parent", with: \\.parent)
           }

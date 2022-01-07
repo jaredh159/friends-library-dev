@@ -54,7 +54,10 @@ function parseClassInterior(name: string, path: string, lines: string[]): Model 
     }
 
     // computed property
-    if (line.match(/ ({|})$/)) {
+    const computedPropMatch = line.match(/\s+var ([^ ]+):\s+([^ ]+)\s+{/);
+    if (computedPropMatch) {
+      const computedProp = { name: computedPropMatch[1], type: computedPropMatch[2] };
+      model.computedProps.push(computedProp);
       continue;
     }
 

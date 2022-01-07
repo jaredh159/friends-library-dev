@@ -17,6 +17,12 @@ describe(`extractModelAttrs()`, () => {
       var updatedAt: Date
       var deletedAt = Date()
 
+      var computed1: Int { 42 }
+      var computed2: NonEmpty<[Int]> {
+        .init(42)
+      }
+      var computed3: Cents<Int> { someFunction() }
+
       init(
         id: Id = .init(),
         name: String,
@@ -42,6 +48,12 @@ describe(`extractModelAttrs()`, () => {
       relations: {
         kids: { type: `Person`, relationType: `Children` },
       },
+      computedProps: [
+        { name: `hasBeard`, type: `Bool` },
+        { name: `computed1`, type: `Int` },
+        { name: `computed2`, type: `NonEmpty<[Int]>` },
+        { name: `computed3`, type: `Cents<Int>` },
+      ],
       props: [
         { name: `id`, type: `Id` },
         { name: `name`, type: `String` },
@@ -152,6 +164,7 @@ describe(`extractModels()`, () => {
           { propName: `id`, hasDefault: true },
           { propName: `age`, hasDefault: false },
         ],
+        computedProps: [],
         props: [
           { name: `id`, type: `UUID` },
           { name: `age`, type: `Int` },
@@ -190,6 +203,7 @@ describe(`extractModels()`, () => {
         migrationNumber: 12,
         taggedTypes: {},
         dbEnums: {},
+        computedProps: [],
         relations: {},
         init: [],
         props: [{ name: `id`, type: `UUID` }],
