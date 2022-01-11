@@ -228,23 +228,23 @@ extension Download {
   }
 
   func update(_ input: AppSchema.UpdateDownloadInput) {
-    self.editionId = .init(rawValue: input.editionId)
-    self.format = input.format
-    self.source = input.source
-    self.audioQuality = input.audioQuality
-    self.audioPartNumber = input.audioPartNumber
-    self.isMobile = input.isMobile
-    self.userAgent = input.userAgent
-    self.os = input.os
-    self.browser = input.browser
-    self.platform = input.platform
-    self.referrer = input.referrer
-    self.ip = input.ip
-    self.city = input.city
-    self.region = input.region
-    self.postalCode = input.postalCode
-    self.country = input.country
-    self.latitude = input.latitude
-    self.longitude = input.longitude
+    editionId = .init(rawValue: input.editionId)
+    format = input.format
+    source = input.source
+    audioQuality = input.audioQuality
+    audioPartNumber = input.audioPartNumber
+    isMobile = input.isMobile
+    userAgent = input.userAgent
+    os = input.os
+    browser = input.browser
+    platform = input.platform
+    referrer = input.referrer
+    ip = input.ip
+    city = input.city
+    region = input.region
+    postalCode = input.postalCode
+    country = input.country
+    latitude = input.latitude
+    longitude = input.longitude
   }
 }

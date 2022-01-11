@@ -184,17 +184,17 @@ extension Document {
   }
 
   func update(_ input: AppSchema.UpdateDocumentInput) {
-    self.friendId = .init(rawValue: input.friendId)
-    self.altLanguageId = input.altLanguageId != nil ? .init(rawValue: input.altLanguageId!) : nil
-    self.title = input.title
-    self.slug = input.slug
-    self.filename = input.filename
-    self.published = input.published
-    self.originalTitle = input.originalTitle
-    self.incomplete = input.incomplete
-    self.description = input.description
-    self.partialDescription = input.partialDescription
-    self.featuredDescription = input.featuredDescription
-    self.updatedAt = Current.date()
+    friendId = .init(rawValue: input.friendId)
+    altLanguageId = input.altLanguageId != nil ? .init(rawValue: input.altLanguageId!) : nil
+    title = input.title
+    slug = input.slug
+    filename = input.filename
+    published = input.published
+    originalTitle = input.originalTitle
+    incomplete = input.incomplete
+    description = input.description
+    partialDescription = input.partialDescription
+    featuredDescription = input.featuredDescription
+    updatedAt = Current.date()
   }
 }

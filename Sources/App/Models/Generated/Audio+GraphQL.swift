@@ -167,15 +167,15 @@ extension Audio {
   }
 
   func update(_ input: AppSchema.UpdateAudioInput) {
-    self.editionId = .init(rawValue: input.editionId)
-    self.reader = input.reader
-    self.isIncomplete = input.isIncomplete
-    self.mp3ZipSizeHq = .init(rawValue: input.mp3ZipSizeHq)
-    self.mp3ZipSizeLq = .init(rawValue: input.mp3ZipSizeLq)
-    self.m4bSizeHq = .init(rawValue: input.m4bSizeHq)
-    self.m4bSizeLq = .init(rawValue: input.m4bSizeLq)
-    self.externalPlaylistIdHq = input.externalPlaylistIdHq != nil ? .init(rawValue: input.externalPlaylistIdHq!) : nil
-    self.externalPlaylistIdLq = input.externalPlaylistIdLq != nil ? .init(rawValue: input.externalPlaylistIdLq!) : nil
-    self.updatedAt = Current.date()
+    editionId = .init(rawValue: input.editionId)
+    reader = input.reader
+    isIncomplete = input.isIncomplete
+    mp3ZipSizeHq = .init(rawValue: input.mp3ZipSizeHq)
+    mp3ZipSizeLq = .init(rawValue: input.mp3ZipSizeLq)
+    m4bSizeHq = .init(rawValue: input.m4bSizeHq)
+    m4bSizeLq = .init(rawValue: input.m4bSizeLq)
+    externalPlaylistIdHq = input.externalPlaylistIdHq != nil ? .init(rawValue: input.externalPlaylistIdHq!) : nil
+    externalPlaylistIdLq = input.externalPlaylistIdLq != nil ? .init(rawValue: input.externalPlaylistIdLq!) : nil
+    updatedAt = Current.date()
   }
 }

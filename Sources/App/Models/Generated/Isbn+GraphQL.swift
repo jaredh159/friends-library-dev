@@ -117,8 +117,8 @@ extension Isbn {
   }
 
   func update(_ input: AppSchema.UpdateIsbnInput) {
-    self.code = .init(rawValue: input.code)
-    self.editionId = input.editionId != nil ? .init(rawValue: input.editionId!) : nil
-    self.updatedAt = Current.date()
+    code = .init(rawValue: input.code)
+    editionId = input.editionId != nil ? .init(rawValue: input.editionId!) : nil
+    updatedAt = Current.date()
   }
 }

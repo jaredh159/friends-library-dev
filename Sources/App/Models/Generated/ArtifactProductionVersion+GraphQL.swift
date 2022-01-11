@@ -108,6 +108,6 @@ extension ArtifactProductionVersion {
   }
 
   func update(_ input: AppSchema.UpdateArtifactProductionVersionInput) {
-    self.version = .init(rawValue: input.version)
+    version = .init(rawValue: input.version)
   }
 }

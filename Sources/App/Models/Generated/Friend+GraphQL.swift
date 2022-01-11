@@ -162,14 +162,14 @@ extension Friend {
   }
 
   func update(_ input: AppSchema.UpdateFriendInput) throws {
-    self.lang = input.lang
-    self.name = input.name
-    self.slug = input.slug
-    self.gender = input.gender
-    self.description = input.description
-    self.born = input.born
-    self.died = input.died
-    self.published = input.published != nil ? try Date.fromISO(input.published!) : nil
-    self.updatedAt = Current.date()
+    lang = input.lang
+    name = input.name
+    slug = input.slug
+    gender = input.gender
+    description = input.description
+    born = input.born
+    died = input.died
+    published = input.published != nil ? try Date.fromISO(input.published!) : nil
+    updatedAt = Current.date()
   }
 }

@@ -125,9 +125,9 @@ extension RelatedDocument {
   }
 
   func update(_ input: AppSchema.UpdateRelatedDocumentInput) {
-    self.description = input.description
-    self.documentId = .init(rawValue: input.documentId)
-    self.parentDocumentId = .init(rawValue: input.parentDocumentId)
-    self.updatedAt = Current.date()
+    description = input.description
+    documentId = .init(rawValue: input.documentId)
+    parentDocumentId = .init(rawValue: input.parentDocumentId)
+    updatedAt = Current.date()
   }
 }

@@ -152,13 +152,13 @@ extension EditionChapter {
   }
 
   func update(_ input: AppSchema.UpdateEditionChapterInput) {
-    self.editionId = .init(rawValue: input.editionId)
-    self.order = input.order
-    self.shortHeading = input.shortHeading
-    self.isIntermediateTitle = input.isIntermediateTitle
-    self.customId = input.customId
-    self.sequenceNumber = input.sequenceNumber
-    self.nonSequenceTitle = input.nonSequenceTitle
-    self.updatedAt = Current.date()
+    editionId = .init(rawValue: input.editionId)
+    order = input.order
+    shortHeading = input.shortHeading
+    isIntermediateTitle = input.isIntermediateTitle
+    customId = input.customId
+    sequenceNumber = input.sequenceNumber
+    nonSequenceTitle = input.nonSequenceTitle
+    updatedAt = Current.date()
   }
 }

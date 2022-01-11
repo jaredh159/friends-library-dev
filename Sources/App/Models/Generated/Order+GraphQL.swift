@@ -237,25 +237,25 @@ extension Order {
   }
 
   func update(_ input: AppSchema.UpdateOrderInput) {
-    self.lang = input.lang
-    self.source = input.source
-    self.paymentId = .init(rawValue: input.paymentId)
-    self.printJobId = input.printJobId != nil ? .init(rawValue: input.printJobId!) : nil
-    self.printJobStatus = input.printJobStatus
-    self.amount = .init(rawValue: input.amount)
-    self.taxes = .init(rawValue: input.taxes)
-    self.ccFeeOffset = .init(rawValue: input.ccFeeOffset)
-    self.shipping = .init(rawValue: input.shipping)
-    self.shippingLevel = input.shippingLevel
-    self.email = .init(rawValue: input.email)
-    self.addressName = input.addressName
-    self.addressStreet = input.addressStreet
-    self.addressStreet2 = input.addressStreet2
-    self.addressCity = input.addressCity
-    self.addressState = input.addressState
-    self.addressZip = input.addressZip
-    self.addressCountry = input.addressCountry
-    self.freeOrderRequestId = input.freeOrderRequestId != nil ? .init(rawValue: input.freeOrderRequestId!) : nil
-    self.updatedAt = Current.date()
+    lang = input.lang
+    source = input.source
+    paymentId = .init(rawValue: input.paymentId)
+    printJobId = input.printJobId != nil ? .init(rawValue: input.printJobId!) : nil
+    printJobStatus = input.printJobStatus
+    amount = .init(rawValue: input.amount)
+    taxes = .init(rawValue: input.taxes)
+    ccFeeOffset = .init(rawValue: input.ccFeeOffset)
+    shipping = .init(rawValue: input.shipping)
+    shippingLevel = input.shippingLevel
+    email = .init(rawValue: input.email)
+    addressName = input.addressName
+    addressStreet = input.addressStreet
+    addressStreet2 = input.addressStreet2
+    addressCity = input.addressCity
+    addressState = input.addressState
+    addressZip = input.addressZip
+    addressCountry = input.addressCountry
+    freeOrderRequestId = input.freeOrderRequestId != nil ? .init(rawValue: input.freeOrderRequestId!) : nil
+    updatedAt = Current.date()
   }
 }

@@ -116,7 +116,7 @@ extension Token {
   }
 
   func update(_ input: AppSchema.UpdateTokenInput) {
-    self.value = .init(rawValue: input.value)
-    self.description = input.description
+    value = .init(rawValue: input.value)
+    description = input.description
   }
 }

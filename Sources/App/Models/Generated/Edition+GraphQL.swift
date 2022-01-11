@@ -150,12 +150,12 @@ extension Edition {
   }
 
   func update(_ input: AppSchema.UpdateEditionInput) throws {
-    self.documentId = .init(rawValue: input.documentId)
-    self.type = input.type
-    self.editor = input.editor
-    self.isDraft = input.isDraft
-    self.paperbackSplits = try? NonEmpty<[Int]>.fromArray(input.paperbackSplits ?? [])
-    self.paperbackOverrideSize = input.paperbackOverrideSize
-    self.updatedAt = Current.date()
+    documentId = .init(rawValue: input.documentId)
+    type = input.type
+    editor = input.editor
+    isDraft = input.isDraft
+    paperbackSplits = try? NonEmpty<[Int]>.fromArray(input.paperbackSplits ?? [])
+    paperbackOverrideSize = input.paperbackOverrideSize
+    updatedAt = Current.date()
   }
 }

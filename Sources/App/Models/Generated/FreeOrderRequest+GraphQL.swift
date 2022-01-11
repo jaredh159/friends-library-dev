@@ -179,17 +179,17 @@ extension FreeOrderRequest {
   }
 
   func update(_ input: AppSchema.UpdateFreeOrderRequestInput) {
-    self.name = input.name
-    self.email = .init(rawValue: input.email)
-    self.requestedBooks = input.requestedBooks
-    self.aboutRequester = input.aboutRequester
-    self.addressStreet = input.addressStreet
-    self.addressStreet2 = input.addressStreet2
-    self.addressCity = input.addressCity
-    self.addressState = input.addressState
-    self.addressZip = input.addressZip
-    self.addressCountry = input.addressCountry
-    self.source = input.source
-    self.updatedAt = Current.date()
+    name = input.name
+    email = .init(rawValue: input.email)
+    requestedBooks = input.requestedBooks
+    aboutRequester = input.aboutRequester
+    addressStreet = input.addressStreet
+    addressStreet2 = input.addressStreet2
+    addressCity = input.addressCity
+    addressState = input.addressState
+    addressZip = input.addressZip
+    addressCountry = input.addressCountry
+    source = input.source
+    updatedAt = Current.date()
   }
 }

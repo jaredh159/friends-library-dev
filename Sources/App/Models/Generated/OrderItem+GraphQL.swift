@@ -131,9 +131,9 @@ extension OrderItem {
   }
 
   func update(_ input: AppSchema.UpdateOrderItemInput) {
-    self.orderId = .init(rawValue: input.orderId)
-    self.editionId = .init(rawValue: input.editionId)
-    self.quantity = input.quantity
-    self.unitPrice = .init(rawValue: input.unitPrice)
+    orderId = .init(rawValue: input.orderId)
+    editionId = .init(rawValue: input.editionId)
+    quantity = input.quantity
+    unitPrice = .init(rawValue: input.unitPrice)
   }
 }

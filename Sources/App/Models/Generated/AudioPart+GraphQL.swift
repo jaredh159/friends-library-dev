@@ -167,15 +167,15 @@ extension AudioPart {
   }
 
   func update(_ input: AppSchema.UpdateAudioPartInput) throws {
-    self.audioId = .init(rawValue: input.audioId)
-    self.title = input.title
-    self.duration = .init(rawValue: input.duration)
-    self.chapters = try NonEmpty<[Int]>.fromArray(input.chapters)
-    self.order = input.order
-    self.mp3SizeHq = .init(rawValue: input.mp3SizeHq)
-    self.mp3SizeLq = .init(rawValue: input.mp3SizeLq)
-    self.externalIdHq = .init(rawValue: input.externalIdHq)
-    self.externalIdLq = .init(rawValue: input.externalIdLq)
-    self.updatedAt = Current.date()
+    audioId = .init(rawValue: input.audioId)
+    title = input.title
+    duration = .init(rawValue: input.duration)
+    chapters = try NonEmpty<[Int]>.fromArray(input.chapters)
+    order = input.order
+    mp3SizeHq = .init(rawValue: input.mp3SizeHq)
+    mp3SizeLq = .init(rawValue: input.mp3SizeLq)
+    externalIdHq = .init(rawValue: input.externalIdHq)
+    externalIdLq = .init(rawValue: input.externalIdLq)
+    updatedAt = Current.date()
   }
 }

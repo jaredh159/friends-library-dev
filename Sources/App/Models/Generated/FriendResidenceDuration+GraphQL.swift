@@ -123,8 +123,8 @@ extension FriendResidenceDuration {
   }
 
   func update(_ input: AppSchema.UpdateFriendResidenceDurationInput) {
-    self.friendResidenceId = .init(rawValue: input.friendResidenceId)
-    self.start = input.start
-    self.end = input.end
+    friendResidenceId = .init(rawValue: input.friendResidenceId)
+    start = input.start
+    end = input.end
   }
 }

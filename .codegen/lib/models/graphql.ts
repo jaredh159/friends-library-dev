@@ -52,10 +52,10 @@ export function generateModelGraphQLTypes(
     .map((prop) => prop.name)
     .filter((name) => !isTimestamp(name))
     .filter((name) => name != `id`)
-    .map((name) => `self.${name} = ${modelPropToInitArg(name, model, types, `create`)}`);
+    .map((name) => `${name} = ${modelPropToInitArg(name, model, types, `create`)}`);
 
   if (model.props.find((p) => p.name === `updatedAt`)) {
-    updateSetters.push(`self.updatedAt = Current.date()`);
+    updateSetters.push(`updatedAt = Current.date()`);
   }
 
   code = code.replace(`/* FUNC_UPDATE */`, updateSetters.join(`\n    `));

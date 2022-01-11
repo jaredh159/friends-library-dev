@@ -138,11 +138,11 @@ extension FriendQuote {
   }
 
   func update(_ input: AppSchema.UpdateFriendQuoteInput) {
-    self.friendId = .init(rawValue: input.friendId)
-    self.source = input.source
-    self.text = input.text
-    self.order = input.order
-    self.context = input.context
-    self.updatedAt = Current.date()
+    friendId = .init(rawValue: input.friendId)
+    source = input.source
+    text = input.text
+    order = input.order
+    context = input.context
+    updatedAt = Current.date()
   }
 }

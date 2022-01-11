@@ -116,7 +116,7 @@ extension DocumentTag {
   }
 
   func update(_ input: AppSchema.UpdateDocumentTagInput) {
-    self.documentId = .init(rawValue: input.documentId)
-    self.type = input.type
+    documentId = .init(rawValue: input.documentId)
+    type = input.type
   }
 }
