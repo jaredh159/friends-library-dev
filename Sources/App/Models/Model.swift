@@ -7,21 +7,42 @@ protocol AppModel: Codable, Equatable {}
 enum Children<C: AppModel>: Codable {
   case notLoaded
   case loaded([C])
+
+  var loaded: [C]? {
+    guard case let .loaded(loaded) = self else { return nil }
+    return loaded
+  }
 }
 
 enum Parent<M: AppModel> {
   case notLoaded
   case loaded(M)
+
+  // @TODO would be better if they threw, but swift-format can't handle that yet...
+  var loaded: M? {
+    guard case let .loaded(loaded) = self else { return nil }
+    return loaded
+  }
 }
 
 enum OptionalParent<M: AppModel> {
   case notLoaded
   case loaded(M?)
+
+  var loaded: M?? {
+    guard case let .loaded(loaded) = self else { return .none }
+    return .some(loaded)
+  }
 }
 
 enum OptionalChild<M: AppModel> {
   case notLoaded
   case loaded(M?)
+
+  var loaded: M?? {
+    guard case let .loaded(loaded) = self else { return .none }
+    return .some(loaded)
+  }
 }
 
 protocol UUIDStringable {

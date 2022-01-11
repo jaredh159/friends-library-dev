@@ -119,6 +119,15 @@
         }
       },
       {
+        "package": "RomanNumeralKit",
+        "repositoryURL": "https://github.com/kylehughes/RomanNumeralKit.git",
+        "state": {
+          "branch": null,
+          "revision": "738d9ea027823f0ed592a10e4c6ecbf08636f76f",
+          "version": "1.2.1"
+        }
+      },
+      {
         "package": "routing-kit",
         "repositoryURL": "https://github.com/vapor/routing-kit.git",
         "state": {

@@ -46,6 +46,10 @@ let package = Package(
       url: "https://github.com/pointfreeco/swift-nonempty.git",
       from: "0.3.0"
     ),
+    .package(
+      url: "https://github.com/kylehughes/RomanNumeralKit.git",
+      from: "1.0.0"
+    ),
   ],
   targets: [
     .target(
@@ -58,6 +62,7 @@ let package = Package(
         .product(name: "TaggedTime", package: "swift-tagged"),
         .product(name: "TaggedMoney", package: "swift-tagged"),
         .product(name: "NonEmpty", package: "swift-nonempty"),
+        "RomanNumeralKit",
         "GraphQLKit",
         "QueuesFluentDriver",
         "VaporUtils",
