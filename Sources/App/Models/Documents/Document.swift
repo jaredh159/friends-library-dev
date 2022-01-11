@@ -23,12 +23,6 @@ final class Document: Codable {
   var relatedDocuments = Children<RelatedDocument>.notLoaded
   var tags = Children<DocumentTag>.notLoaded
 
-  var trimmedUtf8ShortTitle: String {
-    get throws {
-      Asciidoc.trimmedUtf8ShortDocumentTitle(title, lang: friend.loaded?.lang ?? .en)
-    }
-  }
-
   init(
     id: Id = .init(),
     friendId: Friend.Id,

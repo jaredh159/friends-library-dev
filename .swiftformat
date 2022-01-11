@@ -1,0 +1,14 @@
+--disable blankLinesAtStartOfScope
+--binarygrouping none
+--decimalgrouping none
+--hexgrouping none
+--indent 2
+--indentcase true
+--octalgrouping none
+--patternlet inline
+--semicolons never
+--stripunusedargs unnamed-only
+--wraparguments before-first
+--wrapcollections before-first
+--wrapparameters before-first
+--wraparguments before-first
