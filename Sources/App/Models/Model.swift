@@ -4,44 +4,91 @@ import Tagged
 
 protocol AppModel: Codable, Equatable {}
 
+enum RelationError: Error {
+  case notLoaded
+}
+
 enum Children<C: AppModel>: Codable {
   case notLoaded
   case loaded([C])
 
-  var loaded: [C]? {
-    guard case let .loaded(loaded) = self else { return nil }
-    return loaded
+  var models: [C] {
+    get throws {
+      guard case .loaded(let loaded) = self else {
+        throw RelationError.notLoaded
+      }
+      return loaded
+    }
+  }
+
+  func require(file: StaticString = #file, line: UInt = #line) -> [C] {
+    guard let models = try? models else {
+      invariant("Required children [\(C.self)] not loaded at \(file):\(line)")
+    }
+    return models
   }
 }
 
-enum Parent<M: AppModel> {
+enum Parent<P: AppModel> {
   case notLoaded
-  case loaded(M)
+  case loaded(P)
 
-  // @TODO would be better if they threw, but swift-format can't handle that yet...
-  var loaded: M? {
-    guard case let .loaded(loaded) = self else { return nil }
-    return loaded
+  var model: P {
+    get throws {
+      guard case .loaded(let loaded) = self else {
+        throw RelationError.notLoaded
+      }
+      return loaded
+    }
+  }
+
+  func require(file: StaticString = #file, line: UInt = #line) -> P {
+    guard let model = try? model else {
+      invariant("Required parent \(P.self) not loaded at \(file):\(line)")
+    }
+    return model
   }
 }
 
-enum OptionalParent<M: AppModel> {
+enum OptionalParent<P: AppModel> {
   case notLoaded
-  case loaded(M?)
+  case loaded(P?)
 
-  var loaded: M?? {
-    guard case let .loaded(loaded) = self else { return .none }
-    return .some(loaded)
+  var model: P? {
+    get throws {
+      guard case .loaded(let loaded) = self else {
+        throw RelationError.notLoaded
+      }
+      return loaded
+    }
+  }
+
+  func require(file: StaticString = #file, line: UInt = #line) -> P {
+    guard let model = try? model else {
+      invariant("Required optional parent \(P.self) not loaded at \(file):\(line)")
+    }
+    return model
   }
 }
 
-enum OptionalChild<M: AppModel> {
+enum OptionalChild<C: AppModel> {
   case notLoaded
-  case loaded(M?)
+  case loaded(C?)
 
-  var loaded: M?? {
-    guard case let .loaded(loaded) = self else { return .none }
-    return .some(loaded)
+  var model: C? {
+    get throws {
+      guard case .loaded(let loaded) = self else {
+        throw RelationError.notLoaded
+      }
+      return loaded
+    }
+  }
+
+  func require(file: StaticString = #file, line: UInt = #line) -> C {
+    guard let model = try? model else {
+      invariant("Required optional child \(C.self) not loaded at \(file):\(line)")
+    }
+    return model
   }
 }
 
@@ -101,13 +148,22 @@ extension DuetModel where IdValue: RawRepresentable, IdValue.RawValue == UUID {
 
 extension Array where Element: DuetModel {
   func firstOrThrowNotFound() throws -> Element {
-    guard let first = self.first else { throw DbError.notFound }
+    guard let first = first else { throw DbError.notFound }
     return first
   }
 }
 
 protocol SQLInspectable {
   func satisfies(constraint: SQL.WhereConstraint) -> Bool
+}
+
+extension SQLInspectable {
+  func satisfies(constraint: SQL.WhereConstraint?) -> Bool {
+    if let constraint = constraint {
+      return satisfies(constraint: constraint)
+    }
+    return true
+  }
 }
 
 protocol RandomEmptyInitializing {
@@ -123,7 +179,7 @@ extension Tagged: RandomEmptyInitializing where RawValue == UUID {
 extension UUID: UUIDStringable {}
 
 extension Tagged: UUIDStringable where RawValue == UUID {
-  var uuidString: String { self.rawValue.uuidString }
+  var uuidString: String { rawValue.uuidString }
 }
 
 protocol Auditable: DuetModel {

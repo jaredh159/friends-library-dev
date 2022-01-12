@@ -33,6 +33,7 @@ final class EditionImpressionResolverTests: AppTestCase {
       query GetEditionImpression {
         editionImpression: getEditionImpression(id: "\(editionImpression.id.uuidString)") {
           id
+          paperbackVolumes
         }
       }
       """,

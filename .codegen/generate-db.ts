@@ -23,12 +23,12 @@ function main() {
   );
 
   code = code.replace(
-    /\/\* REPOS_DELEGATES \*\//g,
+    /\/\* REPOS_ASSIGNS \*\//g,
     models.map((m) => `${m.camelCaseName}s.assign(client: &client)`).join(`\n    `),
   );
 
   code = code.replace(
-    /\/\* REPOS_ASSIGNS \*\//g,
+    /\/\* REPOS_DELEGATES \*\//g,
     dbClientProps
       .map(([fn]) => {
         const match = fn.match(/^(create|update|deleteAll|delete|get)(.*?)(s)?$/);
@@ -86,18 +86,22 @@ import Vapor
 extension DatabaseClient {
   static func live(db: SQLDatabase) -> DatabaseClient {
     var client: DatabaseClient = .notImplemented
+    let entitiesRepo = EntityRepository(db: db)
     /* LIVE_REPOS_CREATE */
-    /* REPOS_ASSIGNS */
     /* REPOS_DELEGATES */
+    /* REPOS_ASSIGNS */
+    entitiesRepo.assign(client: &client)
     return client
   }
 
   static var mock: DatabaseClient {
     let db = MockDb()
     var client: DatabaseClient = .notImplemented
+    let entitiesRepo = MockEntityRepository(db: db)
     /* MOCK_REPOS_CREATE */
-    /* REPOS_ASSIGNS */
     /* REPOS_DELEGATES */
+    /* REPOS_ASSIGNS */
+    entitiesRepo.assign(client: &client)
     return client
   }
 

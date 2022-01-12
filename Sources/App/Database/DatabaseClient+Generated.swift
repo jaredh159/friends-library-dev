@@ -5,6 +5,7 @@ import Vapor
 extension DatabaseClient {
   static func live(db: SQLDatabase) -> DatabaseClient {
     var client: DatabaseClient = .notImplemented
+    let entitiesRepo = EntityRepository(db: db)
     let artifactProductionVersions = Repository<ArtifactProductionVersion>(db: db)
     let audios = Repository<Audio>(db: db)
     let audioParts = Repository<AudioPart>(db: db)
@@ -167,12 +168,14 @@ extension DatabaseClient {
     orderItems.assign(client: &client)
     tokens.assign(client: &client)
     tokenScopes.assign(client: &client)
+    entitiesRepo.assign(client: &client)
     return client
   }
 
   static var mock: DatabaseClient {
     let db = MockDb()
     var client: DatabaseClient = .notImplemented
+    let entitiesRepo = MockEntityRepository(db: db)
     let artifactProductionVersions = MockRepository<ArtifactProductionVersion>(db: db, models: \.artifactProductionVersions)
     let audios = MockRepository<Audio>(db: db, models: \.audios)
     let audioParts = MockRepository<AudioPart>(db: db, models: \.audioParts)
@@ -335,10 +338,17 @@ extension DatabaseClient {
     orderItems.assign(client: &client)
     tokens.assign(client: &client)
     tokenScopes.assign(client: &client)
+    entitiesRepo.assign(client: &client)
     return client
   }
 
   static let notImplemented = DatabaseClient(
+    entities: {
+      throw Abort(.notImplemented, reason: "db.entities")
+    },
+    flushEntities: {
+      throw Abort(.notImplemented, reason: "db.flushEntities")
+    },
     createToken: { _ in
       throw Abort(.notImplemented, reason: "db.createToken")
     },

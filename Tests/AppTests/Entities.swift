@@ -80,6 +80,7 @@ struct Entities {
     _ = try! await Current.db.createIsbn(isbn)
     _ = try! await Current.db.createAudio(audio)
     _ = try! await Current.db.createAudioPart(audioPart)
+    try! Current.db.flushEntities()
 
     return entities
   }

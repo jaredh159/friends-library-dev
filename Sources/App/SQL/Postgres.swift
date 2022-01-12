@@ -72,30 +72,30 @@ enum Postgres {
 
     var param: String {
       switch self {
-        case let .enum(enumVal):
+        case .enum(let enumVal):
           return nullable(enumVal?.rawValue)
-        case let .string(string):
+        case .string(let string):
           return nullable(string)
-        case let .int64(int64):
+        case .int64(let int64):
           return nullable(int64)
-        case let .int(int):
+        case .int(let int):
           return nullable(int)
-        case let .float(float):
+        case .float(let float):
           return nullable(float)
-        case let .double(double):
+        case .double(let double):
           return nullable(double)
-        case let .intArray(ints):
+        case .intArray(let ints):
           guard let ints = ints else { return "NULL" }
           return "'{\(ints.map(String.init).joined(separator: ","))}'"
-        case let .id(model):
+        case .id(let model):
           return "'\(model.uuidId.uuidString)'"
-        case let .uuid(uuid):
+        case .uuid(let uuid):
           return nullable(uuid?.uuidString)
-        case let .bool(bool):
+        case .bool(let bool):
           return nullable(bool)
-        case let .json(string):
+        case .json(let string):
           return nullable(string)
-        case let .date(date):
+        case .date(let date):
           return nullable(date)
         case .currentTimestamp:
           return "current_timestamp"

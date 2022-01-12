@@ -9,15 +9,16 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
   ) where FieldType == TypeRef<Child>? {
     self.init(
       name.description,
-      at: resolveOptionalChild { (parent) async throws -> Child? in
+      at: resolveOptionalChild { parent async throws -> Child? in
         switch parent[keyPath: keyPath] {
-          case let .loaded(child):
+          case .loaded(let child):
             return child
           case .notLoaded:
             return try await loadOptionalChild(at: keyPath, for: parent)
         }
       },
-      as: TypeRef<Child>?.self)
+      as: TypeRef<Child>?.self
+    )
   }
 }
 
@@ -33,10 +34,12 @@ private func loadOptionalChild<Parent: DuetModel, Child: DuetModel>(
       child = try await db.getEditionIsbn(parent.id as! Edition.Id) as! Child?
 
     case \Edition.audio:
-      child = try await db.getEditionAudio(parent.id as! Edition.Id) as! Child?
+      child = try? await db.entities()
+        .find(Child.self, where: Audio[.editionId] == .id(parent))
 
     case \Edition.impression:
-      child = try await db.getEditionEditionImpression(parent.id as! Edition.Id) as! Child?
+      child = try await db.entities()
+        .findOptional(Child.self, where: EditionImpression[.editionId] == .id(parent))
 
     default:
       throw Abort(.notImplemented, reason: "\(keyPath) not handled for OptionalChild<M> relation")
@@ -52,7 +55,7 @@ private func resolveOptionalChild<Parent: AppModel, Child: AppModel>(
 ) -> (Parent) -> (Req, NoArgs, EventLoopGroup) throws -> Future<Child?> {
   { parent in
     { _, _, elg in
-      return future(of: Child?.self, on: elg.next()) {
+      future(of: Child?.self, on: elg.next()) {
         try await f(parent)
       }
     }

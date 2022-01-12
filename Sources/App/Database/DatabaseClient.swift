@@ -4,6 +4,9 @@ import Tagged
 import Vapor
 
 struct DatabaseClient {
+  var entities: () async throws -> PreloadedEntities
+  var flushEntities: () throws -> Void
+
   // tokens
   var createToken: (Token) async throws -> Token
   var getToken: (Token.Id) async throws -> Token

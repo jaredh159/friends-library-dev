@@ -1,4 +1,5 @@
 --disable blankLinesAtStartOfScope
+--disable wrapMultilineStatementBraces
 --binarygrouping none
 --decimalgrouping none
 --hexgrouping none
@@ -7,8 +8,10 @@
 --octalgrouping none
 --patternlet inline
 --semicolons never
---stripunusedargs unnamed-only
+--stripunusedargs closure-only
 --wraparguments before-first
 --wrapcollections before-first
 --wrapparameters before-first
 --wraparguments before-first
+--maxwidth 100
+--enable redundantReturn
