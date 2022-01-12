@@ -1,12 +1,14 @@
 import FluentSQL
 import Vapor
 
-class EntityRepository {
+private var liveEntities: PreloadedEntities?
+private var mockEntities: PreloadedEntities?
+
+struct EntityRepository {
   let db: SQLDatabase
-  var entities: PreloadedEntities?
 
   func getEntities() async throws -> PreloadedEntities {
-    if let entities = entities {
+    if let entities = liveEntities {
       return entities
     }
 
@@ -38,7 +40,7 @@ class EntityRepository {
       audioParts: try await audioParts
     )
 
-    self.entities = entities
+    liveEntities = entities
     return entities
   }
 
@@ -49,12 +51,12 @@ class EntityRepository {
   }
 
   func flush() {
-    entities = nil
+    liveEntities = nil
   }
 
   func assign(client: inout DatabaseClient) {
-    client.entities = { [self] in try await self.getEntities() }
-    client.flushEntities = { [self] in self.flush() }
+    client.entities = { try await getEntities() }
+    client.flushEntities = { flush() }
   }
 
   init(db: SQLDatabase) {
@@ -62,12 +64,11 @@ class EntityRepository {
   }
 }
 
-class MockEntityRepository {
+struct MockEntityRepository {
   let db: MockDb
-  var entities: PreloadedEntities?
 
   func getEntities() async throws -> PreloadedEntities {
-    if let entities = entities {
+    if let entities = mockEntities {
       return entities
     }
 
@@ -86,17 +87,17 @@ class MockEntityRepository {
       audioParts: db.audioParts
     )
 
-    self.entities = entities
+    mockEntities = entities
     return entities
   }
 
   func flush() {
-    entities = nil
+    mockEntities = nil
   }
 
   func assign(client: inout DatabaseClient) {
-    client.entities = { [self] in try await self.getEntities() }
-    client.flushEntities = { [self] in self.flush() }
+    client.entities = { try await getEntities() }
+    client.flushEntities = { flush() }
   }
 
   init(db: MockDb) {

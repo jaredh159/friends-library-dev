@@ -172,8 +172,8 @@ extension Repository where Model: SoftDeletable {
     return model
   }
 
-  func findAll(where: SQL.WhereConstraint? = nil) async throws -> [Model] {
-    try await _findAll(where: `where`)
+  func findAll(where constraint: SQL.WhereConstraint? = nil) async throws -> [Model] {
+    try await _findAll(where: constraint)
       .filter { $0.deletedAt == nil }
   }
 }

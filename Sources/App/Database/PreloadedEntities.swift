@@ -1,6 +1,6 @@
 import Foundation
 
-actor PreloadedEntities {
+actor PreloadedEntities: SQLQuerying {
   var friends: [Friend.Id: Friend]
   var friendQuotes: [FriendQuote.Id: FriendQuote]
   var friendResidences: [FriendResidence.Id: FriendResidence]
@@ -14,32 +14,10 @@ actor PreloadedEntities {
   var audios: [Audio.Id: Audio]
   var audioParts: [AudioPart.Id: AudioPart]
 
-  func find<M: DuetModel>(_ Model: M.Type, withId id: M.IdValue) throws -> M {
-    guard let model = try models(of: Model)[id] else {
-      throw DbError.notFound
-    }
-    return model
-  }
-
-  func find<M: DuetModel>(_ Model: M.Type, where constraint: SQL.WhereConstraint) throws -> M {
-    try Array(models(of: Model).values)
-      .filter { $0.satisfies(constraint: constraint) }
-      .firstOrThrowNotFound()
-  }
-
-  func findOptional<M: DuetModel>(
-    _ Model: M.Type,
-    where constraint: SQL.WhereConstraint
-  ) throws -> M? {
-    try Array(models(of: Model).values)
-      .filter { $0.satisfies(constraint: constraint) }
-      .first ?? nil
-  }
-
-  func findAll<M: DuetModel>(
+  func select<M: DuetModel>(
     _ Model: M.Type,
     where constraint: SQL.WhereConstraint? = nil
-  ) throws -> [M] {
+  ) async throws -> [M] {
     try Array(models(of: Model).values).filter { $0.satisfies(constraint: constraint) }
   }
 

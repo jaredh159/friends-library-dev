@@ -6,6 +6,15 @@ extension DatabaseClient {
   static func live(db: SQLDatabase) -> DatabaseClient {
     var client: DatabaseClient = .notImplemented
     let entitiesRepo = EntityRepository(db: db)
+
+    _ = future(of: Void.self, on: db.eventLoop) {
+      // let gen = GenericRepository(db: db)
+      // let duration = FriendResidenceDuration(friendResidenceId: .init(), start: 0, end: 0)
+      // let lol = try! await gen.create(duration)
+      // let rofl = try! await gen.delete(Audio.self, where: "id" == "lol")
+      // let foobar = try! await gen.delete(Audio.self, byId: .init())
+    }
+
     let artifactProductionVersions = Repository<ArtifactProductionVersion>(db: db)
     let audios = Repository<Audio>(db: db)
     let audioParts = Repository<AudioPart>(db: db)
@@ -176,7 +185,10 @@ extension DatabaseClient {
     let db = MockDb()
     var client: DatabaseClient = .notImplemented
     let entitiesRepo = MockEntityRepository(db: db)
-    let artifactProductionVersions = MockRepository<ArtifactProductionVersion>(db: db, models: \.artifactProductionVersions)
+    let artifactProductionVersions = MockRepository<ArtifactProductionVersion>(
+      db: db,
+      models: \.artifactProductionVersions
+    )
     let audios = MockRepository<Audio>(db: db, models: \.audios)
     let audioParts = MockRepository<AudioPart>(db: db, models: \.audioParts)
     let documents = MockRepository<Document>(db: db, models: \.documents)
@@ -189,7 +201,10 @@ extension DatabaseClient {
     let friends = MockRepository<Friend>(db: db, models: \.friends)
     let friendQuotes = MockRepository<FriendQuote>(db: db, models: \.friendQuotes)
     let friendResidences = MockRepository<FriendResidence>(db: db, models: \.friendResidences)
-    let friendResidenceDurations = MockRepository<FriendResidenceDuration>(db: db, models: \.friendResidenceDurations)
+    let friendResidenceDurations = MockRepository<FriendResidenceDuration>(
+      db: db,
+      models: \.friendResidenceDurations
+    )
     let isbns = MockRepository<Isbn>(db: db, models: \.isbns)
     let freeOrderRequests = MockRepository<FreeOrderRequest>(db: db, models: \.freeOrderRequests)
     let orders = MockRepository<Order>(db: db, models: \.orders)

@@ -5,6 +5,28 @@ import XCTest
 
 final class SqlTests: XCTestCase {
 
+  func testDeleteWithConstraint() throws {
+    let stmt = SQL.delete(from: "foos", where: "id" == "abc")
+
+    let expectedQuery = """
+    DELETE FROM "foos" WHERE "id" = $1;
+    """
+
+    XCTAssertEqual(stmt.query, expectedQuery)
+    XCTAssertEqual(stmt.bindings, ["abc"])
+  }
+
+  func testDeleteAll() throws {
+    let stmt = SQL.delete(from: "foos")
+
+    let expectedQuery = """
+    DELETE FROM "foos";
+    """
+
+    XCTAssertEqual(stmt.query, expectedQuery)
+    XCTAssertEqual(stmt.bindings, [])
+  }
+
   func testBulkInsert() throws {
     let stmt = try SQL.insert(into: "foos", values: [["foo": 1, "bar": 2], ["bar": 4, "foo": 3]])
 

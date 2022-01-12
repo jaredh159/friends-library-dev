@@ -15,6 +15,22 @@ enum SQL {
     let bindings: [Postgres.Data]
   }
 
+  static func delete(
+    from table: String,
+    where constraint: WhereConstraint? = nil
+  ) -> PreparedStatement {
+    var bindings: [Postgres.Data] = []
+
+    var WHERE = ""
+    if let constraint = constraint {
+      bindings.append(constraint.value)
+      WHERE = " \(whereClause(constraint, boundTo: 1))"
+    }
+
+    let query = #"DELETE FROM "\#(table)"\#(WHERE);"#
+    return PreparedStatement(query: query, bindings: bindings)
+  }
+
   static func update(
     _ table: String,
     set values: [String: Postgres.Data],
