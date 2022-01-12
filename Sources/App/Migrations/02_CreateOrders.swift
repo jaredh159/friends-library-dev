@@ -35,38 +35,38 @@ struct CreateOrders: Migration {
 
     return
       printJobStatusFuture
-      .and(shippingLevelFuture)
-      .and(langFuture)
-      .and(sourceFuture)
-      .flatMap { types in
-        let (((printJobStatus, shippingLevel), lang), source) = types
-        return database.schema(M2.tableName)
-          .id()
-          .field(M2.paymentId, .string, .required)
-          .field(M2.printJobStatus, printJobStatus, .required)
-          .field(M2.printJobId, .int)
-          .field(M2.amount, .int, .required)
-          .field(M2.shipping, .int, .required)
-          .field(M2.taxes, .int, .required)
-          .field(M2.ccFeeOffset, .int, .required)
-          .field(M2.shippingLevel, shippingLevel, .required)
-          .field(M2.email, .string, .required)
-          .field(M2.addressName, .string, .required)
-          .field(M2.addressStreet, .string, .required)
-          .field(M2.addressStreet2, .string)
-          .field(M2.addressCity, .string, .required)
-          .field(M2.addressState, .string, .required)
-          .field(M2.addressZip, .string, .required)
-          .field(M2.addressCountry, .string, .required)
-          .field(M2.lang, lang, .required)
-          .field(M2.source, source, .required)
-          .field(.createdAt, .datetime, .required)
-          .field(.updatedAt, .datetime, .required)
-          .create()
-      }
+        .and(shippingLevelFuture)
+        .and(langFuture)
+        .and(sourceFuture)
+        .flatMap { types in
+          let (((printJobStatus, shippingLevel), lang), source) = types
+          return database.schema(M2.tableName)
+            .id()
+            .field(M2.paymentId, .string, .required)
+            .field(M2.printJobStatus, printJobStatus, .required)
+            .field(M2.printJobId, .int)
+            .field(M2.amount, .int, .required)
+            .field(M2.shipping, .int, .required)
+            .field(M2.taxes, .int, .required)
+            .field(M2.ccFeeOffset, .int, .required)
+            .field(M2.shippingLevel, shippingLevel, .required)
+            .field(M2.email, .string, .required)
+            .field(M2.addressName, .string, .required)
+            .field(M2.addressStreet, .string, .required)
+            .field(M2.addressStreet2, .string)
+            .field(M2.addressCity, .string, .required)
+            .field(M2.addressState, .string, .required)
+            .field(M2.addressZip, .string, .required)
+            .field(M2.addressCountry, .string, .required)
+            .field(M2.lang, lang, .required)
+            .field(M2.source, source, .required)
+            .field(.createdAt, .datetime, .required)
+            .field(.updatedAt, .datetime, .required)
+            .create()
+        }
   }
 
   func revert(on database: Database) -> Future<Void> {
-    return database.schema(M2.tableName).delete()
+    database.schema(M2.tableName).delete()
   }
 }

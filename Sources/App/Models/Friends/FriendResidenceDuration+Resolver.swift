@@ -40,7 +40,8 @@ extension Resolver {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [FriendResidenceDuration].self, on: req.eventLoop) {
       try await Current.db.createFriendResidenceDurations(
-        args.input.map(FriendResidenceDuration.init))
+        args.input.map(FriendResidenceDuration.init)
+      )
     }
   }
 
@@ -61,7 +62,8 @@ extension Resolver {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [FriendResidenceDuration].self, on: req.eventLoop) {
       try await Current.db.updateFriendResidenceDurations(
-        args.input.map(FriendResidenceDuration.init))
+        args.input.map(FriendResidenceDuration.init)
+      )
     }
   }
 

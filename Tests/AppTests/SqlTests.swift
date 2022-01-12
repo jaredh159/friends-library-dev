@@ -9,11 +9,11 @@ final class SqlTests: XCTestCase {
     let stmt = try SQL.insert(into: "foos", values: [["foo": 1, "bar": 2], ["bar": 4, "foo": 3]])
 
     let expectedQuery = """
-      INSERT INTO "foos"
-      ("bar", "foo")
-      VALUES
-      ($1, $2), ($3, $4);
-      """
+    INSERT INTO "foos"
+    ("bar", "foo")
+    VALUES
+    ($1, $2), ($3, $4);
+    """
 
     XCTAssertEqual(stmt.query, expectedQuery)
     XCTAssertEqual(stmt.bindings, [2, 1, 4, 3])
@@ -23,10 +23,10 @@ final class SqlTests: XCTestCase {
     let statement = SQL.update("foos", set: ["bar": 1, "baz": true], where: ("lol", .equals, "a"))
 
     let query = """
-      UPDATE "foos"
-      SET "bar" = $1, "baz" = $2
-      WHERE "lol" = $3;
-      """
+    UPDATE "foos"
+    SET "bar" = $1, "baz" = $2
+    WHERE "lol" = $3;
+    """
 
     XCTAssertEqual(statement.query, query)
     XCTAssertEqual(statement.bindings, [1, true, "a"])
@@ -36,9 +36,9 @@ final class SqlTests: XCTestCase {
     let statement = SQL.update("foos", set: ["bar": 1])
 
     let query = """
-      UPDATE "foos"
-      SET "bar" = $1;
-      """
+    UPDATE "foos"
+    SET "bar" = $1;
+    """
 
     XCTAssertEqual(statement.query, query)
     XCTAssertEqual(statement.bindings, [1])
@@ -53,11 +53,11 @@ final class SqlTests: XCTestCase {
     )
 
     let query = """
-      UPDATE "foos"
-      SET "bar" = $1
-      WHERE "lol" = $2
-      RETURNING *;
-      """
+    UPDATE "foos"
+    SET "bar" = $1
+    WHERE "lol" = $2
+    RETURNING *;
+    """
 
     XCTAssertEqual(statement.query, query)
     XCTAssertEqual(statement.bindings, [1, "a"])
@@ -68,11 +68,11 @@ final class SqlTests: XCTestCase {
     let statement = try SQL.insert(into: "foos", values: ["a": 33, "b": "lol", "c": .uuid(id)])
 
     let query = """
-      INSERT INTO "foos"
-      ("a", "b", "c")
-      VALUES
-      ($1, $2, $3);
-      """
+    INSERT INTO "foos"
+    ("a", "b", "c")
+    VALUES
+    ($1, $2, $3);
+    """
 
     XCTAssertEqual(statement.query, query)
     XCTAssertEqual(statement.bindings, [33, "lol", .uuid(id)])
@@ -82,11 +82,11 @@ final class SqlTests: XCTestCase {
     let statement = try SQL.insert(into: "foos", values: ["a": .int(22), "b": .int(nil)])
 
     let query = """
-      INSERT INTO "foos"
-      ("a", "b")
-      VALUES
-      ($1, $2);
-      """
+    INSERT INTO "foos"
+    ("a", "b")
+    VALUES
+    ($1, $2);
+    """
 
     XCTAssertEqual(statement.query, query)
     XCTAssertEqual(statement.bindings, [22, .int(nil)])
@@ -96,11 +96,11 @@ final class SqlTests: XCTestCase {
     let statement = try SQL.insert(into: "foos", values: ["a": "howdy", "b": .string(nil)])
 
     let query = """
-      INSERT INTO "foos"
-      ("a", "b")
-      VALUES
-      ($1, $2);
-      """
+    INSERT INTO "foos"
+    ("a", "b")
+    VALUES
+    ($1, $2);
+    """
 
     XCTAssertEqual(statement.query, query)
     XCTAssertEqual(statement.bindings, ["howdy", .string(nil)])
@@ -117,11 +117,11 @@ final class SqlTests: XCTestCase {
     )
 
     let query = """
-      INSERT INTO "foos"
-      ("a", "b", "c")
-      VALUES
-      ($1, $2, $3);
-      """
+    INSERT INTO "foos"
+    ("a", "b", "c")
+    VALUES
+    ($1, $2, $3);
+    """
 
     XCTAssertEqual(statement.query, query)
     XCTAssertEqual(statement.bindings, [.enum(FooBar.foo), .enum(FooBar.bar), .enum(nil)])
@@ -130,14 +130,15 @@ final class SqlTests: XCTestCase {
   func testDates() throws {
     let date = Date.fromISOString("2021-12-14T17:16:16.896Z")!
     let statement = try SQL.insert(
-      into: "foos", values: ["a": .date(date), "b": .currentTimestamp])
+      into: "foos", values: ["a": .date(date), "b": .currentTimestamp]
+    )
 
     let query = """
-      INSERT INTO "foos"
-      ("a", "b")
-      VALUES
-      ($1, $2);
-      """
+    INSERT INTO "foos"
+    ("a", "b")
+    VALUES
+    ($1, $2);
+    """
 
     XCTAssertEqual(statement.query, query)
     XCTAssertEqual(statement.bindings, [.date(date), .currentTimestamp])

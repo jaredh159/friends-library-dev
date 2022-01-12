@@ -36,38 +36,38 @@ struct CreateDownloads: Migration {
 
     return
       editionTypeFuture
-      .and(audioQualityFuture)
-      .and(formatFuture)
-      .and(sourceFuture)
-      .flatMap { types in
-        let (((editionType, audioQuality), format), source) = types
-        return database.schema(M1.tableName)
-          .id()
-          .field(M1.documentId, .uuid, .required)
-          .field(M1.editionType, editionType, .required)
-          .field(M1.format, format, .required)
-          .field(M1.source, source, .required)
-          .field(M1.isMobile, .bool, .required)
-          .field(M1.audioQuality, audioQuality)
-          .field(M1.audioPartNumber, .int)
-          .field(M1.userAgent, .string)
-          .field(M1.os, .string)
-          .field(M1.browser, .string)
-          .field(M1.platform, .string)
-          .field(M1.referrer, .string)
-          .field(M1.ip, .string)
-          .field(M1.city, .string)
-          .field(M1.region, .string)
-          .field(M1.postalCode, .string)
-          .field(M1.country, .string)
-          .field(M1.latitude, .string)
-          .field(M1.longitude, .string)
-          .field(.createdAt, .datetime, .required)
-          .create()
-      }
+        .and(audioQualityFuture)
+        .and(formatFuture)
+        .and(sourceFuture)
+        .flatMap { types in
+          let (((editionType, audioQuality), format), source) = types
+          return database.schema(M1.tableName)
+            .id()
+            .field(M1.documentId, .uuid, .required)
+            .field(M1.editionType, editionType, .required)
+            .field(M1.format, format, .required)
+            .field(M1.source, source, .required)
+            .field(M1.isMobile, .bool, .required)
+            .field(M1.audioQuality, audioQuality)
+            .field(M1.audioPartNumber, .int)
+            .field(M1.userAgent, .string)
+            .field(M1.os, .string)
+            .field(M1.browser, .string)
+            .field(M1.platform, .string)
+            .field(M1.referrer, .string)
+            .field(M1.ip, .string)
+            .field(M1.city, .string)
+            .field(M1.region, .string)
+            .field(M1.postalCode, .string)
+            .field(M1.country, .string)
+            .field(M1.latitude, .string)
+            .field(M1.longitude, .string)
+            .field(.createdAt, .datetime, .required)
+            .create()
+        }
   }
 
   func revert(on database: Database) -> Future<Void> {
-    return database.schema(M1.tableName).delete()
+    database.schema(M1.tableName).delete()
   }
 }

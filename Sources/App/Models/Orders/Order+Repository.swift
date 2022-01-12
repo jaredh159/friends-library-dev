@@ -4,7 +4,7 @@ import Vapor
 extension Repository where Model == Order {
   func createOrderWithItems(_ order: Order) async throws -> Order {
     try await create(order)
-    guard case let .loaded(items) = order.items, !items.isEmpty else {
+    guard case .loaded(let items) = order.items, !items.isEmpty else {
       return order
     }
     try await createRelations(items)

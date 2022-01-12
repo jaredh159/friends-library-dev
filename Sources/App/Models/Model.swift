@@ -111,7 +111,7 @@ protocol DuetModel: UUIDIdentifiable, SQLInspectable, AppModel {
 
 extension DuetModel {
   static func == (lhs: Self, rhs: Self) -> Bool {
-    return lhs.id == rhs.id
+    lhs.id == rhs.id
   }
 
   var updateValues: [String: Postgres.Data] {

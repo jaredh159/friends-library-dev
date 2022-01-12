@@ -25,7 +25,7 @@ extension Date {
   }
 
   static func fromISOString(_ string: String?, or fallback: Date) -> Date {
-    return fromISOString(string) ?? fallback
+    fromISOString(string) ?? fallback
   }
 
   init(addingDays: Int) {

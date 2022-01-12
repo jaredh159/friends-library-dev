@@ -9,7 +9,7 @@ struct User: Authenticatable {
       case .notLoaded:
         Current.logger.error("Non-loaded token scopes in User authentication")
         return false
-      case let .loaded(scopes):
+      case .loaded(let scopes):
         return scopes.contains { $0.scope == scope || $0.scope == .all }
     }
   }
@@ -32,7 +32,7 @@ struct UserAuthenticator: AsyncBearerAuthenticator {
 
 extension Request {
   func requirePermission(to scope: Scope) throws {
-    guard Current.auth.userCan(self.auth.get(User.self), scope) else {
+    guard Current.auth.userCan(auth.get(User.self), scope) else {
       throw Abort(.unauthorized)
     }
   }

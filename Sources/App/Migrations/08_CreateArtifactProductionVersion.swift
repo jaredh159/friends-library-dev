@@ -13,6 +13,6 @@ struct CreateArtifactProductionVersion: Migration {
   }
 
   func revert(on database: Database) -> Future<Void> {
-    return database.schema(FreeOrderRequest.M6.tableName).delete()
+    database.schema(FreeOrderRequest.M6.tableName).delete()
   }
 }

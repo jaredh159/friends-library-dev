@@ -17,16 +17,16 @@ enum Asciidoc {
     if lang == .en {
       return
         title
-        .replacingOccurrences(
-          of: #"^(The|A) "#,
-          with: "",
-          options: .regularExpression
-        )
-        .replacingOccurrences(
-          of: #"^Selection from the (.*)"#,
-          with: "$1 (Selection)",
-          options: .regularExpression
-        )
+          .replacingOccurrences(
+            of: #"^(The|A) "#,
+            with: "",
+            options: .regularExpression
+          )
+          .replacingOccurrences(
+            of: #"^Selection from the (.*)"#,
+            with: "$1 (Selection)",
+            options: .regularExpression
+          )
     }
 
     let shortTitle = utf8ShortTitle(title)
@@ -34,16 +34,16 @@ enum Asciidoc {
 
     return
       title
-      .replacingOccurrences(
-        of: #"^Selección de(l| la) (.*)"#,
-        with: "$2 (Selección)",
-        options: .regularExpression
-      )
-      .replacingOccurrences(
-        of: #"^(El|La|Los|Una?) (?!(Camino|Verdad|Vida)\b)"#,
-        with: "",
-        options: .regularExpression
-      )
+        .replacingOccurrences(
+          of: #"^Selección de(l| la) (.*)"#,
+          with: "$2 (Selección)",
+          options: .regularExpression
+        )
+        .replacingOccurrences(
+          of: #"^(El|La|Los|Una?) (?!(Camino|Verdad|Vida)\b)"#,
+          with: "",
+          options: .regularExpression
+        )
   }
 
   static func utf8ShortTitle(_ title: String) -> String {
@@ -63,7 +63,7 @@ enum Asciidoc {
 
   static func htmlTitle(_ title: String) -> String {
     var shortened = ""
-    var number: String? = nil
+    var number: String?
 
     // lol swift regexes... maybe look into https://github.com/crossroadlabs/Regex
     for (index, char) in title.enumerated() {
@@ -87,15 +87,13 @@ enum Asciidoc {
     }
     return shortened.replacingOccurrences(of: "--", with: HtmlEntities.mdash.rawValue)
   }
-
 }
 
 private func toRoman(_ string: String?) -> String {
   guard let string = string else { return "" }
   if let int = Int(string),
-    int < 1000 && int != 160,
-    let rn = try? RomanNumeral(from: int)
-  {
+     int < 1000, int != 160,
+     let rn = try? RomanNumeral(from: int) {
     return rn.stringValue
   }
   return string

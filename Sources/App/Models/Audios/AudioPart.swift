@@ -41,7 +41,6 @@ final class AudioPart: Codable {
     self.externalIdHq = externalIdHq
     self.externalIdLq = externalIdLq
   }
-
 }
 
 // extensions

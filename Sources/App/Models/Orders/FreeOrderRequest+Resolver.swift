@@ -44,26 +44,26 @@ private func sendFreeOrderRequestNotifications(
       ),
       subject: "[,] Free Book Request - \(id)",
       html:
-        """
-        \(entry("Name", order.name))
-        \(entry("Email", order.email.rawValue))
-        \(entry("Requested Books", order.requestedBooks))
-        \(entry("About Requester", order.aboutRequester))
-        \(entry("Street", order.addressStreet))
-        \(entry("Street 2", order.addressStreet2))
-        \(entry("City", order.addressCity))
-        \(entry("State", order.addressState))
-        \(entry("Zip", order.addressZip))
-        \(entry("Country", order.addressCountry))
-        \(entry("Source", order.source))
+      """
+      \(entry("Name", order.name))
+      \(entry("Email", order.email.rawValue))
+      \(entry("Requested Books", order.requestedBooks))
+      \(entry("About Requester", order.aboutRequester))
+      \(entry("Street", order.addressStreet))
+      \(entry("Street 2", order.addressStreet2))
+      \(entry("City", order.addressCity))
+      \(entry("State", order.addressState))
+      \(entry("Zip", order.addressZip))
+      \(entry("Country", order.addressCountry))
+      \(entry("Source", order.source))
 
-        <br />
-        <br />
+      <br />
+      <br />
 
-        <a href="https://orders.friendslibrary.com?request=\(id)">
-          Create Order &raquo;
-        </a>
-        """
+      <a href="https://orders.friendslibrary.com?request=\(id)">
+        Create Order &raquo;
+      </a>
+      """
     )
     .send(on: request.client, withKey: Env.SENDGRID_API_KEY)
     .transform(to: ())
@@ -73,7 +73,7 @@ private func sendFreeOrderRequestNotifications(
   if request.application.environment == .production {
     slackFuture = SlackMessage(
       text:
-        "New *Spanish Free Book Order Request:*\n  → _Name_ `\(order.name)`\n  → _Books_ `\(order.requestedBooks)`\n  → _About_ `\(order.aboutRequester.replacingOccurrences(of: "\n", with: ""))`",
+      "New *Spanish Free Book Order Request:*\n  → _Name_ `\(order.name)`\n  → _Books_ `\(order.requestedBooks)`\n  → _About_ `\(order.aboutRequester.replacingOccurrences(of: "\n", with: ""))`",
       channel: "orders",
       username: "FLP Api Bot",
       emoji: .custom("orange_book")

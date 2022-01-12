@@ -30,7 +30,8 @@ final class FriendResidenceDurationResolverTests: AppTestCase {
     GraphQLTest(
       """
       query GetFriendResidenceDuration {
-        friendResidenceDuration: getFriendResidenceDuration(id: "\(friendResidenceDuration.id.uuidString)") {
+        friendResidenceDuration: getFriendResidenceDuration(id: "\(friendResidenceDuration.id
+        .uuidString)") {
           id
         }
       }
@@ -65,7 +66,8 @@ final class FriendResidenceDurationResolverTests: AppTestCase {
     GraphQLTest(
       """
       mutation DeleteFriendResidenceDuration {
-        friendResidenceDuration: deleteFriendResidenceDuration(id: "\(friendResidenceDuration.id.uuidString)") {
+        friendResidenceDuration: deleteFriendResidenceDuration(id: "\(friendResidenceDuration.id
+        .uuidString)") {
           id
         }
       }

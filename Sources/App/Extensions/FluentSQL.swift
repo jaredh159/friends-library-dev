@@ -9,32 +9,32 @@ extension SQLRow {
 
 extension SQLQueryString {
   mutating func appendInterpolation<T: RawRepresentable>(id: T) where T.RawValue == UUID {
-    self.appendInterpolation(raw: id.rawValue.uuidString)
+    appendInterpolation(raw: id.rawValue.uuidString)
   }
 
   mutating func appendInterpolation<M: DuetModel>(table model: M.Type) {
-    self.appendInterpolation(raw: model.tableName)
+    appendInterpolation(raw: model.tableName)
   }
 
   mutating func appendInterpolation(col: String) {
-    self.appendInterpolation(raw: col)
+    appendInterpolation(raw: col)
   }
 
   mutating func appendInterpolation(nullable: String?) {
     if let string = nullable {
-      self.appendInterpolation(raw: "'")
-      self.appendInterpolation(raw: string)
-      self.appendInterpolation(raw: "'")
+      appendInterpolation(raw: "'")
+      appendInterpolation(raw: string)
+      appendInterpolation(raw: "'")
     } else {
-      self.appendInterpolation(raw: "NULL")
+      appendInterpolation(raw: "NULL")
     }
   }
 
   mutating func appendInterpolation(nullable: Int?) {
     if let string = nullable {
-      self.appendInterpolation(literal: string)
+      appendInterpolation(literal: string)
     } else {
-      self.appendInterpolation(raw: "NULL")
+      appendInterpolation(raw: "NULL")
     }
   }
 }

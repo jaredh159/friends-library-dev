@@ -43,9 +43,9 @@ enum SQL {
     }
 
     let query = """
-      UPDATE "\(table)"
-      SET \(setPairs.list)\(WHERE)\(RETURNING);
-      """
+    UPDATE "\(table)"
+    SET \(setPairs.list)\(WHERE)\(RETURNING);
+    """
 
     return PreparedStatement(query: query, bindings: bindings)
   }
@@ -85,11 +85,11 @@ enum SQL {
     }
 
     let query = """
-      INSERT INTO "\(table)"
-      (\(columns.quotedList))
-      VALUES
-      \(placeholderGroups.list);
-      """
+    INSERT INTO "\(table)"
+    (\(columns.quotedList))
+    VALUES
+    \(placeholderGroups.list);
+    """
 
     return PreparedStatement(query: query, bindings: bindings)
   }
@@ -108,8 +108,8 @@ enum SQL {
     }
 
     let query = """
-      SELECT \(columns.sql) from "\(table)"\(WHERE);
-      """
+    SELECT \(columns.sql) from "\(table)"\(WHERE);
+    """
 
     return PreparedStatement(query: query, bindings: bindings)
   }
@@ -135,9 +135,9 @@ enum SQL {
       let id = UUID().uuidString.replacingOccurrences(of: "-", with: "").lowercased()
       name = "plan_\(id)"
       let insertPrepareSql = """
-        PREPARE \(name)(\(types)) AS
-        \(statement.query)
-        """
+      PREPARE \(name)(\(types)) AS
+      \(statement.query)
+      """
       prepared[key] = name
       _ = try await db.raw("\(raw: insertPrepareSql)").all().get()
     }
@@ -154,13 +154,13 @@ enum SQL {
   }
 }
 
-extension Sequence where Element == String {
-  fileprivate var list: String {
-    self.joined(separator: ", ")
+private extension Sequence where Element == String {
+  var list: String {
+    joined(separator: ", ")
   }
 
-  fileprivate var quotedList: String {
-    "\"\(self.joined(separator: "\", \""))\""
+  var quotedList: String {
+    "\"\(joined(separator: "\", \""))\""
   }
 }
 

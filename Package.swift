@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package(
   name: "graphql-api",
   platforms: [
-    .macOS(.v12)
+    .macOS(.v12),
   ],
   dependencies: [
     .package(
@@ -68,7 +68,7 @@ let package = Package(
         "VaporUtils",
       ],
       swiftSettings: [
-        .unsafeFlags(["-cross-module-optimization"], .when(configuration: .release))
+        .unsafeFlags(["-cross-module-optimization"], .when(configuration: .release)),
       ]
     ),
     .executableTarget(name: "Run", dependencies: [.target(name: "App")]),
@@ -78,6 +78,7 @@ let package = Package(
         .target(name: "App"),
         .product(name: "XCTVapor", package: "vapor"),
         .product(name: "XCTVaporUtils", package: "VaporUtils"),
-      ]),
+      ]
+    ),
   ]
 )

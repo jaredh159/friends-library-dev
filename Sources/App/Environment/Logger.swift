@@ -4,7 +4,7 @@ extension Logger {
   static let null = Logger(label: "(null)", factory: { _ in NullHandler() })
 
   static func passthrough(_ receiver: @escaping (Logger.Level, Logger.Message) -> Void) -> Logger {
-    return Logger(label: "(passthrough)", factory: { _ in PassthroughHandler(receive: receiver) })
+    Logger(label: "(passthrough)", factory: { _ in PassthroughHandler(receive: receiver) })
   }
 }
 
@@ -32,6 +32,7 @@ private struct PassthroughHandler: LogHandler {
     get { [:] }
     set {}
   }
+
   var logLevel: Logger.Level {
     get { .trace }
     set {}
@@ -59,6 +60,7 @@ private struct NullHandler: LogHandler {
     get { [:] }
     set {}
   }
+
   var logLevel: Logger.Level {
     get { .trace }
     set {}

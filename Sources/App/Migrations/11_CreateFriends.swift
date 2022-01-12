@@ -33,6 +33,6 @@ struct CreateFriends: Migration {
   }
 
   func revert(on database: Database) -> Future<Void> {
-    return database.schema(M11.tableName).delete()
+    database.schema(M11.tableName).delete()
   }
 }

@@ -22,7 +22,7 @@ extension Resolver {
     req: Req,
     args: NoArgs
   ) throws -> Future<ArtifactProductionVersion> {
-    return future(of: ArtifactProductionVersion.self, on: req.eventLoop) {
+    future(of: ArtifactProductionVersion.self, on: req.eventLoop) {
       try await Current.db.getLatestArtifactProductionVersion()
     }
   }

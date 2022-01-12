@@ -44,23 +44,23 @@ struct HandleEditionIds: AsyncMigration {
       let editionType = parts[1]
 
       let updateDownload = """
-        UPDATE \(Download.M1.tableName)
-        SET \(Download.M10.editionId) = '\(uuidString)'
-        WHERE
-          \"\(Download.M1.documentId)\" = '\(documentId)'
-        AND
-          \"\(Download.M1.editionType)\" = '\(editionType)'
-        """
+      UPDATE \(Download.M1.tableName)
+      SET \(Download.M10.editionId) = '\(uuidString)'
+      WHERE
+        \"\(Download.M1.documentId)\" = '\(documentId)'
+      AND
+        \"\(Download.M1.editionType)\" = '\(editionType)'
+      """
       _ = try await db.raw("\(raw: updateDownload)").all()
 
       let updateOrderItem = """
-        UPDATE \(OrderItem.M3.tableName)
-        SET \(OrderItem.M10.editionId) = '\(uuidString)'
-        WHERE
-          \"\(OrderItem.M3.documentId)\" = '\(documentId)'
-        AND
-          \"\(OrderItem.M3.editionType)\" = '\(editionType)'
-        """
+      UPDATE \(OrderItem.M3.tableName)
+      SET \(OrderItem.M10.editionId) = '\(uuidString)'
+      WHERE
+        \"\(OrderItem.M3.documentId)\" = '\(documentId)'
+      AND
+        \"\(OrderItem.M3.editionType)\" = '\(editionType)'
+      """
       _ = try await db.raw("\(raw: updateOrderItem)").all()
     }
   }

@@ -45,6 +45,5 @@ struct Seed: AsyncMigration {
     }
   }
 
-  func revert(on database: Database) async throws {
-  }
+  func revert(on database: Database) async throws {}
 }

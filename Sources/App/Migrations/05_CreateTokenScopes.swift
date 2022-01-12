@@ -4,7 +4,7 @@ import Vapor
 struct CreateTokenScopes: Migration {
 
   func prepare(on database: Database) -> Future<Void> {
-    return database.enum(TokenScope.M5.dbEnumName)
+    database.enum(TokenScope.M5.dbEnumName)
       .case(TokenScope.M5.Scope.queryDownloads)
       .case(TokenScope.M5.Scope.mutateDownloads)
       .case(TokenScope.M5.Scope.queryOrders)
@@ -27,6 +27,6 @@ struct CreateTokenScopes: Migration {
   }
 
   func revert(on database: Database) -> Future<Void> {
-    return database.schema(TokenScope.M5.tableName).delete()
+    database.schema(TokenScope.M5.tableName).delete()
   }
 }

@@ -9,15 +9,16 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
   ) where FieldType == [TypeRef<Child>] {
     self.init(
       name.description,
-      at: resolveChildren { (parent) async throws -> [Child] in
+      at: resolveChildren { parent async throws -> [Child] in
         switch parent[keyPath: keyPath] {
-          case let .loaded(children):
+          case .loaded(let children):
             return children
           case .notLoaded:
             return try await loadChildren(at: keyPath, for: parent)
         }
       },
-      as: [TypeRef<Child>].self)
+      as: [TypeRef<Child>].self
+    )
   }
 }
 
@@ -42,7 +43,8 @@ private func loadChildren<Parent: DuetModel, Child: DuetModel>(
     case \FriendResidence.durations:
       children =
         try await db.getFriendResidenceDurations(
-          FriendResidenceDuration[.friendResidenceId] == .id(parent)) as! [Child]
+          FriendResidenceDuration[.friendResidenceId] == .id(parent)
+        ) as! [Child]
 
     case \Edition.chapters:
       children =
@@ -54,7 +56,7 @@ private func loadChildren<Parent: DuetModel, Child: DuetModel>(
     case \Document.relatedDocuments:
       children =
         try await db.getRelatedDocuments(RelatedDocument[.parentDocumentId] == .id(parent))
-        as! [Child]
+          as! [Child]
 
     case \Document.tags:
       children = try await db.getDocumentTags(DocumentTag[.documentId] == .id(parent)) as! [Child]
@@ -82,7 +84,7 @@ private func resolveChildren<P: AppModel, C: AppModel>(
 ) -> (P) -> (Req, NoArgs, EventLoopGroup) throws -> Future<[C]> {
   { parent in
     { _, _, elg in
-      return future(of: [C].self, on: elg.next()) {
+      future(of: [C].self, on: elg.next()) {
         try await f(parent)
       }
     }

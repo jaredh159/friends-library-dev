@@ -14,7 +14,7 @@ struct CreateEditions: Migration {
         database.enum(Download.M1.EditionTypeEnum.name)
           .read()
           .map { editionTypes in (editionTypes, printSizeVariants) }
-      }.flatMap { (editionTypes, printSizeVariants) in
+      }.flatMap { editionTypes, printSizeVariants in
         database.schema(M17.tableName)
           .id()
           .field(

@@ -9,15 +9,16 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
   ) where FieldType == TypeRef<Child>? {
     self.init(
       name.description,
-      at: resolveOptionalParent { (child) async throws -> Child? in
+      at: resolveOptionalParent { child async throws -> Child? in
         switch child[keyPath: keyPath] {
-          case let .loaded(parent):
+          case .loaded(let parent):
             return parent
           case .notLoaded:
             return try await loadOptionalParent(at: keyPath, for: child)
         }
       },
-      as: TypeReference<Child>?.self)
+      as: TypeReference<Child>?.self
+    )
   }
 }
 
@@ -58,7 +59,7 @@ private func resolveOptionalParent<M: AppModel, P: AppModel>(
 ) -> (M) -> (Req, NoArgs, EventLoopGroup) throws -> Future<P?> {
   { model in
     { _, _, elg in
-      return future(of: P?.self, on: elg.next()) {
+      future(of: P?.self, on: elg.next()) {
         try await f(model)
       }
     }

@@ -27,7 +27,8 @@ final class Resolver {
     try request.requirePermission(to: .queryOrders)
     try request.requirePermission(to: .queryDownloads)
     return request.eventLoop.makeSucceededFuture(
-      ModelsCounts(downloads: 0, orders: 0, orderItems: 0))
+      ModelsCounts(downloads: 0, orders: 0, orderItems: 0)
+    )
     // @TODO
     // let downloads = Download.query(on: request.db).count()
     // let orders = Order.query(on: request.db).count()

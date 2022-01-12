@@ -26,78 +26,78 @@ final class FriendResolverTests: AppTestCase {
     let entities = await Entities.create()
 
     let query = """
-      query GetFriend {
-        friend: getFriend(id: "\(entities.friend.id.uuidString)") {
-          id
-          quotes {
-            quoteId: id
-            friend {
-              quoteFriendId: id
+    query GetFriend {
+      friend: getFriend(id: "\(entities.friend.id.uuidString)") {
+        id
+        quotes {
+          quoteId: id
+          friend {
+            quoteFriendId: id
+          }
+        }
+        residences {
+          city
+          durations {
+            id
+            residence {
+              residenceDurationResidenceId: id
             }
           }
-          residences {
-            city
-            durations {
-              id
-              residence {
-                residenceDurationResidenceId: id
-              }
-            }
-            friend {
-              friendResidenceFriendId: id
+          friend {
+            friendResidenceFriendId: id
+          }
+        }
+        documents {
+          documentId: id
+          friend {
+            documentFriendId: id
+          }
+          tags {
+            tagId: id
+            document {
+              documentTagDocumentId: id
             }
           }
-          documents {
-            documentId: id
-            friend {
-              documentFriendId: id
-            }
-            tags {
-              tagId: id
-              document {
-                documentTagDocumentId: id
+          editions {
+            editionId: id
+            impression {
+              editionImpressionId: id
+              edition {
+                editionImpressionEditionId: id
               }
             }
-            editions {
-              editionId: id
-              impression {
-                editionImpressionId: id
-                edition {
-                  editionImpressionEditionId: id
-                }
+            chapters {
+              chapterId: id
+              edition {
+                chapterEditionId: id
               }
-              chapters {
-                chapterId: id
-                edition {
-                  chapterEditionId: id
-                }
+            }
+            document {
+              editionDocumentId: id
+            }
+            isbn {
+              isbnCode: code
+              edition {
+                isbnEditionId: id
               }
-              document {
-                editionDocumentId: id
+            }
+            audio {
+              edition {
+                audioEditionId: id
               }
-              isbn {
-                isbnCode: code
-                edition {
-                  isbnEditionId: id
-                }
-              }
-              audio {
-                edition {
-                  audioEditionId: id
-                }
-                reader
-                parts {
-                  audioPartTitle: title
-                  audio {
-                    audioPartAudioId: id
-                  }
+              reader
+              parts {
+                audioPartTitle: title
+                audio {
+                  audioPartAudioId: id
                 }
               }
             }
           }
         }
       }
-      """
+    }
+    """
 
     let expectedData = GraphQLTest.ExpectedData.containsKVPs([
       "id": entities.friend.id.uuidString,

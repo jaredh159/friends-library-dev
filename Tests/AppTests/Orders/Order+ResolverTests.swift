@@ -16,33 +16,33 @@ final class OrderResolverTests: AppTestCase {
     let itemMap = item.gqlMap()
 
     let query = """
-      mutation CreateOrderWithItems($order: CreateOrderInput!, $items: [CreateOrderItemInput!]!) {
-        order: createOrderWithItems(order: $order, items: $items) {
-          paymentId
-          printJobStatus
-          shippingLevel
-          email
-          addressName
-          addressStreet
-          addressCity
-          addressState
-          addressZip
-          addressCountry
-          lang
-          source
-          items {
-            quantity
-            unitPrice
-            order {
-              itemOrderId: id
-            }
-            edition {
-              itemEditionId: id
-            }
+    mutation CreateOrderWithItems($order: CreateOrderInput!, $items: [CreateOrderItemInput!]!) {
+      order: createOrderWithItems(order: $order, items: $items) {
+        paymentId
+        printJobStatus
+        shippingLevel
+        email
+        addressName
+        addressStreet
+        addressCity
+        addressState
+        addressZip
+        addressCountry
+        lang
+        source
+        items {
+          quantity
+          unitPrice
+          order {
+            itemOrderId: id
+          }
+          edition {
+            itemEditionId: id
           }
         }
       }
-      """
+    }
+    """
 
     let expectedData = GraphQLTest.ExpectedData.containsKVPs([
       "paymentId": orderMap["paymentId"],
@@ -167,7 +167,7 @@ final class OrderResolverTests: AppTestCase {
       }
       """,
       expectedError: .status(.unauthorized),
-      headers: [.authorization: "Bearer \(Seeded.tokens.queryDownloads)"]  // 👋 <-- bad scope
+      headers: [.authorization: "Bearer \(Seeded.tokens.queryDownloads)"] // 👋 <-- bad scope
     ).run(Self.app)
   }
 

@@ -22,6 +22,6 @@ struct CreateFriendResidences: Migration {
   }
 
   func revert(on database: Database) -> Future<Void> {
-    return database.schema(M12.tableName).delete()
+    database.schema(M12.tableName).delete()
   }
 }

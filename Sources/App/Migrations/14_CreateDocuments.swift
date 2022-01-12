@@ -36,6 +36,6 @@ struct CreateDocuments: Migration {
   }
 
   func revert(on database: Database) -> Future<Void> {
-    return database.schema(M14.tableName).delete()
+    database.schema(M14.tableName).delete()
   }
 }

@@ -28,11 +28,13 @@ extension Download {
       static let caseModernized = "modernized"
       static let caseOriginal = "original"
     }
+
     enum AudioQualityEnum {
       static let name = "audio_quality"
       static let caseLq = "lq"
       static let caseHq = "hq"
     }
+
     enum FormatEnum {
       static let name = "download_format"
       static let caseEpub = "epub"
@@ -45,6 +47,7 @@ extension Download {
       static let casePodcast = "podcast"
       static let caseAppEbook = "appEbook"
     }
+
     enum SourceEnum {
       static let name = "download_source"
       static let caseWebsite = "website"

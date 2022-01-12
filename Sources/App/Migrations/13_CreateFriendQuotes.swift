@@ -5,7 +5,7 @@ struct CreateFriendQuotes: Migration {
   private typealias M13 = FriendQuote.M13
 
   func prepare(on database: Database) -> Future<Void> {
-    return database.schema(M13.tableName)
+    database.schema(M13.tableName)
       .id()
       .field(
         M13.friendId,
@@ -24,6 +24,6 @@ struct CreateFriendQuotes: Migration {
   }
 
   func revert(on database: Database) -> Future<Void> {
-    return database.schema(M13.tableName).delete()
+    database.schema(M13.tableName).delete()
   }
 }
