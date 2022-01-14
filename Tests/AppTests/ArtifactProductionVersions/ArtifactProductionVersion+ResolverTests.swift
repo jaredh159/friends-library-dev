@@ -9,11 +9,11 @@ final class ArtifactProductionVersionResolverTests: AppTestCase {
   func testGetLatestRevision() async throws {
     let older = ArtifactProductionVersion.mockOld
     older.version = .init(rawValue: UUID().uuidString)
-    _ = try await Current.db.createArtifactProductionVersion(older)
+    try await Current.db.create(older)
 
     let latest = ArtifactProductionVersion.mock
     latest.version = .init(rawValue: UUID().uuidString)
-    _ = try await Current.db.createArtifactProductionVersion(latest)
+    try await Current.db.create(latest)
 
     GraphQLTest(
       """

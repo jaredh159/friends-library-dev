@@ -27,7 +27,7 @@ public func configure(_ app: Application) throws {
 
   addMigrations(to: app)
 
-  Current.db = .live(db: app.db as! SQLDatabase)
+  Current.db = GenericRepository(db: app.db as! SQLDatabase)
   Current.logger = app.logger
 
   app

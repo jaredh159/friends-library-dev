@@ -13,7 +13,6 @@ type ScriptData = {
   files: Array<{ path: string; source: string }>;
   types: GlobalTypes;
   models: Model[];
-  dbClientProps: DbClientProps;
   repositories: string[];
 };
 
@@ -43,7 +42,6 @@ export function scriptData(): ScriptData & { model?: Model } {
 
   const types = extractGlobalTypes(files.map((f) => f.source));
   const models = extractModels(files);
-  const dbClientProps = extractClientProps(files);
 
   let modelArgIndex = process.argv.indexOf(`--model`);
   if (modelArgIndex === -1) {
@@ -60,7 +58,6 @@ export function scriptData(): ScriptData & { model?: Model } {
     types,
     models,
     model,
-    dbClientProps,
     repositories: repositories(files),
   };
 }

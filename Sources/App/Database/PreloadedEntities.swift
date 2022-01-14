@@ -16,7 +16,9 @@ actor PreloadedEntities: SQLQuerying {
 
   func select<M: DuetModel>(
     _ Model: M.Type,
-    where constraint: [SQL.WhereConstraint] = []
+    where constraint: [SQL.WhereConstraint] = [],
+    orderBy: SQL.Order? = nil,
+    limit: Int? = nil
   ) async throws -> [M] {
     fatalError()
     // try Array(models(of: Model).values).filter { $0.satisfies(constraint: constraint) }

@@ -9,8 +9,10 @@ final class OrderRepositoryTests: AppTestCase {
     let inserted: Order = .empty
     inserted.addressName = "Bob"
 
-    _ = try await Current.db.createOrder(inserted)
-    let retrieved = try await Current.db.getOrder(inserted.id)
+    try await Current.db.create(inserted)
+    let retrieved = try await Current.db.query(Order.self)
+      .where("id" == inserted.id)
+      .first()
 
     XCTAssertEqual(inserted, retrieved)
     XCTAssertEqual(inserted.addressName, retrieved.addressName)
@@ -21,8 +23,10 @@ final class OrderRepositoryTests: AppTestCase {
     inserted.printJobId = 55
     inserted.addressStreet2 = "Apt #2"
 
-    _ = try await Current.db.createOrder(inserted)
-    let retrieved = try await Current.db.getOrder(inserted.id)
+    try await Current.db.create(inserted)
+    let retrieved = try await Current.db.query(Order.self)
+      .where("id" == inserted.id)
+      .first()
 
     XCTAssertEqual(inserted, retrieved)
     XCTAssertEqual(inserted.printJobId, retrieved.printJobId)
@@ -30,17 +34,19 @@ final class OrderRepositoryTests: AppTestCase {
   }
 
   func testGetOrdersByPrintJobStatus() async throws {
-    try await Current.db.deleteAllOrders()
+    _ = try await Current.db.query(Order.self).delete()
 
     let order1 = Order.empty
     order1.printJobStatus = .accepted
     let order2 = Order.empty
     order2.printJobStatus = .pending
-    _ = try await Current.db.createOrder(order1)
-    _ = try await Current.db.createOrder(order2)
+    try await Current.db.create(order1)
+    try await Current.db.create(order2)
 
     let found = try await Current.db
-      .getOrders(Order[.printJobStatus] == .enum(Order.PrintJobStatus.accepted))
+      .query(Order.self)
+      .where(Order[.printJobStatus] == .enum(Order.PrintJobStatus.accepted))
+      .all()
 
     XCTAssertEqual(found.count, 1)
     XCTAssertEqual(found.first, order1)
@@ -48,7 +54,7 @@ final class OrderRepositoryTests: AppTestCase {
 
   // func testUpdateOrder() async throws {
   //   let order = Order.empty
-  //   try await Current.db.createOrder(order)
+  //   try await Current.db.create(order)
 
   //   let input = UpdateOrderInput(id: order.id.rawValue, printJobStatus: .bricked, printJobId: 55)
   //   let updated = try await Current.db.updateOrder(input)
@@ -59,7 +65,7 @@ final class OrderRepositoryTests: AppTestCase {
 
   // func testUpdateOrderOnlyPrintJobId() async throws {
   //   let order = Order.empty
-  //   try await Current.db.createOrder(order)
+  //   try await Current.db.create(order)
 
   //   let input = UpdateOrderInput(id: order.id.rawValue, printJobStatus: nil, printJobId: 66)
   //   let updated = try await Current.db.updateOrder(input)
@@ -71,7 +77,7 @@ final class OrderRepositoryTests: AppTestCase {
   // func testUpdateOrderOnlyPrintJobStatus() async throws {
   //   let order = Order.empty
   //   order.printJobId = 77
-  //   try await Current.db.createOrder(order)
+  //   try await Current.db.create(order)
 
   //   let input = UpdateOrderInput(id: order.id.rawValue, printJobStatus: .canceled, printJobId: nil)
   //   let updated = try await Current.db.updateOrder(input)
@@ -84,7 +90,7 @@ final class OrderRepositoryTests: AppTestCase {
   //   let order = Order.empty
   //   order.printJobId = 88
   //   order.printJobStatus = .rejected
-  //   try await Current.db.createOrder(order)
+  //   try await Current.db.create(order)
 
   //   let input = UpdateOrderInput(id: order.id.rawValue, printJobStatus: nil, printJobId: nil)
   //   let updated = try await Current.db.updateOrder(input)

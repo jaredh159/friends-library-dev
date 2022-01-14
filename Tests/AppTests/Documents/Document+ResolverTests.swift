@@ -48,7 +48,7 @@ final class DocumentResolverTests: AppTestCase {
     let relatedDoc: RelatedDocument = .random
     relatedDoc.parentDocumentId = entities1.document.id
     relatedDoc.documentId = entities2.document.id
-    _ = try await Current.db.createRelatedDocument(relatedDoc)
+    try await Current.db.create(relatedDoc)
 
     GraphQLTest(
       """
@@ -111,7 +111,7 @@ final class DocumentResolverTests: AppTestCase {
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": document.gqlMap()])
 
-    let retrieved = try? await Current.db.getDocument(document.id)
+    let retrieved = try? await Current.db.find(Document.self, byId: document.id)
     XCTAssertNil(retrieved)
   }
 }

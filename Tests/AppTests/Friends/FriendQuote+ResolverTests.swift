@@ -74,7 +74,7 @@ final class FriendQuoteResolverTests: AppTestCase {
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": friendQuote.gqlMap()])
 
-    let retrieved = try? await Current.db.getFriendQuote(friendQuote.id)
+    let retrieved = try? await Current.db.find(FriendQuote.self, byId: friendQuote.id)
     XCTAssertNil(retrieved)
   }
 }

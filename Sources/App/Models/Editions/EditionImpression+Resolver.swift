@@ -7,19 +7,16 @@ extension Resolver {
     req: Req,
     args: IdentifyEntityArgs
   ) throws -> Future<EditionImpression> {
-    try req.requirePermission(to: .queryEditionImpressions)
+    try req.requirePermission(to: .queryFriends)
     return future(of: EditionImpression.self, on: req.eventLoop) {
-      try await Current.db.getEditionImpression(.init(rawValue: args.id))
+      try await Current.db.find(EditionImpression.self, byId: args.id)
     }
   }
 
-  func getEditionImpressions(
-    req: Req,
-    args: NoArgs
-  ) throws -> Future<[EditionImpression]> {
-    try req.requirePermission(to: .queryEditionImpressions)
+  func getEditionImpressions(req: Req, args: NoArgs) throws -> Future<[EditionImpression]> {
+    try req.requirePermission(to: .queryFriends)
     return future(of: [EditionImpression].self, on: req.eventLoop) {
-      try await Current.db.getEditionImpressions(nil)
+      try await Current.db.query(EditionImpression.self).all()
     }
   }
 
@@ -27,9 +24,9 @@ extension Resolver {
     req: Req,
     args: AppSchema.CreateEditionImpressionArgs
   ) throws -> Future<EditionImpression> {
-    try req.requirePermission(to: .mutateEditionImpressions)
+    try req.requirePermission(to: .mutateFriends)
     return future(of: EditionImpression.self, on: req.eventLoop) {
-      try await Current.db.createEditionImpression(EditionImpression(args.input))
+      try await Current.db.create(EditionImpression(args.input))
     }
   }
 
@@ -37,9 +34,9 @@ extension Resolver {
     req: Req,
     args: AppSchema.CreateEditionImpressionsArgs
   ) throws -> Future<[EditionImpression]> {
-    try req.requirePermission(to: .mutateEditionImpressions)
+    try req.requirePermission(to: .mutateFriends)
     return future(of: [EditionImpression].self, on: req.eventLoop) {
-      try await Current.db.createEditionImpressions(args.input.map(EditionImpression.init))
+      try await Current.db.create(args.input.map(EditionImpression.init))
     }
   }
 
@@ -47,9 +44,9 @@ extension Resolver {
     req: Req,
     args: AppSchema.UpdateEditionImpressionArgs
   ) throws -> Future<EditionImpression> {
-    try req.requirePermission(to: .mutateEditionImpressions)
+    try req.requirePermission(to: .mutateFriends)
     return future(of: EditionImpression.self, on: req.eventLoop) {
-      try await Current.db.updateEditionImpression(EditionImpression(args.input))
+      try await Current.db.update(EditionImpression(args.input))
     }
   }
 
@@ -57,9 +54,9 @@ extension Resolver {
     req: Req,
     args: AppSchema.UpdateEditionImpressionsArgs
   ) throws -> Future<[EditionImpression]> {
-    try req.requirePermission(to: .mutateEditionImpressions)
+    try req.requirePermission(to: .mutateFriends)
     return future(of: [EditionImpression].self, on: req.eventLoop) {
-      try await Current.db.updateEditionImpressions(args.input.map(EditionImpression.init))
+      try await Current.db.update(args.input.map(EditionImpression.init))
     }
   }
 
@@ -67,9 +64,9 @@ extension Resolver {
     req: Req,
     args: IdentifyEntityArgs
   ) throws -> Future<EditionImpression> {
-    try req.requirePermission(to: .mutateEditionImpressions)
+    try req.requirePermission(to: .mutateFriends)
     return future(of: EditionImpression.self, on: req.eventLoop) {
-      try await Current.db.deleteEditionImpression(.init(rawValue: args.id))
+      try await Current.db.delete(EditionImpression.self, byId: args.id)
     }
   }
 }

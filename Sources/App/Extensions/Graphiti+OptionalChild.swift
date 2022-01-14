@@ -26,24 +26,9 @@ private func loadOptionalChild<Parent: DuetModel, Child: DuetModel>(
   at keyPath: WritableKeyPath<Parent, OptionalChild<Child>>,
   for parent: Parent
 ) async throws -> Child? {
-  let db = Current.db
-  let child: Child?
-  switch keyPath {
-
-    case \Edition.isbn:
-      child = try await db.getEditionIsbn(parent.id as! Edition.Id) as! Child?
-
-    case \Edition.audio:
-      child = try? await db.entities()
-        .find(Child.self, where: Audio[.editionId] == .id(parent))
-
-    case \Edition.impression:
-      child = try await db.entities()
-        .findOptional(Child.self, where: EditionImpression[.editionId] == .id(parent))
-
-    default:
-      throw Abort(.notImplemented, reason: "\(keyPath) not handled for OptionalChild<M> relation")
-  }
+  let child = try await Current.db.query(Child.self)
+    .where("id" == parent.id)
+    .first()
 
   var parent = parent
   parent[keyPath: keyPath] = .loaded(child)

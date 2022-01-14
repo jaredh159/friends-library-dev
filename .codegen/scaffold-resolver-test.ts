@@ -58,7 +58,7 @@ final class ThingResolverTests: AppTestCase {
   }
 
   func testGetThing() async throws {
-    let thing = try await Current.db.createThing(.random)
+    let thing = try await Current.db.create(Thing.random)
 
     GraphQLTest(
       """
@@ -74,7 +74,7 @@ final class ThingResolverTests: AppTestCase {
   }
 
   func testUpdateThing() async throws {
-    let thing = try await Current.db.createThing(.random)
+    let thing = try await Current.db.create(Thing.random)
 
     // do some updates here ---vvv
     thing.someProp = "new value"
@@ -93,7 +93,7 @@ final class ThingResolverTests: AppTestCase {
   }
 
   func testDeleteThing() async throws {
-    let thing = try await Current.db.createThing(.random)
+    let thing = try await Current.db.create(Thing.random)
 
     GraphQLTest(
       """
@@ -107,7 +107,7 @@ final class ThingResolverTests: AppTestCase {
       headers: [.authorization: "Bearer \\(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": thing.gqlMap()])
 
-    let retrieved = try? await Current.db.getThing(thing.id)
+    let retrieved = try? await Current.db.find(Thing.self, byId: thing.id)
     XCTAssertNil(retrieved)
   }
 }

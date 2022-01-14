@@ -3,23 +3,17 @@ import Vapor
 // below auto-generated
 
 extension Resolver {
-  func getOrderItem(
-    req: Req,
-    args: IdentifyEntityArgs
-  ) throws -> Future<OrderItem> {
-    try req.requirePermission(to: .queryOrders)
+  func getOrderItem(req: Req, args: IdentifyEntityArgs) throws -> Future<OrderItem> {
+    try req.requirePermission(to: .queryFriends)
     return future(of: OrderItem.self, on: req.eventLoop) {
-      try await Current.db.getOrderItem(.init(rawValue: args.id))
+      try await Current.db.find(OrderItem.self, byId: args.id)
     }
   }
 
-  func getOrderItems(
-    req: Req,
-    args: NoArgs
-  ) throws -> Future<[OrderItem]> {
-    try req.requirePermission(to: .queryOrders)
+  func getOrderItems(req: Req, args: NoArgs) throws -> Future<[OrderItem]> {
+    try req.requirePermission(to: .queryFriends)
     return future(of: [OrderItem].self, on: req.eventLoop) {
-      try await Current.db.getOrderItems(nil)
+      try await Current.db.query(OrderItem.self).all()
     }
   }
 
@@ -27,9 +21,9 @@ extension Resolver {
     req: Req,
     args: AppSchema.CreateOrderItemArgs
   ) throws -> Future<OrderItem> {
-    try req.requirePermission(to: .mutateOrders)
+    try req.requirePermission(to: .mutateFriends)
     return future(of: OrderItem.self, on: req.eventLoop) {
-      try await Current.db.createOrderItem(OrderItem(args.input))
+      try await Current.db.create(OrderItem(args.input))
     }
   }
 
@@ -37,9 +31,9 @@ extension Resolver {
     req: Req,
     args: AppSchema.CreateOrderItemsArgs
   ) throws -> Future<[OrderItem]> {
-    try req.requirePermission(to: .mutateOrders)
+    try req.requirePermission(to: .mutateFriends)
     return future(of: [OrderItem].self, on: req.eventLoop) {
-      try await Current.db.createOrderItems(args.input.map(OrderItem.init))
+      try await Current.db.create(args.input.map(OrderItem.init))
     }
   }
 
@@ -47,9 +41,9 @@ extension Resolver {
     req: Req,
     args: AppSchema.UpdateOrderItemArgs
   ) throws -> Future<OrderItem> {
-    try req.requirePermission(to: .mutateOrders)
+    try req.requirePermission(to: .mutateFriends)
     return future(of: OrderItem.self, on: req.eventLoop) {
-      try await Current.db.updateOrderItem(OrderItem(args.input))
+      try await Current.db.update(OrderItem(args.input))
     }
   }
 
@@ -57,19 +51,16 @@ extension Resolver {
     req: Req,
     args: AppSchema.UpdateOrderItemsArgs
   ) throws -> Future<[OrderItem]> {
-    try req.requirePermission(to: .mutateOrders)
+    try req.requirePermission(to: .mutateFriends)
     return future(of: [OrderItem].self, on: req.eventLoop) {
-      try await Current.db.updateOrderItems(args.input.map(OrderItem.init))
+      try await Current.db.update(args.input.map(OrderItem.init))
     }
   }
 
-  func deleteOrderItem(
-    req: Req,
-    args: IdentifyEntityArgs
-  ) throws -> Future<OrderItem> {
-    try req.requirePermission(to: .mutateOrders)
+  func deleteOrderItem(req: Req, args: IdentifyEntityArgs) throws -> Future<OrderItem> {
+    try req.requirePermission(to: .mutateFriends)
     return future(of: OrderItem.self, on: req.eventLoop) {
-      try await Current.db.deleteOrderItem(.init(rawValue: args.id))
+      try await Current.db.delete(OrderItem.self, byId: args.id)
     }
   }
 }

@@ -4,16 +4,16 @@ import Vapor
 
 extension Resolver {
   func getAudioPart(req: Req, args: IdentifyEntityArgs) throws -> Future<AudioPart> {
-    try req.requirePermission(to: .queryAudios)
+    try req.requirePermission(to: .queryFriends)
     return future(of: AudioPart.self, on: req.eventLoop) {
-      try await Current.db.getAudioPart(.init(rawValue: args.id))
+      try await Current.db.find(AudioPart.self, byId: args.id)
     }
   }
 
   func getAudioParts(req: Req, args: NoArgs) throws -> Future<[AudioPart]> {
-    try req.requirePermission(to: .queryAudios)
+    try req.requirePermission(to: .queryFriends)
     return future(of: [AudioPart].self, on: req.eventLoop) {
-      try await Current.db.getAudioParts(nil)
+      try await Current.db.query(AudioPart.self).all()
     }
   }
 
@@ -21,9 +21,9 @@ extension Resolver {
     req: Req,
     args: AppSchema.CreateAudioPartArgs
   ) throws -> Future<AudioPart> {
-    try req.requirePermission(to: .mutateAudios)
+    try req.requirePermission(to: .mutateFriends)
     return future(of: AudioPart.self, on: req.eventLoop) {
-      try await Current.db.createAudioPart(AudioPart(args.input))
+      try await Current.db.create(AudioPart(args.input))
     }
   }
 
@@ -31,9 +31,9 @@ extension Resolver {
     req: Req,
     args: AppSchema.CreateAudioPartsArgs
   ) throws -> Future<[AudioPart]> {
-    try req.requirePermission(to: .mutateAudios)
+    try req.requirePermission(to: .mutateFriends)
     return future(of: [AudioPart].self, on: req.eventLoop) {
-      try await Current.db.createAudioParts(args.input.map(AudioPart.init))
+      try await Current.db.create(args.input.map(AudioPart.init))
     }
   }
 
@@ -41,9 +41,9 @@ extension Resolver {
     req: Req,
     args: AppSchema.UpdateAudioPartArgs
   ) throws -> Future<AudioPart> {
-    try req.requirePermission(to: .mutateAudios)
+    try req.requirePermission(to: .mutateFriends)
     return future(of: AudioPart.self, on: req.eventLoop) {
-      try await Current.db.updateAudioPart(AudioPart(args.input))
+      try await Current.db.update(AudioPart(args.input))
     }
   }
 
@@ -51,16 +51,16 @@ extension Resolver {
     req: Req,
     args: AppSchema.UpdateAudioPartsArgs
   ) throws -> Future<[AudioPart]> {
-    try req.requirePermission(to: .mutateAudios)
+    try req.requirePermission(to: .mutateFriends)
     return future(of: [AudioPart].self, on: req.eventLoop) {
-      try await Current.db.updateAudioParts(args.input.map(AudioPart.init))
+      try await Current.db.update(args.input.map(AudioPart.init))
     }
   }
 
   func deleteAudioPart(req: Req, args: IdentifyEntityArgs) throws -> Future<AudioPart> {
-    try req.requirePermission(to: .mutateAudios)
+    try req.requirePermission(to: .mutateFriends)
     return future(of: AudioPart.self, on: req.eventLoop) {
-      try await Current.db.deleteAudioPart(.init(rawValue: args.id))
+      try await Current.db.delete(AudioPart.self, byId: args.id)
     }
   }
 }

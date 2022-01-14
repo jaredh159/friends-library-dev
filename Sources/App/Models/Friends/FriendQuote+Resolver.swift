@@ -6,14 +6,14 @@ extension Resolver {
   func getFriendQuote(req: Req, args: IdentifyEntityArgs) throws -> Future<FriendQuote> {
     try req.requirePermission(to: .queryFriends)
     return future(of: FriendQuote.self, on: req.eventLoop) {
-      try await Current.db.getFriendQuote(.init(rawValue: args.id))
+      try await Current.db.find(FriendQuote.self, byId: args.id)
     }
   }
 
   func getFriendQuotes(req: Req, args: NoArgs) throws -> Future<[FriendQuote]> {
     try req.requirePermission(to: .queryFriends)
     return future(of: [FriendQuote].self, on: req.eventLoop) {
-      try await Current.db.getFriendQuotes(nil)
+      try await Current.db.query(FriendQuote.self).all()
     }
   }
 
@@ -23,7 +23,7 @@ extension Resolver {
   ) throws -> Future<FriendQuote> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: FriendQuote.self, on: req.eventLoop) {
-      try await Current.db.createFriendQuote(FriendQuote(args.input))
+      try await Current.db.create(FriendQuote(args.input))
     }
   }
 
@@ -33,7 +33,7 @@ extension Resolver {
   ) throws -> Future<[FriendQuote]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [FriendQuote].self, on: req.eventLoop) {
-      try await Current.db.createFriendQuotes(args.input.map(FriendQuote.init))
+      try await Current.db.create(args.input.map(FriendQuote.init))
     }
   }
 
@@ -43,7 +43,7 @@ extension Resolver {
   ) throws -> Future<FriendQuote> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: FriendQuote.self, on: req.eventLoop) {
-      try await Current.db.updateFriendQuote(FriendQuote(args.input))
+      try await Current.db.update(FriendQuote(args.input))
     }
   }
 
@@ -53,14 +53,14 @@ extension Resolver {
   ) throws -> Future<[FriendQuote]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [FriendQuote].self, on: req.eventLoop) {
-      try await Current.db.updateFriendQuotes(args.input.map(FriendQuote.init))
+      try await Current.db.update(args.input.map(FriendQuote.init))
     }
   }
 
   func deleteFriendQuote(req: Req, args: IdentifyEntityArgs) throws -> Future<FriendQuote> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: FriendQuote.self, on: req.eventLoop) {
-      try await Current.db.deleteFriendQuote(.init(rawValue: args.id))
+      try await Current.db.delete(FriendQuote.self, byId: args.id)
     }
   }
 }

@@ -1,5 +1,6 @@
 --disable blankLinesAtStartOfScope
 --disable wrapMultilineStatementBraces
+--disable yodaConditions
 --binarygrouping none
 --decimalgrouping none
 --hexgrouping none

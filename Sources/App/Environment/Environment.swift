@@ -4,7 +4,7 @@ import Vapor
 struct Environment {
   var uuid: () -> UUID = UUID.init
   var date: () -> Date = Date.init
-  var db: DatabaseClient = .notImplemented
+  var db: DbClient = ThrowingDbClient()
   var auth: Auth = .live
   var logger = Logger(label: "api.friendslibrary")
   var slackClient: SlackClient = .init()

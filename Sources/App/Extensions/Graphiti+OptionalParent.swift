@@ -27,26 +27,25 @@ private func loadOptionalParent<Child: DuetModel, Parent: DuetModel>(
   for child: Child
 ) async throws -> Parent? {
   let db = Current.db
-  let parent: Parent?
+  var parent: Parent?
+  var childFk: UUIDStringable?
   switch keyPath {
 
     case \Document.altLanguageDocument:
-      let document = child as! Document
-      guard let altLanguageDocumentId = document.altLanguageId else { return nil }
-      parent = try? await db.getDocument(altLanguageDocumentId) as! Parent?
+      childFk = (child as! Document).altLanguageId
 
     case \Isbn.edition:
-      let isbn = child as! Isbn
-      guard let editionId = isbn.editionId else { return nil }
-      parent = try? await db.getEdition(editionId) as! Parent?
+      childFk = (child as! Isbn).editionId
 
     case \Order.freeOrderRequest:
-      let order = child as! Order
-      guard let freeOrderRequestId = order.freeOrderRequestId else { return nil }
-      parent = try? await db.getFreeOrderRequest(freeOrderRequestId) as! Parent?
+      childFk = (child as! Order).freeOrderRequestId
 
     default:
       throw Abort(.notImplemented, reason: "\(keyPath) not handled for OptionalParent<M> relation")
+  }
+
+  if let fk = childFk {
+    parent = try? await db.query(Parent.self).where("id" == fk).first()
   }
 
   var child = child

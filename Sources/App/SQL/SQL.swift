@@ -10,6 +10,16 @@ enum SQL {
     value: Postgres.Data
   )
 
+  enum OrderDirection {
+    case asc
+    case desc
+  }
+
+  typealias Order = (
+    column: String,
+    direction: OrderDirection
+  )
+
   struct PreparedStatement {
     let query: String
     let bindings: [Postgres.Data]
@@ -112,7 +122,7 @@ enum SQL {
     _ columns: Postgres.Columns,
     from table: String,
     where constraints: [WhereConstraint] = [],
-    orderBy: (column: String, by: OrderBy)? = nil,
+    orderBy: Order? = nil,
     limit: Int? = nil
   ) -> PreparedStatement {
     var binding = 1
@@ -201,4 +211,8 @@ private extension Sequence where Element == String {
 
 func == (lhs: String, rhs: Postgres.Data) -> SQL.WhereConstraint {
   (lhs, .equals, rhs)
+}
+
+func == (lhs: String, rhs: UUIDStringable) -> SQL.WhereConstraint {
+  (lhs, .equals, .uuid(rhs))
 }

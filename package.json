@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "watchexec --restart --watch Sources --exts swift --signal SIGINT swift run",
+    "start:tests": "watchexec --restart --watch Sources --watch Tests --exts swift --signal SIGINT swift test",
     "debug": "export LOG_LEVEL=trace; npm run start",
     "deploy:staging": "fldev tsnode deploy.ts",
     "deploy:production": "fldev tsnode deploy.ts --production",
@@ -30,7 +31,7 @@
     "compile": "true # <-- keep manager automation script happy",
     "generate:models": "fldev tsnode ./.codegen/generate-models.ts",
     "generate:db": "fldev tsnode ./.codegen/generate-db.ts",
-    "generate": "npm run generate:models && npm run generate:db",
+    "generate": "npm run generate:models",
     "scaffold:repo": "fldev tsnode ./.codegen/scaffold-repository.ts",
     "scaffold:resolver-test": "fldev tsnode ./.codegen/scaffold-resolver-test.ts",
     "scaffold:resolver": "fldev tsnode ./.codegen/scaffold-resolver.ts"

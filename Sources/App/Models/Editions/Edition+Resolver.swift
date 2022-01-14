@@ -4,51 +4,63 @@ import Vapor
 
 extension Resolver {
   func getEdition(req: Req, args: IdentifyEntityArgs) throws -> Future<Edition> {
-    try req.requirePermission(to: .queryEditions)
+    try req.requirePermission(to: .queryFriends)
     return future(of: Edition.self, on: req.eventLoop) {
-      try await Current.db.getEdition(.init(rawValue: args.id))
+      try await Current.db.find(Edition.self, byId: args.id)
     }
   }
 
   func getEditions(req: Req, args: NoArgs) throws -> Future<[Edition]> {
-    try req.requirePermission(to: .queryEditions)
+    try req.requirePermission(to: .queryFriends)
     return future(of: [Edition].self, on: req.eventLoop) {
-      try await Current.db.getEditions(nil)
+      try await Current.db.query(Edition.self).all()
     }
   }
 
-  func createEdition(req: Req, args: AppSchema.CreateEditionArgs) throws -> Future<Edition> {
-    try req.requirePermission(to: .mutateEditions)
+  func createEdition(
+    req: Req,
+    args: AppSchema.CreateEditionArgs
+  ) throws -> Future<Edition> {
+    try req.requirePermission(to: .mutateFriends)
     return future(of: Edition.self, on: req.eventLoop) {
-      try await Current.db.createEdition(Edition(args.input))
+      try await Current.db.create(Edition(args.input))
     }
   }
 
-  func createEditions(req: Req, args: AppSchema.CreateEditionsArgs) throws -> Future<[Edition]> {
-    try req.requirePermission(to: .mutateEditions)
+  func createEditions(
+    req: Req,
+    args: AppSchema.CreateEditionsArgs
+  ) throws -> Future<[Edition]> {
+    try req.requirePermission(to: .mutateFriends)
     return future(of: [Edition].self, on: req.eventLoop) {
-      try await Current.db.createEditions(args.input.map(Edition.init))
+      try await Current.db.create(args.input.map(Edition.init))
     }
   }
 
-  func updateEdition(req: Req, args: AppSchema.UpdateEditionArgs) throws -> Future<Edition> {
-    try req.requirePermission(to: .mutateEditions)
+  func updateEdition(
+    req: Req,
+    args: AppSchema.UpdateEditionArgs
+  ) throws -> Future<Edition> {
+    try req.requirePermission(to: .mutateFriends)
     return future(of: Edition.self, on: req.eventLoop) {
-      try await Current.db.updateEdition(Edition(args.input))
+      try await Current.db.update(Edition(args.input))
     }
   }
 
-  func updateEditions(req: Req, args: AppSchema.UpdateEditionsArgs) throws -> Future<[Edition]> {
-    try req.requirePermission(to: .mutateEditions)
+  func updateEditions(
+    req: Req,
+    args: AppSchema.UpdateEditionsArgs
+  ) throws -> Future<[Edition]> {
+    try req.requirePermission(to: .mutateFriends)
     return future(of: [Edition].self, on: req.eventLoop) {
-      try await Current.db.updateEditions(args.input.map(Edition.init))
+      try await Current.db.update(args.input.map(Edition.init))
     }
   }
 
   func deleteEdition(req: Req, args: IdentifyEntityArgs) throws -> Future<Edition> {
-    try req.requirePermission(to: .mutateEditions)
+    try req.requirePermission(to: .mutateFriends)
     return future(of: Edition.self, on: req.eventLoop) {
-      try await Current.db.deleteEdition(.init(rawValue: args.id))
+      try await Current.db.delete(Edition.self, byId: args.id)
     }
   }
 }

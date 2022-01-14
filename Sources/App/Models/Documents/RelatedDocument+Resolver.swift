@@ -4,16 +4,16 @@ import Vapor
 
 extension Resolver {
   func getRelatedDocument(req: Req, args: IdentifyEntityArgs) throws -> Future<RelatedDocument> {
-    try req.requirePermission(to: .queryDocuments)
+    try req.requirePermission(to: .queryFriends)
     return future(of: RelatedDocument.self, on: req.eventLoop) {
-      throw Abort(.notImplemented, reason: "resolver.getRelatedDocument")
+      try await Current.db.find(RelatedDocument.self, byId: args.id)
     }
   }
 
   func getRelatedDocuments(req: Req, args: NoArgs) throws -> Future<[RelatedDocument]> {
-    try req.requirePermission(to: .queryDocuments)
+    try req.requirePermission(to: .queryFriends)
     return future(of: [RelatedDocument].self, on: req.eventLoop) {
-      throw Abort(.notImplemented, reason: "resolver.getRelatedDocuments")
+      try await Current.db.query(RelatedDocument.self).all()
     }
   }
 
@@ -21,9 +21,9 @@ extension Resolver {
     req: Req,
     args: AppSchema.CreateRelatedDocumentArgs
   ) throws -> Future<RelatedDocument> {
-    try req.requirePermission(to: .mutateDocuments)
+    try req.requirePermission(to: .mutateFriends)
     return future(of: RelatedDocument.self, on: req.eventLoop) {
-      throw Abort(.notImplemented, reason: "resolver.createRelatedDocument")
+      try await Current.db.create(RelatedDocument(args.input))
     }
   }
 
@@ -31,9 +31,9 @@ extension Resolver {
     req: Req,
     args: AppSchema.CreateRelatedDocumentsArgs
   ) throws -> Future<[RelatedDocument]> {
-    try req.requirePermission(to: .mutateDocuments)
+    try req.requirePermission(to: .mutateFriends)
     return future(of: [RelatedDocument].self, on: req.eventLoop) {
-      throw Abort(.notImplemented, reason: "resolver.createRelatedDocuments")
+      try await Current.db.create(args.input.map(RelatedDocument.init))
     }
   }
 
@@ -41,9 +41,9 @@ extension Resolver {
     req: Req,
     args: AppSchema.UpdateRelatedDocumentArgs
   ) throws -> Future<RelatedDocument> {
-    try req.requirePermission(to: .mutateDocuments)
+    try req.requirePermission(to: .mutateFriends)
     return future(of: RelatedDocument.self, on: req.eventLoop) {
-      throw Abort(.notImplemented, reason: "resolver.updateRelatedDocument")
+      try await Current.db.update(RelatedDocument(args.input))
     }
   }
 
@@ -51,19 +51,16 @@ extension Resolver {
     req: Req,
     args: AppSchema.UpdateRelatedDocumentsArgs
   ) throws -> Future<[RelatedDocument]> {
-    try req.requirePermission(to: .mutateDocuments)
+    try req.requirePermission(to: .mutateFriends)
     return future(of: [RelatedDocument].self, on: req.eventLoop) {
-      throw Abort(.notImplemented, reason: "resolver.updateRelatedDocuments")
+      try await Current.db.update(args.input.map(RelatedDocument.init))
     }
   }
 
-  func deleteRelatedDocument(
-    req: Req,
-    args: IdentifyEntityArgs
-  ) throws -> Future<RelatedDocument> {
-    try req.requirePermission(to: .mutateDocuments)
+  func deleteRelatedDocument(req: Req, args: IdentifyEntityArgs) throws -> Future<RelatedDocument> {
+    try req.requirePermission(to: .mutateFriends)
     return future(of: RelatedDocument.self, on: req.eventLoop) {
-      throw Abort(.notImplemented, reason: "resolver.deleteRelatedDocument")
+      try await Current.db.delete(RelatedDocument.self, byId: args.id)
     }
   }
 }

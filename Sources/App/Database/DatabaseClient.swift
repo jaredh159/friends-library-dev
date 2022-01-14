@@ -3,180 +3,99 @@ import FluentSQL
 import Tagged
 import Vapor
 
-struct DatabaseClient {
-  var entities: () async throws -> PreloadedEntities
-  var flushEntities: () throws -> Void
+protocol DbClient {
+  func query<Model: DuetModel>(_ Model: Model.Type) -> DuetQuery<Model>
 
-  // tokens
-  var createToken: (Token) async throws -> Token
-  var getToken: (Token.Id) async throws -> Token
-  var getTokens: (SQL.WhereConstraint?) async throws -> [Token]
-  var createTokenScope: (TokenScope) async throws -> TokenScope
-  var getTokenScopes: (SQL.WhereConstraint?) async throws -> [TokenScope]
+  @discardableResult
+  func update<Model: DuetModel>(_ model: Model) async throws -> Model
 
-  // orders
-  var getOrder: (Order.Id) async throws -> Order
-  var getOrders: (SQL.WhereConstraint?) async throws -> [Order]
-  var updateOrder: (Order) async throws -> Order
-  var updateOrders: ([Order]) async throws -> [Order]
-  var createOrder: (Order) async throws -> Order
-  var createOrders: ([Order]) async throws -> [Order]
-  var deleteOrder: (Order.Id) async throws -> Order
-  var deleteAllOrders: () async throws -> Void
+  @discardableResult
+  func create<Model: DuetModel>(_ models: [Model]) async throws -> [Model]
+}
 
-  // order items
-  var createOrderItem: (OrderItem) async throws -> OrderItem
-  var createOrderItems: ([OrderItem]) async throws -> [OrderItem]
-  var getOrderItem: (OrderItem.Id) async throws -> OrderItem
-  var getOrderItems: (SQL.WhereConstraint?) async throws -> [OrderItem]
-  var updateOrderItem: (OrderItem) async throws -> OrderItem
-  var updateOrderItems: ([OrderItem]) async throws -> [OrderItem]
-  var deleteOrderItem: (OrderItem.Id) async throws -> OrderItem
+extension DbClient {
+  func find<M: DuetModel>(_ Model: M.Type, byId id: UUID) async throws -> M {
+    try await query(M.self).byId(id).first()
+  }
 
-  // free order requests
-  var createFreeOrderRequest: (FreeOrderRequest) async throws -> FreeOrderRequest
-  var getFreeOrderRequest: (FreeOrderRequest.Id) async throws -> FreeOrderRequest
+  func find<M: DuetModel>(_ Model: M.Type, byId id: M.IdValue) async throws -> M {
+    try await query(M.self).byId(id).first()
+  }
 
-  // downloads
-  var createDownload: (Download) async throws -> Download
-  var createDownloads: ([Download]) async throws -> [Download]
-  var getDownload: (Download.Id) async throws -> Download
-  var getDownloads: (SQL.WhereConstraint?) async throws -> [Download]
-  var updateDownload: (Download) async throws -> Download
-  var updateDownloads: ([Download]) async throws -> [Download]
-  var deleteDownload: (Download.Id) async throws -> Download
-  var deleteAllDownloads: () async throws -> Void
+  @discardableResult
+  func create<M: DuetModel>(_ model: M) async throws -> M {
+    let models = try await create([model])
+    return models.first ?? model
+  }
 
-  // friends
-  var createFriend: (Friend) async throws -> Friend
-  var createFriends: ([Friend]) async throws -> [Friend]
-  var getFriend: (Friend.Id) async throws -> Friend
-  var getFriends: (SQL.WhereConstraint?) async throws -> [Friend]
-  var updateFriend: (Friend) async throws -> Friend
-  var updateFriends: ([Friend]) async throws -> [Friend]
-  var deleteFriend: (Friend.Id) async throws -> Friend
-  var deleteAllFriends: () async throws -> Void
+  @discardableResult
+  func delete<M: DuetModel>(_ Model: M.Type, byId id: UUID) async throws -> M {
+    try await query(M.self).where("id" == id).deleteOne()
+  }
 
-  // friend quotes
-  var createFriendQuote: (FriendQuote) async throws -> FriendQuote
-  var createFriendQuotes: ([FriendQuote]) async throws -> [FriendQuote]
-  var getFriendQuote: (FriendQuote.Id) async throws -> FriendQuote
-  var getFriendQuotes: (SQL.WhereConstraint?) async throws -> [FriendQuote]
-  var updateFriendQuote: (FriendQuote) async throws -> FriendQuote
-  var updateFriendQuotes: ([FriendQuote]) async throws -> [FriendQuote]
-  var deleteFriendQuote: (FriendQuote.Id) async throws -> FriendQuote
-  var deleteAllFriendQuotes: () async throws -> Void
+  @discardableResult
+  func delete<M: DuetModel>(_ Model: M.Type, byId id: M.IdValue) async throws -> M {
+    try await query(M.self).where("id" == id).deleteOne()
+  }
 
-  // friend residences
-  var createFriendResidence: (FriendResidence) async throws -> FriendResidence
-  var createFriendResidences: ([FriendResidence]) async throws -> [FriendResidence]
-  var getFriendResidence: (FriendResidence.Id) async throws -> FriendResidence
-  var getFriendResidences: (SQL.WhereConstraint?) async throws -> [FriendResidence]
-  var updateFriendResidence: (FriendResidence) async throws -> FriendResidence
-  var updateFriendResidences: ([FriendResidence]) async throws -> [FriendResidence]
-  var deleteFriendResidence: (FriendResidence.Id) async throws -> FriendResidence
-  var deleteAllFriendResidences: () async throws -> Void
+  @discardableResult
+  func update<Model: DuetModel>(_ models: [Model]) async throws -> [Model] {
+    try await withThrowingTaskGroup(of: Model.self) { group in
+      for model in models {
+        group.addTask { try await update(model) }
+      }
+      var updated: [Model] = []
+      for try await updatedModel in group {
+        updated.append(updatedModel)
+      }
+      return updated
+    }
+  }
+}
 
-  // friend residence durations
-  var createFriendResidenceDuration:
-    (FriendResidenceDuration) async throws -> FriendResidenceDuration
-  var createFriendResidenceDurations:
-    ([FriendResidenceDuration]) async throws -> [FriendResidenceDuration]
-  var getFriendResidenceDuration:
-    (FriendResidenceDuration.Id) async throws -> FriendResidenceDuration
-  var getFriendResidenceDurations: (SQL.WhereConstraint?) async throws -> [FriendResidenceDuration]
-  var updateFriendResidenceDuration:
-    (FriendResidenceDuration) async throws -> FriendResidenceDuration
-  var updateFriendResidenceDurations:
-    ([FriendResidenceDuration]) async throws -> [FriendResidenceDuration]
-  var deleteFriendResidenceDuration:
-    (FriendResidenceDuration.Id) async throws -> FriendResidenceDuration
-  var deleteAllFriendResidenceDurations: () async throws -> Void
+// extensions
 
-  // documents
-  var createDocument: (Document) async throws -> Document
-  var createDocuments: ([Document]) async throws -> [Document]
-  var getDocument: (Document.Id) async throws -> Document
-  var getDocuments: (SQL.WhereConstraint?) async throws -> [Document]
-  var updateDocument: (Document) async throws -> Document
-  var updateDocuments: ([Document]) async throws -> [Document]
-  var deleteDocument: (Document.Id) async throws -> Document
-  var deleteAllDocuments: () async throws -> Void
+struct ThrowingSql: SQLQuerying, SQLMutating {
 
-  // document tags
-  var createDocumentTag: (DocumentTag) async throws -> DocumentTag
-  var getDocumentTags: (SQL.WhereConstraint?) async throws -> [DocumentTag]
+  func update<M: DuetModel>(_ model: M) async throws -> M {
+    throw Abort(.notImplemented, reason: "ThrowingSql.update")
+  }
 
-  // related documents
-  var createRelatedDocument: (RelatedDocument) async throws -> RelatedDocument
-  var getRelatedDocuments: (SQL.WhereConstraint?) async throws -> [RelatedDocument]
+  func select<M: DuetModel>(
+    _ Model: M.Type,
+    where: [SQL.WhereConstraint],
+    orderBy: SQL.Order?,
+    limit: Int?
+  ) async throws -> [M] {
+    throw Abort(.notImplemented, reason: "ThrowingSql.select")
+  }
 
-  // editions
-  var createEdition: (Edition) async throws -> Edition
-  var createEditions: ([Edition]) async throws -> [Edition]
-  var getEdition: (Edition.Id) async throws -> Edition
-  var getEditionIsbn: (Edition.Id) async throws -> Isbn?
-  var getEditionAudio: (Edition.Id) async throws -> Audio?
-  var getEditionEditionImpression: (Edition.Id) async throws -> EditionImpression?
-  var getEditions: (SQL.WhereConstraint?) async throws -> [Edition]
-  var updateEdition: (Edition) async throws -> Edition
-  var updateEditions: ([Edition]) async throws -> [Edition]
-  var deleteEdition: (Edition.Id) async throws -> Edition
-  var deleteAllEditions: () async throws -> Void
+  func create<M: DuetModel>(_ models: [M]) async throws -> [M] {
+    throw Abort(.notImplemented, reason: "ThrowingSql.create")
+  }
 
-  // editions impressions
-  var createEditionImpression: (EditionImpression) async throws -> EditionImpression
-  var createEditionImpressions: ([EditionImpression]) async throws -> [EditionImpression]
-  var getEditionImpression: (EditionImpression.Id) async throws -> EditionImpression
-  var getEditionImpressions: (SQL.WhereConstraint?) async throws -> [EditionImpression]
-  var updateEditionImpression: (EditionImpression) async throws -> EditionImpression
-  var updateEditionImpressions: ([EditionImpression]) async throws -> [EditionImpression]
-  var deleteEditionImpression: (EditionImpression.Id) async throws -> EditionImpression
-  var deleteAllEditionImpressions: () async throws -> Void
+  func forceDelete<M: DuetModel>(
+    _ Model: M.Type,
+    where: [SQL.WhereConstraint],
+    orderBy: SQL.Order?,
+    limit: Int?
+  ) async throws -> [M] {
+    throw Abort(.notImplemented, reason: "ThrowingSql.forceDelete")
+  }
+}
 
-  // edition chapters
-  var createEditionChapter: (EditionChapter) async throws -> EditionChapter
-  var createEditionChapters: ([EditionChapter]) async throws -> [EditionChapter]
-  var getEditionChapter: (EditionChapter.Id) async throws -> EditionChapter
-  var getEditionChapters: (SQL.WhereConstraint?) async throws -> [EditionChapter]
-  var updateEditionChapter: (EditionChapter) async throws -> EditionChapter
-  var updateEditionChapters: ([EditionChapter]) async throws -> [EditionChapter]
-  var deleteEditionChapter: (EditionChapter.Id) async throws -> EditionChapter
-  var deleteAllEditionChapters: () async throws -> Void
+struct ThrowingDbClient: DbClient {
+  func query<Model: DuetModel>(_ Model: Model.Type) -> DuetQuery<Model> {
+    DuetQuery<Model>(db: ThrowingSql(), constraints: [], limit: nil, order: nil)
+  }
 
-  // audios
-  var createAudio: (Audio) async throws -> Audio
-  var createAudios: ([Audio]) async throws -> [Audio]
-  var getAudio: (Audio.Id) async throws -> Audio
-  var getAudios: (SQL.WhereConstraint?) async throws -> [Audio]
-  var updateAudio: (Audio) async throws -> Audio
-  var updateAudios: ([Audio]) async throws -> [Audio]
-  var deleteAudio: (Audio.Id) async throws -> Audio
-  var deleteAllAudios: () async throws -> Void
+  @discardableResult
+  func update<Model: DuetModel>(_ model: Model) async throws -> Model {
+    throw Abort(.notImplemented, reason: "ThrowingDbClient.update")
+  }
 
-  // audio parts
-  var createAudioPart: (AudioPart) async throws -> AudioPart
-  var createAudioParts: ([AudioPart]) async throws -> [AudioPart]
-  var getAudioPart: (AudioPart.Id) async throws -> AudioPart
-  var getAudioParts: (SQL.WhereConstraint?) async throws -> [AudioPart]
-  var updateAudioPart: (AudioPart) async throws -> AudioPart
-  var updateAudioParts: ([AudioPart]) async throws -> [AudioPart]
-  var deleteAudioPart: (AudioPart.Id) async throws -> AudioPart
-  var deleteAllAudioParts: () async throws -> Void
-
-  // isbns
-  var createIsbn: (Isbn) async throws -> Isbn
-  var createIsbns: ([Isbn]) async throws -> [Isbn]
-  var getIsbn: (Isbn.Id) async throws -> Isbn
-  var getIsbns: (SQL.WhereConstraint?) async throws -> [Isbn]
-  var updateIsbn: (Isbn) async throws -> Isbn
-  var updateIsbns: ([Isbn]) async throws -> [Isbn]
-  var deleteIsbn: (Isbn.Id) async throws -> Isbn
-  var deleteAllIsbns: () async throws -> Void
-
-  // artifact production versions
-  var createArtifactProductionVersion:
-    (ArtifactProductionVersion) async throws -> ArtifactProductionVersion
-  var getArtifactProductionVersions: (SQL.WhereConstraint?) async throws
-    -> [ArtifactProductionVersion]
+  @discardableResult
+  func create<Model: DuetModel>(_ models: [Model]) async throws -> [Model] {
+    throw Abort(.notImplemented, reason: "ThrowingDbClient.create")
+  }
 }

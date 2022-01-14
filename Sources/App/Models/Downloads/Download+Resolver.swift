@@ -4,51 +4,63 @@ import Vapor
 
 extension Resolver {
   func getDownload(req: Req, args: IdentifyEntityArgs) throws -> Future<Download> {
-    try req.requirePermission(to: .queryDownloads)
+    try req.requirePermission(to: .queryFriends)
     return future(of: Download.self, on: req.eventLoop) {
-      try await Current.db.getDownload(.init(rawValue: args.id))
+      try await Current.db.find(Download.self, byId: args.id)
     }
   }
 
   func getDownloads(req: Req, args: NoArgs) throws -> Future<[Download]> {
-    try req.requirePermission(to: .queryDownloads)
+    try req.requirePermission(to: .queryFriends)
     return future(of: [Download].self, on: req.eventLoop) {
-      try await Current.db.getDownloads(nil)
+      try await Current.db.query(Download.self).all()
     }
   }
 
-  func createDownload(req: Req, args: AppSchema.CreateDownloadArgs) throws -> Future<Download> {
-    try req.requirePermission(to: .mutateDownloads)
+  func createDownload(
+    req: Req,
+    args: AppSchema.CreateDownloadArgs
+  ) throws -> Future<Download> {
+    try req.requirePermission(to: .mutateFriends)
     return future(of: Download.self, on: req.eventLoop) {
-      try await Current.db.createDownload(Download(args.input))
+      try await Current.db.create(Download(args.input))
     }
   }
 
-  func createDownloads(req: Req, args: AppSchema.CreateDownloadsArgs) throws -> Future<[Download]> {
-    try req.requirePermission(to: .mutateDownloads)
+  func createDownloads(
+    req: Req,
+    args: AppSchema.CreateDownloadsArgs
+  ) throws -> Future<[Download]> {
+    try req.requirePermission(to: .mutateFriends)
     return future(of: [Download].self, on: req.eventLoop) {
-      try await Current.db.createDownloads(args.input.map(Download.init))
+      try await Current.db.create(args.input.map(Download.init))
     }
   }
 
-  func updateDownload(req: Req, args: AppSchema.UpdateDownloadArgs) throws -> Future<Download> {
-    try req.requirePermission(to: .mutateDownloads)
+  func updateDownload(
+    req: Req,
+    args: AppSchema.UpdateDownloadArgs
+  ) throws -> Future<Download> {
+    try req.requirePermission(to: .mutateFriends)
     return future(of: Download.self, on: req.eventLoop) {
-      try await Current.db.updateDownload(Download(args.input))
+      try await Current.db.update(Download(args.input))
     }
   }
 
-  func updateDownloads(req: Req, args: AppSchema.UpdateDownloadsArgs) throws -> Future<[Download]> {
-    try req.requirePermission(to: .mutateDownloads)
+  func updateDownloads(
+    req: Req,
+    args: AppSchema.UpdateDownloadsArgs
+  ) throws -> Future<[Download]> {
+    try req.requirePermission(to: .mutateFriends)
     return future(of: [Download].self, on: req.eventLoop) {
-      try await Current.db.updateDownloads(args.input.map(Download.init))
+      try await Current.db.update(args.input.map(Download.init))
     }
   }
 
   func deleteDownload(req: Req, args: IdentifyEntityArgs) throws -> Future<Download> {
-    try req.requirePermission(to: .mutateDownloads)
+    try req.requirePermission(to: .mutateFriends)
     return future(of: Download.self, on: req.eventLoop) {
-      try await Current.db.deleteDownload(.init(rawValue: args.id))
+      try await Current.db.delete(Download.self, byId: args.id)
     }
   }
 }

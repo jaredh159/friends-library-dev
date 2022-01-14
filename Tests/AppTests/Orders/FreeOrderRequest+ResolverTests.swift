@@ -7,7 +7,7 @@ import XCTVaporUtils
 final class FreeOrderRequestResolverTests: AppTestCase {
 
   func testQueryFreeOrder() async throws {
-    let request = try await Current.db.createFreeOrderRequest(.mock)
+    let request = try await Current.db.create(FreeOrderRequest.mock)
 
     GraphQLTest(
       """
@@ -43,7 +43,7 @@ final class FreeOrderRequestResolverTests: AppTestCase {
   func testQueryFreeOrderWithStreet2() async throws {
     let request: FreeOrderRequest = .mock
     request.addressStreet2 = "hey ho howdy"
-    _ = try await Current.db.createFreeOrderRequest(request)
+    try await Current.db.create(request)
 
     GraphQLTest(
       """

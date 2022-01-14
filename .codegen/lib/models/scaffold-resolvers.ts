@@ -9,23 +9,17 @@ const RESOLVER_PATTERN = /* swift */ `
 // below auto-generated
 
 extension Resolver {
-  func getThing(
-    req: Req,
-    args: IdentifyEntityArgs
-  ) throws -> Future<Thing> {
-    try req.requirePermission(to: .queryThings)
+  func getThing(req: Req, args: IdentifyEntityArgs) throws -> Future<Thing> {
+    try req.requirePermission(to: .queryFriends)
     return future(of: Thing.self, on: req.eventLoop) {
-      try await Current.db.getThing(.init(rawValue: args.id))
+      try await Current.db.find(Thing.self, byId: args.id)
     }
   }
 
-  func getThings(
-    req: Req,
-    args: NoArgs
-  ) throws -> Future<[Thing]> {
-    try req.requirePermission(to: .queryThings)
+  func getThings(req: Req, args: NoArgs) throws -> Future<[Thing]> {
+    try req.requirePermission(to: .queryFriends)
     return future(of: [Thing].self, on: req.eventLoop) {
-      try await Current.db.getThings()
+      try await Current.db.query(Thing.self).all()
     }
   }
 
@@ -33,9 +27,9 @@ extension Resolver {
     req: Req,
     args: AppSchema.CreateThingArgs
   ) throws -> Future<Thing> {
-    try req.requirePermission(to: .mutateThings)
+    try req.requirePermission(to: .mutateFriends)
     return future(of: Thing.self, on: req.eventLoop) {
-      try await Current.db.createThing(Thing(args.input))
+      try await Current.db.create(Thing(args.input))
     }
   }
 
@@ -43,9 +37,9 @@ extension Resolver {
     req: Req,
     args: AppSchema.CreateThingsArgs
   ) throws -> Future<[Thing]> {
-    try req.requirePermission(to: .mutateThings)
+    try req.requirePermission(to: .mutateFriends)
     return future(of: [Thing].self, on: req.eventLoop) {
-      try await Current.db.createThings(args.input.map(Thing.init))
+      try await Current.db.create(args.input.map(Thing.init))
     }
   }
 
@@ -53,9 +47,9 @@ extension Resolver {
     req: Req,
     args: AppSchema.UpdateThingArgs
   ) throws -> Future<Thing> {
-    try req.requirePermission(to: .mutateThings)
+    try req.requirePermission(to: .mutateFriends)
     return future(of: Thing.self, on: req.eventLoop) {
-      try await Current.db.updateThing(Thing(args.input))
+      try await Current.db.update(Thing(args.input))
     }
   }
 
@@ -63,19 +57,16 @@ extension Resolver {
     req: Req,
     args: AppSchema.UpdateThingsArgs
   ) throws -> Future<[Thing]> {
-    try req.requirePermission(to: .mutateThings)
+    try req.requirePermission(to: .mutateFriends)
     return future(of: [Thing].self, on: req.eventLoop) {
-      try await Current.db.updateThings(args.input.map(Thing.init))
+      try await Current.db.update(args.input.map(Thing.init))
     }
   }
 
-  func deleteThing(
-    req: Req,
-    args: IdentifyEntityArgs
-  ) throws -> Future<Thing> {
-    try req.requirePermission(to: .mutateThings)
+  func deleteThing(req: Req, args: IdentifyEntityArgs) throws -> Future<Thing> {
+    try req.requirePermission(to: .mutateFriends)
     return future(of: Thing.self, on: req.eventLoop) {
-      try await Current.db.deleteThing(.init(rawValue: args.id))
+      try await Current.db.delete(Thing.self, byId: args.id)
     }
   }
 }

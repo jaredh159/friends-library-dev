@@ -5,24 +5,13 @@ import Vapor
 import VaporUtils
 
 extension Resolver {
-
-  func getFreeOrderRequest(
-    req: Req,
-    args: IdentifyEntityArgs
-  ) throws -> Future<FreeOrderRequest> {
-    try req.requirePermission(to: .queryOrders)
-    return future(of: FreeOrderRequest.self, on: req.eventLoop) {
-      try await Current.db.getFreeOrderRequest(.init(rawValue: args.id))
-    }
-  }
-
   func createFreeOrderRequest(
     req: Req,
     args: AppSchema.CreateFreeOrderRequestArgs
   ) throws -> Future<FreeOrderRequest> {
-    try req.requirePermission(to: .mutateOrders)
+    try req.requirePermission(to: .mutateFriends)
     return future(of: FreeOrderRequest.self, on: req.eventLoop) {
-      let order = try await Current.db.createFreeOrderRequest(FreeOrderRequest(args.input))
+      let order = try await Current.db.create(FreeOrderRequest(args.input))
       try await sendFreeOrderRequestNotifications(for: order, on: req).get()
       return order
     }
@@ -101,39 +90,57 @@ private func entry(_ key: String, _ value: String?) -> String {
 // below auto-generated
 
 extension Resolver {
+  func getFreeOrderRequest(req: Req, args: IdentifyEntityArgs) throws -> Future<FreeOrderRequest> {
+    try req.requirePermission(to: .queryFriends)
+    return future(of: FreeOrderRequest.self, on: req.eventLoop) {
+      try await Current.db.find(FreeOrderRequest.self, byId: args.id)
+    }
+  }
 
-  func getFreeOrderRequests(
-    req: Req,
-    args: NoArgs
-  ) throws -> Future<[FreeOrderRequest]> {
-    throw Abort(.notImplemented)
+  func getFreeOrderRequests(req: Req, args: NoArgs) throws -> Future<[FreeOrderRequest]> {
+    try req.requirePermission(to: .queryFriends)
+    return future(of: [FreeOrderRequest].self, on: req.eventLoop) {
+      try await Current.db.query(FreeOrderRequest.self).all()
+    }
   }
 
   func createFreeOrderRequests(
     req: Req,
     args: AppSchema.CreateFreeOrderRequestsArgs
   ) throws -> Future<[FreeOrderRequest]> {
-    throw Abort(.notImplemented)
+    try req.requirePermission(to: .mutateFriends)
+    return future(of: [FreeOrderRequest].self, on: req.eventLoop) {
+      try await Current.db.create(args.input.map(FreeOrderRequest.init))
+    }
   }
 
   func updateFreeOrderRequest(
     req: Req,
     args: AppSchema.UpdateFreeOrderRequestArgs
   ) throws -> Future<FreeOrderRequest> {
-    throw Abort(.notImplemented)
+    try req.requirePermission(to: .mutateFriends)
+    return future(of: FreeOrderRequest.self, on: req.eventLoop) {
+      try await Current.db.update(FreeOrderRequest(args.input))
+    }
   }
 
   func updateFreeOrderRequests(
     req: Req,
     args: AppSchema.UpdateFreeOrderRequestsArgs
   ) throws -> Future<[FreeOrderRequest]> {
-    throw Abort(.notImplemented)
+    try req.requirePermission(to: .mutateFriends)
+    return future(of: [FreeOrderRequest].self, on: req.eventLoop) {
+      try await Current.db.update(args.input.map(FreeOrderRequest.init))
+    }
   }
 
   func deleteFreeOrderRequest(
     req: Req,
     args: IdentifyEntityArgs
   ) throws -> Future<FreeOrderRequest> {
-    throw Abort(.notImplemented)
+    try req.requirePermission(to: .mutateFriends)
+    return future(of: FreeOrderRequest.self, on: req.eventLoop) {
+      try await Current.db.delete(FreeOrderRequest.self, byId: args.id)
+    }
   }
 }

@@ -68,19 +68,18 @@ struct Entities {
 
     beforePersist(&entities)
 
-    _ = try! await Current.db.createFriend(friend)
-    _ = try! await Current.db.createFriendQuote(friendQuote)
-    _ = try! await Current.db.createFriendResidence(friendResidence)
-    _ = try! await Current.db.createFriendResidenceDuration(friendResidenceDuration)
-    _ = try! await Current.db.createDocument(document)
-    _ = try! await Current.db.createDocumentTag(documentTag)
-    _ = try! await Current.db.createEdition(edition)
-    _ = try! await Current.db.createEditionChapter(editionChapter)
-    _ = try! await Current.db.createEditionImpression(editionImpression)
-    _ = try! await Current.db.createIsbn(isbn)
-    _ = try! await Current.db.createAudio(audio)
-    _ = try! await Current.db.createAudioPart(audioPart)
-    try! Current.db.flushEntities()
+    _ = try! await Current.db.create(friend)
+    _ = try! await Current.db.create(friendQuote)
+    _ = try! await Current.db.create(friendResidence)
+    _ = try! await Current.db.create(friendResidenceDuration)
+    _ = try! await Current.db.create(document)
+    _ = try! await Current.db.create(documentTag)
+    _ = try! await Current.db.create(edition)
+    _ = try! await Current.db.create(editionChapter)
+    _ = try! await Current.db.create(editionImpression)
+    _ = try! await Current.db.create(isbn)
+    _ = try! await Current.db.create(audio)
+    _ = try! await Current.db.create(audioPart)
 
     return entities
   }

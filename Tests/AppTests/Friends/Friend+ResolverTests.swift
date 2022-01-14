@@ -131,7 +131,7 @@ final class FriendResolverTests: AppTestCase {
   }
 
   func testUpdateFriend() async throws {
-    let friend = try await Current.db.createFriend(.random)
+    let friend = try await Current.db.create(Friend.random)
 
     // do some updates here ---vvv
     friend.name = "Bob"
@@ -150,7 +150,7 @@ final class FriendResolverTests: AppTestCase {
   }
 
   func testDeleteFriend() async throws {
-    let friend = try await Current.db.createFriend(.random)
+    let friend = try await Current.db.create(Friend.random)
 
     GraphQLTest(
       """
@@ -164,7 +164,7 @@ final class FriendResolverTests: AppTestCase {
       headers: [.authorization: "Bearer (Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": friend.gqlMap()])
 
-    let retrieved = try? await Current.db.getFriend(friend.id)
+    let retrieved = try? await Current.db.find(Friend.self, byId: friend.id)
     XCTAssertNil(retrieved)
   }
 }

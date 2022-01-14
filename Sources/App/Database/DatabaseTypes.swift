@@ -6,4 +6,5 @@ enum DbError: Error {
   case decodingFailed
   case nonUniformBulkInsertInput
   case emptyBulkInsertInput
+  case tooManyResultsForDeleteOne
 }

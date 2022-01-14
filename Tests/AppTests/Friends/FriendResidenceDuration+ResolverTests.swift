@@ -76,7 +76,10 @@ final class FriendResidenceDurationResolverTests: AppTestCase {
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": friendResidenceDuration.gqlMap()])
 
-    let retrieved = try? await Current.db.getFriendResidenceDuration(friendResidenceDuration.id)
+    let retrieved = try? await Current.db.find(
+      FriendResidenceDuration.self,
+      byId: friendResidenceDuration.id
+    )
     XCTAssertNil(retrieved)
   }
 }

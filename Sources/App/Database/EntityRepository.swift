@@ -54,11 +54,6 @@ struct EntityRepository {
     liveEntities = nil
   }
 
-  func assign(client: inout DatabaseClient) {
-    client.entities = { try await getEntities() }
-    client.flushEntities = { flush() }
-  }
-
   init(db: SQLDatabase) {
     self.db = db
   }
@@ -93,11 +88,6 @@ struct MockEntityRepository {
 
   func flush() {
     mockEntities = nil
-  }
-
-  func assign(client: inout DatabaseClient) {
-    client.entities = { try await getEntities() }
-    client.flushEntities = { flush() }
   }
 
   init(db: MockDb) {

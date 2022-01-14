@@ -1,4 +1,5 @@
-final class MockDb {
+final class MockDb: SQLQuerying, SQLMutating, DbClient {
+
   typealias Models<M: DuetModel> = ReferenceWritableKeyPath<MockDb, [M.IdValue: M]>
   var tokens: [Token.Id: Token] = [:]
   var friends: [Friend.Id: Friend] = [:]
@@ -20,6 +21,57 @@ final class MockDb {
   var orderItems: [OrderItem.Id: OrderItem] = [:]
   var artifactProductionVersions: [ArtifactProductionVersion.Id: ArtifactProductionVersion] = [:]
   var documentTags: [DocumentTag.Id: DocumentTag] = [:]
+
+  func query<M: DuetModel>(_ Model: M.Type) -> DuetQuery<M> {
+    DuetQuery<M>(db: self, constraints: [], limit: nil, order: nil)
+  }
+
+  func select<M: DuetModel>(
+    _ Model: M.Type,
+    where constraints: [SQL.WhereConstraint],
+    orderBy: SQL.Order?,
+    limit: Int?
+  ) async throws -> [M] {
+    var models: [M] = Array(self[keyPath: models(of: M.self)].values)
+    for constraint in constraints {
+      models = models.filter { $0.satisfies(constraint: constraint) }
+    }
+
+    // @TODO order...
+
+    if let limit = limit {
+      models = Array(models.prefix(limit))
+    }
+    return models
+  }
+
+  func create<M: DuetModel>(_ insert: [M]) async throws -> [M] {
+    var models = self[keyPath: models(of: M.self)]
+    for model in insert {
+      models[model.id] = model
+    }
+    return insert
+  }
+
+  func update<M: DuetModel>(_ model: M) async throws -> M {
+    var models = self[keyPath: models(of: M.self)]
+    models[model.id] = model
+    return model
+  }
+
+  func forceDelete<M: DuetModel>(
+    _ Model: M.Type,
+    where constraints: [SQL.WhereConstraint],
+    orderBy: SQL.Order?,
+    limit: Int?
+  ) async throws -> [M] {
+    let keyPath = models(of: M.self)
+    let selected = try await select(Model, where: constraints, orderBy: orderBy, limit: limit)
+    for model in selected {
+      self[keyPath: keyPath][model.id] = nil
+    }
+    return selected
+  }
 
   func models<M: DuetModel>(of Model: M.Type) -> Models<M> {
     switch Model.tableName {
@@ -64,38 +116,7 @@ final class MockDb {
       case DocumentTag.tableName:
         return \MockDb.documentTags as! Models<M>
       default:
-       fatalError("\(Model.tableName) not supported in mockDb")
+        fatalError("\(Model.tableName) not supported in mockDb")
     }
-  }
-
-  func find<M: DuetModel>( _ id: M.IdValue, in keyPath: Models<M>) throws -> M {
-    guard let model = self[keyPath: keyPath][id] else {
-      throw DbError.notFound
-    }
-    return model
-  }
-
-  func all<M: DuetModel>(_ keyPath: KeyPath<MockDb, [M.IdValue: M]>) -> [M] {
-    Array(self[keyPath: keyPath].values)
-  }
-
-  func find<M: DuetModel>(where predicate: (M) -> Bool, in keyPath: Models<M>) -> [M] {
-    self[keyPath: keyPath].values.filter(predicate)
-  }
-
-  func first<M: DuetModel>(where predicate: (M) -> Bool, in keyPath: Models<M>) throws -> M {
-    guard let model = self[keyPath: keyPath].values.first(where: predicate) else {
-      throw DbError.notFound
-    }
-    return model
-  }
-
-  @discardableResult
-  func add<M: DuetModel>(
-    _ model: M,
-    to keyPath: Models<M>
-  ) -> M {
-    self[keyPath: keyPath][model.id] = model
-    return model
   }
 }

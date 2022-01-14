@@ -7,9 +7,9 @@ final class TokenResolverTests: AppTestCase {
 
   func testTokenByValue() async throws {
     let token = Token(description: "test")
-    _ = try await Current.db.createToken(token)
+    try await Current.db.create(token)
     let scope = TokenScope(tokenId: token.id, scope: .queryOrders)
-    _ = try await Current.db.createTokenScope(scope)
+    try await Current.db.create(scope)
 
     GraphQLTest(
       """

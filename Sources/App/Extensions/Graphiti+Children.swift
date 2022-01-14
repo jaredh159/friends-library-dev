@@ -26,53 +26,49 @@ private func loadChildren<Parent: DuetModel, Child: DuetModel>(
   at keyPath: WritableKeyPath<Parent, Children<Child>>,
   for parent: Parent
 ) async throws -> [Child] {
-  let children: [Child]
-  let db = Current.db
+  let foreignKey: String
   switch keyPath {
 
     case \Friend.documents:
-      children = try await db.getDocuments(Document[.friendId] == .id(parent)) as! [Child]
+      foreignKey = Document[.friendId]
 
     case \Friend.residences:
-      children =
-        try await db.getFriendResidences(FriendResidence[.friendId] == .id(parent)) as! [Child]
+      foreignKey = FriendResidence[.friendId]
 
     case \Friend.quotes:
-      children = try await db.getFriendQuotes(FriendQuote[.friendId] == .id(parent)) as! [Child]
+      foreignKey = FriendQuote[.friendId]
 
     case \FriendResidence.durations:
-      children =
-        try await db.getFriendResidenceDurations(
-          FriendResidenceDuration[.friendResidenceId] == .id(parent)
-        ) as! [Child]
+      foreignKey = FriendResidenceDuration[.friendResidenceId]
 
     case \Edition.chapters:
-      children =
-        try await db.getEditionChapters(EditionChapter[.editionId] == .id(parent)) as! [Child]
+      foreignKey = EditionChapter[.editionId]
 
     case \Document.editions:
-      children = try await db.getEditions(Edition[.documentId] == .id(parent)) as! [Child]
+      foreignKey = Edition[.documentId]
 
     case \Document.relatedDocuments:
-      children =
-        try await db.getRelatedDocuments(RelatedDocument[.parentDocumentId] == .id(parent))
-          as! [Child]
+      foreignKey = RelatedDocument[.parentDocumentId]
 
     case \Document.tags:
-      children = try await db.getDocumentTags(DocumentTag[.documentId] == .id(parent)) as! [Child]
+      foreignKey = DocumentTag[.documentId]
 
     case \Audio.parts:
-      children = try await db.getAudioParts(AudioPart[.audioId] == .id(parent)) as! [Child]
+      foreignKey = AudioPart[.audioId]
 
     case \Order.items:
-      children = try await db.getOrderItems(OrderItem[.orderId] == .id(parent)) as! [Child]
+      foreignKey = OrderItem[.orderId]
 
     case \Token.scopes:
-      children = try await db.getTokenScopes(TokenScope[.tokenId] == .id(parent)) as! [Child]
+      foreignKey = TokenScope[.tokenId]
 
     default:
       throw Abort(.notImplemented, reason: "\(keyPath) not handled for Children<M> relation")
   }
+
+  let children = try await Current.db.query(Child.self)
+    .where(foreignKey == .id(parent))
+    .all()
 
   var parent = parent
   parent[keyPath: keyPath] = .loaded(children)
