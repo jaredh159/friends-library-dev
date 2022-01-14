@@ -7,7 +7,7 @@ extension Resolver {
   ) throws -> Future<ArtifactProductionVersion> {
     future(of: ArtifactProductionVersion.self, on: req.eventLoop) {
       try await Current.db.query(ArtifactProductionVersion.self)
-        .orderBy(ArtifactProductionVersion[.createdAt], by: .asc)
+        .orderBy(ArtifactProductionVersion[.createdAt], by: .desc)
         .first()
     }
   }

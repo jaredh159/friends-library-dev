@@ -46,16 +46,14 @@ final class MockDatabase: SQLQuerying, SQLMutating, DatabaseClient {
   }
 
   func create<M: DuetModel>(_ insert: [M]) async throws -> [M] {
-    var models = self[keyPath: models(of: M.self)]
     for model in insert {
-      models[model.id] = model
+      self[keyPath: models(of: M.self)][model.id] = model
     }
     return insert
   }
 
   func update<M: DuetModel>(_ model: M) async throws -> M {
-    var models = self[keyPath: models(of: M.self)]
-    models[model.id] = model
+    self[keyPath: models(of: M.self)][model.id] = model
     return model
   }
 

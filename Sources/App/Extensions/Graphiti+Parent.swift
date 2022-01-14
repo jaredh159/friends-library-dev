@@ -26,7 +26,61 @@ private func loadParent<Child: DuetModel, P: DuetModel>(
   at keyPath: WritableKeyPath<Child, Parent<P>>,
   for child: Child
 ) async throws -> P {
-  let parent = try await Current.db.query(P.self).where("id" == child.id).first()
+  let childFk: UUIDStringable
+  switch keyPath {
+
+    case \Edition.document:
+      childFk = (child as! Edition).documentId
+
+    case \EditionChapter.edition:
+      childFk = (child as! EditionChapter).editionId
+
+    case \EditionImpression.edition:
+      childFk = (child as! EditionImpression).editionId
+
+    case \Download.edition:
+      childFk = (child as! Download).editionId
+
+    case \Document.friend:
+      childFk = (child as! Document).friendId
+
+    case \RelatedDocument.parentDocument:
+      childFk = (child as! RelatedDocument).parentDocumentId
+
+    case \RelatedDocument.document:
+      childFk = (child as! RelatedDocument).documentId
+
+    case \DocumentTag.document:
+      childFk = (child as! DocumentTag).documentId
+
+    case \FriendQuote.friend:
+      childFk = (child as! FriendQuote).friendId
+
+    case \FriendResidence.friend:
+      childFk = (child as! FriendResidence).friendId
+
+    case \FriendResidenceDuration.residence:
+      childFk = (child as! FriendResidenceDuration).friendResidenceId
+
+    case \Audio.edition:
+      childFk = (child as! Audio).editionId
+
+    case \AudioPart.audio:
+      childFk = (child as! AudioPart).audioId
+
+    case \OrderItem.edition:
+      childFk = (child as! OrderItem).editionId
+
+    case \OrderItem.order:
+      childFk = (child as! OrderItem).orderId
+
+    case \TokenScope.token:
+      childFk = (child as! TokenScope).tokenId
+
+    default:
+      throw Abort(.notImplemented, reason: "\(keyPath) not handled for Parent<M> relation")
+  }
+  let parent = try await Current.db.query(P.self).where("id" == childFk).first()
   var child = child
   child[keyPath: keyPath] = .loaded(parent)
   return parent
