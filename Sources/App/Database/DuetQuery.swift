@@ -46,14 +46,14 @@ struct DuetQuery<Model: DuetModel> {
 
   func delete() async throws -> [Model] {
     let models = try await db.select(Model.self, where: constraints, orderBy: order, limit: limit)
-    // @TODO implment
+    try await db.forceDelete(Model.self, where: constraints, orderBy: order, limit: limit)
     return models
   }
 
   func deleteOne() async throws -> Model {
     let models = try await db.select(Model.self, where: constraints, orderBy: order, limit: limit)
     guard models.count == 1 else { throw DbError.tooManyResultsForDeleteOne }
-    // @TODO implment
+    try await db.forceDelete(Model.self, where: constraints, orderBy: order, limit: limit)
     return try models.firstOrThrowNotFound()
   }
 
@@ -62,7 +62,35 @@ struct DuetQuery<Model: DuetModel> {
   }
 
   func first() async throws -> Model {
-    try await db.select(Model.self, where: constraints, orderBy: order, limit: limit)
-      .firstOrThrowNotFound()
+    try await all().firstOrThrowNotFound()
+  }
+}
+
+extension DuetQuery where Model: SoftDeletable {
+  func all() async throws -> [Model] {
+    try await db.select(
+      Model.self,
+      where: constraints + ["deleted_at" == .null],
+      orderBy: order,
+      limit: limit
+    )
+  }
+
+  func delete() async throws -> [Model] {
+    let models = try await db.select(Model.self, where: constraints, orderBy: order, limit: limit)
+    for var model in models {
+      model.deletedAt = Current.date()
+    }
+    try await db.update(models)
+    return models
+  }
+
+  func deleteOne() async throws -> Model {
+    let models = try await db.select(Model.self, where: constraints, orderBy: order, limit: limit)
+    guard models.count == 1 else { throw DbError.tooManyResultsForDeleteOne }
+    guard var model = models.first else { throw DbError.notFound }
+    model.deletedAt = Current.date()
+    try await db.update(model)
+    return model
   }
 }

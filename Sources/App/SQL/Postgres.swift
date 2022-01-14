@@ -45,6 +45,7 @@ enum Postgres {
     case date(Date?)
     case `enum`(PostgresEnum?)
     case json(String?)
+    case null
     case currentTimestamp
 
     var typeName: String {
@@ -61,6 +62,8 @@ enum Postgres {
           return "bool"
         case .enum(let enumVal):
           return enumVal?.dataType ?? "unknown"
+        case .null:
+          return "unknown"
         case .date:
           return "timestamp"
         case .json:
@@ -97,6 +100,8 @@ enum Postgres {
           return nullable(string)
         case .date(let date):
           return nullable(date)
+        case .null:
+          return "NULL"
         case .currentTimestamp:
           return "current_timestamp"
       }
