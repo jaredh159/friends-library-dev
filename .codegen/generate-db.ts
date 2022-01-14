@@ -43,19 +43,19 @@ function main() {
         const isPlural = s === `s`;
         switch (`${verb}--${isPlural}`) {
           case `get--true`:
-            return `client.${fn} = { try await ${model.camelCaseName}s.findAll(where: $0) }`;
+            return `client.${fn} = { try await repo.findAll(${model.name}.self, where: $0) }`;
           case `get--false`:
-            return `client.${fn} = { try await ${model.camelCaseName}s.find($0) }`;
+            return `client.${fn} = { try await repo.find(${model.name}.self, byId: $0) }`;
           case `create--true`:
           case `create--false`:
-            return `client.${fn} = { try await ${model.camelCaseName}s.create($0) }`;
+            return `client.${fn} = { try await repo.create($0) }`;
           case `update--true`:
           case `update--false`:
-            return `client.${fn} = { try await ${model.camelCaseName}s.update($0) }`;
+            return `client.${fn} = { try await repo.update($0) }`;
           case `delete--false`:
-            return `client.${fn} = { try await ${model.camelCaseName}s.delete($0) }`;
+            return `client.${fn} = { try await repo.delete(${model.name}.self, byId: $0) }`;
           case `deleteAll--true`:
-            return `client.${fn} = { try await ${model.camelCaseName}s.deleteAll() }`;
+            return `client.${fn} = { try await repo.delete(${model.name}.self) }`;
           default:
             throw new Error(`Unexpected fn ${fn}`);
         }
@@ -87,6 +87,7 @@ extension DatabaseClient {
   static func live(db: SQLDatabase) -> DatabaseClient {
     var client: DatabaseClient = .notImplemented
     let entitiesRepo = EntityRepository(db: db)
+    let repo = GenericRepository(db: db)
     /* LIVE_REPOS_CREATE */
     /* REPOS_DELEGATES */
     /* REPOS_ASSIGNS */
@@ -98,6 +99,7 @@ extension DatabaseClient {
     let db = MockDb()
     var client: DatabaseClient = .notImplemented
     let entitiesRepo = MockEntityRepository(db: db)
+    let repo = MockGenericRepository(db: db)
     /* MOCK_REPOS_CREATE */
     /* REPOS_DELEGATES */
     /* REPOS_ASSIGNS */

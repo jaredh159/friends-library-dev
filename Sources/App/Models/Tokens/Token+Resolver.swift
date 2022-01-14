@@ -7,7 +7,8 @@ extension Resolver {
 
   func getTokenByValue(req: Req, args: GetTokenByValueArgs) throws -> Future<Token> {
     future(of: Token.self, on: req.eventLoop) {
-      try await Current.db.getTokenByValue(.init(rawValue: args.value))
+      try await Current.db.getTokens(Token[.value] == .uuid(args.value))
+        .firstOrThrowNotFound()
     }
   }
 }

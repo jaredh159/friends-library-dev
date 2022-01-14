@@ -10,19 +10,17 @@ struct DatabaseClient {
   // tokens
   var createToken: (Token) async throws -> Token
   var getToken: (Token.Id) async throws -> Token
-  var getTokenByValue: (Token.Value) async throws -> Token
+  var getTokens: (SQL.WhereConstraint?) async throws -> [Token]
   var createTokenScope: (TokenScope) async throws -> TokenScope
   var getTokenScopes: (SQL.WhereConstraint?) async throws -> [TokenScope]
 
   // orders
   var getOrder: (Order.Id) async throws -> Order
   var getOrders: (SQL.WhereConstraint?) async throws -> [Order]
-  var getOrdersByPrintJobStatus: (Order.PrintJobStatus) async throws -> [Order]
   var updateOrder: (Order) async throws -> Order
   var updateOrders: ([Order]) async throws -> [Order]
   var createOrder: (Order) async throws -> Order
   var createOrders: ([Order]) async throws -> [Order]
-  var createOrderWithItems: (Order) async throws -> Order
   var deleteOrder: (Order.Id) async throws -> Order
   var deleteAllOrders: () async throws -> Void
 
@@ -179,5 +177,6 @@ struct DatabaseClient {
   // artifact production versions
   var createArtifactProductionVersion:
     (ArtifactProductionVersion) async throws -> ArtifactProductionVersion
-  var getLatestArtifactProductionVersion: () async throws -> ArtifactProductionVersion
+  var getArtifactProductionVersions: (SQL.WhereConstraint?) async throws
+    -> [ArtifactProductionVersion]
 }

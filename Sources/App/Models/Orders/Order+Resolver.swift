@@ -14,9 +14,12 @@ extension Resolver {
   func createOrderWithItems(req: Req, args: CreateOrderWithItemsArgs) throws -> Future<Order> {
     try req.requirePermission(to: .mutateOrders)
     let order = Order(args.order)
-    order.items = .loaded(args.items.map(OrderItem.init))
+    let items = args.items.map(OrderItem.init)
+    order.items = .loaded(items)
     return future(of: Order.self, on: req.eventLoop) {
-      try await Current.db.createOrderWithItems(order)
+      _ = try await Current.db.createOrder(order)
+      _ = try await Current.db.createOrderItems(items)
+      return order
     }
   }
 
@@ -37,7 +40,7 @@ extension Resolver {
   ) throws -> Future<[Order]> {
     try req.requirePermission(to: .queryOrders)
     return future(of: [Order].self, on: req.eventLoop) {
-      try await Current.db.getOrdersByPrintJobStatus(args.printJobStatus)
+      try await Current.db.getOrders(Order[.printJobStatus] == .enum(args.printJobStatus))
     }
   }
 

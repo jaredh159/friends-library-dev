@@ -22,7 +22,8 @@ struct UserAuthenticator: AsyncBearerAuthenticator {
       return
     }
     do {
-      let token = try await Current.db.getTokenByValue(.init(rawValue: tokenValue))
+      let token = try await Current.db.getTokens(Token[.value] == .uuid(tokenValue))
+        .firstOrThrowNotFound()
       request.auth.login(User(token: token))
     } catch {
       return

@@ -23,7 +23,9 @@ extension Resolver {
     args: NoArgs
   ) throws -> Future<ArtifactProductionVersion> {
     future(of: ArtifactProductionVersion.self, on: req.eventLoop) {
-      try await Current.db.getLatestArtifactProductionVersion()
+      try await Current.db.getArtifactProductionVersions(nil)
+        .sorted { $0.createdAt > $1.createdAt }
+        .firstOrThrowNotFound()
     }
   }
 }
