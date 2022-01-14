@@ -1,7 +1,7 @@
 import FluentSQL
 
 protocol SQLQuerying {
-  func select<M: DuetModel>(_ Model: M.Type, where: SQL.WhereConstraint?) async throws -> [M]
+  func select<M: DuetModel>(_ Model: M.Type, where: [SQL.WhereConstraint]) async throws -> [M]
 }
 
 protocol SQLMutating {
@@ -88,7 +88,7 @@ extension SQLMutating where Self: SQLQuerying {
     _ Model: M.Type,
     where constraint: SQL.WhereConstraint? = nil
   ) async throws -> [M] {
-    let models = try await select(Model.self, where: constraint)
+    let models = try await select(Model.self, where: [constraint].compactMap { $0 })
     for var model in models {
       model.deletedAt = Current.date()
     }
@@ -106,28 +106,32 @@ extension SQLMutating where Self: SQLQuerying {
 extension SQLQuerying {
 
   func find<M: DuetModel>(_ Model: M.Type, byId id: M.IdValue) async throws -> M {
-    try await select(M.self, where: "id" == .uuid(id)).firstOrThrowNotFound()
+    fatalError()
+    // try await select(M.self, where: ["id" == .uuid(id)]).firstOrThrowNotFound()
   }
 
   func find<M: DuetModel>(
     _ Model: M.Type,
     where constraint: SQL.WhereConstraint
   ) async throws -> M {
-    try await select(M.self, where: constraint).firstOrThrowNotFound()
+    fatalError()
+    // try await select(M.self, where: constraint).firstOrThrowNotFound()
   }
 
   func findOptional<M: DuetModel>(
     _ Model: M.Type,
     where constraint: SQL.WhereConstraint
   ) async throws -> M? {
-    try await select(M.self, where: constraint).first ?? nil
+    fatalError()
+    // try await select(M.self, where: constraint).first ?? nil
   }
 
   func findAll<M: DuetModel>(
     _ Model: M.Type,
     where constraint: SQL.WhereConstraint? = nil
   ) async throws -> [M] {
-    try await select(Model, where: constraint)
+    fatalError()
+    // try await select(Model, where: constraint)
   }
 
   func findAll<M: SoftDeletable>(
@@ -135,7 +139,8 @@ extension SQLQuerying {
     where constraint: SQL.WhereConstraint? = nil,
     withDeleted: Bool = false
   ) async throws -> [M] {
-    try await select(Model, where: constraint).filter { withDeleted || $0.deletedAt == nil }
+    fatalError()
+    // try await select(Model, where: constraint).filter { withDeleted || $0.deletedAt == nil }
   }
 }
 
@@ -159,7 +164,7 @@ struct GenericRepository: SQLQuerying, SQLMutating {
     let prepared = SQL.update(
       M.tableName,
       set: model.updateValues,
-      where: ("id", .equals, .id(model)),
+      where: [("id", .equals, .id(model))],
       returning: .all
     )
     return try await SQL.execute(prepared, on: db).all()
@@ -174,7 +179,7 @@ struct GenericRepository: SQLQuerying, SQLMutating {
   ) async throws -> [M] {
     let models = try await findAll(M.self, where: constraint)
     guard !models.isEmpty else { return models }
-    let prepared = SQL.delete(from: M.tableName, where: constraint)
+    let prepared = SQL.delete(from: M.tableName, where: [constraint].compactMap { $0 })
     _ = try await SQL.execute(prepared, on: db).all()
     return models
   }
@@ -184,11 +189,11 @@ struct GenericRepository: SQLQuerying, SQLMutating {
     _ Model: M.Type,
     where constraint: SQL.WhereConstraint? = nil
   ) async throws -> [M] {
-    let models = try await select(Model.self, where: constraint)
+    let models = try await select(Model.self, where: [constraint].compactMap { $0 })
     let prepared = SQL.update(
       M.tableName,
       set: ["deleted_at": .currentTimestamp],
-      where: constraint
+      where: [constraint].compactMap { $0 }
     )
     _ = try await SQL.execute(prepared, on: db).all()
     return models
@@ -196,9 +201,9 @@ struct GenericRepository: SQLQuerying, SQLMutating {
 
   func select<M: DuetModel>(
     _ Model: M.Type,
-    where constraint: SQL.WhereConstraint? = nil
+    where constraints: [SQL.WhereConstraint] = []
   ) async throws -> [M] {
-    let prepared = SQL.select(.all, from: M.tableName, where: constraint)
+    let prepared = SQL.select(.all, from: M.tableName, where: constraints)
     let rows = try await SQL.execute(prepared, on: db).all()
     return try rows.compactMap { try $0.decode(Model.self) }
   }
@@ -240,8 +245,9 @@ struct MockGenericRepository: SQLQuerying, SQLMutating {
 
   func select<M: DuetModel>(
     _ Model: M.Type,
-    where constraint: SQL.WhereConstraint?
+    where constraint: [SQL.WhereConstraint] = []
   ) async throws -> [M] {
-    db.find(where: { $0.satisfies(constraint: constraint) }, in: db.models(of: Model.self))
+    fatalError()
+    // db.find(where: { $0.satisfies(constraint: constraint) }, in: db.models(of: Model.self))
   }
 }

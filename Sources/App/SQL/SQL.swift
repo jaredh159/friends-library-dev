@@ -17,15 +17,17 @@ enum SQL {
 
   static func delete(
     from table: String,
-    where constraint: WhereConstraint? = nil
+    where constraints: [WhereConstraint]? = nil
   ) -> PreparedStatement {
+    var binding = 1
     var bindings: [Postgres.Data] = []
 
-    var WHERE = ""
-    if let constraint = constraint {
-      bindings.append(constraint.value)
-      WHERE = " \(whereClause(constraint, boundTo: 1))"
-    }
+    let WHERE = whereClause(
+      constraints,
+      currentBinding: &binding,
+      bindings: &bindings,
+      separatedBy: " "
+    )
 
     let query = #"DELETE FROM "\#(table)"\#(WHERE);"#
     return PreparedStatement(query: query, bindings: bindings)
@@ -34,7 +36,7 @@ enum SQL {
   static func update(
     _ table: String,
     set values: [String: Postgres.Data],
-    where constraint: WhereConstraint? = nil,
+    where constraints: [WhereConstraint]? = nil,
     returning: Postgres.Columns? = nil
   ) -> PreparedStatement {
     var bindings: [Postgres.Data] = []
@@ -47,11 +49,7 @@ enum SQL {
       currentBinding += 1
     }
 
-    var WHERE = ""
-    if let constraint = constraint {
-      bindings.append(constraint.value)
-      WHERE = "\n\(whereClause(constraint, boundTo: currentBinding))"
-    }
+    let WHERE = whereClause(constraints, currentBinding: &currentBinding, bindings: &bindings)
 
     var RETURNING = ""
     if let returning = returning {
@@ -113,18 +111,26 @@ enum SQL {
   static func select(
     _ columns: Postgres.Columns,
     from table: String,
-    where constraint: WhereConstraint? = nil
+    where constraints: [WhereConstraint] = [],
+    orderBy: (column: String, by: OrderBy)? = nil,
+    limit: Int? = nil
   ) -> PreparedStatement {
+    var binding = 1
     var bindings: [Postgres.Data] = []
+    let WHERE = whereClause(constraints, currentBinding: &binding, bindings: &bindings)
 
-    var WHERE = ""
-    if let constraint = constraint {
-      bindings.append(constraint.value)
-      WHERE = "\n\(whereClause(constraint, boundTo: 1))"
+    var ORDER_BY = ""
+    if let (column, type) = orderBy {
+      ORDER_BY = "\nORDER BY \"\(column)\" \(type == .asc ? "ASC" : "DESC")"
+    }
+
+    var LIMIT = ""
+    if let limit = limit {
+      LIMIT = "\nLIMIT \(limit)"
     }
 
     let query = """
-    SELECT \(columns.sql) from "\(table)"\(WHERE);
+    SELECT \(columns.sql) FROM "\(table)"\(WHERE)\(ORDER_BY)\(LIMIT);
     """
 
     return PreparedStatement(query: query, bindings: bindings)
@@ -161,12 +167,25 @@ enum SQL {
     return db.raw("\(raw: "EXECUTE \(name)(\(params))")")
   }
 
-  static func resetPreparedStatements() {
-    prepared = [:]
+  private static func whereClause(
+    _ constraints: [WhereConstraint]?,
+    currentBinding binding: inout Int,
+    bindings: inout [Postgres.Data],
+    separatedBy: String = "\n"
+  ) -> String {
+    guard let constraints = constraints, !constraints.isEmpty else { return "" }
+    var parts: [String] = []
+    for (index, constraint) in constraints.enumerated() {
+      let prefix = index == 0 ? "WHERE" : "AND"
+      bindings.append(constraint.value)
+      parts.append("\(prefix) \"\(constraint.column)\" \(constraint.operator.sql) $\(binding)")
+      binding += 1
+    }
+    return "\(separatedBy)\(parts.joined(separator: separatedBy))"
   }
 
-  private static func whereClause(_ constraint: WhereConstraint, boundTo binding: Int) -> String {
-    "WHERE \"\(constraint.column)\" \(constraint.operator.sql) $\(binding)"
+  static func resetPreparedStatements() {
+    prepared = [:]
   }
 }
 

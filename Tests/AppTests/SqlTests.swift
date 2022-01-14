@@ -5,15 +5,63 @@ import XCTest
 
 final class SqlTests: XCTestCase {
 
+  func testSimpleSelect() throws {
+    let stmt = SQL.select(.all, from: "foos")
+
+    let expectedQuery = """
+    SELECT * FROM "foos";
+    """
+
+    XCTAssertEqual(stmt.query, expectedQuery)
+    XCTAssertEqual(stmt.bindings, [])
+  }
+
+  func testSelectWithLimit() throws {
+    let stmt = SQL.select(.all, from: "foos", limit: 4)
+
+    let expectedQuery = """
+    SELECT * FROM "foos"
+    LIMIT 4;
+    """
+
+    XCTAssertEqual(stmt.query, expectedQuery)
+    XCTAssertEqual(stmt.bindings, [])
+  }
+
+  func testSelectWithSingleWhere() throws {
+    let stmt = SQL.select(.all, from: "foos", where: ["id" == 123])
+
+    let expectedQuery = """
+    SELECT * FROM "foos"
+    WHERE "id" = $1;
+    """
+
+    XCTAssertEqual(stmt.query, expectedQuery)
+    XCTAssertEqual(stmt.bindings, [123])
+  }
+
+  func testSelectWithMultipleWheres() throws {
+    let stmt = SQL.select(.all, from: "foos", where: ["id" == 123, "foo" == 789])
+
+    let expectedQuery = """
+    SELECT * FROM "foos"
+    WHERE "id" = $1
+    AND "foo" = $2;
+    """
+
+    XCTAssertEqual(stmt.query, expectedQuery)
+    XCTAssertEqual(stmt.bindings, [123, 789])
+  }
+
   func testDeleteWithConstraint() throws {
-    let stmt = SQL.delete(from: "foos", where: "id" == "abc")
+    let stmt = SQL.delete(from: "foos", where: ["id" == 123])
 
     let expectedQuery = """
     DELETE FROM "foos" WHERE "id" = $1;
     """
 
     XCTAssertEqual(stmt.query, expectedQuery)
-    XCTAssertEqual(stmt.bindings, ["abc"])
+    XCTAssertEqual(stmt.bindings, [123])
   }
 
   func testDeleteAll() throws {
@@ -42,7 +90,7 @@ final class SqlTests: XCTestCase {
   }
 
   func testUpdate() {
-    let statement = SQL.update("foos", set: ["bar": 1, "baz": true], where: ("lol", .equals, "a"))
+    let statement = SQL.update("foos", set: ["bar": 1, "baz": true], where: [("lol", .equals, "a")])
 
     let query = """
     UPDATE "foos"
@@ -70,7 +118,7 @@ final class SqlTests: XCTestCase {
     let statement = SQL.update(
       "foos",
       set: ["bar": 1],
-      where: ("lol", .equals, "a"),
+      where: [("lol", .equals, "a")],
       returning: .all
     )
 

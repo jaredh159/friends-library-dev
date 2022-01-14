@@ -46,13 +46,13 @@ struct Repository<Model: DuetModel> {
   }
 
   func findChildren<Child: DuetModel>(_ id: Model.IdValue, fk: String) async throws -> [Child] {
-    let prepared = SQL.select(.all, from: Child.tableName, where: (fk, .equals, .uuid(id)))
+    let prepared = SQL.select(.all, from: Child.tableName, where: [(fk, .equals, .uuid(id))])
     let rows = try await SQL.execute(prepared, on: db).all()
     return try rows.compactMap { try $0.decode(Child.self) }
   }
 
   func findOptionalChild<Child: DuetModel>(_ id: Model.IdValue, fk: String) async throws -> Child? {
-    let prepared = SQL.select(.all, from: Child.tableName, where: (fk, .equals, .uuid(id)))
+    let prepared = SQL.select(.all, from: Child.tableName, where: [(fk, .equals, .uuid(id))])
     let rows = try await SQL.execute(prepared, on: db).all()
     return try rows.compactMap { try $0.decode(Child.self) }.first ?? nil
   }
@@ -62,15 +62,16 @@ struct Repository<Model: DuetModel> {
   }
 
   private func _find(_ id: Model.IdValue) async throws -> Model {
-    let prepared = SQL.select(.all, from: Model.tableName, where: ("id", .equals, .uuid(id)))
+    let prepared = SQL.select(.all, from: Model.tableName, where: [("id", .equals, .uuid(id))])
     let rows = try await SQL.execute(prepared, on: db).all()
     return try rows.compactMap { try $0.decode(Model.self) }.firstOrThrowNotFound()
   }
 
   private func _findAll(where: SQL.WhereConstraint? = nil) async throws -> [Model] {
-    let prepared = SQL.select(.all, from: Model.tableName, where: `where`)
-    let rows = try await SQL.execute(prepared, on: db).all()
-    return try rows.compactMap { try $0.decode(Model.self) }
+    fatalError()
+    // let prepared = SQL.select(.all, from: Model.tableName, where: `where`)
+    // let rows = try await SQL.execute(prepared, on: db).all()
+    // return try rows.compactMap { try $0.decode(Model.self) }
   }
 
   func selectRelation<Relation: DuetModel>(
@@ -78,9 +79,10 @@ struct Repository<Model: DuetModel> {
     from model: Relation.Type,
     where: SQL.WhereConstraint? = nil
   ) async throws -> [Relation] {
-    let prepared = SQL.select(columns, from: model.tableName, where: `where`)
-    let rows = try await SQL.execute(prepared, on: db).all()
-    return try rows.compactMap { try $0.decode(model) }
+    fatalError()
+    // let prepared = SQL.select(columns, from: model.tableName, where: `where`)
+    // let rows = try await SQL.execute(prepared, on: db).all()
+    // return try rows.compactMap { try $0.decode(model) }
   }
 
   // UPDATE
@@ -89,7 +91,7 @@ struct Repository<Model: DuetModel> {
     let prepared = SQL.update(
       Model.tableName,
       set: model.updateValues,
-      where: ("id", .equals, .id(model)),
+      where: [("id", .equals, .id(model))],
       returning: .all
     )
     return try await SQL.execute(prepared, on: db).all()
@@ -150,7 +152,7 @@ extension Repository where Model: SoftDeletable {
     let prepared = SQL.update(
       Model.tableName,
       set: ["deleted_at": .currentTimestamp],
-      where: ("id", .equals, .id(model)),
+      where: [("id", .equals, .id(model))],
       returning: .all
     )
     _ = try await SQL.execute(prepared, on: db).all()
