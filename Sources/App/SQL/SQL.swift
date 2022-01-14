@@ -34,8 +34,8 @@ enum SQL {
     let bindings: [Postgres.Data]
   }
 
-  static func delete(
-    from table: String,
+  static func delete<M: DuetModel>(
+    from Model: M.Type,
     where constraints: [WhereConstraint]? = nil
   ) -> PreparedStatement {
     var binding = 1
@@ -48,7 +48,7 @@ enum SQL {
       separatedBy: " "
     )
 
-    let query = #"DELETE FROM "\#(table)"\#(WHERE);"#
+    let query = #"DELETE FROM "\#(Model.tableName)"\#(WHERE);"#
     return PreparedStatement(query: query, bindings: bindings)
   }
 

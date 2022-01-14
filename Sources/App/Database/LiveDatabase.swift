@@ -42,7 +42,7 @@ struct LiveDatabase: SQLQuerying, SQLMutating, DatabaseClient {
       .all()
     guard !models.isEmpty else { return models }
     // @TODO suuport delete
-    let prepared = SQL.delete(from: M.tableName, where: constraints)
+    let prepared = SQL.delete(from: M.self, where: constraints)
     _ = try await SQL.execute(prepared, on: db).all()
     return models
   }

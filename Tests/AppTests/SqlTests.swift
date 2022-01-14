@@ -56,7 +56,7 @@ final class SqlTests: XCTestCase {
   }
 
   func testDeleteWithConstraint() throws {
-    let stmt = SQL.delete(from: Thing.tableName, where: ["id" == 123])
+    let stmt = SQL.delete(from: Thing.self, where: ["id" == 123])
 
     let expectedQuery = """
     DELETE FROM "things" WHERE "id" = $1;
@@ -67,7 +67,7 @@ final class SqlTests: XCTestCase {
   }
 
   func testDeleteAll() throws {
-    let stmt = SQL.delete(from: Thing.tableName)
+    let stmt = SQL.delete(from: Thing.self)
 
     let expectedQuery = """
     DELETE FROM "things";
