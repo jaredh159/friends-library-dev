@@ -32,22 +32,22 @@ describe(`generateModelConformances()`, () => {
       }
 
       extension Thing {
-        var insertValues: [String: Postgres.Data] {
-          [
-            Self[.id]: .id(self),
-            Self[.name]: .string(name),
-            Self[.version]: .string(version.rawValue),
-          ]
-        }
-      }
-
-      extension Thing {
         typealias ColumnName = CodingKeys
 
         enum CodingKeys: String, CodingKey {
           case id
           case name
           case version
+        }
+      }
+
+      extension Thing {
+        var insertValues: [ColumnName: Postgres.Data] {
+          [
+            .id: .id(self),
+            .name: .string(name),
+            .version: .string(version.rawValue),
+          ]
         }
       }
 
@@ -91,15 +91,6 @@ describe(`generateModelConformances()`, () => {
       }
 
       extension Thing {
-        var insertValues: [String: Postgres.Data] {
-          [
-            Self[.createdAt]: .currentTimestamp,
-            Self[.updatedAt]: .currentTimestamp,
-          ]
-        }
-      }
-
-      extension Thing {
         typealias ColumnName = CodingKeys
 
         enum CodingKeys: String, CodingKey {
@@ -109,6 +100,15 @@ describe(`generateModelConformances()`, () => {
         }
       }
 
+      extension Thing {
+        var insertValues: [ColumnName: Postgres.Data] {
+          [
+            .createdAt: .currentTimestamp,
+            .updatedAt: .currentTimestamp,
+          ]
+        }
+      }
+      
       extension Thing: SQLInspectable {
         func satisfies(constraint: SQL.WhereConstraint) -> Bool {
           switch constraint.column {

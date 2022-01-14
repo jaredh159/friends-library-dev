@@ -38,27 +38,27 @@ describe(`insertData()`, () => {
 
     const expected = stripIndent(/* swift */ `
       extension Thing {
-        var insertValues: [String: Postgres.Data] {
+        var insertValues: [ColumnName: Postgres.Data] {
           [
-            Self[.id]: .id(self),
-            Self[.parentId]: .uuid(parentId),
-            Self[.optionalParentId]: .uuid(optionalParentId),
-            Self[.published]: .date(published),
-            Self[.lols]: .intArray(lols.array),
-            Self[.optionalLols]: .intArray(optionalLols?.array),
-            Self[.honestInt]: .int(honestInt),
-            Self[.optionalInt]: .int(optionalInt),
-            Self[.honestString]: .string(honestString),
-            Self[.optionalString]: .string(optionalString),
-            Self[.fooId]: .int(fooId.rawValue),
-            Self[.optionalFooId]: .int(optionalFooId?.rawValue),
-            Self[.paymentId]: .string(paymentId.rawValue),
-            Self[.myBool]: .bool(myBool),
-            Self[.jimJam]: .enum(jimJam),
-            Self[.someRandoEnum]: .enum(someRandoEnum),
-            Self[.sha]: .string(sha.rawValue),
-            Self[.createdAt]: .currentTimestamp,
-            Self[.updatedAt]: .currentTimestamp,
+            .id: .id(self),
+            .parentId: .uuid(parentId),
+            .optionalParentId: .uuid(optionalParentId),
+            .published: .date(published),
+            .lols: .intArray(lols.array),
+            .optionalLols: .intArray(optionalLols?.array),
+            .honestInt: .int(honestInt),
+            .optionalInt: .int(optionalInt),
+            .honestString: .string(honestString),
+            .optionalString: .string(optionalString),
+            .fooId: .int(fooId.rawValue),
+            .optionalFooId: .int(optionalFooId?.rawValue),
+            .paymentId: .string(paymentId.rawValue),
+            .myBool: .bool(myBool),
+            .jimJam: .enum(jimJam),
+            .someRandoEnum: .enum(someRandoEnum),
+            .sha: .string(sha.rawValue),
+            .createdAt: .currentTimestamp,
+            .updatedAt: .currentTimestamp,
           ]
         }
       }

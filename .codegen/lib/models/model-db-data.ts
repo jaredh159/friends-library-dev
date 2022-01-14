@@ -6,7 +6,7 @@ import Model, { Prop } from './Model';
 export function insertData(model: Model, types: GlobalTypes): string {
   let code = stripIndent(/* swift */ `
     extension __MODEL_NAME__ {
-      var insertValues: [String: Postgres.Data] {
+      var insertValues: [ColumnName: Postgres.Data] {
         [
           // VALUES_HERE
         ]
@@ -22,7 +22,7 @@ export function insertData(model: Model, types: GlobalTypes): string {
     .replace(`__MODEL_NAME__`, model.name)
     .replace(
       `// VALUES_HERE`,
-      values.map(([ident, value]) => `Self[.${ident}]: ${value},`).join(`\n      `),
+      values.map(([ident, value]) => `.${ident}: ${value},`).join(`\n      `),
     );
 }
 

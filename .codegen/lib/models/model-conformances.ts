@@ -30,12 +30,12 @@ export function generateModelConformances(
     : `"${pascalToSnake(name)}s"`;
   code += `extension ${name}: DuetModel {\n  static let tableName = ${table}\n}\n`;
 
-  code += `\n` + insertData(model, globalTypes) + `\n\n`;
-
-  code += `extension ${name} {\n  typealias ColumnName = CodingKeys\n\n`;
+  code += `\nextension ${name} {\n  typealias ColumnName = CodingKeys\n\n`;
   code += `  enum CodingKeys: String, CodingKey {\n    `;
   code += props.map((p) => `case ${p.name}`).join(`\n    `);
-  code += `\n  }\n}\n`;
+  code += `\n  }\n}\n\n`;
+
+  code += insertData(model, globalTypes) + `\n`;
 
   code += INSPECTABLE_PATTERN.replace(`Thing`, model.name).replace(
     `// CASES_HERE`,
