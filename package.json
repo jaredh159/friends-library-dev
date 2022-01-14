@@ -32,7 +32,6 @@
     "generate:models": "fldev tsnode ./.codegen/generate-models.ts",
     "generate:db": "fldev tsnode ./.codegen/generate-db.ts",
     "generate": "npm run generate:models",
-    "scaffold:repo": "fldev tsnode ./.codegen/scaffold-repository.ts",
     "scaffold:resolver-test": "fldev tsnode ./.codegen/scaffold-resolver-test.ts",
     "scaffold:resolver": "fldev tsnode ./.codegen/scaffold-resolver.ts"
   },

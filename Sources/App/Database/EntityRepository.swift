@@ -60,7 +60,7 @@ struct EntityRepository {
 }
 
 struct MockEntityRepository {
-  let db: MockDb
+  let db: MockDatabase
 
   func getEntities() async throws -> PreloadedEntities {
     if let entities = mockEntities {
@@ -90,7 +90,7 @@ struct MockEntityRepository {
     mockEntities = nil
   }
 
-  init(db: MockDb) {
+  init(db: MockDatabase) {
     self.db = db
   }
 }

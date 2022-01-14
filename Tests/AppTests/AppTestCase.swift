@@ -20,7 +20,7 @@ class AppTestCase: XCTestCase {
   }
 
   override func setUp() {
-    Current.db = MockDb()
+    Current.db = MockDatabase()
     Current.auth = .mockWithAllScopes
   }
 }

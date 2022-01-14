@@ -20,4 +20,3 @@
 --exclude **/*+Conformances.swift
 --exclude **/*+GraphQL.swift
 --exclude **/*+Mocks.swift
---exclude **/MockDb.swift

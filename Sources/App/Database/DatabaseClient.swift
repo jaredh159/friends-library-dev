@@ -3,7 +3,7 @@ import FluentSQL
 import Tagged
 import Vapor
 
-protocol DbClient {
+protocol DatabaseClient {
   func query<Model: DuetModel>(_ Model: Model.Type) -> DuetQuery<Model>
 
   @discardableResult
@@ -13,7 +13,7 @@ protocol DbClient {
   func create<Model: DuetModel>(_ models: [Model]) async throws -> [Model]
 }
 
-extension DbClient {
+extension DatabaseClient {
   func find<M: DuetModel>(_ Model: M.Type, byId id: UUID) async throws -> M {
     try await query(M.self).byId(id).first()
   }
@@ -84,18 +84,18 @@ struct ThrowingSql: SQLQuerying, SQLMutating {
   }
 }
 
-struct ThrowingDbClient: DbClient {
+struct ThrowingDatabaseClient: DatabaseClient {
   func query<Model: DuetModel>(_ Model: Model.Type) -> DuetQuery<Model> {
     DuetQuery<Model>(db: ThrowingSql(), constraints: [], limit: nil, order: nil)
   }
 
   @discardableResult
   func update<Model: DuetModel>(_ model: Model) async throws -> Model {
-    throw Abort(.notImplemented, reason: "ThrowingDbClient.update")
+    throw Abort(.notImplemented, reason: "ThrowingDatabaseClient.update")
   }
 
   @discardableResult
   func create<Model: DuetModel>(_ models: [Model]) async throws -> [Model] {
-    throw Abort(.notImplemented, reason: "ThrowingDbClient.create")
+    throw Abort(.notImplemented, reason: "ThrowingDatabaseClient.create")
   }
 }
