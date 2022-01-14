@@ -4,6 +4,38 @@ import Tagged
 
 protocol AppModel: Codable, Equatable {}
 
+enum OrderBy {
+  case asc
+  case desc
+}
+
+struct DuetQuery<Model: DuetModel> {
+  let db: SQLQuerying
+  let constraints: [SQL.WhereConstraint]
+  let limit: Int?
+  let order: (column: String, by: OrderBy)?
+
+  func `where`(_ constraints: SQL.WhereConstraint...) -> DuetQuery<Model> {
+    .init(db: db, constraints: constraints, limit: limit, order: order)
+  }
+
+  func limit(_ limit: Int) -> DuetQuery<Model> {
+    .init(db: db, constraints: constraints, limit: limit, order: order)
+  }
+
+  func orderBy(_ column: String, _ by: OrderBy) -> DuetQuery<Model> {
+    .init(db: db, constraints: constraints, limit: limit, order: (column: column, by: by))
+  }
+
+  func all() async throws -> [Model] {
+    fatalError()
+  }
+
+  func first() async throws -> Model {
+    fatalError()
+  }
+}
+
 enum RelationError: Error {
   case notLoaded
 }

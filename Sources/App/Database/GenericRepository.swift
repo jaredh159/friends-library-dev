@@ -142,6 +142,10 @@ extension SQLQuerying {
 struct GenericRepository: SQLQuerying, SQLMutating {
   let db: SQLDatabase
 
+  func query<M: DuetModel>(_ Model: M.Type) -> DuetQuery<M> {
+    DuetQuery<M>(db: self, constraints: [], limit: nil, order: nil)
+  }
+
   @discardableResult
   func create<M: DuetModel>(_ models: [M]) async throws -> [M] {
     guard !models.isEmpty else { return models }
