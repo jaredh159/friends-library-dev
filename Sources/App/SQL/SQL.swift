@@ -13,12 +13,21 @@ enum SQL {
   enum OrderDirection {
     case asc
     case desc
+
+    var sql: String {
+      switch self {
+        case .asc:
+          return "ASC"
+        case .desc:
+          return "DESC"
+      }
+    }
   }
 
-  typealias Order = (
-    column: String,
-    direction: OrderDirection
-  )
+  struct Order<M: DuetModel> {
+    let column: M.ColumnName
+    let direction: OrderDirection
+  }
 
   struct PreparedStatement {
     let query: String
@@ -118,11 +127,11 @@ enum SQL {
     return PreparedStatement(query: query, bindings: bindings)
   }
 
-  static func select(
+  static func select<M: DuetModel>(
     _ columns: Postgres.Columns,
-    from table: String,
+    from Model: M.Type,
     where constraints: [WhereConstraint] = [],
-    orderBy: Order? = nil,
+    orderBy order: Order<M>? = nil,
     limit: Int? = nil
   ) -> PreparedStatement {
     var binding = 1
@@ -130,8 +139,8 @@ enum SQL {
     let WHERE = whereClause(constraints, currentBinding: &binding, bindings: &bindings)
 
     var ORDER_BY = ""
-    if let (column, type) = orderBy {
-      ORDER_BY = "\nORDER BY \"\(column)\" \(type == .asc ? "ASC" : "DESC")"
+    if let order = order {
+      ORDER_BY = "\nORDER BY \"\(M.columnName(order.column))\" \(order.direction.sql)"
     }
 
     var LIMIT = ""
@@ -140,7 +149,7 @@ enum SQL {
     }
 
     let query = """
-    SELECT \(columns.sql) FROM "\(table)"\(WHERE)\(ORDER_BY)\(LIMIT);
+    SELECT \(columns.sql) FROM "\(M.tableName)"\(WHERE)\(ORDER_BY)\(LIMIT);
     """
 
     return PreparedStatement(query: query, bindings: bindings)

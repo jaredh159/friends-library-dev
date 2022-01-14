@@ -29,7 +29,7 @@ final class MockDatabase: SQLQuerying, SQLMutating, DatabaseClient {
   func select<M: DuetModel>(
     _ Model: M.Type,
     where constraints: [SQL.WhereConstraint],
-    orderBy: SQL.Order?,
+    orderBy: SQL.Order<M>?,
     limit: Int?
   ) async throws -> [M] {
     var models: [M] = Array(self[keyPath: models(of: M.self)].values)
@@ -60,7 +60,7 @@ final class MockDatabase: SQLQuerying, SQLMutating, DatabaseClient {
   func forceDelete<M: DuetModel>(
     _ Model: M.Type,
     where constraints: [SQL.WhereConstraint],
-    orderBy: SQL.Order?,
+    orderBy: SQL.Order<M>?,
     limit: Int?
   ) async throws -> [M] {
     let keyPath = models(of: M.self)

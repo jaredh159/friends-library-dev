@@ -32,7 +32,7 @@ struct LiveDatabase: SQLQuerying, SQLMutating, DatabaseClient {
   func forceDelete<M: DuetModel>(
     _ Model: M.Type,
     where constraints: [SQL.WhereConstraint] = [],
-    orderBy: SQL.Order? = nil,
+    orderBy: SQL.Order<M>? = nil,
     limit: Int? = nil
   ) async throws -> [M] {
     let models = try await query(M.self)
@@ -65,12 +65,12 @@ struct LiveDatabase: SQLQuerying, SQLMutating, DatabaseClient {
   func select<M: DuetModel>(
     _ Model: M.Type,
     where constraints: [SQL.WhereConstraint] = [],
-    orderBy: SQL.Order? = nil,
+    orderBy: SQL.Order<M>? = nil,
     limit: Int? = nil
   ) async throws -> [M] {
     let prepared = SQL.select(
       .all,
-      from: M.tableName,
+      from: M.self,
       where: constraints,
       orderBy: orderBy,
       limit: limit

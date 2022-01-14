@@ -1,3 +1,5 @@
+import Foundation
+import Tagged
 import Vapor
 import XCTest
 
@@ -6,10 +8,10 @@ import XCTest
 final class SqlTests: XCTestCase {
 
   func testSimpleSelect() throws {
-    let stmt = SQL.select(.all, from: "foos")
+    let stmt = SQL.select(.all, from: Thing.self)
 
     let expectedQuery = """
-    SELECT * FROM "foos";
+    SELECT * FROM "things";
     """
 
     XCTAssertEqual(stmt.query, expectedQuery)
@@ -17,10 +19,10 @@ final class SqlTests: XCTestCase {
   }
 
   func testSelectWithLimit() throws {
-    let stmt = SQL.select(.all, from: "foos", limit: 4)
+    let stmt = SQL.select(.all, from: Thing.self, limit: 4)
 
     let expectedQuery = """
-    SELECT * FROM "foos"
+    SELECT * FROM "things"
     LIMIT 4;
     """
 
@@ -29,10 +31,10 @@ final class SqlTests: XCTestCase {
   }
 
   func testSelectWithSingleWhere() throws {
-    let stmt = SQL.select(.all, from: "foos", where: ["id" == 123])
+    let stmt = SQL.select(.all, from: Thing.self, where: ["id" == 123])
 
     let expectedQuery = """
-    SELECT * FROM "foos"
+    SELECT * FROM "things"
     WHERE "id" = $1;
     """
 
@@ -41,10 +43,10 @@ final class SqlTests: XCTestCase {
   }
 
   func testSelectWithMultipleWheres() throws {
-    let stmt = SQL.select(.all, from: "foos", where: ["id" == 123, "foo" == 789])
+    let stmt = SQL.select(.all, from: Thing.self, where: ["id" == 123, "foo" == 789])
 
     let expectedQuery = """
-    SELECT * FROM "foos"
+    SELECT * FROM "things"
     WHERE "id" = $1
     AND "foo" = $2;
     """
@@ -54,10 +56,10 @@ final class SqlTests: XCTestCase {
   }
 
   func testDeleteWithConstraint() throws {
-    let stmt = SQL.delete(from: "foos", where: ["id" == 123])
+    let stmt = SQL.delete(from: Thing.tableName, where: ["id" == 123])
 
     let expectedQuery = """
-    DELETE FROM "foos" WHERE "id" = $1;
+    DELETE FROM "things" WHERE "id" = $1;
     """
 
     XCTAssertEqual(stmt.query, expectedQuery)
@@ -65,10 +67,10 @@ final class SqlTests: XCTestCase {
   }
 
   func testDeleteAll() throws {
-    let stmt = SQL.delete(from: "foos")
+    let stmt = SQL.delete(from: Thing.tableName)
 
     let expectedQuery = """
-    DELETE FROM "foos";
+    DELETE FROM "things";
     """
 
     XCTAssertEqual(stmt.query, expectedQuery)
@@ -76,10 +78,10 @@ final class SqlTests: XCTestCase {
   }
 
   func testBulkInsert() throws {
-    let stmt = try SQL.insert(into: "foos", values: [["foo": 1, "bar": 2], ["bar": 4, "foo": 3]])
+    let stmt = try SQL.insert(into: "things", values: [["foo": 1, "bar": 2], ["bar": 4, "foo": 3]])
 
     let expectedQuery = """
-    INSERT INTO "foos"
+    INSERT INTO "things"
     ("bar", "foo")
     VALUES
     ($1, $2), ($3, $4);
@@ -90,10 +92,14 @@ final class SqlTests: XCTestCase {
   }
 
   func testUpdate() {
-    let statement = SQL.update("foos", set: ["bar": 1, "baz": true], where: [("lol", .equals, "a")])
+    let statement = SQL.update(
+      "things",
+      set: ["bar": 1, "baz": true],
+      where: [("lol", .equals, "a")]
+    )
 
     let query = """
-    UPDATE "foos"
+    UPDATE "things"
     SET "bar" = $1, "baz" = $2
     WHERE "lol" = $3;
     """
@@ -103,10 +109,10 @@ final class SqlTests: XCTestCase {
   }
 
   func testUpdateWithoutWhere() {
-    let statement = SQL.update("foos", set: ["bar": 1])
+    let statement = SQL.update("things", set: ["bar": 1])
 
     let query = """
-    UPDATE "foos"
+    UPDATE "things"
     SET "bar" = $1;
     """
 
@@ -116,14 +122,14 @@ final class SqlTests: XCTestCase {
 
   func testUpdateReturning() {
     let statement = SQL.update(
-      "foos",
+      "things",
       set: ["bar": 1],
       where: [("lol", .equals, "a")],
       returning: .all
     )
 
     let query = """
-    UPDATE "foos"
+    UPDATE "things"
     SET "bar" = $1
     WHERE "lol" = $2
     RETURNING *;
@@ -135,10 +141,10 @@ final class SqlTests: XCTestCase {
 
   func testBasicInsert() throws {
     let id = UUID()
-    let statement = try SQL.insert(into: "foos", values: ["a": 33, "b": "lol", "c": .uuid(id)])
+    let statement = try SQL.insert(into: "things", values: ["a": 33, "b": "lol", "c": .uuid(id)])
 
     let query = """
-    INSERT INTO "foos"
+    INSERT INTO "things"
     ("a", "b", "c")
     VALUES
     ($1, $2, $3);
@@ -149,10 +155,10 @@ final class SqlTests: XCTestCase {
   }
 
   func testOptionalInts() throws {
-    let statement = try SQL.insert(into: "foos", values: ["a": .int(22), "b": .int(nil)])
+    let statement = try SQL.insert(into: "things", values: ["a": .int(22), "b": .int(nil)])
 
     let query = """
-    INSERT INTO "foos"
+    INSERT INTO "things"
     ("a", "b")
     VALUES
     ($1, $2);
@@ -163,10 +169,10 @@ final class SqlTests: XCTestCase {
   }
 
   func testOptionalStrings() throws {
-    let statement = try SQL.insert(into: "foos", values: ["a": "howdy", "b": .string(nil)])
+    let statement = try SQL.insert(into: "things", values: ["a": "howdy", "b": .string(nil)])
 
     let query = """
-    INSERT INTO "foos"
+    INSERT INTO "things"
     ("a", "b")
     VALUES
     ($1, $2);
@@ -178,7 +184,7 @@ final class SqlTests: XCTestCase {
 
   func testEnums() throws {
     let statement = try SQL.insert(
-      into: "foos",
+      into: "things",
       values: [
         "a": .enum(FooBar.foo),
         "b": .enum(FooBar.bar),
@@ -187,7 +193,7 @@ final class SqlTests: XCTestCase {
     )
 
     let query = """
-    INSERT INTO "foos"
+    INSERT INTO "things"
     ("a", "b", "c")
     VALUES
     ($1, $2, $3);
@@ -200,11 +206,11 @@ final class SqlTests: XCTestCase {
   func testDates() throws {
     let date = Date.fromISOString("2021-12-14T17:16:16.896Z")!
     let statement = try SQL.insert(
-      into: "foos", values: ["a": .date(date), "b": .currentTimestamp]
+      into: "things", values: ["a": .date(date), "b": .currentTimestamp]
     )
 
     let query = """
-    INSERT INTO "foos"
+    INSERT INTO "things"
     ("a", "b")
     VALUES
     ($1, $2);

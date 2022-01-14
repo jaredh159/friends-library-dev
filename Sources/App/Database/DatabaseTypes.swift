@@ -7,7 +7,7 @@ protocol SQLQuerying {
   func select<M: DuetModel>(
     _ Model: M.Type,
     where: [SQL.WhereConstraint],
-    orderBy: SQL.Order?,
+    orderBy: SQL.Order<M>?,
     limit: Int?
   ) async throws -> [M]
 }
@@ -23,7 +23,7 @@ protocol SQLMutating {
   func forceDelete<M: DuetModel>(
     _ Model: M.Type,
     where: [SQL.WhereConstraint],
-    orderBy: SQL.Order?,
+    orderBy: SQL.Order<M>?,
     limit: Int?
   ) async throws -> [M]
 }

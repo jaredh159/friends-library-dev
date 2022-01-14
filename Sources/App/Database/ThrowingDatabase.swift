@@ -9,7 +9,7 @@ struct ThrowingSql: SQLQuerying, SQLMutating {
   func select<M: DuetModel>(
     _ Model: M.Type,
     where: [SQL.WhereConstraint],
-    orderBy: SQL.Order?,
+    orderBy: SQL.Order<M>?,
     limit: Int?
   ) async throws -> [M] {
     throw Abort(.notImplemented, reason: "ThrowingSql.select")
@@ -22,7 +22,7 @@ struct ThrowingSql: SQLQuerying, SQLMutating {
   func forceDelete<M: DuetModel>(
     _ Model: M.Type,
     where: [SQL.WhereConstraint],
-    orderBy: SQL.Order?,
+    orderBy: SQL.Order<M>?,
     limit: Int?
   ) async throws -> [M] {
     throw Abort(.notImplemented, reason: "ThrowingSql.forceDelete")
@@ -33,7 +33,7 @@ struct ThrowingDatabaseClient: DatabaseClient {
   func select<M: DuetModel>(
     _ Model: M.Type,
     where: [SQL.WhereConstraint],
-    orderBy: SQL.Order?,
+    orderBy: SQL.Order<M>?,
     limit: Int?
   ) async throws -> [M] {
     throw Abort(.notImplemented, reason: "ThrowingDatabaseClient.select")
@@ -42,7 +42,7 @@ struct ThrowingDatabaseClient: DatabaseClient {
   func forceDelete<M: DuetModel>(
     _ Model: M.Type,
     where: [SQL.WhereConstraint],
-    orderBy: SQL.Order?,
+    orderBy: SQL.Order<M>?,
     limit: Int?
   ) async throws -> [M] {
     throw Abort(.notImplemented, reason: "ThrowingDatabaseClient.forceDelete")
