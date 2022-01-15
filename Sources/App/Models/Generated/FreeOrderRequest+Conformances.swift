@@ -11,27 +11,6 @@ extension FreeOrderRequest: DuetModel {
 }
 
 extension FreeOrderRequest {
-  var insertValues: [String: Postgres.Data] {
-    [
-      Self[.id]: .id(self),
-      Self[.name]: .string(name),
-      Self[.email]: .string(email.rawValue),
-      Self[.requestedBooks]: .string(requestedBooks),
-      Self[.aboutRequester]: .string(aboutRequester),
-      Self[.addressStreet]: .string(addressStreet),
-      Self[.addressStreet2]: .string(addressStreet2),
-      Self[.addressCity]: .string(addressCity),
-      Self[.addressState]: .string(addressState),
-      Self[.addressZip]: .string(addressZip),
-      Self[.addressCountry]: .string(addressCountry),
-      Self[.source]: .string(source),
-      Self[.createdAt]: .currentTimestamp,
-      Self[.updatedAt]: .currentTimestamp,
-    ]
-  }
-}
-
-extension FreeOrderRequest {
   typealias ColumnName = CodingKeys
 
   enum CodingKeys: String, CodingKey {
@@ -49,6 +28,27 @@ extension FreeOrderRequest {
     case source
     case createdAt
     case updatedAt
+  }
+}
+
+extension FreeOrderRequest {
+  var insertValues: [ColumnName: Postgres.Data] {
+    [
+      .id: .id(self),
+      .name: .string(name),
+      .email: .string(email.rawValue),
+      .requestedBooks: .string(requestedBooks),
+      .aboutRequester: .string(aboutRequester),
+      .addressStreet: .string(addressStreet),
+      .addressStreet2: .string(addressStreet2),
+      .addressCity: .string(addressCity),
+      .addressState: .string(addressState),
+      .addressZip: .string(addressZip),
+      .addressCountry: .string(addressCountry),
+      .source: .string(source),
+      .createdAt: .currentTimestamp,
+      .updatedAt: .currentTimestamp,
+    ]
   }
 }
 

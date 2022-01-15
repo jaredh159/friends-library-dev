@@ -103,32 +103,16 @@ protocol UUIDIdentifiable {
 protocol DuetModel: UUIDIdentifiable, SQLInspectable, AppModel {
   associatedtype IdValue: RandomEmptyInitializing, UUIDStringable, Hashable
   var id: IdValue { get set }
-  associatedtype ColumnName: CodingKey
+  associatedtype ColumnName: CodingKey, Hashable
   static func columnName(_ column: ColumnName) -> String
   static var tableName: String { get }
-  var insertValues: [String: Postgres.Data] { get }
+  // @TODO rename
+  var insertValues: [ColumnName: Postgres.Data] { get }
 }
 
 extension DuetModel {
   static func == (lhs: Self, rhs: Self) -> Bool {
     lhs.id == rhs.id
-  }
-
-  var updateValues: [String: Postgres.Data] {
-    var insert = insertValues
-    insert["id"] = nil
-    insert["createdAt"] = nil
-    return insert
-  }
-}
-
-extension DuetModel where Self: Touchable {
-  var updateValues: [String: Postgres.Data] {
-    var insert = insertValues
-    insert["id"] = nil
-    insert["createdAt"] = nil
-    insert["updatedAt"] = .date(Current.date())
-    return insert
   }
 }
 

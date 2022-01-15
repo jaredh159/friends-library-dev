@@ -11,27 +11,6 @@ extension Document: DuetModel {
 }
 
 extension Document {
-  var insertValues: [String: Postgres.Data] {
-    [
-      Self[.id]: .id(self),
-      Self[.friendId]: .uuid(friendId),
-      Self[.altLanguageId]: .uuid(altLanguageId),
-      Self[.title]: .string(title),
-      Self[.slug]: .string(slug),
-      Self[.filename]: .string(filename),
-      Self[.published]: .int(published),
-      Self[.originalTitle]: .string(originalTitle),
-      Self[.incomplete]: .bool(incomplete),
-      Self[.description]: .string(description),
-      Self[.partialDescription]: .string(partialDescription),
-      Self[.featuredDescription]: .string(featuredDescription),
-      Self[.createdAt]: .currentTimestamp,
-      Self[.updatedAt]: .currentTimestamp,
-    ]
-  }
-}
-
-extension Document {
   typealias ColumnName = CodingKeys
 
   enum CodingKeys: String, CodingKey {
@@ -50,6 +29,27 @@ extension Document {
     case createdAt
     case updatedAt
     case deletedAt
+  }
+}
+
+extension Document {
+  var insertValues: [ColumnName: Postgres.Data] {
+    [
+      .id: .id(self),
+      .friendId: .uuid(friendId),
+      .altLanguageId: .uuid(altLanguageId),
+      .title: .string(title),
+      .slug: .string(slug),
+      .filename: .string(filename),
+      .published: .int(published),
+      .originalTitle: .string(originalTitle),
+      .incomplete: .bool(incomplete),
+      .description: .string(description),
+      .partialDescription: .string(partialDescription),
+      .featuredDescription: .string(featuredDescription),
+      .createdAt: .currentTimestamp,
+      .updatedAt: .currentTimestamp,
+    ]
   }
 }
 

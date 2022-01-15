@@ -11,35 +11,6 @@ extension Order: DuetModel {
 }
 
 extension Order {
-  var insertValues: [String: Postgres.Data] {
-    [
-      Self[.id]: .id(self),
-      Self[.lang]: .enum(lang),
-      Self[.source]: .enum(source),
-      Self[.paymentId]: .string(paymentId.rawValue),
-      Self[.printJobId]: .int(printJobId?.rawValue),
-      Self[.printJobStatus]: .enum(printJobStatus),
-      Self[.amount]: .int(amount.rawValue),
-      Self[.taxes]: .int(taxes.rawValue),
-      Self[.ccFeeOffset]: .int(ccFeeOffset.rawValue),
-      Self[.shipping]: .int(shipping.rawValue),
-      Self[.shippingLevel]: .enum(shippingLevel),
-      Self[.email]: .string(email.rawValue),
-      Self[.addressName]: .string(addressName),
-      Self[.addressStreet]: .string(addressStreet),
-      Self[.addressStreet2]: .string(addressStreet2),
-      Self[.addressCity]: .string(addressCity),
-      Self[.addressState]: .string(addressState),
-      Self[.addressZip]: .string(addressZip),
-      Self[.addressCountry]: .string(addressCountry),
-      Self[.freeOrderRequestId]: .uuid(freeOrderRequestId),
-      Self[.createdAt]: .currentTimestamp,
-      Self[.updatedAt]: .currentTimestamp,
-    ]
-  }
-}
-
-extension Order {
   typealias ColumnName = CodingKeys
 
   enum CodingKeys: String, CodingKey {
@@ -65,6 +36,35 @@ extension Order {
     case freeOrderRequestId
     case createdAt
     case updatedAt
+  }
+}
+
+extension Order {
+  var insertValues: [ColumnName: Postgres.Data] {
+    [
+      .id: .id(self),
+      .lang: .enum(lang),
+      .source: .enum(source),
+      .paymentId: .string(paymentId.rawValue),
+      .printJobId: .int(printJobId?.rawValue),
+      .printJobStatus: .enum(printJobStatus),
+      .amount: .int(amount.rawValue),
+      .taxes: .int(taxes.rawValue),
+      .ccFeeOffset: .int(ccFeeOffset.rawValue),
+      .shipping: .int(shipping.rawValue),
+      .shippingLevel: .enum(shippingLevel),
+      .email: .string(email.rawValue),
+      .addressName: .string(addressName),
+      .addressStreet: .string(addressStreet),
+      .addressStreet2: .string(addressStreet2),
+      .addressCity: .string(addressCity),
+      .addressState: .string(addressState),
+      .addressZip: .string(addressZip),
+      .addressCountry: .string(addressCountry),
+      .freeOrderRequestId: .uuid(freeOrderRequestId),
+      .createdAt: .currentTimestamp,
+      .updatedAt: .currentTimestamp,
+    ]
   }
 }
 

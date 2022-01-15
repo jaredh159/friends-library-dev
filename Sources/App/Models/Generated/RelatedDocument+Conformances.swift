@@ -11,19 +11,6 @@ extension RelatedDocument: DuetModel {
 }
 
 extension RelatedDocument {
-  var insertValues: [String: Postgres.Data] {
-    [
-      Self[.id]: .id(self),
-      Self[.description]: .string(description),
-      Self[.documentId]: .uuid(documentId),
-      Self[.parentDocumentId]: .uuid(parentDocumentId),
-      Self[.createdAt]: .currentTimestamp,
-      Self[.updatedAt]: .currentTimestamp,
-    ]
-  }
-}
-
-extension RelatedDocument {
   typealias ColumnName = CodingKeys
 
   enum CodingKeys: String, CodingKey {
@@ -33,6 +20,19 @@ extension RelatedDocument {
     case parentDocumentId
     case createdAt
     case updatedAt
+  }
+}
+
+extension RelatedDocument {
+  var insertValues: [ColumnName: Postgres.Data] {
+    [
+      .id: .id(self),
+      .description: .string(description),
+      .documentId: .uuid(documentId),
+      .parentDocumentId: .uuid(parentDocumentId),
+      .createdAt: .currentTimestamp,
+      .updatedAt: .currentTimestamp,
+    ]
   }
 }
 

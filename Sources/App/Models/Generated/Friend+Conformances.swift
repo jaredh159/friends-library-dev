@@ -11,24 +11,6 @@ extension Friend: DuetModel {
 }
 
 extension Friend {
-  var insertValues: [String: Postgres.Data] {
-    [
-      Self[.id]: .id(self),
-      Self[.lang]: .enum(lang),
-      Self[.name]: .string(name),
-      Self[.slug]: .string(slug),
-      Self[.gender]: .enum(gender),
-      Self[.description]: .string(description),
-      Self[.born]: .int(born),
-      Self[.died]: .int(died),
-      Self[.published]: .date(published),
-      Self[.createdAt]: .currentTimestamp,
-      Self[.updatedAt]: .currentTimestamp,
-    ]
-  }
-}
-
-extension Friend {
   typealias ColumnName = CodingKeys
 
   enum CodingKeys: String, CodingKey {
@@ -43,6 +25,24 @@ extension Friend {
     case published
     case createdAt
     case updatedAt
+  }
+}
+
+extension Friend {
+  var insertValues: [ColumnName: Postgres.Data] {
+    [
+      .id: .id(self),
+      .lang: .enum(lang),
+      .name: .string(name),
+      .slug: .string(slug),
+      .gender: .enum(gender),
+      .description: .string(description),
+      .born: .int(born),
+      .died: .int(died),
+      .published: .date(published),
+      .createdAt: .currentTimestamp,
+      .updatedAt: .currentTimestamp,
+    ]
   }
 }
 

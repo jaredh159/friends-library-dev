@@ -11,25 +11,6 @@ extension AudioPart: DuetModel {
 }
 
 extension AudioPart {
-  var insertValues: [String: Postgres.Data] {
-    [
-      Self[.id]: .id(self),
-      Self[.audioId]: .uuid(audioId),
-      Self[.title]: .string(title),
-      Self[.duration]: .double(duration.rawValue),
-      Self[.chapters]: .intArray(chapters.array),
-      Self[.order]: .int(order),
-      Self[.mp3SizeHq]: .int(mp3SizeHq.rawValue),
-      Self[.mp3SizeLq]: .int(mp3SizeLq.rawValue),
-      Self[.externalIdHq]: .int64(externalIdHq.rawValue),
-      Self[.externalIdLq]: .int64(externalIdLq.rawValue),
-      Self[.createdAt]: .currentTimestamp,
-      Self[.updatedAt]: .currentTimestamp,
-    ]
-  }
-}
-
-extension AudioPart {
   typealias ColumnName = CodingKeys
 
   enum CodingKeys: String, CodingKey {
@@ -45,6 +26,25 @@ extension AudioPart {
     case externalIdLq
     case createdAt
     case updatedAt
+  }
+}
+
+extension AudioPart {
+  var insertValues: [ColumnName: Postgres.Data] {
+    [
+      .id: .id(self),
+      .audioId: .uuid(audioId),
+      .title: .string(title),
+      .duration: .double(duration.rawValue),
+      .chapters: .intArray(chapters.array),
+      .order: .int(order),
+      .mp3SizeHq: .int(mp3SizeHq.rawValue),
+      .mp3SizeLq: .int(mp3SizeLq.rawValue),
+      .externalIdHq: .int64(externalIdHq.rawValue),
+      .externalIdLq: .int64(externalIdLq.rawValue),
+      .createdAt: .currentTimestamp,
+      .updatedAt: .currentTimestamp,
+    ]
   }
 }
 

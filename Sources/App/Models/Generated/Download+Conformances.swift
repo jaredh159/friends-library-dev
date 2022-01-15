@@ -11,33 +11,6 @@ extension Download: DuetModel {
 }
 
 extension Download {
-  var insertValues: [String: Postgres.Data] {
-    [
-      Self[.id]: .id(self),
-      Self[.editionId]: .uuid(editionId),
-      Self[.format]: .enum(format),
-      Self[.source]: .enum(source),
-      Self[.audioQuality]: .enum(audioQuality),
-      Self[.audioPartNumber]: .int(audioPartNumber),
-      Self[.isMobile]: .bool(isMobile),
-      Self[.userAgent]: .string(userAgent),
-      Self[.os]: .string(os),
-      Self[.browser]: .string(browser),
-      Self[.platform]: .string(platform),
-      Self[.referrer]: .string(referrer),
-      Self[.ip]: .string(ip),
-      Self[.city]: .string(city),
-      Self[.region]: .string(region),
-      Self[.postalCode]: .string(postalCode),
-      Self[.country]: .string(country),
-      Self[.latitude]: .string(latitude),
-      Self[.longitude]: .string(longitude),
-      Self[.createdAt]: .currentTimestamp,
-    ]
-  }
-}
-
-extension Download {
   typealias ColumnName = CodingKeys
 
   enum CodingKeys: String, CodingKey {
@@ -61,6 +34,33 @@ extension Download {
     case latitude
     case longitude
     case createdAt
+  }
+}
+
+extension Download {
+  var insertValues: [ColumnName: Postgres.Data] {
+    [
+      .id: .id(self),
+      .editionId: .uuid(editionId),
+      .format: .enum(format),
+      .source: .enum(source),
+      .audioQuality: .enum(audioQuality),
+      .audioPartNumber: .int(audioPartNumber),
+      .isMobile: .bool(isMobile),
+      .userAgent: .string(userAgent),
+      .os: .string(os),
+      .browser: .string(browser),
+      .platform: .string(platform),
+      .referrer: .string(referrer),
+      .ip: .string(ip),
+      .city: .string(city),
+      .region: .string(region),
+      .postalCode: .string(postalCode),
+      .country: .string(country),
+      .latitude: .string(latitude),
+      .longitude: .string(longitude),
+      .createdAt: .currentTimestamp,
+    ]
   }
 }
 

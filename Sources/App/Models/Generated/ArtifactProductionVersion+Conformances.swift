@@ -11,22 +11,22 @@ extension ArtifactProductionVersion: DuetModel {
 }
 
 extension ArtifactProductionVersion {
-  var insertValues: [String: Postgres.Data] {
-    [
-      Self[.id]: .id(self),
-      Self[.version]: .string(version.rawValue),
-      Self[.createdAt]: .currentTimestamp,
-    ]
-  }
-}
-
-extension ArtifactProductionVersion {
   typealias ColumnName = CodingKeys
 
   enum CodingKeys: String, CodingKey {
     case id
     case version
     case createdAt
+  }
+}
+
+extension ArtifactProductionVersion {
+  var insertValues: [ColumnName: Postgres.Data] {
+    [
+      .id: .id(self),
+      .version: .string(version.rawValue),
+      .createdAt: .currentTimestamp,
+    ]
   }
 }
 

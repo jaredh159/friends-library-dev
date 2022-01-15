@@ -11,19 +11,6 @@ extension FriendResidence: DuetModel {
 }
 
 extension FriendResidence {
-  var insertValues: [String: Postgres.Data] {
-    [
-      Self[.id]: .id(self),
-      Self[.friendId]: .uuid(friendId),
-      Self[.city]: .string(city),
-      Self[.region]: .string(region),
-      Self[.createdAt]: .currentTimestamp,
-      Self[.updatedAt]: .currentTimestamp,
-    ]
-  }
-}
-
-extension FriendResidence {
   typealias ColumnName = CodingKeys
 
   enum CodingKeys: String, CodingKey {
@@ -33,6 +20,19 @@ extension FriendResidence {
     case region
     case createdAt
     case updatedAt
+  }
+}
+
+extension FriendResidence {
+  var insertValues: [ColumnName: Postgres.Data] {
+    [
+      .id: .id(self),
+      .friendId: .uuid(friendId),
+      .city: .string(city),
+      .region: .string(region),
+      .createdAt: .currentTimestamp,
+      .updatedAt: .currentTimestamp,
+    ]
   }
 }
 

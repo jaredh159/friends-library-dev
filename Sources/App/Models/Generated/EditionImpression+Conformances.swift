@@ -11,21 +11,6 @@ extension EditionImpression: DuetModel {
 }
 
 extension EditionImpression {
-  var insertValues: [String: Postgres.Data] {
-    [
-      Self[.id]: .id(self),
-      Self[.editionId]: .uuid(editionId),
-      Self[.adocLength]: .int(adocLength),
-      Self[.paperbackSize]: .enum(paperbackSize),
-      Self[.paperbackVolumes]: .intArray(paperbackVolumes.array),
-      Self[.publishedRevision]: .string(publishedRevision.rawValue),
-      Self[.productionToolchainRevision]: .string(productionToolchainRevision.rawValue),
-      Self[.createdAt]: .currentTimestamp,
-    ]
-  }
-}
-
-extension EditionImpression {
   typealias ColumnName = CodingKeys
 
   enum CodingKeys: String, CodingKey {
@@ -37,6 +22,21 @@ extension EditionImpression {
     case publishedRevision
     case productionToolchainRevision
     case createdAt
+  }
+}
+
+extension EditionImpression {
+  var insertValues: [ColumnName: Postgres.Data] {
+    [
+      .id: .id(self),
+      .editionId: .uuid(editionId),
+      .adocLength: .int(adocLength),
+      .paperbackSize: .enum(paperbackSize),
+      .paperbackVolumes: .intArray(paperbackVolumes.array),
+      .publishedRevision: .string(publishedRevision.rawValue),
+      .productionToolchainRevision: .string(productionToolchainRevision.rawValue),
+      .createdAt: .currentTimestamp,
+    ]
   }
 }
 

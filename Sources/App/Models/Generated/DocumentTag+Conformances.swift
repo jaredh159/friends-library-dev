@@ -11,17 +11,6 @@ extension DocumentTag: DuetModel {
 }
 
 extension DocumentTag {
-  var insertValues: [String: Postgres.Data] {
-    [
-      Self[.id]: .id(self),
-      Self[.documentId]: .uuid(documentId),
-      Self[.type]: .enum(type),
-      Self[.createdAt]: .currentTimestamp,
-    ]
-  }
-}
-
-extension DocumentTag {
   typealias ColumnName = CodingKeys
 
   enum CodingKeys: String, CodingKey {
@@ -29,6 +18,17 @@ extension DocumentTag {
     case documentId
     case type
     case createdAt
+  }
+}
+
+extension DocumentTag {
+  var insertValues: [ColumnName: Postgres.Data] {
+    [
+      .id: .id(self),
+      .documentId: .uuid(documentId),
+      .type: .enum(type),
+      .createdAt: .currentTimestamp,
+    ]
   }
 }
 

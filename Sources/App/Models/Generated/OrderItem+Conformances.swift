@@ -11,19 +11,6 @@ extension OrderItem: DuetModel {
 }
 
 extension OrderItem {
-  var insertValues: [String: Postgres.Data] {
-    [
-      Self[.id]: .id(self),
-      Self[.orderId]: .uuid(orderId),
-      Self[.editionId]: .uuid(editionId),
-      Self[.quantity]: .int(quantity),
-      Self[.unitPrice]: .int(unitPrice.rawValue),
-      Self[.createdAt]: .currentTimestamp,
-    ]
-  }
-}
-
-extension OrderItem {
   typealias ColumnName = CodingKeys
 
   enum CodingKeys: String, CodingKey {
@@ -33,6 +20,19 @@ extension OrderItem {
     case quantity
     case unitPrice
     case createdAt
+  }
+}
+
+extension OrderItem {
+  var insertValues: [ColumnName: Postgres.Data] {
+    [
+      .id: .id(self),
+      .orderId: .uuid(orderId),
+      .editionId: .uuid(editionId),
+      .quantity: .int(quantity),
+      .unitPrice: .int(unitPrice.rawValue),
+      .createdAt: .currentTimestamp,
+    ]
   }
 }
 

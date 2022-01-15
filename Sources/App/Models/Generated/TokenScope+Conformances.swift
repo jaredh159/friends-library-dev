@@ -11,17 +11,6 @@ extension TokenScope: DuetModel {
 }
 
 extension TokenScope {
-  var insertValues: [String: Postgres.Data] {
-    [
-      Self[.id]: .id(self),
-      Self[.scope]: .enum(scope),
-      Self[.tokenId]: .uuid(tokenId),
-      Self[.createdAt]: .currentTimestamp,
-    ]
-  }
-}
-
-extension TokenScope {
   typealias ColumnName = CodingKeys
 
   enum CodingKeys: String, CodingKey {
@@ -29,6 +18,17 @@ extension TokenScope {
     case scope
     case tokenId
     case createdAt
+  }
+}
+
+extension TokenScope {
+  var insertValues: [ColumnName: Postgres.Data] {
+    [
+      .id: .id(self),
+      .scope: .enum(scope),
+      .tokenId: .uuid(tokenId),
+      .createdAt: .currentTimestamp,
+    ]
   }
 }
 

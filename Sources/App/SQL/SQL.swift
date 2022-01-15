@@ -52,9 +52,9 @@ enum SQL {
     return PreparedStatement(query: query, bindings: bindings)
   }
 
-  static func update(
-    _ table: String,
-    set values: [String: Postgres.Data],
+  static func update<M: DuetModel>(
+    _ Model: M.Type,
+    set values: [M.ColumnName: Postgres.Data],
     where constraints: [WhereConstraint]? = nil,
     returning: Postgres.Columns? = nil
   ) -> PreparedStatement {
@@ -63,6 +63,7 @@ enum SQL {
     var currentBinding = 1
 
     for (column, value) in values {
+      // TODO: filter out createdAT, id
       bindings.append(value)
       setPairs.append("\"\(column)\" = $\(currentBinding)")
       currentBinding += 1
@@ -76,7 +77,7 @@ enum SQL {
     }
 
     let query = """
-    UPDATE "\(table)"
+    UPDATE "\(Model.tableName)"
     SET \(setPairs.list)\(WHERE)\(RETURNING);
     """
 

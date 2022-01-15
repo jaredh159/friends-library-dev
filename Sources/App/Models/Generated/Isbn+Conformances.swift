@@ -11,18 +11,6 @@ extension Isbn: DuetModel {
 }
 
 extension Isbn {
-  var insertValues: [String: Postgres.Data] {
-    [
-      Self[.id]: .id(self),
-      Self[.code]: .string(code.rawValue),
-      Self[.editionId]: .uuid(editionId),
-      Self[.createdAt]: .currentTimestamp,
-      Self[.updatedAt]: .currentTimestamp,
-    ]
-  }
-}
-
-extension Isbn {
   typealias ColumnName = CodingKeys
 
   enum CodingKeys: String, CodingKey {
@@ -31,6 +19,18 @@ extension Isbn {
     case editionId
     case createdAt
     case updatedAt
+  }
+}
+
+extension Isbn {
+  var insertValues: [ColumnName: Postgres.Data] {
+    [
+      .id: .id(self),
+      .code: .string(code.rawValue),
+      .editionId: .uuid(editionId),
+      .createdAt: .currentTimestamp,
+      .updatedAt: .currentTimestamp,
+    ]
   }
 }
 

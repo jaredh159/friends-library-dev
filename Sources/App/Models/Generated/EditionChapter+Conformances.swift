@@ -11,23 +11,6 @@ extension EditionChapter: DuetModel {
 }
 
 extension EditionChapter {
-  var insertValues: [String: Postgres.Data] {
-    [
-      Self[.id]: .id(self),
-      Self[.editionId]: .uuid(editionId),
-      Self[.order]: .int(order),
-      Self[.shortHeading]: .string(shortHeading),
-      Self[.isIntermediateTitle]: .bool(isIntermediateTitle),
-      Self[.customId]: .string(customId),
-      Self[.sequenceNumber]: .int(sequenceNumber),
-      Self[.nonSequenceTitle]: .string(nonSequenceTitle),
-      Self[.createdAt]: .currentTimestamp,
-      Self[.updatedAt]: .currentTimestamp,
-    ]
-  }
-}
-
-extension EditionChapter {
   typealias ColumnName = CodingKeys
 
   enum CodingKeys: String, CodingKey {
@@ -41,6 +24,23 @@ extension EditionChapter {
     case nonSequenceTitle
     case createdAt
     case updatedAt
+  }
+}
+
+extension EditionChapter {
+  var insertValues: [ColumnName: Postgres.Data] {
+    [
+      .id: .id(self),
+      .editionId: .uuid(editionId),
+      .order: .int(order),
+      .shortHeading: .string(shortHeading),
+      .isIntermediateTitle: .bool(isIntermediateTitle),
+      .customId: .string(customId),
+      .sequenceNumber: .int(sequenceNumber),
+      .nonSequenceTitle: .string(nonSequenceTitle),
+      .createdAt: .currentTimestamp,
+      .updatedAt: .currentTimestamp,
+    ]
   }
 }
 

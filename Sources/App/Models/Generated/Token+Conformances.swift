@@ -11,17 +11,6 @@ extension Token: DuetModel {
 }
 
 extension Token {
-  var insertValues: [String: Postgres.Data] {
-    [
-      Self[.id]: .id(self),
-      Self[.value]: .uuid(value),
-      Self[.description]: .string(description),
-      Self[.createdAt]: .currentTimestamp,
-    ]
-  }
-}
-
-extension Token {
   typealias ColumnName = CodingKeys
 
   enum CodingKeys: String, CodingKey {
@@ -29,6 +18,17 @@ extension Token {
     case value
     case description
     case createdAt
+  }
+}
+
+extension Token {
+  var insertValues: [ColumnName: Postgres.Data] {
+    [
+      .id: .id(self),
+      .value: .uuid(value),
+      .description: .string(description),
+      .createdAt: .currentTimestamp,
+    ]
   }
 }
 

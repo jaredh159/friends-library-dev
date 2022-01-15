@@ -11,21 +11,6 @@ extension FriendQuote: DuetModel {
 }
 
 extension FriendQuote {
-  var insertValues: [String: Postgres.Data] {
-    [
-      Self[.id]: .id(self),
-      Self[.friendId]: .uuid(friendId),
-      Self[.source]: .string(source),
-      Self[.text]: .string(text),
-      Self[.order]: .int(order),
-      Self[.context]: .string(context),
-      Self[.createdAt]: .currentTimestamp,
-      Self[.updatedAt]: .currentTimestamp,
-    ]
-  }
-}
-
-extension FriendQuote {
   typealias ColumnName = CodingKeys
 
   enum CodingKeys: String, CodingKey {
@@ -37,6 +22,21 @@ extension FriendQuote {
     case context
     case createdAt
     case updatedAt
+  }
+}
+
+extension FriendQuote {
+  var insertValues: [ColumnName: Postgres.Data] {
+    [
+      .id: .id(self),
+      .friendId: .uuid(friendId),
+      .source: .string(source),
+      .text: .string(text),
+      .order: .int(order),
+      .context: .string(context),
+      .createdAt: .currentTimestamp,
+      .updatedAt: .currentTimestamp,
+    ]
   }
 }
 

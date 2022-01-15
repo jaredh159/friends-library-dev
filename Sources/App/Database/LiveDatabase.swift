@@ -18,8 +18,10 @@ struct LiveDatabase: SQLQuerying, SQLMutating, DatabaseClient {
   @discardableResult
   func update<M: DuetModel>(_ model: M) async throws -> M {
     let prepared = SQL.update(
-      M.tableName,
-      set: model.updateValues,
+      M.self,
+      set: model.insertValues.filter { key, _ in
+        M.columnName(key) != "created_at" && M.columnName(key) != "id"
+      },
       where: [("id", .equals, .id(model))],
       returning: .all
     )
@@ -54,8 +56,10 @@ struct LiveDatabase: SQLQuerying, SQLMutating, DatabaseClient {
   ) async throws -> [M] {
     let models = try await select(Model.self, where: [constraint].compactMap { $0 })
     let prepared = SQL.update(
-      M.tableName,
-      set: ["deleted_at": .currentTimestamp],
+      M.self,
+      // 👋 start here, maybe fix by making a simple SQL.softDelete method?
+      // or figure out how to derive a .deletedAt key?
+      set: [.deletedAt: .currentTimestamp],
       where: [constraint].compactMap { $0 }
     )
     _ = try await SQL.execute(prepared, on: db).all()
