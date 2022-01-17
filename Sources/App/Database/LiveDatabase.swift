@@ -1,6 +1,7 @@
 import FluentSQL
 
 struct LiveDatabase: SQLQuerying, SQLMutating, DatabaseClient {
+
   let db: SQLDatabase
 
   func query<M: DuetModel>(_ Model: M.Type) -> DuetQuery<M> {
@@ -10,8 +11,8 @@ struct LiveDatabase: SQLQuerying, SQLMutating, DatabaseClient {
   @discardableResult
   func create<M: DuetModel>(_ models: [M]) async throws -> [M] {
     guard !models.isEmpty else { return models }
-    let prepared = try SQL.insert(into: M.tableName, values: models.map(\.insertValues))
-    _ = try await SQL.execute(prepared, on: db).all()
+    let prepared = try SQL.insert(into: M.self, values: models.map(\.insertValues))
+    try await SQL.execute(prepared, on: db)
     return models
   }
 
@@ -25,7 +26,7 @@ struct LiveDatabase: SQLQuerying, SQLMutating, DatabaseClient {
       where: [("id", .equals, .id(model))],
       returning: .all
     )
-    return try await SQL.execute(prepared, on: db).all()
+    return try await SQL.execute(prepared, on: db)
       .compactMap { try $0.decode(M.self) }
       .firstOrThrowNotFound()
   }
@@ -43,43 +44,36 @@ struct LiveDatabase: SQLQuerying, SQLMutating, DatabaseClient {
       .limit(limit)
       .all()
     guard !models.isEmpty else { return models }
-    // @TODO suuport delete
     let prepared = SQL.delete(from: M.self, where: constraints)
-    _ = try await SQL.execute(prepared, on: db).all()
+    try await SQL.execute(prepared, on: db)
     return models
   }
 
   @discardableResult
   func delete<M: SoftDeletable>(
     _ Model: M.Type,
-    where constraint: SQL.WhereConstraint? = nil
+    where constraints: [SQL.WhereConstraint]? = nil
   ) async throws -> [M] {
-    let models = try await select(Model.self, where: [constraint].compactMap { $0 })
-    let prepared = SQL.update(
-      M.self,
-      // 👋 start here, maybe fix by making a simple SQL.softDelete method?
-      // or figure out how to derive a .deletedAt key?
-      set: [.deletedAt: .currentTimestamp],
-      where: [constraint].compactMap { $0 }
-    )
-    _ = try await SQL.execute(prepared, on: db).all()
+    let models = try await select(Model.self, where: constraints)
+    let prepared = SQL.softDelete(M.self, where: constraints)
+    try await SQL.execute(prepared, on: db)
     return models
   }
 
   func select<M: DuetModel>(
     _ Model: M.Type,
-    where constraints: [SQL.WhereConstraint] = [],
+    where constraints: [SQL.WhereConstraint]? = nil,
     orderBy: SQL.Order<M>? = nil,
     limit: Int? = nil
   ) async throws -> [M] {
     let prepared = SQL.select(
       .all,
       from: M.self,
-      where: constraints,
+      where: constraints ?? [],
       orderBy: orderBy,
       limit: limit
     )
-    let rows = try await SQL.execute(prepared, on: db).all()
+    let rows = try await SQL.execute(prepared, on: db)
     return try rows.compactMap { try $0.decode(Model.self) }
   }
 }

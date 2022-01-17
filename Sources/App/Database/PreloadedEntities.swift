@@ -16,7 +16,7 @@ actor PreloadedEntities: SQLQuerying {
 
   func select<M: DuetModel>(
     _ Model: M.Type,
-    where constraint: [SQL.WhereConstraint] = [],
+    where constraint: [SQL.WhereConstraint]? = nil,
     orderBy: SQL.Order<M>? = nil,
     limit: Int? = nil
   ) async throws -> [M] {

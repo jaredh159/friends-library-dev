@@ -28,12 +28,12 @@ final class MockDatabase: SQLQuerying, SQLMutating, DatabaseClient {
 
   func select<M: DuetModel>(
     _ Model: M.Type,
-    where constraints: [SQL.WhereConstraint],
-    orderBy: SQL.Order<M>?,
-    limit: Int?
+    where constraints: [SQL.WhereConstraint]? = nil,
+    orderBy: SQL.Order<M>? = nil,
+    limit: Int? = nil
   ) async throws -> [M] {
     var models: [M] = Array(self[keyPath: models(of: M.self)].values)
-    for constraint in constraints {
+    for constraint in constraints ?? [] {
       models = models.filter { $0.satisfies(constraint: constraint) }
     }
 

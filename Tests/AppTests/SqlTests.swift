@@ -78,7 +78,7 @@ final class SqlTests: XCTestCase {
   }
 
   func testBulkInsert() throws {
-    let stmt = try SQL.insert(into: "things", values: [["foo": 1, "bar": 2], ["bar": 4, "foo": 3]])
+    let stmt = try SQL.insert(into: Thing.self, values: [[.foo: 1, .bar: 2], [.bar: 4, .foo: 3]])
 
     let expectedQuery = """
     INSERT INTO "things"
@@ -93,8 +93,8 @@ final class SqlTests: XCTestCase {
 
   func testUpdate() {
     let statement = SQL.update(
-      "things",
-      set: ["bar": 1, "baz": true],
+      Thing.self,
+      set: [.bar: 1, .baz: true],
       where: [("lol", .equals, "a")]
     )
 
@@ -109,7 +109,7 @@ final class SqlTests: XCTestCase {
   }
 
   func testUpdateWithoutWhere() {
-    let statement = SQL.update("things", set: ["bar": 1])
+    let statement = SQL.update(Thing.self, set: [.bar: 1])
 
     let query = """
     UPDATE "things"
@@ -122,8 +122,8 @@ final class SqlTests: XCTestCase {
 
   func testUpdateReturning() {
     let statement = SQL.update(
-      "things",
-      set: ["bar": 1],
+      Thing.self,
+      set: [.bar: 1],
       where: [("lol", .equals, "a")],
       returning: .all
     )
@@ -141,11 +141,14 @@ final class SqlTests: XCTestCase {
 
   func testBasicInsert() throws {
     let id = UUID()
-    let statement = try SQL.insert(into: "things", values: ["a": 33, "b": "lol", "c": .uuid(id)])
+    let statement = try SQL.insert(
+      into: Thing.self,
+      values: [.bar: 33, .foo: "lol", .id: .uuid(id)]
+    )
 
     let query = """
     INSERT INTO "things"
-    ("a", "b", "c")
+    ("bar", "foo", "id")
     VALUES
     ($1, $2, $3);
     """
@@ -155,11 +158,11 @@ final class SqlTests: XCTestCase {
   }
 
   func testOptionalInts() throws {
-    let statement = try SQL.insert(into: "things", values: ["a": .int(22), "b": .int(nil)])
+    let statement = try SQL.insert(into: Thing.self, values: [.bar: .int(22), .optBar: .int(nil)])
 
     let query = """
     INSERT INTO "things"
-    ("a", "b")
+    ("bar", "opt_bar")
     VALUES
     ($1, $2);
     """
@@ -169,11 +172,11 @@ final class SqlTests: XCTestCase {
   }
 
   func testOptionalStrings() throws {
-    let statement = try SQL.insert(into: "things", values: ["a": "howdy", "b": .string(nil)])
+    let statement = try SQL.insert(into: Thing.self, values: [.foo: "howdy", .optFoo: .string(nil)])
 
     let query = """
     INSERT INTO "things"
-    ("a", "b")
+    ("foo", "opt_foo")
     VALUES
     ($1, $2);
     """
@@ -184,40 +187,52 @@ final class SqlTests: XCTestCase {
 
   func testEnums() throws {
     let statement = try SQL.insert(
-      into: "things",
+      into: Thing.self,
       values: [
-        "a": .enum(FooBar.foo),
-        "b": .enum(FooBar.bar),
-        "c": .enum(nil),
+        .foobar: .enum(FooBar.foo),
+        .optFoobar: .enum(nil),
       ]
     )
 
     let query = """
     INSERT INTO "things"
-    ("a", "b", "c")
+    ("foobar", "opt_foobar")
     VALUES
-    ($1, $2, $3);
+    ($1, $2);
     """
 
     XCTAssertEqual(statement.query, query)
-    XCTAssertEqual(statement.bindings, [.enum(FooBar.foo), .enum(FooBar.bar), .enum(nil)])
+    XCTAssertEqual(statement.bindings, [.enum(FooBar.foo), .enum(nil)])
   }
 
   func testDates() throws {
     let date = Date.fromISOString("2021-12-14T17:16:16.896Z")!
     let statement = try SQL.insert(
-      into: "things", values: ["a": .date(date), "b": .currentTimestamp]
+      into: Thing.self,
+      values: [.createdAt: .date(date), .updatedAt: .currentTimestamp]
     )
 
     let query = """
     INSERT INTO "things"
-    ("a", "b")
+    ("created_at", "updated_at")
     VALUES
     ($1, $2);
     """
 
     XCTAssertEqual(statement.query, query)
     XCTAssertEqual(statement.bindings, [.date(date), .currentTimestamp])
+  }
+
+  func testUpdateRemovesIdAndCreatedAtFromInsertValues() throws {
+    let thing = Thing(foo: "foo", bar: 0, baz: true, foobar: .foo)
+    let statement = SQL.update(Thing.self, set: thing.insertValues)
+
+    let query = """
+    UPDATE "things"
+    SET "updated_at" = $1, "foo" = $2, "opt_bar" = $3, "opt_foobar" = $4, "bar" = $5, "opt_foo" = $6, "foobar" = $7, "baz" = $8;
+    """
+
+    XCTAssertEqual(statement.query, query)
   }
 }
 

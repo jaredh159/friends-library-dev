@@ -6,7 +6,7 @@ import Vapor
 protocol SQLQuerying {
   func select<M: DuetModel>(
     _ Model: M.Type,
-    where: [SQL.WhereConstraint],
+    where: [SQL.WhereConstraint]?,
     orderBy: SQL.Order<M>?,
     limit: Int?
   ) async throws -> [M]

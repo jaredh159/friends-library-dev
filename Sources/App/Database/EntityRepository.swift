@@ -46,7 +46,7 @@ struct EntityRepository {
 
   private func findAll<M: DuetModel>(_ Model: M.Type) async throws -> [M] {
     let prepared = SQL.select(.all, from: M.self)
-    let rows = try await SQL.execute(prepared, on: db).all()
+    let rows = try await SQL.execute(prepared, on: db)
     return try rows.compactMap { try $0.decode(Model.self) }
   }
 

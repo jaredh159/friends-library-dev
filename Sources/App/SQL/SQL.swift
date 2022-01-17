@@ -52,9 +52,16 @@ enum SQL {
     return PreparedStatement(query: query, bindings: bindings)
   }
 
-  static func update<M: DuetModel>(
+  static func softDelete<M: SoftDeletable>(
     _ Model: M.Type,
-    set values: [M.ColumnName: Postgres.Data],
+    where constraints: [WhereConstraint]? = nil
+  ) -> PreparedStatement {
+    return update(table: M.tableName, set: ["deleted_at": .currentTimestamp], where: constraints)
+  }
+
+  private static func update(
+    table: String,
+    set values: [String: Postgres.Data],
     where constraints: [WhereConstraint]? = nil,
     returning: Postgres.Columns? = nil
   ) -> PreparedStatement {
@@ -62,8 +69,7 @@ enum SQL {
     var setPairs: [String] = []
     var currentBinding = 1
 
-    for (column, value) in values {
-      // TODO: filter out createdAT, id
+    for (column, value) in values.filter({ key, _ in key != "created_at" && key != "id" }) {
       bindings.append(value)
       setPairs.append("\"\(column)\" = $\(currentBinding)")
       currentBinding += 1
@@ -77,24 +83,39 @@ enum SQL {
     }
 
     let query = """
-    UPDATE "\(Model.tableName)"
+    UPDATE "\(table)"
     SET \(setPairs.list)\(WHERE)\(RETURNING);
     """
 
     return PreparedStatement(query: query, bindings: bindings)
   }
 
-  static func insert(
-    into table: String,
-    values: [String: Postgres.Data]
-  ) throws -> PreparedStatement {
-    try insert(into: table, values: [values])
+  static func update<M: DuetModel>(
+    _ Model: M.Type,
+    set values: [M.ColumnName: Postgres.Data],
+    where constraints: [WhereConstraint]? = nil,
+    returning: Postgres.Columns? = nil
+  ) -> PreparedStatement {
+    return update(
+      table: M.tableName,
+      set: values.mapKeys { M.columnName($0) },
+      where: constraints,
+      returning: returning
+    )
   }
 
-  static func insert(
-    into table: String,
-    values: [[String: Postgres.Data]]
+  static func insert<M: DuetModel>(
+    into Model: M.Type,
+    values: [M.ColumnName: Postgres.Data]
   ) throws -> PreparedStatement {
+    try insert(into: M.self, values: [values])
+  }
+
+  static func insert<M: DuetModel>(
+    into Model: M.Type,
+    values columnValues: [[M.ColumnName: Postgres.Data]]
+  ) throws -> PreparedStatement {
+    let values = columnValues.map { $0.mapKeys { M.columnName($0) } }
     guard let firstRecord = values.first else {
       throw DbError.emptyBulkInsertInput
     }
@@ -103,7 +124,7 @@ enum SQL {
       throw DbError.nonUniformBulkInsertInput
     }
 
-    let columns = Array(firstRecord.keys.sorted())
+    let columns = firstRecord.keys.sorted()
     var placeholderGroups: [String] = []
     var bindings: [Postgres.Data] = []
     var currentBinding = 1
@@ -119,7 +140,7 @@ enum SQL {
     }
 
     let query = """
-    INSERT INTO "\(table)"
+    INSERT INTO "\(M.tableName)"
     (\(columns.quotedList))
     VALUES
     \(placeholderGroups.list);
@@ -156,14 +177,15 @@ enum SQL {
     return PreparedStatement(query: query, bindings: bindings)
   }
 
+  @discardableResult
   static func execute(
     _ statement: PreparedStatement,
     on db: SQLDatabase
-  ) async throws -> SQLRawBuilder {
+  ) async throws -> [SQLRow] {
     // e.g. SELECT statements with no WHERE clause have
     // no bindings, and so can't be sent as a pg prepared statement
     if statement.bindings.isEmpty {
-      return db.raw("\(raw: statement.query)")
+      return try await db.raw("\(raw: statement.query)").all()
     }
 
     let types = statement.bindings.map(\.typeName).list
@@ -184,7 +206,7 @@ enum SQL {
       _ = try await db.raw("\(raw: insertPrepareSql)").all().get()
     }
 
-    return db.raw("\(raw: "EXECUTE \(name)(\(params))")")
+    return try await db.raw("\(raw: "EXECUTE \(name)(\(params))")").all()
   }
 
   private static func whereClause(
