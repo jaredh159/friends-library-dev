@@ -1,3 +1,6 @@
+import Foundation
+import Vapor
+
 final class MockDatabase: SQLQuerying, SQLMutating, DatabaseClient {
 
   typealias Models<M: DuetModel> = ReferenceWritableKeyPath<MockDatabase, [M.IdValue: M]>
@@ -38,7 +41,21 @@ final class MockDatabase: SQLQuerying, SQLMutating, DatabaseClient {
         .filter { $0.satisfies(constraint: constraint as! SQL.WhereConstraint<M.Model>) }
     }
 
-    // @TODO order...
+    if let orderBy = orderBy {
+      models = try models.sorted { a, b in
+        let propA = try a.introspectValue(at: orderBy.column)
+        let propB = try b.introspectValue(at: orderBy.column)
+        switch (propA, propB) {
+          case (let dateA, let dateB) as (Date, Date):
+            return orderBy.direction == .asc ? dateA < dateB : dateA > dateB
+          default:
+            throw Abort(
+              .notImplemented,
+              reason: "MockDatabase orderBy not implemented for \(type(of: propA))"
+            )
+        }
+      }
+    }
 
     if let limit = limit {
       models = Array(models.prefix(limit))

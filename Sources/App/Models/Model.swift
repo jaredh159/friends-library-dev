@@ -190,3 +190,15 @@ protocol SoftDeletable: DuetModel {
 enum DuetError: Error {
   case missingExpectedColumn(String)
 }
+
+extension DuetModel {
+  func introspectValue(at column: ColumnName) throws -> Any {
+    let mirror = Mirror(reflecting: self)
+    for child in mirror.children {
+      if child.label == column.stringValue {
+        return child.value
+      }
+    }
+    return DuetError.missingExpectedColumn(column.stringValue)
+  }
+}

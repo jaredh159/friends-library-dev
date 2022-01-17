@@ -1,7 +1,23 @@
 import FluentSQL
 import Foundation
 
-private var prepared: [String: String] = [:]
+private actor PreparedStatements {
+  var statements: [String: String] = [:]
+
+  func get(_ key: String) -> String? {
+    statements[key]
+  }
+
+  func set(_ value: String, forKey key: String) {
+    statements[key] = value
+  }
+
+  func reset() {
+    statements = [:]
+  }
+}
+
+private var prepared = PreparedStatements()
 
 enum SQL {
   enum OrderDirection {
@@ -201,7 +217,7 @@ enum SQL {
     let key = [statement.query, types].joined()
     let name: String
 
-    if let previouslyInsertedName = prepared[key] {
+    if let previouslyInsertedName = await prepared.get(key) {
       name = previouslyInsertedName
     } else {
       let id = UUID().uuidString.replacingOccurrences(of: "-", with: "").lowercased()
@@ -210,7 +226,7 @@ enum SQL {
       PREPARE \(name)(\(types)) AS
       \(statement.query)
       """
-      prepared[key] = name
+      await prepared.set(name, forKey: key)
       _ = try await db.raw("\(raw: insertPrepareSql)").all().get()
     }
 
@@ -234,8 +250,8 @@ enum SQL {
     return "\(separatedBy)\(parts.joined(separator: separatedBy))"
   }
 
-  static func resetPreparedStatements() {
-    prepared = [:]
+  static func resetPreparedStatements() async {
+    await prepared.reset()
   }
 }
 

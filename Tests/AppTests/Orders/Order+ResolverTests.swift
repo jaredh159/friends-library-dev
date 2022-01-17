@@ -71,11 +71,13 @@ final class OrderResolverTests: AppTestCase {
   }
 
   func testCreateOrderWithFreeRequestId() async throws {
+    let edition = await Entities.create().edition
     let req = try await Current.db.create(FreeOrderRequest.random)
     let order = Order.random
     order.freeOrderRequestId = req.id
     let item = OrderItem.random
     item.orderId = order.id
+    item.editionId = edition.id
 
     GraphQLTest(
       """

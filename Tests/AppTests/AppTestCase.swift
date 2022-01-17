@@ -16,7 +16,12 @@ class AppTestCase: XCTestCase {
 
   override static func tearDown() {
     app.shutdown()
-    SQL.resetPreparedStatements()
+    let exp = XCTestExpectation(description: "reset complete")
+    Task {
+      await SQL.resetPreparedStatements()
+      exp.fulfill()
+    }
+    _ = XCTWaiter.wait(for: [exp], timeout: 1)
   }
 
   override func setUp() {
