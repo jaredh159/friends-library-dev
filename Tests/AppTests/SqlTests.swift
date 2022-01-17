@@ -59,7 +59,27 @@ final class SqlTests: XCTestCase {
     let stmt = SQL.delete(from: Thing.self, where: [.id == 123])
 
     let expectedQuery = """
-    DELETE FROM "things" WHERE "id" = $1;
+    DELETE FROM "things"
+    WHERE "id" = $1;
+    """
+
+    XCTAssertEqual(stmt.query, expectedQuery)
+    XCTAssertEqual(stmt.bindings, [123])
+  }
+
+  func testDeleteWithOrderByAndLimit() throws {
+    let stmt = SQL.delete(
+      from: Thing.self,
+      where: [.id == 123],
+      orderBy: .init(.createdAt, .asc),
+      limit: 1
+    )
+
+    let expectedQuery = """
+    DELETE FROM "things"
+    WHERE "id" = $1
+    ORDER BY "created_at" ASC
+    LIMIT 1;
     """
 
     XCTAssertEqual(stmt.query, expectedQuery)

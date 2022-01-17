@@ -1,24 +1,6 @@
 import FluentSQL
 import Foundation
 
-private actor PreparedStatements {
-  var statements: [String: String] = [:]
-
-  func get(_ key: String) -> String? {
-    statements[key]
-  }
-
-  func set(_ value: String, forKey key: String) {
-    statements[key] = value
-  }
-
-  func reset() {
-    statements = [:]
-  }
-}
-
-private var prepared = PreparedStatements()
-
 enum SQL {
   enum OrderDirection {
     case asc
@@ -37,6 +19,21 @@ enum SQL {
   struct Order<M: DuetModel> {
     let column: M.ColumnName
     let direction: OrderDirection
+
+    init(column: M.ColumnName, direction: OrderDirection) {
+      self.column = column
+      self.direction = direction
+    }
+
+    init(_ column: M.ColumnName, _ direction: OrderDirection) {
+      self.column = column
+      self.direction = direction
+    }
+
+    static func sql(_ order: Self?, prefixedBy prefix: String = "\n") -> String {
+      guard let order = order else { return "" }
+      return "\(prefix)ORDER BY \"\(M.columnName(order.column))\" \(order.direction.sql)"
+    }
   }
 
   struct WhereConstraint<M: DuetModel> {
@@ -60,19 +57,16 @@ enum SQL {
 
   static func delete<M: DuetModel>(
     from Model: M.Type,
-    where constraints: [WhereConstraint<M>]? = nil
+    where constraints: [WhereConstraint<M>]? = nil,
+    orderBy: Order<M>? = nil,
+    limit: Int? = nil
   ) -> PreparedStatement {
     var binding = 1
     var bindings: [Postgres.Data] = []
-
-    let WHERE = whereClause(
-      constraints,
-      currentBinding: &binding,
-      bindings: &bindings,
-      separatedBy: " "
-    )
-
-    let query = #"DELETE FROM "\#(Model.tableName)"\#(WHERE);"#
+    let WHERE = whereClause(constraints, currentBinding: &binding, bindings: &bindings)
+    let ORDER_BY = Order<M>.sql(orderBy)
+    let LIMIT = limit.sql()
+    let query = #"DELETE FROM "\#(Model.tableName)"\#(WHERE)\#(ORDER_BY)\#(LIMIT);"#
     return PreparedStatement(query: query, bindings: bindings)
   }
 
@@ -183,17 +177,8 @@ enum SQL {
     var binding = 1
     var bindings: [Postgres.Data] = []
     let WHERE = whereClause(constraints, currentBinding: &binding, bindings: &bindings)
-
-    var ORDER_BY = ""
-    if let order = order {
-      ORDER_BY = "\nORDER BY \"\(M.columnName(order.column))\" \(order.direction.sql)"
-    }
-
-    var LIMIT = ""
-    if let limit = limit {
-      LIMIT = "\nLIMIT \(limit)"
-    }
-
+    let ORDER_BY = Order<M>.sql(order)
+    let LIMIT = limit.sql()
     let query = """
     SELECT \(columns.sql) FROM "\(M.tableName)"\(WHERE)\(ORDER_BY)\(LIMIT);
     """
@@ -272,3 +257,28 @@ func == <M: DuetModel>(lhs: M.ColumnName, rhs: Postgres.Data) -> SQL.WhereConstr
 func == <M: DuetModel>(lhs: M.ColumnName, rhs: UUIDStringable) -> SQL.WhereConstraint<M> {
   .init(column: lhs, operator: .equals, value: .uuid(rhs))
 }
+
+private extension Optional where Wrapped == Int {
+  func sql(prefixedBy prefix: String = "\n") -> String {
+    guard let limit = self else { return "" }
+    return "\(prefix)LIMIT \(limit)"
+  }
+}
+
+private actor PreparedStatements {
+  var statements: [String: String] = [:]
+
+  func get(_ key: String) -> String? {
+    statements[key]
+  }
+
+  func set(_ value: String, forKey key: String) {
+    statements[key] = value
+  }
+
+  func reset() {
+    statements = [:]
+  }
+}
+
+private var prepared = PreparedStatements()

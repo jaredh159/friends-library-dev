@@ -41,7 +41,7 @@ struct DuetQuery<M: DuetModel> {
       db: db,
       constraints: constraints,
       limit: limit,
-      order: SQL.Order<M>(column: column, direction: direction)
+      order: .init(column: column, direction: direction)
     )
   }
 
