@@ -13,7 +13,7 @@ extension FriendQuote: DuetModel {
 extension FriendQuote {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey {
+  enum CodingKeys: String, CodingKey, CaseIterable {
     case id
     case friendId
     case source
@@ -41,26 +41,24 @@ extension FriendQuote {
 }
 
 extension FriendQuote: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+  func satisfies(constraint: SQL.WhereConstraint<FriendQuote>) -> Bool {
     switch constraint.column {
-      case "id":
+      case .id:
         return .id(self) == constraint.value
-      case "friend_id":
+      case .friendId:
         return .uuid(friendId) == constraint.value
-      case "source":
+      case .source:
         return .string(source) == constraint.value
-      case "text":
+      case .text:
         return .string(text) == constraint.value
-      case "order":
+      case .order:
         return .int(order) == constraint.value
-      case "context":
+      case .context:
         return .string(context) == constraint.value
-      case "created_at":
+      case .createdAt:
         return .date(createdAt) == constraint.value
-      case "updated_at":
+      case .updatedAt:
         return .date(updatedAt) == constraint.value
-      default:
-        return false
     }
   }
 }

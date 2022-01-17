@@ -103,16 +103,24 @@ protocol UUIDIdentifiable {
 protocol DuetModel: UUIDIdentifiable, SQLInspectable, AppModel {
   associatedtype IdValue: RandomEmptyInitializing, UUIDStringable, Hashable
   var id: IdValue { get set }
-  associatedtype ColumnName: CodingKey, Hashable
+  associatedtype ColumnName: CodingKey, Hashable, CaseIterable
   static func columnName(_ column: ColumnName) -> String
   static var tableName: String { get }
-  // @TODO rename
   var insertValues: [ColumnName: Postgres.Data] { get }
 }
 
 extension DuetModel {
   static func == (lhs: Self, rhs: Self) -> Bool {
     lhs.id == rhs.id
+  }
+
+  static func column(_ name: String) throws -> ColumnName {
+    for column in ColumnName.allCases {
+      if Self.columnName(column) == name {
+        return column
+      }
+    }
+    throw DuetError.missingExpectedColumn(name)
   }
 }
 
@@ -138,11 +146,12 @@ extension Array where Element: DuetModel {
 }
 
 protocol SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint) -> Bool
+  associatedtype Model: DuetModel
+  func satisfies(constraint: SQL.WhereConstraint<Model>) -> Bool
 }
 
 extension SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint?) -> Bool {
+  func satisfies(constraint: SQL.WhereConstraint<Model>?) -> Bool {
     if let constraint = constraint {
       return satisfies(constraint: constraint)
     }
@@ -176,4 +185,8 @@ protocol Touchable: DuetModel {
 
 protocol SoftDeletable: DuetModel {
   var deletedAt: Date? { get set }
+}
+
+enum DuetError: Error {
+  case missingExpectedColumn(String)
 }

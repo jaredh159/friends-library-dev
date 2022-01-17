@@ -13,7 +13,7 @@ extension OrderItem: DuetModel {
 extension OrderItem {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey {
+  enum CodingKeys: String, CodingKey, CaseIterable {
     case id
     case orderId
     case editionId
@@ -37,22 +37,20 @@ extension OrderItem {
 }
 
 extension OrderItem: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+  func satisfies(constraint: SQL.WhereConstraint<OrderItem>) -> Bool {
     switch constraint.column {
-      case "id":
+      case .id:
         return .id(self) == constraint.value
-      case "order_id":
+      case .orderId:
         return .uuid(orderId) == constraint.value
-      case "edition_id":
+      case .editionId:
         return .uuid(editionId) == constraint.value
-      case "quantity":
+      case .quantity:
         return .int(quantity) == constraint.value
-      case "unit_price":
+      case .unitPrice:
         return .int(unitPrice.rawValue) == constraint.value
-      case "created_at":
+      case .createdAt:
         return .date(createdAt) == constraint.value
-      default:
-        return false
     }
   }
 }

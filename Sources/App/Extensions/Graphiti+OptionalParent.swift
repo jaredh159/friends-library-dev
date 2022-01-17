@@ -45,7 +45,7 @@ private func loadOptionalParent<Child: DuetModel, Parent: DuetModel>(
   }
 
   if let fk = childFk {
-    parent = try? await db.query(Parent.self).where("id" == fk).first()
+    parent = try? await db.query(Parent.self).where(Parent.column("id") == fk).first()
   }
 
   var child = child

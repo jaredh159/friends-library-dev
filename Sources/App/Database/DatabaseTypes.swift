@@ -6,7 +6,7 @@ import Vapor
 protocol SQLQuerying {
   func select<M: DuetModel>(
     _ Model: M.Type,
-    where: [SQL.WhereConstraint]?,
+    where: [SQL.WhereConstraint<M>]?,
     orderBy: SQL.Order<M>?,
     limit: Int?
   ) async throws -> [M]
@@ -22,7 +22,7 @@ protocol SQLMutating {
   @discardableResult
   func forceDelete<M: DuetModel>(
     _ Model: M.Type,
-    where: [SQL.WhereConstraint],
+    where: [SQL.WhereConstraint<M>],
     orderBy: SQL.Order<M>?,
     limit: Int?
   ) async throws -> [M]
@@ -54,13 +54,8 @@ extension DatabaseClient {
   }
 
   @discardableResult
-  func delete<M: DuetModel>(_ Model: M.Type, byId id: UUID) async throws -> M {
-    try await query(M.self).where("id" == id).deleteOne()
-  }
-
-  @discardableResult
-  func delete<M: DuetModel>(_ Model: M.Type, byId id: M.IdValue) async throws -> M {
-    try await query(M.self).where("id" == id).deleteOne()
+  func delete<M: DuetModel>(_ Model: M.Type, byId id: UUIDStringable) async throws -> M {
+    try await query(M.self).where(M.column("id") == id).deleteOne()
   }
 }
 

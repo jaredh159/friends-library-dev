@@ -36,7 +36,7 @@ extension Resolver {
     try req.requirePermission(to: .queryOrders)
     return future(of: [Order].self, on: req.eventLoop) {
       try await Current.db.query(Order.self)
-        .where(Order[.printJobStatus] == .enum(args.printJobStatus))
+        .where(.printJobStatus == .enum(args.printJobStatus))
         .all()
     }
   }

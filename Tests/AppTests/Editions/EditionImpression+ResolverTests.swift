@@ -7,9 +7,7 @@ final class EditionImpressionResolverTests: AppTestCase {
 
   func testCreateEditionImpression() async throws {
     let entities = await Entities.create()
-    _ = try await Current.db.query(EditionImpression.self)
-      .where("id" == entities.editionImpression.id)
-      .delete()
+    try await Current.db.delete(EditionImpression.self, byId: entities.editionImpression.id)
     let editionImpression = EditionImpression.random
     editionImpression.editionId = entities.edition.id
     let map = editionImpression.gqlMap()
@@ -78,9 +76,7 @@ final class EditionImpressionResolverTests: AppTestCase {
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": editionImpression.gqlMap()])
 
-    let retrieved = try? await Current.db.query(EditionImpression.self)
-      .where("id" == editionImpression.id)
-      .first()
+    let retrieved = try? await Current.db.find(EditionImpression.self, byId: editionImpression.id)
     XCTAssertNil(retrieved)
   }
 }

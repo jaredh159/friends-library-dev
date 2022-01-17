@@ -13,7 +13,7 @@ extension RelatedDocument: DuetModel {
 extension RelatedDocument {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey {
+  enum CodingKeys: String, CodingKey, CaseIterable {
     case id
     case description
     case documentId
@@ -37,22 +37,20 @@ extension RelatedDocument {
 }
 
 extension RelatedDocument: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+  func satisfies(constraint: SQL.WhereConstraint<RelatedDocument>) -> Bool {
     switch constraint.column {
-      case "id":
+      case .id:
         return .id(self) == constraint.value
-      case "description":
+      case .description:
         return .string(description) == constraint.value
-      case "document_id":
+      case .documentId:
         return .uuid(documentId) == constraint.value
-      case "parent_document_id":
+      case .parentDocumentId:
         return .uuid(parentDocumentId) == constraint.value
-      case "created_at":
+      case .createdAt:
         return .date(createdAt) == constraint.value
-      case "updated_at":
+      case .updatedAt:
         return .date(updatedAt) == constraint.value
-      default:
-        return false
     }
   }
 }

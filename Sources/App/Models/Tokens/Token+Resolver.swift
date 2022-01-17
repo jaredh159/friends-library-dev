@@ -8,7 +8,7 @@ extension Resolver {
   func getTokenByValue(req: Req, args: GetTokenByValueArgs) throws -> Future<Token> {
     future(of: Token.self, on: req.eventLoop) {
       try await Current.db.query(Token.self)
-        .where(Token[.value] == args.value)
+        .where(.value == args.value)
         .first()
     }
   }

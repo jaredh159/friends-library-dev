@@ -10,9 +10,7 @@ final class OrderRepositoryTests: AppTestCase {
     inserted.addressName = "Bob"
 
     try await Current.db.create(inserted)
-    let retrieved = try await Current.db.query(Order.self)
-      .where("id" == inserted.id)
-      .first()
+    let retrieved = try await Current.db.find(Order.self, byId: inserted.id)
 
     XCTAssertEqual(inserted, retrieved)
     XCTAssertEqual(inserted.addressName, retrieved.addressName)
@@ -24,9 +22,7 @@ final class OrderRepositoryTests: AppTestCase {
     inserted.addressStreet2 = "Apt #2"
 
     try await Current.db.create(inserted)
-    let retrieved = try await Current.db.query(Order.self)
-      .where("id" == inserted.id)
-      .first()
+    let retrieved = try await Current.db.find(Order.self, byId: inserted.id)
 
     XCTAssertEqual(inserted, retrieved)
     XCTAssertEqual(inserted.printJobId, retrieved.printJobId)
@@ -43,9 +39,8 @@ final class OrderRepositoryTests: AppTestCase {
     try await Current.db.create(order1)
     try await Current.db.create(order2)
 
-    let found = try await Current.db
-      .query(Order.self)
-      .where(Order[.printJobStatus] == .enum(Order.PrintJobStatus.accepted))
+    let found = try await Current.db.query(Order.self)
+      .where(.printJobStatus == .enum(Order.PrintJobStatus.accepted))
       .all()
 
     XCTAssertEqual(found.count, 1)

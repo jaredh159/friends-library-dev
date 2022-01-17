@@ -13,7 +13,7 @@ extension AudioPart: DuetModel {
 extension AudioPart {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey {
+  enum CodingKeys: String, CodingKey, CaseIterable {
     case id
     case audioId
     case title
@@ -49,34 +49,32 @@ extension AudioPart {
 }
 
 extension AudioPart: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+  func satisfies(constraint: SQL.WhereConstraint<AudioPart>) -> Bool {
     switch constraint.column {
-      case "id":
+      case .id:
         return .id(self) == constraint.value
-      case "audio_id":
+      case .audioId:
         return .uuid(audioId) == constraint.value
-      case "title":
+      case .title:
         return .string(title) == constraint.value
-      case "duration":
+      case .duration:
         return .double(duration.rawValue) == constraint.value
-      case "chapters":
+      case .chapters:
         return .intArray(chapters.array) == constraint.value
-      case "order":
+      case .order:
         return .int(order) == constraint.value
-      case "mp3_size_hq":
+      case .mp3SizeHq:
         return .int(mp3SizeHq.rawValue) == constraint.value
-      case "mp3_size_lq":
+      case .mp3SizeLq:
         return .int(mp3SizeLq.rawValue) == constraint.value
-      case "external_id_hq":
+      case .externalIdHq:
         return .int64(externalIdHq.rawValue) == constraint.value
-      case "external_id_lq":
+      case .externalIdLq:
         return .int64(externalIdLq.rawValue) == constraint.value
-      case "created_at":
+      case .createdAt:
         return .date(createdAt) == constraint.value
-      case "updated_at":
+      case .updatedAt:
         return .date(updatedAt) == constraint.value
-      default:
-        return false
     }
   }
 }

@@ -13,7 +13,7 @@ extension EditionImpression: DuetModel {
 extension EditionImpression {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey {
+  enum CodingKeys: String, CodingKey, CaseIterable {
     case id
     case editionId
     case adocLength
@@ -41,26 +41,24 @@ extension EditionImpression {
 }
 
 extension EditionImpression: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+  func satisfies(constraint: SQL.WhereConstraint<EditionImpression>) -> Bool {
     switch constraint.column {
-      case "id":
+      case .id:
         return .id(self) == constraint.value
-      case "edition_id":
+      case .editionId:
         return .uuid(editionId) == constraint.value
-      case "adoc_length":
+      case .adocLength:
         return .int(adocLength) == constraint.value
-      case "paperback_size":
+      case .paperbackSize:
         return .enum(paperbackSize) == constraint.value
-      case "paperback_volumes":
+      case .paperbackVolumes:
         return .intArray(paperbackVolumes.array) == constraint.value
-      case "published_revision":
+      case .publishedRevision:
         return .string(publishedRevision.rawValue) == constraint.value
-      case "production_toolchain_revision":
+      case .productionToolchainRevision:
         return .string(productionToolchainRevision.rawValue) == constraint.value
-      case "created_at":
+      case .createdAt:
         return .date(createdAt) == constraint.value
-      default:
-        return false
     }
   }
 }

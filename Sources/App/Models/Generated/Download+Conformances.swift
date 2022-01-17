@@ -13,7 +13,7 @@ extension Download: DuetModel {
 extension Download {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey {
+  enum CodingKeys: String, CodingKey, CaseIterable {
     case id
     case editionId
     case format
@@ -65,50 +65,48 @@ extension Download {
 }
 
 extension Download: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+  func satisfies(constraint: SQL.WhereConstraint<Download>) -> Bool {
     switch constraint.column {
-      case "id":
+      case .id:
         return .id(self) == constraint.value
-      case "edition_id":
+      case .editionId:
         return .uuid(editionId) == constraint.value
-      case "format":
+      case .format:
         return .enum(format) == constraint.value
-      case "source":
+      case .source:
         return .enum(source) == constraint.value
-      case "audio_quality":
+      case .audioQuality:
         return .enum(audioQuality) == constraint.value
-      case "audio_part_number":
+      case .audioPartNumber:
         return .int(audioPartNumber) == constraint.value
-      case "is_mobile":
+      case .isMobile:
         return .bool(isMobile) == constraint.value
-      case "user_agent":
+      case .userAgent:
         return .string(userAgent) == constraint.value
-      case "os":
+      case .os:
         return .string(os) == constraint.value
-      case "browser":
+      case .browser:
         return .string(browser) == constraint.value
-      case "platform":
+      case .platform:
         return .string(platform) == constraint.value
-      case "referrer":
+      case .referrer:
         return .string(referrer) == constraint.value
-      case "ip":
+      case .ip:
         return .string(ip) == constraint.value
-      case "city":
+      case .city:
         return .string(city) == constraint.value
-      case "region":
+      case .region:
         return .string(region) == constraint.value
-      case "postal_code":
+      case .postalCode:
         return .string(postalCode) == constraint.value
-      case "country":
+      case .country:
         return .string(country) == constraint.value
-      case "latitude":
+      case .latitude:
         return .string(latitude) == constraint.value
-      case "longitude":
+      case .longitude:
         return .string(longitude) == constraint.value
-      case "created_at":
+      case .createdAt:
         return .date(createdAt) == constraint.value
-      default:
-        return false
     }
   }
 }

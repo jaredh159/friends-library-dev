@@ -13,7 +13,7 @@ extension Isbn: DuetModel {
 extension Isbn {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey {
+  enum CodingKeys: String, CodingKey, CaseIterable {
     case id
     case code
     case editionId
@@ -35,20 +35,18 @@ extension Isbn {
 }
 
 extension Isbn: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+  func satisfies(constraint: SQL.WhereConstraint<Isbn>) -> Bool {
     switch constraint.column {
-      case "id":
+      case .id:
         return .id(self) == constraint.value
-      case "code":
+      case .code:
         return .string(code.rawValue) == constraint.value
-      case "edition_id":
+      case .editionId:
         return .uuid(editionId) == constraint.value
-      case "created_at":
+      case .createdAt:
         return .date(createdAt) == constraint.value
-      case "updated_at":
+      case .updatedAt:
         return .date(updatedAt) == constraint.value
-      default:
-        return false
     }
   }
 }

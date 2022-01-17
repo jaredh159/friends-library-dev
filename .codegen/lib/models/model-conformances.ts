@@ -5,7 +5,7 @@ import Model from './Model';
 
 export function generateModelConformances(
   model: Model,
-  globalTypes: GlobalTypes,
+  types: GlobalTypes,
 ): [filepath: string, code: string] {
   const { name, migrationNumber, props } = model;
   let code = `// auto-generated, do not edit\nimport Foundation\n`;
@@ -31,21 +31,21 @@ export function generateModelConformances(
   code += `extension ${name}: DuetModel {\n  static let tableName = ${table}\n}\n`;
 
   code += `\nextension ${name} {\n  typealias ColumnName = CodingKeys\n\n`;
-  code += `  enum CodingKeys: String, CodingKey {\n    `;
+  code += `  enum CodingKeys: String, CodingKey, CaseIterable {\n    `;
   code += props.map((p) => `case ${p.name}`).join(`\n    `);
   code += `\n  }\n}\n\n`;
 
-  code += insertData(model, globalTypes) + `\n`;
+  code += insertData(model, types) + `\n`;
 
-  code += INSPECTABLE_PATTERN.replace(`Thing`, model.name).replace(
+  code += INSPECTABLE_PATTERN.replace(/Thing/g, model.name).replace(
     `// CASES_HERE`,
     model.props
       .flatMap((prop) => [
-        `case "${snakeCase(prop.name)}":`,
+        `case .${prop.name}:`,
         `  return ${toPostgresData(
           prop,
           model,
-          globalTypes,
+          types,
           `forInspect`,
         )} == constraint.value`,
       ])
@@ -75,11 +75,9 @@ function pascalToSnake(str: string): string {
 
 const INSPECTABLE_PATTERN = /* swift */ `
 extension Thing: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+  func satisfies(constraint: SQL.WhereConstraint<Thing>) -> Bool {
     switch constraint.column {
       // CASES_HERE
-      default:
-        return false
     }
   }
 }

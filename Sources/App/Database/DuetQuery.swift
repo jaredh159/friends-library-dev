@@ -2,23 +2,24 @@ import Foundation
 
 struct DuetQuery<M: DuetModel> {
   let db: SQLQuerying & SQLMutating
-  let constraints: [SQL.WhereConstraint]
+  let constraints: [SQL.WhereConstraint<M>]
   let limit: Int?
   let order: SQL.Order<M>?
 
-  func byId(_ id: UUID) -> DuetQuery<M> {
-    .init(db: db, constraints: constraints + ["id" == .uuid(id)], limit: limit, order: order)
+  func byId(_ id: UUIDStringable) throws -> DuetQuery<M> {
+    try .init(
+      db: db,
+      constraints: constraints + [M.column("id") == .uuid(id)],
+      limit: limit,
+      order: order
+    )
   }
 
-  func byId(_ id: M.IdValue) -> DuetQuery<M> {
-    .init(db: db, constraints: constraints + ["id" == .uuid(id)], limit: limit, order: order)
-  }
-
-  func `where`(_ constraints: SQL.WhereConstraint...) -> DuetQuery<M> {
+  func `where`(_ constraints: SQL.WhereConstraint<M>...) -> DuetQuery<M> {
     .init(db: db, constraints: self.constraints + constraints, limit: limit, order: order)
   }
 
-  func `where`(_ constraints: [SQL.WhereConstraint]) -> DuetQuery<M> {
+  func `where`(_ constraints: [SQL.WhereConstraint<M>]) -> DuetQuery<M> {
     .init(db: db, constraints: self.constraints + constraints, limit: limit, order: order)
   }
 
@@ -70,7 +71,7 @@ extension DuetQuery where M: SoftDeletable {
   func all() async throws -> [M] {
     try await db.select(
       M.self,
-      where: constraints + ["deleted_at" == .null],
+      where: constraints + [M.column("deleted_at") == .null],
       orderBy: order,
       limit: limit
     )

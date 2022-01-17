@@ -4,12 +4,6 @@ import Foundation
 private var prepared: [String: String] = [:]
 
 enum SQL {
-  typealias WhereConstraint = (
-    column: String,
-    operator: Postgres.WhereOperator,
-    value: Postgres.Data
-  )
-
   enum OrderDirection {
     case asc
     case desc
@@ -29,6 +23,20 @@ enum SQL {
     let direction: OrderDirection
   }
 
+  struct WhereConstraint<M: DuetModel> {
+    let column: M.ColumnName
+    let `operator`: Postgres.WhereOperator
+    let value: Postgres.Data
+
+    static func isNull(_ column: M.ColumnName) -> WhereConstraint<M> {
+      column == .null
+    }
+
+    func sql(boundTo binding: Int) -> String {
+      "\"\(M.columnName(column))\" \(self.operator.sql) $\(binding)"
+    }
+  }
+
   struct PreparedStatement {
     let query: String
     let bindings: [Postgres.Data]
@@ -36,7 +44,7 @@ enum SQL {
 
   static func delete<M: DuetModel>(
     from Model: M.Type,
-    where constraints: [WhereConstraint]? = nil
+    where constraints: [WhereConstraint<M>]? = nil
   ) -> PreparedStatement {
     var binding = 1
     var bindings: [Postgres.Data] = []
@@ -54,15 +62,15 @@ enum SQL {
 
   static func softDelete<M: SoftDeletable>(
     _ Model: M.Type,
-    where constraints: [WhereConstraint]? = nil
+    where constraints: [WhereConstraint<M>]? = nil
   ) -> PreparedStatement {
     return update(table: M.tableName, set: ["deleted_at": .currentTimestamp], where: constraints)
   }
 
-  private static func update(
+  private static func update<M: DuetModel>(
     table: String,
     set values: [String: Postgres.Data],
-    where constraints: [WhereConstraint]? = nil,
+    where constraints: [WhereConstraint<M>]? = nil,
     returning: Postgres.Columns? = nil
   ) -> PreparedStatement {
     var bindings: [Postgres.Data] = []
@@ -93,7 +101,7 @@ enum SQL {
   static func update<M: DuetModel>(
     _ Model: M.Type,
     set values: [M.ColumnName: Postgres.Data],
-    where constraints: [WhereConstraint]? = nil,
+    where constraints: [WhereConstraint<M>]? = nil,
     returning: Postgres.Columns? = nil
   ) -> PreparedStatement {
     return update(
@@ -152,7 +160,7 @@ enum SQL {
   static func select<M: DuetModel>(
     _ columns: Postgres.Columns,
     from Model: M.Type,
-    where constraints: [WhereConstraint] = [],
+    where constraints: [WhereConstraint<M>] = [],
     orderBy order: Order<M>? = nil,
     limit: Int? = nil
   ) -> PreparedStatement {
@@ -209,8 +217,8 @@ enum SQL {
     return try await db.raw("\(raw: "EXECUTE \(name)(\(params))")").all()
   }
 
-  private static func whereClause(
-    _ constraints: [WhereConstraint]?,
+  private static func whereClause<M: DuetModel>(
+    _ constraints: [WhereConstraint<M>]?,
     currentBinding binding: inout Int,
     bindings: inout [Postgres.Data],
     separatedBy: String = "\n"
@@ -220,7 +228,7 @@ enum SQL {
     for (index, constraint) in constraints.enumerated() {
       let prefix = index == 0 ? "WHERE" : "AND"
       bindings.append(constraint.value)
-      parts.append("\(prefix) \"\(constraint.column)\" \(constraint.operator.sql) $\(binding)")
+      parts.append("\(prefix) \(constraint.sql(boundTo: binding))")
       binding += 1
     }
     return "\(separatedBy)\(parts.joined(separator: separatedBy))"
@@ -241,10 +249,10 @@ private extension Sequence where Element == String {
   }
 }
 
-func == (lhs: String, rhs: Postgres.Data) -> SQL.WhereConstraint {
-  (lhs, .equals, rhs)
+func == <M: DuetModel>(lhs: M.ColumnName, rhs: Postgres.Data) -> SQL.WhereConstraint<M> {
+  .init(column: lhs, operator: .equals, value: rhs)
 }
 
-func == (lhs: String, rhs: UUIDStringable) -> SQL.WhereConstraint {
-  (lhs, .equals, .uuid(rhs))
+func == <M: DuetModel>(lhs: M.ColumnName, rhs: UUIDStringable) -> SQL.WhereConstraint<M> {
+  .init(column: lhs, operator: .equals, value: .uuid(rhs))
 }

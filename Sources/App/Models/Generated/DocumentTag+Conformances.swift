@@ -13,7 +13,7 @@ extension DocumentTag: DuetModel {
 extension DocumentTag {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey {
+  enum CodingKeys: String, CodingKey, CaseIterable {
     case id
     case documentId
     case type
@@ -33,18 +33,16 @@ extension DocumentTag {
 }
 
 extension DocumentTag: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+  func satisfies(constraint: SQL.WhereConstraint<DocumentTag>) -> Bool {
     switch constraint.column {
-      case "id":
+      case .id:
         return .id(self) == constraint.value
-      case "document_id":
+      case .documentId:
         return .uuid(documentId) == constraint.value
-      case "type":
+      case .type:
         return .enum(type) == constraint.value
-      case "created_at":
+      case .createdAt:
         return .date(createdAt) == constraint.value
-      default:
-        return false
     }
   }
 }

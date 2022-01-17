@@ -18,12 +18,10 @@ struct LiveDatabase: SQLQuerying, SQLMutating, DatabaseClient {
 
   @discardableResult
   func update<M: DuetModel>(_ model: M) async throws -> M {
-    let prepared = SQL.update(
+    let prepared = try SQL.update(
       M.self,
-      set: model.insertValues.filter { key, _ in
-        M.columnName(key) != "created_at" && M.columnName(key) != "id"
-      },
-      where: [("id", .equals, .id(model))],
+      set: model.insertValues,
+      where: [M.column("id") == .id(model)],
       returning: .all
     )
     return try await SQL.execute(prepared, on: db)
@@ -34,7 +32,7 @@ struct LiveDatabase: SQLQuerying, SQLMutating, DatabaseClient {
   @discardableResult
   func forceDelete<M: DuetModel>(
     _ Model: M.Type,
-    where constraints: [SQL.WhereConstraint] = [],
+    where constraints: [SQL.WhereConstraint<M>] = [],
     orderBy: SQL.Order<M>? = nil,
     limit: Int? = nil
   ) async throws -> [M] {
@@ -52,7 +50,7 @@ struct LiveDatabase: SQLQuerying, SQLMutating, DatabaseClient {
   @discardableResult
   func delete<M: SoftDeletable>(
     _ Model: M.Type,
-    where constraints: [SQL.WhereConstraint]? = nil
+    where constraints: [SQL.WhereConstraint<M>]? = nil
   ) async throws -> [M] {
     let models = try await select(Model.self, where: constraints)
     let prepared = SQL.softDelete(M.self, where: constraints)
@@ -62,7 +60,7 @@ struct LiveDatabase: SQLQuerying, SQLMutating, DatabaseClient {
 
   func select<M: DuetModel>(
     _ Model: M.Type,
-    where constraints: [SQL.WhereConstraint]? = nil,
+    where constraints: [SQL.WhereConstraint<M>]? = nil,
     orderBy: SQL.Order<M>? = nil,
     limit: Int? = nil
   ) async throws -> [M] {

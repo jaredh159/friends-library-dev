@@ -68,7 +68,7 @@ extension Thing {
 
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey {
+  enum CodingKeys: String, CodingKey, CaseIterable {
     case id
     case foo
     case bar
@@ -84,7 +84,7 @@ extension Thing {
 }
 
 extension Thing: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+  func satisfies(constraint: SQL.WhereConstraint<Thing>) -> Bool {
     true
   }
 }

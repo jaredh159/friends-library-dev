@@ -13,7 +13,7 @@ extension Document: DuetModel {
 extension Document {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey {
+  enum CodingKeys: String, CodingKey, CaseIterable {
     case id
     case friendId
     case altLanguageId
@@ -54,40 +54,38 @@ extension Document {
 }
 
 extension Document: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+  func satisfies(constraint: SQL.WhereConstraint<Document>) -> Bool {
     switch constraint.column {
-      case "id":
+      case .id:
         return .id(self) == constraint.value
-      case "friend_id":
+      case .friendId:
         return .uuid(friendId) == constraint.value
-      case "alt_language_id":
+      case .altLanguageId:
         return .uuid(altLanguageId) == constraint.value
-      case "title":
+      case .title:
         return .string(title) == constraint.value
-      case "slug":
+      case .slug:
         return .string(slug) == constraint.value
-      case "filename":
+      case .filename:
         return .string(filename) == constraint.value
-      case "published":
+      case .published:
         return .int(published) == constraint.value
-      case "original_title":
+      case .originalTitle:
         return .string(originalTitle) == constraint.value
-      case "incomplete":
+      case .incomplete:
         return .bool(incomplete) == constraint.value
-      case "description":
+      case .description:
         return .string(description) == constraint.value
-      case "partial_description":
+      case .partialDescription:
         return .string(partialDescription) == constraint.value
-      case "featured_description":
+      case .featuredDescription:
         return .string(featuredDescription) == constraint.value
-      case "created_at":
+      case .createdAt:
         return .date(createdAt) == constraint.value
-      case "updated_at":
+      case .updatedAt:
         return .date(updatedAt) == constraint.value
-      case "deleted_at":
+      case .deletedAt:
         return .date(deletedAt) == constraint.value
-      default:
-        return false
     }
   }
 }

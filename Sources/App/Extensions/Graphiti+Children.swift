@@ -26,41 +26,41 @@ private func loadChildren<Parent: DuetModel, Child: DuetModel>(
   at keyPath: WritableKeyPath<Parent, Children<Child>>,
   for parent: Parent
 ) async throws -> [Child] {
-  let foreignKey: String
+  let foreignKey: Child.ColumnName
   switch keyPath {
 
     case \Friend.documents:
-      foreignKey = Document[.friendId]
+      foreignKey = try Child.column(Document[.friendId])
 
     case \Friend.residences:
-      foreignKey = FriendResidence[.friendId]
+      foreignKey = try Child.column(FriendResidence[.friendId])
 
     case \Friend.quotes:
-      foreignKey = FriendQuote[.friendId]
+      foreignKey = try Child.column(FriendQuote[.friendId])
 
     case \FriendResidence.durations:
-      foreignKey = FriendResidenceDuration[.friendResidenceId]
+      foreignKey = try Child.column(FriendResidenceDuration[.friendResidenceId])
 
     case \Edition.chapters:
-      foreignKey = EditionChapter[.editionId]
+      foreignKey = try Child.column(EditionChapter[.editionId])
 
     case \Document.editions:
-      foreignKey = Edition[.documentId]
+      foreignKey = try Child.column(Edition[.documentId])
 
     case \Document.relatedDocuments:
-      foreignKey = RelatedDocument[.parentDocumentId]
+      foreignKey = try Child.column(RelatedDocument[.parentDocumentId])
 
     case \Document.tags:
-      foreignKey = DocumentTag[.documentId]
+      foreignKey = try Child.column(DocumentTag[.documentId])
 
     case \Audio.parts:
-      foreignKey = AudioPart[.audioId]
+      foreignKey = try Child.column(AudioPart[.audioId])
 
     case \Order.items:
-      foreignKey = OrderItem[.orderId]
+      foreignKey = try Child.column(OrderItem[.orderId])
 
     case \Token.scopes:
-      foreignKey = TokenScope[.tokenId]
+      foreignKey = try Child.column(TokenScope[.tokenId])
 
     default:
       throw Abort(.notImplemented, reason: "\(keyPath) not handled for Children<M> relation")

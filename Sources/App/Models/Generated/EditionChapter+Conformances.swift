@@ -13,7 +13,7 @@ extension EditionChapter: DuetModel {
 extension EditionChapter {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey {
+  enum CodingKeys: String, CodingKey, CaseIterable {
     case id
     case editionId
     case order
@@ -45,30 +45,28 @@ extension EditionChapter {
 }
 
 extension EditionChapter: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+  func satisfies(constraint: SQL.WhereConstraint<EditionChapter>) -> Bool {
     switch constraint.column {
-      case "id":
+      case .id:
         return .id(self) == constraint.value
-      case "edition_id":
+      case .editionId:
         return .uuid(editionId) == constraint.value
-      case "order":
+      case .order:
         return .int(order) == constraint.value
-      case "short_heading":
+      case .shortHeading:
         return .string(shortHeading) == constraint.value
-      case "is_intermediate_title":
+      case .isIntermediateTitle:
         return .bool(isIntermediateTitle) == constraint.value
-      case "custom_id":
+      case .customId:
         return .string(customId) == constraint.value
-      case "sequence_number":
+      case .sequenceNumber:
         return .int(sequenceNumber) == constraint.value
-      case "non_sequence_title":
+      case .nonSequenceTitle:
         return .string(nonSequenceTitle) == constraint.value
-      case "created_at":
+      case .createdAt:
         return .date(createdAt) == constraint.value
-      case "updated_at":
+      case .updatedAt:
         return .date(updatedAt) == constraint.value
-      default:
-        return false
     }
   }
 }

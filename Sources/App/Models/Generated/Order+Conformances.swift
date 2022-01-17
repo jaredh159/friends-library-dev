@@ -13,7 +13,7 @@ extension Order: DuetModel {
 extension Order {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey {
+  enum CodingKeys: String, CodingKey, CaseIterable {
     case id
     case lang
     case source
@@ -69,54 +69,52 @@ extension Order {
 }
 
 extension Order: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+  func satisfies(constraint: SQL.WhereConstraint<Order>) -> Bool {
     switch constraint.column {
-      case "id":
+      case .id:
         return .id(self) == constraint.value
-      case "lang":
+      case .lang:
         return .enum(lang) == constraint.value
-      case "source":
+      case .source:
         return .enum(source) == constraint.value
-      case "payment_id":
+      case .paymentId:
         return .string(paymentId.rawValue) == constraint.value
-      case "print_job_id":
+      case .printJobId:
         return .int(printJobId?.rawValue) == constraint.value
-      case "print_job_status":
+      case .printJobStatus:
         return .enum(printJobStatus) == constraint.value
-      case "amount":
+      case .amount:
         return .int(amount.rawValue) == constraint.value
-      case "taxes":
+      case .taxes:
         return .int(taxes.rawValue) == constraint.value
-      case "cc_fee_offset":
+      case .ccFeeOffset:
         return .int(ccFeeOffset.rawValue) == constraint.value
-      case "shipping":
+      case .shipping:
         return .int(shipping.rawValue) == constraint.value
-      case "shipping_level":
+      case .shippingLevel:
         return .enum(shippingLevel) == constraint.value
-      case "email":
+      case .email:
         return .string(email.rawValue) == constraint.value
-      case "address_name":
+      case .addressName:
         return .string(addressName) == constraint.value
-      case "address_street":
+      case .addressStreet:
         return .string(addressStreet) == constraint.value
-      case "address_street2":
+      case .addressStreet2:
         return .string(addressStreet2) == constraint.value
-      case "address_city":
+      case .addressCity:
         return .string(addressCity) == constraint.value
-      case "address_state":
+      case .addressState:
         return .string(addressState) == constraint.value
-      case "address_zip":
+      case .addressZip:
         return .string(addressZip) == constraint.value
-      case "address_country":
+      case .addressCountry:
         return .string(addressCountry) == constraint.value
-      case "free_order_request_id":
+      case .freeOrderRequestId:
         return .uuid(freeOrderRequestId) == constraint.value
-      case "created_at":
+      case .createdAt:
         return .date(createdAt) == constraint.value
-      case "updated_at":
+      case .updatedAt:
         return .date(updatedAt) == constraint.value
-      default:
-        return false
     }
   }
 }

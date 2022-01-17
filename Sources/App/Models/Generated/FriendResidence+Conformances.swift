@@ -13,7 +13,7 @@ extension FriendResidence: DuetModel {
 extension FriendResidence {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey {
+  enum CodingKeys: String, CodingKey, CaseIterable {
     case id
     case friendId
     case city
@@ -37,22 +37,20 @@ extension FriendResidence {
 }
 
 extension FriendResidence: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+  func satisfies(constraint: SQL.WhereConstraint<FriendResidence>) -> Bool {
     switch constraint.column {
-      case "id":
+      case .id:
         return .id(self) == constraint.value
-      case "friend_id":
+      case .friendId:
         return .uuid(friendId) == constraint.value
-      case "city":
+      case .city:
         return .string(city) == constraint.value
-      case "region":
+      case .region:
         return .string(region) == constraint.value
-      case "created_at":
+      case .createdAt:
         return .date(createdAt) == constraint.value
-      case "updated_at":
+      case .updatedAt:
         return .date(updatedAt) == constraint.value
-      default:
-        return false
     }
   }
 }

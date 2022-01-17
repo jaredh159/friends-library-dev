@@ -31,7 +31,7 @@ final class SqlTests: XCTestCase {
   }
 
   func testSelectWithSingleWhere() throws {
-    let stmt = SQL.select(.all, from: Thing.self, where: ["id" == 123])
+    let stmt = SQL.select(.all, from: Thing.self, where: [.id == 123])
 
     let expectedQuery = """
     SELECT * FROM "things"
@@ -43,7 +43,7 @@ final class SqlTests: XCTestCase {
   }
 
   func testSelectWithMultipleWheres() throws {
-    let stmt = SQL.select(.all, from: Thing.self, where: ["id" == 123, "foo" == 789])
+    let stmt = SQL.select(.all, from: Thing.self, where: [.id == 123, .foo == 789])
 
     let expectedQuery = """
     SELECT * FROM "things"
@@ -56,7 +56,7 @@ final class SqlTests: XCTestCase {
   }
 
   func testDeleteWithConstraint() throws {
-    let stmt = SQL.delete(from: Thing.self, where: ["id" == 123])
+    let stmt = SQL.delete(from: Thing.self, where: [.id == 123])
 
     let expectedQuery = """
     DELETE FROM "things" WHERE "id" = $1;
@@ -92,16 +92,12 @@ final class SqlTests: XCTestCase {
   }
 
   func testUpdate() {
-    let statement = SQL.update(
-      Thing.self,
-      set: [.bar: 1, .baz: true],
-      where: [("lol", .equals, "a")]
-    )
+    let statement = SQL.update(Thing.self, set: [.bar: 1, .baz: true], where: [.foo == "a"])
 
     let query = """
     UPDATE "things"
     SET "bar" = $1, "baz" = $2
-    WHERE "lol" = $3;
+    WHERE "foo" = $3;
     """
 
     XCTAssertEqual(statement.query, query)
@@ -124,14 +120,14 @@ final class SqlTests: XCTestCase {
     let statement = SQL.update(
       Thing.self,
       set: [.bar: 1],
-      where: [("lol", .equals, "a")],
+      where: [.foo == "a"],
       returning: .all
     )
 
     let query = """
     UPDATE "things"
     SET "bar" = $1
-    WHERE "lol" = $2
+    WHERE "foo" = $2
     RETURNING *;
     """
 

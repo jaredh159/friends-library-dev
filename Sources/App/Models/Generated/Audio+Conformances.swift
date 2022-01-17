@@ -13,7 +13,7 @@ extension Audio: DuetModel {
 extension Audio {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey {
+  enum CodingKeys: String, CodingKey, CaseIterable {
     case id
     case editionId
     case reader
@@ -49,34 +49,32 @@ extension Audio {
 }
 
 extension Audio: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+  func satisfies(constraint: SQL.WhereConstraint<Audio>) -> Bool {
     switch constraint.column {
-      case "id":
+      case .id:
         return .id(self) == constraint.value
-      case "edition_id":
+      case .editionId:
         return .uuid(editionId) == constraint.value
-      case "reader":
+      case .reader:
         return .string(reader) == constraint.value
-      case "is_incomplete":
+      case .isIncomplete:
         return .bool(isIncomplete) == constraint.value
-      case "mp3_zip_size_hq":
+      case .mp3ZipSizeHq:
         return .int(mp3ZipSizeHq.rawValue) == constraint.value
-      case "mp3_zip_size_lq":
+      case .mp3ZipSizeLq:
         return .int(mp3ZipSizeLq.rawValue) == constraint.value
-      case "m4b_size_hq":
+      case .m4bSizeHq:
         return .int(m4bSizeHq.rawValue) == constraint.value
-      case "m4b_size_lq":
+      case .m4bSizeLq:
         return .int(m4bSizeLq.rawValue) == constraint.value
-      case "external_playlist_id_hq":
+      case .externalPlaylistIdHq:
         return .int64(externalPlaylistIdHq?.rawValue) == constraint.value
-      case "external_playlist_id_lq":
+      case .externalPlaylistIdLq:
         return .int64(externalPlaylistIdLq?.rawValue) == constraint.value
-      case "created_at":
+      case .createdAt:
         return .date(createdAt) == constraint.value
-      case "updated_at":
+      case .updatedAt:
         return .date(updatedAt) == constraint.value
-      default:
-        return false
     }
   }
 }

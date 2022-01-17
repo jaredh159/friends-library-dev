@@ -80,7 +80,7 @@ private func loadParent<Child: DuetModel, P: DuetModel>(
     default:
       throw Abort(.notImplemented, reason: "\(keyPath) not handled for Parent<M> relation")
   }
-  let parent = try await Current.db.query(P.self).where("id" == childFk).first()
+  let parent = try await Current.db.query(P.self).where(P.column("id") == childFk).first()
   var child = child
   child[keyPath: keyPath] = .loaded(parent)
   return parent

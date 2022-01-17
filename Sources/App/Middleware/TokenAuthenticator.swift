@@ -23,7 +23,7 @@ struct UserAuthenticator: AsyncBearerAuthenticator {
     }
     do {
       let token = try await Current.db.query(Token.self)
-        .where(Token[.value] == tokenValue)
+        .where(.value == tokenValue)
         .first()
       request.auth.login(User(token: token))
     } catch {

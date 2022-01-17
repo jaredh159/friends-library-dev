@@ -13,7 +13,7 @@ extension FreeOrderRequest: DuetModel {
 extension FreeOrderRequest {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey {
+  enum CodingKeys: String, CodingKey, CaseIterable {
     case id
     case name
     case email
@@ -53,38 +53,36 @@ extension FreeOrderRequest {
 }
 
 extension FreeOrderRequest: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+  func satisfies(constraint: SQL.WhereConstraint<FreeOrderRequest>) -> Bool {
     switch constraint.column {
-      case "id":
+      case .id:
         return .id(self) == constraint.value
-      case "name":
+      case .name:
         return .string(name) == constraint.value
-      case "email":
+      case .email:
         return .string(email.rawValue) == constraint.value
-      case "requested_books":
+      case .requestedBooks:
         return .string(requestedBooks) == constraint.value
-      case "about_requester":
+      case .aboutRequester:
         return .string(aboutRequester) == constraint.value
-      case "address_street":
+      case .addressStreet:
         return .string(addressStreet) == constraint.value
-      case "address_street2":
+      case .addressStreet2:
         return .string(addressStreet2) == constraint.value
-      case "address_city":
+      case .addressCity:
         return .string(addressCity) == constraint.value
-      case "address_state":
+      case .addressState:
         return .string(addressState) == constraint.value
-      case "address_zip":
+      case .addressZip:
         return .string(addressZip) == constraint.value
-      case "address_country":
+      case .addressCountry:
         return .string(addressCountry) == constraint.value
-      case "source":
+      case .source:
         return .string(source) == constraint.value
-      case "created_at":
+      case .createdAt:
         return .date(createdAt) == constraint.value
-      case "updated_at":
+      case .updatedAt:
         return .date(updatedAt) == constraint.value
-      default:
-        return false
     }
   }
 }

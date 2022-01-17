@@ -13,7 +13,7 @@ extension ArtifactProductionVersion: DuetModel {
 extension ArtifactProductionVersion {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey {
+  enum CodingKeys: String, CodingKey, CaseIterable {
     case id
     case version
     case createdAt
@@ -31,16 +31,14 @@ extension ArtifactProductionVersion {
 }
 
 extension ArtifactProductionVersion: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+  func satisfies(constraint: SQL.WhereConstraint<ArtifactProductionVersion>) -> Bool {
     switch constraint.column {
-      case "id":
+      case .id:
         return .id(self) == constraint.value
-      case "version":
+      case .version:
         return .string(version.rawValue) == constraint.value
-      case "created_at":
+      case .createdAt:
         return .date(createdAt) == constraint.value
-      default:
-        return false
     }
   }
 }

@@ -13,7 +13,7 @@ extension TokenScope: DuetModel {
 extension TokenScope {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey {
+  enum CodingKeys: String, CodingKey, CaseIterable {
     case id
     case scope
     case tokenId
@@ -33,18 +33,16 @@ extension TokenScope {
 }
 
 extension TokenScope: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+  func satisfies(constraint: SQL.WhereConstraint<TokenScope>) -> Bool {
     switch constraint.column {
-      case "id":
+      case .id:
         return .id(self) == constraint.value
-      case "scope":
+      case .scope:
         return .enum(scope) == constraint.value
-      case "token_id":
+      case .tokenId:
         return .uuid(tokenId) == constraint.value
-      case "created_at":
+      case .createdAt:
         return .date(createdAt) == constraint.value
-      default:
-        return false
     }
   }
 }

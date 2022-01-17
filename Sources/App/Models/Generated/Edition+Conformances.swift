@@ -13,7 +13,7 @@ extension Edition: DuetModel {
 extension Edition {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey {
+  enum CodingKeys: String, CodingKey, CaseIterable {
     case id
     case documentId
     case type
@@ -44,30 +44,28 @@ extension Edition {
 }
 
 extension Edition: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+  func satisfies(constraint: SQL.WhereConstraint<Edition>) -> Bool {
     switch constraint.column {
-      case "id":
+      case .id:
         return .id(self) == constraint.value
-      case "document_id":
+      case .documentId:
         return .uuid(documentId) == constraint.value
-      case "type":
+      case .type:
         return .enum(type) == constraint.value
-      case "editor":
+      case .editor:
         return .string(editor) == constraint.value
-      case "is_draft":
+      case .isDraft:
         return .bool(isDraft) == constraint.value
-      case "paperback_splits":
+      case .paperbackSplits:
         return .intArray(paperbackSplits?.array) == constraint.value
-      case "paperback_override_size":
+      case .paperbackOverrideSize:
         return .enum(paperbackOverrideSize) == constraint.value
-      case "created_at":
+      case .createdAt:
         return .date(createdAt) == constraint.value
-      case "updated_at":
+      case .updatedAt:
         return .date(updatedAt) == constraint.value
-      case "deleted_at":
+      case .deletedAt:
         return .date(deletedAt) == constraint.value
-      default:
-        return false
     }
   }
 }

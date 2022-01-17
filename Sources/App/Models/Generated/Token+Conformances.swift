@@ -13,7 +13,7 @@ extension Token: DuetModel {
 extension Token {
   typealias ColumnName = CodingKeys
 
-  enum CodingKeys: String, CodingKey {
+  enum CodingKeys: String, CodingKey, CaseIterable {
     case id
     case value
     case description
@@ -33,18 +33,16 @@ extension Token {
 }
 
 extension Token: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+  func satisfies(constraint: SQL.WhereConstraint<Token>) -> Bool {
     switch constraint.column {
-      case "id":
+      case .id:
         return .id(self) == constraint.value
-      case "value":
+      case .value:
         return .uuid(value) == constraint.value
-      case "description":
+      case .description:
         return .string(description) == constraint.value
-      case "created_at":
+      case .createdAt:
         return .date(createdAt) == constraint.value
-      default:
-        return false
     }
   }
 }
