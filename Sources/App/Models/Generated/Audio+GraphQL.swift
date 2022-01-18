@@ -3,7 +3,7 @@ import Graphiti
 import Vapor
 
 extension AppSchema {
-  static var AudioType: AppType<Audio> {
+  static var AudioType: ModelType<Audio> {
     Type(Audio.self) {
       Field("id", at: \.id.rawValue)
       Field("editionId", at: \.editionId.rawValue)
@@ -145,8 +145,10 @@ extension Audio {
       mp3ZipSizeLq: .init(rawValue: input.mp3ZipSizeLq),
       m4bSizeHq: .init(rawValue: input.m4bSizeHq),
       m4bSizeLq: .init(rawValue: input.m4bSizeLq),
-      externalPlaylistIdHq: input.externalPlaylistIdHq != nil ? .init(rawValue: input.externalPlaylistIdHq!) : nil,
-      externalPlaylistIdLq: input.externalPlaylistIdLq != nil ? .init(rawValue: input.externalPlaylistIdLq!) : nil,
+      externalPlaylistIdHq: input
+        .externalPlaylistIdHq != nil ? .init(rawValue: input.externalPlaylistIdHq!) : nil,
+      externalPlaylistIdLq: input
+        .externalPlaylistIdLq != nil ? .init(rawValue: input.externalPlaylistIdLq!) : nil,
       isIncomplete: input.isIncomplete
     )
   }
@@ -160,8 +162,10 @@ extension Audio {
       mp3ZipSizeLq: .init(rawValue: input.mp3ZipSizeLq),
       m4bSizeHq: .init(rawValue: input.m4bSizeHq),
       m4bSizeLq: .init(rawValue: input.m4bSizeLq),
-      externalPlaylistIdHq: input.externalPlaylistIdHq != nil ? .init(rawValue: input.externalPlaylistIdHq!) : nil,
-      externalPlaylistIdLq: input.externalPlaylistIdLq != nil ? .init(rawValue: input.externalPlaylistIdLq!) : nil,
+      externalPlaylistIdHq: input
+        .externalPlaylistIdHq != nil ? .init(rawValue: input.externalPlaylistIdHq!) : nil,
+      externalPlaylistIdLq: input
+        .externalPlaylistIdLq != nil ? .init(rawValue: input.externalPlaylistIdLq!) : nil,
       isIncomplete: input.isIncomplete
     )
   }
@@ -174,8 +178,10 @@ extension Audio {
     mp3ZipSizeLq = .init(rawValue: input.mp3ZipSizeLq)
     m4bSizeHq = .init(rawValue: input.m4bSizeHq)
     m4bSizeLq = .init(rawValue: input.m4bSizeLq)
-    externalPlaylistIdHq = input.externalPlaylistIdHq != nil ? .init(rawValue: input.externalPlaylistIdHq!) : nil
-    externalPlaylistIdLq = input.externalPlaylistIdLq != nil ? .init(rawValue: input.externalPlaylistIdLq!) : nil
+    externalPlaylistIdHq = input
+      .externalPlaylistIdHq != nil ? .init(rawValue: input.externalPlaylistIdHq!) : nil
+    externalPlaylistIdLq = input
+      .externalPlaylistIdLq != nil ? .init(rawValue: input.externalPlaylistIdLq!) : nil
     updatedAt = Current.date()
   }
 }

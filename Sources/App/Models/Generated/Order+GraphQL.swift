@@ -3,7 +3,7 @@ import Graphiti
 import Vapor
 
 extension AppSchema {
-  static var OrderType: AppType<Order> {
+  static var OrderType: ModelType<Order> {
     Type(Order.self) {
       Field("id", at: \.id.rawValue)
       Field("lang", at: \.lang)
@@ -207,7 +207,8 @@ extension Order {
       addressState: input.addressState,
       addressZip: input.addressZip,
       addressCountry: input.addressCountry,
-      freeOrderRequestId: input.freeOrderRequestId != nil ? .init(rawValue: input.freeOrderRequestId!) : nil
+      freeOrderRequestId: input
+        .freeOrderRequestId != nil ? .init(rawValue: input.freeOrderRequestId!) : nil
     )
   }
 
@@ -232,7 +233,8 @@ extension Order {
       addressState: input.addressState,
       addressZip: input.addressZip,
       addressCountry: input.addressCountry,
-      freeOrderRequestId: input.freeOrderRequestId != nil ? .init(rawValue: input.freeOrderRequestId!) : nil
+      freeOrderRequestId: input
+        .freeOrderRequestId != nil ? .init(rawValue: input.freeOrderRequestId!) : nil
     )
   }
 
@@ -255,7 +257,8 @@ extension Order {
     addressState = input.addressState
     addressZip = input.addressZip
     addressCountry = input.addressCountry
-    freeOrderRequestId = input.freeOrderRequestId != nil ? .init(rawValue: input.freeOrderRequestId!) : nil
+    freeOrderRequestId = input
+      .freeOrderRequestId != nil ? .init(rawValue: input.freeOrderRequestId!) : nil
     updatedAt = Current.date()
   }
 }

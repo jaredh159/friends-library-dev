@@ -3,7 +3,7 @@ import Graphiti
 import Vapor
 
 extension AppSchema {
-  static var TokenScopeType: AppType<TokenScope> {
+  static var TokenScopeType: ModelType<TokenScope> {
     Type(TokenScope.self) {
       Field("id", at: \.id.rawValue)
       Field("scope", at: \.scope)

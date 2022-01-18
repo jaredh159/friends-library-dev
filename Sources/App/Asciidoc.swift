@@ -12,7 +12,6 @@ enum HtmlEntities: String {
 }
 
 enum Asciidoc {
-
   static func trimmedUtf8ShortDocumentTitle(_ title: String, lang: Lang) -> String {
     if lang == .en {
       return

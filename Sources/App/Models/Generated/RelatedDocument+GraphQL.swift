@@ -3,7 +3,7 @@ import Graphiti
 import Vapor
 
 extension AppSchema {
-  static var RelatedDocumentType: AppType<RelatedDocument> {
+  static var RelatedDocumentType: ModelType<RelatedDocument> {
     Type(RelatedDocument.self) {
       Field("id", at: \.id.rawValue)
       Field("description", at: \.description)
@@ -80,7 +80,10 @@ extension AppSchema {
     }
   }
 
-  static var createRelatedDocuments: AppField<[RelatedDocument], AppSchema.CreateRelatedDocumentsArgs> {
+  static var createRelatedDocuments: AppField<
+    [RelatedDocument],
+    AppSchema.CreateRelatedDocumentsArgs
+  > {
     Field("createRelatedDocuments", at: Resolver.createRelatedDocuments) {
       Argument("input", at: \.input)
     }
@@ -92,7 +95,10 @@ extension AppSchema {
     }
   }
 
-  static var updateRelatedDocuments: AppField<[RelatedDocument], AppSchema.UpdateRelatedDocumentsArgs> {
+  static var updateRelatedDocuments: AppField<
+    [RelatedDocument],
+    AppSchema.UpdateRelatedDocumentsArgs
+  > {
     Field("updateRelatedDocuments", at: Resolver.updateRelatedDocuments) {
       Argument("input", at: \.input)
     }

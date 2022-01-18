@@ -21,6 +21,10 @@ final class Friend: Codable {
     slug.starts(with: "compila")
   }
 
+  var directoryPath: String {
+    "\(lang)/\(slug)"
+  }
+
   init(
     id: Id = .init(),
     lang: Lang,

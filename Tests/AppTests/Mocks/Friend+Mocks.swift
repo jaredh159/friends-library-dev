@@ -9,7 +9,7 @@ extension Friend {
     Friend(
       lang: .en,
       name: "@mock name",
-      slug: "@mock slug",
+      slug: "mock-slug-slug",
       gender: .male,
       description: "@mock description",
       born: nil,
@@ -35,7 +35,7 @@ extension Friend {
     Friend(
       lang: Lang.allCases.shuffled().first!,
       name: "@random".random,
-      slug: "@random".random,
+      slug: "random-slug-\(Int.random)",
       gender: Gender.allCases.shuffled().first!,
       description: "@random".random,
       born: Bool.random() ? Int.random : nil,

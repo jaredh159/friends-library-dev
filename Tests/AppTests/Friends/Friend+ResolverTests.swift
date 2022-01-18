@@ -49,6 +49,7 @@ final class FriendResolverTests: AppTestCase {
         }
         documents {
           documentId: id
+          trimmedUtf8ShortTitle
           friend {
             documentFriendId: id
           }
@@ -121,6 +122,7 @@ final class FriendResolverTests: AppTestCase {
       "audioPartAudioId": entities.audio.id.uuidString,
       "audioPartTitle": entities.audioPart.title,
       "isbnCode": entities.isbn.code.rawValue,
+      "trimmedUtf8ShortTitle": entities.document.title,
     ])
 
     GraphQLTest(

@@ -3,7 +3,7 @@ import Graphiti
 import Vapor
 
 extension AppSchema {
-  static var ArtifactProductionVersionType: AppType<ArtifactProductionVersion> {
+  static var ArtifactProductionVersionType: ModelType<ArtifactProductionVersion> {
     Type(ArtifactProductionVersion.self) {
       Field("id", at: \.id.rawValue)
       Field("version", at: \.version.rawValue)
@@ -37,14 +37,20 @@ extension AppSchema {
     let input: [AppSchema.UpdateArtifactProductionVersionInput]
   }
 
-  static var CreateArtifactProductionVersionInputType: AppInput<AppSchema.CreateArtifactProductionVersionInput> {
+  static var CreateArtifactProductionVersionInputType: AppInput<
+    AppSchema
+      .CreateArtifactProductionVersionInput
+  > {
     Input(AppSchema.CreateArtifactProductionVersionInput.self) {
       InputField("id", at: \.id)
       InputField("version", at: \.version)
     }
   }
 
-  static var UpdateArtifactProductionVersionInputType: AppInput<AppSchema.UpdateArtifactProductionVersionInput> {
+  static var UpdateArtifactProductionVersionInputType: AppInput<
+    AppSchema
+      .UpdateArtifactProductionVersionInput
+  > {
     Input(AppSchema.UpdateArtifactProductionVersionInput.self) {
       InputField("id", at: \.id)
       InputField("version", at: \.version)
@@ -61,31 +67,46 @@ extension AppSchema {
     Field("getArtifactProductionVersions", at: Resolver.getArtifactProductionVersions)
   }
 
-  static var createArtifactProductionVersion: AppField<ArtifactProductionVersion, AppSchema.CreateArtifactProductionVersionArgs> {
+  static var createArtifactProductionVersion: AppField<
+    ArtifactProductionVersion,
+    AppSchema.CreateArtifactProductionVersionArgs
+  > {
     Field("createArtifactProductionVersion", at: Resolver.createArtifactProductionVersion) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createArtifactProductionVersions: AppField<[ArtifactProductionVersion], AppSchema.CreateArtifactProductionVersionsArgs> {
+  static var createArtifactProductionVersions: AppField<
+    [ArtifactProductionVersion],
+    AppSchema.CreateArtifactProductionVersionsArgs
+  > {
     Field("createArtifactProductionVersions", at: Resolver.createArtifactProductionVersions) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateArtifactProductionVersion: AppField<ArtifactProductionVersion, AppSchema.UpdateArtifactProductionVersionArgs> {
+  static var updateArtifactProductionVersion: AppField<
+    ArtifactProductionVersion,
+    AppSchema.UpdateArtifactProductionVersionArgs
+  > {
     Field("updateArtifactProductionVersion", at: Resolver.updateArtifactProductionVersion) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateArtifactProductionVersions: AppField<[ArtifactProductionVersion], AppSchema.UpdateArtifactProductionVersionsArgs> {
+  static var updateArtifactProductionVersions: AppField<
+    [ArtifactProductionVersion],
+    AppSchema.UpdateArtifactProductionVersionsArgs
+  > {
     Field("updateArtifactProductionVersions", at: Resolver.updateArtifactProductionVersions) {
       Argument("input", at: \.input)
     }
   }
 
-  static var deleteArtifactProductionVersion: AppField<ArtifactProductionVersion, IdentifyEntityArgs> {
+  static var deleteArtifactProductionVersion: AppField<
+    ArtifactProductionVersion,
+    IdentifyEntityArgs
+  > {
     Field("deleteArtifactProductionVersion", at: Resolver.deleteArtifactProductionVersion) {
       Argument("id", at: \.id)
     }

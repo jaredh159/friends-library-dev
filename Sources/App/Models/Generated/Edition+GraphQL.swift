@@ -4,7 +4,7 @@ import NonEmpty
 import Vapor
 
 extension AppSchema {
-  static var EditionType: AppType<Edition> {
+  static var EditionType: ModelType<Edition> {
     Type(Edition.self) {
       Field("id", at: \.id.rawValue)
       Field("documentId", at: \.documentId.rawValue)
@@ -15,6 +15,8 @@ extension AppSchema {
       Field("paperbackOverrideSize", at: \.paperbackOverrideSize)
       Field("createdAt", at: \.createdAt)
       Field("updatedAt", at: \.updatedAt)
+      Field("directoryPath", at: \.directoryPath)
+      Field("images", at: \.images)
       Field("document", with: \.document)
       Field("impression", with: \.impression)
       Field("isbn", with: \.isbn)

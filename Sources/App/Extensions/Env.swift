@@ -7,4 +7,5 @@ extension Env {
   static let DATABASE_NAME = get("DATABASE_NAME")!
   static let DATABASE_USERNAME = get("DATABASE_USERNAME")!
   static let DATABASE_PASSWORD = get("DATABASE_PASSWORD")!
+  static let CLOUD_STORAGE_BUCKET_URL = get("CLOUD_STORAGE_BUCKET_URL")!
 }

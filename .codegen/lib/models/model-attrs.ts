@@ -54,10 +54,7 @@ function parseClassInterior(name: string, path: string, lines: string[]): Model 
     }
 
     // computed property
-    const computedPropMatch = line.match(/\s+var ([^ ]+):\s+([^ ]+)\s+{/);
-    if (computedPropMatch) {
-      const computedProp = { name: computedPropMatch[1], type: computedPropMatch[2] };
-      model.computedProps.push(computedProp);
+    if (extractComputedProp(line, model)) {
       continue;
     }
 
@@ -76,6 +73,16 @@ function parseClassInterior(name: string, path: string, lines: string[]): Model 
   }
 
   return model;
+}
+
+function extractComputedProp(line: string, model: Model): boolean {
+  const computedPropMatch = line.match(/\s+var ([^ ]+):\s+([^ ]+)\s+{/);
+  if (computedPropMatch) {
+    const computedProp = { name: computedPropMatch[1], type: computedPropMatch[2] };
+    model.computedProps.push(computedProp);
+    return true;
+  }
+  return false;
 }
 
 function parseInit(model: Model, line: string, lines: string[]): void {
@@ -235,6 +242,10 @@ function extractFromModelExtension(model: Model, lines: string[]): void {
     const line = lines.shift()!;
     if (line === `}`) {
       return;
+    }
+
+    if (extractComputedProp(line, model)) {
+      continue;
     }
 
     if (line.startsWith(`  typealias `)) {

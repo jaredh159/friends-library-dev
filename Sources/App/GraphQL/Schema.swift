@@ -66,6 +66,10 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.RelatedDocumentType
 
   // edition types
+  AppSchema.EditionImageType
+  AppSchema.EditionSquareImagesType
+  AppSchema.EditionThreeDImagesType
+  AppSchema.EditionImagesType
   AppSchema.EditionType
   AppSchema.CreateEditionInputType
   AppSchema.UpdateEditionInputType

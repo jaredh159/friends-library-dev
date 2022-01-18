@@ -3,7 +3,7 @@ import Graphiti
 import Vapor
 
 extension AppSchema {
-  static var DownloadType: AppType<Download> {
+  static var DownloadType: ModelType<Download> {
     Type(Download.self) {
       Field("id", at: \.id.rawValue)
       Field("editionId", at: \.editionId.rawValue)

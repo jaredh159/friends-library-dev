@@ -160,6 +160,14 @@ function mockValue(
     };
   }
 
+  if (propName === `slug` && type === `String`) {
+    return {
+      mock: `"mock-slug-${propName.toLowerCase()}"`,
+      empty: `""`,
+      random: `"random-slug-\\(Int.random)"`,
+    };
+  }
+
   switch (type) {
     case `String`:
       return { mock: `"@mock ${propName}"`, empty: `""`, random: `"@random".random` };

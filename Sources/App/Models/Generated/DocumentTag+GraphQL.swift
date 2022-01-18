@@ -3,7 +3,7 @@ import Graphiti
 import Vapor
 
 extension AppSchema {
-  static var DocumentTagType: AppType<DocumentTag> {
+  static var DocumentTagType: ModelType<DocumentTag> {
     Type(DocumentTag.self) {
       Field("id", at: \.id.rawValue)
       Field("documentId", at: \.documentId.rawValue)

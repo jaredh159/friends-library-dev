@@ -3,7 +3,7 @@ import Graphiti
 import Vapor
 
 extension AppSchema {
-  static var EditionChapterType: AppType<EditionChapter> {
+  static var EditionChapterType: ModelType<EditionChapter> {
     Type(EditionChapter.self) {
       Field("id", at: \.id.rawValue)
       Field("editionId", at: \.editionId.rawValue)
@@ -99,7 +99,10 @@ extension AppSchema {
     }
   }
 
-  static var createEditionChapters: AppField<[EditionChapter], AppSchema.CreateEditionChaptersArgs> {
+  static var createEditionChapters: AppField<
+    [EditionChapter],
+    AppSchema.CreateEditionChaptersArgs
+  > {
     Field("createEditionChapters", at: Resolver.createEditionChapters) {
       Argument("input", at: \.input)
     }
@@ -111,7 +114,10 @@ extension AppSchema {
     }
   }
 
-  static var updateEditionChapters: AppField<[EditionChapter], AppSchema.UpdateEditionChaptersArgs> {
+  static var updateEditionChapters: AppField<
+    [EditionChapter],
+    AppSchema.UpdateEditionChaptersArgs
+  > {
     Field("updateEditionChapters", at: Resolver.updateEditionChapters) {
       Argument("input", at: \.input)
     }

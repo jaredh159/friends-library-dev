@@ -4,7 +4,7 @@ import NonEmpty
 import Vapor
 
 extension AppSchema {
-  static var AudioPartType: AppType<AudioPart> {
+  static var AudioPartType: ModelType<AudioPart> {
     Type(AudioPart.self) {
       Field("id", at: \.id.rawValue)
       Field("audioId", at: \.audioId.rawValue)

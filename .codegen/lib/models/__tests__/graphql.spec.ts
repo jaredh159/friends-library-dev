@@ -174,7 +174,7 @@ describe(`generateModelGraphQLTypes()`, () => {
       import Vapor
 
       extension AppSchema {
-        static var ThingType: AppType<Thing> {
+        static var ThingType: ModelType<Thing> {
           Type(Thing.self) {
             Field("id", at: \\.id.rawValue)
             Field("name", at: \\.name)

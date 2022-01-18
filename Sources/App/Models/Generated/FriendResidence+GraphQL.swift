@@ -3,7 +3,7 @@ import Graphiti
 import Vapor
 
 extension AppSchema {
-  static var FriendResidenceType: AppType<FriendResidence> {
+  static var FriendResidenceType: ModelType<FriendResidence> {
     Type(FriendResidence.self) {
       Field("id", at: \.id.rawValue)
       Field("friendId", at: \.friendId.rawValue)
@@ -80,7 +80,10 @@ extension AppSchema {
     }
   }
 
-  static var createFriendResidences: AppField<[FriendResidence], AppSchema.CreateFriendResidencesArgs> {
+  static var createFriendResidences: AppField<
+    [FriendResidence],
+    AppSchema.CreateFriendResidencesArgs
+  > {
     Field("createFriendResidences", at: Resolver.createFriendResidences) {
       Argument("input", at: \.input)
     }
@@ -92,7 +95,10 @@ extension AppSchema {
     }
   }
 
-  static var updateFriendResidences: AppField<[FriendResidence], AppSchema.UpdateFriendResidencesArgs> {
+  static var updateFriendResidences: AppField<
+    [FriendResidence],
+    AppSchema.UpdateFriendResidencesArgs
+  > {
     Field("updateFriendResidences", at: Resolver.updateFriendResidences) {
       Argument("input", at: \.input)
     }

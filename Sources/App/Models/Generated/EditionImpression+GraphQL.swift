@@ -4,7 +4,7 @@ import NonEmpty
 import Vapor
 
 extension AppSchema {
-  static var EditionImpressionType: AppType<EditionImpression> {
+  static var EditionImpressionType: ModelType<EditionImpression> {
     Type(EditionImpression.self) {
       Field("id", at: \.id.rawValue)
       Field("editionId", at: \.editionId.rawValue)
@@ -89,25 +89,37 @@ extension AppSchema {
     Field("getEditionImpressions", at: Resolver.getEditionImpressions)
   }
 
-  static var createEditionImpression: AppField<EditionImpression, AppSchema.CreateEditionImpressionArgs> {
+  static var createEditionImpression: AppField<
+    EditionImpression,
+    AppSchema.CreateEditionImpressionArgs
+  > {
     Field("createEditionImpression", at: Resolver.createEditionImpression) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createEditionImpressions: AppField<[EditionImpression], AppSchema.CreateEditionImpressionsArgs> {
+  static var createEditionImpressions: AppField<
+    [EditionImpression],
+    AppSchema.CreateEditionImpressionsArgs
+  > {
     Field("createEditionImpressions", at: Resolver.createEditionImpressions) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateEditionImpression: AppField<EditionImpression, AppSchema.UpdateEditionImpressionArgs> {
+  static var updateEditionImpression: AppField<
+    EditionImpression,
+    AppSchema.UpdateEditionImpressionArgs
+  > {
     Field("updateEditionImpression", at: Resolver.updateEditionImpression) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateEditionImpressions: AppField<[EditionImpression], AppSchema.UpdateEditionImpressionsArgs> {
+  static var updateEditionImpressions: AppField<
+    [EditionImpression],
+    AppSchema.UpdateEditionImpressionsArgs
+  > {
     Field("updateEditionImpressions", at: Resolver.updateEditionImpressions) {
       Argument("input", at: \.input)
     }

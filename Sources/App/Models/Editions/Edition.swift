@@ -19,6 +19,10 @@ final class Edition: Codable {
   var audio = OptionalChild<Audio>.notLoaded
   var chapters = Children<EditionChapter>.notLoaded
 
+  var directoryPath: String {
+    "\(document.require().directoryPath)/\(type)"
+  }
+
   init(
     id: Id = .init(),
     documentId: Document.Id,

@@ -3,7 +3,7 @@ import Graphiti
 import Vapor
 
 extension AppSchema {
-  static var FriendType: AppType<Friend> {
+  static var FriendType: ModelType<Friend> {
     Type(Friend.self) {
       Field("id", at: \.id.rawValue)
       Field("lang", at: \.lang)
@@ -17,6 +17,7 @@ extension AppSchema {
       Field("createdAt", at: \.createdAt)
       Field("updatedAt", at: \.updatedAt)
       Field("isCompilations", at: \.isCompilations)
+      Field("directoryPath", at: \.directoryPath)
       Field("documents", with: \.documents)
       Field("residences", with: \.residences)
       Field("quotes", with: \.quotes)

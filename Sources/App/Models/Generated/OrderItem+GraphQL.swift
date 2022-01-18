@@ -3,7 +3,7 @@ import Graphiti
 import Vapor
 
 extension AppSchema {
-  static var OrderItemType: AppType<OrderItem> {
+  static var OrderItemType: ModelType<OrderItem> {
     Type(OrderItem.self) {
       Field("id", at: \.id.rawValue)
       Field("orderId", at: \.orderId.rawValue)

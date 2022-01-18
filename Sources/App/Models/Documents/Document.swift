@@ -23,6 +23,14 @@ final class Document: Codable {
   var relatedDocuments = Children<RelatedDocument>.notLoaded
   var tags = Children<DocumentTag>.notLoaded
 
+  var directoryPath: String {
+    "\(friend.require().directoryPath)/\(slug)"
+  }
+
+  var trimmedUtf8ShortTitle: String {
+    Asciidoc.trimmedUtf8ShortDocumentTitle(title, lang: friend.require().lang)
+  }
+
   init(
     id: Id = .init(),
     friendId: Friend.Id,

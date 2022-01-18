@@ -213,7 +213,7 @@ import NonEmpty
 import Vapor
 
 extension AppSchema {
-  static var ThingType: AppType<Thing> {
+  static var ThingType: ModelType<Thing> {
     Type(Thing.self) {
       /* GRAPHQL_SCHEMA_TYPE */
     }

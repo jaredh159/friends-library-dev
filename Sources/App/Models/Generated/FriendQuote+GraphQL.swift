@@ -3,7 +3,7 @@ import Graphiti
 import Vapor
 
 extension AppSchema {
-  static var FriendQuoteType: AppType<FriendQuote> {
+  static var FriendQuoteType: ModelType<FriendQuote> {
     Type(FriendQuote.self) {
       Field("id", at: \.id.rawValue)
       Field("friendId", at: \.friendId.rawValue)

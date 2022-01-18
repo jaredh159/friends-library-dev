@@ -3,7 +3,7 @@ import Graphiti
 import Vapor
 
 extension AppSchema {
-  static var IsbnType: AppType<Isbn> {
+  static var IsbnType: ModelType<Isbn> {
     Type(Isbn.self) {
       Field("id", at: \.id.rawValue)
       Field("code", at: \.code.rawValue)

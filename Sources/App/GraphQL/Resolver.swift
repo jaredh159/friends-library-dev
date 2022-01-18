@@ -4,7 +4,8 @@ import Graphiti
 import Vapor
 
 typealias AppField<FieldType, Args: Decodable> = Field<Resolver, Request, FieldType, Args>
-typealias AppType<Model: AppModel> = Type<Resolver, Request, Model>
+typealias ModelType<Model: AppModel> = Type<Resolver, Request, Model>
+typealias AppType<Value: Encodable> = Type<Resolver, Request, Value>
 typealias AppInput<InputObjectType: Decodable> = Input<Resolver, Request, InputObjectType>
 
 enum AppSchema {}

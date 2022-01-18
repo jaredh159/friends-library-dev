@@ -3,7 +3,7 @@ import Graphiti
 import Vapor
 
 extension AppSchema {
-  static var FreeOrderRequestType: AppType<FreeOrderRequest> {
+  static var FreeOrderRequestType: ModelType<FreeOrderRequest> {
     Type(FreeOrderRequest.self) {
       Field("id", at: \.id.rawValue)
       Field("name", at: \.name)
@@ -112,25 +112,37 @@ extension AppSchema {
     Field("getFreeOrderRequests", at: Resolver.getFreeOrderRequests)
   }
 
-  static var createFreeOrderRequest: AppField<FreeOrderRequest, AppSchema.CreateFreeOrderRequestArgs> {
+  static var createFreeOrderRequest: AppField<
+    FreeOrderRequest,
+    AppSchema.CreateFreeOrderRequestArgs
+  > {
     Field("createFreeOrderRequest", at: Resolver.createFreeOrderRequest) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createFreeOrderRequests: AppField<[FreeOrderRequest], AppSchema.CreateFreeOrderRequestsArgs> {
+  static var createFreeOrderRequests: AppField<
+    [FreeOrderRequest],
+    AppSchema.CreateFreeOrderRequestsArgs
+  > {
     Field("createFreeOrderRequests", at: Resolver.createFreeOrderRequests) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateFreeOrderRequest: AppField<FreeOrderRequest, AppSchema.UpdateFreeOrderRequestArgs> {
+  static var updateFreeOrderRequest: AppField<
+    FreeOrderRequest,
+    AppSchema.UpdateFreeOrderRequestArgs
+  > {
     Field("updateFreeOrderRequest", at: Resolver.updateFreeOrderRequest) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateFreeOrderRequests: AppField<[FreeOrderRequest], AppSchema.UpdateFreeOrderRequestsArgs> {
+  static var updateFreeOrderRequests: AppField<
+    [FreeOrderRequest],
+    AppSchema.UpdateFreeOrderRequestsArgs
+  > {
     Field("updateFreeOrderRequests", at: Resolver.updateFreeOrderRequests) {
       Argument("input", at: \.input)
     }

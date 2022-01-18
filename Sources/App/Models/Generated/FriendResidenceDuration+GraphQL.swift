@@ -3,7 +3,7 @@ import Graphiti
 import Vapor
 
 extension AppSchema {
-  static var FriendResidenceDurationType: AppType<FriendResidenceDuration> {
+  static var FriendResidenceDurationType: ModelType<FriendResidenceDuration> {
     Type(FriendResidenceDuration.self) {
       Field("id", at: \.id.rawValue)
       Field("friendResidenceId", at: \.friendResidenceId.rawValue)
@@ -44,7 +44,10 @@ extension AppSchema {
     let input: [AppSchema.UpdateFriendResidenceDurationInput]
   }
 
-  static var CreateFriendResidenceDurationInputType: AppInput<AppSchema.CreateFriendResidenceDurationInput> {
+  static var CreateFriendResidenceDurationInputType: AppInput<
+    AppSchema
+      .CreateFriendResidenceDurationInput
+  > {
     Input(AppSchema.CreateFriendResidenceDurationInput.self) {
       InputField("id", at: \.id)
       InputField("friendResidenceId", at: \.friendResidenceId)
@@ -53,7 +56,10 @@ extension AppSchema {
     }
   }
 
-  static var UpdateFriendResidenceDurationInputType: AppInput<AppSchema.UpdateFriendResidenceDurationInput> {
+  static var UpdateFriendResidenceDurationInputType: AppInput<
+    AppSchema
+      .UpdateFriendResidenceDurationInput
+  > {
     Input(AppSchema.UpdateFriendResidenceDurationInput.self) {
       InputField("id", at: \.id)
       InputField("friendResidenceId", at: \.friendResidenceId)
@@ -72,25 +78,37 @@ extension AppSchema {
     Field("getFriendResidenceDurations", at: Resolver.getFriendResidenceDurations)
   }
 
-  static var createFriendResidenceDuration: AppField<FriendResidenceDuration, AppSchema.CreateFriendResidenceDurationArgs> {
+  static var createFriendResidenceDuration: AppField<
+    FriendResidenceDuration,
+    AppSchema.CreateFriendResidenceDurationArgs
+  > {
     Field("createFriendResidenceDuration", at: Resolver.createFriendResidenceDuration) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createFriendResidenceDurations: AppField<[FriendResidenceDuration], AppSchema.CreateFriendResidenceDurationsArgs> {
+  static var createFriendResidenceDurations: AppField<
+    [FriendResidenceDuration],
+    AppSchema.CreateFriendResidenceDurationsArgs
+  > {
     Field("createFriendResidenceDurations", at: Resolver.createFriendResidenceDurations) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateFriendResidenceDuration: AppField<FriendResidenceDuration, AppSchema.UpdateFriendResidenceDurationArgs> {
+  static var updateFriendResidenceDuration: AppField<
+    FriendResidenceDuration,
+    AppSchema.UpdateFriendResidenceDurationArgs
+  > {
     Field("updateFriendResidenceDuration", at: Resolver.updateFriendResidenceDuration) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateFriendResidenceDurations: AppField<[FriendResidenceDuration], AppSchema.UpdateFriendResidenceDurationsArgs> {
+  static var updateFriendResidenceDurations: AppField<
+    [FriendResidenceDuration],
+    AppSchema.UpdateFriendResidenceDurationsArgs
+  > {
     Field("updateFriendResidenceDurations", at: Resolver.updateFriendResidenceDurations) {
       Argument("input", at: \.input)
     }

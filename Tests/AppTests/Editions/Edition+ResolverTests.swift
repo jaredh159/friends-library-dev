@@ -33,10 +33,20 @@ final class EditionResolverTests: AppTestCase {
       query GetEdition {
         edition: getEdition(id: "\(edition.id.uuidString)") {
           id
+          images {
+            square {
+              w45 {
+                width
+              }
+            }
+          }
         }
       }
       """,
-      expectedData: .containsKVPs(["id": edition.id.uuidString]),
+      expectedData: .containsKVPs([
+        "id": edition.id.uuidString,
+        "width": 45,
+      ]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app)
   }
