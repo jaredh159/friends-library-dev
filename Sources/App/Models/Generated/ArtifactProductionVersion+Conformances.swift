@@ -2,7 +2,7 @@
 import Foundation
 import Tagged
 
-extension ArtifactProductionVersion: AppModel {
+extension ArtifactProductionVersion: ApiModel {
   typealias Id = Tagged<ArtifactProductionVersion, UUID>
 }
 

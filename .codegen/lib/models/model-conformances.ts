@@ -17,7 +17,7 @@ export function generateModelConformances(
 
   code += `\n`;
 
-  code += `extension ${name}: AppModel {`;
+  code += `extension ${name}: ApiModel {`;
   if (needsIdAlias) {
     code += `\n  typealias Id = Tagged<${name}, UUID>\n`;
   }

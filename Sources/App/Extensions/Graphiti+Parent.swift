@@ -86,7 +86,7 @@ private func loadParent<Child: DuetModel, P: DuetModel>(
   return parent
 }
 
-private func resolveParent<M: AppModel, P: AppModel>(
+private func resolveParent<M: ApiModel, P: ApiModel>(
   _ f: @escaping (M) async throws -> P
 ) -> (M) -> (Req, NoArgs, EventLoopGroup) throws -> Future<P> {
   { model in

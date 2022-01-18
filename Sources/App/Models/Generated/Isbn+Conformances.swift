@@ -2,7 +2,7 @@
 import Foundation
 import Tagged
 
-extension Isbn: AppModel {
+extension Isbn: ApiModel {
   typealias Id = Tagged<Isbn, UUID>
 }
 

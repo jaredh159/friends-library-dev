@@ -18,11 +18,11 @@ enum PreloadedEntityType {
   case audioPart(AudioPart.Type)
 }
 
-protocol AppModel: Codable, Equatable {
+protocol ApiModel: Codable, Equatable {
   static var preloadedEntityType: PreloadedEntityType? { get }
 }
 
-extension AppModel {
+extension ApiModel {
   static var preloadedEntityType: PreloadedEntityType? { nil }
   static var isPreloaded: Bool { preloadedEntityType != nil }
 }
@@ -31,7 +31,7 @@ enum RelationError: Error {
   case notLoaded
 }
 
-enum Children<C: AppModel>: Codable {
+enum Children<C: ApiModel>: Codable {
   case notLoaded
   case loaded([C])
 
@@ -52,7 +52,7 @@ enum Children<C: AppModel>: Codable {
   }
 }
 
-enum Parent<P: AppModel> {
+enum Parent<P: ApiModel> {
   case notLoaded
   case loaded(P)
 
@@ -73,7 +73,7 @@ enum Parent<P: AppModel> {
   }
 }
 
-enum OptionalParent<P: AppModel> {
+enum OptionalParent<P: ApiModel> {
   case notLoaded
   case loaded(P?)
 
@@ -94,7 +94,7 @@ enum OptionalParent<P: AppModel> {
   }
 }
 
-enum OptionalChild<C: AppModel> {
+enum OptionalChild<C: ApiModel> {
   case notLoaded
   case loaded(C?)
 
@@ -123,7 +123,7 @@ protocol UUIDIdentifiable {
   var uuidId: UUID { get }
 }
 
-protocol DuetModel: UUIDIdentifiable, SQLInspectable, AppModel {
+protocol DuetModel: UUIDIdentifiable, SQLInspectable, ApiModel {
   associatedtype IdValue: RandomEmptyInitializing, UUIDStringable, Hashable
   var id: IdValue { get set }
   associatedtype ColumnName: CodingKey, Hashable, CaseIterable

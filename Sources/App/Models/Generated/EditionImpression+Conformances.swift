@@ -2,7 +2,7 @@
 import Foundation
 import Tagged
 
-extension EditionImpression: AppModel {
+extension EditionImpression: ApiModel {
   typealias Id = Tagged<EditionImpression, UUID>
   static var preloadedEntityType: PreloadedEntityType? {
     .editionImpression(Self.self)

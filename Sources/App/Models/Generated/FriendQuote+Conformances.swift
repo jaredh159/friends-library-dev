@@ -2,7 +2,7 @@
 import Foundation
 import Tagged
 
-extension FriendQuote: AppModel {
+extension FriendQuote: ApiModel {
   typealias Id = Tagged<FriendQuote, UUID>
   static var preloadedEntityType: PreloadedEntityType? {
     .friendQuote(Self.self)

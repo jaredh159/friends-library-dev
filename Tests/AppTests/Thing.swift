@@ -38,7 +38,7 @@ final class Thing: Codable {
 
 // extensions
 
-extension Thing: AppModel {
+extension Thing: ApiModel {
   typealias Id = Tagged<Thing, UUID>
 }
 

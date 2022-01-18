@@ -2,7 +2,7 @@
 import Foundation
 import Tagged
 
-extension Token: AppModel {
+extension Token: ApiModel {
   typealias Id = Tagged<Token, UUID>
 }
 

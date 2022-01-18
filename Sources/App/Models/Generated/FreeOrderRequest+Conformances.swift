@@ -2,7 +2,7 @@
 import Foundation
 import Tagged
 
-extension FreeOrderRequest: AppModel {
+extension FreeOrderRequest: ApiModel {
   typealias Id = Tagged<FreeOrderRequest, UUID>
 }
 

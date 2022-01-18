@@ -2,7 +2,7 @@
 import Foundation
 import Tagged
 
-extension DocumentTag: AppModel {
+extension DocumentTag: ApiModel {
   typealias Id = Tagged<DocumentTag, UUID>
   static var preloadedEntityType: PreloadedEntityType? {
     .documentTag(Self.self)

@@ -53,7 +53,7 @@ private func loadOptionalParent<Child: DuetModel, Parent: DuetModel>(
   return parent
 }
 
-private func resolveOptionalParent<M: AppModel, P: AppModel>(
+private func resolveOptionalParent<M: ApiModel, P: ApiModel>(
   _ f: @escaping (M) async throws -> P?
 ) -> (M) -> (Req, NoArgs, EventLoopGroup) throws -> Future<P?> {
   { model in

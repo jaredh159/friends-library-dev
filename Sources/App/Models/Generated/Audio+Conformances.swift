@@ -2,7 +2,7 @@
 import Foundation
 import Tagged
 
-extension Audio: AppModel {
+extension Audio: ApiModel {
   typealias Id = Tagged<Audio, UUID>
   static var preloadedEntityType: PreloadedEntityType? {
     .audio(Self.self)

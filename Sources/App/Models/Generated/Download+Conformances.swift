@@ -2,7 +2,7 @@
 import Foundation
 import Tagged
 
-extension Download: AppModel {
+extension Download: ApiModel {
   typealias Id = Tagged<Download, UUID>
 }
 

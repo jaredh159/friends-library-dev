@@ -24,7 +24,7 @@ describe(`generateModelConformances()`, () => {
       import Foundation
       import Tagged
 
-      extension Thing: AppModel {
+      extension Thing: ApiModel {
         typealias Id = Tagged<Thing, UUID>
         static var preloadedEntityType: PreloadedEntityType? {
           .thing(Self.self)
@@ -86,7 +86,7 @@ describe(`generateModelConformances()`, () => {
       // auto-generated, do not edit
       import Foundation
 
-      extension Thing: AppModel {}
+      extension Thing: ApiModel {}
 
       extension Thing: DuetModel {
         static let tableName = "things"
