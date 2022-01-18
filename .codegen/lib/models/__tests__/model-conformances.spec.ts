@@ -12,6 +12,7 @@ describe(`generateModelConformances()`, () => {
   it(`generates correct conformances for models`, () => {
     const model = Model.mock();
     model.migrationNumber = 8;
+    model.isPreloaded = true;
     model.props = [
       { name: `id`, type: `Id` },
       { name: `name`, type: `String` },
@@ -25,6 +26,9 @@ describe(`generateModelConformances()`, () => {
 
       extension Thing: AppModel {
         typealias Id = Tagged<Thing, UUID>
+        static var preloadedEntityType: PreloadedEntityType? {
+          .thing(Self.self)
+        }
       }
 
       extension Thing: DuetModel {
@@ -34,7 +38,7 @@ describe(`generateModelConformances()`, () => {
       extension Thing {
         typealias ColumnName = CodingKeys
 
-        enum CodingKeys: String, CodingKey {
+        enum CodingKeys: String, CodingKey, CaseIterable {
           case id
           case name
           case version
@@ -52,16 +56,14 @@ describe(`generateModelConformances()`, () => {
       }
 
       extension Thing: SQLInspectable {
-        func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+        func satisfies(constraint: SQL.WhereConstraint<Thing>) -> Bool {
           switch constraint.column {
-            case "id":
+            case .id:
               return .id(self) == constraint.value
-            case "name":
+            case .name:
               return .string(name) == constraint.value
-            case "version":
+            case .version:
               return .string(version.rawValue) == constraint.value
-            default:
-              return false
           }
         }
       }
@@ -93,7 +95,7 @@ describe(`generateModelConformances()`, () => {
       extension Thing {
         typealias ColumnName = CodingKeys
 
-        enum CodingKeys: String, CodingKey {
+        enum CodingKeys: String, CodingKey, CaseIterable {
           case createdAt
           case updatedAt
           case deletedAt
@@ -110,16 +112,14 @@ describe(`generateModelConformances()`, () => {
       }
       
       extension Thing: SQLInspectable {
-        func satisfies(constraint: SQL.WhereConstraint) -> Bool {
+        func satisfies(constraint: SQL.WhereConstraint<Thing>) -> Bool {
           switch constraint.column {
-            case "created_at":
+            case .createdAt:
               return .date(createdAt) == constraint.value
-            case "updated_at":
+            case .updatedAt:
               return .date(updatedAt) == constraint.value
-            case "deleted_at":
+            case .deletedAt:
               return .date(deletedAt) == constraint.value
-            default:
-              return false
           }
         }
       }

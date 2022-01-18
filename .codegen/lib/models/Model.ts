@@ -13,6 +13,7 @@ export default class Model {
   public props: Prop[] = [];
   public computedProps: Prop[] = [];
   public init: Array<{ propName: string; hasDefault: boolean }> = [];
+  public isPreloaded: boolean = false;
 
   public constructor(name: string = ``, filepath: string = ``) {
     this.name = name;

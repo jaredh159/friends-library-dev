@@ -1,4 +1,3 @@
-import { snakeCase } from 'snake-case';
 import { insertData, toPostgresData } from './model-db-data';
 import { GlobalTypes } from '../types';
 import Model from './Model';
@@ -20,10 +19,15 @@ export function generateModelConformances(
 
   code += `extension ${name}: AppModel {`;
   if (needsIdAlias) {
-    code += `\n  typealias Id = Tagged<${name}, UUID>\n}\n\n`;
-  } else {
-    code += `}\n\n`;
+    code += `\n  typealias Id = Tagged<${name}, UUID>\n`;
   }
+  if (model.isPreloaded) {
+    code += `${
+      needsIdAlias ? `` : `\n`
+    }  static var preloadedEntityType: PreloadedEntityType? {`;
+    code += `\n    .${model.camelCaseName}(Self.self)\n  }\n`;
+  }
+  code += `}\n\n`;
 
   const table = migrationNumber
     ? `M${migrationNumber}.tableName`

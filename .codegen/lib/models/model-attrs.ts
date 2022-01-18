@@ -130,6 +130,33 @@ function setMigrationNumber(model: Model, lines: string[]): void {
   }
 }
 
+function setIsPreloaded({ source }: File, models: Record<string, Model>): void {
+  if (!source.includes(`enum PreloadedEntityType {`)) {
+    return;
+  }
+  const lines = source.split(`\n`);
+  while (lines.length) {
+    const line = lines.shift()!;
+    if (line.match(/^enum PreloadedEntityType {$/)) {
+      parsePreloadedEntityTypes(lines, models);
+    }
+  }
+}
+
+function parsePreloadedEntityTypes(lines: string[], models: Record<string, Model>) {
+  while (lines.length && lines[0] !== `}`) {
+    const line = lines.shift()!;
+    const match = line.match(/^\s+case [^)]+\(([A-Z][A-Za-z]+)\.Type\)$/);
+    if (!match) {
+      continue;
+    }
+    const modelName = match[1];
+    const model = models[modelName];
+    if (!model) throw new Error(`Unexpected model name from PreloadedEntityType enum`);
+    model.isPreloaded = true;
+  }
+}
+
 export function extractModels(files: File[]): Model[] {
   const models: Record<string, Model> = {};
   for (const file of files) {
@@ -141,6 +168,7 @@ export function extractModels(files: File[]): Model[] {
 
   for (const file of files) {
     setMigrationNumbers(file, models);
+    setIsPreloaded(file, models);
   }
 
   return Object.values(models);

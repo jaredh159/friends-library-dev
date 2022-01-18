@@ -12,6 +12,38 @@ protocol SQLQuerying {
   ) async throws -> [M]
 }
 
+protocol InMemoryDatabase {
+  typealias Models<M: DuetModel> = ReferenceWritableKeyPath<Self, [M.IdValue: M]>
+  func models<M: DuetModel>(of Model: M.Type) async throws -> [M.IdValue: M]
+}
+
+extension InMemoryDatabase {
+  func select<M: DuetModel>(
+    _ Model: M.Type,
+    where constraints: [SQL.WhereConstraint<M>]? = nil,
+    orderBy: SQL.Order<M>? = nil,
+    limit: Int? = nil
+  ) async throws -> [M] {
+    if M.isPreloaded, let hasEntityRepo = self as? HasEntityRepository {
+      return try await hasEntityRepo.entityRepo.getEntities()
+        .select(M.self, where: constraints, orderBy: orderBy, limit: limit)
+    }
+    var models = Array(try await self.models(of: Model).values)
+    for constraint in constraints ?? [] {
+      models = models.filter {
+        $0.satisfies(constraint: constraint as! SQL.WhereConstraint<M.Model>)
+      }
+    }
+    if let orderBy = orderBy {
+      try models.order(by: orderBy)
+    }
+    if let limit = limit {
+      models = Array(models.prefix(limit))
+    }
+    return models
+  }
+}
+
 protocol SQLMutating {
   @discardableResult
   func create<M: DuetModel>(_ models: [M]) async throws -> [M]

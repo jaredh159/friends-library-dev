@@ -4,6 +4,9 @@ import Tagged
 
 extension EditionImpression: AppModel {
   typealias Id = Tagged<EditionImpression, UUID>
+  static var preloadedEntityType: PreloadedEntityType? {
+    .editionImpression(Self.self)
+  }
 }
 
 extension EditionImpression: DuetModel {

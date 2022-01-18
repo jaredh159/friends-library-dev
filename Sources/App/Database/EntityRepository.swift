@@ -1,14 +1,31 @@
 import FluentSQL
 import Vapor
 
-private var liveEntities: PreloadedEntities?
-private var mockEntities: PreloadedEntities?
+protocol EntityRepository: AnyObject {
+  var entities: PreloadedEntities? { get set }
+  func getEntities() async throws -> PreloadedEntities
+  func flush() async
+}
 
-struct EntityRepository {
+extension EntityRepository {
+  func flush() async {
+    if let entities = entities {
+      await entities.flush()
+    }
+    entities = nil
+  }
+}
+
+protocol HasEntityRepository {
+  var entityRepo: EntityRepository { get }
+}
+
+class LiveEntityRepository: EntityRepository {
   let db: SQLDatabase
+  var entities: PreloadedEntities?
 
   func getEntities() async throws -> PreloadedEntities {
-    if let entities = liveEntities {
+    if let entities = entities {
       return entities
     }
 
@@ -25,7 +42,7 @@ struct EntityRepository {
     async let audios = findAll(Audio.self)
     async let audioParts = findAll(AudioPart.self)
 
-    let entities = PreloadedEntities(
+    let loaded = PreloadedEntities(
       friends: try await friends,
       friendQuotes: try await friendQuotes,
       friendResidences: try await friendResidences,
@@ -40,8 +57,8 @@ struct EntityRepository {
       audioParts: try await audioParts
     )
 
-    liveEntities = entities
-    return entities
+    entities = loaded
+    return loaded
   }
 
   private func findAll<M: DuetModel>(_ Model: M.Type) async throws -> [M] {
@@ -50,24 +67,21 @@ struct EntityRepository {
     return try rows.compactMap { try $0.decode(Model.self) }
   }
 
-  func flush() {
-    liveEntities = nil
-  }
-
   init(db: SQLDatabase) {
     self.db = db
   }
 }
 
-struct MockEntityRepository {
+class MockEntityRepository: EntityRepository {
   let db: MockDatabase
+  var entities: PreloadedEntities?
 
   func getEntities() async throws -> PreloadedEntities {
-    if let entities = mockEntities {
+    if let entities = entities {
       return entities
     }
 
-    let entities = PreloadedEntities(
+    let loaded = PreloadedEntities(
       friends: db.friends,
       friendQuotes: db.friendQuotes,
       friendResidences: db.friendResidences,
@@ -82,26 +96,11 @@ struct MockEntityRepository {
       audioParts: db.audioParts
     )
 
-    mockEntities = entities
-    return entities
-  }
-
-  func flush() {
-    mockEntities = nil
+    entities = loaded
+    return loaded
   }
 
   init(db: MockDatabase) {
     self.db = db
-  }
-}
-
-extension Children {
-  mutating func push(_ child: C) {
-    switch self {
-      case .notLoaded:
-        self = .loaded([child])
-      case .loaded(let children):
-        self = .loaded(children + [child])
-    }
   }
 }

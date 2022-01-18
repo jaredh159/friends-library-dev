@@ -4,6 +4,9 @@ import Tagged
 
 extension Document: AppModel {
   typealias Id = Tagged<Document, UUID>
+  static var preloadedEntityType: PreloadedEntityType? {
+    .document(Self.self)
+  }
 }
 
 extension Document: DuetModel {

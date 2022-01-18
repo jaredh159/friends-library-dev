@@ -1,8 +1,31 @@
 import Foundation
 import NIO
 import Tagged
+import Vapor
 
-protocol AppModel: Codable, Equatable {}
+enum PreloadedEntityType {
+  case friend(Friend.Type)
+  case friendQuote(FriendQuote.Type)
+  case friendResidence(FriendResidence.Type)
+  case friendResidenceDuration(FriendResidenceDuration.Type)
+  case document(Document.Type)
+  case documentTag(DocumentTag.Type)
+  case relatedDocument(RelatedDocument.Type)
+  case edition(Edition.Type)
+  case editionImpression(EditionImpression.Type)
+  case editionChapter(EditionChapter.Type)
+  case audio(Audio.Type)
+  case audioPart(AudioPart.Type)
+}
+
+protocol AppModel: Codable, Equatable {
+  static var preloadedEntityType: PreloadedEntityType? { get }
+}
+
+extension AppModel {
+  static var preloadedEntityType: PreloadedEntityType? { nil }
+  static var isPreloaded: Bool { preloadedEntityType != nil }
+}
 
 enum RelationError: Error {
   case notLoaded
@@ -192,13 +215,31 @@ enum DuetError: Error {
 }
 
 extension DuetModel {
-  func introspectValue(at column: ColumnName) throws -> Any {
+  func introspectValue(at column: String) throws -> Any {
     let mirror = Mirror(reflecting: self)
     for child in mirror.children {
-      if child.label == column.stringValue {
+      if child.label == column {
         return child.value
       }
     }
-    return DuetError.missingExpectedColumn(column.stringValue)
+    return DuetError.missingExpectedColumn(column)
+  }
+}
+
+extension Array where Element: DuetModel {
+  mutating func order<M: DuetModel>(by order: SQL.Order<M>) throws {
+    try sort { a, b in
+      let propA = try a.introspectValue(at: order.column.stringValue)
+      let propB = try b.introspectValue(at: order.column.stringValue)
+      switch (propA, propB) {
+        case (let dateA, let dateB) as (Date, Date):
+          return order.direction == .asc ? dateA < dateB : dateA > dateB
+        default:
+          throw Abort(
+            .notImplemented,
+            reason: "[DuetModel].order(by:) not implemented for \(type(of: propA))"
+          )
+      }
+    }
   }
 }

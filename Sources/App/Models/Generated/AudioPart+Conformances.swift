@@ -4,6 +4,9 @@ import Tagged
 
 extension AudioPart: AppModel {
   typealias Id = Tagged<AudioPart, UUID>
+  static var preloadedEntityType: PreloadedEntityType? {
+    .audioPart(Self.self)
+  }
 }
 
 extension AudioPart: DuetModel {

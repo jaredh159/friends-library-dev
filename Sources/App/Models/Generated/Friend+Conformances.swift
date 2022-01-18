@@ -4,6 +4,9 @@ import Tagged
 
 extension Friend: AppModel {
   typealias Id = Tagged<Friend, UUID>
+  static var preloadedEntityType: PreloadedEntityType? {
+    .friend(Self.self)
+  }
 }
 
 extension Friend: DuetModel {

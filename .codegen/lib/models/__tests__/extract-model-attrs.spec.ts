@@ -45,6 +45,7 @@ describe(`extractModelAttrs()`, () => {
       filepath: `/Models/Thing.swift`,
       taggedTypes: {},
       dbEnums: {},
+      isPreloaded: false,
       relations: {
         kids: { type: `Person`, relationType: `Children` },
       },
@@ -160,6 +161,7 @@ describe(`extractModels()`, () => {
         taggedTypes: {},
         dbEnums: {},
         relations: {},
+        isPreloaded: false,
         init: [
           { propName: `id`, hasDefault: true },
           { propName: `age`, hasDefault: false },
@@ -206,6 +208,7 @@ describe(`extractModels()`, () => {
         computedProps: [],
         relations: {},
         init: [],
+        isPreloaded: false,
         props: [{ name: `id`, type: `UUID` }],
       },
     ]);

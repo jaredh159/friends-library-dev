@@ -1,8 +1,13 @@
 import FluentSQL
 
 struct LiveDatabase: SQLQuerying, SQLMutating, DatabaseClient {
-
   let db: SQLDatabase
+  let entityRepo: EntityRepository
+
+  init(db: SQLDatabase) {
+    self.db = db
+    entityRepo = LiveEntityRepository(db: db)
+  }
 
   func query<M: DuetModel>(_ Model: M.Type) -> DuetQuery<M> {
     DuetQuery<M>(db: self, constraints: [], limit: nil, order: nil)
@@ -13,6 +18,7 @@ struct LiveDatabase: SQLQuerying, SQLMutating, DatabaseClient {
     guard !models.isEmpty else { return models }
     let prepared = try SQL.insert(into: M.self, values: models.map(\.insertValues))
     try await SQL.execute(prepared, on: db)
+    if M.isPreloaded { await entityRepo.flush() }
     return models
   }
 
@@ -24,9 +30,11 @@ struct LiveDatabase: SQLQuerying, SQLMutating, DatabaseClient {
       where: [M.column("id") == .id(model)],
       returning: .all
     )
-    return try await SQL.execute(prepared, on: db)
+    let models = try await SQL.execute(prepared, on: db)
       .compactMap { try $0.decode(M.self) }
       .firstOrThrowNotFound()
+    if M.isPreloaded { await entityRepo.flush() }
+    return models
   }
 
   @discardableResult
@@ -44,6 +52,7 @@ struct LiveDatabase: SQLQuerying, SQLMutating, DatabaseClient {
     guard !models.isEmpty else { return models }
     let prepared = SQL.delete(from: M.self, where: constraints)
     try await SQL.execute(prepared, on: db)
+    if M.isPreloaded { await entityRepo.flush() }
     return models
   }
 
@@ -55,6 +64,7 @@ struct LiveDatabase: SQLQuerying, SQLMutating, DatabaseClient {
     let models = try await select(Model.self, where: constraints)
     let prepared = SQL.softDelete(M.self, where: constraints)
     try await SQL.execute(prepared, on: db)
+    if M.isPreloaded { await entityRepo.flush() }
     return models
   }
 
@@ -64,6 +74,10 @@ struct LiveDatabase: SQLQuerying, SQLMutating, DatabaseClient {
     orderBy: SQL.Order<M>? = nil,
     limit: Int? = nil
   ) async throws -> [M] {
+    if M.isPreloaded {
+      return try await entityRepo.getEntities()
+        .select(M.self, where: constraints, orderBy: orderBy, limit: limit)
+    }
     let prepared = SQL.select(
       .all,
       from: M.self,

@@ -4,6 +4,9 @@ import Tagged
 
 extension FriendResidenceDuration: AppModel {
   typealias Id = Tagged<FriendResidenceDuration, UUID>
+  static var preloadedEntityType: PreloadedEntityType? {
+    .friendResidenceDuration(Self.self)
+  }
 }
 
 extension FriendResidenceDuration: DuetModel {

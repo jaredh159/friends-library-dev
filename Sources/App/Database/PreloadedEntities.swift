@@ -1,6 +1,6 @@
 import Foundation
 
-actor PreloadedEntities: SQLQuerying {
+actor PreloadedEntities: SQLQuerying, InMemoryDatabase {
   var friends: [Friend.Id: Friend]
   var friendQuotes: [FriendQuote.Id: FriendQuote]
   var friendResidences: [FriendResidence.Id: FriendResidence]
@@ -13,16 +13,7 @@ actor PreloadedEntities: SQLQuerying {
   var editionChapters: [EditionChapter.Id: EditionChapter]
   var audios: [Audio.Id: Audio]
   var audioParts: [AudioPart.Id: AudioPart]
-
-  func select<M: DuetModel>(
-    _ Model: M.Type,
-    where constraint: [SQL.WhereConstraint<M>]? = nil,
-    orderBy: SQL.Order<M>? = nil,
-    limit: Int? = nil
-  ) async throws -> [M] {
-    fatalError()
-    // try Array(models(of: Model).values).filter { $0.satisfies(constraint: constraint) }
-  }
+  // ⚠️ when adding new dictionary properties, make sure you flush them in self.flush()
 
   init(
     friends: [Friend.Id: Friend] = [:],
@@ -143,6 +134,21 @@ actor PreloadedEntities: SQLQuerying {
     }
   }
 
+  func flush() {
+    friends = [:]
+    friendQuotes = [:]
+    friendResidences = [:]
+    friendResidenceDurations = [:]
+    documents = [:]
+    documentTags = [:]
+    relatedDocuments = [:]
+    editions = [:]
+    editionImpressions = [:]
+    editionChapters = [:]
+    audios = [:]
+    audioParts = [:]
+  }
+
   convenience init(
     friends: [Friend] = [],
     friendQuotes: [FriendQuote] = [],
@@ -173,7 +179,7 @@ actor PreloadedEntities: SQLQuerying {
     )
   }
 
-  private func models<M: DuetModel>(of Model: M.Type) throws -> [M.IdValue: M] {
+  func models<M: DuetModel>(of Model: M.Type) async throws -> [M.IdValue: M] {
     switch Model.tableName {
       case Friend.tableName:
         return friends as! [M.IdValue: M]
@@ -218,6 +224,17 @@ enum PreloadedEntitiesError: Error, LocalizedError {
     switch self {
       case .unsupportedModelType(let tableName):
         return "Model with table name `\(tableName)` not available in PreloadedEntities"
+    }
+  }
+}
+
+extension Children {
+  mutating func push(_ child: C) {
+    switch self {
+      case .notLoaded:
+        self = .loaded([child])
+      case .loaded(let children):
+        self = .loaded(children + [child])
     }
   }
 }

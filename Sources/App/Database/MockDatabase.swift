@@ -1,9 +1,7 @@
 import Foundation
 import Vapor
 
-final class MockDatabase: SQLQuerying, SQLMutating, DatabaseClient {
-
-  typealias Models<M: DuetModel> = ReferenceWritableKeyPath<MockDatabase, [M.IdValue: M]>
+final class MockDatabase: DatabaseClient, InMemoryDatabase, HasEntityRepository {
   var tokens: [Token.Id: Token] = [:]
   var friends: [Friend.Id: Friend] = [:]
   var friendQuotes: [FriendQuote.Id: FriendQuote] = [:]
@@ -25,53 +23,23 @@ final class MockDatabase: SQLQuerying, SQLMutating, DatabaseClient {
   var artifactProductionVersions: [ArtifactProductionVersion.Id: ArtifactProductionVersion] = [:]
   var documentTags: [DocumentTag.Id: DocumentTag] = [:]
 
+  lazy var entityRepo: EntityRepository = MockEntityRepository(db: self)
+
   func query<M: DuetModel>(_ Model: M.Type) -> DuetQuery<M> {
     DuetQuery<M>(db: self, constraints: [], limit: nil, order: nil)
   }
 
-  func select<M: DuetModel>(
-    _ Model: M.Type,
-    where constraints: [SQL.WhereConstraint<M>]? = nil,
-    orderBy: SQL.Order<M>? = nil,
-    limit: Int? = nil
-  ) async throws -> [M] {
-    var models: [M] = Array(self[keyPath: models(of: M.self)].values)
-    for constraint in constraints ?? [] {
-      models = models
-        .filter { $0.satisfies(constraint: constraint as! SQL.WhereConstraint<M.Model>) }
-    }
-
-    if let orderBy = orderBy {
-      models = try models.sorted { a, b in
-        let propA = try a.introspectValue(at: orderBy.column)
-        let propB = try b.introspectValue(at: orderBy.column)
-        switch (propA, propB) {
-          case (let dateA, let dateB) as (Date, Date):
-            return orderBy.direction == .asc ? dateA < dateB : dateA > dateB
-          default:
-            throw Abort(
-              .notImplemented,
-              reason: "MockDatabase orderBy not implemented for \(type(of: propA))"
-            )
-        }
-      }
-    }
-
-    if let limit = limit {
-      models = Array(models.prefix(limit))
-    }
-    return models
-  }
-
   func create<M: DuetModel>(_ insert: [M]) async throws -> [M] {
     for model in insert {
-      self[keyPath: models(of: M.self)][model.id] = model
+      self[keyPath: modelsKeyPath(of: M.self)][model.id] = model
     }
+    if M.isPreloaded { await entityRepo.flush() }
     return insert
   }
 
   func update<M: DuetModel>(_ model: M) async throws -> M {
-    self[keyPath: models(of: M.self)][model.id] = model
+    self[keyPath: modelsKeyPath(of: M.self)][model.id] = model
+    if M.isPreloaded { await entityRepo.flush() }
     return model
   }
 
@@ -81,15 +49,20 @@ final class MockDatabase: SQLQuerying, SQLMutating, DatabaseClient {
     orderBy: SQL.Order<M>?,
     limit: Int?
   ) async throws -> [M] {
-    let keyPath = models(of: M.self)
+    let keyPath = modelsKeyPath(of: M.self)
     let selected = try await select(Model, where: constraints, orderBy: orderBy, limit: limit)
     for model in selected {
       self[keyPath: keyPath][model.id] = nil
     }
+    if M.isPreloaded { await entityRepo.flush() }
     return selected
   }
 
-  func models<M: DuetModel>(of Model: M.Type) -> Models<M> {
+  func models<M: DuetModel>(of Model: M.Type) async throws -> [M.IdValue: M] {
+    self[keyPath: modelsKeyPath(of: M.self)]
+  }
+
+  func modelsKeyPath<M: DuetModel>(of Model: M.Type) -> Models<M> {
     switch Model.tableName {
       case Token.tableName:
         return \MockDatabase.tokens as! Models<M>
