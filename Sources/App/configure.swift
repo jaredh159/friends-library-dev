@@ -22,7 +22,8 @@ public func configure(_ app: Application) throws {
       username: Env.DATABASE_USERNAME,
       password: Env.DATABASE_PASSWORD,
       database: Env.get("\(dbPrefix)DATABASE_NAME")!
-    ), as: .psql
+    ),
+    as: .psql
   )
 
   addMigrations(to: app)

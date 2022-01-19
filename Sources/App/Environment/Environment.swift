@@ -7,7 +7,8 @@ struct Environment {
   var db: DatabaseClient = ThrowingDatabaseClient()
   var auth: Auth = .live
   var logger = Logger(label: "api.friendslibrary")
-  var slackClient: SlackClient = .init()
+  var slackClient: Slack.Client = .init()
+  var luluClient: Lulu.Api.Client = .live
 }
 
 var Current = Environment()
@@ -17,7 +18,7 @@ extension UUID {
 }
 
 func invariant(_ msg: String) -> Never {
-  let slack = Slack(text: msg, channel: "errors", emoji: .fireEngine)
+  let slack = Slack.Message(text: msg, channel: "#errors", emoji: .fireEngine)
   try! Current.slackClient.sendSync(slack)
   fatalError(msg)
 }

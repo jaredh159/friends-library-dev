@@ -16,6 +16,23 @@ enum PrintSizeVariant: String, Codable, CaseIterable {
   case m
   case xl
   case xlCondensed
+
+  var printSize: PrintSize {
+    switch self {
+      case .s:
+        return .s
+      case .m:
+        return .m
+      case .xl, .xlCondensed:
+        return .xl
+    }
+  }
+}
+
+enum PrintSize: String, Codable, CaseIterable {
+  case s
+  case m
+  case xl
 }
 
 typealias GitCommitSha = Tagged<(tagged: (), sha: ()), String>

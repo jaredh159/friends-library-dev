@@ -8,4 +8,7 @@ extension Env {
   static let DATABASE_USERNAME = get("DATABASE_USERNAME")!
   static let DATABASE_PASSWORD = get("DATABASE_PASSWORD")!
   static let CLOUD_STORAGE_BUCKET_URL = get("CLOUD_STORAGE_BUCKET_URL")!
+  static let LULU_API_ENDPOINT = get("LULU_API_ENDPOINT")!
+  static let LULU_CLIENT_KEY = get("LULU_CLIENT_KEY")!
+  static let LULU_CLIENT_SECRET = get("LULU_CLIENT_SECRET")!
 }

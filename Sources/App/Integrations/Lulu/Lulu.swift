@@ -1,10 +1,14 @@
 import NonEmpty
 import TaggedMoney
 
+enum Lulu {
+  enum Api {}
+}
+
 // @TODO check if we're not still grandfathered in at old price of 1.4
 private let PRICE_PER_PAGE: Double = 2.0
 
-enum Lulu {
+extension Lulu {
   static func paperbackPrice(size: PrintSizeVariant, volumes: NonEmpty<[Int]>) -> Cents<Int> {
     volumes.reduce(Cents<Int>(rawValue: 0)) { acc, pagesInVolume in
       let isSaddleStitch = size == .s && pagesInVolume < 32
