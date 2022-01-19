@@ -28,6 +28,18 @@ final class Order: Codable {
   var items = Children<OrderItem>.notLoaded
   var freeOrderRequest = OptionalParent<FreeOrderRequest>.notLoaded
 
+  var address: ShippingAddress {
+    .init(
+      name: addressName,
+      street: addressStreet,
+      street2: addressStreet2,
+      city: addressCity,
+      state: addressState,
+      zip: addressZip,
+      country: addressCountry
+    )
+  }
+
   init(
     id: Id = .init(),
     printJobId: PrintJobId? = nil,
@@ -74,6 +86,48 @@ final class Order: Codable {
 }
 
 /// extensions
+
+extension Order {
+  convenience init(
+    id: Id = .init(),
+    printJobId: PrintJobId? = nil,
+    lang: Lang,
+    source: OrderSource,
+    paymentId: PaymentId,
+    printJobStatus: PrintJobStatus,
+    amount: Cents<Int>,
+    taxes: Cents<Int>,
+    ccFeeOffset: Cents<Int>,
+    shipping: Cents<Int>,
+    shippingLevel: ShippingLevel,
+    email: EmailAddress,
+    address: ShippingAddress,
+    freeOrderRequestId: FreeOrderRequest.Id? = nil
+  ) {
+    self.init(
+      id: id,
+      printJobId: printJobId,
+      lang: lang,
+      source: source,
+      paymentId: paymentId,
+      printJobStatus: printJobStatus,
+      amount: amount,
+      taxes: taxes,
+      ccFeeOffset: ccFeeOffset,
+      shipping: shipping,
+      shippingLevel: shippingLevel,
+      email: email,
+      addressName: address.name,
+      addressStreet: address.street,
+      addressStreet2: address.street2,
+      addressCity: address.city,
+      addressState: address.state,
+      addressZip: address.zip,
+      addressCountry: address.country,
+      freeOrderRequestId: freeOrderRequestId
+    )
+  }
+}
 
 extension Order {
   enum PrintJobStatus: String, Codable, CaseIterable {

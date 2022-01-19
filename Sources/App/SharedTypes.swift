@@ -1,5 +1,15 @@
 import Tagged
 
+struct ShippingAddress {
+  var name: String
+  var street: String
+  var street2: String?
+  var city: String
+  var state: String
+  var zip: String
+  var country: String
+}
+
 enum Lang: String, Codable, CaseIterable {
   case en
   case es

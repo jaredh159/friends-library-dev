@@ -65,3 +65,17 @@ extension Lulu.Api {
     let lineItemCosts: [LineItemCost]
   }
 }
+
+extension ShippingAddress {
+  var luluAddress: Lulu.Api.ShippingAddress {
+    .init(
+      name: name,
+      street1: street,
+      street2: street2,
+      countryCode: country,
+      city: city,
+      stateCode: state,
+      postcode: zip
+    )
+  }
+}

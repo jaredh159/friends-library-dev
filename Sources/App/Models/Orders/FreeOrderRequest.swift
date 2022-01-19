@@ -16,6 +16,18 @@ final class FreeOrderRequest: Codable {
   var createdAt = Current.date()
   var updatedAt = Current.date()
 
+  var address: ShippingAddress {
+    .init(
+      name: name,
+      street: addressStreet,
+      street2: addressStreet2,
+      city: addressCity,
+      state: addressState,
+      zip: addressZip,
+      country: addressCountry
+    )
+  }
+
   init(
     id: Id = .init(),
     name: String,
@@ -42,5 +54,33 @@ final class FreeOrderRequest: Codable {
     self.addressZip = addressZip
     self.addressCountry = addressCountry
     self.source = source
+  }
+}
+
+// extensions
+
+extension FreeOrderRequest {
+  convenience init(
+    id: Id = .init(),
+    email: EmailAddress,
+    requestedBooks: String,
+    aboutRequester: String,
+    address: ShippingAddress,
+    source: String
+  ) {
+    self.init(
+      id: id,
+      name: address.name,
+      email: email,
+      requestedBooks: requestedBooks,
+      aboutRequester: aboutRequester,
+      addressStreet: address.street,
+      addressStreet2: address.street2,
+      addressCity: address.city,
+      addressState: address.state,
+      addressZip: address.zip,
+      addressCountry: address.country,
+      source: source
+    )
   }
 }
