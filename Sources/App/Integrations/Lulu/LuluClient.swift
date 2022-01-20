@@ -6,6 +6,7 @@ extension Lulu.Api {
   struct Client {
     var createPrintJob: (CreatePrintJobBody) async throws -> PrintJob
     var listPrintJobs: (NonEmpty<[Int64]>?) async throws -> [PrintJob]
+    var getPrintJobStatus: (Int64) async throws -> PrintJob.Status
     var createPrintJobCostCalculation: (
       ShippingAddress,
       ShippingOptionLevel,
@@ -18,7 +19,35 @@ extension Lulu.Api.Client {
   static let live: Self = .init(
     createPrintJob: createPrintJob(_:),
     listPrintJobs: listPrintJobs(_:),
+    getPrintJobStatus: getPrintJobStatus(id:),
     createPrintJobCostCalculation: printJobCost(address:shippingLevel:items:)
+  )
+}
+
+extension Lulu.Api.Client {
+  static let mock: Self = .init(
+    createPrintJob: { _ in .init(id: 1, status: .init(name: .created), lineItems: []) },
+    listPrintJobs: { _ in [] },
+    getPrintJobStatus: { _ in .init(name: .created) },
+    createPrintJobCostCalculation: { _, _, _ in
+      .init(
+        totalCostInclTax: "0.00",
+        totalTax: "0.00",
+        shippingCost: .init(totalCostExclTax: "0.00"),
+        fees: [.init(totalCostExclTax: "0.00")]
+      )
+    }
+  )
+}
+
+// live implementations
+
+private func getPrintJobStatus(id: Int64) async throws -> Lulu.Api.PrintJob.Status {
+  try await HTTP.get(
+    "\(Env.LULU_API_ENDPOINT)/print-jobs/\(id)/status/",
+    decoding: Lulu.Api.PrintJob.Status.self,
+    auth: .bearer(try await luluToken.get()),
+    keyDecodingStrategy: .convertFromSnakeCase
   )
 }
 
@@ -55,6 +84,8 @@ private func printJobCost(
   )
 }
 
+// helpers
+
 private func postJson<Body: Encodable, Response: Decodable>(
   _ body: Body,
   to path: String,
@@ -67,20 +98,5 @@ private func postJson<Body: Encodable, Response: Decodable>(
     auth: .bearer(try await luluToken.get()),
     keyEncodingStrategy: .convertToSnakeCase,
     keyDecodingStrategy: .convertFromSnakeCase
-  )
-}
-
-extension Lulu.Api.Client {
-  static let mock: Self = .init(
-    createPrintJob: { _ in .init(id: 1, status: .init(name: .created), lineItems: []) },
-    listPrintJobs: { _ in [] },
-    createPrintJobCostCalculation: { _, _, _ in
-      .init(
-        totalCostInclTax: "0.00",
-        totalTax: "0.00",
-        shippingCost: .init(totalCostExclTax: "0.00"),
-        fees: [.init(totalCostExclTax: "0.00")]
-      )
-    }
   )
 }
