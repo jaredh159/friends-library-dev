@@ -77,6 +77,8 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.UpdateEditionInputType
 
   // edition impression types
+  AppSchema.EditionImpressionFileType
+  AppSchema.EditionImpressionFilesType
   AppSchema.EditionImpressionType
   AppSchema.CreateEditionImpressionInputType
   AppSchema.UpdateEditionImpressionInputType

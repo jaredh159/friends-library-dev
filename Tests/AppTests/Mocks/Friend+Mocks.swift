@@ -9,7 +9,7 @@ extension Friend {
     Friend(
       lang: .en,
       name: "@mock name",
-      slug: "mock-slug-slug",
+      slug: "mock-slug",
       gender: .male,
       description: "@mock description",
       born: nil,

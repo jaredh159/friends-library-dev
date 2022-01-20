@@ -2,13 +2,53 @@ import Foundation
 import NonEmpty
 import TaggedMoney
 
-enum PrintJobServiceError: Error {
-  case noExploratoryMetadataRetrieved
-  case invalidMoneyStringFromApi(String)
-  case invalidInputForCreditCardFeeOffset
-}
-
 enum PrintJobService {
+  static func createPrintJob(_ order: Order) async throws -> Lulu.Api.PrintJob {
+    let orderItems: [OrderItem]
+    if case .loaded(let items) = order.items {
+      orderItems = items
+    } else {
+      orderItems = try await Current.db.query(OrderItem.self)
+        .where(.orderId == order.id)
+        .all()
+      order.items = .loaded(orderItems)
+    }
+
+    for item in orderItems {
+      item.order = .loaded(order)
+      if case .notLoaded = item.edition {
+        let edition = try await Current.db.find(item.editionId)
+        item.edition = .loaded(edition)
+      }
+    }
+
+    let lineItems = try orderItems.flatMap { item -> [Lulu.Api.CreatePrintJobBody.LineItem] in
+      let edition = item.edition.require()
+      guard let impression = edition.impression.require() else {
+        throw PrintJobServiceError.unexpectedMissingEditionImpression(order.id, edition.id)
+      }
+      return impression.paperbackVolumes.enumerated().map { index, pages in
+        let titleSuffix = impression.paperbackVolumes.count > 1 ? ", vol. \(index + 1)" : ""
+        return .init(
+          title: edition.document.require().title + titleSuffix,
+          cover: impression.files.paperbackCover[index].url.absoluteString,
+          interior: impression.files.paperbackInterior[index].url.absoluteString,
+          podPackageId: Lulu.podPackageId(size: impression.paperbackSize.printSize, pages: pages),
+          quantity: item.quantity
+        )
+      }
+    }
+
+    let payload = Lulu.Api.CreatePrintJobBody(
+      shippingLevel: order.shippingLevel.lulu,
+      shippingAddress: order.address.lulu,
+      contactEmail: "jared@netrivet.com",
+      externalId: order.id.rawValue.uuidString,
+      lineItems: lineItems
+    )
+    return try await Current.luluClient.createPrintJob(payload)
+  }
+
   struct ExploratoryItem {
     let volumes: NonEmpty<[Int]>
     let printSize: PrintSize
@@ -21,15 +61,6 @@ enum PrintJobService {
     let taxes: Cents<Int>
     let fees: Cents<Int>
     let creditCardFeeOffset: Cents<Int>
-  }
-
-  static func creditCardFeeOffset(_ desiredNet: Cents<Int>) throws -> Cents<Int> {
-    if desiredNet <= 0 {
-      throw PrintJobServiceError.invalidInputForCreditCardFeeOffset
-    }
-    let withFlatFee = desiredNet.rawValue + STRIPE_FLAT_FEE
-    let percentageOffset = calculatePercentageOffset(withFlatFee)
-    return .init(rawValue: STRIPE_FLAT_FEE + percentageOffset)
   }
 
   static func getExploratoryMetadata(
@@ -85,7 +116,38 @@ enum PrintJobService {
       )
     }
   }
+
+  static func creditCardFeeOffset(_ desiredNet: Cents<Int>) throws -> Cents<Int> {
+    if desiredNet <= 0 {
+      throw PrintJobServiceError.invalidInputForCreditCardFeeOffset
+    }
+    let withFlatFee = desiredNet.rawValue + STRIPE_FLAT_FEE
+    let percentageOffset = calculatePercentageOffset(withFlatFee)
+    return .init(rawValue: STRIPE_FLAT_FEE + percentageOffset)
+  }
 }
+
+enum PrintJobServiceError: Error, LocalizedError {
+  case noExploratoryMetadataRetrieved
+  case invalidMoneyStringFromApi(String)
+  case invalidInputForCreditCardFeeOffset
+  case unexpectedMissingEditionImpression(Order.Id, Edition.Id)
+
+  var errorDescription: String? {
+    switch self {
+      case .noExploratoryMetadataRetrieved:
+        return "No exploratory metadata could be retrieved. Very likely shipping was not possible."
+      case .invalidMoneyStringFromApi(let value):
+        return "Could not convert API currency string value (\(value)) to cents."
+      case .invalidInputForCreditCardFeeOffset:
+        return "Invalid negative or zero amount for calculating credit card offset."
+      case .unexpectedMissingEditionImpression(let orderId, let editionId):
+        return "Unexpected missing edition impression for edition \(editionId) in order \(orderId)."
+    }
+  }
+}
+
+// helpers
 
 private func toCents(_ string: String) throws -> Cents<Int> {
   guard let dollars = Double(string) else {

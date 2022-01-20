@@ -23,6 +23,10 @@ final class Edition: Codable {
     "\(document.require().directoryPath)/\(type)"
   }
 
+  var filename: String {
+    "\(document.require().filename)--\(type)"
+  }
+
   init(
     id: Id = .init(),
     documentId: Document.Id,

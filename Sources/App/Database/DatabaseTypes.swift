@@ -75,6 +75,10 @@ extension DatabaseClient {
     try await query(M.self).byId(id).first()
   }
 
+  func find<M: DuetModel>(_ id: Tagged<M, UUID>) async throws -> M {
+    try await query(M.self).byId(id).first()
+  }
+
   func find<M: DuetModel>(_ Model: M.Type, byId id: M.IdValue) async throws -> M {
     try await query(M.self).byId(id).first()
   }

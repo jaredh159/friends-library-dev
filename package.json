@@ -31,7 +31,7 @@
     "compile": "true # <-- keep manager automation script happy",
     "generate:models": "fldev tsnode ./.codegen/generate-models.ts",
     "generate:db": "fldev tsnode ./.codegen/generate-db.ts",
-    "generate": "npm run generate:models",
+    "generate": "npm run generate:models && swiftformat ./Sources/App/Models/Generated/",
     "scaffold:resolver-test": "fldev tsnode ./.codegen/scaffold-resolver-test.ts",
     "scaffold:resolver": "fldev tsnode ./.codegen/scaffold-resolver.ts"
   },

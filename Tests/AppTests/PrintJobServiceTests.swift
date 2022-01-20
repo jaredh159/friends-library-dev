@@ -10,6 +10,101 @@ final class PrintJobServiceTests: AppTestCase {
     Current.luluClient = .mock
   }
 
+  func testCreatePrintJobe() async throws {
+    var payload: Lulu.Api.CreatePrintJobBody!
+
+    Current.luluClient.createPrintJob = {
+      payload = $0
+      return .init(id: 1, status: .init(name: .created), lineItems: [])
+    }
+
+    let entities = await Entities.create()
+    let order = Order.random
+    let item = OrderItem.random
+    item.orderId = order.id
+    item.editionId = entities.edition.id
+    try await Current.db.create(order)
+    try await Current.db.create(item)
+
+    let job = try await PrintJobService.createPrintJob(order)
+
+    XCTAssertEqual(1, job.id)
+    XCTAssertEqual(
+      payload,
+      .init(
+        shippingLevel: order.shippingLevel.lulu,
+        shippingAddress: order.address.lulu,
+        contactEmail: "jared@netrivet.com",
+        externalId: order.id.rawValue.uuidString,
+        lineItems: [.init(
+          title: entities.document.title,
+          cover: entities.editionImpression.files.paperbackCover.first.url.absoluteString,
+          interior: entities.editionImpression.files.paperbackInterior.first.url.absoluteString,
+          podPackageId: Lulu.podPackageId(
+            size: entities.editionImpression.paperbackSize.printSize,
+            pages: entities.editionImpression.paperbackVolumes.first
+          ),
+          quantity: item.quantity
+        )]
+      )
+    )
+  }
+
+  func testCreatePrintJobWithFauxVolumes() async throws {
+    var payload: Lulu.Api.CreatePrintJobBody!
+
+    Current.luluClient.createPrintJob = {
+      payload = $0
+      return .init(id: 1, status: .init(name: .created), lineItems: [])
+    }
+
+    let entities = await Entities.create {
+      $0.editionImpression.paperbackVolumes = .init(123)
+      $0.editionImpression.paperbackVolumes.append(234)
+    }
+    let order = Order.random
+    let item = OrderItem.random
+    item.orderId = order.id
+    item.editionId = entities.edition.id
+    try await Current.db.create(order)
+    try await Current.db.create(item)
+
+    let job = try await PrintJobService.createPrintJob(order)
+
+    XCTAssertEqual(1, job.id)
+    XCTAssertEqual(
+      payload,
+      .init(
+        shippingLevel: order.shippingLevel.lulu,
+        shippingAddress: order.address.lulu,
+        contactEmail: "jared@netrivet.com",
+        externalId: order.id.rawValue.uuidString,
+        lineItems: [
+          .init(
+            title: entities.document.title + ", vol. 1",
+            cover: entities.editionImpression.files.paperbackCover.first.url.absoluteString,
+            interior: entities.editionImpression.files.paperbackInterior.first.url.absoluteString,
+            podPackageId: Lulu.podPackageId(
+              size: entities.editionImpression.paperbackSize.printSize,
+              pages: entities.editionImpression.paperbackVolumes.first
+            ),
+            quantity: item.quantity
+          ),
+          .init(
+            title: entities.document.title + ", vol. 2",
+            cover: entities.editionImpression.files.paperbackCover[1].url.absoluteString,
+            interior: entities.editionImpression.files.paperbackInterior[1].url.absoluteString,
+            podPackageId: Lulu.podPackageId(
+              size: entities.editionImpression.paperbackSize.printSize,
+              pages: entities.editionImpression.paperbackVolumes.first
+            ),
+            quantity: item.quantity
+          ),
+        ]
+      )
+    )
+  }
+
   func testGetExploratoryMetadata() async throws {
     let responses = Responses([
       .init(shipping: "9.99", tax: "3.33", total: "19.12", fee: "1.50"),

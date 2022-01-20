@@ -1,7 +1,7 @@
 import Foundation
 
 extension Lulu.Api {
-  enum ShippingOptionLevel: String, CaseIterable, Codable {
+  enum ShippingOptionLevel: String, CaseIterable, Codable, Equatable {
     case mail = "MAIL"
     case priorityMail = "PRIORITY_MAIL"
     case groundHd = "GROUND_HD"
@@ -16,7 +16,7 @@ extension Lulu.Api {
     let expiresIn: Double
   }
 
-  struct ShippingAddress: Codable {
+  struct ShippingAddress: Codable, Equatable {
     let name: String
     let street1: String
     let street2: String?
@@ -51,6 +51,49 @@ extension Lulu.Api {
     var totalTax: String
     var shippingCost: ShippingCost
     var fees: [Fee]
+  }
+
+  struct CreatePrintJobBody: Encodable, Equatable {
+    struct LineItem: Encodable, Equatable {
+      var title: String
+      var cover: String
+      var interior: String
+      var podPackageId: String
+      var quantity: Int
+    }
+
+    var shippingLevel: ShippingOptionLevel
+    var shippingAddress: ShippingAddress
+    var contactEmail: String
+    var externalId: String?
+    var lineItems: [LineItem]
+  }
+
+  struct PrintJob: Decodable {
+    struct Status: Decodable {
+      enum Name: String, Decodable {
+        case created = "CREATED"
+        case rejected = "REJECTED"
+        case unpaid = "UNPAID"
+        case paymentInProgress = "PAYMENT_IN_PROGRESS"
+        case productionReady = "PRODUCTION_READY"
+        case productionDelayed = "PRODUCTION_DELAYED"
+        case inProduction = "IN_PRODUCTION"
+        case error = "ERROR"
+        case shipped = "SHIPPED"
+        case canceled = "CANCELED"
+      }
+
+      var name: Name
+    }
+
+    struct LineItem: Decodable {
+      var trackingUrls: [String]
+    }
+
+    var id: Int64
+    var status: Status
+    var lineItems: [LineItem]
   }
 }
 

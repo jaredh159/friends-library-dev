@@ -16,7 +16,3 @@
 --wraparguments before-first
 --maxwidth 100
 --enable redundantReturn
---exclude **/*+Generated.swift
---exclude **/*+Conformances.swift
---exclude **/*+GraphQL.swift
---exclude **/*+Mocks.swift

@@ -15,6 +15,7 @@ extension AppSchema {
       Field("productionToolchainRevision", at: \.productionToolchainRevision.rawValue)
       Field("createdAt", at: \.createdAt)
       Field("paperbackPriceInCents", at: \.paperbackPrice.rawValue)
+      Field("files", at: \.files)
       Field("edition", with: \.edition)
     }
   }

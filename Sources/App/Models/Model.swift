@@ -86,8 +86,8 @@ enum OptionalParent<P: ApiModel> {
     }
   }
 
-  func require(file: StaticString = #file, line: UInt = #line) -> P {
-    guard let model = try? model else {
+  func require(file: StaticString = #file, line: UInt = #line) -> P? {
+    guard case .loaded(let model) = self else {
       invariant("Required optional parent \(P.self) not loaded at \(file):\(line)")
     }
     return model
@@ -107,8 +107,8 @@ enum OptionalChild<C: ApiModel> {
     }
   }
 
-  func require(file: StaticString = #file, line: UInt = #line) -> C {
-    guard let model = try? model else {
+  func require(file: StaticString = #file, line: UInt = #line) -> C? {
+    guard case .loaded(let model) = self else {
       invariant("Required optional child \(C.self) not loaded at \(file):\(line)")
     }
     return model

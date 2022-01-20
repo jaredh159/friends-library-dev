@@ -160,11 +160,11 @@ function mockValue(
     };
   }
 
-  if (propName === `slug` && type === `String`) {
+  if ([`slug`, `filename`].includes(propName) && type === `String`) {
     return {
-      mock: `"mock-slug-${propName.toLowerCase()}"`,
+      mock: `"mock-${propName.toLowerCase()}"`,
       empty: `""`,
-      random: `"random-slug-\\(Int.random)"`,
+      random: `"random-${propName}-\\(Int.random)"`,
     };
   }
 
