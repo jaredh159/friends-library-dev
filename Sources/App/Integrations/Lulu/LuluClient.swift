@@ -48,7 +48,7 @@ private func postJson<Body: Encodable, Response: Decodable>(
 ) async throws -> Response {
   try await HTTP.postJson(
     body,
-    to: "\(Env.LULU_API_ENDPOINT)\(path)",
+    to: "\(Env.LULU_API_ENDPOINT)/\(path)",
     decoding: Response.self,
     auth: .bearer(try await luluToken.get()),
     keyEncodingStrategy: .convertToSnakeCase,

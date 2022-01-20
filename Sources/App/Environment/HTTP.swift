@@ -17,20 +17,45 @@ enum HTTP {
     case get = "GET"
   }
 
-  enum HttpError: Error, LocalizedError {
-    case invalidUrl(String)
-    case base64EncodingFailed
-    case decodingError(Error, String)
+  static func postJson<Body: Encodable>(
+    _ body: Body,
+    to urlString: String,
+    headers: [String: String] = [:],
+    auth: AuthType? = nil,
+    keyEncodingStrategy: JSONEncoder.KeyEncodingStrategy = .useDefaultKeys
+  ) async throws -> (Data, URLResponse) {
+    var request = try urlRequest(to: urlString, method: .post, headers: headers, auth: auth)
+    request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+    request.setValue("no-cache", forHTTPHeaderField: "Cache-Control")
+    let encoder = JSONEncoder()
+    encoder.keyEncodingStrategy = keyEncodingStrategy
+    request.httpBody = try encoder.encode(body)
+    return try await URLSession.shared.data(for: request)
+  }
 
-    var errorDescription: String? {
-      switch self {
-        case .invalidUrl(let string):
-          return "Invalid URL string: \(string)"
-        case .base64EncodingFailed:
-          return "base64Endoding failed"
-        case .decodingError(let error, let raw):
-          return "JSON decoding failed. Error=\(error), Raw=\(raw)"
-      }
+  static func postJson<Body: Encodable, Response: Decodable>(
+    _ body: Body,
+    to urlString: String,
+    decoding: Response.Type,
+    headers: [String: String] = [:],
+    auth: AuthType? = nil,
+    keyEncodingStrategy: JSONEncoder.KeyEncodingStrategy = .useDefaultKeys,
+    keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys
+  ) async throws -> Response {
+    let (data, _) = try await postJson(
+      body,
+      to: urlString,
+      headers: headers,
+      auth: auth,
+      keyEncodingStrategy: keyEncodingStrategy
+    )
+    // print("\(String(data: data, encoding: .utf8)!)")
+    do {
+      let decoder = JSONDecoder()
+      decoder.keyDecodingStrategy = keyDecodingStrategy
+      return try decoder.decode(Response.self, from: data)
+    } catch {
+      throw HttpError.decodingError(error, String(data: data, encoding: .utf8) ?? "")
     }
   }
 
@@ -66,47 +91,6 @@ enum HTTP {
     return try decoder.decode(T.self, from: data)
   }
 
-  static func postJson<Body: Encodable>(
-    _ body: Body,
-    to urlString: String,
-    headers: [String: String] = [:],
-    auth: AuthType? = nil,
-    keyEncodingStrategy: JSONEncoder.KeyEncodingStrategy = .useDefaultKeys
-  ) async throws -> (Data, URLResponse) {
-    var request = try urlRequest(to: urlString, method: .post, headers: headers, auth: auth)
-    request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
-    request.setValue("no-cache", forHTTPHeaderField: "Cache-Control")
-    let encoder = JSONEncoder()
-    encoder.keyEncodingStrategy = keyEncodingStrategy
-    request.httpBody = try encoder.encode(body)
-    return try await URLSession.shared.data(for: request)
-  }
-
-  static func postJson<Body: Encodable, Response: Decodable>(
-    _ body: Body,
-    to urlString: String,
-    decoding: Response.Type,
-    headers: [String: String] = [:],
-    auth: AuthType? = nil,
-    keyEncodingStrategy: JSONEncoder.KeyEncodingStrategy = .useDefaultKeys,
-    keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys
-  ) async throws -> Response {
-    let (data, _) = try await postJson(
-      body,
-      to: urlString,
-      headers: headers,
-      auth: auth,
-      keyEncodingStrategy: keyEncodingStrategy
-    )
-    do {
-      let decoder = JSONDecoder()
-      decoder.keyDecodingStrategy = keyDecodingStrategy
-      return try decoder.decode(Response.self, from: data)
-    } catch {
-      throw HttpError.decodingError(error, String(data: data, encoding: .utf8) ?? "")
-    }
-  }
-
   private static func urlRequest(
     to urlString: String,
     method: Method,
@@ -140,5 +124,22 @@ enum HTTP {
         break
     }
     return request
+  }
+}
+
+enum HttpError: Error, LocalizedError {
+  case invalidUrl(String)
+  case base64EncodingFailed
+  case decodingError(Error, String)
+
+  var errorDescription: String? {
+    switch self {
+      case .invalidUrl(let string):
+        return "Invalid URL string: \(string)"
+      case .base64EncodingFailed:
+        return "base64Endoding failed"
+      case .decodingError(let error, let raw):
+        return "JSON decoding failed. Error=\(error), Raw=\(raw)"
+    }
   }
 }

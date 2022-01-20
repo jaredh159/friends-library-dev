@@ -10,7 +10,7 @@ final class PrintJobServiceTests: AppTestCase {
     Current.luluClient = .mock
   }
 
-  func testCreatePrintJobe() async throws {
+  func testCreatePrintJob() async throws {
     var payload: Lulu.Api.CreatePrintJobBody!
 
     Current.luluClient.createPrintJob = {

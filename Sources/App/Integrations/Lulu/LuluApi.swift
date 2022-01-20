@@ -88,7 +88,7 @@ extension Lulu.Api {
     }
 
     struct LineItem: Decodable {
-      var trackingUrls: [String]
+      var trackingUrls: [String]?
     }
 
     var id: Int64
