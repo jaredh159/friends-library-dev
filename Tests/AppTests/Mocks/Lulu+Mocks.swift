@@ -39,3 +39,20 @@ extension Lulu.Api.PrintJobCostCalculationsBody.LineItem {
     quantity: 1
   )
 }
+
+extension Lulu.Api.PrintJobCostCalculationResponse {
+  static let mock: Self = .init(
+    totalCostInclTax: "0.00",
+    totalTax: "0.00",
+    shippingCost: .init(totalCostExclTax: "0.00"),
+    fees: [.init(totalCostExclTax: "0.0")]
+  )
+
+  init(shipping: String, tax: String, total: String, fee: String) {
+    self = .mock
+    shippingCost.totalCostExclTax = shipping
+    totalTax = tax
+    totalCostInclTax = total
+    fees = [.init(totalCostExclTax: fee)]
+  }
+}

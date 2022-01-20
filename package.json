@@ -20,7 +20,7 @@
     "lint": "test $(swift-format-5.5 lint --configuration ./.swift-format.json --recursive ./Sources ./Tests ./Package.swift 2>&1 | wc -l | sed -E 's/ //g') == '0'",
     "format": "swift-format-5.5 --configuration ./.swift-format.json --recursive --in-place ./Sources ./Tests ./Package.swift",
     "test": "SWIFT_DETERMINISTIC_HASHING=1 swift test 2>&1 | xcbeautify",
-    "test:isolate": "SWIFT_DETERMINISTIC_HASHING=1 swift test --filter Isolate 2>&1 | xcbeautify",
+    "test:isolate": "SWIFT_DETERMINISTIC_HASHING=1 swift test --filter Isolate",
     "nuke": "npm run migrate:nuke; npm run test:db:nuke",
     "test:db:nuke": "killall Postico; dropdb flp_test && createdb flp_test",
     "test:clear": "clear && printf '\\e[3J' && npm run test; echo",

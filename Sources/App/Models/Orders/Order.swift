@@ -144,6 +144,7 @@ extension Order {
     case mail
     case priorityMail
     case groundHd
+    case groundBus
     case ground
     case expedited
     case express

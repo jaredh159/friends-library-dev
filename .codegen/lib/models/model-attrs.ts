@@ -2,28 +2,27 @@ import { File, GlobalTypes } from '../types';
 import Model from './Model';
 
 export function extractModelAttrs({ source, path }: File): Model | undefined {
-  if (
-    (!path.includes(`/Models/`) && !path.includes(`/Migrations/`)) ||
-    path.includes(`+`) ||
-    path.includes(`Repository`) ||
-    path.includes(`Resolver`)
-  ) {
+  if (isFileWithoutModelInfo(path)) {
     return undefined;
   }
 
-  let model: Model | undefined = undefined;
   const lines = source.split(`\n`);
   while (lines.length) {
     const line = lines.shift()!;
     const classMatch = line.match(/^(?:final )?class ([A-Z][^\s]+)(: Codable)? {$/);
     if (classMatch !== null) {
-      model = parseClassInterior(classMatch[1], path, lines);
-    }
-    if (model && line.startsWith(`extension ${model.name} {`)) {
-      extractFromModelExtension(model, lines);
+      return parseClassInterior(classMatch[1], path, lines);
     }
   }
-  return model;
+}
+
+function isFileWithoutModelInfo(path: string): boolean {
+  return (
+    (!path.includes(`/Models/`) && !path.includes(`/Migrations/`)) ||
+    path.includes(`Generated`) ||
+    path.includes(`Repository`) ||
+    path.includes(`Resolver`)
+  );
 }
 
 function parseClassInterior(name: string, path: string, lines: string[]): Model {
@@ -176,6 +175,7 @@ export function extractModels(files: File[]): Model[] {
   for (const file of files) {
     setMigrationNumbers(file, models);
     setIsPreloaded(file, models);
+    extractFromExtensions(file, models);
   }
 
   return Object.values(models);
@@ -235,6 +235,26 @@ function extractDbEnumCases(lines: string[]): string[] {
     }
   }
   return cases;
+}
+
+function extractFromExtensions({ source, path }: File, models: Record<string, Model>) {
+  if (isFileWithoutModelInfo(path)) {
+    return;
+  }
+
+  const lines = source.split(`\n`);
+  while (lines.length) {
+    const line = lines.shift()!;
+    const extMatch = line.match(/^extension ([A-Z][^\s]+) {$/);
+    if (!extMatch) {
+      continue;
+    }
+    const model = models[extMatch[1]];
+    if (!model) {
+      continue;
+    }
+    extractFromModelExtension(model, lines);
+  }
 }
 
 function extractFromModelExtension(model: Model, lines: string[]): void {

@@ -39,35 +39,23 @@ extension Lulu.Api {
   }
 
   struct PrintJobCostCalculationResponse: Decodable {
-    struct LineItemCost: Decodable {
-      let costExclDiscounts: String
-      let totalTax: String
-      let taxRate: String
-      let quantity: Int
-      let totalCostExclDiscounts: String
-      let totalCostExclTax: String
-      let totalCostInclTax: String
-    }
-
     struct ShippingCost: Decodable {
-      let totalCostExclTax: String
-      let totalCostInclTax: String
-      let taxRate: String
-      let totalTax: String
+      var totalCostExclTax: String
     }
 
-    let currency: String
-    let totalCostExclTax: String
-    let totalCostInclTax: String
-    let totalDiscountAmount: String
-    let totalTax: String
-    let shippingCost: ShippingCost
-    let lineItemCosts: [LineItemCost]
+    struct Fee: Decodable {
+      var totalCostExclTax: String
+    }
+
+    var totalCostInclTax: String
+    var totalTax: String
+    var shippingCost: ShippingCost
+    var fees: [Fee]
   }
 }
 
 extension ShippingAddress {
-  var luluAddress: Lulu.Api.ShippingAddress {
+  var lulu: Lulu.Api.ShippingAddress {
     .init(
       name: name,
       street1: street,
@@ -77,5 +65,26 @@ extension ShippingAddress {
       stateCode: state,
       postcode: zip
     )
+  }
+}
+
+extension Order.ShippingLevel {
+  var lulu: Lulu.Api.ShippingOptionLevel {
+    switch self {
+      case .mail:
+        return .mail
+      case .priorityMail:
+        return .priorityMail
+      case .groundHd:
+        return .groundHd
+      case .groundBus:
+        return .groundBus
+      case .ground:
+        return .ground
+      case .expedited:
+        return .expedited
+      case .express:
+        return .express
+    }
   }
 }

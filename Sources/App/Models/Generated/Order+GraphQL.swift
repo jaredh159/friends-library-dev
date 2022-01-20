@@ -27,6 +27,7 @@ extension AppSchema {
       Field("freeOrderRequestId", at: \.freeOrderRequestId?.rawValue)
       Field("createdAt", at: \.createdAt)
       Field("updatedAt", at: \.updatedAt)
+      Field("address", at: \.address)
       Field("items", with: \.items)
       Field("freeOrderRequest", with: \.freeOrderRequest)
     }

@@ -19,6 +19,7 @@ extension AppSchema {
       Field("source", at: \.source)
       Field("createdAt", at: \.createdAt)
       Field("updatedAt", at: \.updatedAt)
+      Field("address", at: \.address)
     }
   }
 

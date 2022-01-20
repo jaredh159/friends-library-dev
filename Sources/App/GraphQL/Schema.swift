@@ -21,6 +21,8 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   Enum(Friend.Gender.self)
   Enum(PrintSizeVariant.self)
 
+  AppSchema.ShippingAddressType
+
   // isbn types
   AppSchema.IsbnType
   AppSchema.CreateIsbnInputType

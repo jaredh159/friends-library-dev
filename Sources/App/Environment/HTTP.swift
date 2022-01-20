@@ -17,9 +17,21 @@ enum HTTP {
     case get = "GET"
   }
 
-  enum HttpError: Error {
+  enum HttpError: Error, LocalizedError {
     case invalidUrl(String)
     case base64EncodingFailed
+    case decodingError(Error, String)
+
+    var errorDescription: String? {
+      switch self {
+        case .invalidUrl(let string):
+          return "Invalid URL string: \(string)"
+        case .base64EncodingFailed:
+          return "base64Endoding failed"
+        case .decodingError(let error, let raw):
+          return "JSON decoding failed. Error=\(error), Raw=\(raw)"
+      }
+    }
   }
 
   static func postFormUrlencoded(
@@ -86,9 +98,13 @@ enum HTTP {
       auth: auth,
       keyEncodingStrategy: keyEncodingStrategy
     )
-    let decoder = JSONDecoder()
-    decoder.keyDecodingStrategy = keyDecodingStrategy
-    return try decoder.decode(Response.self, from: data)
+    do {
+      let decoder = JSONDecoder()
+      decoder.keyDecodingStrategy = keyDecodingStrategy
+      return try decoder.decode(Response.self, from: data)
+    } catch {
+      throw HttpError.decodingError(error, String(data: data, encoding: .utf8) ?? "")
+    }
   }
 
   private static func urlRequest(

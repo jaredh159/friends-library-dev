@@ -15,7 +15,7 @@ final class EditionImpression: Codable {
   var edition = Parent<Edition>.notLoaded
 
   var paperbackPrice: Cents<Int> {
-    Lulu.paperbackPrice(size: paperbackSize, volumes: paperbackVolumes)
+    Lulu.paperbackPrice(size: paperbackSize.printSize, volumes: paperbackVolumes)
   }
 
   init(

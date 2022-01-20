@@ -35,3 +35,14 @@ private func printJobCost(
     keyDecodingStrategy: .convertFromSnakeCase
   )
 }
+
+extension Lulu.Api.Client {
+  static let mock: Self = .init(createPrintJobCostCalculation: { _, _, _ in
+    .init(
+      totalCostInclTax: "0.00",
+      totalTax: "0.00",
+      shippingCost: .init(totalCostExclTax: "0.00"),
+      fees: [.init(totalCostExclTax: "0.00")]
+    )
+  })
+}
