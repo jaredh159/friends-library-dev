@@ -95,6 +95,10 @@ extension Lulu.Api {
     var status: Status
     var lineItems: [LineItem]
   }
+
+  struct ListPrintJobsResponse: Decodable {
+    var results: [PrintJob]
+  }
 }
 
 extension ShippingAddress {

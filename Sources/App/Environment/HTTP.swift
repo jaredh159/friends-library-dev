@@ -72,6 +72,34 @@ enum HTTP {
     return try await URLSession.shared.data(for: request)
   }
 
+  static func get<T: Decodable>(
+    _ urlString: String,
+    decoding: T.Type,
+    headers: [String: String] = [:],
+    auth: AuthType? = nil,
+    keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys
+  ) async throws -> T {
+    let request = try urlRequest(to: urlString, method: .get, headers: headers, auth: auth)
+    let (data, _) = try await URLSession.shared.data(for: request)
+    // print("\(String(data: data, encoding: .utf8)!)")
+    do {
+      let decoder = JSONDecoder()
+      decoder.keyDecodingStrategy = keyDecodingStrategy
+      return try decoder.decode(T.self, from: data)
+    } catch {
+      throw HttpError.decodingError(error, String(data: data, encoding: .utf8) ?? "")
+    }
+  }
+
+  static func get(
+    _ urlString: String,
+    headers: [String: String] = [:],
+    auth: AuthType? = nil
+  ) async throws -> (Data, URLResponse) {
+    let request = try urlRequest(to: urlString, method: .get, headers: headers, auth: auth)
+    return try await URLSession.shared.data(for: request)
+  }
+
   static func postFormUrlencoded<T: Decodable>(
     _ params: [String: String],
     to urlString: String,

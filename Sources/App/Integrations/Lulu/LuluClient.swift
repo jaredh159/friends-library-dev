@@ -1,9 +1,11 @@
 import Foundation
+import NonEmpty
 
 extension Lulu.Api {
 
   struct Client {
     var createPrintJob: (CreatePrintJobBody) async throws -> PrintJob
+    var listPrintJobs: (NonEmpty<[Int64]>?) async throws -> [PrintJob]
     var createPrintJobCostCalculation: (
       ShippingAddress,
       ShippingOptionLevel,
@@ -15,8 +17,20 @@ extension Lulu.Api {
 extension Lulu.Api.Client {
   static let live: Self = .init(
     createPrintJob: createPrintJob(_:),
+    listPrintJobs: listPrintJobs(_:),
     createPrintJobCostCalculation: printJobCost(address:shippingLevel:items:)
   )
+}
+
+private func listPrintJobs(_ ids: NonEmpty<[Int64]>? = nil) async throws -> [Lulu.Api.PrintJob] {
+  var query = ""
+  ids.map { query += "?id=" + $0.map(String.init).joined(separator: "&id=") }
+  return try await HTTP.get(
+    "\(Env.LULU_API_ENDPOINT)/print-jobs/\(query)",
+    decoding: Lulu.Api.ListPrintJobsResponse.self,
+    auth: .bearer(try await luluToken.get()),
+    keyDecodingStrategy: .convertFromSnakeCase
+  ).results
 }
 
 private func createPrintJob(
@@ -59,6 +73,7 @@ private func postJson<Body: Encodable, Response: Decodable>(
 extension Lulu.Api.Client {
   static let mock: Self = .init(
     createPrintJob: { _ in .init(id: 1, status: .init(name: .created), lineItems: []) },
+    listPrintJobs: { _ in [] },
     createPrintJobCostCalculation: { _, _, _ in
       .init(
         totalCostInclTax: "0.00",
