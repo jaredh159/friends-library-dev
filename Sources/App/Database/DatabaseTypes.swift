@@ -93,6 +93,11 @@ extension DatabaseClient {
   func delete<M: DuetModel>(_ Model: M.Type, byId id: UUIDStringable) async throws -> M {
     try await query(M.self).where(M.column("id") == id).deleteOne()
   }
+
+  @discardableResult
+  func delete<M: DuetModel>(_ id: Tagged<M, UUID>) async throws -> M {
+    try await query(M.self).where(M.column("id") == id).deleteOne()
+  }
 }
 
 extension SQLMutating {

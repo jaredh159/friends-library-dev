@@ -10,7 +10,7 @@ final class OrderRepositoryTests: AppTestCase {
     inserted.addressName = "Bob"
 
     try await Current.db.create(inserted)
-    let retrieved = try await Current.db.find(Order.self, byId: inserted.id)
+    let retrieved = try await Current.db.find(inserted.id)
 
     XCTAssertEqual(inserted, retrieved)
     XCTAssertEqual(inserted.addressName, retrieved.addressName)
@@ -22,7 +22,7 @@ final class OrderRepositoryTests: AppTestCase {
     inserted.addressStreet2 = "Apt #2"
 
     try await Current.db.create(inserted)
-    let retrieved = try await Current.db.find(Order.self, byId: inserted.id)
+    let retrieved = try await Current.db.find(inserted.id)
 
     XCTAssertEqual(inserted, retrieved)
     XCTAssertEqual(inserted.printJobId, retrieved.printJobId)

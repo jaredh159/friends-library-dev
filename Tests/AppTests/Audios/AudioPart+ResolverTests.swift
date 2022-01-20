@@ -74,7 +74,7 @@ final class AudioPartResolverTests: AppTestCase {
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": audioPart.gqlMap()])
 
-    let retrieved = try? await Current.db.find(AudioPart.self, byId: audioPart.id)
+    let retrieved = try? await Current.db.find(audioPart.id)
     XCTAssertNil(retrieved)
   }
 }

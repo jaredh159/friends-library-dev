@@ -74,7 +74,7 @@ final class EditionChapterResolverTests: AppTestCase {
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": editionChapter.gqlMap()])
 
-    let retrieved = try? await Current.db.find(EditionChapter.self, byId: editionChapter.id)
+    let retrieved = try? await Current.db.find(editionChapter.id)
     XCTAssertNil(retrieved)
   }
 }

@@ -79,7 +79,7 @@ final class IsbnResolverTests: AppTestCase {
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": isbn.gqlMap()])
 
-    let retrieved = try? await Current.db.find(Isbn.self, byId: isbn.id)
+    let retrieved = try? await Current.db.find(isbn.id)
     XCTAssertNil(retrieved)
   }
 }

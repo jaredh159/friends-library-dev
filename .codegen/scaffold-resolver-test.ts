@@ -107,7 +107,7 @@ final class ThingResolverTests: AppTestCase {
       headers: [.authorization: "Bearer \\(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": thing.gqlMap()])
 
-    let retrieved = try? await Current.db.find(Thing.self, byId: thing.id)
+    let retrieved = try? await Current.db.find(thing.id)
     XCTAssertNil(retrieved)
   }
 }

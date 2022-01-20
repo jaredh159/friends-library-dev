@@ -111,7 +111,7 @@ final class DocumentResolverTests: AppTestCase {
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": document.gqlMap()])
 
-    let retrieved = try? await Current.db.find(Document.self, byId: document.id)
+    let retrieved = try? await Current.db.find(document.id)
     XCTAssertNil(retrieved)
   }
 }

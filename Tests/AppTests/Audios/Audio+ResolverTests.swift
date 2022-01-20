@@ -7,7 +7,7 @@ final class AudioResolverTests: AppTestCase {
 
   func testCreateAudio() async throws {
     let entities = await Entities.create()
-    _ = try await Current.db.delete(Audio.self, byId: entities.audio.id)
+    _ = try await Current.db.delete(entities.audio.id)
     let audio = Audio.random
     audio.editionId = entities.edition.id
     let map = audio.gqlMap()
@@ -75,7 +75,7 @@ final class AudioResolverTests: AppTestCase {
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": audio.gqlMap()])
 
-    let retrieved = try? await Current.db.find(Audio.self, byId: audio.id)
+    let retrieved = try? await Current.db.find(audio.id)
     XCTAssertNil(retrieved)
   }
 }

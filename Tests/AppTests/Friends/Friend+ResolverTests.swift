@@ -166,7 +166,7 @@ final class FriendResolverTests: AppTestCase {
       headers: [.authorization: "Bearer (Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": friend.gqlMap()])
 
-    let retrieved = try? await Current.db.find(Friend.self, byId: friend.id)
+    let retrieved = try? await Current.db.find(friend.id)
     XCTAssertNil(retrieved)
   }
 }
