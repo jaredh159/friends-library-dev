@@ -9,6 +9,7 @@ struct Environment {
   var logger = Logger(label: "api.friendslibrary")
   var slackClient: Slack.Client = .init()
   var luluClient: Lulu.Api.Client = .live
+  var sendGridClient: SendGrid.Client.SlackErrorLogging = .live
 }
 
 var Current = Environment()
@@ -18,7 +19,6 @@ extension UUID {
 }
 
 func invariant(_ msg: String) -> Never {
-  let slack = Slack.Message(text: msg, channel: "#errors", emoji: .fireEngine)
-  try! Current.slackClient.sendSync(slack)
+  try! Current.slackClient.sendSync(.error(msg))
   fatalError(msg)
 }

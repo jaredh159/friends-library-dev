@@ -3,7 +3,8 @@ import Vapor
 extension Env {
   static let PG_DUMP_PATH = get("PG_DUMP_PATH")!
   static let SENDGRID_API_KEY = get("SENDGRID_API_KEY")!
-  static let SLACK_API_TOKEN = get("SLACK_API_TOKEN")!
+  static let SLACK_API_TOKEN_WORKSPACE_MAIN = get("SLACK_API_TOKEN_WORKSPACE_MAIN")!
+  static let SLACK_API_TOKEN_WORKSPACE_BOT = get("SLACK_API_TOKEN_WORKSPACE_BOT")!
   static let DATABASE_NAME = get("DATABASE_NAME")!
   static let DATABASE_USERNAME = get("DATABASE_USERNAME")!
   static let DATABASE_PASSWORD = get("DATABASE_PASSWORD")!

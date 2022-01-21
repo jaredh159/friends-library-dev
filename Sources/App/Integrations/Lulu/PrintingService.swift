@@ -3,6 +3,7 @@ import NonEmpty
 import TaggedMoney
 
 enum PrintJobService {
+
   static func createPrintJob(_ order: Order) async throws -> Lulu.Api.PrintJob {
     let orderItems: [OrderItem]
     if case .loaded(let items) = order.items {

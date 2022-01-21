@@ -2,7 +2,6 @@ import Fluent
 import Foundation
 import Graphiti
 import Vapor
-import VaporUtils
 
 extension Resolver {
   func createFreeOrderRequest(
@@ -12,7 +11,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateFriends)
     return future(of: FreeOrderRequest.self, on: req.eventLoop) {
       let order = try await Current.db.create(FreeOrderRequest(args.input))
-      try await sendFreeOrderRequestNotifications(for: order, on: req).get()
+      try await sendFreeOrderRequestNotifications(for: order, on: req)
       return order
     }
   }
@@ -21,16 +20,12 @@ extension Resolver {
 private func sendFreeOrderRequestNotifications(
   for order: FreeOrderRequest,
   on request: Request
-) -> Future<Void> {
+) async throws {
   let id = order.id.rawValue.uuidString.lowercased()
-  var emailFuture = request.eventLoop.makeSucceededVoidFuture()
   if let emailTo = Env.get("FREE_ORDER_REQUEST_EMAIL_RECIPIENT") {
-    emailFuture = SendGridEmail(
+    let email = SendGrid.Email(
       to: .init(email: emailTo),
-      from: .init(
-        email: "notifications@graphql-api.friendslibrary.com",
-        name: "Friends Library"
-      ),
+      from: .friendsLibrary,
       subject: "[,] Free Book Request - \(id)",
       html:
       """
@@ -54,24 +49,14 @@ private func sendFreeOrderRequestNotifications(
       </a>
       """
     )
-    .send(on: request.client, withKey: Env.SENDGRID_API_KEY)
-    .transform(to: ())
+    try await Current.sendGridClient.send(email)
   }
 
-  var slackFuture = request.eventLoop.makeSucceededVoidFuture()
   if request.application.environment == .production {
-    slackFuture = SlackMessage(
-      text:
-      "New *Spanish Free Book Order Request:*\n  → _Name_ `\(order.name)`\n  → _Books_ `\(order.requestedBooks)`\n  → _About_ `\(order.aboutRequester.replacingOccurrences(of: "\n", with: ""))`",
-      channel: "orders",
-      username: "FLP Api Bot",
-      emoji: .custom("orange_book")
-    )
-    .send(on: request.client, withToken: Env.SLACK_API_TOKEN)
-    .transform(to: ())
+    let text =
+      "New *Spanish Free Book Order Request:*\n  → _Name_ `\(order.name)`\n  → _Books_ `\(order.requestedBooks)`\n  → _About_ `\(order.aboutRequester.replacingOccurrences(of: "\n", with: ""))`"
+    try await Current.slackClient.send(.order(text, emoji: .orangeBook))
   }
-
-  return [emailFuture, slackFuture].flatten(on: request.eventLoop)
 }
 
 private func entry(_ key: String, _ value: String?) -> String {

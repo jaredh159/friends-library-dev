@@ -23,14 +23,14 @@ enum HTTP {
     headers: [String: String] = [:],
     auth: AuthType? = nil,
     keyEncodingStrategy: JSONEncoder.KeyEncodingStrategy = .useDefaultKeys
-  ) async throws -> (Data, URLResponse) {
+  ) async throws -> (Data, HTTPURLResponse) {
     var request = try urlRequest(to: urlString, method: .post, headers: headers, auth: auth)
     request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
     request.setValue("no-cache", forHTTPHeaderField: "Cache-Control")
     let encoder = JSONEncoder()
     encoder.keyEncodingStrategy = keyEncodingStrategy
     request.httpBody = try encoder.encode(body)
-    return try await URLSession.shared.data(for: request)
+    return try convertResponse(try await URLSession.shared.data(for: request))
   }
 
   static func postJson<Body: Encodable, Response: Decodable>(
@@ -49,7 +49,6 @@ enum HTTP {
       auth: auth,
       keyEncodingStrategy: keyEncodingStrategy
     )
-    // print("\(String(data: data, encoding: .utf8)!)")
     do {
       let decoder = JSONDecoder()
       decoder.keyDecodingStrategy = keyDecodingStrategy
@@ -64,12 +63,12 @@ enum HTTP {
     to urlString: String,
     headers: [String: String] = [:],
     auth: AuthType? = nil
-  ) async throws -> (Data, URLResponse) {
+  ) async throws -> (Data, HTTPURLResponse) {
     var request = try urlRequest(to: urlString, method: .post, headers: headers, auth: auth)
     request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
     let query = params.map { key, value in "\(key)=\(value)" }.joined(separator: "&")
     request.httpBody = query.data(using: .utf8)
-    return try await URLSession.shared.data(for: request)
+    return try convertResponse(await URLSession.shared.data(for: request))
   }
 
   static func get<T: Decodable>(
@@ -81,7 +80,6 @@ enum HTTP {
   ) async throws -> T {
     let request = try urlRequest(to: urlString, method: .get, headers: headers, auth: auth)
     let (data, _) = try await URLSession.shared.data(for: request)
-    // print("\(String(data: data, encoding: .utf8)!)")
     do {
       let decoder = JSONDecoder()
       decoder.keyDecodingStrategy = keyDecodingStrategy
@@ -95,9 +93,9 @@ enum HTTP {
     _ urlString: String,
     headers: [String: String] = [:],
     auth: AuthType? = nil
-  ) async throws -> (Data, URLResponse) {
+  ) async throws -> (Data, HTTPURLResponse) {
     let request = try urlRequest(to: urlString, method: .get, headers: headers, auth: auth)
-    return try await URLSession.shared.data(for: request)
+    return try convertResponse(await URLSession.shared.data(for: request))
   }
 
   static func postFormUrlencoded<T: Decodable>(
@@ -118,47 +116,13 @@ enum HTTP {
     decoder.keyDecodingStrategy = keyDecodingStrategy
     return try decoder.decode(T.self, from: data)
   }
-
-  private static func urlRequest(
-    to urlString: String,
-    method: Method,
-    headers: [String: String] = [:],
-    auth: AuthType? = nil
-  ) throws -> URLRequest {
-    guard let url = URL(string: urlString) else {
-      throw HttpError.invalidUrl(urlString)
-    }
-    var request = URLRequest(url: url)
-    request.httpMethod = method.rawValue
-    headers.forEach { key, value in request.setValue(value, forHTTPHeaderField: key) }
-    switch auth {
-      case .bearer(let token):
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-      case .basicEncoded(let string):
-        request.setValue("Basic \(string)", forHTTPHeaderField: "Authorization")
-      case .basic(let username, let password):
-        guard let data = "\(username):\(password)".data(using: .utf8) else {
-          throw HttpError.base64EncodingFailed
-        }
-        let encoded = data.base64EncodedString()
-        request.setValue("Basic \(encoded)", forHTTPHeaderField: "Authorization")
-      case .basicUnencoded(let string):
-        guard let data = string.data(using: .utf8) else {
-          throw HttpError.base64EncodingFailed
-        }
-        let encoded = data.base64EncodedString()
-        request.setValue("Basic \(encoded)", forHTTPHeaderField: "Authorization")
-      case nil:
-        break
-    }
-    return request
-  }
 }
 
 enum HttpError: Error, LocalizedError {
   case invalidUrl(String)
   case base64EncodingFailed
   case decodingError(Error, String)
+  case unexpectedResponseType
 
   var errorDescription: String? {
     switch self {
@@ -168,6 +132,53 @@ enum HttpError: Error, LocalizedError {
         return "base64Endoding failed"
       case .decodingError(let error, let raw):
         return "JSON decoding failed. Error=\(error), Raw=\(raw)"
+      case .unexpectedResponseType:
+        return "Unexpected response type, could not convert to HTTPURLResponse"
     }
   }
+}
+
+// helpers
+
+private func urlRequest(
+  to urlString: String,
+  method: HTTP.Method,
+  headers: [String: String] = [:],
+  auth: HTTP.AuthType? = nil
+) throws -> URLRequest {
+  guard let url = URL(string: urlString) else {
+    throw HttpError.invalidUrl(urlString)
+  }
+  var request = URLRequest(url: url)
+  request.httpMethod = method.rawValue
+  headers.forEach { key, value in request.setValue(value, forHTTPHeaderField: key) }
+  switch auth {
+    case .bearer(let token):
+      request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+    case .basicEncoded(let string):
+      request.setValue("Basic \(string)", forHTTPHeaderField: "Authorization")
+    case .basic(let username, let password):
+      guard let data = "\(username):\(password)".data(using: .utf8) else {
+        throw HttpError.base64EncodingFailed
+      }
+      let encoded = data.base64EncodedString()
+      request.setValue("Basic \(encoded)", forHTTPHeaderField: "Authorization")
+    case .basicUnencoded(let string):
+      guard let data = string.data(using: .utf8) else {
+        throw HttpError.base64EncodingFailed
+      }
+      let encoded = data.base64EncodedString()
+      request.setValue("Basic \(encoded)", forHTTPHeaderField: "Authorization")
+    case nil:
+      break
+  }
+  return request
+}
+
+private func convertResponse(_ result: (Data, URLResponse)) throws
+  -> (Data, HTTPURLResponse) {
+  guard let httpResponse = result.1 as? HTTPURLResponse else {
+    throw HttpError.unexpectedResponseType
+  }
+  return (result.0, httpResponse)
 }
