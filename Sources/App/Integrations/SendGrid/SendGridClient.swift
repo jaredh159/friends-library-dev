@@ -36,9 +36,9 @@ extension SendGrid.Client.SlackErrorLogging {
       let msg = """
       **Failed to send SendGrid email**
       Response: `\(String(data: errorData, encoding: .utf8) ?? "<no data>")`
-      To: \(email.personalizations.first?.to.first?.email ?? "")
+      To: \(email.firstRecipient.email)
       Subject: \(email.subject)
-      Body: \(email.content.first?["value"] ?? "")
+      Body: \(email.html)
       """
       try await Current.slackClient.send(.error(msg))
     }

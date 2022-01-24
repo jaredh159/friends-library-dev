@@ -14,6 +14,19 @@ struct Environment {
 
 var Current = Environment()
 
+extension Environment {
+  static let mock = Environment(
+    uuid: { .mock },
+    date: { Date(timeIntervalSince1970: 0) },
+    db: MockDatabase(),
+    auth: .mockWithAllScopes,
+    logger: .null,
+    slackClient: .mock,
+    luluClient: .mock,
+    sendGridClient: .mock
+  )
+}
+
 extension UUID {
   static let mock = UUID("3EFC3511-999E-4385-A071-E5B0965C4AFD")!
 }

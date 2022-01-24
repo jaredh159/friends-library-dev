@@ -1,4 +1,5 @@
 import Foundation
+import NonEmpty
 
 enum SendGrid {
   struct EmailAddress: Encodable, ExpressibleByStringLiteral {
@@ -18,7 +19,7 @@ enum SendGrid {
 
   struct Email: Encodable {
     struct Personalization: Encodable {
-      let to: [EmailAddress]
+      let to: NonEmpty<[EmailAddress]>
     }
 
     struct Attachment: Encodable {
@@ -37,19 +38,30 @@ enum SendGrid {
       }
     }
 
-    let personalizations: [Personalization]
+    struct Content: Encodable {
+      var type: String
+      var value: String
+    }
+
+    let personalizations: NonEmpty<[Personalization]>
     let from: EmailAddress
     let subject: String
-    let content: [[String: String]]
+    let content: NonEmpty<[Content]>
     var attachments: [Attachment]?
 
+    var firstRecipient: EmailAddress {
+      personalizations.first.to.first
+    }
+
+    var html: String {
+      content.first.value
+    }
+
     init(to: EmailAddress, from: EmailAddress, subject: String, html: String) {
-      personalizations = [Personalization(to: [to])]
+      personalizations = .init(Personalization(to: .init(to)))
       self.from = from
       self.subject = subject
-      content = [
-        ["type": "text/html", "value": html],
-      ]
+      content = .init(Content(type: "text/html", value: html))
     }
   }
 }
@@ -60,3 +72,5 @@ extension SendGrid.EmailAddress {
     name: "Friends Library"
   )
 }
+
+extension SendGrid.EmailAddress: Equatable {}

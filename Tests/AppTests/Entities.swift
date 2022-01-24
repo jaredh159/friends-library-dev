@@ -19,37 +19,48 @@ struct Entities {
 
     let friendResidence: FriendResidence = .random
     friendResidence.friendId = friend.id
+    connect(friend, \.residences, to: [friendResidence], \.friend)
 
     let friendResidenceDuration: FriendResidenceDuration = .random
     friendResidenceDuration.friendResidenceId = friendResidence.id
+    connect(friendResidence, \.durations, to: [friendResidenceDuration], \.residence)
 
     let friendQuote: FriendQuote = .random
     friendQuote.friendId = friend.id
+    connect(friend, \.quotes, to: [friendQuote], \.friend)
 
     let document: Document = .random
     document.altLanguageId = nil
     document.friendId = friend.id
+    connect(friend, \.documents, to: [document], \.friend)
 
     let documentTag: DocumentTag = .random
     documentTag.documentId = document.id
+    connect(document, \.tags, to: [documentTag], \.document)
 
     let edition: Edition = .random
     edition.documentId = document.id
+    connect(document, \.editions, to: [edition], \.document)
 
     let editionChapter: EditionChapter = .random
     editionChapter.editionId = edition.id
+    connect(edition, \.chapters, to: [editionChapter], \.edition)
 
     let editionImpression: EditionImpression = .random
     editionImpression.editionId = edition.id
+    connect(edition, \.impression, to: editionImpression, \.edition)
 
     let isbn: Isbn = .random
     isbn.editionId = edition.id
+    connect(edition, \.isbn, to: isbn, \.edition)
 
     let audio: Audio = .random
     audio.editionId = edition.id
+    connect(edition, \.audio, to: audio, \.edition)
 
     let audioPart: AudioPart = .random
     audioPart.audioId = audio.id
+    connect(audio, \.parts, to: [audioPart], \.audio)
 
     var entities = Entities(
       friend: friend,

@@ -1,3 +1,4 @@
+import FluentSQL
 import Vapor
 import XCTest
 
@@ -10,8 +11,10 @@ class AppTestCase: XCTestCase {
     app = Application(.testing)
     try! app.autoRevert().wait()
     try! app.autoMigrate().wait()
+    Current = .mock
     try! configure(app)
     Current.logger = .null
+    Current.db = MockDatabase()
   }
 
   override static func tearDown() {
@@ -25,7 +28,9 @@ class AppTestCase: XCTestCase {
   }
 
   override func setUp() {
-    Current.db = MockDatabase()
-    Current.auth = .mockWithAllScopes
+    let existingDb = Current.db
+    Current = .mock
+    Current.date = { Date() }
+    Current.db = existingDb
   }
 }

@@ -35,6 +35,11 @@ enum Children<C: ApiModel>: Codable {
   case notLoaded
   case loaded([C])
 
+  var isLoaded: Bool {
+    guard case .loaded = self else { return false }
+    return true
+  }
+
   var models: [C] {
     get throws {
       guard case .loaded(let loaded) = self else {
@@ -55,6 +60,11 @@ enum Children<C: ApiModel>: Codable {
 enum Parent<P: ApiModel> {
   case notLoaded
   case loaded(P)
+
+  var isLoaded: Bool {
+    guard case .loaded = self else { return false }
+    return true
+  }
 
   var model: P {
     get throws {
@@ -77,6 +87,11 @@ enum OptionalParent<P: ApiModel> {
   case notLoaded
   case loaded(P?)
 
+  var isLoaded: Bool {
+    guard case .loaded = self else { return false }
+    return true
+  }
+
   var model: P? {
     get throws {
       guard case .loaded(let loaded) = self else {
@@ -97,6 +112,11 @@ enum OptionalParent<P: ApiModel> {
 enum OptionalChild<C: ApiModel> {
   case notLoaded
   case loaded(C?)
+
+  var isLoaded: Bool {
+    guard case .loaded = self else { return false }
+    return true
+  }
 
   var model: C? {
     get throws {
@@ -198,6 +218,14 @@ extension Tagged: UUIDStringable where RawValue == UUID {
   var uuidString: String { rawValue.uuidString }
 }
 
+extension UUID {
+  var lowercased: String { uuidString.lowercased() }
+}
+
+extension Tagged where RawValue == UUID {
+  var lowercased: String { rawValue.lowercased }
+}
+
 protocol Auditable: DuetModel {
   var createdAt: Date { get set }
 }
@@ -242,4 +270,34 @@ extension Array where Element: DuetModel {
       }
     }
   }
+}
+
+func connect<P: ApiModel, C: ApiModel>(
+  _ parent: P,
+  _ toChildren: ReferenceWritableKeyPath<P, Children<C>>,
+  to children: [C],
+  _ toParent: ReferenceWritableKeyPath<C, Parent<P>>
+) {
+  parent[keyPath: toChildren] = .loaded(children)
+  children.forEach { $0[keyPath: toParent] = .loaded(parent) }
+}
+
+func connect<P: ApiModel, C: ApiModel>(
+  _ parent: P,
+  _ toChildren: ReferenceWritableKeyPath<P, OptionalChild<C>>,
+  to child: C?,
+  _ toParent: ReferenceWritableKeyPath<C, Parent<P>>
+) {
+  parent[keyPath: toChildren] = .loaded(child)
+  child?[keyPath: toParent] = .loaded(parent)
+}
+
+func connect<P: ApiModel, C: ApiModel>(
+  _ parent: P,
+  _ toChildren: ReferenceWritableKeyPath<P, OptionalChild<C>>,
+  to child: C?,
+  _ toParent: ReferenceWritableKeyPath<C, OptionalParent<P>>
+) {
+  parent[keyPath: toChildren] = .loaded(child)
+  child?[keyPath: toParent] = .loaded(parent)
 }

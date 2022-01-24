@@ -74,7 +74,7 @@ enum SQL {
     _ Model: M.Type,
     where constraints: [WhereConstraint<M>]? = nil
   ) -> PreparedStatement {
-    return update(table: M.tableName, set: ["deleted_at": .currentTimestamp], where: constraints)
+    update(table: M.tableName, set: ["deleted_at": .currentTimestamp], where: constraints)
   }
 
   private static func update<M: DuetModel>(
@@ -114,7 +114,7 @@ enum SQL {
     where constraints: [WhereConstraint<M>]? = nil,
     returning: Postgres.Columns? = nil
   ) -> PreparedStatement {
-    return update(
+    update(
       table: M.tableName,
       set: values.mapKeys { M.columnName($0) },
       where: constraints,

@@ -64,3 +64,7 @@ extension Slack.Message {
     .init(text: text, channel: .debug, emoji: emoji)
   }
 }
+
+extension Slack.Emoji: Equatable {}
+extension Slack.Channel: Equatable {}
+extension Slack.Message: Equatable {}
