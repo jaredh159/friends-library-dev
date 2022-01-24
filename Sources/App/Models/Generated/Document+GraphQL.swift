@@ -5,9 +5,9 @@ import Vapor
 extension AppSchema {
   static var DocumentType: ModelType<Document> {
     Type(Document.self) {
-      Field("id", at: \.id.rawValue)
-      Field("friendId", at: \.friendId.rawValue)
-      Field("altLanguageId", at: \.altLanguageId?.rawValue)
+      Field("id", at: \.id.rawValue.lowercased)
+      Field("friendId", at: \.friendId.rawValue.lowercased)
+      Field("altLanguageId", at: \.altLanguageId?.rawValue.lowercased)
       Field("title", at: \.title)
       Field("slug", at: \.slug)
       Field("filename", at: \.filename)

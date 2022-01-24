@@ -90,8 +90,10 @@ describe(`extractModelAttrs()`, () => {
       }
   `);
 
-    const model = extractModelAttrs({ source, path: `/Models/Thing.swift` });
-    expect(model?.taggedTypes).toEqual({
+    const models = extractModels([{ source, path: `/Models/Thing.swift` }]);
+    expect(models).toHaveLength(1);
+    expect(models[0].name).toBe(`Thing`);
+    expect(models[0]?.taggedTypes).toEqual({
       Alias1: `UUID`,
       Alias2: `Int`,
       Alias3: `String`,
@@ -118,8 +120,10 @@ describe(`extractModelAttrs()`, () => {
       }
   `);
 
-    const model = extractModelAttrs({ source, path: `/Models/Thing.swift` });
-    expect(model?.dbEnums).toEqual({
+    const models = extractModels([{ source, path: `/Models/Thing.swift` }]);
+    expect(models).toHaveLength(1);
+    expect(models[0].name).toBe(`Thing`);
+    expect(models[0]?.dbEnums).toEqual({
       Foobar: [`foo`, `bar`],
       JimJam: [`jim`, `jam`],
     });

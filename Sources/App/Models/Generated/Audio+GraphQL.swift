@@ -5,8 +5,8 @@ import Vapor
 extension AppSchema {
   static var AudioType: ModelType<Audio> {
     Type(Audio.self) {
-      Field("id", at: \.id.rawValue)
-      Field("editionId", at: \.editionId.rawValue)
+      Field("id", at: \.id.rawValue.lowercased)
+      Field("editionId", at: \.editionId.rawValue.lowercased)
       Field("reader", at: \.reader)
       Field("isIncomplete", at: \.isIncomplete)
       Field("mp3ZipSizeHq", at: \.mp3ZipSizeHq.rawValue)

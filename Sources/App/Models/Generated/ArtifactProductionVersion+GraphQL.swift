@@ -5,7 +5,7 @@ import Vapor
 extension AppSchema {
   static var ArtifactProductionVersionType: ModelType<ArtifactProductionVersion> {
     Type(ArtifactProductionVersion.self) {
-      Field("id", at: \.id.rawValue)
+      Field("id", at: \.id.rawValue.lowercased)
       Field("version", at: \.version.rawValue)
       Field("createdAt", at: \.createdAt)
     }

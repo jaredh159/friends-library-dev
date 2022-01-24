@@ -5,7 +5,7 @@ import Vapor
 extension AppSchema {
   static var FreeOrderRequestType: ModelType<FreeOrderRequest> {
     Type(FreeOrderRequest.self) {
-      Field("id", at: \.id.rawValue)
+      Field("id", at: \.id.rawValue.lowercased)
       Field("name", at: \.name)
       Field("email", at: \.email.rawValue)
       Field("requestedBooks", at: \.requestedBooks)

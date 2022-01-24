@@ -17,6 +17,7 @@ extension Token {
     case id
     case value
     case description
+    case uses
     case createdAt
   }
 }
@@ -27,6 +28,7 @@ extension Token {
       .id: .id(self),
       .value: .uuid(value),
       .description: .string(description),
+      .uses: .int(uses),
       .createdAt: .currentTimestamp,
     ]
   }
@@ -41,6 +43,8 @@ extension Token: SQLInspectable {
         return .uuid(value) == constraint.value
       case .description:
         return .string(description) == constraint.value
+      case .uses:
+        return .int(uses) == constraint.value
       case .createdAt:
         return .date(createdAt) == constraint.value
     }

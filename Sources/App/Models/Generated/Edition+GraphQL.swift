@@ -6,8 +6,8 @@ import Vapor
 extension AppSchema {
   static var EditionType: ModelType<Edition> {
     Type(Edition.self) {
-      Field("id", at: \.id.rawValue)
-      Field("documentId", at: \.documentId.rawValue)
+      Field("id", at: \.id.rawValue.lowercased)
+      Field("documentId", at: \.documentId.rawValue.lowercased)
       Field("type", at: \.type)
       Field("editor", at: \.editor)
       Field("isDraft", at: \.isDraft)

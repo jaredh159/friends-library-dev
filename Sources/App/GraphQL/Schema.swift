@@ -45,6 +45,8 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.UpdateOrderInputType
   AppSchema.FreeOrderRequestType
   AppSchema.CreateFreeOrderRequestInputType
+  AppSchema.OrderInitializationType
+  AppSchema.CreateOrderInitializationInputType
 
   // friend types
   AppSchema.FriendType
@@ -179,6 +181,7 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
     AppSchema.updateOrder
     AppSchema.updateOrders
     AppSchema.createFreeOrderRequest
+    AppSchema.createOrderInitialization
     Field("createOrderWithItems", at: Resolver.createOrderWithItems) {
       Argument("order", at: \.order)
       Argument("items", at: \.items)

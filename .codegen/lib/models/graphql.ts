@@ -203,6 +203,15 @@ function keyPath(
   ) {
     keyPath += `${isOptional ? `?` : ``}.rawValue`;
   }
+  if (
+    type === `Id` ||
+    type === `UUID` ||
+    model.taggedTypes[type] === `UUID` ||
+    globalTypes.taggedTypes[type] === `UUID` ||
+    type.endsWith(`.Id`)
+  ) {
+    keyPath += `.lowercased`;
+  }
   return keyPath;
 }
 

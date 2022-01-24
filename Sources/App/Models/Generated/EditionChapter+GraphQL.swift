@@ -5,8 +5,8 @@ import Vapor
 extension AppSchema {
   static var EditionChapterType: ModelType<EditionChapter> {
     Type(EditionChapter.self) {
-      Field("id", at: \.id.rawValue)
-      Field("editionId", at: \.editionId.rawValue)
+      Field("id", at: \.id.rawValue.lowercased)
+      Field("editionId", at: \.editionId.rawValue.lowercased)
       Field("order", at: \.order)
       Field("shortHeading", at: \.shortHeading)
       Field("isIntermediateTitle", at: \.isIntermediateTitle)

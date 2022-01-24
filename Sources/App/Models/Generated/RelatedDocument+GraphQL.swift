@@ -5,10 +5,10 @@ import Vapor
 extension AppSchema {
   static var RelatedDocumentType: ModelType<RelatedDocument> {
     Type(RelatedDocument.self) {
-      Field("id", at: \.id.rawValue)
+      Field("id", at: \.id.rawValue.lowercased)
       Field("description", at: \.description)
-      Field("documentId", at: \.documentId.rawValue)
-      Field("parentDocumentId", at: \.parentDocumentId.rawValue)
+      Field("documentId", at: \.documentId.rawValue.lowercased)
+      Field("parentDocumentId", at: \.parentDocumentId.rawValue.lowercased)
       Field("createdAt", at: \.createdAt)
       Field("updatedAt", at: \.updatedAt)
       Field("document", with: \.document)

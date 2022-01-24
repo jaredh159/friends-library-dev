@@ -5,7 +5,7 @@ import Vapor
 extension AppSchema {
   static var OrderType: ModelType<Order> {
     Type(Order.self) {
-      Field("id", at: \.id.rawValue)
+      Field("id", at: \.id.rawValue.lowercased)
       Field("lang", at: \.lang)
       Field("source", at: \.source)
       Field("paymentId", at: \.paymentId.rawValue)
@@ -24,7 +24,7 @@ extension AppSchema {
       Field("addressState", at: \.addressState)
       Field("addressZip", at: \.addressZip)
       Field("addressCountry", at: \.addressCountry)
-      Field("freeOrderRequestId", at: \.freeOrderRequestId?.rawValue)
+      Field("freeOrderRequestId", at: \.freeOrderRequestId?.rawValue.lowercased)
       Field("createdAt", at: \.createdAt)
       Field("updatedAt", at: \.updatedAt)
       Field("address", at: \.address)

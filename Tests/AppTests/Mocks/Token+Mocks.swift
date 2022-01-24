@@ -21,6 +21,7 @@ extension App.Token {
       "id": .string(id.rawValue.uuidString),
       "value": .string(value.rawValue.uuidString),
       "description": .string(description),
+      "uses": uses != nil ? .number(Number(uses!)) : .null,
     ])
     omitting.forEach { try? map.remove($0) }
     return map

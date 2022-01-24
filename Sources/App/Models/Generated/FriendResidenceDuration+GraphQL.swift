@@ -5,8 +5,8 @@ import Vapor
 extension AppSchema {
   static var FriendResidenceDurationType: ModelType<FriendResidenceDuration> {
     Type(FriendResidenceDuration.self) {
-      Field("id", at: \.id.rawValue)
-      Field("friendResidenceId", at: \.friendResidenceId.rawValue)
+      Field("id", at: \.id.rawValue.lowercased)
+      Field("friendResidenceId", at: \.friendResidenceId.rawValue.lowercased)
       Field("start", at: \.start)
       Field("end", at: \.end)
       Field("createdAt", at: \.createdAt)

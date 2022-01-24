@@ -130,17 +130,17 @@ describe(`modelPropToInitArg()`, () => {
 
 describe(`schemaTypeFieldParts()`, () => {
   const expected = [
-    [`id`, `at`, `\\.id.rawValue`],
+    [`id`, `at`, `\\.id.rawValue.lowercased`],
     [`name`, `at`, `\\.name`],
     [`desc`, `at`, `\\.desc`],
     [`seconds`, `at`, `\\.seconds.rawValue`],
     [`fooBar`, `at`, `\\.fooBar`],
     [`jimJam`, `at`, `\\.jimJam`],
-    [`value`, `at`, `\\.value.rawValue`],
+    [`value`, `at`, `\\.value.rawValue.lowercased`],
     [`email`, `at`, `\\.email.rawValue`],
     [`price`, `at`, `\\.price.rawValue`],
-    [`parentId`, `at`, `\\.parentId.rawValue`],
-    [`optionalParentId`, `at`, `\\.optionalParentId?.rawValue`],
+    [`parentId`, `at`, `\\.parentId.rawValue.lowercased`],
+    [`optionalParentId`, `at`, `\\.optionalParentId?.rawValue.lowercased`],
     [`printJobId`, `at`, `\\.printJobId?.rawValue`],
     [`splits`, `at`, `\\.splits.rawValue`],
     [`optionalSplits`, `at`, `\\.optionalSplits?.rawValue`],
@@ -176,17 +176,17 @@ describe(`generateModelGraphQLTypes()`, () => {
       extension AppSchema {
         static var ThingType: ModelType<Thing> {
           Type(Thing.self) {
-            Field("id", at: \\.id.rawValue)
+            Field("id", at: \\.id.rawValue.lowercased)
             Field("name", at: \\.name)
             Field("desc", at: \\.desc)
             Field("seconds", at: \\.seconds.rawValue)
             Field("fooBar", at: \\.fooBar)
             Field("jimJam", at: \\.jimJam)
-            Field("value", at: \\.value.rawValue)
+            Field("value", at: \\.value.rawValue.lowercased)
             Field("email", at: \\.email.rawValue)
             Field("price", at: \\.price.rawValue)
-            Field("parentId", at: \\.parentId.rawValue)
-            Field("optionalParentId", at: \\.optionalParentId?.rawValue)
+            Field("parentId", at: \\.parentId.rawValue.lowercased)
+            Field("optionalParentId", at: \\.optionalParentId?.rawValue.lowercased)
             Field("printJobId", at: \\.printJobId?.rawValue)
             Field("splits", at: \\.splits.rawValue)
             Field("optionalSplits", at: \\.optionalSplits?.rawValue)

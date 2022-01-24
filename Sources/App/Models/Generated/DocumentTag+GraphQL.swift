@@ -5,8 +5,8 @@ import Vapor
 extension AppSchema {
   static var DocumentTagType: ModelType<DocumentTag> {
     Type(DocumentTag.self) {
-      Field("id", at: \.id.rawValue)
-      Field("documentId", at: \.documentId.rawValue)
+      Field("id", at: \.id.rawValue.lowercased)
+      Field("documentId", at: \.documentId.rawValue.lowercased)
       Field("type", at: \.type)
       Field("createdAt", at: \.createdAt)
       Field("document", with: \.document)

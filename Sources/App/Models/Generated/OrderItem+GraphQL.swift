@@ -5,9 +5,9 @@ import Vapor
 extension AppSchema {
   static var OrderItemType: ModelType<OrderItem> {
     Type(OrderItem.self) {
-      Field("id", at: \.id.rawValue)
-      Field("orderId", at: \.orderId.rawValue)
-      Field("editionId", at: \.editionId.rawValue)
+      Field("id", at: \.id.rawValue.lowercased)
+      Field("orderId", at: \.orderId.rawValue.lowercased)
+      Field("editionId", at: \.editionId.rawValue.lowercased)
       Field("quantity", at: \.quantity)
       Field("unitPrice", at: \.unitPrice.rawValue)
       Field("createdAt", at: \.createdAt)

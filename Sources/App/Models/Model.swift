@@ -208,7 +208,7 @@ protocol RandomEmptyInitializing {
 
 extension Tagged: RandomEmptyInitializing where RawValue == UUID {
   init() {
-    self.init(rawValue: UUID())
+    self.init(rawValue: Current.uuid())
   }
 }
 

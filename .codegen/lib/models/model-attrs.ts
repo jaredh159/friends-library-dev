@@ -1,6 +1,24 @@
 import { File, GlobalTypes } from '../types';
 import Model from './Model';
 
+export function extractModels(files: File[]): Model[] {
+  const models: Record<string, Model> = {};
+  for (const file of files) {
+    const model = extractModelAttrs(file);
+    if (model) {
+      models[model.name] = model;
+    }
+  }
+
+  for (const file of files) {
+    setMigrationNumbers(file, models);
+    setIsPreloaded(file, models);
+    extractFromExtensions(file, models);
+  }
+
+  return Object.values(models);
+}
+
 export function extractModelAttrs({ source, path }: File): Model | undefined {
   if (isFileWithoutModelInfo(path)) {
     return undefined;
@@ -161,24 +179,6 @@ function parsePreloadedEntityTypes(lines: string[], models: Record<string, Model
     if (!model) throw new Error(`Unexpected model name from PreloadedEntityType enum`);
     model.isPreloaded = true;
   }
-}
-
-export function extractModels(files: File[]): Model[] {
-  const models: Record<string, Model> = {};
-  for (const file of files) {
-    const model = extractModelAttrs(file);
-    if (model) {
-      models[model.name] = model;
-    }
-  }
-
-  for (const file of files) {
-    setMigrationNumbers(file, models);
-    setIsPreloaded(file, models);
-    extractFromExtensions(file, models);
-  }
-
-  return Object.values(models);
 }
 
 export function extractGlobalTypes(sources: string[]): GlobalTypes {

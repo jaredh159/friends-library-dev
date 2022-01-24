@@ -5,7 +5,7 @@ import Vapor
 extension AppSchema {
   static var FriendType: ModelType<Friend> {
     Type(Friend.self) {
-      Field("id", at: \.id.rawValue)
+      Field("id", at: \.id.rawValue.lowercased)
       Field("lang", at: \.lang)
       Field("name", at: \.name)
       Field("slug", at: \.slug)

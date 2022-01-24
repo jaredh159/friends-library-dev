@@ -13,6 +13,7 @@ class AppTestCase: XCTestCase {
     try! app.autoMigrate().wait()
     Current = .mock
     try! configure(app)
+    Current.uuid = { UUID() }
     Current.logger = .null
     Current.db = MockDatabase()
   }
@@ -30,6 +31,7 @@ class AppTestCase: XCTestCase {
   override func setUp() {
     let existingDb = Current.db
     Current = .mock
+    Current.uuid = { UUID() }
     Current.date = { Date() }
     Current.db = existingDb
   }

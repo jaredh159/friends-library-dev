@@ -5,8 +5,8 @@ import Vapor
 extension AppSchema {
   static var DownloadType: ModelType<Download> {
     Type(Download.self) {
-      Field("id", at: \.id.rawValue)
-      Field("editionId", at: \.editionId.rawValue)
+      Field("id", at: \.id.rawValue.lowercased)
+      Field("editionId", at: \.editionId.rawValue.lowercased)
       Field("format", at: \.format)
       Field("source", at: \.source)
       Field("audioQuality", at: \.audioQuality)

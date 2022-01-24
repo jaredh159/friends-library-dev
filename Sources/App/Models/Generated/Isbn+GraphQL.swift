@@ -5,9 +5,9 @@ import Vapor
 extension AppSchema {
   static var IsbnType: ModelType<Isbn> {
     Type(Isbn.self) {
-      Field("id", at: \.id.rawValue)
+      Field("id", at: \.id.rawValue.lowercased)
       Field("code", at: \.code.rawValue)
-      Field("editionId", at: \.editionId?.rawValue)
+      Field("editionId", at: \.editionId?.rawValue.lowercased)
       Field("createdAt", at: \.createdAt)
       Field("updatedAt", at: \.updatedAt)
       Field("edition", with: \.edition)

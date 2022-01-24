@@ -5,8 +5,8 @@ import Vapor
 extension AppSchema {
   static var FriendQuoteType: ModelType<FriendQuote> {
     Type(FriendQuote.self) {
-      Field("id", at: \.id.rawValue)
-      Field("friendId", at: \.friendId.rawValue)
+      Field("id", at: \.id.rawValue.lowercased)
+      Field("friendId", at: \.friendId.rawValue.lowercased)
       Field("source", at: \.source)
       Field("text", at: \.text)
       Field("order", at: \.order)

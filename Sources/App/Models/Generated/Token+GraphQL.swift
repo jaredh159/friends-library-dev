@@ -5,9 +5,10 @@ import Vapor
 extension AppSchema {
   static var TokenType: ModelType<Token> {
     Type(Token.self) {
-      Field("id", at: \.id.rawValue)
-      Field("value", at: \.value.rawValue)
+      Field("id", at: \.id.rawValue.lowercased)
+      Field("value", at: \.value.rawValue.lowercased)
       Field("description", at: \.description)
+      Field("uses", at: \.uses)
       Field("createdAt", at: \.createdAt)
       Field("scopes", with: \.scopes)
     }
@@ -17,12 +18,14 @@ extension AppSchema {
     let id: UUID?
     let value: UUID
     let description: String
+    let uses: Int?
   }
 
   struct UpdateTokenInput: Codable {
     let id: UUID
     let value: UUID
     let description: String
+    let uses: Int?
   }
 
   struct CreateTokenArgs: Codable {
@@ -46,6 +49,7 @@ extension AppSchema {
       InputField("id", at: \.id)
       InputField("value", at: \.value)
       InputField("description", at: \.description)
+      InputField("uses", at: \.uses)
     }
   }
 
@@ -54,6 +58,7 @@ extension AppSchema {
       InputField("id", at: \.id)
       InputField("value", at: \.value)
       InputField("description", at: \.description)
+      InputField("uses", at: \.uses)
     }
   }
 
@@ -103,7 +108,8 @@ extension Token {
     self.init(
       id: .init(rawValue: input.id ?? UUID()),
       value: .init(rawValue: input.value),
-      description: input.description
+      description: input.description,
+      uses: input.uses
     )
   }
 
@@ -111,12 +117,14 @@ extension Token {
     self.init(
       id: .init(rawValue: input.id),
       value: .init(rawValue: input.value),
-      description: input.description
+      description: input.description,
+      uses: input.uses
     )
   }
 
   func update(_ input: AppSchema.UpdateTokenInput) {
     value = .init(rawValue: input.value)
     description = input.description
+    uses = input.uses
   }
 }

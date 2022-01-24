@@ -6,8 +6,8 @@ import Vapor
 extension AppSchema {
   static var EditionImpressionType: ModelType<EditionImpression> {
     Type(EditionImpression.self) {
-      Field("id", at: \.id.rawValue)
-      Field("editionId", at: \.editionId.rawValue)
+      Field("id", at: \.id.rawValue.lowercased)
+      Field("editionId", at: \.editionId.rawValue.lowercased)
       Field("adocLength", at: \.adocLength)
       Field("paperbackSize", at: \.paperbackSize)
       Field("paperbackVolumes", at: \.paperbackVolumes.rawValue)

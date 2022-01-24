@@ -5,9 +5,9 @@ import Vapor
 extension AppSchema {
   static var TokenScopeType: ModelType<TokenScope> {
     Type(TokenScope.self) {
-      Field("id", at: \.id.rawValue)
+      Field("id", at: \.id.rawValue.lowercased)
       Field("scope", at: \.scope)
-      Field("tokenId", at: \.tokenId.rawValue)
+      Field("tokenId", at: \.tokenId.rawValue.lowercased)
       Field("createdAt", at: \.createdAt)
       Field("token", with: \.token)
     }
