@@ -10,6 +10,7 @@ struct Environment {
   var slackClient: Slack.Client = .init()
   var luluClient: Lulu.Api.Client = .live
   var sendGridClient: SendGrid.Client.SlackErrorLogging = .live
+  var stripeClient = Stripe.Client()
 }
 
 var Current = Environment()
@@ -23,7 +24,8 @@ extension Environment {
     logger: .null,
     slackClient: .mock,
     luluClient: .mock,
-    sendGridClient: .mock
+    sendGridClient: .mock,
+    stripeClient: .mock
   )
 }
 

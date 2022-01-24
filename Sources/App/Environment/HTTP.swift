@@ -49,13 +49,7 @@ enum HTTP {
       auth: auth,
       keyEncodingStrategy: keyEncodingStrategy
     )
-    do {
-      let decoder = JSONDecoder()
-      decoder.keyDecodingStrategy = keyDecodingStrategy
-      return try decoder.decode(Response.self, from: data)
-    } catch {
-      throw HttpError.decodingError(error, String(data: data, encoding: .utf8) ?? "")
-    }
+    return try decode(Response.self, from: data, using: keyDecodingStrategy)
   }
 
   static func postFormUrlencoded(
@@ -71,24 +65,6 @@ enum HTTP {
     return try convertResponse(await URLSession.shared.data(for: request))
   }
 
-  static func get<T: Decodable>(
-    _ urlString: String,
-    decoding: T.Type,
-    headers: [String: String] = [:],
-    auth: AuthType? = nil,
-    keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys
-  ) async throws -> T {
-    let request = try urlRequest(to: urlString, method: .get, headers: headers, auth: auth)
-    let (data, _) = try await URLSession.shared.data(for: request)
-    do {
-      let decoder = JSONDecoder()
-      decoder.keyDecodingStrategy = keyDecodingStrategy
-      return try decoder.decode(T.self, from: data)
-    } catch {
-      throw HttpError.decodingError(error, String(data: data, encoding: .utf8) ?? "")
-    }
-  }
-
   static func get(
     _ urlString: String,
     headers: [String: String] = [:],
@@ -96,6 +72,37 @@ enum HTTP {
   ) async throws -> (Data, HTTPURLResponse) {
     let request = try urlRequest(to: urlString, method: .get, headers: headers, auth: auth)
     return try convertResponse(await URLSession.shared.data(for: request))
+  }
+
+  static func get<T: Decodable>(
+    _ urlString: String,
+    decoding: T.Type,
+    headers: [String: String] = [:],
+    auth: AuthType? = nil,
+    keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys
+  ) async throws -> T {
+    let (data, _) = try await get(urlString, headers: headers, auth: auth)
+    return try decode(T.self, from: data, using: keyDecodingStrategy)
+  }
+
+  static func post(
+    _ urlString: String,
+    headers: [String: String] = [:],
+    auth: AuthType? = nil
+  ) async throws -> (Data, HTTPURLResponse) {
+    let request = try urlRequest(to: urlString, method: .post, headers: headers, auth: auth)
+    return try convertResponse(await URLSession.shared.data(for: request))
+  }
+
+  static func post<T: Decodable>(
+    _ urlString: String,
+    decoding: T.Type,
+    headers: [String: String] = [:],
+    auth: AuthType? = nil,
+    keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys
+  ) async throws -> T {
+    let (data, _) = try await post(urlString, headers: headers, auth: auth)
+    return try decode(T.self, from: data, using: keyDecodingStrategy)
   }
 
   static func postFormUrlencoded<T: Decodable>(
@@ -181,4 +188,18 @@ private func convertResponse(_ result: (Data, URLResponse)) throws
     throw HttpError.unexpectedResponseType
   }
   return (result.0, httpResponse)
+}
+
+private func decode<T: Decodable>(
+  _: T.Type,
+  from data: Data,
+  using keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys
+) throws -> T {
+  do {
+    let decoder = JSONDecoder()
+    decoder.keyDecodingStrategy = keyDecodingStrategy
+    return try decoder.decode(T.self, from: data)
+  } catch {
+    throw HttpError.decodingError(error, String(data: data, encoding: .utf8) ?? "")
+  }
 }
