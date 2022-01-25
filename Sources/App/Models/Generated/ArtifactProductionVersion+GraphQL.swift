@@ -21,22 +21,6 @@ extension AppSchema {
     let version: String
   }
 
-  struct CreateArtifactProductionVersionArgs: Codable {
-    let input: AppSchema.CreateArtifactProductionVersionInput
-  }
-
-  struct UpdateArtifactProductionVersionArgs: Codable {
-    let input: AppSchema.UpdateArtifactProductionVersionInput
-  }
-
-  struct CreateArtifactProductionVersionsArgs: Codable {
-    let input: [AppSchema.CreateArtifactProductionVersionInput]
-  }
-
-  struct UpdateArtifactProductionVersionsArgs: Codable {
-    let input: [AppSchema.UpdateArtifactProductionVersionInput]
-  }
-
   static var CreateArtifactProductionVersionInputType: AppInput<
     AppSchema
       .CreateArtifactProductionVersionInput
@@ -69,7 +53,7 @@ extension AppSchema {
 
   static var createArtifactProductionVersion: AppField<
     ArtifactProductionVersion,
-    AppSchema.CreateArtifactProductionVersionArgs
+    InputArgs<CreateArtifactProductionVersionInput>
   > {
     Field("createArtifactProductionVersion", at: Resolver.createArtifactProductionVersion) {
       Argument("input", at: \.input)
@@ -78,7 +62,7 @@ extension AppSchema {
 
   static var createArtifactProductionVersions: AppField<
     [ArtifactProductionVersion],
-    AppSchema.CreateArtifactProductionVersionsArgs
+    InputArgs<[CreateArtifactProductionVersionInput]>
   > {
     Field("createArtifactProductionVersions", at: Resolver.createArtifactProductionVersions) {
       Argument("input", at: \.input)
@@ -87,7 +71,7 @@ extension AppSchema {
 
   static var updateArtifactProductionVersion: AppField<
     ArtifactProductionVersion,
-    AppSchema.UpdateArtifactProductionVersionArgs
+    InputArgs<UpdateArtifactProductionVersionInput>
   > {
     Field("updateArtifactProductionVersion", at: Resolver.updateArtifactProductionVersion) {
       Argument("input", at: \.input)
@@ -96,7 +80,7 @@ extension AppSchema {
 
   static var updateArtifactProductionVersions: AppField<
     [ArtifactProductionVersion],
-    AppSchema.UpdateArtifactProductionVersionsArgs
+    InputArgs<[UpdateArtifactProductionVersionInput]>
   > {
     Field("updateArtifactProductionVersions", at: Resolver.updateArtifactProductionVersions) {
       Argument("input", at: \.input)

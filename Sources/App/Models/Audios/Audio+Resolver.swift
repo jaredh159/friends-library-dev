@@ -19,7 +19,7 @@ extension Resolver {
 
   func createAudio(
     req: Req,
-    args: AppSchema.CreateAudioArgs
+    args: InputArgs<AppSchema.CreateAudioInput>
   ) throws -> Future<Audio> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: Audio.self, on: req.eventLoop) {
@@ -29,7 +29,7 @@ extension Resolver {
 
   func createAudios(
     req: Req,
-    args: AppSchema.CreateAudiosArgs
+    args: InputArgs<[AppSchema.CreateAudioInput]>
   ) throws -> Future<[Audio]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [Audio].self, on: req.eventLoop) {
@@ -39,7 +39,7 @@ extension Resolver {
 
   func updateAudio(
     req: Req,
-    args: AppSchema.UpdateAudioArgs
+    args: InputArgs<AppSchema.UpdateAudioInput>
   ) throws -> Future<Audio> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: Audio.self, on: req.eventLoop) {
@@ -49,7 +49,7 @@ extension Resolver {
 
   func updateAudios(
     req: Req,
-    args: AppSchema.UpdateAudiosArgs
+    args: InputArgs<[AppSchema.UpdateAudioInput]>
   ) throws -> Future<[Audio]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [Audio].self, on: req.eventLoop) {

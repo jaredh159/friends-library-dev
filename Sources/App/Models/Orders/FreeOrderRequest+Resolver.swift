@@ -6,7 +6,7 @@ import Vapor
 extension Resolver {
   func createFreeOrderRequest(
     req: Req,
-    args: AppSchema.CreateFreeOrderRequestArgs
+    args: InputArgs<AppSchema.CreateFreeOrderRequestInput>
   ) throws -> Future<FreeOrderRequest> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: FreeOrderRequest.self, on: req.eventLoop) {
@@ -91,7 +91,7 @@ extension Resolver {
 
   func createFreeOrderRequests(
     req: Req,
-    args: AppSchema.CreateFreeOrderRequestsArgs
+    args: InputArgs<[AppSchema.CreateFreeOrderRequestInput]>
   ) throws -> Future<[FreeOrderRequest]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [FreeOrderRequest].self, on: req.eventLoop) {
@@ -101,7 +101,7 @@ extension Resolver {
 
   func updateFreeOrderRequest(
     req: Req,
-    args: AppSchema.UpdateFreeOrderRequestArgs
+    args: InputArgs<AppSchema.UpdateFreeOrderRequestInput>
   ) throws -> Future<FreeOrderRequest> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: FreeOrderRequest.self, on: req.eventLoop) {
@@ -111,7 +111,7 @@ extension Resolver {
 
   func updateFreeOrderRequests(
     req: Req,
-    args: AppSchema.UpdateFreeOrderRequestsArgs
+    args: InputArgs<[AppSchema.UpdateFreeOrderRequestInput]>
   ) throws -> Future<[FreeOrderRequest]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [FreeOrderRequest].self, on: req.eventLoop) {

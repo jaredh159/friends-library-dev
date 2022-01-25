@@ -30,22 +30,6 @@ extension AppSchema {
     let region: String
   }
 
-  struct CreateFriendResidenceArgs: Codable {
-    let input: AppSchema.CreateFriendResidenceInput
-  }
-
-  struct UpdateFriendResidenceArgs: Codable {
-    let input: AppSchema.UpdateFriendResidenceInput
-  }
-
-  struct CreateFriendResidencesArgs: Codable {
-    let input: [AppSchema.CreateFriendResidenceInput]
-  }
-
-  struct UpdateFriendResidencesArgs: Codable {
-    let input: [AppSchema.UpdateFriendResidenceInput]
-  }
-
   static var CreateFriendResidenceInputType: AppInput<AppSchema.CreateFriendResidenceInput> {
     Input(AppSchema.CreateFriendResidenceInput.self) {
       InputField("id", at: \.id)
@@ -74,7 +58,10 @@ extension AppSchema {
     Field("getFriendResidences", at: Resolver.getFriendResidences)
   }
 
-  static var createFriendResidence: AppField<FriendResidence, AppSchema.CreateFriendResidenceArgs> {
+  static var createFriendResidence: AppField<
+    FriendResidence,
+    InputArgs<CreateFriendResidenceInput>
+  > {
     Field("createFriendResidence", at: Resolver.createFriendResidence) {
       Argument("input", at: \.input)
     }
@@ -82,14 +69,17 @@ extension AppSchema {
 
   static var createFriendResidences: AppField<
     [FriendResidence],
-    AppSchema.CreateFriendResidencesArgs
+    InputArgs<[CreateFriendResidenceInput]>
   > {
     Field("createFriendResidences", at: Resolver.createFriendResidences) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateFriendResidence: AppField<FriendResidence, AppSchema.UpdateFriendResidenceArgs> {
+  static var updateFriendResidence: AppField<
+    FriendResidence,
+    InputArgs<UpdateFriendResidenceInput>
+  > {
     Field("updateFriendResidence", at: Resolver.updateFriendResidence) {
       Argument("input", at: \.input)
     }
@@ -97,7 +87,7 @@ extension AppSchema {
 
   static var updateFriendResidences: AppField<
     [FriendResidence],
-    AppSchema.UpdateFriendResidencesArgs
+    InputArgs<[UpdateFriendResidenceInput]>
   > {
     Field("updateFriendResidences", at: Resolver.updateFriendResidences) {
       Argument("input", at: \.input)

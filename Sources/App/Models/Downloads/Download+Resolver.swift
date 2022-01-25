@@ -19,7 +19,7 @@ extension Resolver {
 
   func createDownload(
     req: Req,
-    args: AppSchema.CreateDownloadArgs
+    args: InputArgs<AppSchema.CreateDownloadInput>
   ) throws -> Future<Download> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: Download.self, on: req.eventLoop) {
@@ -29,7 +29,7 @@ extension Resolver {
 
   func createDownloads(
     req: Req,
-    args: AppSchema.CreateDownloadsArgs
+    args: InputArgs<[AppSchema.CreateDownloadInput]>
   ) throws -> Future<[Download]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [Download].self, on: req.eventLoop) {
@@ -39,7 +39,7 @@ extension Resolver {
 
   func updateDownload(
     req: Req,
-    args: AppSchema.UpdateDownloadArgs
+    args: InputArgs<AppSchema.UpdateDownloadInput>
   ) throws -> Future<Download> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: Download.self, on: req.eventLoop) {
@@ -49,7 +49,7 @@ extension Resolver {
 
   func updateDownloads(
     req: Req,
-    args: AppSchema.UpdateDownloadsArgs
+    args: InputArgs<[AppSchema.UpdateDownloadInput]>
   ) throws -> Future<[Download]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [Download].self, on: req.eventLoop) {

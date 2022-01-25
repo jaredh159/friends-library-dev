@@ -13,7 +13,7 @@ struct OrderInitialization: Encodable {
 extension Resolver {
   func createOrderInitialization(
     req: Req,
-    args: AppSchema.CreateOrderInitializationArgs
+    args: InputArgs<AppSchema.CreateOrderInitializationInput>
   ) throws -> Future<OrderInitialization> {
     let amount = Cents<Int>(rawValue: args.input.amount)
     let orderId = Order.Id()
@@ -42,13 +42,9 @@ extension AppSchema {
     let amount: Int
   }
 
-  struct CreateOrderInitializationArgs: Codable {
-    let input: CreateOrderInitializationInput
-  }
-
   static var createOrderInitialization: AppField<
     OrderInitialization,
-    CreateOrderInitializationArgs
+    InputArgs<AppSchema.CreateOrderInitializationInput>
   > {
     Field("createOrderInitialization", at: Resolver.createOrderInitialization) {
       Argument("input", at: \.input)

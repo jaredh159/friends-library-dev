@@ -19,7 +19,7 @@ extension Resolver {
 
   func createIsbn(
     req: Req,
-    args: AppSchema.CreateIsbnArgs
+    args: InputArgs<AppSchema.CreateIsbnInput>
   ) throws -> Future<Isbn> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: Isbn.self, on: req.eventLoop) {
@@ -29,7 +29,7 @@ extension Resolver {
 
   func createIsbns(
     req: Req,
-    args: AppSchema.CreateIsbnsArgs
+    args: InputArgs<[AppSchema.CreateIsbnInput]>
   ) throws -> Future<[Isbn]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [Isbn].self, on: req.eventLoop) {
@@ -39,7 +39,7 @@ extension Resolver {
 
   func updateIsbn(
     req: Req,
-    args: AppSchema.UpdateIsbnArgs
+    args: InputArgs<AppSchema.UpdateIsbnInput>
   ) throws -> Future<Isbn> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: Isbn.self, on: req.eventLoop) {
@@ -49,7 +49,7 @@ extension Resolver {
 
   func updateIsbns(
     req: Req,
-    args: AppSchema.UpdateIsbnsArgs
+    args: InputArgs<[AppSchema.UpdateIsbnInput]>
   ) throws -> Future<[Isbn]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [Isbn].self, on: req.eventLoop) {

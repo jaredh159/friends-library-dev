@@ -19,7 +19,7 @@ extension Resolver {
 
   func createEditionChapter(
     req: Req,
-    args: AppSchema.CreateEditionChapterArgs
+    args: InputArgs<AppSchema.CreateEditionChapterInput>
   ) throws -> Future<EditionChapter> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: EditionChapter.self, on: req.eventLoop) {
@@ -29,7 +29,7 @@ extension Resolver {
 
   func createEditionChapters(
     req: Req,
-    args: AppSchema.CreateEditionChaptersArgs
+    args: InputArgs<[AppSchema.CreateEditionChapterInput]>
   ) throws -> Future<[EditionChapter]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [EditionChapter].self, on: req.eventLoop) {
@@ -39,7 +39,7 @@ extension Resolver {
 
   func updateEditionChapter(
     req: Req,
-    args: AppSchema.UpdateEditionChapterArgs
+    args: InputArgs<AppSchema.UpdateEditionChapterInput>
   ) throws -> Future<EditionChapter> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: EditionChapter.self, on: req.eventLoop) {
@@ -49,7 +49,7 @@ extension Resolver {
 
   func updateEditionChapters(
     req: Req,
-    args: AppSchema.UpdateEditionChaptersArgs
+    args: InputArgs<[AppSchema.UpdateEditionChapterInput]>
   ) throws -> Future<[EditionChapter]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [EditionChapter].self, on: req.eventLoop) {

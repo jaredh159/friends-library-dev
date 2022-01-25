@@ -76,7 +76,7 @@ describe(`generateModelMocks()`, () => {
       
         func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
           var map: GraphQL.Map = .dictionary([
-            "id": .string(id.rawValue.uuidString),
+            "id": .string(id.lowercased),
             "name": .string(name),
           ])
           omitting.forEach { try? map.remove($0) }
@@ -152,7 +152,7 @@ describe(`generateModelMocks()`, () => {
 
         func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
           var map: GraphQL.Map = .dictionary([
-            "id": .string(id.rawValue.uuidString),
+            "id": .string(id.lowercased),
             "name": .string(name),
             "someInt": .number(Number(someInt)),
             "someBool": .bool(someBool),
@@ -160,7 +160,7 @@ describe(`generateModelMocks()`, () => {
             "someSha": .string(someSha.rawValue),
             "someNil": someNil != nil ? .string(someNil!) : .null,
             "fooId": .number(Number(fooId.rawValue)),
-            "relationId": .string(relationId.rawValue.uuidString),
+            "relationId": .string(relationId.lowercased),
             "seconds": .number(Number(seconds.rawValue)),
             "nonEmptyInt": .array(nonEmptyInt.array.map { .number(Number($0)) }),
             "someFoo": .string(someFoo.rawValue),

@@ -25,7 +25,7 @@ extension Resolver {
 
   func createFriendResidenceDuration(
     req: Req,
-    args: AppSchema.CreateFriendResidenceDurationArgs
+    args: InputArgs<AppSchema.CreateFriendResidenceDurationInput>
   ) throws -> Future<FriendResidenceDuration> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: FriendResidenceDuration.self, on: req.eventLoop) {
@@ -35,7 +35,7 @@ extension Resolver {
 
   func createFriendResidenceDurations(
     req: Req,
-    args: AppSchema.CreateFriendResidenceDurationsArgs
+    args: InputArgs<[AppSchema.CreateFriendResidenceDurationInput]>
   ) throws -> Future<[FriendResidenceDuration]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [FriendResidenceDuration].self, on: req.eventLoop) {
@@ -45,7 +45,7 @@ extension Resolver {
 
   func updateFriendResidenceDuration(
     req: Req,
-    args: AppSchema.UpdateFriendResidenceDurationArgs
+    args: InputArgs<AppSchema.UpdateFriendResidenceDurationInput>
   ) throws -> Future<FriendResidenceDuration> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: FriendResidenceDuration.self, on: req.eventLoop) {
@@ -55,7 +55,7 @@ extension Resolver {
 
   func updateFriendResidenceDurations(
     req: Req,
-    args: AppSchema.UpdateFriendResidenceDurationsArgs
+    args: InputArgs<[AppSchema.UpdateFriendResidenceDurationInput]>
   ) throws -> Future<[FriendResidenceDuration]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [FriendResidenceDuration].self, on: req.eventLoop) {

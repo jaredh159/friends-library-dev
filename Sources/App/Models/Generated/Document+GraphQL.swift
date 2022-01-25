@@ -59,22 +59,6 @@ extension AppSchema {
     let featuredDescription: String?
   }
 
-  struct CreateDocumentArgs: Codable {
-    let input: AppSchema.CreateDocumentInput
-  }
-
-  struct UpdateDocumentArgs: Codable {
-    let input: AppSchema.UpdateDocumentInput
-  }
-
-  struct CreateDocumentsArgs: Codable {
-    let input: [AppSchema.CreateDocumentInput]
-  }
-
-  struct UpdateDocumentsArgs: Codable {
-    let input: [AppSchema.UpdateDocumentInput]
-  }
-
   static var CreateDocumentInputType: AppInput<AppSchema.CreateDocumentInput> {
     Input(AppSchema.CreateDocumentInput.self) {
       InputField("id", at: \.id)
@@ -119,25 +103,25 @@ extension AppSchema {
     Field("getDocuments", at: Resolver.getDocuments)
   }
 
-  static var createDocument: AppField<Document, AppSchema.CreateDocumentArgs> {
+  static var createDocument: AppField<Document, InputArgs<CreateDocumentInput>> {
     Field("createDocument", at: Resolver.createDocument) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createDocuments: AppField<[Document], AppSchema.CreateDocumentsArgs> {
+  static var createDocuments: AppField<[Document], InputArgs<[CreateDocumentInput]>> {
     Field("createDocuments", at: Resolver.createDocuments) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateDocument: AppField<Document, AppSchema.UpdateDocumentArgs> {
+  static var updateDocument: AppField<Document, InputArgs<UpdateDocumentInput>> {
     Field("updateDocument", at: Resolver.updateDocument) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateDocuments: AppField<[Document], AppSchema.UpdateDocumentsArgs> {
+  static var updateDocuments: AppField<[Document], InputArgs<[UpdateDocumentInput]>> {
     Field("updateDocuments", at: Resolver.updateDocuments) {
       Argument("input", at: \.input)
     }

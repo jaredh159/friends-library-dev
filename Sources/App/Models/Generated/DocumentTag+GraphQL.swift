@@ -25,22 +25,6 @@ extension AppSchema {
     let type: DocumentTag.TagType
   }
 
-  struct CreateDocumentTagArgs: Codable {
-    let input: AppSchema.CreateDocumentTagInput
-  }
-
-  struct UpdateDocumentTagArgs: Codable {
-    let input: AppSchema.UpdateDocumentTagInput
-  }
-
-  struct CreateDocumentTagsArgs: Codable {
-    let input: [AppSchema.CreateDocumentTagInput]
-  }
-
-  struct UpdateDocumentTagsArgs: Codable {
-    let input: [AppSchema.UpdateDocumentTagInput]
-  }
-
   static var CreateDocumentTagInputType: AppInput<AppSchema.CreateDocumentTagInput> {
     Input(AppSchema.CreateDocumentTagInput.self) {
       InputField("id", at: \.id)
@@ -67,25 +51,25 @@ extension AppSchema {
     Field("getDocumentTags", at: Resolver.getDocumentTags)
   }
 
-  static var createDocumentTag: AppField<DocumentTag, AppSchema.CreateDocumentTagArgs> {
+  static var createDocumentTag: AppField<DocumentTag, InputArgs<CreateDocumentTagInput>> {
     Field("createDocumentTag", at: Resolver.createDocumentTag) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createDocumentTags: AppField<[DocumentTag], AppSchema.CreateDocumentTagsArgs> {
+  static var createDocumentTags: AppField<[DocumentTag], InputArgs<[CreateDocumentTagInput]>> {
     Field("createDocumentTags", at: Resolver.createDocumentTags) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateDocumentTag: AppField<DocumentTag, AppSchema.UpdateDocumentTagArgs> {
+  static var updateDocumentTag: AppField<DocumentTag, InputArgs<UpdateDocumentTagInput>> {
     Field("updateDocumentTag", at: Resolver.updateDocumentTag) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateDocumentTags: AppField<[DocumentTag], AppSchema.UpdateDocumentTagsArgs> {
+  static var updateDocumentTags: AppField<[DocumentTag], InputArgs<[UpdateDocumentTagInput]>> {
     Field("updateDocumentTags", at: Resolver.updateDocumentTags) {
       Argument("input", at: \.input)
     }

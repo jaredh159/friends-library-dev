@@ -30,22 +30,6 @@ extension AppSchema {
     let parentDocumentId: UUID
   }
 
-  struct CreateRelatedDocumentArgs: Codable {
-    let input: AppSchema.CreateRelatedDocumentInput
-  }
-
-  struct UpdateRelatedDocumentArgs: Codable {
-    let input: AppSchema.UpdateRelatedDocumentInput
-  }
-
-  struct CreateRelatedDocumentsArgs: Codable {
-    let input: [AppSchema.CreateRelatedDocumentInput]
-  }
-
-  struct UpdateRelatedDocumentsArgs: Codable {
-    let input: [AppSchema.UpdateRelatedDocumentInput]
-  }
-
   static var CreateRelatedDocumentInputType: AppInput<AppSchema.CreateRelatedDocumentInput> {
     Input(AppSchema.CreateRelatedDocumentInput.self) {
       InputField("id", at: \.id)
@@ -74,7 +58,10 @@ extension AppSchema {
     Field("getRelatedDocuments", at: Resolver.getRelatedDocuments)
   }
 
-  static var createRelatedDocument: AppField<RelatedDocument, AppSchema.CreateRelatedDocumentArgs> {
+  static var createRelatedDocument: AppField<
+    RelatedDocument,
+    InputArgs<CreateRelatedDocumentInput>
+  > {
     Field("createRelatedDocument", at: Resolver.createRelatedDocument) {
       Argument("input", at: \.input)
     }
@@ -82,14 +69,17 @@ extension AppSchema {
 
   static var createRelatedDocuments: AppField<
     [RelatedDocument],
-    AppSchema.CreateRelatedDocumentsArgs
+    InputArgs<[CreateRelatedDocumentInput]>
   > {
     Field("createRelatedDocuments", at: Resolver.createRelatedDocuments) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateRelatedDocument: AppField<RelatedDocument, AppSchema.UpdateRelatedDocumentArgs> {
+  static var updateRelatedDocument: AppField<
+    RelatedDocument,
+    InputArgs<UpdateRelatedDocumentInput>
+  > {
     Field("updateRelatedDocument", at: Resolver.updateRelatedDocument) {
       Argument("input", at: \.input)
     }
@@ -97,7 +87,7 @@ extension AppSchema {
 
   static var updateRelatedDocuments: AppField<
     [RelatedDocument],
-    AppSchema.UpdateRelatedDocumentsArgs
+    InputArgs<[UpdateRelatedDocumentInput]>
   > {
     Field("updateRelatedDocuments", at: Resolver.updateRelatedDocuments) {
       Argument("input", at: \.input)

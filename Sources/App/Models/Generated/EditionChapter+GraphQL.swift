@@ -41,22 +41,6 @@ extension AppSchema {
     let nonSequenceTitle: String?
   }
 
-  struct CreateEditionChapterArgs: Codable {
-    let input: AppSchema.CreateEditionChapterInput
-  }
-
-  struct UpdateEditionChapterArgs: Codable {
-    let input: AppSchema.UpdateEditionChapterInput
-  }
-
-  struct CreateEditionChaptersArgs: Codable {
-    let input: [AppSchema.CreateEditionChapterInput]
-  }
-
-  struct UpdateEditionChaptersArgs: Codable {
-    let input: [AppSchema.UpdateEditionChapterInput]
-  }
-
   static var CreateEditionChapterInputType: AppInput<AppSchema.CreateEditionChapterInput> {
     Input(AppSchema.CreateEditionChapterInput.self) {
       InputField("id", at: \.id)
@@ -93,7 +77,7 @@ extension AppSchema {
     Field("getEditionChapters", at: Resolver.getEditionChapters)
   }
 
-  static var createEditionChapter: AppField<EditionChapter, AppSchema.CreateEditionChapterArgs> {
+  static var createEditionChapter: AppField<EditionChapter, InputArgs<CreateEditionChapterInput>> {
     Field("createEditionChapter", at: Resolver.createEditionChapter) {
       Argument("input", at: \.input)
     }
@@ -101,14 +85,14 @@ extension AppSchema {
 
   static var createEditionChapters: AppField<
     [EditionChapter],
-    AppSchema.CreateEditionChaptersArgs
+    InputArgs<[CreateEditionChapterInput]>
   > {
     Field("createEditionChapters", at: Resolver.createEditionChapters) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateEditionChapter: AppField<EditionChapter, AppSchema.UpdateEditionChapterArgs> {
+  static var updateEditionChapter: AppField<EditionChapter, InputArgs<UpdateEditionChapterInput>> {
     Field("updateEditionChapter", at: Resolver.updateEditionChapter) {
       Argument("input", at: \.input)
     }
@@ -116,7 +100,7 @@ extension AppSchema {
 
   static var updateEditionChapters: AppField<
     [EditionChapter],
-    AppSchema.UpdateEditionChaptersArgs
+    InputArgs<[UpdateEditionChapterInput]>
   > {
     Field("updateEditionChapters", at: Resolver.updateEditionChapters) {
       Argument("input", at: \.input)

@@ -19,7 +19,7 @@ extension Resolver {
 
   func createOrderItem(
     req: Req,
-    args: AppSchema.CreateOrderItemArgs
+    args: InputArgs<AppSchema.CreateOrderItemInput>
   ) throws -> Future<OrderItem> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: OrderItem.self, on: req.eventLoop) {
@@ -29,7 +29,7 @@ extension Resolver {
 
   func createOrderItems(
     req: Req,
-    args: AppSchema.CreateOrderItemsArgs
+    args: InputArgs<[AppSchema.CreateOrderItemInput]>
   ) throws -> Future<[OrderItem]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [OrderItem].self, on: req.eventLoop) {
@@ -39,7 +39,7 @@ extension Resolver {
 
   func updateOrderItem(
     req: Req,
-    args: AppSchema.UpdateOrderItemArgs
+    args: InputArgs<AppSchema.UpdateOrderItemInput>
   ) throws -> Future<OrderItem> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: OrderItem.self, on: req.eventLoop) {
@@ -49,7 +49,7 @@ extension Resolver {
 
   func updateOrderItems(
     req: Req,
-    args: AppSchema.UpdateOrderItemsArgs
+    args: InputArgs<[AppSchema.UpdateOrderItemInput]>
   ) throws -> Future<[OrderItem]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [OrderItem].self, on: req.eventLoop) {

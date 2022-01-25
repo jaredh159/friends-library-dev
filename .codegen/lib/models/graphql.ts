@@ -238,22 +238,6 @@ extension AppSchema {
     /* GRAPHQL_REQUEST_INPUT_CREATE_UPDATE */
   }
 
-  struct CreateThingArgs: Codable {
-    let input: AppSchema.CreateThingInput
-  }
-
-  struct UpdateThingArgs: Codable {
-    let input: AppSchema.UpdateThingInput
-  }
-
-  struct CreateThingsArgs: Codable {
-    let input: [AppSchema.CreateThingInput]
-  }
-
-  struct UpdateThingsArgs: Codable {
-    let input: [AppSchema.UpdateThingInput]
-  }
-
   static var CreateThingInputType: AppInput<AppSchema.CreateThingInput> {
     Input(AppSchema.CreateThingInput.self) {
       /* GRAPHQL_SCHEMA_INPUTS_CREATE_UPDATE */
@@ -276,25 +260,25 @@ extension AppSchema {
     Field("getThings", at: Resolver.getThings)
   }
 
-  static var createThing: AppField<Thing, AppSchema.CreateThingArgs> {
+  static var createThing: AppField<Thing, InputArgs<CreateThingInput>> {
     Field("createThing", at: Resolver.createThing) {
       Argument("input", at: \\.input)
     }
   }
 
-  static var createThings: AppField<[Thing], AppSchema.CreateThingsArgs> {
+  static var createThings: AppField<[Thing], InputArgs<[CreateThingInput]>> {
     Field("createThings", at: Resolver.createThings) {
       Argument("input", at: \\.input)
     }
   }
 
-  static var updateThing: AppField<Thing, AppSchema.UpdateThingArgs> {
+  static var updateThing: AppField<Thing, InputArgs<UpdateThingInput>> {
     Field("updateThing", at: Resolver.updateThing) {
       Argument("input", at: \\.input)
     }
   }
 
-  static var updateThings: AppField<[Thing], AppSchema.UpdateThingsArgs> {
+  static var updateThings: AppField<[Thing], InputArgs<[UpdateThingInput]>> {
     Field("updateThings", at: Resolver.updateThings) {
       Argument("input", at: \\.input)
     }

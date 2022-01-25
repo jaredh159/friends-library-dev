@@ -48,22 +48,6 @@ extension AppSchema {
     let externalPlaylistIdLq: Int64?
   }
 
-  struct CreateAudioArgs: Codable {
-    let input: AppSchema.CreateAudioInput
-  }
-
-  struct UpdateAudioArgs: Codable {
-    let input: AppSchema.UpdateAudioInput
-  }
-
-  struct CreateAudiosArgs: Codable {
-    let input: [AppSchema.CreateAudioInput]
-  }
-
-  struct UpdateAudiosArgs: Codable {
-    let input: [AppSchema.UpdateAudioInput]
-  }
-
   static var CreateAudioInputType: AppInput<AppSchema.CreateAudioInput> {
     Input(AppSchema.CreateAudioInput.self) {
       InputField("id", at: \.id)
@@ -104,25 +88,25 @@ extension AppSchema {
     Field("getAudios", at: Resolver.getAudios)
   }
 
-  static var createAudio: AppField<Audio, AppSchema.CreateAudioArgs> {
+  static var createAudio: AppField<Audio, InputArgs<CreateAudioInput>> {
     Field("createAudio", at: Resolver.createAudio) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createAudios: AppField<[Audio], AppSchema.CreateAudiosArgs> {
+  static var createAudios: AppField<[Audio], InputArgs<[CreateAudioInput]>> {
     Field("createAudios", at: Resolver.createAudios) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateAudio: AppField<Audio, AppSchema.UpdateAudioArgs> {
+  static var updateAudio: AppField<Audio, InputArgs<UpdateAudioInput>> {
     Field("updateAudio", at: Resolver.updateAudio) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateAudios: AppField<[Audio], AppSchema.UpdateAudiosArgs> {
+  static var updateAudios: AppField<[Audio], InputArgs<[UpdateAudioInput]>> {
     Field("updateAudios", at: Resolver.updateAudios) {
       Argument("input", at: \.input)
     }

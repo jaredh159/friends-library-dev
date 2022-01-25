@@ -26,22 +26,6 @@ extension AppSchema {
     let editionId: UUID?
   }
 
-  struct CreateIsbnArgs: Codable {
-    let input: AppSchema.CreateIsbnInput
-  }
-
-  struct UpdateIsbnArgs: Codable {
-    let input: AppSchema.UpdateIsbnInput
-  }
-
-  struct CreateIsbnsArgs: Codable {
-    let input: [AppSchema.CreateIsbnInput]
-  }
-
-  struct UpdateIsbnsArgs: Codable {
-    let input: [AppSchema.UpdateIsbnInput]
-  }
-
   static var CreateIsbnInputType: AppInput<AppSchema.CreateIsbnInput> {
     Input(AppSchema.CreateIsbnInput.self) {
       InputField("id", at: \.id)
@@ -68,25 +52,25 @@ extension AppSchema {
     Field("getIsbns", at: Resolver.getIsbns)
   }
 
-  static var createIsbn: AppField<Isbn, AppSchema.CreateIsbnArgs> {
+  static var createIsbn: AppField<Isbn, InputArgs<CreateIsbnInput>> {
     Field("createIsbn", at: Resolver.createIsbn) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createIsbns: AppField<[Isbn], AppSchema.CreateIsbnsArgs> {
+  static var createIsbns: AppField<[Isbn], InputArgs<[CreateIsbnInput]>> {
     Field("createIsbns", at: Resolver.createIsbns) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateIsbn: AppField<Isbn, AppSchema.UpdateIsbnArgs> {
+  static var updateIsbn: AppField<Isbn, InputArgs<UpdateIsbnInput>> {
     Field("updateIsbn", at: Resolver.updateIsbn) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateIsbns: AppField<[Isbn], AppSchema.UpdateIsbnsArgs> {
+  static var updateIsbns: AppField<[Isbn], InputArgs<[UpdateIsbnInput]>> {
     Field("updateIsbns", at: Resolver.updateIsbns) {
       Argument("input", at: \.input)
     }

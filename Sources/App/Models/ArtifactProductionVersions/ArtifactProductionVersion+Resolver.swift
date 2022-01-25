@@ -38,7 +38,7 @@ extension Resolver {
 
   func createArtifactProductionVersion(
     req: Req,
-    args: AppSchema.CreateArtifactProductionVersionArgs
+    args: InputArgs<AppSchema.CreateArtifactProductionVersionInput>
   ) throws -> Future<ArtifactProductionVersion> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: ArtifactProductionVersion.self, on: req.eventLoop) {
@@ -48,7 +48,7 @@ extension Resolver {
 
   func createArtifactProductionVersions(
     req: Req,
-    args: AppSchema.CreateArtifactProductionVersionsArgs
+    args: InputArgs<[AppSchema.CreateArtifactProductionVersionInput]>
   ) throws -> Future<[ArtifactProductionVersion]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [ArtifactProductionVersion].self, on: req.eventLoop) {
@@ -58,7 +58,7 @@ extension Resolver {
 
   func updateArtifactProductionVersion(
     req: Req,
-    args: AppSchema.UpdateArtifactProductionVersionArgs
+    args: InputArgs<AppSchema.UpdateArtifactProductionVersionInput>
   ) throws -> Future<ArtifactProductionVersion> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: ArtifactProductionVersion.self, on: req.eventLoop) {
@@ -68,7 +68,7 @@ extension Resolver {
 
   func updateArtifactProductionVersions(
     req: Req,
-    args: AppSchema.UpdateArtifactProductionVersionsArgs
+    args: InputArgs<[AppSchema.UpdateArtifactProductionVersionInput]>
   ) throws -> Future<[ArtifactProductionVersion]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [ArtifactProductionVersion].self, on: req.eventLoop) {

@@ -33,7 +33,7 @@ extension Resolver {
 
   func createToken(
     req: Req,
-    args: AppSchema.CreateTokenArgs
+    args: InputArgs<AppSchema.CreateTokenInput>
   ) throws -> Future<Token> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: Token.self, on: req.eventLoop) {
@@ -43,7 +43,7 @@ extension Resolver {
 
   func createTokens(
     req: Req,
-    args: AppSchema.CreateTokensArgs
+    args: InputArgs<[AppSchema.CreateTokenInput]>
   ) throws -> Future<[Token]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [Token].self, on: req.eventLoop) {
@@ -53,7 +53,7 @@ extension Resolver {
 
   func updateToken(
     req: Req,
-    args: AppSchema.UpdateTokenArgs
+    args: InputArgs<AppSchema.UpdateTokenInput>
   ) throws -> Future<Token> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: Token.self, on: req.eventLoop) {
@@ -63,7 +63,7 @@ extension Resolver {
 
   func updateTokens(
     req: Req,
-    args: AppSchema.UpdateTokensArgs
+    args: InputArgs<[AppSchema.UpdateTokenInput]>
   ) throws -> Future<[Token]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [Token].self, on: req.eventLoop) {

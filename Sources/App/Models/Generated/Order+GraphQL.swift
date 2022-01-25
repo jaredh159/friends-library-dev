@@ -79,22 +79,6 @@ extension AppSchema {
     let freeOrderRequestId: UUID?
   }
 
-  struct CreateOrderArgs: Codable {
-    let input: AppSchema.CreateOrderInput
-  }
-
-  struct UpdateOrderArgs: Codable {
-    let input: AppSchema.UpdateOrderInput
-  }
-
-  struct CreateOrdersArgs: Codable {
-    let input: [AppSchema.CreateOrderInput]
-  }
-
-  struct UpdateOrdersArgs: Codable {
-    let input: [AppSchema.UpdateOrderInput]
-  }
-
   static var CreateOrderInputType: AppInput<AppSchema.CreateOrderInput> {
     Input(AppSchema.CreateOrderInput.self) {
       InputField("id", at: \.id)
@@ -155,25 +139,25 @@ extension AppSchema {
     Field("getOrders", at: Resolver.getOrders)
   }
 
-  static var createOrder: AppField<Order, AppSchema.CreateOrderArgs> {
+  static var createOrder: AppField<Order, InputArgs<CreateOrderInput>> {
     Field("createOrder", at: Resolver.createOrder) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createOrders: AppField<[Order], AppSchema.CreateOrdersArgs> {
+  static var createOrders: AppField<[Order], InputArgs<[CreateOrderInput]>> {
     Field("createOrders", at: Resolver.createOrders) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateOrder: AppField<Order, AppSchema.UpdateOrderArgs> {
+  static var updateOrder: AppField<Order, InputArgs<UpdateOrderInput>> {
     Field("updateOrder", at: Resolver.updateOrder) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateOrders: AppField<[Order], AppSchema.UpdateOrdersArgs> {
+  static var updateOrders: AppField<[Order], InputArgs<[UpdateOrderInput]>> {
     Field("updateOrders", at: Resolver.updateOrders) {
       Argument("input", at: \.input)
     }

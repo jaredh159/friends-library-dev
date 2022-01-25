@@ -22,7 +22,7 @@ extension Resolver {
 
   func createEditionImpression(
     req: Req,
-    args: AppSchema.CreateEditionImpressionArgs
+    args: InputArgs<AppSchema.CreateEditionImpressionInput>
   ) throws -> Future<EditionImpression> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: EditionImpression.self, on: req.eventLoop) {
@@ -32,7 +32,7 @@ extension Resolver {
 
   func createEditionImpressions(
     req: Req,
-    args: AppSchema.CreateEditionImpressionsArgs
+    args: InputArgs<[AppSchema.CreateEditionImpressionInput]>
   ) throws -> Future<[EditionImpression]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [EditionImpression].self, on: req.eventLoop) {
@@ -42,7 +42,7 @@ extension Resolver {
 
   func updateEditionImpression(
     req: Req,
-    args: AppSchema.UpdateEditionImpressionArgs
+    args: InputArgs<AppSchema.UpdateEditionImpressionInput>
   ) throws -> Future<EditionImpression> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: EditionImpression.self, on: req.eventLoop) {
@@ -52,7 +52,7 @@ extension Resolver {
 
   func updateEditionImpressions(
     req: Req,
-    args: AppSchema.UpdateEditionImpressionsArgs
+    args: InputArgs<[AppSchema.UpdateEditionImpressionInput]>
   ) throws -> Future<[EditionImpression]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [EditionImpression].self, on: req.eventLoop) {

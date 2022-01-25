@@ -19,7 +19,7 @@ extension Resolver {
 
   func createTokenScope(
     req: Req,
-    args: AppSchema.CreateTokenScopeArgs
+    args: InputArgs<AppSchema.CreateTokenScopeInput>
   ) throws -> Future<TokenScope> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: TokenScope.self, on: req.eventLoop) {
@@ -29,7 +29,7 @@ extension Resolver {
 
   func createTokenScopes(
     req: Req,
-    args: AppSchema.CreateTokenScopesArgs
+    args: InputArgs<[AppSchema.CreateTokenScopeInput]>
   ) throws -> Future<[TokenScope]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [TokenScope].self, on: req.eventLoop) {
@@ -39,7 +39,7 @@ extension Resolver {
 
   func updateTokenScope(
     req: Req,
-    args: AppSchema.UpdateTokenScopeArgs
+    args: InputArgs<AppSchema.UpdateTokenScopeInput>
   ) throws -> Future<TokenScope> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: TokenScope.self, on: req.eventLoop) {
@@ -49,7 +49,7 @@ extension Resolver {
 
   func updateTokenScopes(
     req: Req,
-    args: AppSchema.UpdateTokenScopesArgs
+    args: InputArgs<[AppSchema.UpdateTokenScopeInput]>
   ) throws -> Future<[TokenScope]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [TokenScope].self, on: req.eventLoop) {

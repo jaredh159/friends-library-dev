@@ -28,22 +28,6 @@ extension AppSchema {
     let uses: Int?
   }
 
-  struct CreateTokenArgs: Codable {
-    let input: AppSchema.CreateTokenInput
-  }
-
-  struct UpdateTokenArgs: Codable {
-    let input: AppSchema.UpdateTokenInput
-  }
-
-  struct CreateTokensArgs: Codable {
-    let input: [AppSchema.CreateTokenInput]
-  }
-
-  struct UpdateTokensArgs: Codable {
-    let input: [AppSchema.UpdateTokenInput]
-  }
-
   static var CreateTokenInputType: AppInput<AppSchema.CreateTokenInput> {
     Input(AppSchema.CreateTokenInput.self) {
       InputField("id", at: \.id)
@@ -72,25 +56,25 @@ extension AppSchema {
     Field("getTokens", at: Resolver.getTokens)
   }
 
-  static var createToken: AppField<Token, AppSchema.CreateTokenArgs> {
+  static var createToken: AppField<Token, InputArgs<CreateTokenInput>> {
     Field("createToken", at: Resolver.createToken) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createTokens: AppField<[Token], AppSchema.CreateTokensArgs> {
+  static var createTokens: AppField<[Token], InputArgs<[CreateTokenInput]>> {
     Field("createTokens", at: Resolver.createTokens) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateToken: AppField<Token, AppSchema.UpdateTokenArgs> {
+  static var updateToken: AppField<Token, InputArgs<UpdateTokenInput>> {
     Field("updateToken", at: Resolver.updateToken) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateTokens: AppField<[Token], AppSchema.UpdateTokensArgs> {
+  static var updateTokens: AppField<[Token], InputArgs<[UpdateTokenInput]>> {
     Field("updateTokens", at: Resolver.updateTokens) {
       Argument("input", at: \.input)
     }

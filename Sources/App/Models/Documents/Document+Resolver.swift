@@ -19,7 +19,7 @@ extension Resolver {
 
   func createDocument(
     req: Req,
-    args: AppSchema.CreateDocumentArgs
+    args: InputArgs<AppSchema.CreateDocumentInput>
   ) throws -> Future<Document> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: Document.self, on: req.eventLoop) {
@@ -29,7 +29,7 @@ extension Resolver {
 
   func createDocuments(
     req: Req,
-    args: AppSchema.CreateDocumentsArgs
+    args: InputArgs<[AppSchema.CreateDocumentInput]>
   ) throws -> Future<[Document]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [Document].self, on: req.eventLoop) {
@@ -39,7 +39,7 @@ extension Resolver {
 
   func updateDocument(
     req: Req,
-    args: AppSchema.UpdateDocumentArgs
+    args: InputArgs<AppSchema.UpdateDocumentInput>
   ) throws -> Future<Document> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: Document.self, on: req.eventLoop) {
@@ -49,7 +49,7 @@ extension Resolver {
 
   func updateDocuments(
     req: Req,
-    args: AppSchema.UpdateDocumentsArgs
+    args: InputArgs<[AppSchema.UpdateDocumentInput]>
   ) throws -> Future<[Document]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [Document].self, on: req.eventLoop) {

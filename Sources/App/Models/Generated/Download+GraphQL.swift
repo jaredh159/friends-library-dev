@@ -73,22 +73,6 @@ extension AppSchema {
     let longitude: String?
   }
 
-  struct CreateDownloadArgs: Codable {
-    let input: AppSchema.CreateDownloadInput
-  }
-
-  struct UpdateDownloadArgs: Codable {
-    let input: AppSchema.UpdateDownloadInput
-  }
-
-  struct CreateDownloadsArgs: Codable {
-    let input: [AppSchema.CreateDownloadInput]
-  }
-
-  struct UpdateDownloadsArgs: Codable {
-    let input: [AppSchema.UpdateDownloadInput]
-  }
-
   static var CreateDownloadInputType: AppInput<AppSchema.CreateDownloadInput> {
     Input(AppSchema.CreateDownloadInput.self) {
       InputField("id", at: \.id)
@@ -147,25 +131,25 @@ extension AppSchema {
     Field("getDownloads", at: Resolver.getDownloads)
   }
 
-  static var createDownload: AppField<Download, AppSchema.CreateDownloadArgs> {
+  static var createDownload: AppField<Download, InputArgs<CreateDownloadInput>> {
     Field("createDownload", at: Resolver.createDownload) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createDownloads: AppField<[Download], AppSchema.CreateDownloadsArgs> {
+  static var createDownloads: AppField<[Download], InputArgs<[CreateDownloadInput]>> {
     Field("createDownloads", at: Resolver.createDownloads) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateDownload: AppField<Download, AppSchema.UpdateDownloadArgs> {
+  static var updateDownload: AppField<Download, InputArgs<UpdateDownloadInput>> {
     Field("updateDownload", at: Resolver.updateDownload) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateDownloads: AppField<[Download], AppSchema.UpdateDownloadsArgs> {
+  static var updateDownloads: AppField<[Download], InputArgs<[UpdateDownloadInput]>> {
     Field("updateDownloads", at: Resolver.updateDownloads) {
       Argument("input", at: \.input)
     }

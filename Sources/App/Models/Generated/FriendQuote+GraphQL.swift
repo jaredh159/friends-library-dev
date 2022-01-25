@@ -35,22 +35,6 @@ extension AppSchema {
     let context: String?
   }
 
-  struct CreateFriendQuoteArgs: Codable {
-    let input: AppSchema.CreateFriendQuoteInput
-  }
-
-  struct UpdateFriendQuoteArgs: Codable {
-    let input: AppSchema.UpdateFriendQuoteInput
-  }
-
-  struct CreateFriendQuotesArgs: Codable {
-    let input: [AppSchema.CreateFriendQuoteInput]
-  }
-
-  struct UpdateFriendQuotesArgs: Codable {
-    let input: [AppSchema.UpdateFriendQuoteInput]
-  }
-
   static var CreateFriendQuoteInputType: AppInput<AppSchema.CreateFriendQuoteInput> {
     Input(AppSchema.CreateFriendQuoteInput.self) {
       InputField("id", at: \.id)
@@ -83,25 +67,25 @@ extension AppSchema {
     Field("getFriendQuotes", at: Resolver.getFriendQuotes)
   }
 
-  static var createFriendQuote: AppField<FriendQuote, AppSchema.CreateFriendQuoteArgs> {
+  static var createFriendQuote: AppField<FriendQuote, InputArgs<CreateFriendQuoteInput>> {
     Field("createFriendQuote", at: Resolver.createFriendQuote) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createFriendQuotes: AppField<[FriendQuote], AppSchema.CreateFriendQuotesArgs> {
+  static var createFriendQuotes: AppField<[FriendQuote], InputArgs<[CreateFriendQuoteInput]>> {
     Field("createFriendQuotes", at: Resolver.createFriendQuotes) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateFriendQuote: AppField<FriendQuote, AppSchema.UpdateFriendQuoteArgs> {
+  static var updateFriendQuote: AppField<FriendQuote, InputArgs<UpdateFriendQuoteInput>> {
     Field("updateFriendQuote", at: Resolver.updateFriendQuote) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateFriendQuotes: AppField<[FriendQuote], AppSchema.UpdateFriendQuotesArgs> {
+  static var updateFriendQuotes: AppField<[FriendQuote], InputArgs<[UpdateFriendQuoteInput]>> {
     Field("updateFriendQuotes", at: Resolver.updateFriendQuotes) {
       Argument("input", at: \.input)
     }

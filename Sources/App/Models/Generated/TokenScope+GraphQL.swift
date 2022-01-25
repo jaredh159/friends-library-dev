@@ -25,22 +25,6 @@ extension AppSchema {
     let tokenId: UUID
   }
 
-  struct CreateTokenScopeArgs: Codable {
-    let input: AppSchema.CreateTokenScopeInput
-  }
-
-  struct UpdateTokenScopeArgs: Codable {
-    let input: AppSchema.UpdateTokenScopeInput
-  }
-
-  struct CreateTokenScopesArgs: Codable {
-    let input: [AppSchema.CreateTokenScopeInput]
-  }
-
-  struct UpdateTokenScopesArgs: Codable {
-    let input: [AppSchema.UpdateTokenScopeInput]
-  }
-
   static var CreateTokenScopeInputType: AppInput<AppSchema.CreateTokenScopeInput> {
     Input(AppSchema.CreateTokenScopeInput.self) {
       InputField("id", at: \.id)
@@ -67,25 +51,25 @@ extension AppSchema {
     Field("getTokenScopes", at: Resolver.getTokenScopes)
   }
 
-  static var createTokenScope: AppField<TokenScope, AppSchema.CreateTokenScopeArgs> {
+  static var createTokenScope: AppField<TokenScope, InputArgs<CreateTokenScopeInput>> {
     Field("createTokenScope", at: Resolver.createTokenScope) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createTokenScopes: AppField<[TokenScope], AppSchema.CreateTokenScopesArgs> {
+  static var createTokenScopes: AppField<[TokenScope], InputArgs<[CreateTokenScopeInput]>> {
     Field("createTokenScopes", at: Resolver.createTokenScopes) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateTokenScope: AppField<TokenScope, AppSchema.UpdateTokenScopeArgs> {
+  static var updateTokenScope: AppField<TokenScope, InputArgs<UpdateTokenScopeInput>> {
     Field("updateTokenScope", at: Resolver.updateTokenScope) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateTokenScopes: AppField<[TokenScope], AppSchema.UpdateTokenScopesArgs> {
+  static var updateTokenScopes: AppField<[TokenScope], InputArgs<[UpdateTokenScopeInput]>> {
     Field("updateTokenScopes", at: Resolver.updateTokenScopes) {
       Argument("input", at: \.input)
     }

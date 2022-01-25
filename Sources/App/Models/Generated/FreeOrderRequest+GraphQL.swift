@@ -53,22 +53,6 @@ extension AppSchema {
     let source: String
   }
 
-  struct CreateFreeOrderRequestArgs: Codable {
-    let input: AppSchema.CreateFreeOrderRequestInput
-  }
-
-  struct UpdateFreeOrderRequestArgs: Codable {
-    let input: AppSchema.UpdateFreeOrderRequestInput
-  }
-
-  struct CreateFreeOrderRequestsArgs: Codable {
-    let input: [AppSchema.CreateFreeOrderRequestInput]
-  }
-
-  struct UpdateFreeOrderRequestsArgs: Codable {
-    let input: [AppSchema.UpdateFreeOrderRequestInput]
-  }
-
   static var CreateFreeOrderRequestInputType: AppInput<AppSchema.CreateFreeOrderRequestInput> {
     Input(AppSchema.CreateFreeOrderRequestInput.self) {
       InputField("id", at: \.id)
@@ -115,7 +99,7 @@ extension AppSchema {
 
   static var createFreeOrderRequest: AppField<
     FreeOrderRequest,
-    AppSchema.CreateFreeOrderRequestArgs
+    InputArgs<CreateFreeOrderRequestInput>
   > {
     Field("createFreeOrderRequest", at: Resolver.createFreeOrderRequest) {
       Argument("input", at: \.input)
@@ -124,7 +108,7 @@ extension AppSchema {
 
   static var createFreeOrderRequests: AppField<
     [FreeOrderRequest],
-    AppSchema.CreateFreeOrderRequestsArgs
+    InputArgs<[CreateFreeOrderRequestInput]>
   > {
     Field("createFreeOrderRequests", at: Resolver.createFreeOrderRequests) {
       Argument("input", at: \.input)
@@ -133,7 +117,7 @@ extension AppSchema {
 
   static var updateFreeOrderRequest: AppField<
     FreeOrderRequest,
-    AppSchema.UpdateFreeOrderRequestArgs
+    InputArgs<UpdateFreeOrderRequestInput>
   > {
     Field("updateFreeOrderRequest", at: Resolver.updateFreeOrderRequest) {
       Argument("input", at: \.input)
@@ -142,7 +126,7 @@ extension AppSchema {
 
   static var updateFreeOrderRequests: AppField<
     [FreeOrderRequest],
-    AppSchema.UpdateFreeOrderRequestsArgs
+    InputArgs<[UpdateFreeOrderRequestInput]>
   > {
     Field("updateFreeOrderRequests", at: Resolver.updateFreeOrderRequests) {
       Argument("input", at: \.input)

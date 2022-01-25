@@ -48,22 +48,6 @@ extension AppSchema {
     let published: String?
   }
 
-  struct CreateFriendArgs: Codable {
-    let input: AppSchema.CreateFriendInput
-  }
-
-  struct UpdateFriendArgs: Codable {
-    let input: AppSchema.UpdateFriendInput
-  }
-
-  struct CreateFriendsArgs: Codable {
-    let input: [AppSchema.CreateFriendInput]
-  }
-
-  struct UpdateFriendsArgs: Codable {
-    let input: [AppSchema.UpdateFriendInput]
-  }
-
   static var CreateFriendInputType: AppInput<AppSchema.CreateFriendInput> {
     Input(AppSchema.CreateFriendInput.self) {
       InputField("id", at: \.id)
@@ -102,25 +86,25 @@ extension AppSchema {
     Field("getFriends", at: Resolver.getFriends)
   }
 
-  static var createFriend: AppField<Friend, AppSchema.CreateFriendArgs> {
+  static var createFriend: AppField<Friend, InputArgs<CreateFriendInput>> {
     Field("createFriend", at: Resolver.createFriend) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createFriends: AppField<[Friend], AppSchema.CreateFriendsArgs> {
+  static var createFriends: AppField<[Friend], InputArgs<[CreateFriendInput]>> {
     Field("createFriends", at: Resolver.createFriends) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateFriend: AppField<Friend, AppSchema.UpdateFriendArgs> {
+  static var updateFriend: AppField<Friend, InputArgs<UpdateFriendInput>> {
     Field("updateFriend", at: Resolver.updateFriend) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateFriends: AppField<[Friend], AppSchema.UpdateFriendsArgs> {
+  static var updateFriends: AppField<[Friend], InputArgs<[UpdateFriendInput]>> {
     Field("updateFriends", at: Resolver.updateFriends) {
       Argument("input", at: \.input)
     }

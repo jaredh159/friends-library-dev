@@ -40,22 +40,6 @@ extension AppSchema {
     let productionToolchainRevision: String
   }
 
-  struct CreateEditionImpressionArgs: Codable {
-    let input: AppSchema.CreateEditionImpressionInput
-  }
-
-  struct UpdateEditionImpressionArgs: Codable {
-    let input: AppSchema.UpdateEditionImpressionInput
-  }
-
-  struct CreateEditionImpressionsArgs: Codable {
-    let input: [AppSchema.CreateEditionImpressionInput]
-  }
-
-  struct UpdateEditionImpressionsArgs: Codable {
-    let input: [AppSchema.UpdateEditionImpressionInput]
-  }
-
   static var CreateEditionImpressionInputType: AppInput<AppSchema.CreateEditionImpressionInput> {
     Input(AppSchema.CreateEditionImpressionInput.self) {
       InputField("id", at: \.id)
@@ -92,7 +76,7 @@ extension AppSchema {
 
   static var createEditionImpression: AppField<
     EditionImpression,
-    AppSchema.CreateEditionImpressionArgs
+    InputArgs<CreateEditionImpressionInput>
   > {
     Field("createEditionImpression", at: Resolver.createEditionImpression) {
       Argument("input", at: \.input)
@@ -101,7 +85,7 @@ extension AppSchema {
 
   static var createEditionImpressions: AppField<
     [EditionImpression],
-    AppSchema.CreateEditionImpressionsArgs
+    InputArgs<[CreateEditionImpressionInput]>
   > {
     Field("createEditionImpressions", at: Resolver.createEditionImpressions) {
       Argument("input", at: \.input)
@@ -110,7 +94,7 @@ extension AppSchema {
 
   static var updateEditionImpression: AppField<
     EditionImpression,
-    AppSchema.UpdateEditionImpressionArgs
+    InputArgs<UpdateEditionImpressionInput>
   > {
     Field("updateEditionImpression", at: Resolver.updateEditionImpression) {
       Argument("input", at: \.input)
@@ -119,7 +103,7 @@ extension AppSchema {
 
   static var updateEditionImpressions: AppField<
     [EditionImpression],
-    AppSchema.UpdateEditionImpressionsArgs
+    InputArgs<[UpdateEditionImpressionInput]>
   > {
     Field("updateEditionImpressions", at: Resolver.updateEditionImpressions) {
       Argument("input", at: \.input)

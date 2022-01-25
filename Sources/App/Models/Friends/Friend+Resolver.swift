@@ -19,7 +19,7 @@ extension Resolver {
 
   func createFriend(
     req: Req,
-    args: AppSchema.CreateFriendArgs
+    args: InputArgs<AppSchema.CreateFriendInput>
   ) throws -> Future<Friend> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: Friend.self, on: req.eventLoop) {
@@ -29,7 +29,7 @@ extension Resolver {
 
   func createFriends(
     req: Req,
-    args: AppSchema.CreateFriendsArgs
+    args: InputArgs<[AppSchema.CreateFriendInput]>
   ) throws -> Future<[Friend]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [Friend].self, on: req.eventLoop) {
@@ -39,7 +39,7 @@ extension Resolver {
 
   func updateFriend(
     req: Req,
-    args: AppSchema.UpdateFriendArgs
+    args: InputArgs<AppSchema.UpdateFriendInput>
   ) throws -> Future<Friend> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: Friend.self, on: req.eventLoop) {
@@ -49,7 +49,7 @@ extension Resolver {
 
   func updateFriends(
     req: Req,
-    args: AppSchema.UpdateFriendsArgs
+    args: InputArgs<[AppSchema.UpdateFriendInput]>
   ) throws -> Future<[Friend]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [Friend].self, on: req.eventLoop) {

@@ -46,22 +46,6 @@ extension AppSchema {
     let paperbackOverrideSize: PrintSizeVariant?
   }
 
-  struct CreateEditionArgs: Codable {
-    let input: AppSchema.CreateEditionInput
-  }
-
-  struct UpdateEditionArgs: Codable {
-    let input: AppSchema.UpdateEditionInput
-  }
-
-  struct CreateEditionsArgs: Codable {
-    let input: [AppSchema.CreateEditionInput]
-  }
-
-  struct UpdateEditionsArgs: Codable {
-    let input: [AppSchema.UpdateEditionInput]
-  }
-
   static var CreateEditionInputType: AppInput<AppSchema.CreateEditionInput> {
     Input(AppSchema.CreateEditionInput.self) {
       InputField("id", at: \.id)
@@ -96,25 +80,25 @@ extension AppSchema {
     Field("getEditions", at: Resolver.getEditions)
   }
 
-  static var createEdition: AppField<Edition, AppSchema.CreateEditionArgs> {
+  static var createEdition: AppField<Edition, InputArgs<CreateEditionInput>> {
     Field("createEdition", at: Resolver.createEdition) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createEditions: AppField<[Edition], AppSchema.CreateEditionsArgs> {
+  static var createEditions: AppField<[Edition], InputArgs<[CreateEditionInput]>> {
     Field("createEditions", at: Resolver.createEditions) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateEdition: AppField<Edition, AppSchema.UpdateEditionArgs> {
+  static var updateEdition: AppField<Edition, InputArgs<UpdateEditionInput>> {
     Field("updateEdition", at: Resolver.updateEdition) {
       Argument("input", at: \.input)
     }
   }
 
-  static var updateEditions: AppField<[Edition], AppSchema.UpdateEditionsArgs> {
+  static var updateEditions: AppField<[Edition], InputArgs<[UpdateEditionInput]>> {
     Field("updateEditions", at: Resolver.updateEditions) {
       Argument("input", at: \.input)
     }

@@ -28,22 +28,6 @@ extension AppSchema {
     let end: Int
   }
 
-  struct CreateFriendResidenceDurationArgs: Codable {
-    let input: AppSchema.CreateFriendResidenceDurationInput
-  }
-
-  struct UpdateFriendResidenceDurationArgs: Codable {
-    let input: AppSchema.UpdateFriendResidenceDurationInput
-  }
-
-  struct CreateFriendResidenceDurationsArgs: Codable {
-    let input: [AppSchema.CreateFriendResidenceDurationInput]
-  }
-
-  struct UpdateFriendResidenceDurationsArgs: Codable {
-    let input: [AppSchema.UpdateFriendResidenceDurationInput]
-  }
-
   static var CreateFriendResidenceDurationInputType: AppInput<
     AppSchema
       .CreateFriendResidenceDurationInput
@@ -80,7 +64,7 @@ extension AppSchema {
 
   static var createFriendResidenceDuration: AppField<
     FriendResidenceDuration,
-    AppSchema.CreateFriendResidenceDurationArgs
+    InputArgs<CreateFriendResidenceDurationInput>
   > {
     Field("createFriendResidenceDuration", at: Resolver.createFriendResidenceDuration) {
       Argument("input", at: \.input)
@@ -89,7 +73,7 @@ extension AppSchema {
 
   static var createFriendResidenceDurations: AppField<
     [FriendResidenceDuration],
-    AppSchema.CreateFriendResidenceDurationsArgs
+    InputArgs<[CreateFriendResidenceDurationInput]>
   > {
     Field("createFriendResidenceDurations", at: Resolver.createFriendResidenceDurations) {
       Argument("input", at: \.input)
@@ -98,7 +82,7 @@ extension AppSchema {
 
   static var updateFriendResidenceDuration: AppField<
     FriendResidenceDuration,
-    AppSchema.UpdateFriendResidenceDurationArgs
+    InputArgs<UpdateFriendResidenceDurationInput>
   > {
     Field("updateFriendResidenceDuration", at: Resolver.updateFriendResidenceDuration) {
       Argument("input", at: \.input)
@@ -107,7 +91,7 @@ extension AppSchema {
 
   static var updateFriendResidenceDurations: AppField<
     [FriendResidenceDuration],
-    AppSchema.UpdateFriendResidenceDurationsArgs
+    InputArgs<[UpdateFriendResidenceDurationInput]>
   > {
     Field("updateFriendResidenceDurations", at: Resolver.updateFriendResidenceDurations) {
       Argument("input", at: \.input)
