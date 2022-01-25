@@ -20,9 +20,11 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   Enum(Scope.self)
   Enum(Friend.Gender.self)
   Enum(PrintSizeVariant.self)
+  Enum(AppSchema.SubmitContactFormInput.Subject.self)
 
   AppSchema.GenericResponseType
   AppSchema.ShippingAddressType
+  AppSchema.SubmitContactFormInputType
 
   // isbn types
   AppSchema.IsbnType
@@ -129,6 +131,7 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   }
 
   Mutation {
+    AppSchema.submitContactForm
     AppSchema.createDownload
     AppSchema.createArtifactProductionVersion
 

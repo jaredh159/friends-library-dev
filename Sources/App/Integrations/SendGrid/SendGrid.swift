@@ -45,6 +45,7 @@ enum SendGrid {
 
     let personalizations: NonEmpty<[Personalization]>
     let from: EmailAddress
+    let replyTo: EmailAddress?
     let subject: String
     let content: NonEmpty<[Content]>
     var attachments: [Attachment]?
@@ -57,10 +58,17 @@ enum SendGrid {
       content.first.value
     }
 
-    init(to: EmailAddress, from: EmailAddress, subject: String, html: String) {
+    init(
+      to: EmailAddress,
+      from: EmailAddress,
+      replyTo: EmailAddress? = nil,
+      subject: String,
+      html: String
+    ) {
       personalizations = .init(Personalization(to: .init(to)))
       self.from = from
       self.subject = subject
+      self.replyTo = replyTo
       content = .init(Content(type: "text/html", value: html))
     }
   }

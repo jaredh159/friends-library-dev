@@ -1,10 +1,10 @@
 import Foundation
 
-enum EmailBuilder {
+extension EmailBuilder {
   static func orderShipped(_ order: Order, trackingUrl: String?) async throws -> SendGrid.Email {
     SendGrid.Email(
       to: .init(email: order.email.rawValue, name: order.addressName),
-      from: order |> emailFrom,
+      from: fromAddress(lang: order.lang),
       subject: order.lang == .en
         ? "[,] Friends Library Order Shipped"
         : "[,] Pedido Enviado – Biblioteca de Amigos",
@@ -17,7 +17,7 @@ enum EmailBuilder {
   static func orderConfirmation(_ order: Order) async throws -> SendGrid.Email {
     SendGrid.Email(
       to: .init(email: order.email.rawValue, name: order.addressName),
-      from: order |> emailFrom,
+      from: fromAddress(lang: order.lang),
       subject: order.lang == .en
         ? "[,] Friends Library Order Confirmation"
         : "[,] Confirmación de Pedido – Biblioteca de Amigos",
@@ -29,12 +29,6 @@ enum EmailBuilder {
 }
 
 // helpers
-
-private func emailFrom(order: Order) -> SendGrid.EmailAddress {
-  order.lang == .en
-    ? .init(email: "noreply@friendslibrary.com", name: "Friends Library")
-    : .init(email: "noreply@bibliotecadelosamigos.org", name: "Biblioteca de los Amigos")
-}
 
 private func lineItems(_ order: Order) async throws -> String {
   if !order.items.isLoaded {
