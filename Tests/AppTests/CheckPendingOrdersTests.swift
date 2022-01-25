@@ -5,12 +5,6 @@ import XCTest
 @testable import App
 
 final class CheckPendingOrdersTests: AppTestCase {
-  var slacksSent: [Slack.Message] = []
-
-  override func setUp() {
-    Current.slackClient.send = { [self] in self.slacksSent.append($0) }
-    slacksSent = []
-  }
 
   func testCheckPendingOrdersHappyPath() async throws {
     let order = Order.mock
@@ -33,7 +27,7 @@ final class CheckPendingOrdersTests: AppTestCase {
     let retrieved = try await Current.db.find(order.id)
     XCTAssertEqual(retrieved.printJobStatus, .accepted)
     XCTAssertEqual(
-      slacksSent,
+      sent.slacks,
       [.order("Verified acceptance of print job 33, status: PRODUCTION_DELAYED")]
     )
   }
@@ -43,7 +37,7 @@ final class CheckPendingOrdersTests: AppTestCase {
     Current.db = ThrowingDatabaseClient()
     await OrderPrintJobCoordinator.checkPendingOrders()
     XCTAssertEqual(
-      slacksSent,
+      sent.slacks,
       [.error("Error querying orders & print jobs: Abort.501: ThrowingSql.select")]
     )
     Current.db = existingDb
@@ -59,7 +53,7 @@ final class CheckPendingOrdersTests: AppTestCase {
     await OrderPrintJobCoordinator.checkPendingOrders()
 
     XCTAssertEqual(
-      slacksSent,
+      sent.slacks,
       [.error("Unexpected missing print job id in orders: [\(order.id)]")]
     )
   }
@@ -86,7 +80,7 @@ final class CheckPendingOrdersTests: AppTestCase {
     let retrieved = try await Current.db.find(order.id)
     XCTAssertEqual(retrieved.printJobStatus, .rejected)
     XCTAssertEqual(
-      slacksSent,
+      sent.slacks,
       [.error("Print job 33 for order \(order.id) rejected")]
     )
   }

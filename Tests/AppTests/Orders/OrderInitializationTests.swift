@@ -47,8 +47,6 @@ final class OrderInitializationTests: AppTestCase {
 
   func testCreateOrderInitializationFailure() async throws {
     Current.stripeClient.createPaymentIntent = { _, _ in throw "some error" }
-    var slacksSent: [Slack.Message] = []
-    Current.slackClient.send = { slacksSent.append($0) }
 
     GraphQLTest(
       """
@@ -64,6 +62,6 @@ final class OrderInitializationTests: AppTestCase {
       expectedError: .status(.internalServerError)
     ).run(Self.app, variables: ["input": .dictionary(["amount": .int(555)])])
 
-    XCTAssertEqual(slacksSent, [.error("Error creating OrderInitialization: some error")])
+    XCTAssertEqual(sent.slacks, [.error("Error creating OrderInitialization: some error")])
   }
 }

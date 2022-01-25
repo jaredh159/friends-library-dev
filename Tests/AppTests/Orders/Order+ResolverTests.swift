@@ -212,8 +212,6 @@ final class OrderResolverTests: AppTestCase {
       return .init(id: $0, clientSecret: "")
     }
 
-    let slackBuffer = Slack.Client.mockAndBuffer()
-
     let input: Map = .dictionary([
       "orderId": .string(order.id.lowercased),
       "orderPaymentId": "stripe_pi_id",
@@ -238,7 +236,7 @@ final class OrderResolverTests: AppTestCase {
     XCTAssertEqual(canceledPaymentId, "stripe_pi_id")
     let orderId = order.id.lowercased
     XCTAssertEqual(
-      slackBuffer.messages,
+      sent.slacks,
       [
         .error("Created stripe refund `pi_refund_id` for bricked order `\(orderId)`"),
         .error("Canceled stripe payment intent `stripe_pi_id` for bricked order `\(orderId)`"),

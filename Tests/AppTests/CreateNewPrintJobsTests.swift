@@ -5,12 +5,6 @@ import XCTest
 @testable import App
 
 final class CreateNewPrintJobTests: AppTestCase {
-  var slacksSent: [Slack.Message] = []
-
-  override func setUp() {
-    Current.slackClient.send = { [self] in self.slacksSent.append($0) }
-    slacksSent = []
-  }
 
   func testNoPrintJobsCreatedIfNoOrdersInPresubmitStatus() async throws {
     await OrderPrintJobCoordinator.createNewPrintJobs { _ in throw Fail() }
@@ -32,7 +26,7 @@ final class CreateNewPrintJobTests: AppTestCase {
     XCTAssertEqual(created.count, 1)
     XCTAssertEqual(updated.printJobId, 33)
     XCTAssertEqual(updated.printJobStatus, .pending)
-    XCTAssertEqual(slacksSent, [.order("Created print job 33 for order \(order.id)")])
+    XCTAssertEqual(sent.slacks, [.order("Created print job 33 for order \(order.id)")])
   }
 
   func testUnexpectedLuluStatusLogsErrorWithoutUpdatingOrder() async throws {
@@ -45,7 +39,10 @@ final class CreateNewPrintJobTests: AppTestCase {
     }
 
     let retrieved = try await Current.db.find(order.id)
-    XCTAssertEqual(slacksSent, [.error("Unexpected print job status ERROR for order \(order.id)")])
+    XCTAssertEqual(
+      sent.slacks,
+      [.error("Unexpected print job status ERROR for order \(order.id)")]
+    )
     XCTAssertEqual(retrieved.printJobStatus, .presubmit)
     XCTAssertEqual(retrieved.printJobId, nil)
   }
