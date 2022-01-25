@@ -40,7 +40,7 @@ extension SendGrid.Client.SlackErrorLogging {
       Subject: \(email.subject)
       Body: \(email.html)
       """
-      try await Current.slackClient.send(.error(msg))
+      await Current.slackClient.send(.error(msg))
     }
   })
   static let mock: Self = .init(send: { _ in })

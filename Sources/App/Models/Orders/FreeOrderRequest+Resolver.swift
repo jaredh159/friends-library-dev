@@ -55,7 +55,7 @@ private func sendFreeOrderRequestNotifications(
   if request.application.environment == .production {
     let text =
       "New *Spanish Free Book Order Request:*\n  → _Name_ `\(order.name)`\n  → _Books_ `\(order.requestedBooks)`\n  → _About_ `\(order.aboutRequester.replacingOccurrences(of: "\n", with: ""))`"
-    try await Current.slackClient.send(.order(text, emoji: .orangeBook))
+    await Current.slackClient.send(.order(text, emoji: .orangeBook))
   }
 }
 

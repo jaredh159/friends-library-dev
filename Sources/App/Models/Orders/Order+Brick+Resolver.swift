@@ -75,9 +75,3 @@ extension Resolver {
     }
   }
 }
-
-// helpers
-
-func slackError(_ msg: String) async {
-  try? await Current.slackClient.send(.error(msg))
-}

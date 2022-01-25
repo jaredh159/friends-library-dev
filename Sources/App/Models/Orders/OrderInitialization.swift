@@ -30,7 +30,7 @@ extension Resolver {
           createOrderToken: try await token.value
         )
       } catch {
-        try await Current.slackClient.send(.error("Error creating OrderInitialization: \(error)"))
+        await Current.slackClient.send(.error("Error creating OrderInitialization: \(error)"))
         throw Abort(.internalServerError)
       }
     }

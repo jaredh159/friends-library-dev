@@ -65,6 +65,30 @@ extension Slack.Message {
   }
 }
 
+func slackError(_ msg: String) async {
+  await Current.slackClient.send(.error(msg))
+}
+
+func slackDebug(_ msg: String) async {
+  await Current.slackClient.send(.debug(msg))
+}
+
+func slackAudio(_ msg: String) async {
+  await Current.slackClient.send(.audio(msg))
+}
+
+func slackDownload(_ msg: String) async {
+  await Current.slackClient.send(.download(msg))
+}
+
+func slackInfo(_ msg: String) async {
+  await Current.slackClient.send(.info(msg))
+}
+
+func slackOrder(_ msg: String) async {
+  await Current.slackClient.send(.order(msg))
+}
+
 extension Slack.Emoji: Equatable {}
 extension Slack.Channel: Equatable {}
 extension Slack.Message: Equatable {}

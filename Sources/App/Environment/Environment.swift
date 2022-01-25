@@ -34,6 +34,6 @@ extension UUID {
 }
 
 func invariant(_ msg: String) -> Never {
-  try! Current.slackClient.sendSync(.error(msg))
+  Current.slackClient.sendSync(.error(msg))
   fatalError(msg)
 }

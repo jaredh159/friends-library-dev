@@ -16,7 +16,7 @@ private struct SendResponse: Decodable {
   let error: String?
 }
 
-private func send(_ slack: Slack.Message) async throws {
+private func send(_ slack: Slack.Message) async {
   switch slack.channel {
     case .info, .orders, .downloads, .other:
       Current.logger.info("Sent a slack to `\(slack.channel)`: \(slack.text)")
@@ -26,30 +26,32 @@ private func send(_ slack: Slack.Message) async throws {
       Current.logger.debug("Sent a slack to `\(slack.channel)`: \(slack.text)")
   }
 
-  let response = try await HTTP.postJson(
-    [
-      "channel": slack.channel.string,
-      "text": slack.text,
-      "icon_emoji": slack.emoji.description,
-      "username": slack.username,
-      "unfurl_links": "false",
-      "unfurl_media": "false",
-    ],
-    to: "https://slack.com/api/chat.postMessage",
-    decoding: SendResponse.self,
-    auth: .bearer(slack.channel.token)
-  )
-
-  if !response.ok {
-    Current.logger.error("Failed to send slack, error=\(response.error ?? "")")
-    throw Slack.ClientError.failedToSend(response.error)
+  do {
+    let response = try await HTTP.postJson(
+      [
+        "channel": slack.channel.string,
+        "text": slack.text,
+        "icon_emoji": slack.emoji.description,
+        "username": slack.username,
+        "unfurl_links": "false",
+        "unfurl_media": "false",
+      ],
+      to: "https://slack.com/api/chat.postMessage",
+      decoding: SendResponse.self,
+      auth: .bearer(slack.channel.token)
+    )
+    if !response.ok {
+      Current.logger.error("Failed to send slack, error=\(response.error ?? "")")
+    }
+  } catch {
+    Current.logger.error("Failed to send slack, error=\(error)")
   }
 }
 
-private func sendSync(_ slack: Slack.Message) throws {
+private func sendSync(_ slack: Slack.Message) {
   let semaphore = DispatchSemaphore(value: 0)
   Task {
-    try await send(slack)
+    await send(slack)
     semaphore.signal()
   }
   _ = semaphore.wait(timeout: .distantFuture)
