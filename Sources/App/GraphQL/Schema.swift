@@ -25,6 +25,7 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.GenericResponseType
   AppSchema.ShippingAddressType
   AppSchema.SubmitContactFormInputType
+  AppSchema.LogJsErrorDataInputType
 
   // isbn types
   AppSchema.IsbnType
@@ -134,6 +135,7 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
     AppSchema.submitContactForm
     AppSchema.createDownload
     AppSchema.createArtifactProductionVersion
+    AppSchema.logJsError
 
     // isbn mutations
     AppSchema.createIsbn

@@ -57,18 +57,10 @@ extension Resolver {
         }
       }
 
-      let stateHistory = (args.input.stateHistory ?? [String]()).map { #""\#($0)""# }
       await slackError("""
       *Bricked Order*
       ```
-      {
-        "orderId": "\(args.input.orderId ?? "<missing order id>")",
-        "orderPaymentId": "\(args.input.orderPaymentId ?? "<missing payment id>")",
-        "userAgent": "\(args.input.userAgent ?? "<missing user agent>")",
-        "stateHistory": [
-          \(stateHistory.joined(separator: ",\n    "))
-        ]
-      }
+      \(JSON.encode(args.input, .pretty) ?? String(describing: args.input))
       ```
       """)
       return GenericResponse(success: true)

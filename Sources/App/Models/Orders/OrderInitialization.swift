@@ -44,7 +44,7 @@ extension AppSchema {
 
   static var createOrderInitialization: AppField<
     OrderInitialization,
-    InputArgs<AppSchema.CreateOrderInitializationInput>
+    InputArgs<CreateOrderInitializationInput>
   > {
     Field("createOrderInitialization", at: Resolver.createOrderInitialization) {
       Argument("input", at: \.input)

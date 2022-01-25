@@ -244,15 +244,13 @@ final class OrderResolverTests: AppTestCase {
         .error("""
         *Bricked Order*
         ```
-        {
-          "orderId": "\(orderId)",
-          "orderPaymentId": "stripe_pi_id",
-          "userAgent": "operafox",
-          "stateHistory": [
-            "foo",
-            "bar"
-          ]
-        }
+        \(JSON.encode(
+          BrickOrderInput(
+            orderPaymentId: "stripe_pi_id",
+            orderId: orderId,
+            userAgent: "operafox",
+            stateHistory: ["foo", "bar"]
+          ), .pretty)!)
         ```
         """),
       ]
