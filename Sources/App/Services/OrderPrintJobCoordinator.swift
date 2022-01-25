@@ -4,9 +4,7 @@ import NonEmpty
 enum OrderPrintJobCoordinator {
   typealias JobCreator = (Order) async throws -> Lulu.Api.PrintJob
 
-  static func createNewPrintJobs(
-    _ createPrintJob: JobCreator = PrintJobService.createPrintJob(_:)
-  ) async {
+  static func createNewPrintJobs(_ createPrintJob: JobCreator = PrintJobs.create(_:)) async {
     let orders: [Order]
     do {
       orders = try await Current.db.query(Order.self)

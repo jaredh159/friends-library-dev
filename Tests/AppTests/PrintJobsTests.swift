@@ -3,7 +3,7 @@ import XCTest
 
 @testable import App
 
-final class PrintJobServiceTests: AppTestCase {
+final class PrintJobsTests: AppTestCase {
 
   override func setUp() {
     super.setUp()
@@ -26,7 +26,7 @@ final class PrintJobServiceTests: AppTestCase {
     try await Current.db.create(order)
     try await Current.db.create(item)
 
-    let job = try await PrintJobService.createPrintJob(order)
+    let job = try await PrintJobs.create(order)
 
     XCTAssertEqual(1, job.id)
     XCTAssertEqual(
@@ -69,7 +69,7 @@ final class PrintJobServiceTests: AppTestCase {
     try await Current.db.create(order)
     try await Current.db.create(item)
 
-    let job = try await PrintJobService.createPrintJob(order)
+    let job = try await PrintJobs.create(order)
 
     XCTAssertEqual(1, job.id)
     XCTAssertEqual(
@@ -115,7 +115,7 @@ final class PrintJobServiceTests: AppTestCase {
       await responses.next()
     }
 
-    let meta = try await PrintJobService.getExploratoryMetadata(
+    let meta = try await PrintJobs.getExploratoryMetadata(
       for: [.init(volumes: .init(259), printSize: .m, quantity: 1)],
       shippedTo: .mock
     )
@@ -139,7 +139,7 @@ final class PrintJobServiceTests: AppTestCase {
     ]
 
     for (input, expected) in cases {
-      let actual = try PrintJobService.creditCardFeeOffset(.init(rawValue: input))
+      let actual = try PrintJobs.creditCardFeeOffset(.init(rawValue: input))
       XCTAssertEqual(actual, .init(rawValue: expected))
     }
   }
