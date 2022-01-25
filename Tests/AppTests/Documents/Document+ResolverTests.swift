@@ -36,7 +36,7 @@ final class DocumentResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["id": document.id.uuidString]),
+      expectedData: .containsKVPs(["id": document.id.lowercased]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app)
   }
@@ -68,10 +68,10 @@ final class DocumentResolverTests: AppTestCase {
       }
       """,
       expectedData: .containsKVPs([
-        "id": entities1.document.id,
-        "relatedDocumentId": relatedDoc.id,
-        "relatedDocumentParentDocumentId": entities1.document.id,
-        "relatedDocumentDocumentId": entities2.document.id,
+        "id": entities1.document.id.lowercased,
+        "relatedDocumentId": relatedDoc.id.lowercased,
+        "relatedDocumentParentDocumentId": entities1.document.id.lowercased,
+        "relatedDocumentDocumentId": entities2.document.id.lowercased,
       ]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app)
@@ -107,7 +107,7 @@ final class DocumentResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["id": document.id.uuidString]),
+      expectedData: .containsKVPs(["id": document.id.lowercased]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": document.gqlMap()])
 

@@ -46,7 +46,7 @@ extension Friend {
 
   func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
     var map: GraphQL.Map = .dictionary([
-      "id": .string(id.rawValue.uuidString),
+      "id": .string(id.lowercased),
       "lang": .string(lang.rawValue),
       "name": .string(name),
       "slug": .string(slug),

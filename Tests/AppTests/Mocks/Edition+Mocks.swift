@@ -22,8 +22,8 @@ extension Edition {
 
   func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
     var map: GraphQL.Map = .dictionary([
-      "id": .string(id.rawValue.uuidString),
-      "documentId": .string(documentId.rawValue.uuidString),
+      "id": .string(id.lowercased),
+      "documentId": .string(documentId.lowercased),
       "type": .string(type.rawValue),
       "editor": editor != nil ? .string(editor!) : .null,
       "isDraft": .bool(isDraft),

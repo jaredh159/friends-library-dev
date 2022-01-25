@@ -18,8 +18,8 @@ extension DocumentTag {
 
   func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
     var map: GraphQL.Map = .dictionary([
-      "id": .string(id.rawValue.uuidString),
-      "documentId": .string(documentId.rawValue.uuidString),
+      "id": .string(id.lowercased),
+      "documentId": .string(documentId.lowercased),
       "type": .string(type.rawValue),
     ])
     omitting.forEach { try? map.remove($0) }

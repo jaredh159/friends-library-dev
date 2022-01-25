@@ -21,9 +21,9 @@ extension Isbn {
 
   func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
     var map: GraphQL.Map = .dictionary([
-      "id": .string(id.rawValue.uuidString),
+      "id": .string(id.lowercased),
       "code": .string(code.rawValue),
-      "editionId": editionId != nil ? .string(editionId!.rawValue.uuidString) : .null,
+      "editionId": editionId != nil ? .string(editionId!.lowercased) : .null,
     ])
     omitting.forEach { try? map.remove($0) }
     return map

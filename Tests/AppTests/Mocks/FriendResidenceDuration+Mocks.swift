@@ -18,8 +18,8 @@ extension FriendResidenceDuration {
 
   func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
     var map: GraphQL.Map = .dictionary([
-      "id": .string(id.rawValue.uuidString),
-      "friendResidenceId": .string(friendResidenceId.rawValue.uuidString),
+      "id": .string(id.lowercased),
+      "friendResidenceId": .string(friendResidenceId.lowercased),
       "start": .number(Number(start)),
       "end": .number(Number(end)),
     ])

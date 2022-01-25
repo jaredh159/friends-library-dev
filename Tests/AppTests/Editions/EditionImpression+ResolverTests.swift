@@ -37,7 +37,7 @@ final class EditionImpressionResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["id": editionImpression.id.uuidString]),
+      expectedData: .containsKVPs(["id": editionImpression.id.lowercased]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app)
   }
@@ -72,7 +72,7 @@ final class EditionImpressionResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["id": editionImpression.id.uuidString]),
+      expectedData: .containsKVPs(["id": editionImpression.id.lowercased]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": editionImpression.gqlMap()])
 

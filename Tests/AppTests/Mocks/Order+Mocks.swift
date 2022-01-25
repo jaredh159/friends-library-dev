@@ -72,7 +72,7 @@ extension Order {
 
   func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
     var map: GraphQL.Map = .dictionary([
-      "id": .string(id.rawValue.uuidString),
+      "id": .string(id.lowercased),
       "lang": .string(lang.rawValue),
       "source": .string(source.rawValue),
       "paymentId": .string(paymentId.rawValue),
@@ -91,7 +91,7 @@ extension Order {
       "addressState": .string(addressState),
       "addressZip": .string(addressZip),
       "addressCountry": .string(addressCountry),
-      "freeOrderRequestId": freeOrderRequestId != nil ? .string(freeOrderRequestId!.rawValue.uuidString) : .null,
+      "freeOrderRequestId": freeOrderRequestId != nil ? .string(freeOrderRequestId!.lowercased) : .null,
     ])
     omitting.forEach { try? map.remove($0) }
     return map

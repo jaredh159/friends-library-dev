@@ -14,7 +14,7 @@ final class TokenResolverTests: AppTestCase {
     GraphQLTest(
       """
       query {
-        getTokenByValue(value: "\(token.value.uuidString)") {
+        getTokenByValue(value: "\(token.value.lowercased)") {
           id
           value
           description
@@ -28,9 +28,9 @@ final class TokenResolverTests: AppTestCase {
       }
       """,
       expectedData: .containsKVPs([
-        "id": token.id.uuidString,
-        "scopeTokenId": token.id.uuidString,
-        "value": token.value.uuidString,
+        "id": token.id.lowercased,
+        "scopeTokenId": token.id.lowercased,
+        "value": token.value.lowercased,
         "description": "test",
         "scope": "queryOrders",
       ])

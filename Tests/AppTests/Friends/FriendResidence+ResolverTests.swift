@@ -35,7 +35,7 @@ final class FriendResidenceResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["id": friendResidence.id.uuidString]),
+      expectedData: .containsKVPs(["id": friendResidence.id.lowercased]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app)
   }
@@ -70,7 +70,7 @@ final class FriendResidenceResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["id": friendResidence.id.uuidString]),
+      expectedData: .containsKVPs(["id": friendResidence.id.lowercased]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": friendResidence.gqlMap()])
 

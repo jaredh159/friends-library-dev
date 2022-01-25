@@ -18,8 +18,8 @@ extension App.Token {
 
   func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
     var map: GraphQL.Map = .dictionary([
-      "id": .string(id.rawValue.uuidString),
-      "value": .string(value.rawValue.uuidString),
+      "id": .string(id.lowercased),
+      "value": .string(value.lowercased),
       "description": .string(description),
       "uses": uses != nil ? .number(Number(uses!)) : .null,
     ])

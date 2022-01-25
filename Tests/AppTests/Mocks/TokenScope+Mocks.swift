@@ -18,9 +18,9 @@ extension TokenScope {
 
   func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
     var map: GraphQL.Map = .dictionary([
-      "id": .string(id.rawValue.uuidString),
+      "id": .string(id.lowercased),
       "scope": .string(scope.rawValue),
-      "tokenId": .string(tokenId.rawValue.uuidString),
+      "tokenId": .string(tokenId.lowercased),
     ])
     omitting.forEach { try? map.remove($0) }
     return map

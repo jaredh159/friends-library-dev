@@ -7,6 +7,8 @@ import XCTVaporUtils
 final class OrderInitializationTests: AppTestCase {
 
   func testCreateOrderInitializationSuccess() async throws {
+    try await Current.db.deleteAll(Token.self)
+
     var uuids = [
       "0d70e2a5-2cda-4326-b9cf-f28e70f580e8", // order id
       "552444a7-b8c6-4e65-8787-1a91cd96e9ac", // token id (not asserted)

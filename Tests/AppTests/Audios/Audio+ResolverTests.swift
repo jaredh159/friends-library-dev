@@ -36,7 +36,7 @@ final class AudioResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["id": audio.id.uuidString]),
+      expectedData: .containsKVPs(["id": audio.id.lowercased]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app)
   }
@@ -71,7 +71,7 @@ final class AudioResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["id": audio.id.uuidString]),
+      expectedData: .containsKVPs(["id": audio.id.lowercased]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": audio.gqlMap()])
 

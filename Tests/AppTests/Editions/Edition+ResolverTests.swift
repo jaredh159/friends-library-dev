@@ -43,10 +43,7 @@ final class EditionResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs([
-        "id": edition.id.uuidString,
-        "width": 45,
-      ]),
+      expectedData: .containsKVPs(["id": edition.id.lowercased, "width": 45]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app)
   }
@@ -81,7 +78,7 @@ final class EditionResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["id": edition.id.uuidString]),
+      expectedData: .containsKVPs(["id": edition.id.lowercased]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": edition.gqlMap()])
 

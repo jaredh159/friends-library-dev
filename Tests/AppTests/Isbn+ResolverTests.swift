@@ -36,7 +36,7 @@ final class IsbnResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["id": isbn.id.uuidString]),
+      expectedData: .containsKVPs(["id": isbn.id.lowercased]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app)
   }
@@ -75,7 +75,7 @@ final class IsbnResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["id": isbn.id.uuidString]),
+      expectedData: .containsKVPs(["id": isbn.id.lowercased]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": isbn.gqlMap()])
 

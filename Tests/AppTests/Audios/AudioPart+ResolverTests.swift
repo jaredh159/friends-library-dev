@@ -35,7 +35,7 @@ final class AudioPartResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["id": audioPart.id.uuidString]),
+      expectedData: .containsKVPs(["id": audioPart.id.lowercased]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app)
   }
@@ -70,7 +70,7 @@ final class AudioPartResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["id": audioPart.id.uuidString]),
+      expectedData: .containsKVPs(["id": audioPart.id.lowercased]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": audioPart.gqlMap()])
 

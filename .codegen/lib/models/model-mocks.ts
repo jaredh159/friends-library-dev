@@ -82,7 +82,7 @@ function mapValue(name: string, type: string, model: Model, types: GlobalTypes):
   const isTaggedUUID =
     model.taggedTypes[type] === `UUID` || types.taggedTypes[type] === `UUID`;
   if (type === `Id` || type.endsWith(`.Id`) || isTaggedUUID) {
-    return `.string(${name}.rawValue.uuidString)`;
+    return `.string(${name}.lowercased)`;
   }
 
   if (model.dbEnums[type] || types.dbEnums[type]) {

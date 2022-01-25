@@ -39,8 +39,8 @@ extension Audio {
 
   func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
     var map: GraphQL.Map = .dictionary([
-      "id": .string(id.rawValue.uuidString),
-      "editionId": .string(editionId.rawValue.uuidString),
+      "id": .string(id.lowercased),
+      "editionId": .string(editionId.lowercased),
       "reader": .string(reader),
       "isIncomplete": .bool(isIncomplete),
       "mp3ZipSizeHq": .number(Number(mp3ZipSizeHq.rawValue)),

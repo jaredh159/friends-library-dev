@@ -25,7 +25,7 @@ final class ArtifactProductionVersionResolverTests: AppTestCase {
       }
       """,
       expectedData: .containsKVPs([
-        "id": latest.id.rawValue.uuidString,
+        "id": latest.id.lowercased,
         "sha": latest.version,
       ])
     ).run(Self.app)

@@ -35,7 +35,7 @@ final class FriendQuoteResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["id": friendQuote.id.uuidString]),
+      expectedData: .containsKVPs(["id": friendQuote.id.lowercased]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app)
   }
@@ -70,7 +70,7 @@ final class FriendQuoteResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["id": friendQuote.id.uuidString]),
+      expectedData: .containsKVPs(["id": friendQuote.id.lowercased]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": friendQuote.gqlMap()])
 

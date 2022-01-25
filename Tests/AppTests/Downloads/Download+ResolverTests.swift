@@ -46,7 +46,7 @@ final class DownloadResolverTests: AppTestCase {
       }
       """,
       expectedData: .containsKVPs([
-        "documentId": entities.document.id.uuidString,
+        "documentId": entities.document.id.lowercased,
         "editionType": entities.edition.type.rawValue,
         "format": map["format"],
         "source": map["source"],

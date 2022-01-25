@@ -54,7 +54,7 @@ extension FreeOrderRequest {
 
   func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
     var map: GraphQL.Map = .dictionary([
-      "id": .string(id.rawValue.uuidString),
+      "id": .string(id.lowercased),
       "name": .string(name),
       "email": .string(email.rawValue),
       "requestedBooks": .string(requestedBooks),

@@ -8,12 +8,12 @@ class AppTestCase: XCTestCase {
   static var app: Application!
 
   override static func setUp() {
+    Current = .mock
+    Current.uuid = { UUID() }
     app = Application(.testing)
     try! app.autoRevert().wait()
     try! app.autoMigrate().wait()
-    Current = .mock
     try! configure(app)
-    Current.uuid = { UUID() }
     Current.logger = .null
     Current.db = MockDatabase()
   }

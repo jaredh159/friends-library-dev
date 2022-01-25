@@ -22,10 +22,10 @@ extension RelatedDocument {
 
   func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
     var map: GraphQL.Map = .dictionary([
-      "id": .string(id.rawValue.uuidString),
+      "id": .string(id.lowercased),
       "description": .string(description),
-      "documentId": .string(documentId.rawValue.uuidString),
-      "parentDocumentId": .string(parentDocumentId.rawValue.uuidString),
+      "documentId": .string(documentId.lowercased),
+      "parentDocumentId": .string(parentDocumentId.lowercased),
     ])
     omitting.forEach { try? map.remove($0) }
     return map

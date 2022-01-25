@@ -23,8 +23,8 @@ extension FriendQuote {
 
   func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
     var map: GraphQL.Map = .dictionary([
-      "id": .string(id.rawValue.uuidString),
-      "friendId": .string(friendId.rawValue.uuidString),
+      "id": .string(id.lowercased),
+      "friendId": .string(friendId.lowercased),
       "source": .string(source),
       "text": .string(text),
       "order": .number(Number(order)),

@@ -54,9 +54,9 @@ extension App.Document {
 
   func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
     var map: GraphQL.Map = .dictionary([
-      "id": .string(id.rawValue.uuidString),
-      "friendId": .string(friendId.rawValue.uuidString),
-      "altLanguageId": altLanguageId != nil ? .string(altLanguageId!.rawValue.uuidString) : .null,
+      "id": .string(id.lowercased),
+      "friendId": .string(friendId.lowercased),
+      "altLanguageId": altLanguageId != nil ? .string(altLanguageId!.lowercased) : .null,
       "title": .string(title),
       "slug": .string(slug),
       "filename": .string(filename),

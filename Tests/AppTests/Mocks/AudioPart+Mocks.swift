@@ -49,8 +49,8 @@ extension AudioPart {
 
   func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
     var map: GraphQL.Map = .dictionary([
-      "id": .string(id.rawValue.uuidString),
-      "audioId": .string(audioId.rawValue.uuidString),
+      "id": .string(id.lowercased),
+      "audioId": .string(audioId.lowercased),
       "title": .string(title),
       "duration": .number(Number(duration.rawValue)),
       "chapters": .array(chapters.array.map { .number(Number($0)) }),

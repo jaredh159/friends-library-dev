@@ -47,7 +47,7 @@ final class OrderResolverTests: AppTestCase {
     let expectedData = GraphQLTest.ExpectedData.containsKVPs([
       "paymentId": orderMap["paymentId"],
       "itemOrderId": orderMap["id"],
-      "itemEditionId": entities.edition.id.uuidString,
+      "itemEditionId": entities.edition.id.lowercased,
       "printJobStatus": orderMap["printJobStatus"],
       "shippingLevel": orderMap["shippingLevel"],
       "email": orderMap["email"],
@@ -89,7 +89,7 @@ final class OrderResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["id": req.id.uuidString]),
+      expectedData: .containsKVPs(["id": req.id.lowercased]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["order": order.gqlMap(), "items": [item.gqlMap()]])
   }
@@ -189,7 +189,7 @@ final class OrderResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsUUIDs([order1.id.rawValue, order2.id.rawValue]),
+      expectedData: .containsAll([order1.id.lowercased, order2.id.lowercased]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app)
   }

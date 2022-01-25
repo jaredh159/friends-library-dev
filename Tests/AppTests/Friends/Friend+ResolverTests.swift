@@ -101,25 +101,25 @@ final class FriendResolverTests: AppTestCase {
     """
 
     let expectedData = GraphQLTest.ExpectedData.containsKVPs([
-      "id": entities.friend.id.uuidString,
-      "quoteId": entities.friendQuote.id.uuidString,
-      "tagId": entities.documentTag.id.uuidString,
-      "documentTagDocumentId": entities.document.id.uuidString,
-      "quoteFriendId": entities.friend.id,
-      "friendResidenceFriendId": entities.friend.id.uuidString,
-      "documentFriendId": entities.friend.id.uuidString,
+      "id": entities.friend.id.lowercased,
+      "quoteId": entities.friendQuote.id.lowercased,
+      "tagId": entities.documentTag.id.lowercased,
+      "documentTagDocumentId": entities.document.id.lowercased,
+      "quoteFriendId": entities.friend.id.lowercased,
+      "friendResidenceFriendId": entities.friend.id.lowercased,
+      "documentFriendId": entities.friend.id.lowercased,
       "city": entities.friendResidence.city,
-      "residenceDurationResidenceId": entities.friendResidence.id.uuidString,
-      "editionId": entities.edition.id.uuidString,
-      "chapterEditionId": entities.edition.id.uuidString,
-      "audioEditionId": entities.edition.id.uuidString,
-      "isbnEditionId": entities.edition.id.uuidString,
-      "editionImpressionEditionId": entities.edition.id.uuidString,
-      "editionImpressionId": entities.editionImpression.id.uuidString,
-      "documentId": entities.document.id.uuidString,
-      "editionDocumentId": entities.document.id.uuidString,
+      "residenceDurationResidenceId": entities.friendResidence.id.lowercased,
+      "editionId": entities.edition.id.lowercased,
+      "chapterEditionId": entities.edition.id.lowercased,
+      "audioEditionId": entities.edition.id.lowercased,
+      "isbnEditionId": entities.edition.id.lowercased,
+      "editionImpressionEditionId": entities.edition.id.lowercased,
+      "editionImpressionId": entities.editionImpression.id.lowercased,
+      "documentId": entities.document.id.lowercased,
+      "editionDocumentId": entities.document.id.lowercased,
       "reader": entities.audio.reader,
-      "audioPartAudioId": entities.audio.id.uuidString,
+      "audioPartAudioId": entities.audio.id.lowercased,
       "audioPartTitle": entities.audioPart.title,
       "isbnCode": entities.isbn.code.rawValue,
       "trimmedUtf8ShortTitle": entities.document.title,
@@ -162,7 +162,7 @@ final class FriendResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["id": friend.id.uuidString]),
+      expectedData: .containsKVPs(["id": friend.id.lowercased]),
       headers: [.authorization: "Bearer (Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": friend.gqlMap()])
 
