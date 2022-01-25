@@ -16,8 +16,24 @@ struct ModelsCounts: Codable {
   let orderItems: Int
 }
 
+struct InputArgs<Input: Codable>: Codable {
+  let input: Input
+}
+
 struct IdentifyEntityArgs: Codable {
   let id: UUID
+}
+
+struct GenericResponse: Codable {
+  let success: Bool
+}
+
+extension AppSchema {
+  static var GenericResponseType: AppType<GenericResponse> {
+    Type(GenericResponse.self) {
+      Field("success", at: \.success)
+    }
+  }
 }
 
 final class Resolver {

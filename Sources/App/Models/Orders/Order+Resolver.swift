@@ -1,5 +1,3 @@
-import Vapor
-
 import Fluent
 import Foundation
 import Graphiti
@@ -59,40 +57,28 @@ extension Resolver {
     }
   }
 
-  func createOrder(
-    req: Req,
-    args: AppSchema.CreateOrderArgs
-  ) throws -> Future<Order> {
+  func createOrder(req: Req, args: AppSchema.CreateOrderArgs) throws -> Future<Order> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: Order.self, on: req.eventLoop) {
       try await Current.db.create(Order(args.input))
     }
   }
 
-  func createOrders(
-    req: Req,
-    args: AppSchema.CreateOrdersArgs
-  ) throws -> Future<[Order]> {
+  func createOrders(req: Req, args: AppSchema.CreateOrdersArgs) throws -> Future<[Order]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [Order].self, on: req.eventLoop) {
       try await Current.db.create(args.input.map(Order.init))
     }
   }
 
-  func updateOrder(
-    req: Req,
-    args: AppSchema.UpdateOrderArgs
-  ) throws -> Future<Order> {
+  func updateOrder(req: Req, args: AppSchema.UpdateOrderArgs) throws -> Future<Order> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: Order.self, on: req.eventLoop) {
       try await Current.db.update(Order(args.input))
     }
   }
 
-  func updateOrders(
-    req: Req,
-    args: AppSchema.UpdateOrdersArgs
-  ) throws -> Future<[Order]> {
+  func updateOrders(req: Req, args: AppSchema.UpdateOrdersArgs) throws -> Future<[Order]> {
     try req.requirePermission(to: .mutateFriends)
     return future(of: [Order].self, on: req.eventLoop) {
       try await Current.db.update(args.input.map(Order.init))

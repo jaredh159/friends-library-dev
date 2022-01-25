@@ -21,6 +21,7 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   Enum(Friend.Gender.self)
   Enum(PrintSizeVariant.self)
 
+  AppSchema.GenericResponseType
   AppSchema.ShippingAddressType
 
   // isbn types
@@ -47,6 +48,7 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.CreateFreeOrderRequestInputType
   AppSchema.OrderInitializationType
   AppSchema.CreateOrderInitializationInputType
+  AppSchema.BrickOrderInputType
 
   // friend types
   AppSchema.FriendType
@@ -182,6 +184,7 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
     AppSchema.updateOrders
     AppSchema.createFreeOrderRequest
     AppSchema.createOrderInitialization
+    AppSchema.brickOrder
     Field("createOrderWithItems", at: Resolver.createOrderWithItems) {
       Argument("order", at: \.order)
       Argument("items", at: \.items)

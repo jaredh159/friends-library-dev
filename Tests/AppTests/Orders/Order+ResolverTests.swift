@@ -193,4 +193,71 @@ final class OrderResolverTests: AppTestCase {
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app)
   }
+
+  func testBrickOrder() async throws {
+    let order = Order.random
+    order.printJobStatus = .presubmit
+    order.paymentId = .init(rawValue: "stripe_pi_id")
+    try await Current.db.create(order)
+
+    var refundedPaymentIntentId: String?
+    Current.stripeClient.createRefund = {
+      refundedPaymentIntentId = $0
+      return .init(id: "pi_refund_id")
+    }
+
+    var canceledPaymentId: String?
+    Current.stripeClient.cancelPaymentIntent = {
+      canceledPaymentId = $0
+      return .init(id: $0, clientSecret: "")
+    }
+
+    let slackBuffer = Slack.Client.mockAndBuffer()
+
+    let input: Map = .dictionary([
+      "orderId": .string(order.id.lowercased),
+      "orderPaymentId": "stripe_pi_id",
+      "userAgent": "operafox",
+      "stateHistory": .array(["foo", "bar"]),
+    ])
+
+    GraphQLTest(
+      """
+      mutation BrickOrder($input: BrickOrderInput!) {
+        brickOrder(input: $input) {
+          success
+        }
+      }
+      """,
+      expectedData: .containsKVPs(["success": true])
+    ).run(Self.app, variables: ["input": input])
+
+    let retrieved = try await Current.db.find(order.id)
+    XCTAssertEqual(retrieved.printJobStatus, .bricked)
+    XCTAssertEqual(refundedPaymentIntentId, "stripe_pi_id")
+    XCTAssertEqual(canceledPaymentId, "stripe_pi_id")
+    let orderId = order.id.lowercased
+    XCTAssertEqual(
+      slackBuffer.messages,
+      [
+        .error("Created stripe refund `pi_refund_id` for bricked order `\(orderId)`"),
+        .error("Canceled stripe payment intent `stripe_pi_id` for bricked order `\(orderId)`"),
+        .error("Updated order `\(orderId)` to printJobStatus `.bricked`"),
+        .error("""
+        *Bricked Order*
+        ```
+        {
+          "orderId": "\(orderId)",
+          "orderPaymentId": "stripe_pi_id",
+          "userAgent": "operafox",
+          "stateHistory": [
+            "foo",
+            "bar"
+          ]
+        }
+        ```
+        """),
+      ]
+    )
+  }
 }

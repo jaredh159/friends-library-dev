@@ -28,7 +28,7 @@ extension InMemoryDatabase {
       return try await hasEntityRepo.entityRepo.getEntities()
         .select(M.self, where: constraints, orderBy: orderBy, limit: limit)
     }
-    var models = Array(try await self.models(of: Model).values)
+    var models = Array(try await models(of: Model).values)
     for constraint in constraints ?? [] {
       models = models.filter {
         $0.satisfies(constraint: constraint as! SQL.WhereConstraint<M.Model>)
@@ -97,6 +97,10 @@ extension DatabaseClient {
   @discardableResult
   func delete<M: DuetModel>(_ id: Tagged<M, UUID>) async throws -> M {
     try await query(M.self).where(M.column("id") == id).deleteOne()
+  }
+
+  func deleteAll<M: DuetModel>(_ Model: M.Type) async throws {
+    _ = try await query(M.self).delete()
   }
 }
 
