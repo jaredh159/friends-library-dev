@@ -18,14 +18,14 @@ extension Resolver {
 
 extension Resolver {
   func getToken(req: Req, args: IdentifyEntityArgs) throws -> Future<Token> {
-    try req.requirePermission(to: .queryFriends)
+    try req.requirePermission(to: .queryEntities)
     return future(of: Token.self, on: req.eventLoop) {
       try await Current.db.find(Token.self, byId: args.id)
     }
   }
 
   func getTokens(req: Req, args: NoArgs) throws -> Future<[Token]> {
-    try req.requirePermission(to: .queryFriends)
+    try req.requirePermission(to: .queryEntities)
     return future(of: [Token].self, on: req.eventLoop) {
       try await Current.db.query(Token.self).all()
     }
@@ -35,7 +35,7 @@ extension Resolver {
     req: Req,
     args: InputArgs<AppSchema.CreateTokenInput>
   ) throws -> Future<Token> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: Token.self, on: req.eventLoop) {
       try await Current.db.create(Token(args.input))
     }
@@ -45,7 +45,7 @@ extension Resolver {
     req: Req,
     args: InputArgs<[AppSchema.CreateTokenInput]>
   ) throws -> Future<[Token]> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: [Token].self, on: req.eventLoop) {
       try await Current.db.create(args.input.map(Token.init))
     }
@@ -55,7 +55,7 @@ extension Resolver {
     req: Req,
     args: InputArgs<AppSchema.UpdateTokenInput>
   ) throws -> Future<Token> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: Token.self, on: req.eventLoop) {
       try await Current.db.update(Token(args.input))
     }
@@ -65,14 +65,14 @@ extension Resolver {
     req: Req,
     args: InputArgs<[AppSchema.UpdateTokenInput]>
   ) throws -> Future<[Token]> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: [Token].self, on: req.eventLoop) {
       try await Current.db.update(args.input.map(Token.init))
     }
   }
 
   func deleteToken(req: Req, args: IdentifyEntityArgs) throws -> Future<Token> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: Token.self, on: req.eventLoop) {
       try await Current.db.delete(Token.self, byId: args.id)
     }

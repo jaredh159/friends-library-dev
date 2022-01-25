@@ -4,14 +4,14 @@ import Vapor
 
 extension Resolver {
   func getDocument(req: Req, args: IdentifyEntityArgs) throws -> Future<Document> {
-    try req.requirePermission(to: .queryFriends)
+    try req.requirePermission(to: .queryEntities)
     return future(of: Document.self, on: req.eventLoop) {
       try await Current.db.find(Document.self, byId: args.id)
     }
   }
 
   func getDocuments(req: Req, args: NoArgs) throws -> Future<[Document]> {
-    try req.requirePermission(to: .queryFriends)
+    try req.requirePermission(to: .queryEntities)
     return future(of: [Document].self, on: req.eventLoop) {
       try await Current.db.query(Document.self).all()
     }
@@ -21,7 +21,7 @@ extension Resolver {
     req: Req,
     args: InputArgs<AppSchema.CreateDocumentInput>
   ) throws -> Future<Document> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: Document.self, on: req.eventLoop) {
       try await Current.db.create(Document(args.input))
     }
@@ -31,7 +31,7 @@ extension Resolver {
     req: Req,
     args: InputArgs<[AppSchema.CreateDocumentInput]>
   ) throws -> Future<[Document]> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: [Document].self, on: req.eventLoop) {
       try await Current.db.create(args.input.map(Document.init))
     }
@@ -41,7 +41,7 @@ extension Resolver {
     req: Req,
     args: InputArgs<AppSchema.UpdateDocumentInput>
   ) throws -> Future<Document> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: Document.self, on: req.eventLoop) {
       try await Current.db.update(Document(args.input))
     }
@@ -51,14 +51,14 @@ extension Resolver {
     req: Req,
     args: InputArgs<[AppSchema.UpdateDocumentInput]>
   ) throws -> Future<[Document]> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: [Document].self, on: req.eventLoop) {
       try await Current.db.update(args.input.map(Document.init))
     }
   }
 
   func deleteDocument(req: Req, args: IdentifyEntityArgs) throws -> Future<Document> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: Document.self, on: req.eventLoop) {
       try await Current.db.delete(Document.self, byId: args.id)
     }

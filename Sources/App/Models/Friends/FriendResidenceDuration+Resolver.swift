@@ -7,7 +7,7 @@ extension Resolver {
     req: Req,
     args: IdentifyEntityArgs
   ) throws -> Future<FriendResidenceDuration> {
-    try req.requirePermission(to: .queryFriends)
+    try req.requirePermission(to: .queryEntities)
     return future(of: FriendResidenceDuration.self, on: req.eventLoop) {
       try await Current.db.find(FriendResidenceDuration.self, byId: args.id)
     }
@@ -17,7 +17,7 @@ extension Resolver {
     req: Req,
     args: NoArgs
   ) throws -> Future<[FriendResidenceDuration]> {
-    try req.requirePermission(to: .queryFriends)
+    try req.requirePermission(to: .queryEntities)
     return future(of: [FriendResidenceDuration].self, on: req.eventLoop) {
       try await Current.db.query(FriendResidenceDuration.self).all()
     }
@@ -27,7 +27,7 @@ extension Resolver {
     req: Req,
     args: InputArgs<AppSchema.CreateFriendResidenceDurationInput>
   ) throws -> Future<FriendResidenceDuration> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: FriendResidenceDuration.self, on: req.eventLoop) {
       try await Current.db.create(FriendResidenceDuration(args.input))
     }
@@ -37,7 +37,7 @@ extension Resolver {
     req: Req,
     args: InputArgs<[AppSchema.CreateFriendResidenceDurationInput]>
   ) throws -> Future<[FriendResidenceDuration]> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: [FriendResidenceDuration].self, on: req.eventLoop) {
       try await Current.db.create(args.input.map(FriendResidenceDuration.init))
     }
@@ -47,7 +47,7 @@ extension Resolver {
     req: Req,
     args: InputArgs<AppSchema.UpdateFriendResidenceDurationInput>
   ) throws -> Future<FriendResidenceDuration> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: FriendResidenceDuration.self, on: req.eventLoop) {
       try await Current.db.update(FriendResidenceDuration(args.input))
     }
@@ -57,7 +57,7 @@ extension Resolver {
     req: Req,
     args: InputArgs<[AppSchema.UpdateFriendResidenceDurationInput]>
   ) throws -> Future<[FriendResidenceDuration]> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: [FriendResidenceDuration].self, on: req.eventLoop) {
       try await Current.db.update(args.input.map(FriendResidenceDuration.init))
     }
@@ -67,7 +67,7 @@ extension Resolver {
     req: Req,
     args: IdentifyEntityArgs
   ) throws -> Future<FriendResidenceDuration> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: FriendResidenceDuration.self, on: req.eventLoop) {
       try await Current.db.delete(FriendResidenceDuration.self, byId: args.id)
     }

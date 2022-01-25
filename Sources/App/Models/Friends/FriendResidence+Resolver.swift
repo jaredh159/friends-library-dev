@@ -4,14 +4,14 @@ import Vapor
 
 extension Resolver {
   func getFriendResidence(req: Req, args: IdentifyEntityArgs) throws -> Future<FriendResidence> {
-    try req.requirePermission(to: .queryFriends)
+    try req.requirePermission(to: .queryEntities)
     return future(of: FriendResidence.self, on: req.eventLoop) {
       try await Current.db.find(FriendResidence.self, byId: args.id)
     }
   }
 
   func getFriendResidences(req: Req, args: NoArgs) throws -> Future<[FriendResidence]> {
-    try req.requirePermission(to: .queryFriends)
+    try req.requirePermission(to: .queryEntities)
     return future(of: [FriendResidence].self, on: req.eventLoop) {
       try await Current.db.query(FriendResidence.self).all()
     }
@@ -21,7 +21,7 @@ extension Resolver {
     req: Req,
     args: InputArgs<AppSchema.CreateFriendResidenceInput>
   ) throws -> Future<FriendResidence> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: FriendResidence.self, on: req.eventLoop) {
       try await Current.db.create(FriendResidence(args.input))
     }
@@ -31,7 +31,7 @@ extension Resolver {
     req: Req,
     args: InputArgs<[AppSchema.CreateFriendResidenceInput]>
   ) throws -> Future<[FriendResidence]> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: [FriendResidence].self, on: req.eventLoop) {
       try await Current.db.create(args.input.map(FriendResidence.init))
     }
@@ -41,7 +41,7 @@ extension Resolver {
     req: Req,
     args: InputArgs<AppSchema.UpdateFriendResidenceInput>
   ) throws -> Future<FriendResidence> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: FriendResidence.self, on: req.eventLoop) {
       try await Current.db.update(FriendResidence(args.input))
     }
@@ -51,14 +51,14 @@ extension Resolver {
     req: Req,
     args: InputArgs<[AppSchema.UpdateFriendResidenceInput]>
   ) throws -> Future<[FriendResidence]> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: [FriendResidence].self, on: req.eventLoop) {
       try await Current.db.update(args.input.map(FriendResidence.init))
     }
   }
 
   func deleteFriendResidence(req: Req, args: IdentifyEntityArgs) throws -> Future<FriendResidence> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: FriendResidence.self, on: req.eventLoop) {
       try await Current.db.delete(FriendResidence.self, byId: args.id)
     }

@@ -4,14 +4,14 @@ import Vapor
 
 extension Resolver {
   func getTokenScope(req: Req, args: IdentifyEntityArgs) throws -> Future<TokenScope> {
-    try req.requirePermission(to: .queryFriends)
+    try req.requirePermission(to: .queryEntities)
     return future(of: TokenScope.self, on: req.eventLoop) {
       try await Current.db.find(TokenScope.self, byId: args.id)
     }
   }
 
   func getTokenScopes(req: Req, args: NoArgs) throws -> Future<[TokenScope]> {
-    try req.requirePermission(to: .queryFriends)
+    try req.requirePermission(to: .queryEntities)
     return future(of: [TokenScope].self, on: req.eventLoop) {
       try await Current.db.query(TokenScope.self).all()
     }
@@ -21,7 +21,7 @@ extension Resolver {
     req: Req,
     args: InputArgs<AppSchema.CreateTokenScopeInput>
   ) throws -> Future<TokenScope> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: TokenScope.self, on: req.eventLoop) {
       try await Current.db.create(TokenScope(args.input))
     }
@@ -31,7 +31,7 @@ extension Resolver {
     req: Req,
     args: InputArgs<[AppSchema.CreateTokenScopeInput]>
   ) throws -> Future<[TokenScope]> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: [TokenScope].self, on: req.eventLoop) {
       try await Current.db.create(args.input.map(TokenScope.init))
     }
@@ -41,7 +41,7 @@ extension Resolver {
     req: Req,
     args: InputArgs<AppSchema.UpdateTokenScopeInput>
   ) throws -> Future<TokenScope> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: TokenScope.self, on: req.eventLoop) {
       try await Current.db.update(TokenScope(args.input))
     }
@@ -51,14 +51,14 @@ extension Resolver {
     req: Req,
     args: InputArgs<[AppSchema.UpdateTokenScopeInput]>
   ) throws -> Future<[TokenScope]> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: [TokenScope].self, on: req.eventLoop) {
       try await Current.db.update(args.input.map(TokenScope.init))
     }
   }
 
   func deleteTokenScope(req: Req, args: IdentifyEntityArgs) throws -> Future<TokenScope> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: TokenScope.self, on: req.eventLoop) {
       try await Current.db.delete(TokenScope.self, byId: args.id)
     }

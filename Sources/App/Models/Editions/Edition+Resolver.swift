@@ -4,14 +4,14 @@ import Vapor
 
 extension Resolver {
   func getEdition(req: Req, args: IdentifyEntityArgs) throws -> Future<Edition> {
-    try req.requirePermission(to: .queryFriends)
+    try req.requirePermission(to: .queryEntities)
     return future(of: Edition.self, on: req.eventLoop) {
       try await Current.db.find(Edition.self, byId: args.id)
     }
   }
 
   func getEditions(req: Req, args: NoArgs) throws -> Future<[Edition]> {
-    try req.requirePermission(to: .queryFriends)
+    try req.requirePermission(to: .queryEntities)
     return future(of: [Edition].self, on: req.eventLoop) {
       try await Current.db.query(Edition.self).all()
     }
@@ -21,7 +21,7 @@ extension Resolver {
     req: Req,
     args: InputArgs<AppSchema.CreateEditionInput>
   ) throws -> Future<Edition> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: Edition.self, on: req.eventLoop) {
       try await Current.db.create(Edition(args.input))
     }
@@ -31,7 +31,7 @@ extension Resolver {
     req: Req,
     args: InputArgs<[AppSchema.CreateEditionInput]>
   ) throws -> Future<[Edition]> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: [Edition].self, on: req.eventLoop) {
       try await Current.db.create(args.input.map(Edition.init))
     }
@@ -41,7 +41,7 @@ extension Resolver {
     req: Req,
     args: InputArgs<AppSchema.UpdateEditionInput>
   ) throws -> Future<Edition> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: Edition.self, on: req.eventLoop) {
       try await Current.db.update(Edition(args.input))
     }
@@ -51,14 +51,14 @@ extension Resolver {
     req: Req,
     args: InputArgs<[AppSchema.UpdateEditionInput]>
   ) throws -> Future<[Edition]> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: [Edition].self, on: req.eventLoop) {
       try await Current.db.update(args.input.map(Edition.init))
     }
   }
 
   func deleteEdition(req: Req, args: IdentifyEntityArgs) throws -> Future<Edition> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: Edition.self, on: req.eventLoop) {
       try await Current.db.delete(Edition.self, byId: args.id)
     }

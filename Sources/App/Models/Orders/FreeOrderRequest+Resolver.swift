@@ -8,7 +8,7 @@ extension Resolver {
     req: Req,
     args: InputArgs<AppSchema.CreateFreeOrderRequestInput>
   ) throws -> Future<FreeOrderRequest> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: FreeOrderRequest.self, on: req.eventLoop) {
       let order = try await Current.db.create(FreeOrderRequest(args.input))
       try await sendFreeOrderRequestNotifications(for: order, on: req)
@@ -76,14 +76,14 @@ private func entry(_ key: String, _ value: String?) -> String {
 
 extension Resolver {
   func getFreeOrderRequest(req: Req, args: IdentifyEntityArgs) throws -> Future<FreeOrderRequest> {
-    try req.requirePermission(to: .queryFriends)
+    try req.requirePermission(to: .queryEntities)
     return future(of: FreeOrderRequest.self, on: req.eventLoop) {
       try await Current.db.find(FreeOrderRequest.self, byId: args.id)
     }
   }
 
   func getFreeOrderRequests(req: Req, args: NoArgs) throws -> Future<[FreeOrderRequest]> {
-    try req.requirePermission(to: .queryFriends)
+    try req.requirePermission(to: .queryEntities)
     return future(of: [FreeOrderRequest].self, on: req.eventLoop) {
       try await Current.db.query(FreeOrderRequest.self).all()
     }
@@ -93,7 +93,7 @@ extension Resolver {
     req: Req,
     args: InputArgs<[AppSchema.CreateFreeOrderRequestInput]>
   ) throws -> Future<[FreeOrderRequest]> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: [FreeOrderRequest].self, on: req.eventLoop) {
       try await Current.db.create(args.input.map(FreeOrderRequest.init))
     }
@@ -103,7 +103,7 @@ extension Resolver {
     req: Req,
     args: InputArgs<AppSchema.UpdateFreeOrderRequestInput>
   ) throws -> Future<FreeOrderRequest> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: FreeOrderRequest.self, on: req.eventLoop) {
       try await Current.db.update(FreeOrderRequest(args.input))
     }
@@ -113,7 +113,7 @@ extension Resolver {
     req: Req,
     args: InputArgs<[AppSchema.UpdateFreeOrderRequestInput]>
   ) throws -> Future<[FreeOrderRequest]> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: [FreeOrderRequest].self, on: req.eventLoop) {
       try await Current.db.update(args.input.map(FreeOrderRequest.init))
     }
@@ -123,7 +123,7 @@ extension Resolver {
     req: Req,
     args: IdentifyEntityArgs
   ) throws -> Future<FreeOrderRequest> {
-    try req.requirePermission(to: .mutateFriends)
+    try req.requirePermission(to: .mutateEntities)
     return future(of: FreeOrderRequest.self, on: req.eventLoop) {
       try await Current.db.delete(FreeOrderRequest.self, byId: args.id)
     }
