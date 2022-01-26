@@ -19,11 +19,13 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   Enum(DocumentTag.TagType.self)
   Enum(Scope.self)
   Enum(Friend.Gender.self)
+  Enum(PrintSize.self)
   Enum(PrintSizeVariant.self)
   Enum(AppSchema.SubmitContactFormInput.Subject.self)
 
   AppSchema.GenericResponseType
   AppSchema.ShippingAddressType
+  AppSchema.ShippingAddressInputType
   AppSchema.SubmitContactFormInputType
   AppSchema.LogJsErrorDataInputType
 
@@ -52,6 +54,9 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.OrderInitializationType
   AppSchema.CreateOrderInitializationInputType
   AppSchema.BrickOrderInputType
+  AppSchema.PrintJobExploratoryItemInputType
+  AppSchema.GetPrintJobExploratoryMetaDataInputType
+  AppSchema.PrintJobExploratoryMetadataType
 
   // friend types
   AppSchema.FriendType
@@ -126,6 +131,7 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
     // order queries
     AppSchema.getOrder
     AppSchema.getFreeOrderRequest
+    AppSchema.getPrintJobExploratoryMetadata
     Field("getOrdersByPrintJobStatus", at: Resolver.getOrdersByPrintJobStatus) {
       Argument("printJobStatus", at: \.printJobStatus)
     }

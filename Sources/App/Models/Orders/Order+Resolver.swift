@@ -23,6 +23,7 @@ extension Resolver {
     }
   }
 
+  // @todo, i think i can delete this, was used by GH action alone
   struct GetOrdersByPrintJobStatusArgs: Codable {
     let printJobStatus: Order.PrintJobStatus
   }

@@ -56,7 +56,7 @@ enum PrintJobs {
     let quantity: Int
   }
 
-  struct ExploratoryMetadata {
+  struct ExploratoryMetadata: Encodable {
     let shippingLevel: Order.ShippingLevel
     let shipping: Cents<Int>
     let taxes: Cents<Int>

@@ -2,6 +2,7 @@
 --disable wrapMultilineStatementBraces
 --disable yodaConditions
 --disable fileHeader
+--disable unusedArguments
 --binarygrouping none
 --decimalgrouping none
 --hexgrouping none
@@ -10,7 +11,6 @@
 --octalgrouping none
 --patternlet inline
 --semicolons never
---stripunusedargs closure-only
 --wraparguments before-first
 --wrapcollections before-first
 --wrapparameters before-first

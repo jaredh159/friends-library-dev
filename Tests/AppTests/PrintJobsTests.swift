@@ -1,13 +1,53 @@
 import Foundation
+import GraphQL
 import XCTest
+import XCTVaporUtils
 
 @testable import App
 
 final class PrintJobsTests: AppTestCase {
 
-  override func setUp() {
-    super.setUp()
-    Current.luluClient = .mock
+  func testQueryExploratoryMetadata() async throws {
+    let responses = Responses([
+      .init(shipping: "9.99", tax: "3.33", total: "19.12", fee: "1.50"),
+      .init(shipping: "10.99", tax: "4.33", total: "20.12", fee: "1.50"),
+    ])
+
+    Current.luluClient.createPrintJobCostCalculation = { _, _, _ in
+      await responses.next()
+    }
+
+    let input: Map = .dictionary([
+      "items": .array([
+        .dictionary([
+          "volumes": .array([55]),
+          "printSize": "m",
+          "quantity": 1,
+        ]),
+      ]),
+      "address": ShippingAddress.mock.gqlMap(),
+    ])
+
+    GraphQLTest(
+      """
+      query GetPrintJobExploratoryMetadata($input: GetPrintJobExploratoryMetaDataInput!) {
+        getPrintJobExploratoryMetadata(input: $input) {
+          shippingLevel
+          shippingInCents
+          taxesInCents
+          feesInCents
+          creditCardFeeOffsetInCents
+        }
+      }
+      """,
+      expectedData: .containsKVPs([
+        "shippingInCents": 999,
+        "taxesInCents": 333,
+        "feesInCents": 150,
+        "creditCardFeeOffsetInCents": 88,
+        "shippingLevel": "mail",
+      ])
+    ).run(Self.app, variables: ["input": input])
   }
 
   func testCreatePrintJob() async throws {
