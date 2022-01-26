@@ -20,6 +20,37 @@ final class DownloadableFileTests: AppTestCase {
     }
   }
 
+  func testInitFromLogPath() async throws {
+    let tests: [(String, DownloadFormat)] = [
+      ("ebook/epub", .ebook(.epub)),
+      ("ebook/mobi", .ebook(.mobi)),
+      ("ebook/pdf", .ebook(.pdf)),
+      ("ebook/speech", .ebook(.speech)),
+      ("ebook/app", .ebook(.app)),
+      ("paperback/interior", .paperback(type: .interior, volumeIndex: nil)),
+      ("paperback/interior/1", .paperback(type: .interior, volumeIndex: 0)),
+      ("paperback/cover", .paperback(type: .cover, volumeIndex: nil)),
+      ("paperback/cover/1", .paperback(type: .cover, volumeIndex: 0)),
+      ("audio/m4b/hq", .audio(.m4b(.high))),
+      ("audio/m4b/lq", .audio(.m4b(.low))),
+      ("audio/mp3s/hq", .audio(.mp3Zip(.high))),
+      ("audio/mp3s/lq", .audio(.mp3Zip(.low))),
+      ("audio/mp3/hq", .audio(.mp3(quality: .high, multipartIndex: nil))),
+      ("audio/mp3/lq", .audio(.mp3(quality: .low, multipartIndex: nil))),
+      ("audio/mp3/1/hq", .audio(.mp3(quality: .high, multipartIndex: 0))),
+      ("audio/mp3/1/lq", .audio(.mp3(quality: .low, multipartIndex: 0))),
+      ("audio/podcast/hq/podcast.rss", .audio(.podcast(.high))),
+      ("audio/podcast/lq/podcast.rss", .audio(.podcast(.low))),
+    ]
+
+    for (pathEnd, format) in tests {
+      let logPath = "download/\(edition.id.lowercased)/\(pathEnd)"
+      let downloadable = try await DownloadableFile(logPath: logPath)
+      XCTAssertEqual(edition, downloadable?.edition)
+      XCTAssertEqual(format, downloadable?.format)
+    }
+  }
+
   func testLogPaths() {
     let tests: [(DownloadFormat, String)] = [
       (.ebook(.epub), "ebook/epub"),
@@ -44,14 +75,14 @@ final class DownloadableFileTests: AppTestCase {
     ]
 
     for (format, pathEnd) in tests {
-      let downloadable = DownloadableFile(editionImpression: impression, format: format)
+      let downloadable = DownloadableFile(edition: edition, format: format)
       XCTAssertEqual(downloadable.logPath, "download/\(edition.id.lowercased)/\(pathEnd)")
       XCTAssertEqual(downloadable.logUrl.absoluteString, "\(cloudUrl)/\(downloadable.logPath)")
     }
   }
 
   func testSourcePath() {
-    let file = DownloadableFile(editionImpression: impression, format: .ebook(.epub))
+    let file = DownloadableFile(edition: edition, format: .ebook(.epub))
     XCTAssertEqual(file.sourcePath, "\(edition.directoryPath)/Journal--updated.epub")
   }
 
@@ -79,7 +110,7 @@ final class DownloadableFileTests: AppTestCase {
     ]
 
     for (format, expectedFilename) in tests {
-      let downloadable = DownloadableFile(editionImpression: impression, format: format)
+      let downloadable = DownloadableFile(edition: edition, format: format)
       XCTAssertEqual(downloadable.filename, expectedFilename)
       XCTAssertEqual(
         downloadable.sourceUrl.absoluteString,

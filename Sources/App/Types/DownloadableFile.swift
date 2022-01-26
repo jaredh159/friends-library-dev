@@ -1,77 +1,191 @@
 import Foundation
 
 struct DownloadableFile {
-  let filename: String
-  let sourcePath: String
-  let sourceUrl: URL
-  let logPath: String
-  let logUrl: URL
+  let edition: Edition
+  let format: DownloadFormat
 
-  init(editionImpression impression: EditionImpression, format: DownloadFormat) {
-    let edition = impression.edition.require()
-    filename = deriveFilename(base: edition.filename, format: format)
-    sourcePath = "\(edition.directoryPath)/\(filename)"
-    sourceUrl = URL(string: "\(Env.CLOUD_STORAGE_BUCKET_URL)/\(sourcePath)")!
-    logPath = deriveLogPath(editionId: edition.id, format: format)
-    logUrl = URL(string: "\(Env.CLOUD_STORAGE_BUCKET_URL)/\(logPath)")!
+  var sourcePath: String {
+    "\(edition.directoryPath)/\(filename)"
+  }
+
+  var sourceUrl: URL {
+    URL(string: "\(Env.CLOUD_STORAGE_BUCKET_URL)/\(sourcePath)")!
+  }
+
+  var logUrl: URL {
+    URL(string: "\(Env.CLOUD_STORAGE_BUCKET_URL)/\(logPath)")!
+  }
+
+  var filename: String {
+    switch format {
+      case .ebook(.epub):
+        return "\(edition.filename).epub"
+      case .ebook(.mobi):
+        return "\(edition.filename).mobi"
+      case .ebook(.pdf):
+        return "\(edition.filename).pdf"
+      case .ebook(.speech):
+        return "\(edition.filename).html"
+      case .ebook(.app):
+        return "\(edition.filename)--(app-ebook).html"
+      case .paperback(.interior, let index):
+        return "\(edition.filename)--(print)\(index |> volumeFilenameSuffix).pdf"
+      case .paperback(.cover, let index):
+        return "\(edition.filename)--cover\(index |> volumeFilenameSuffix).pdf"
+      case .audio(.m4b(let quality)):
+        return "\(edition.filename)\(quality |> qualityFilenameSuffix).m4b"
+      case .audio(.mp3Zip(let quality)):
+        return "\(edition.filename)--mp3s\(quality |> qualityFilenameSuffix).zip"
+      case .audio(.mp3(let quality, let index)):
+        return "\(edition.filename)\(index |> partFilenameSuffix)\(quality |> qualityFilenameSuffix).mp3"
+      case .audio(.podcast):
+        return "podcast.rss"
+    }
+  }
+
+  var logPath: String {
+    let id = edition.id.lowercased
+    switch format {
+      case .ebook(.epub):
+        return "download/\(id)/ebook/epub"
+      case .ebook(.mobi):
+        return "download/\(id)/ebook/mobi"
+      case .ebook(.pdf):
+        return "download/\(id)/ebook/pdf"
+      case .ebook(.speech):
+        return "download/\(id)/ebook/speech"
+      case .ebook(.app):
+        return "download/\(id)/ebook/app"
+      case .paperback(.interior, let index):
+        return "download/\(id)/paperback/interior\(index |> volumeLogPathSuffix)"
+      case .paperback(.cover, let index):
+        return "download/\(id)/paperback/cover\(index |> volumeLogPathSuffix)"
+      case .audio(.m4b(let quality)):
+        return "download/\(id)/audio/m4b\(quality |> qualityLogPathSuffix)"
+      case .audio(.mp3Zip(let quality)):
+        return "download/\(id)/audio/mp3s\(quality |> qualityLogPathSuffix)"
+      case .audio(.mp3(let quality, let index)):
+        return "download/\(id)/audio/mp3\(index |> partLogPathSuffix)\(quality |> qualityLogPathSuffix)"
+      case .audio(.podcast(let quality)):
+        return "download/\(id)/audio/podcast\(quality |> qualityLogPathSuffix)/podcast.rss"
+    }
+  }
+}
+
+extension DownloadableFile {
+  init?(logPath: String) async throws {
+    var segments = logPath.split(separator: "/")
+
+    guard !segments.isEmpty, segments.removeFirst() == "download" else {
+      throw ParseLogPathError.missingLeadingDownload(logPath)
+    }
+
+    guard !segments.isEmpty else {
+      throw ParseLogPathError.missingEditionId(logPath)
+    }
+
+    guard let editionUuid = UUID(uuidString: segments.removeFirst() |> String.init) else {
+      throw ParseLogPathError.invalidEditionId(logPath)
+    }
+
+    guard let edition = try? await Current.db.find(Edition.Id(rawValue: editionUuid)) else {
+      throw ParseLogPathError.editionNotFound(logPath)
+    }
+
+    switch segments.joined(separator: "/") {
+      case "ebook/epub":
+        self = .init(edition: edition, format: .ebook(.epub))
+      case "ebook/mobi":
+        self = .init(edition: edition, format: .ebook(.mobi))
+      case "ebook/pdf":
+        self = .init(edition: edition, format: .ebook(.pdf))
+      case "ebook/speech":
+        self = .init(edition: edition, format: .ebook(.speech))
+      case "ebook/app":
+        self = .init(edition: edition, format: .ebook(.app))
+      case "paperback/interior":
+        self = .init(edition: edition, format: .paperback(type: .interior, volumeIndex: nil))
+      case "paperback/cover":
+        self = .init(edition: edition, format: .paperback(type: .cover, volumeIndex: nil))
+      case "audio/podcast/hq/podcast.rss":
+        self = .init(edition: edition, format: .audio(.podcast(.high)))
+      case "audio/podcast/lq/podcast.rss":
+        self = .init(edition: edition, format: .audio(.podcast(.low)))
+      case "audio/m4b/hq":
+        self = .init(edition: edition, format: .audio(.m4b(.high)))
+      case "audio/m4b/lq":
+        self = .init(edition: edition, format: .audio(.m4b(.low)))
+      case "audio/mp3s/hq":
+        self = .init(edition: edition, format: .audio(.mp3Zip(.high)))
+      case "audio/mp3s/lq":
+        self = .init(edition: edition, format: .audio(.mp3Zip(.low)))
+      case "audio/mp3/hq":
+        self = .init(edition: edition, format: .audio(.mp3(quality: .high, multipartIndex: nil)))
+      case "audio/mp3/lq":
+        self = .init(edition: edition, format: .audio(.mp3(quality: .low, multipartIndex: nil)))
+      default:
+        guard segments.count >= 3 else {
+          throw ParseLogPathError.invalid(logPath)
+        }
+
+        let first = segments.removeFirst()
+        let second = segments.removeFirst()
+        let third = segments.removeFirst()
+
+        switch (first, second) {
+          case ("paperback", "interior"):
+            guard let index = third |> toIndex else {
+              throw ParseLogPathError.invalidPaperbackVolume(logPath)
+            }
+            self = .init(edition: edition, format: .paperback(type: .interior, volumeIndex: index))
+          case ("paperback", "cover"):
+            guard let index = third |> toIndex else {
+              throw ParseLogPathError.invalidPaperbackVolume(logPath)
+            }
+            self = .init(edition: edition, format: .paperback(type: .cover, volumeIndex: index))
+          case ("audio", "mp3"):
+            guard let index = third |> toIndex, !segments.isEmpty else {
+              throw ParseLogPathError.invalidMp3Part(logPath)
+            }
+            switch segments.removeFirst() {
+              case "hq":
+                self = .init(
+                  edition: edition,
+                  format: .audio(.mp3(quality: .high, multipartIndex: index))
+                )
+              case "lq":
+                self = .init(
+                  edition: edition,
+                  format: .audio(.mp3(quality: .low, multipartIndex: index))
+                )
+              default:
+                throw ParseLogPathError.invalidMp3Part(logPath)
+            }
+          default:
+            throw ParseLogPathError.invalid(logPath)
+        }
+    }
+  }
+
+  enum ParseLogPathError: Error {
+    case missingLeadingDownload(String)
+    case missingEditionId(String)
+    case invalidEditionId(String)
+    case editionNotFound(String)
+    case invalid(String)
+    case invalidPaperbackVolume(String)
+    case invalidMp3Part(String)
   }
 }
 
 // helpers
 
-private func deriveLogPath(editionId: Edition.Id, format: DownloadFormat) -> String {
-  let id = editionId.lowercased
-  switch format {
-    case .ebook(.epub):
-      return "download/\(id)/ebook/epub"
-    case .ebook(.mobi):
-      return "download/\(id)/ebook/mobi"
-    case .ebook(.pdf):
-      return "download/\(id)/ebook/pdf"
-    case .ebook(.speech):
-      return "download/\(id)/ebook/speech"
-    case .ebook(.app):
-      return "download/\(id)/ebook/app"
-    case .paperback(.interior, let index):
-      return "download/\(id)/paperback/interior\(index |> volumeLogPathSuffix)"
-    case .paperback(.cover, let index):
-      return "download/\(id)/paperback/cover\(index |> volumeLogPathSuffix)"
-    case .audio(.m4b(let quality)):
-      return "download/\(id)/audio/m4b\(quality |> qualityLogPathSuffix)"
-    case .audio(.mp3Zip(let quality)):
-      return "download/\(id)/audio/mp3s\(quality |> qualityLogPathSuffix)"
-    case .audio(.mp3(let quality, let index)):
-      return "download/\(id)/audio/mp3\(index |> partLogPathSuffix)\(quality |> qualityLogPathSuffix)"
-    case .audio(.podcast(let quality)):
-      return "download/\(id)/audio/podcast\(quality |> qualityLogPathSuffix)/podcast.rss"
+private func toIndex(_ segment: String.SubSequence) -> Int? {
+  guard segment.allSatisfy(\.isWholeNumber),
+        let index = Int(String(segment)),
+        index > 0 else { return nil
   }
-}
-
-private func deriveFilename(base: String, format: DownloadFormat) -> String {
-  switch format {
-    case .ebook(.epub):
-      return "\(base).epub"
-    case .ebook(.mobi):
-      return "\(base).mobi"
-    case .ebook(.pdf):
-      return "\(base).pdf"
-    case .ebook(.speech):
-      return "\(base).html"
-    case .ebook(.app):
-      return "\(base)--(app-ebook).html"
-    case .paperback(.interior, let index):
-      return "\(base)--(print)\(index |> volumeFilenameSuffix).pdf"
-    case .paperback(.cover, let index):
-      return "\(base)--cover\(index |> volumeFilenameSuffix).pdf"
-    case .audio(.m4b(let quality)):
-      return "\(base)\(quality |> qualityFilenameSuffix).m4b"
-    case .audio(.mp3Zip(let quality)):
-      return "\(base)--mp3s\(quality |> qualityFilenameSuffix).zip"
-    case .audio(.mp3(let quality, let index)):
-      return "\(base)\(index |> partFilenameSuffix)\(quality |> qualityFilenameSuffix).mp3"
-    case .audio(.podcast):
-      return "podcast.rss"
-  }
+  return index - 1
 }
 
 private func volumeFilenameSuffix(_ index: Int?) -> String {
