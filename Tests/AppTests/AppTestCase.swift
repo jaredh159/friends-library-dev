@@ -26,12 +26,7 @@ class AppTestCase: XCTestCase {
 
   override static func tearDown() {
     app.shutdown()
-    let exp = XCTestExpectation(description: "reset complete")
-    Task {
-      await SQL.resetPreparedStatements()
-      exp.fulfill()
-    }
-    _ = XCTWaiter.wait(for: [exp], timeout: 1)
+    sync { await SQL.resetPreparedStatements() }
   }
 
   override func setUp() {
@@ -43,4 +38,18 @@ class AppTestCase: XCTestCase {
     Current.slackClient.send = { [self] in sent.slacks.append($0) }
     Current.sendGridClient.send = { [self] in sent.emails.append($0) }
   }
+}
+
+func sync(
+  function: StaticString = #function,
+  line: UInt = #line,
+  column: UInt = #column,
+  _ f: @escaping () async throws -> Void
+) {
+  let exp = XCTestExpectation(description: "sync:\(function):\(line):\(column)")
+  Task {
+    try await f()
+    exp.fulfill()
+  }
+  _ = XCTWaiter.wait(for: [exp], timeout: 1)
 }

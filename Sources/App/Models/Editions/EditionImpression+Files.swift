@@ -27,7 +27,7 @@ extension EditionImpression {
   }
 
   var files: Files {
-    let edition = self.edition.require()
+    let edition = edition.require()
     let path = edition.directoryPath
     let filenameBase = edition.filename
 
