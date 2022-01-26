@@ -3,52 +3,55 @@ import Graphiti
 import NonEmpty
 
 extension EditionImpression {
-  struct Files: Codable {
-    struct File: Codable {
-      let path: String
-      let filename: String
-      let url: URL
-
-      init(_ directoryPath: String, _ filename: String) {
-        let path = directoryPath + "/" + filename
-        self.path = path
-        self.filename = filename
-        url = URL(string: "\(Env.CLOUD_STORAGE_BUCKET_URL)/\(path)")!
-      }
+  struct Files: Encodable {
+    struct Ebook: Encodable {
+      let epub: DownloadableFile
+      let mobi: DownloadableFile
+      let pdf: DownloadableFile
+      let speech: DownloadableFile
+      let app: DownloadableFile
     }
 
-    let epub: File
-    let mobi: File
-    let webPdf: File
-    let speech: File
-    let appEbook: File
-    let paperbackInterior: NonEmpty<[File]>
-    let paperbackCover: NonEmpty<[File]>
+    struct Paperback: Encodable {
+      let interior: NonEmpty<[DownloadableFile]>
+      let cover: NonEmpty<[DownloadableFile]>
+    }
+
+    let ebook: Ebook
+    let paperback: Paperback
   }
 
   var files: Files {
     let edition = edition.require()
-    let path = edition.directoryPath
-    let filenameBase = edition.filename
 
-    var interiors = paperbackVolumes.enumerated().map { index, _ -> Files.File in
-      let suffix = paperbackVolumes.count == 1 ? "" : "--v\(index + 1)"
-      return Files.File(path, "\(filenameBase)--(print)\(suffix).pdf")
+    var interiors = paperbackVolumes.indices.map { index -> DownloadableFile in
+      let volumeIndex = paperbackVolumes.count == 1 ? nil : index
+      return DownloadableFile(
+        edition: edition,
+        format: .paperback(type: .interior, volumeIndex: volumeIndex)
+      )
     }
 
-    var covers = paperbackVolumes.enumerated().map { index, _ -> Files.File in
-      let suffix = paperbackVolumes.count == 1 ? "" : "--v\(index + 1)"
-      return Files.File(path, "\(filenameBase)--cover\(suffix).pdf")
+    var covers = paperbackVolumes.indices.map { index -> DownloadableFile in
+      let volumeIndex = paperbackVolumes.count == 1 ? nil : index
+      return DownloadableFile(
+        edition: edition,
+        format: .paperback(type: .cover, volumeIndex: volumeIndex)
+      )
     }
 
     return Files(
-      epub: .init(path, filenameBase + ".epub"),
-      mobi: .init(path, filenameBase + ".mobi"),
-      webPdf: .init(path, filenameBase + ".pdf"),
-      speech: .init(path, filenameBase + ".html"),
-      appEbook: .init(path, filenameBase + "--(app-ebook).html"),
-      paperbackInterior: .init(interiors.removeFirst()) + interiors,
-      paperbackCover: .init(covers.removeFirst()) + covers
+      ebook: .init(
+        epub: .init(edition: edition, format: .ebook(.epub)),
+        mobi: .init(edition: edition, format: .ebook(.mobi)),
+        pdf: .init(edition: edition, format: .ebook(.pdf)),
+        speech: .init(edition: edition, format: .ebook(.speech)),
+        app: .init(edition: edition, format: .ebook(.app))
+      ),
+      paperback: .init(
+        interior: .init(interiors.removeFirst()) + interiors,
+        cover: .init(covers.removeFirst()) + covers
+      )
     )
   }
 }
@@ -56,23 +59,27 @@ extension EditionImpression {
 // extensions
 
 extension AppSchema {
-  static var EditionImpressionFileType: AppType<EditionImpression.Files.File> {
-    Type(EditionImpression.Files.File.self, as: "EditionImpressionFile") {
-      Field("path", at: \.path)
-      Field("filename", at: \.filename)
-      Field("url", at: \.url.absoluteString)
+  static var EditionImpressionEbookFilesType: AppType<EditionImpression.Files.Ebook> {
+    Type(EditionImpression.Files.Ebook.self, as: "EditionImpressionEbookFiles") {
+      Field("mobi", at: \.mobi)
+      Field("epub", at: \.epub)
+      Field("pdf", at: \.pdf)
+      Field("app", at: \.app)
+      Field("speech", at: \.speech)
+    }
+  }
+
+  static var EditionImpressionPaperbackFilesType: AppType<EditionImpression.Files.Paperback> {
+    Type(EditionImpression.Files.Paperback.self, as: "EditionImpressionPaperbackFiles") {
+      Field("cover", at: \.cover.rawValue)
+      Field("interior", at: \.interior.rawValue)
     }
   }
 
   static var EditionImpressionFilesType: AppType<EditionImpression.Files> {
     Type(EditionImpression.Files.self, as: "EditionImpressionFiles") {
-      Field("epub", at: \.epub)
-      Field("mobi", at: \.mobi)
-      Field("webPdf", at: \.webPdf)
-      Field("speech", at: \.speech)
-      Field("appEbook", at: \.appEbook)
-      Field("paperbackInterior", at: \.paperbackInterior.rawValue)
-      Field("paperbackCover", at: \.paperbackCover.rawValue)
+      Field("ebook", at: \.ebook)
+      Field("paperback", at: \.paperback)
     }
   }
 }

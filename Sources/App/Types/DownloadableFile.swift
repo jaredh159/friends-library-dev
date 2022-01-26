@@ -1,6 +1,7 @@
 import Foundation
+import Graphiti
 
-struct DownloadableFile {
+struct DownloadableFile: Encodable {
   let edition: Edition
   let format: DownloadFormat
 
@@ -72,6 +73,8 @@ struct DownloadableFile {
   }
 }
 
+// parsing init
+
 extension DownloadableFile {
   init?(logPath: String) async throws {
     var segments = logPath.split(separator: "/")
@@ -134,7 +137,7 @@ extension DownloadableFile {
 
         switch (first, second) {
           case ("paperback", "interior"):
-            guard let index = third |> toIndex else {
+            guard let index = third |> toIndex, validatePaperbackVolume(edition, index) else {
               throw ParseLogPathError.invalidPaperbackVolume(logPath)
             }
             self = .init(edition: edition, format: .paperback(type: .interior, volumeIndex: index))
@@ -144,10 +147,10 @@ extension DownloadableFile {
             }
             self = .init(edition: edition, format: .paperback(type: .cover, volumeIndex: index))
           case ("audio", "mp3"):
-            guard let index = third |> toIndex, !segments.isEmpty else {
+            guard let index = third |> toIndex, validateMp3Part(edition, index) else {
               throw ParseLogPathError.invalidMp3Part(logPath)
             }
-            switch segments.removeFirst() {
+            switch segments.first {
               case "hq":
                 self = .init(
                   edition: edition,
@@ -178,13 +181,39 @@ extension DownloadableFile {
   }
 }
 
+// graphql extensions
+
+extension AppSchema {
+  static var DownloadableFileType: AppType<DownloadableFile> {
+    Type(DownloadableFile.self) {
+      Field("logPath", at: \.logPath)
+      Field("sourcePath", at: \.sourcePath)
+      Field("logUrl", at: \.logUrl.absoluteString)
+      Field("sourceUrl", at: \.sourceUrl.absoluteString)
+    }
+  }
+}
+
 // helpers
+
+private func validatePaperbackVolume(_ edition: Edition, _ index: Int) -> Bool {
+  guard let impression = edition.impression.require() else {
+    return false
+  }
+  return index >= 0 && index < impression.paperbackVolumes.count
+}
+
+private func validateMp3Part(_ edition: Edition, _ index: Int) -> Bool {
+  guard let audio = edition.audio.require() else {
+    return false
+  }
+  return index >= 0 && index < audio.parts.require().count
+}
 
 private func toIndex(_ segment: String.SubSequence) -> Int? {
   guard segment.allSatisfy(\.isWholeNumber),
         let index = Int(String(segment)),
-        index > 0 else { return nil
-  }
+        index > 0 else { return nil }
   return index - 1
 }
 

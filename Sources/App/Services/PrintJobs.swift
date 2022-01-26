@@ -32,8 +32,8 @@ enum PrintJobs {
         let titleSuffix = impression.paperbackVolumes.count > 1 ? ", vol. \(index + 1)" : ""
         return .init(
           title: edition.document.require().title + titleSuffix,
-          cover: impression.files.paperbackCover[index].url.absoluteString,
-          interior: impression.files.paperbackInterior[index].url.absoluteString,
+          cover: impression.files.paperback.cover[index].sourceUrl.absoluteString,
+          interior: impression.files.paperback.interior[index].sourceUrl.absoluteString,
           podPackageId: Lulu.podPackageId(size: impression.paperbackSize.printSize, pages: pages),
           quantity: item.quantity
         )

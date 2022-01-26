@@ -28,6 +28,7 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.ShippingAddressInputType
   AppSchema.SubmitContactFormInputType
   AppSchema.LogJsErrorDataInputType
+  AppSchema.DownloadableFileType
 
   // isbn types
   AppSchema.IsbnType
@@ -89,7 +90,8 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.UpdateEditionInputType
 
   // edition impression types
-  AppSchema.EditionImpressionFileType
+  AppSchema.EditionImpressionEbookFilesType
+  AppSchema.EditionImpressionPaperbackFilesType
   AppSchema.EditionImpressionFilesType
   AppSchema.EditionImpressionType
   AppSchema.CreateEditionImpressionInputType

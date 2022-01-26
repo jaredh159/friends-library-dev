@@ -26,7 +26,8 @@ final class EditionImpressionResolverTests: AppTestCase {
   }
 
   func testGetEditionImpression() async throws {
-    let editionImpression = await Entities.create().editionImpression
+    let entities = await Entities.create()
+    let editionImpression = entities.editionImpression
 
     GraphQLTest(
       """
@@ -34,10 +35,22 @@ final class EditionImpressionResolverTests: AppTestCase {
         editionImpression: getEditionImpression(id: "\(editionImpression.id.uuidString)") {
           id
           paperbackVolumes
+          files {
+            ebook {
+              epub {
+                logPath
+              }
+            }
+          }
         }
       }
       """,
-      expectedData: .containsKVPs(["id": editionImpression.id.lowercased]),
+      expectedData: .containsKVPs([
+        "id": editionImpression.id.lowercased,
+        "logPath": DownloadableFile(edition: entities.edition, format: .ebook(.epub))
+          .logPath
+          .replacingOccurrences(of: "/", with: "\\/"),
+      ]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app)
   }

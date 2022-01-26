@@ -32,7 +32,6 @@ final class PrintJobsTests: AppTestCase {
       """
       query GetPrintJobExploratoryMetadata($input: GetPrintJobExploratoryMetaDataInput!) {
         getPrintJobExploratoryMetadata(input: $input) {
-          shippingLevel
           shippingInCents
           taxesInCents
           feesInCents
@@ -45,7 +44,6 @@ final class PrintJobsTests: AppTestCase {
         "taxesInCents": 333,
         "feesInCents": 150,
         "creditCardFeeOffsetInCents": 88,
-        "shippingLevel": "mail",
       ])
     ).run(Self.app, variables: ["input": input])
   }
@@ -78,8 +76,9 @@ final class PrintJobsTests: AppTestCase {
         externalId: order.id.rawValue.uuidString,
         lineItems: [.init(
           title: entities.document.title,
-          cover: entities.editionImpression.files.paperbackCover.first.url.absoluteString,
-          interior: entities.editionImpression.files.paperbackInterior.first.url.absoluteString,
+          cover: entities.editionImpression.files.paperback.cover.first.sourceUrl.absoluteString,
+          interior: entities.editionImpression.files.paperback.interior.first.sourceUrl
+            .absoluteString,
           podPackageId: Lulu.podPackageId(
             size: entities.editionImpression.paperbackSize.printSize,
             pages: entities.editionImpression.paperbackVolumes.first
@@ -122,8 +121,9 @@ final class PrintJobsTests: AppTestCase {
         lineItems: [
           .init(
             title: entities.document.title + ", vol. 1",
-            cover: entities.editionImpression.files.paperbackCover.first.url.absoluteString,
-            interior: entities.editionImpression.files.paperbackInterior.first.url.absoluteString,
+            cover: entities.editionImpression.files.paperback.cover.first.sourceUrl.absoluteString,
+            interior: entities.editionImpression.files.paperback.interior.first.sourceUrl
+              .absoluteString,
             podPackageId: Lulu.podPackageId(
               size: entities.editionImpression.paperbackSize.printSize,
               pages: entities.editionImpression.paperbackVolumes.first
@@ -132,8 +132,9 @@ final class PrintJobsTests: AppTestCase {
           ),
           .init(
             title: entities.document.title + ", vol. 2",
-            cover: entities.editionImpression.files.paperbackCover[1].url.absoluteString,
-            interior: entities.editionImpression.files.paperbackInterior[1].url.absoluteString,
+            cover: entities.editionImpression.files.paperback.cover[1].sourceUrl.absoluteString,
+            interior: entities.editionImpression.files.paperback.interior[1].sourceUrl
+              .absoluteString,
             podPackageId: Lulu.podPackageId(
               size: entities.editionImpression.paperbackSize.printSize,
               pages: entities.editionImpression.paperbackVolumes.first
