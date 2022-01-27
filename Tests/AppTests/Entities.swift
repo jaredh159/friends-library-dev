@@ -60,6 +60,7 @@ struct Entities {
 
     let audioPart: AudioPart = .random
     audioPart.audioId = audio.id
+    audioPart.order = 1
     connect(audio, \.parts, to: [audioPart], \.audio)
 
     var entities = Entities(

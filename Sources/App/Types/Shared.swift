@@ -29,7 +29,7 @@ enum DownloadFormat: Equatable, Encodable {
     }
 
     case podcast(Quality)
-    case mp3Zip(Quality)
+    case mp3s(Quality)
     case m4b(Quality)
     case mp3(quality: Quality, multipartIndex: Int?)
   }

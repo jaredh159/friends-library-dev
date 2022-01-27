@@ -31,6 +31,7 @@ final class ArtifactProductionVersionResolverTests: AppTestCase {
     ).run(Self.app)
   }
 
+  // @TODO why skipped?
   func skip_testCreateArtifactProductionVersion() throws {
     let revision = UUID().uuidString
 

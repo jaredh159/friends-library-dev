@@ -26,17 +26,33 @@ final class AudioResolverTests: AppTestCase {
   }
 
   func testGetAudio() async throws {
-    let audio = await Entities.create().audio
+    let entities = await Entities.create()
+    let audio = entities.audio
 
     GraphQLTest(
       """
       query GetAudio {
         audio: getAudio(id: "\(audio.id.uuidString)") {
           id
+          files {
+            podcast {
+              hq {
+                logPath
+              }
+            }
+          }
         }
       }
       """,
-      expectedData: .containsKVPs(["id": audio.id.lowercased]),
+      expectedData: .containsKVPs([
+        "id": audio.id.lowercased,
+        "logPath": DownloadableFile(
+          edition: entities.edition,
+          format: .audio(.podcast(.high))
+        )
+        .logPath
+        .replacingOccurrences(of: "/", with: "\\/"),
+      ]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app)
   }

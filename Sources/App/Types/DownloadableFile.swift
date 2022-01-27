@@ -35,7 +35,7 @@ struct DownloadableFile: Encodable {
         return "\(edition.filename)--cover\(index |> volumeFilenameSuffix).pdf"
       case .audio(.m4b(let quality)):
         return "\(edition.filename)\(quality |> qualityFilenameSuffix).m4b"
-      case .audio(.mp3Zip(let quality)):
+      case .audio(.mp3s(let quality)):
         return "\(edition.filename)--mp3s\(quality |> qualityFilenameSuffix).zip"
       case .audio(.mp3(let quality, let index)):
         return "\(edition.filename)\(index |> partFilenameSuffix)\(quality |> qualityFilenameSuffix).mp3"
@@ -63,7 +63,7 @@ struct DownloadableFile: Encodable {
         return "download/\(id)/paperback/cover\(index |> volumeLogPathSuffix)"
       case .audio(.m4b(let quality)):
         return "download/\(id)/audio/m4b\(quality |> qualityLogPathSuffix)"
-      case .audio(.mp3Zip(let quality)):
+      case .audio(.mp3s(let quality)):
         return "download/\(id)/audio/mp3s\(quality |> qualityLogPathSuffix)"
       case .audio(.mp3(let quality, let index)):
         return "download/\(id)/audio/mp3\(index |> partLogPathSuffix)\(quality |> qualityLogPathSuffix)"
@@ -119,9 +119,9 @@ extension DownloadableFile {
       case "audio/m4b/lq":
         self = .init(edition: edition, format: .audio(.m4b(.low)))
       case "audio/mp3s/hq":
-        self = .init(edition: edition, format: .audio(.mp3Zip(.high)))
+        self = .init(edition: edition, format: .audio(.mp3s(.high)))
       case "audio/mp3s/lq":
-        self = .init(edition: edition, format: .audio(.mp3Zip(.low)))
+        self = .init(edition: edition, format: .audio(.mp3s(.low)))
       case "audio/mp3/hq":
         self = .init(edition: edition, format: .audio(.mp3(quality: .high, multipartIndex: nil)))
       case "audio/mp3/lq":

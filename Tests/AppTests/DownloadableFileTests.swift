@@ -13,6 +13,9 @@ final class DownloadableFileTests: AppTestCase {
     super.setUp()
     guard entities == nil else { return }
     sync { [self] in
+      _ = try await Current.db.query(Document.self)
+        .where(.filename == "Journal")
+        .delete()
       entities = await Entities.create {
         $0.edition.type = .updated
         $0.document.filename = "Journal"
@@ -33,8 +36,8 @@ final class DownloadableFileTests: AppTestCase {
       ("paperback/cover/1", .paperback(type: .cover, volumeIndex: 0)),
       ("audio/m4b/hq", .audio(.m4b(.high))),
       ("audio/m4b/lq", .audio(.m4b(.low))),
-      ("audio/mp3s/hq", .audio(.mp3Zip(.high))),
-      ("audio/mp3s/lq", .audio(.mp3Zip(.low))),
+      ("audio/mp3s/hq", .audio(.mp3s(.high))),
+      ("audio/mp3s/lq", .audio(.mp3s(.low))),
       ("audio/mp3/hq", .audio(.mp3(quality: .high, multipartIndex: nil))),
       ("audio/mp3/lq", .audio(.mp3(quality: .low, multipartIndex: nil))),
       ("audio/mp3/1/hq", .audio(.mp3(quality: .high, multipartIndex: 0))),
@@ -64,8 +67,8 @@ final class DownloadableFileTests: AppTestCase {
       (.paperback(type: .cover, volumeIndex: 0), "paperback/cover/1"),
       (.audio(.m4b(.high)), "audio/m4b/hq"),
       (.audio(.m4b(.low)), "audio/m4b/lq"),
-      (.audio(.mp3Zip(.high)), "audio/mp3s/hq"),
-      (.audio(.mp3Zip(.low)), "audio/mp3s/lq"),
+      (.audio(.mp3s(.high)), "audio/mp3s/hq"),
+      (.audio(.mp3s(.low)), "audio/mp3s/lq"),
       (.audio(.mp3(quality: .high, multipartIndex: nil)), "audio/mp3/hq"),
       (.audio(.mp3(quality: .low, multipartIndex: nil)), "audio/mp3/lq"),
       (.audio(.mp3(quality: .high, multipartIndex: 0)), "audio/mp3/1/hq"),
@@ -99,8 +102,8 @@ final class DownloadableFileTests: AppTestCase {
       (.paperback(type: .cover, volumeIndex: 0), "Journal--updated--cover--v1.pdf"),
       (.audio(.m4b(.high)), "Journal--updated.m4b"),
       (.audio(.m4b(.low)), "Journal--updated--lq.m4b"),
-      (.audio(.mp3Zip(.high)), "Journal--updated--mp3s.zip"),
-      (.audio(.mp3Zip(.low)), "Journal--updated--mp3s--lq.zip"),
+      (.audio(.mp3s(.high)), "Journal--updated--mp3s.zip"),
+      (.audio(.mp3s(.low)), "Journal--updated--mp3s--lq.zip"),
       (.audio(.mp3(quality: .high, multipartIndex: nil)), "Journal--updated.mp3"),
       (.audio(.mp3(quality: .low, multipartIndex: nil)), "Journal--updated--lq.mp3"),
       (.audio(.mp3(quality: .high, multipartIndex: 0)), "Journal--updated--pt1.mp3"),

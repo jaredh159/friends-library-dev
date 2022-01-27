@@ -103,6 +103,8 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.UpdateEditionChapterInputType
 
   // audio types
+  AppSchema.AudioFileQualitiesType
+  AppSchema.AudioFilesType
   AppSchema.AudioType
   AppSchema.CreateAudioInputType
   AppSchema.UpdateAudioInputType

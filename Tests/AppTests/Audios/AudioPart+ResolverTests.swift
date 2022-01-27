@@ -25,17 +25,32 @@ final class AudioPartResolverTests: AppTestCase {
   }
 
   func testGetAudioPart() async throws {
-    let audioPart = await Entities.create().audioPart
+    try await Current.db.deleteAll(Audio.self)
+    let entities = await Entities.create()
+    let audioPart = entities.audioPart
 
     GraphQLTest(
       """
       query GetAudioPart {
         audioPart: getAudioPart(id: "\(audioPart.id.uuidString)") {
           id
+          mp3File {
+            hq {
+              logPath
+            }
+          }
         }
       }
       """,
-      expectedData: .containsKVPs(["id": audioPart.id.lowercased]),
+      expectedData: .containsKVPs([
+        "id": audioPart.id.lowercased,
+        "logPath": DownloadableFile(
+          edition: entities.edition,
+          format: .audio(.mp3(quality: .high, multipartIndex: nil))
+        )
+        .logPath
+        .replacingOccurrences(of: "/", with: "\\/"),
+      ]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app)
   }

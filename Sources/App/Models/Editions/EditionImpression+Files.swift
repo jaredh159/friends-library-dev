@@ -2,26 +2,27 @@ import Foundation
 import Graphiti
 import NonEmpty
 
-extension EditionImpression {
-  struct Files: Encodable {
-    struct Ebook: Encodable {
-      let epub: DownloadableFile
-      let mobi: DownloadableFile
-      let pdf: DownloadableFile
-      let speech: DownloadableFile
-      let app: DownloadableFile
-    }
-
-    struct Paperback: Encodable {
-      let interior: NonEmpty<[DownloadableFile]>
-      let cover: NonEmpty<[DownloadableFile]>
-    }
-
-    let ebook: Ebook
-    let paperback: Paperback
+struct EditionImpressionFiles: Encodable {
+  struct Ebook: Encodable {
+    let epub: DownloadableFile
+    let mobi: DownloadableFile
+    let pdf: DownloadableFile
+    let speech: DownloadableFile
+    let app: DownloadableFile
   }
 
-  var files: Files {
+  struct Paperback: Encodable {
+    let interior: NonEmpty<[DownloadableFile]>
+    let cover: NonEmpty<[DownloadableFile]>
+  }
+
+  let ebook: Ebook
+  let paperback: Paperback
+}
+
+extension EditionImpression {
+
+  var files: EditionImpressionFiles {
     let edition = edition.require()
 
     var interiors = paperbackVolumes.indices.map { index -> DownloadableFile in
@@ -40,7 +41,7 @@ extension EditionImpression {
       )
     }
 
-    return Files(
+    return EditionImpressionFiles(
       ebook: .init(
         epub: .init(edition: edition, format: .ebook(.epub)),
         mobi: .init(edition: edition, format: .ebook(.mobi)),
@@ -59,8 +60,8 @@ extension EditionImpression {
 // extensions
 
 extension AppSchema {
-  static var EditionImpressionEbookFilesType: AppType<EditionImpression.Files.Ebook> {
-    Type(EditionImpression.Files.Ebook.self, as: "EditionImpressionEbookFiles") {
+  static var EditionImpressionEbookFilesType: AppType<EditionImpressionFiles.Ebook> {
+    Type(EditionImpressionFiles.Ebook.self, as: "EditionImpressionEbookFiles") {
       Field("mobi", at: \.mobi)
       Field("epub", at: \.epub)
       Field("pdf", at: \.pdf)
@@ -69,15 +70,15 @@ extension AppSchema {
     }
   }
 
-  static var EditionImpressionPaperbackFilesType: AppType<EditionImpression.Files.Paperback> {
-    Type(EditionImpression.Files.Paperback.self, as: "EditionImpressionPaperbackFiles") {
+  static var EditionImpressionPaperbackFilesType: AppType<EditionImpressionFiles.Paperback> {
+    Type(EditionImpressionFiles.Paperback.self, as: "EditionImpressionPaperbackFiles") {
       Field("cover", at: \.cover.rawValue)
       Field("interior", at: \.interior.rawValue)
     }
   }
 
-  static var EditionImpressionFilesType: AppType<EditionImpression.Files> {
-    Type(EditionImpression.Files.self, as: "EditionImpressionFiles") {
+  static var EditionImpressionFilesType: AppType<EditionImpressionFiles> {
+    Type(EditionImpressionFiles.self) {
       Field("ebook", at: \.ebook)
       Field("paperback", at: \.paperback)
     }
