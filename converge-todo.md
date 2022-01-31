@@ -2,7 +2,6 @@
 
 - [ ] - FriendResidenceDuration might be better as an OptionalChild, since i don't think
     we ever want more than one... or do we? think
-- [ ] - fix gap in migrations number (removed doc tag pivot)
 
 - [ ] - ANOTHER_TODO
 

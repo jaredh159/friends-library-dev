@@ -31,20 +31,19 @@ final class ArtifactProductionVersionResolverTests: AppTestCase {
     ).run(Self.app)
   }
 
-  // @TODO why skipped?
-  func skip_testCreateArtifactProductionVersion() throws {
+  func testCreateArtifactProductionVersion() throws {
     let revision = UUID().uuidString
 
     GraphQLTest(
       """
-      mutation CreateArtifactProductionVersion($revision: String!) {
-        version: createArtifactProductionVersion(revision: $revision) {
+      mutation CreateArtifactProductionVersion($input: CreateArtifactProductionVersionInput!) {
+        version: createArtifactProductionVersion(input: $input) {
           sha: version
         }
       }
       """,
       expectedData: .containsKVPs(["sha": revision]),
       headers: [.authorization: "Bearer \(Seeded.tokens.mutateArtifactProductionVersions)"]
-    ).run(Self.app, variables: ["revision": .string(revision)])
+    ).run(Self.app, variables: ["input": .dictionary(["version": .string(revision)])])
   }
 }

@@ -173,27 +173,6 @@ final class OrderResolverTests: AppTestCase {
     ).run(Self.app)
   }
 
-  func testGetOrdersByPrintJobStatus() async throws {
-    let order1 = Order.empty
-    order1.printJobStatus = .bricked
-    let order2 = Order.empty
-    order2.printJobStatus = .bricked
-    try await Current.db.create(order1)
-    try await Current.db.create(order2)
-
-    GraphQLTest(
-      """
-      query {
-        getOrdersByPrintJobStatus(printJobStatus: bricked) {
-          id
-        }
-      }
-      """,
-      expectedData: .containsAll([order1.id.lowercased, order2.id.lowercased]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app)
-  }
-
   func testBrickOrder() async throws {
     let order = Order.random
     order.printJobStatus = .presubmit

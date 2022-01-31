@@ -136,9 +136,6 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
     AppSchema.getOrder
     AppSchema.getFreeOrderRequest
     AppSchema.getPrintJobExploratoryMetadata
-    Field("getOrdersByPrintJobStatus", at: Resolver.getOrdersByPrintJobStatus) {
-      Argument("printJobStatus", at: \.printJobStatus)
-    }
   }
 
   Mutation {

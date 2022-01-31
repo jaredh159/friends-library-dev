@@ -22,23 +22,6 @@ extension Resolver {
       return order
     }
   }
-
-  // @todo, i think i can delete this, was used by GH action alone
-  struct GetOrdersByPrintJobStatusArgs: Codable {
-    let printJobStatus: Order.PrintJobStatus
-  }
-
-  func getOrdersByPrintJobStatus(
-    req: Req,
-    args: GetOrdersByPrintJobStatusArgs
-  ) throws -> Future<[Order]> {
-    try req.requirePermission(to: .queryOrders)
-    return future(of: [Order].self, on: req.eventLoop) {
-      try await Current.db.query(Order.self)
-        .where(.printJobStatus == .enum(args.printJobStatus))
-        .all()
-    }
-  }
 }
 
 // below auto-generated
