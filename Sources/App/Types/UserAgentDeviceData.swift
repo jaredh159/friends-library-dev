@@ -2,6 +2,7 @@ import Foundation
 
 struct UserAgentDeviceData: Decodable {
   let isBot: Bool
+  let isMobile: Bool
   let os: String
   let browser: String
   let platform: String
@@ -10,8 +11,8 @@ struct UserAgentDeviceData: Decodable {
 extension UserAgentDeviceData {
   init?(userAgent: String) {
     let parse = Process()
-    parse.executableURL = URL(fileURLWithPath: Env.PARSE_USERAGENT_BIN)
-    parse.arguments = [userAgent]
+    parse.executableURL = URL(fileURLWithPath: Env.NODE_BIN)
+    parse.arguments = [Env.PARSE_USERAGENT_BIN, userAgent]
     let outPipe = Pipe()
     parse.standardOutput = outPipe
     try? parse.run()

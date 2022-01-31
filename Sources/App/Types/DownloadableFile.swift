@@ -1,9 +1,41 @@
 import Foundation
 import Graphiti
+import Vapor
 
 struct DownloadableFile: Encodable {
+  enum Format: Equatable, Encodable {
+    enum Ebook: String, Codable, CaseIterable, Equatable {
+      case epub
+      case mobi
+      case pdf
+      case speech
+      case app
+    }
+
+    enum Audio: Equatable, Encodable {
+      enum Quality: Equatable, Encodable {
+        case high
+        case low
+      }
+
+      case podcast(Quality)
+      case mp3s(Quality)
+      case m4b(Quality)
+      case mp3(quality: Quality, multipartIndex: Int?)
+    }
+
+    enum Paperback: String, Codable, CaseIterable, Equatable {
+      case cover
+      case interior
+    }
+
+    case ebook(Ebook)
+    case audio(Audio)
+    case paperback(type: Paperback, volumeIndex: Int?)
+  }
+
   let edition: Edition
-  let format: DownloadFormat
+  let format: Format
 
   var sourcePath: String {
     "\(edition.directoryPath)/\(filename)"
@@ -76,7 +108,7 @@ struct DownloadableFile: Encodable {
 // parsing init
 
 extension DownloadableFile {
-  init?(logPath: String) async throws {
+  init(logPath: String) async throws {
     var segments = logPath.split(separator: "/")
 
     guard !segments.isEmpty, segments.removeFirst() == "download" else {
@@ -170,7 +202,7 @@ extension DownloadableFile {
     }
   }
 
-  enum ParseLogPathError: Error {
+  enum ParseLogPathError: Error, LocalizedError {
     case missingLeadingDownload(String)
     case missingEditionId(String)
     case invalidEditionId(String)
@@ -178,6 +210,25 @@ extension DownloadableFile {
     case invalid(String)
     case invalidPaperbackVolume(String)
     case invalidMp3Part(String)
+
+    var errorDescription: String? {
+      switch self {
+        case .missingLeadingDownload(let path):
+          return "Missing leading `download/` segment in path \(path)"
+        case .missingEditionId(let path):
+          return "Missing edition id path \(path)"
+        case .invalidEditionId(let path):
+          return "Invalid edition id in path \(path)"
+        case .editionNotFound(let path):
+          return "Edition not found from path \(path)"
+        case .invalid(let path):
+          return "Invalid path \(path)"
+        case .invalidPaperbackVolume(let path):
+          return "Invalid paperback volume in path \(path)"
+        case .invalidMp3Part(let path):
+          return "Invalid mp3 part in path \(path)"
+      }
+    }
   }
 }
 
@@ -237,7 +288,7 @@ private func partLogPathSuffix(_ index: Int?) -> String {
   return "/\(index + 1)"
 }
 
-private func qualityFilenameSuffix(_ quality: DownloadFormat.Audio.Quality) -> String {
+private func qualityFilenameSuffix(_ quality: DownloadableFile.Format.Audio.Quality) -> String {
   switch quality {
     case .high:
       return ""
@@ -246,11 +297,86 @@ private func qualityFilenameSuffix(_ quality: DownloadFormat.Audio.Quality) -> S
   }
 }
 
-private func qualityLogPathSuffix(_ quality: DownloadFormat.Audio.Quality) -> String {
+private func qualityLogPathSuffix(_ quality: DownloadableFile.Format.Audio.Quality) -> String {
   switch quality {
     case .high:
       return "/hq"
     case .low:
       return "/lq"
+  }
+}
+
+// extensions
+
+extension DownloadableFile.Format {
+  var downloadFormat: Download.Format? {
+    switch self {
+      case .ebook(.epub):
+        return .epub
+      case .ebook(.mobi):
+        return .mobi
+      case .ebook(.pdf):
+        return .webPdf
+      case .ebook(.speech):
+        return .speech
+      case .ebook(.app):
+        return .appEbook
+      case .audio(.mp3s):
+        return .mp3Zip
+      case .audio(.m4b):
+        return .m4b
+      case .audio(.mp3):
+        return .mp3
+      case .audio(.podcast):
+        return .podcast
+      case .paperback:
+        return nil
+    }
+  }
+
+  var audioQuality: Download.AudioQuality? {
+    switch self {
+      case .ebook, .paperback:
+        return nil
+      case .audio(.mp3s(.high)):
+        return .hq
+      case .audio(.mp3s(.low)):
+        return .lq
+      case .audio(.m4b(.high)):
+        return .hq
+      case .audio(.m4b(.low)):
+        return .lq
+      case .audio(.podcast(.high)):
+        return .hq
+      case .audio(.podcast(.low)):
+        return .lq
+      case .audio(.mp3(quality: .high, multipartIndex: _)):
+        return .hq
+      case .audio(.mp3(quality: .low, multipartIndex: _)):
+        return .lq
+    }
+  }
+
+  var audioPartNumber: Int? {
+    switch self {
+      case .ebook, .paperback:
+        return nil
+      case .audio(.mp3s), .audio(.m4b), .audio(.podcast):
+        return nil
+      case .audio(.mp3(quality: _, multipartIndex: let index)):
+        if let index = index {
+          return index + 1
+        }
+        return nil
+    }
+  }
+
+  var slackChannel: Slack.Channel {
+    switch self {
+      case .audio(.mp3), .audio(.podcast):
+        return .audioDownloads
+      case .audio, .paperback, .ebook:
+        return .downloads
+    }
   }
 }

@@ -13,9 +13,8 @@ final class DownloadableFileTests: AppTestCase {
     super.setUp()
     guard entities == nil else { return }
     sync { [self] in
-      _ = try await Current.db.query(Document.self)
-        .where(.filename == "Journal")
-        .delete()
+      try await Current.db.deleteAll(Download.self)
+      try await Current.db.deleteAll(Friend.self)
       entities = await Entities.create {
         $0.edition.type = .updated
         $0.document.filename = "Journal"
@@ -23,8 +22,107 @@ final class DownloadableFileTests: AppTestCase {
     }
   }
 
+  func testBotDownload() async throws {
+    let botUa = "GoogleBot"
+    let file = DownloadableFile(edition: edition, format: .ebook(.epub))
+    let res = try await logAndRedirect(file: file, userAgent: botUa)
+    let downloads = try await Current.db.query(Download.self)
+      .where(.userAgent == .string("GoogleBot"))
+      .all()
+    XCTAssertEqual([], downloads) // no downloads inserted in db
+    XCTAssertEqual(sent.slacks, [.debug("Bot download: `GoogleBot`")])
+    XCTAssertEqual(res.headers.first(name: .location), file.sourceUrl.absoluteString)
+  }
+
+  func testDownloadHappyPathNoLocationFound() async throws {
+    Current.ipApiClient.getIpData = { _ in throw "whoops" }
+    let userAgent = "FriendsLibrary".random
+    let device = UserAgentDeviceData(userAgent: userAgent)
+    let file = DownloadableFile(edition: edition, format: .ebook(.epub))
+
+    let res = try await logAndRedirect(
+      file: file,
+      userAgent: userAgent,
+      ipAddress: "1.2.3.4",
+      referrer: "https://www.friendslibrary.com"
+    )
+
+    let inserted = try await Current.db.query(Download.self)
+      .where(.userAgent == .string(userAgent))
+      .first()
+
+    XCTAssertEqual(inserted.editionId, file.edition.id)
+    XCTAssertEqual(inserted.format, .epub)
+    XCTAssertEqual(inserted.source, .app)
+    XCTAssertEqual(inserted.isMobile, device?.isMobile)
+    XCTAssertEqual(inserted.os, device?.os)
+    XCTAssertEqual(inserted.browser, device?.browser)
+    XCTAssertEqual(inserted.platform, device?.platform)
+    XCTAssertEqual(inserted.ip, "1.2.3.4")
+    XCTAssertEqual(inserted.referrer, "https://www.friendslibrary.com")
+    XCTAssertEqual(inserted.audioQuality, nil)
+    XCTAssertEqual(inserted.audioPartNumber, nil)
+    XCTAssertEqual(res.headers.first(name: .location), file.sourceUrl.absoluteString)
+  }
+
+  func testDownloadHappyPathLocationFound() async throws {
+    Current.ipApiClient.getIpData = { ip in
+      XCTAssertEqual(ip, "1.2.3.4")
+      return .init(
+        ip: ip,
+        city: "City",
+        region: "Region",
+        countryName: "CountryName",
+        postal: "Postal",
+        latitude: 123.456,
+        longitude: -123.456
+      )
+    }
+
+    let userAgent = "Netscape 3.0".random
+    let file = DownloadableFile(
+      edition: edition,
+      format: .audio(.mp3(quality: .high, multipartIndex: 3))
+    )
+
+    _ = try await logAndRedirect(
+      file: file,
+      userAgent: userAgent,
+      ipAddress: "1.2.3.4",
+      referrer: "https://www.friendslibrary.com"
+    )
+
+    let inserted = try await Current.db.query(Download.self)
+      .where(.userAgent == .string(userAgent))
+      .first()
+
+    XCTAssertEqual(inserted.city, "City")
+    XCTAssertEqual(inserted.region, "Region")
+    XCTAssertEqual(inserted.postalCode, "Postal")
+    XCTAssertEqual(inserted.latitude, "123.456")
+    XCTAssertEqual(inserted.longitude, "-123.456")
+    XCTAssertEqual(sent.slacks.count, 1)
+    XCTAssertEqual(sent.slacks[0].channel, .audioDownloads)
+    XCTAssertEqual(
+      sent.slacks[0].text,
+      "Download: `\(edition.directoryPath)`, device: `non-mobile`, from url: `[friendslibrary.com]`, location: `City / Region / Postal / CountryName` https://www.google.com/maps/@123.456,-123.456,14z"
+    )
+  }
+
+  func testAppUaIsNotCountedAsBot() async throws {
+    let userAgent = "FriendsLibrary GoogleBot".random
+    let file = DownloadableFile(edition: edition, format: .ebook(.epub))
+    _ = try await logAndRedirect(file: file, userAgent: userAgent)
+
+    let inserted = try await Current.db.query(Download.self)
+      .where(.userAgent == .string(userAgent))
+      .first()
+
+    XCTAssertEqual(inserted.editionId, edition.id)
+  }
+
   func testInitFromLogPath() async throws {
-    let tests: [(String, DownloadFormat)] = [
+    let tests: [(String, DownloadableFile.Format)] = [
       ("ebook/epub", .ebook(.epub)),
       ("ebook/mobi", .ebook(.mobi)),
       ("ebook/pdf", .ebook(.pdf)),
@@ -49,13 +147,13 @@ final class DownloadableFileTests: AppTestCase {
     for (pathEnd, format) in tests {
       let logPath = "download/\(edition.id.lowercased)/\(pathEnd)"
       let downloadable = try await DownloadableFile(logPath: logPath)
-      XCTAssertEqual(edition, downloadable?.edition)
-      XCTAssertEqual(format, downloadable?.format)
+      XCTAssertEqual(edition, downloadable.edition)
+      XCTAssertEqual(format, downloadable.format)
     }
   }
 
   func testLogPaths() {
-    let tests: [(DownloadFormat, String)] = [
+    let tests: [(DownloadableFile.Format, String)] = [
       (.ebook(.epub), "ebook/epub"),
       (.ebook(.mobi), "ebook/mobi"),
       (.ebook(.pdf), "ebook/pdf"),
@@ -90,7 +188,7 @@ final class DownloadableFileTests: AppTestCase {
   }
 
   func testFilenames() {
-    let tests: [(DownloadFormat, String)] = [
+    let tests: [(DownloadableFile.Format, String)] = [
       (.ebook(.epub), "Journal--updated.epub"),
       (.ebook(.mobi), "Journal--updated.mobi"),
       (.ebook(.pdf), "Journal--updated.pdf"),

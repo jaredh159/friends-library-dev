@@ -11,39 +11,6 @@ enum EditionType: String, Codable, CaseIterable {
   case modernized
 }
 
-// maybe this should be moved inside of `DownloadableFile`, and
-// renamed `Identifier`?
-enum DownloadFormat: Equatable, Encodable {
-  enum Ebook: String, Codable, CaseIterable, Equatable {
-    case epub
-    case mobi
-    case pdf
-    case speech
-    case app
-  }
-
-  enum Audio: Equatable, Encodable {
-    enum Quality: Equatable, Encodable {
-      case high
-      case low
-    }
-
-    case podcast(Quality)
-    case mp3s(Quality)
-    case m4b(Quality)
-    case mp3(quality: Quality, multipartIndex: Int?)
-  }
-
-  enum Paperback: String, Codable, CaseIterable, Equatable {
-    case cover
-    case interior
-  }
-
-  case ebook(Ebook)
-  case audio(Audio)
-  case paperback(type: Paperback, volumeIndex: Int?)
-}
-
 enum PrintSizeVariant: String, Codable, CaseIterable {
   case s
   case m

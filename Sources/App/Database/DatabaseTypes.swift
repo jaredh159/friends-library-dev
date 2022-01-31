@@ -120,10 +120,25 @@ extension SQLMutating {
   }
 }
 
-enum DbError: Error {
+enum DbError: Error, LocalizedError {
   case notFound
   case decodingFailed
   case nonUniformBulkInsertInput
   case emptyBulkInsertInput
   case tooManyResultsForDeleteOne
+
+  var errorDescription: String? {
+    switch self {
+      case .notFound:
+        return "Database error: Not found"
+      case .decodingFailed:
+        return "Database error: Decoding failed"
+      case .nonUniformBulkInsertInput:
+        return "Database error: Non-uniform bulk insert input"
+      case .emptyBulkInsertInput:
+        return "Database error: Empty bulk insert input"
+      case .tooManyResultsForDeleteOne:
+        return "Database error: Too many results for delete one"
+    }
+  }
 }

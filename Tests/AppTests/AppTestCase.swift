@@ -48,8 +48,19 @@ func sync(
 ) {
   let exp = XCTestExpectation(description: "sync:\(function):\(line):\(column)")
   Task {
-    try await f()
-    exp.fulfill()
+    do {
+      try await f()
+      exp.fulfill()
+    } catch {
+      fatalError("Error awaiting \(exp.description) -- \(error)")
+    }
   }
-  _ = XCTWaiter.wait(for: [exp], timeout: 1)
+  switch XCTWaiter.wait(for: [exp], timeout: 10) {
+    case .completed:
+      return
+    case .timedOut:
+      fatalError("Timed out waiting for \(exp.description)")
+    default:
+      fatalError("Unexpected result waiting for \(exp.description)")
+  }
 }

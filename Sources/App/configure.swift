@@ -31,6 +31,10 @@ public func configure(_ app: Application) throws {
   Current.db = LiveDatabase(db: app.db as! SQLDatabase)
   Current.logger = app.logger
 
+  app.get("download", "**") {
+    try await downloadFileRouteHandler(req: $0)
+  }
+
   app
     .grouped(UserAuthenticator())
     .register(graphQLSchema: appSchema, withResolver: Resolver())

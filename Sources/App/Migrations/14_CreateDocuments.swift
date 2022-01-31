@@ -10,7 +10,7 @@ struct CreateDocuments: Migration {
       .field(
         M14.friendId,
         .uuid,
-        .references(Friend.M11.tableName, .id, onDelete: .setNull),
+        .references(Friend.M11.tableName, .id, onDelete: .cascade),
         .required
       )
       .field(

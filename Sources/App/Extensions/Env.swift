@@ -17,5 +17,6 @@ extension Env {
   static let JARED_CONTACT_FORM_EMAIL = get("JARED_CONTACT_FORM_EMAIL")!
   static let JASON_CONTACT_FORM_EMAIL = get("JASON_CONTACT_FORM_EMAIL")!
   static let PARSE_USERAGENT_BIN = get("PARSE_USERAGENT_BIN")!
+  static let NODE_BIN = get("NODE_BIN")!
   static let LOCATION_API_KEY = get("LOCATION_API_KEY")!
 }
