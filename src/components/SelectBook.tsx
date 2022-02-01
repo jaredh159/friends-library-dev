@@ -1,16 +1,24 @@
 import React, { useState } from 'react';
+import { gql, useQuery } from '@apollo/client';
 import cx from 'classnames';
 import { v4 as uuid } from 'uuid';
-import { Edition, OrderItem } from '../types';
 import { XCircleIcon } from '@heroicons/react/solid';
+import { OrderItem } from '../types';
+import { GetOrderEditions } from '../graphql/GetOrderEditions';
+import FullscreenLoading from './FullscreenLoading';
+import InfoMessage from './InfoMessage';
+import { Lang, PrintSizeVariant } from '../graphql/globalTypes';
 
-interface Props {
-  editions: Edition[];
+interface ContainerProps {
   onCancel: () => unknown;
   onSelect: (item: OrderItem) => unknown;
 }
 
-const SelectBook: React.FC<Props> = ({ editions, onCancel, onSelect }) => {
+type Props = ContainerProps & {
+  editions: Array<GetOrderEditions['editions'][0] & { searchString: string }>;
+};
+
+export const SelectBook: React.FC<Props> = ({ editions, onCancel, onSelect }) => {
   const [filterText, setFilterText] = useState(``);
 
   const filteredEditions = editions.filter((edition) => {
@@ -59,20 +67,22 @@ const SelectBook: React.FC<Props> = ({ editions, onCancel, onSelect }) => {
               width="110"
               height="161"
               alt={edition.document.trimmedUtf8ShortTitle}
-              src={edition.image.large}
+              src={edition.images.threeD.large.url}
             />
             <div className="ml-2 space-y-1.5 mt-4">
               <h1 className="font-sans font-bold text-xl text-flprimary">
                 {edition.document.trimmedUtf8ShortTitle}
               </h1>
               <h2 className="font-serif text-md antialiased text-gray-800">
-                {edition.friend.name}
+                {edition.document.friend.name}
               </h2>
               <h3 className="font-serif text-md">
                 <span
                   className={cx(`capitalize`, {
-                    'text-flmaroon': edition.type === `updated` && edition.lang === `en`,
-                    'text-flgold': edition.type === `updated` && edition.lang === `es`,
+                    'text-flmaroon':
+                      edition.type === `updated` && edition.document.friend.lang === `en`,
+                    'text-flgold':
+                      edition.type === `updated` && edition.document.friend.lang === `es`,
                     'text-flblue': edition.type === `modernized`,
                     'text-flgreen': edition.type === `original`,
                   })}
@@ -87,20 +97,21 @@ const SelectBook: React.FC<Props> = ({ editions, onCancel, onSelect }) => {
               onClick={() => {
                 onSelect({
                   id: uuid(),
-                  lang: edition.lang,
+                  lang: edition.document.friend.lang,
                   editionId: edition.id,
-                  image: edition.image.small,
+                  image: edition.images.threeD.small.url,
                   orderTitle: `${edition.document.title}${
                     edition.type !== `updated` ? ` (${edition.type})` : ``
                   }`,
                   displayTitle: edition.document.trimmedUtf8ShortTitle,
-                  author: edition.friend.name,
-                  documentId: edition.document.id,
+                  author: edition.document.friend.name,
                   quantity: 1,
-                  unitPrice: edition.price,
-                  editionType: edition.type,
-                  printSize: edition.printSize,
-                  pages: edition.pages,
+                  unitPrice: edition.impression!.paperbackPriceInCents,
+                  // editionType: edition.type,
+                  printSize: PrintSizeVariant.m,
+                  // printSize: (edition.impression?.paperbackSize ??
+                  //   PrintSize.m) as PrintSizeVariant, // TODO
+                  pages: edition.impression!.paperbackVolumes,
                 });
               }}
               className="ml-auto whitespace-no-wrap flex-shrink-0 bg-flblue-600 hover:ring-2 ring-offset-2 ring-flblue-400 cursor-pointer mr-2 antialiased uppercase text-xs self-end mb-4 rounded-full text-white px-4 py-1"
@@ -114,4 +125,67 @@ const SelectBook: React.FC<Props> = ({ editions, onCancel, onSelect }) => {
   );
 };
 
-export default SelectBook;
+// container
+
+const SelectBookContainer: React.FC<ContainerProps> = ({ onCancel, onSelect }) => {
+  const { data, loading, error } = useQuery<GetOrderEditions>(QUERY_ORDER_EDITIONS);
+  if (loading) {
+    return <FullscreenLoading />;
+  }
+  if (!data || error) {
+    return (
+      <InfoMessage type="error">
+        {!error ? `Missing data` : `Error ${error.message}`}
+      </InfoMessage>
+    );
+  }
+  const editions = data.editions
+    .map((ed) => ({ ...ed, searchString: editionSearchString(ed) }))
+    .filter((ed) => !!ed.impression);
+  return <SelectBook onCancel={onCancel} onSelect={onSelect} editions={editions} />;
+};
+
+export default SelectBookContainer;
+
+const QUERY_ORDER_EDITIONS = gql`
+  query GetOrderEditions {
+    editions: getEditions {
+      id
+      type
+      document {
+        title
+        trimmedUtf8ShortTitle
+        friend {
+          name
+          lang
+        }
+      }
+      impression {
+        paperbackPriceInCents
+        paperbackSize
+        paperbackVolumes
+      }
+      images {
+        threeD {
+          small: w55 {
+            url
+          }
+          large: w110 {
+            url
+          }
+        }
+      }
+    }
+  }
+`;
+
+function editionSearchString(edition: GetOrderEditions['editions'][0]): string {
+  return [
+    edition.document.title,
+    edition.document.friend.name,
+    edition.type,
+    edition.document.friend.lang === Lang.en ? `english` : `spanish espanol`,
+  ]
+    .join(` `)
+    .toLowerCase();
+}

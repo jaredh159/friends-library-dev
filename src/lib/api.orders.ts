@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid';
 import { gql } from '@apollo/client';
 import client from '../client';
-import { result } from './api';
+import result from './result';
 import {
   GetFreeOrderRequest,
   GetFreeOrderRequest_request_address as FreeOrderRequestAddress,
@@ -74,7 +74,7 @@ export async function createOrder(
   }));
 
   try {
-    let { data } = await client.mutate<
+    const { data } = await client.mutate<
       CreateOrderWithItems,
       CreateOrderWithItemsVariables
     >({

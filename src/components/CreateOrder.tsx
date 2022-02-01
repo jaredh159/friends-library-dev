@@ -8,10 +8,8 @@ import {
   CheckCircleIcon,
   CloudUploadIcon,
 } from '@heroicons/react/solid';
-import Loading from './Loading';
-import * as api from '../lib/api';
 import * as orders from '../lib/api.orders';
-import type { Edition, OrderAddress, OrderItem } from '../types';
+import type { OrderAddress, OrderItem } from '../types';
 import SelectBook from './SelectBook';
 import EmptyWell from './EmptyWell';
 import PillButton from './PillButton';
@@ -23,14 +21,7 @@ import Button from './Button';
 import InfoMessage from './InfoMessage';
 
 const CreateOrder: React.FC = () => {
-  let initialEditions: Edition[] | null = null;
-  const storedEditionsJson: string | null = sessionStorage.getItem(`editions`);
-  if (storedEditionsJson) {
-    initialEditions = JSON.parse(storedEditionsJson);
-  }
-
   const [selectingBook, setSelectingBook] = useState(false);
-  const [editions, setEditions] = useState<Edition[] | null>(initialEditions);
   const [items, setItems] = useState<OrderItem[]>([]);
   const [checkingAddress, setCheckingAddress] = useState(false);
   const [submittingOrder, setSubmittingOrder] = useState(false);
@@ -54,42 +45,22 @@ const CreateOrder: React.FC = () => {
     });
   }, []);
 
-  useEffect(() => {
-    if (editions === null) {
-      api.getEditions().then((editions) => {
-        sessionStorage.setItem(`editions`, JSON.stringify(editions));
-        setEditions(editions);
-      });
-    }
-  }, [editions]);
-
-  if (editions === null) {
-    return (
-      <div className="w-full h-screen flex items-center justify-center">
-        <Loading />
-      </div>
-    );
-  }
-
   if (selectingBook) {
     return (
-      <Wrap>
-        <SelectBook
-          editions={editions}
-          onCancel={() => setSelectingBook(false)}
-          onSelect={(item) => {
-            setItems([...items, item]);
-            setSelectingBook(false);
-          }}
-        />
-      </Wrap>
+      <SelectBook
+        onCancel={() => setSelectingBook(false)}
+        onSelect={(item) => {
+          setItems([...items, item]);
+          setSelectingBook(false);
+        }}
+      />
     );
   }
 
   const addressIsValid = addressValid(address, email);
 
   return (
-    <Wrap>
+    <>
       <h1 className="text-flprimary font-sans font-bold text-3xl uppercase text-center antialiased">
         Create Order
       </h1>
@@ -300,19 +271,11 @@ const CreateOrder: React.FC = () => {
           </InfoMessage>
         )}
       </div>
-    </Wrap>
+    </>
   );
 };
 
 export default CreateOrder;
-
-const Wrap: React.FC = ({ children }) => {
-  return (
-    <div className="flex flex-col items-center p-12" style={{ minHeight: `100vh` }}>
-      <div className="w-1/2 min-w-[600px]">{children}</div>
-    </div>
-  );
-};
 
 const countries = Object.entries(COUNTRIES);
 

@@ -1,7 +1,4 @@
-import { EditionType, PrintSize, Lang } from '@friends-library/types';
-import { AdminOrderEditionResourceV1 } from '@friends-library/api';
-
-export type Edition = AdminOrderEditionResourceV1 & { searchString: string };
+import { PrintSize, Lang } from '@friends-library/types';
 
 export interface OrderItem {
   id: string;
@@ -26,5 +23,3 @@ export interface OrderAddress {
   zip: string;
   country: string;
 }
-
-// snowpack woes

@@ -21,3 +21,11 @@ const client = new ApolloClient({
 });
 
 export default client;
+
+declare global {
+  interface ImportMeta {
+    env: {
+      SNOWPACK_PUBLIC_FLP_GRAPHQL_API_ENDPOINT: string;
+    };
+  }
+}

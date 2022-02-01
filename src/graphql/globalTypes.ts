@@ -7,6 +7,12 @@
 // START Enums and Input Objects
 //==============================================================
 
+export enum EditionType {
+  modernized = 'modernized',
+  original = 'original',
+  updated = 'updated',
+}
+
 export enum Lang {
   en = 'en',
   es = 'es',
@@ -31,6 +37,13 @@ export enum PrintSize {
   m = 'm',
   s = 's',
   xl = 'xl',
+}
+
+export enum PrintSizeVariant {
+  m = 'm',
+  s = 's',
+  xl = 'xl',
+  xlCondensed = 'xlCondensed',
 }
 
 export enum ShippingLevel {

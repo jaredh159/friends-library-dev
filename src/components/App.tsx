@@ -15,7 +15,13 @@ const App: React.FC = () => {
     );
   }
 
-  return <CreateOrder />;
+  return (
+    <div className="flex flex-col items-center p-12" style={{ minHeight: `100vh` }}>
+      <div className="w-1/2 min-w-[600px]">
+        <CreateOrder />
+      </div>
+    </div>
+  );
 };
 
 export default App;

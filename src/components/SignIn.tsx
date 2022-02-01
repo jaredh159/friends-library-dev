@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { gql } from '@apollo/client';
 import cx from 'classnames';
 import InfoMessage from './InfoMessage';
-import * as api from '../lib/api';
 import client from '../client';
 import { GetTokenByValue, GetTokenByValueVariables } from '../graphql/GetTokenByValue';
 
