@@ -10,12 +10,18 @@ func logAndRedirect(
   response.status = RedirectType.temporary.status
   response.headers.replaceOrAdd(name: .location, value: file.sourceUrl.absoluteString)
 
+  let isAppUserAgent = userAgent.contains("FriendsLibrary")
+  var source: Download.DownloadSource = isAppUserAgent ? .app : .website
+  if case .audio(.podcast) = file.format {
+    source = .podcast
+    response.status = RedirectType.permanent.status
+  }
+
   guard let device = UserAgentDeviceData(userAgent: userAgent) else {
     await slackError("Failed to parse user agent `\(userAgent)` into device data")
     return response
   }
 
-  let isAppUserAgent = userAgent.contains("FriendsLibrary")
   if !isAppUserAgent, device.isBot == true {
     await slackDebug("Bot download: `\(userAgent)`")
     return response
@@ -24,11 +30,6 @@ func logAndRedirect(
   guard let downloadFormat = file.format.downloadFormat else {
     await slackError("Unexpected download format: \(file.format)")
     return response
-  }
-
-  var source: Download.DownloadSource = isAppUserAgent ? .app : .website
-  if case .audio(.podcast) = file.format {
-    source = .podcast
   }
 
   let download = Download(
