@@ -30,7 +30,7 @@ final class PrintJobsTests: AppTestCase {
 
     GraphQLTest(
       """
-      query GetPrintJobExploratoryMetadata($input: GetPrintJobExploratoryMetaDataInput!) {
+      query GetPrintJobExploratoryMetadata($input: GetPrintJobExploratoryMetadataInput!) {
         getPrintJobExploratoryMetadata(input: $input) {
           shippingInCents
           taxesInCents

@@ -26,16 +26,7 @@ struct Seed: AsyncMigration {
         "mutateArtifactProductionVersions",
         [.mutateArtifactProductionVersions]
       ),
-      Seeded.tokens.allScopes: (
-        "allScopes",
-        [
-          .queryDownloads,
-          .queryOrders,
-          .mutateDownloads,
-          .mutateOrders,
-          .mutateArtifactProductionVersions,
-        ]
-      ),
+      Seeded.tokens.allScopes: ("allScopes", [.all]),
     ]
 
     for (tokenValue, (description, scopes)) in tokens {

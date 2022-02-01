@@ -56,7 +56,7 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.CreateOrderInitializationInputType
   AppSchema.BrickOrderInputType
   AppSchema.PrintJobExploratoryItemInputType
-  AppSchema.GetPrintJobExploratoryMetaDataInputType
+  AppSchema.GetPrintJobExploratoryMetadataInputType
   AppSchema.PrintJobExploratoryMetadataType
 
   // friend types
@@ -120,6 +120,7 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
     AppSchema.getDocument
     AppSchema.getDocumentTag
     AppSchema.getEdition
+    AppSchema.getEditions
     AppSchema.getEditionImpression
     AppSchema.getIsbn
     AppSchema.getEditionChapter

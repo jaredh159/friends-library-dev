@@ -4,14 +4,14 @@ import Vapor
 struct AddTokenScopes: AsyncMigration {
 
   func prepare(on database: Database) async throws {
-    _ = try await database.enum(TokenScope.M5.dbEnumName)
-      .case(TokenScope.M24.Scope.caseAll)
-      .case(TokenScope.M24.Scope.caseQueryArtifactProductionVersions)
-      .case(TokenScope.M24.Scope.caseQueryCoverProps)
-      .case(TokenScope.M24.Scope.caseMutateCoverProps)
-      .case(TokenScope.M24.Scope.caseQueryEntities)
-      .case(TokenScope.M24.Scope.caseMutateEntities)
-      .update()
+    try await addDbEnumCases(db: database, enumName: TokenScope.M5.dbEnumName, newCases: [
+      TokenScope.M24.Scope.caseAll,
+      TokenScope.M24.Scope.caseQueryArtifactProductionVersions,
+      TokenScope.M24.Scope.caseQueryCoverProps,
+      TokenScope.M24.Scope.caseMutateCoverProps,
+      TokenScope.M24.Scope.caseQueryEntities,
+      TokenScope.M24.Scope.caseMutateEntities,
+    ])
   }
 
   func revert(on database: Database) async throws {

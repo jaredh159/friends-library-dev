@@ -29,6 +29,7 @@ class LiveEntityRepository: EntityRepository {
       return entities
     }
 
+    Current.logger.info("Querying all entities and caching...")
     async let friends = findAll(Friend.self)
     async let friendQuotes = findAll(FriendQuote.self)
     async let friendResidences = findAll(FriendResidence.self)

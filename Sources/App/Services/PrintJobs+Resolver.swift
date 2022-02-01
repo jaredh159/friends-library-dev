@@ -5,7 +5,7 @@ import Vapor
 extension Resolver {
   func getPrintJobExploratoryMetadata(
     req: Req,
-    args: InputArgs<AppSchema.GetPrintJobExploratoryMetaDataInput>
+    args: InputArgs<AppSchema.GetPrintJobExploratoryMetadataInput>
   ) throws -> Future<PrintJobs.ExploratoryMetadata> {
     let items = try args.input.items
       .map { inputItem in
@@ -31,14 +31,14 @@ extension AppSchema {
     var quantity: Int
   }
 
-  struct GetPrintJobExploratoryMetaDataInput: Codable {
+  struct GetPrintJobExploratoryMetadataInput: Codable {
     var items: [PrintJobExploratoryItemInput]
     var address: ShippingAddressInput
   }
 
   static var getPrintJobExploratoryMetadata: AppField<
     PrintJobs.ExploratoryMetadata,
-    InputArgs<GetPrintJobExploratoryMetaDataInput>
+    InputArgs<GetPrintJobExploratoryMetadataInput>
   > {
     Field("getPrintJobExploratoryMetadata", at: Resolver.getPrintJobExploratoryMetadata) {
       Argument("input", at: \.input)
@@ -63,8 +63,8 @@ extension AppSchema {
     }
   }
 
-  static var GetPrintJobExploratoryMetaDataInputType: AppInput<GetPrintJobExploratoryMetaDataInput> {
-    Input(GetPrintJobExploratoryMetaDataInput.self) {
+  static var GetPrintJobExploratoryMetadataInputType: AppInput<GetPrintJobExploratoryMetadataInput> {
+    Input(GetPrintJobExploratoryMetadataInput.self) {
       InputField("items", at: \.items)
       InputField("address", at: \.address)
     }

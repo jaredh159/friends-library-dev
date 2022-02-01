@@ -26,6 +26,12 @@ struct UserAuthenticator: AsyncBearerAuthenticator {
         .where(.value == tokenValue)
         .first()
 
+      let scopes = try await Current.db.query(TokenScope.self)
+        .where(.tokenId == token.id)
+        .all()
+
+      connect(token, \.scopes, to: scopes, \.token)
+
       // handle limited use tokens
       if let remaining = token.uses {
         if remaining < 2 {

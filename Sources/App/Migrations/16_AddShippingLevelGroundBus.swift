@@ -4,9 +4,11 @@ import Vapor
 struct AddShippingLevelGroundBus: AsyncMigration {
 
   func prepare(on database: Database) async throws {
-    _ = try await database.enum(Order.M2.ShippingLevelEnum.name)
-      .case(M16.ShippingLevelEnum.caseGroundBus)
-      .update()
+    try await addDbEnumCases(
+      db: database,
+      enumName: Order.M2.ShippingLevelEnum.name,
+      newCases: [M16.ShippingLevelEnum.caseGroundBus]
+    )
   }
 
   func revert(on database: Database) async throws {
