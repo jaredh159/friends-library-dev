@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+import { gql, useQuery } from '@apollo/client';
 import cx from 'classnames';
 import InfoMessage from './InfoMessage';
 import * as api from '../lib/api';
+import client from '../client';
+import { GetTokenByValue, GetTokenByValueVariables } from '../graphql/GetTokenByValue';
 
 interface Props {
   setToken(token: string): unknown;
@@ -12,30 +15,39 @@ const SignIn: React.FC<Props> = ({ setToken }) => {
   const [state, setState] = useState<'waiting' | 'authorizing'>(`waiting`);
   const [error, setError] = useState<string | null>(null);
   const inputLengthValid = input.length === 36;
+
+  async function submit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
+    e.preventDefault();
+    if (inputLengthValid && input.match(MATCH_UUID)) {
+      setState(`authorizing`);
+      const variables: GetTokenByValueVariables = { value: input };
+      try {
+        setState(`authorizing`);
+        const { data, error } = await client.query<GetTokenByValue>({
+          query: QUERY_TOKEN,
+          variables,
+        });
+        setState(`waiting`);
+        if (!data || error) {
+          setError(`Error checking token${error ? `: ${error}` : ``}`);
+        } else {
+          setToken(input);
+        }
+      } catch (err) {
+        setError(`Error: ${err}`);
+      }
+    } else {
+      setError(`Invalid token`);
+    }
+  }
+
   return (
     <div className="min-h-screen bg-white flex">
       <div className="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20">
         <div className="mx-auto w-full max-w-sm lg:w-96">
           <div className="mt-8">
             <div className="mt-6">
-              <form
-                onSubmit={async (event) => {
-                  event.preventDefault();
-                  if (inputLengthValid && input.match(MATCH_UUID)) {
-                    setState(`authorizing`);
-                    const err = await api.validateToken(input);
-                    setState(`waiting`);
-                    if (err) {
-                      setError(err);
-                      return;
-                    }
-                    setToken(input);
-                  } else {
-                    setError(`Invalid token`);
-                  }
-                }}
-                className="space-y-6"
-              >
+              <form onSubmit={submit} className="space-y-6">
                 <div>
                   <label
                     htmlFor="email"
@@ -96,3 +108,11 @@ export default SignIn;
 
 const MATCH_UUID =
   /^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i;
+
+const QUERY_TOKEN = gql`
+  query GetTokenByValue($value: UUID!) {
+    token: getTokenByValue(value: $value) {
+      id
+    }
+  }
+`;

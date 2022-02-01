@@ -6,41 +6,42 @@ import gql from '../lib/gql';
 import * as price from '../lib/price';
 
 export async function validateToken(token: string): Promise<string | null> {
-  const ENDPOINT = import.meta.env.SNOWPACK_PUBLIC_FLP_GRAPHQL_API_ENDPOINT;
-  await new Promise((res) => setTimeout(res, 3000));
+  return `lol`;
+  // const ENDPOINT = import.meta.env.SNOWPACK_PUBLIC_FLP_GRAPHQL_API_ENDPOINT;
+  // await new Promise((res) => setTimeout(res, 3000));
 
-  try {
-    const res = await fetch(ENDPOINT, {
-      method: `POST`,
-      headers: { 'Content-Type': `application/json` },
-      body: JSON.stringify({
-        query: QUERY_TOKEN,
-        variables: { value: token },
-      }),
-    });
+  // try {
+  //   const res = await fetch(ENDPOINT, {
+  //     method: `POST`,
+  //     headers: { 'Content-Type': `application/json` },
+  //     body: JSON.stringify({
+  //       query: QUERY_TOKEN,
+  //       variables: { value: token },
+  //     }),
+  //   });
 
-    const json = await res.json();
-    if (json.errors) {
-      const msg = String(json.errors[0].message);
-      if (msg.includes(`404`)) {
-        return `Token not found.`;
-      }
-      return msg;
-    }
+  //   const json = await res.json();
+  //   if (json.errors) {
+  //     const msg = String(json.errors[0].message);
+  //     if (msg.includes(`404`)) {
+  //       return `Token not found.`;
+  //     }
+  //     return msg;
+  //   }
 
-    if (json.data) {
-      for (const scope of json.data.token.scopes) {
-        if (scope.name === `mutateOrders`) {
-          return null;
-        }
-      }
-      return `Token does not have required permission.`;
-    }
-  } catch (error: unknown) {
-    return String(error);
-  }
+  //   if (json.data) {
+  //     for (const scope of json.data.token.scopes) {
+  //       if (scope.name === `mutateOrders`) {
+  //         return null;
+  //       }
+  //     }
+  //     return `Token does not have required permission.`;
+  //   }
+  // } catch (error: unknown) {
+  //   return String(error);
+  // }
 
-  return `Unknown error`;
+  // return `Unknown error`;
 }
 
 export async function createOrder(
@@ -50,137 +51,139 @@ export async function createOrder(
   requestId: string,
   token: string,
 ): Promise<Result<string>> {
-  const feesResult = await getPrintJobFees(address, items);
-  if (!feesResult.success) {
-    return feesResult;
-  }
+  return { success: false, error: `createOrder` };
+  // const feesResult = await getPrintJobFees(address, items);
+  // if (!feesResult.success) {
+  //   return feesResult;
+  // }
 
-  const { shipping, taxes, shippingLevel } = feesResult.value;
-  const totalCents = price.subtotal(items) + shipping + taxes;
-  const total = price.formatted(totalCents);
-  if (!confirm(`Grand total (w/ shipping and taxes) is ${total}. Proceed?`)) {
-    return { success: false, error: `User cancelled` };
-  }
+  // const { shipping, taxes, shippingLevel } = feesResult.value;
+  // const totalCents = price.subtotal(items) + shipping + taxes;
+  // const total = price.formatted(totalCents);
+  // if (!confirm(`Grand total (w/ shipping and taxes) is ${total}. Proceed?`)) {
+  //   return { success: false, error: `User cancelled` };
+  // }
 
-  const createOrderInput = {
-    lang: items.some((i) => i.lang === `es`) ? `es` : `en`,
-    email,
-    source: `internal`,
-    items: items.map((item) => ({
-      title: item.orderTitle,
-      documentId: item.documentId,
-      editionType: item.editionType,
-      quantity: item.quantity,
-      unitPrice: item.unitPrice,
-    })),
-    addressCity: address.city,
-    addressCountry: address.country,
-    addressName: address.name,
-    addressState: address.state,
-    addressStreet: address.street,
-    addressStreet2: address.street2 ?? null,
-    addressZip: address.zip,
-    amount: totalCents,
-    shipping,
-    taxes,
-    ccFeeOffset: 0, // it's our own credit card, so no need to offset
-    printJobStatus: `presubmit`,
-    shippingLevel: shippingLevel.toLowerCase(),
-    freeOrderRequestId: requestId.trim() || null,
-    paymentId: `internal--complimentary--${uuid().split(`-`).shift()}`,
-  };
+  // const createOrderInput = {
+  //   lang: items.some((i) => i.lang === `es`) ? `es` : `en`,
+  //   email,
+  //   source: `internal`,
+  //   items: items.map((item) => ({
+  //     title: item.orderTitle,
+  //     documentId: item.documentId,
+  //     editionType: item.editionType,
+  //     quantity: item.quantity,
+  //     unitPrice: item.unitPrice,
+  //   })),
+  //   addressCity: address.city,
+  //   addressCountry: address.country,
+  //   addressName: address.name,
+  //   addressState: address.state,
+  //   addressStreet: address.street,
+  //   addressStreet2: address.street2 ?? null,
+  //   addressZip: address.zip,
+  //   amount: totalCents,
+  //   shipping,
+  //   taxes,
+  //   ccFeeOffset: 0, // it's our own credit card, so no need to offset
+  //   printJobStatus: `presubmit`,
+  //   shippingLevel: shippingLevel.toLowerCase(),
+  //   freeOrderRequestId: requestId.trim() || null,
+  //   paymentId: `internal--complimentary--${uuid().split(`-`).shift()}`,
+  // };
 
-  const ENDPOINT = import.meta.env.SNOWPACK_PUBLIC_FLP_GRAPHQL_API_ENDPOINT;
-  try {
-    const res = await fetch(ENDPOINT, {
-      method: `POST`,
-      headers: {
-        'Content-Type': `application/json`,
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        query: CREATE_ORDER,
-        variables: { input: createOrderInput },
-      }),
-    });
+  // const ENDPOINT = import.meta.env.SNOWPACK_PUBLIC_FLP_GRAPHQL_API_ENDPOINT;
+  // try {
+  //   const res = await fetch(ENDPOINT, {
+  //     method: `POST`,
+  //     headers: {
+  //       'Content-Type': `application/json`,
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //     body: JSON.stringify({
+  //       query: CREATE_ORDER,
+  //       variables: { input: createOrderInput },
+  //     }),
+  //   });
 
-    const json = await res.json();
-    if (json.errors) {
-      return {
-        success: false,
-        error: json?.errors?.[0]?.message ?? JSON.stringify(json),
-      };
-    }
+  //   const json = await res.json();
+  //   if (json.errors) {
+  //     return {
+  //       success: false,
+  //       error: json?.errors?.[0]?.message ?? JSON.stringify(json),
+  //     };
+  //   }
 
-    if (json?.data?.order?.id) {
-      return { success: true, value: String(json.data.order.id).toLowerCase() };
-    }
-    return {
-      success: false,
-      error: `Unexpected response: ${JSON.stringify(json)}`,
-    };
-  } catch (error: unknown) {
-    return { success: false, error: String(error) };
-  }
+  //   if (json?.data?.order?.id) {
+  //     return { success: true, value: String(json.data.order.id).toLowerCase() };
+  //   }
+  //   return {
+  //     success: false,
+  //     error: `Unexpected response: ${JSON.stringify(json)}`,
+  //   };
+  // } catch (error: unknown) {
+  //   return { success: false, error: String(error) };
+  // }
 }
 
 export async function getFreeOrderRequest(
   requestId: string,
 ): Promise<Result<OrderAddress & { email: string }>> {
-  try {
-    const ENDPOINT = import.meta.env.SNOWPACK_PUBLIC_FLP_GRAPHQL_API_ENDPOINT;
-    const res = await fetch(ENDPOINT, {
-      method: `POST`,
-      headers: { 'Content-Type': `application/json` },
-      body: JSON.stringify({
-        query: QUERY_REQUEST,
-        variables: { id: requestId },
-      }),
-    });
-    if (res.status !== 200) {
-      return {
-        success: false,
-        error: `Unexpected response status: ${res.status}`,
-      };
-    }
-    const json = await res.json();
-    if (typeof json.data?.request !== `object`) {
-      return {
-        success: false,
-        error: `Unexpected response json: ${JSON.stringify(json)}`,
-      };
-    }
+  return { success: false, error: `getFreeOrderRequest` };
+  // try {
+  //   const ENDPOINT = import.meta.env.SNOWPACK_PUBLIC_FLP_GRAPHQL_API_ENDPOINT;
+  //   const res = await fetch(ENDPOINT, {
+  //     method: `POST`,
+  //     headers: { 'Content-Type': `application/json` },
+  //     body: JSON.stringify({
+  //       query: QUERY_REQUEST,
+  //       variables: { id: requestId },
+  //     }),
+  //   });
+  //   if (res.status !== 200) {
+  //     return {
+  //       success: false,
+  //       error: `Unexpected response status: ${res.status}`,
+  //     };
+  //   }
+  //   const json = await res.json();
+  //   if (typeof json.data?.request !== `object`) {
+  //     return {
+  //       success: false,
+  //       error: `Unexpected response json: ${JSON.stringify(json)}`,
+  //     };
+  //   }
 
-    const request: {
-      email: string;
-      name: string;
-      addressStreet: string;
-      addressStreet2: string | null;
-      addressCity: string;
-      addressState: string;
-      addressZip: string;
-      addressCountry: string;
-    } = json.data.request;
+  //   const request: {
+  //     email: string;
+  //     name: string;
+  //     addressStreet: string;
+  //     addressStreet2: string | null;
+  //     addressCity: string;
+  //     addressState: string;
+  //     addressZip: string;
+  //     addressCountry: string;
+  //   } = json.data.request;
 
-    return {
-      success: true,
-      value: {
-        name: request.name,
-        email: request.email,
-        street: request.addressStreet,
-        ...(request.addressStreet2 ? { street2: request.addressStreet2 } : {}),
-        city: request.addressCity,
-        state: request.addressState,
-        zip: request.addressZip,
-        country: request.addressCountry,
-      },
-    };
-  } catch (error) {
-    return {
-      success: false,
-      error: String(error),
-    };
-  }
+  //   return {
+  //     success: true,
+  //     value: {
+  //       name: request.name,
+  //       email: request.email,
+  //       street: request.addressStreet,
+  //       ...(request.addressStreet2 ? { street2: request.addressStreet2 } : {}),
+  //       city: request.addressCity,
+  //       state: request.addressState,
+  //       zip: request.addressZip,
+  //       country: request.addressCountry,
+  //     },
+  //   };
+  // } catch (error) {
+  //   return {
+  //     success: false,
+  //     error: String(error),
+  //   };
+  // }
 }
 
 export async function getPrintJobFees(
@@ -247,38 +250,38 @@ function editionSearchString(edition: Edition): string {
     .toLowerCase();
 }
 
-const QUERY_TOKEN = gql`
-  query GetTokenByValue($value: String!) {
-    token: getTokenByValue(value: $value) {
-      scopes {
-        name: scope
-      }
-    }
-  }
-`;
+// const QUERY_TOKEN = gql`
+//   query GetTokenByValue($value: String!) {
+//     token: getTokenByValue(value: $value) {
+//       scopes {
+//         name: scope
+//       }
+//     }
+//   }
+// `;
 
-const CREATE_ORDER = gql`
-  mutation CreateOrder($input: CreateOrderInput!) {
-    order: createOrder(input: $input) {
-      id
-    }
-  }
-`;
+// const CREATE_ORDER = gql`
+//   mutation CreateOrder($input: CreateOrderInput!) {
+//     order: createOrder(input: $input) {
+//       id
+//     }
+//   }
+// `;
 
-const QUERY_REQUEST = gql`
-  query GetFreeOrderRequest($id: String!) {
-    request: getFreeOrderRequest(id: $id) {
-      email
-      name
-      addressStreet
-      addressStreet2
-      addressCity
-      addressState
-      addressZip
-      addressCountry
-    }
-  }
-`;
+// const QUERY_REQUEST = gql`
+//   query GetFreeOrderRequest($id: String!) {
+//     request: getFreeOrderRequest(id: $id) {
+//       email
+//       name
+//       addressStreet
+//       addressStreet2
+//       addressCity
+//       addressState
+//       addressZip
+//       addressCountry
+//     }
+//   }
+// `;
 
 declare global {
   interface ImportMeta {
