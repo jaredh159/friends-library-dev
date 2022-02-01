@@ -10,7 +10,8 @@ import {
 } from '@heroicons/react/solid';
 import Loading from './Loading';
 import * as api from '../lib/api';
-import type { Edition, OrderAddress, OrderItem, Result } from '../types';
+import * as orders from '../lib/api.orders';
+import type { Edition, OrderAddress, OrderItem } from '../types';
 import SelectBook from './SelectBook';
 import EmptyWell from './EmptyWell';
 import PillButton from './PillButton';
@@ -43,13 +44,13 @@ const CreateOrder: React.FC = () => {
     const requestId = query.get(`request`);
     if (!requestId) return;
     setRequestId(requestId);
-    api.getFreeOrderRequest(requestId).then((result) => {
+    orders.getFreeOrderRequest(requestId).then((result) => {
       if (!result.success) {
         alert(`Failed to retrieve order data for id=${requestId}`);
         return;
       }
       setEmail(result.value.email);
-      setAddress(result.value);
+      setAddress(result.value.address);
     });
   }, []);
 
@@ -246,9 +247,7 @@ const CreateOrder: React.FC = () => {
             onClick={async () => {
               if (!addressIsValid) return;
               setCheckingAddress(true);
-              const checkResult = await api.getPrintJobFees(address, [
-                { pages: [100], printSize: `m`, quantity: 1 },
-              ]);
+              const checkResult = await orders.isAddressValid(address);
               setCheckingAddress(false);
               setTimeout(() => {
                 if (checkResult.success) {
@@ -269,8 +268,7 @@ const CreateOrder: React.FC = () => {
           fullWidth
           onClick={async () => {
             setSubmittingOrder(true);
-            const token = localStorage.getItem(`token`) ?? ``;
-            const result = await api.createOrder(address, items, email, requestId, token);
+            const result = await orders.createOrder(address, items, email, requestId);
             setSubmittingOrder(false);
             setSubmitResult(result);
             if (result.success) {

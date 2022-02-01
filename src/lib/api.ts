@@ -1,9 +1,26 @@
 import { v4 as uuid } from 'uuid';
 import { AdminOrderEditionResourceV1 as Edition } from '@friends-library/api';
 import { ShippingLevel } from '@friends-library/types';
-import { OrderAddress, OrderItem, Result } from '../types';
+import { OrderAddress, OrderItem } from '../types';
 import gql from '../lib/gql';
 import * as price from '../lib/price';
+import { ApolloError } from '@apollo/client';
+
+class ResultHelpers {
+  apolloError(apolloError: ApolloError | undefined): Result<never, string> {
+    return this.error(`${apolloError ?? `missing data`}`);
+  }
+
+  error<T>(error: T): Result<never, T> {
+    return { success: false, error: error };
+  }
+
+  success<T>(value: T): Result<T, never> {
+    return { success: true, value: value };
+  }
+}
+
+export const result = new ResultHelpers();
 
 export async function validateToken(token: string): Promise<string | null> {
   return `lol`;

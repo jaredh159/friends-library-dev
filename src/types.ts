@@ -10,9 +10,7 @@ export interface OrderItem {
   orderTitle: string;
   author: string;
   image: string;
-  documentId: string;
   editionId: string;
-  editionType: EditionType;
   unitPrice: number;
   quantity: number;
   printSize: PrintSize;
@@ -22,7 +20,7 @@ export interface OrderItem {
 export interface OrderAddress {
   name: string;
   street: string;
-  street2?: string;
+  street2?: string | null;
   city: string;
   state: string;
   zip: string;
@@ -30,12 +28,3 @@ export interface OrderAddress {
 }
 
 // snowpack woes
-export type Result<Value, Error = string> =
-  | {
-      success: true;
-      value: Value;
-    }
-  | {
-      success: false;
-      error: Error;
-    };
