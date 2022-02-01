@@ -12,9 +12,13 @@ func logAndRedirect(
 
   let isAppUserAgent = userAgent.contains("FriendsLibrary")
   var source: Download.DownloadSource = isAppUserAgent ? .app : .website
-  if case .audio(.podcast) = file.format {
-    source = .podcast
-    response.status = RedirectType.permanent.status
+
+  switch (userAgent |> isPodcast, file.format) {
+    case (true, _), (_, .audio(.podcast)):
+      source = .podcast
+      response.status = RedirectType.permanent.status
+    default:
+      break
   }
 
   guard let device = UserAgentDeviceData(userAgent: userAgent) else {
@@ -148,4 +152,10 @@ private func shouldQueryLocation(_ format: DownloadableFile.Format) -> Bool {
   }
   // sample only 5% of podcast request, to stay in api rate limits without paid acct
   return Int.random(in: 0 ... 100) < 5
+}
+
+func isPodcast(userAgent: String) -> Bool {
+  userAgent
+    .lowercased()
+    .match("(podcast|stitcher|tunein|audible|spotify|pocketcasts|overcast|castro|castbox)")
 }

@@ -1,4 +1,5 @@
 import Foundation
+import Vapor
 import XCTest
 
 @testable import App
@@ -19,6 +20,28 @@ final class DownloadableFileTests: AppTestCase {
         $0.edition.type = .updated
         $0.document.filename = "Journal"
       }
+    }
+  }
+
+  func testPodcastAgentsIdentifiedAsPodcast() async throws {
+    let userAgents = [
+      "lol podcasts",
+      "Apple Podcasts",
+      "Audible Mozilla Lol",
+      "overcast more stuff",
+      "tunein more stuff",
+      "foobar Castro (like Mozilla) more stuff",
+      "castbox more stuff",
+      "stitcher more stuff",
+    ]
+    for userAgent in userAgents {
+      let file = DownloadableFile(edition: edition, format: .ebook(.epub))
+      let res = try await logAndRedirect(file: file, userAgent: userAgent)
+      let download = try await Current.db.query(Download.self)
+        .where(.userAgent == .string(userAgent))
+        .first()
+      XCTAssertEqual(download.source, .podcast)
+      XCTAssertEqual(res.status, RedirectType.permanent.status)
     }
   }
 
