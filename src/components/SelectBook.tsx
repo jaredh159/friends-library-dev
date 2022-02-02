@@ -7,7 +7,8 @@ import { OrderItem } from '../types';
 import { GetOrderEditions } from '../graphql/GetOrderEditions';
 import FullscreenLoading from './FullscreenLoading';
 import InfoMessage from './InfoMessage';
-import { Lang, PrintSizeVariant } from '../graphql/globalTypes';
+import { Lang } from '../graphql/globalTypes';
+import { printSizeVariantToPrintSize } from 'src/lib/convert';
 
 interface ContainerProps {
   onCancel: () => unknown;
@@ -107,10 +108,9 @@ export const SelectBook: React.FC<Props> = ({ editions, onCancel, onSelect }) =>
                   author: edition.document.friend.name,
                   quantity: 1,
                   unitPrice: edition.impression!.paperbackPriceInCents,
-                  // editionType: edition.type,
-                  printSize: PrintSizeVariant.m,
-                  // printSize: (edition.impression?.paperbackSize ??
-                  //   PrintSize.m) as PrintSizeVariant, // TODO
+                  printSize: printSizeVariantToPrintSize(
+                    edition.impression!.paperbackSize,
+                  ),
                   pages: edition.impression!.paperbackVolumes,
                 });
               }}
@@ -141,6 +141,7 @@ const SelectBookContainer: React.FC<ContainerProps> = ({ onCancel, onSelect }) =
   }
   const editions = data.editions
     .map((ed) => ({ ...ed, searchString: editionSearchString(ed) }))
+    .filter((ed) => !ed.isDraft)
     .filter((ed) => !!ed.impression);
   return <SelectBook onCancel={onCancel} onSelect={onSelect} editions={editions} />;
 };
@@ -152,6 +153,7 @@ const QUERY_ORDER_EDITIONS = gql`
     editions: getEditions {
       id
       type
+      isDraft
       document {
         title
         trimmedUtf8ShortTitle

@@ -54,6 +54,7 @@ export interface GetOrderEditions_editions {
   __typename: 'Edition';
   id: string;
   type: EditionType;
+  isDraft: boolean;
   document: GetOrderEditions_editions_document;
   impression: GetOrderEditions_editions_impression | null;
   images: GetOrderEditions_editions_images;
