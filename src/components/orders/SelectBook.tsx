@@ -3,12 +3,12 @@ import { gql, useQuery } from '@apollo/client';
 import cx from 'classnames';
 import { v4 as uuid } from 'uuid';
 import { XCircleIcon } from '@heroicons/react/solid';
-import { OrderItem } from '../types';
-import { GetOrderEditions } from '../graphql/GetOrderEditions';
-import FullscreenLoading from './FullscreenLoading';
-import InfoMessage from './InfoMessage';
-import { Lang } from '../graphql/globalTypes';
-import { printSizeVariantToPrintSize } from 'src/lib/convert';
+import { OrderItem } from '../../types';
+import { GetOrderEditions } from '../../graphql/GetOrderEditions';
+import FullscreenLoading from '../FullscreenLoading';
+import InfoMessage from '../InfoMessage';
+import { Lang } from '../../graphql/globalTypes';
+import { printSizeVariantToPrintSize } from '../../lib/convert';
 
 interface ContainerProps {
   onCancel: () => unknown;

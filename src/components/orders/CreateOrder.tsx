@@ -8,17 +8,17 @@ import {
   CheckCircleIcon,
   CloudUploadIcon,
 } from '@heroicons/react/solid';
-import * as orders from '../lib/api.orders';
-import type { OrderAddress, OrderItem } from '../types';
+import * as orders from '../../lib/api.orders';
+import type { OrderAddress, OrderItem } from '../../types';
 import SelectBook from './SelectBook';
-import EmptyWell from './EmptyWell';
-import PillButton from './PillButton';
-import TextInput from './TextInput';
-import LabeledSelect from './LabeledSelect';
-import COUNTRIES from '../lib/countries';
-import * as price from '../lib/price';
-import Button from './Button';
-import InfoMessage from './InfoMessage';
+import EmptyWell from '../EmptyWell';
+import PillButton from '../PillButton';
+import TextInput from '../TextInput';
+import LabeledSelect from '../LabeledSelect';
+import COUNTRIES from '../../lib/countries';
+import * as price from '../../lib/price';
+import Button from '../Button';
+import InfoMessage from '../InfoMessage';
 
 const CreateOrder: React.FC = () => {
   const [selectingBook, setSelectingBook] = useState(false);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import CreateOrder from './CreateOrder';
+import CreateOrder from './orders/CreateOrder';
 import SignIn from './SignIn';
 
 const App: React.FC = () => {
