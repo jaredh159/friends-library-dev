@@ -87,7 +87,7 @@ const CreateOrder: React.FC = () => {
                     {item.author}
                   </h4>
                 </div>
-                <div className="flex-grow pr-4 grow flex justify-end space-x-4">
+                <div className="flex-grow pr-4 flex justify-end space-x-4">
                   <div className="flex items-center space-x-1.5">
                     <code className="antialiased select-none">{item.quantity}</code>
                     <div className="flex flex-col -translate-y-0.5 select-none">
