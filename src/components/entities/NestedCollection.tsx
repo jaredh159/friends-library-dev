@@ -26,7 +26,12 @@ export default function NestedCollection<State extends { id: UUID }>({
   const [isCollapsed, setIsCollapsed] = useState(startsCollapsed);
   const collapsed = isCollapsed || items.length === 0;
   return (
-    <div className="bg-gray-100 rounded-lg p-4 relative">
+    <div
+      className={cx(
+        `NestedCollection bg-gray-100/75 rounded-lg p-4 relative`,
+        !collapsed && `open`,
+      )}
+    >
       <label
         className="label cursor-pointer"
         onClick={() => setIsCollapsed(!isCollapsed)}

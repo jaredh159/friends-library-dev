@@ -30,13 +30,23 @@ declare global {
   }
 }
 
+export const EDIT_EDITION_FIELDS = gql`
+  fragment EditEditionFields on Edition {
+    id
+    type
+    paperbackSplits
+    paperbackOverrideSize
+    isbn {
+      code
+    }
+    isDraft
+  }
+`;
+
 export const EDIT_DOCUMENT_FIELDS = gql`
+  ${EDIT_EDITION_FIELDS}
   fragment EditDocumentFields on Document {
     id
-    friend {
-      name
-      lang
-    }
     altLanguageId
     title
     slug
@@ -47,5 +57,12 @@ export const EDIT_DOCUMENT_FIELDS = gql`
     description
     partialDescription
     featuredDescription
+    friend {
+      name
+      lang
+    }
+    editions {
+      ...EditEditionFields
+    }
   }
 `;

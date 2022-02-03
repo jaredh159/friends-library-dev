@@ -1,5 +1,5 @@
-import React, { Reducer, useReducer, useState } from 'react';
-import { ReducerReplace } from '../../types';
+import React, { useReducer, useState } from 'react';
+import { ReducerReplace, Reducer, EditableDocument } from '../../types';
 import TextInput from '../TextInput';
 import { gql } from '@apollo/client';
 import { EDIT_DOCUMENT_FIELDS } from '../../client';
@@ -9,18 +9,26 @@ import {
   EditDocument as EditDocumentQuery,
   EditDocumentVariables as Vars,
 } from '../../graphql/EditDocument';
-import reducer, { Action } from './reducer';
-import Toggle from '../Toggle';
+import reducer from './reducer';
 import { Lang } from '../../graphql/globalTypes';
-
-type Document = EditDocumentQuery['document'];
+import NestedCollection from './NestedCollection';
+import LabeledToggle from '../LabeledToggle';
+import EditEdition from './EditEdition';
+import * as emptyEntities from '../../lib/empty-entities';
 
 interface Props {
-  document: Document;
+  document: EditableDocument;
   replace: ReducerReplace;
+  deleteItem(path: string): unknown;
+  addItem(path: string, item: unknown): unknown;
 }
 
-export const EditDocument: React.FC<Props> = ({ document: doc, replace }) => {
+export const EditDocument: React.FC<Props> = ({
+  document: doc,
+  replace,
+  addItem,
+  deleteItem,
+}) => {
   return (
     <div className="space-y-4">
       <div className="flex space-x-4">
@@ -60,14 +68,11 @@ export const EditDocument: React.FC<Props> = ({ document: doc, replace }) => {
           onChange={replace(`published`)}
           className="w-[12%]"
         />
-        <div className="flex flex-col justify-between">
-          <label className="label">Incomplete:</label>
-          <Toggle
-            className="self-center mb-1.5"
-            enabled={doc.incomplete}
-            setEnabled={replace(`incomplete`)}
-          />
-        </div>
+        <LabeledToggle
+          label="Incomplete:"
+          enabled={doc.incomplete}
+          setEnabled={replace(`incomplete`)}
+        />
       </div>
       <div className="flex space-x-4">
         <TextInput
@@ -117,6 +122,19 @@ export const EditDocument: React.FC<Props> = ({ document: doc, replace }) => {
         value={doc.featuredDescription}
         onChange={replace(`featuredDescription`)}
       />
+      <NestedCollection
+        label="Edition"
+        items={doc.editions}
+        startsCollapsed={false}
+        onAdd={() => addItem(`editions`, emptyEntities.edition())}
+        onDelete={(index) => deleteItem(`editions[${index}]`)}
+        renderItem={(item, index) => (
+          <EditEdition
+            edition={item}
+            replace={(path) => replace(`editions[${index}].${path}`)}
+          />
+        )}
+      />
     </div>
   );
 };
@@ -126,7 +144,7 @@ export const EditDocument: React.FC<Props> = ({ document: doc, replace }) => {
 const EditDocumentContainer: React.FC = () => {
   const { id = `` } = useParams<{ id: UUID }>();
   const [loaded, setLoaded] = useState(false);
-  const [document, dispatch] = useReducer<Reducer<Document, Action<Document>>>(
+  const [document, dispatch] = useReducer<Reducer<EditableDocument>>(
     reducer,
     null as any,
   );
@@ -146,8 +164,14 @@ const EditDocumentContainer: React.FC = () => {
   return (
     <EditDocument
       document={document}
-      replace={(path) => (value) =>
-        dispatch({ type: `replace_value`, at: path, with: value })}
+      deleteItem={(path) => dispatch({ type: `delete_item`, at: path })}
+      addItem={(path, item) => dispatch({ type: `add_item`, at: path, value: item })}
+      replace={(path, preprocess) => (value) =>
+        dispatch({
+          type: `replace_value`,
+          at: path,
+          with: preprocess ? preprocess(value) : value,
+        })}
     />
   );
 };

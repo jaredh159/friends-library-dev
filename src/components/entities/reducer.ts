@@ -1,13 +1,7 @@
 import set from 'lodash.set';
 import get from 'lodash.get';
 import produce from 'immer';
-
-export type Action<State> =
-  | { type: `replace`; state: State }
-  | { type: `add_item`; at: string; value: unknown }
-  | { type: `delete_item`; at: string }
-  | { type: `replace_value`; at: string; with: unknown }
-  | { type: `update_year`; at: string; with: string };
+import { Action } from '../../types';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export default function reducer<State extends object>(
@@ -40,8 +34,6 @@ export default function reducer<State extends object>(
         collection.splice(Number(indexMatch[1]), 1);
         break;
       }
-      default:
-        throw new Error(`WIP`);
     }
   });
 }

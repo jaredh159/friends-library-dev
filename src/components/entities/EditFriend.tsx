@@ -1,5 +1,4 @@
-import React, { Reducer, useReducer } from 'react';
-import { v4 as uuid } from 'uuid';
+import React, { useReducer } from 'react';
 import { useParams } from 'react-router-dom';
 import { gql } from '@apollo/client';
 import { useQueryResult } from '../../lib/query';
@@ -10,19 +9,19 @@ import {
 import TextInput from '../TextInput';
 import LabeledSelect from '../LabeledSelect';
 import { Gender } from '../../graphql/globalTypes';
-import reducer, { isValidYear, Action } from './reducer';
+import reducer, { isValidYear } from './reducer';
 import NestedCollection from './NestedCollection';
 import { EditDocument } from './EditDocument';
 import { EDIT_DOCUMENT_FIELDS } from '../../client';
+import { EditableFriend, Reducer } from '../../types';
+import * as emptyEntities from '../../lib/empty-entities';
 
 interface Props {
-  friend: EditFriendQuery['friend'];
+  friend: EditableFriend;
 }
 
-type Friend = EditFriendQuery['friend'];
-
 export const EditFriend: React.FC<Props> = ({ friend }) => {
-  const [state, dispatch] = useReducer<Reducer<Friend, Action<Friend>>>(reducer, friend);
+  const [state, dispatch] = useReducer<Reducer<EditableFriend>>(reducer, friend);
   const replace: (path: string) => (value: unknown) => unknown = (path) => {
     return (value) => dispatch({ type: `replace_value`, at: path, with: value });
   };
@@ -97,12 +96,7 @@ export const EditFriend: React.FC<Props> = ({ friend }) => {
           dispatch({
             type: `add_item`,
             at: `quotes`,
-            value: {
-              id: uuid(),
-              source: ``,
-              text: ``,
-              order: Math.max(0, ...state.quotes.map((q) => q.order)) + 1,
-            },
+            value: emptyEntities.friendQuote(state.quotes),
           })
         }
         renderItem={(item, index) => (
@@ -136,7 +130,13 @@ export const EditFriend: React.FC<Props> = ({ friend }) => {
       <NestedCollection
         label="Document"
         items={state.documents.slice(0, 2)}
-        onAdd={() => {}}
+        onAdd={() =>
+          dispatch({
+            type: `add_item`,
+            at: `documents`,
+            value: emptyEntities.document(state),
+          })
+        }
         onDelete={deleteFrom(`documents`)}
         startsCollapsed={false}
         editLink="/documents/:id"
@@ -149,6 +149,16 @@ export const EditFriend: React.FC<Props> = ({ friend }) => {
                 at: `documents[${index}].${path}`,
                 with: value,
               })}
+            deleteItem={(subpath) =>
+              dispatch({ type: `delete_item`, at: `documents[${index}].${subpath}` })
+            }
+            addItem={(subpath, item) =>
+              dispatch({
+                type: `add_item`,
+                at: `documents[${index}].${subpath}`,
+                value: item,
+              })
+            }
           />
         )}
       />
@@ -175,6 +185,7 @@ const QUERY_FRIEND = gql`
   ${EDIT_DOCUMENT_FIELDS}
   query EditFriend($id: UUID!) {
     friend: getFriend(id: $id) {
+      lang
       name
       slug
       gender

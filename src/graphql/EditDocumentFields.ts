@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { Lang } from './globalTypes';
+import { Lang, EditionType, PrintSizeVariant } from './globalTypes';
 
 // ====================================================
 // GraphQL fragment: EditDocumentFields
@@ -15,10 +15,24 @@ export interface EditDocumentFields_friend {
   lang: Lang;
 }
 
+export interface EditDocumentFields_editions_isbn {
+  __typename: 'Isbn';
+  code: string;
+}
+
+export interface EditDocumentFields_editions {
+  __typename: 'Edition';
+  id: string;
+  type: EditionType;
+  paperbackSplits: number[] | null;
+  paperbackOverrideSize: PrintSizeVariant | null;
+  isbn: EditDocumentFields_editions_isbn | null;
+  isDraft: boolean;
+}
+
 export interface EditDocumentFields {
   __typename: 'Document';
   id: string;
-  friend: EditDocumentFields_friend;
   altLanguageId: string | null;
   title: string;
   slug: string;
@@ -29,4 +43,6 @@ export interface EditDocumentFields {
   description: string;
   partialDescription: string;
   featuredDescription: string | null;
+  friend: EditDocumentFields_friend;
+  editions: EditDocumentFields_editions[];
 }
