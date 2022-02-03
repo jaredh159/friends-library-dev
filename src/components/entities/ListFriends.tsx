@@ -57,7 +57,7 @@ const ListFriends: React.FC<Props> = ({ friends }) => {
 
 // container
 
-const ListFriendsContainer: React.FC = ({}) => {
+const ListFriendsContainer: React.FC = () => {
   const query = useQueryResult<GetFriends>(QUERY_FRIENDS);
   if (!query.isResolved) {
     return query.unresolvedElement;

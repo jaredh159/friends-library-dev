@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { Gender } from './globalTypes';
+import { Gender, Lang } from './globalTypes';
 
 // ====================================================
 // GraphQL query operation: EditFriend
@@ -17,6 +17,28 @@ export interface EditFriend_friend_quotes {
   order: number;
 }
 
+export interface EditFriend_friend_documents_friend {
+  __typename: 'Friend';
+  name: string;
+  lang: Lang;
+}
+
+export interface EditFriend_friend_documents {
+  __typename: 'Document';
+  id: string;
+  friend: EditFriend_friend_documents_friend;
+  altLanguageId: string | null;
+  title: string;
+  slug: string;
+  filename: string;
+  published: number | null;
+  originalTitle: string | null;
+  incomplete: boolean;
+  description: string;
+  partialDescription: string;
+  featuredDescription: string | null;
+}
+
 export interface EditFriend_friend {
   __typename: 'Friend';
   name: string;
@@ -26,6 +48,7 @@ export interface EditFriend_friend {
   died: number | null;
   description: string;
   quotes: EditFriend_friend_quotes[];
+  documents: EditFriend_friend_documents[];
 }
 
 export interface EditFriend {

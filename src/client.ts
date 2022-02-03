@@ -1,4 +1,4 @@
-import { ApolloClient, InMemoryCache, createHttpLink, from } from '@apollo/client';
+import { ApolloClient, InMemoryCache, createHttpLink, from, gql } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
 const httpLink = createHttpLink({
@@ -29,3 +29,23 @@ declare global {
     };
   }
 }
+
+export const EDIT_DOCUMENT_FIELDS = gql`
+  fragment EditDocumentFields on Document {
+    id
+    friend {
+      name
+      lang
+    }
+    altLanguageId
+    title
+    slug
+    filename
+    published
+    originalTitle
+    incomplete
+    description
+    partialDescription
+    featuredDescription
+  }
+`;

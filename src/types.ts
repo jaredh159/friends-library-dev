@@ -1,5 +1,8 @@
 import { PrintSize, Lang } from '@friends-library/types';
 
+export type ReducerReplace = (path: string) => (value: unknown) => unknown;
+export type ReducerDeleteFrom = (path: string) => (index: number) => unknown;
+
 export interface OrderItem {
   id: string;
   lang: Lang;

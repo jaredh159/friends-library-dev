@@ -2,7 +2,7 @@ import { ChevronRightIcon } from '@heroicons/react/solid';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
-const Home: React.FC = ({}) => {
+const Home: React.FC = () => {
   return (
     <div>
       <ul className="space-y-2 text-xl text-flprimary">

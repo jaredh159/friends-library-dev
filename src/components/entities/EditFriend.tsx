@@ -1,5 +1,5 @@
-import React, { useReducer } from 'react';
-import cx from 'classnames';
+import React, { Reducer, useReducer } from 'react';
+import { v4 as uuid } from 'uuid';
 import { useParams } from 'react-router-dom';
 import { gql } from '@apollo/client';
 import { useQueryResult } from '../../lib/query';
@@ -10,17 +10,24 @@ import {
 import TextInput from '../TextInput';
 import LabeledSelect from '../LabeledSelect';
 import { Gender } from '../../graphql/globalTypes';
-import reducer, { isValidYear } from './edit-friend-reducer';
+import reducer, { isValidYear, Action } from './reducer';
 import NestedCollection from './NestedCollection';
+import { EditDocument } from './EditDocument';
+import { EDIT_DOCUMENT_FIELDS } from '../../client';
 
 interface Props {
   friend: EditFriendQuery['friend'];
 }
 
+type Friend = EditFriendQuery['friend'];
+
 export const EditFriend: React.FC<Props> = ({ friend }) => {
-  const [state, dispatch] = useReducer(reducer, friend);
-  const replace: (path: string) => (value: string) => unknown = (path) => {
+  const [state, dispatch] = useReducer<Reducer<Friend, Action<Friend>>>(reducer, friend);
+  const replace: (path: string) => (value: unknown) => unknown = (path) => {
     return (value) => dispatch({ type: `replace_value`, at: path, with: value });
+  };
+  const deleteFrom: (path: string) => (index: number) => unknown = (path) => {
+    return (index) => dispatch({ type: `delete_item`, at: `${path}[${index}]` });
   };
   return (
     <div className="mt-6 space-y-4">
@@ -84,21 +91,23 @@ export const EditFriend: React.FC<Props> = ({ friend }) => {
       <NestedCollection
         label="Quote"
         items={state.quotes}
+        startsCollapsed={true}
+        onDelete={deleteFrom(`quotes`)}
         onAdd={() =>
           dispatch({
-            type: `collection_append`,
+            type: `add_item`,
             at: `quotes`,
             value: {
+              id: uuid(),
               source: ``,
               text: ``,
-              order: Math.max(...state.quotes.map((q) => q.order)) + 1,
+              order: Math.max(0, ...state.quotes.map((q) => q.order)) + 1,
             },
           })
         }
-        startsCollapsed={false}
         renderItem={(item, index) => (
-          <>
-            <div className="mt-4 flex space-x-4">
+          <div className="space-y-4">
+            <div className="flex space-x-4">
               <TextInput
                 type="text"
                 className="flex-grow"
@@ -121,7 +130,26 @@ export const EditFriend: React.FC<Props> = ({ friend }) => {
               value={state.quotes[index]?.text ?? ``}
               onChange={replace(`quotes[${index}].text`)}
             />
-          </>
+          </div>
+        )}
+      />
+      <NestedCollection
+        label="Document"
+        items={state.documents.slice(0, 2)}
+        onAdd={() => {}}
+        onDelete={deleteFrom(`documents`)}
+        startsCollapsed={false}
+        editLink="/documents/:id"
+        renderItem={(item, index) => (
+          <EditDocument
+            document={item}
+            replace={(path) => (value) =>
+              dispatch({
+                type: `replace_value`,
+                at: `documents[${index}].${path}`,
+                with: value,
+              })}
+          />
         )}
       />
     </div>
@@ -144,6 +172,7 @@ const EditFriendContainer: React.FC = () => {
 export default EditFriendContainer;
 
 const QUERY_FRIEND = gql`
+  ${EDIT_DOCUMENT_FIELDS}
   query EditFriend($id: UUID!) {
     friend: getFriend(id: $id) {
       name
@@ -157,6 +186,9 @@ const QUERY_FRIEND = gql`
         source
         text
         order
+      }
+      documents {
+        ...EditDocumentFields
       }
     }
   }

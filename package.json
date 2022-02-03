@@ -23,6 +23,7 @@
   "license": "ISC",
   "dependencies": {
     "@apollo/client": "^3.5.8",
+    "@headlessui/react": "^1.4.3",
     "@heroicons/react": "^1.0.4",
     "classnames": "^2.3.1",
     "graphql": "^16.3.0",

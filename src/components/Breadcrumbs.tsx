@@ -4,7 +4,7 @@ import cx from 'classnames';
 import { Link } from 'react-router-dom';
 import { ChevronRightIcon } from '@heroicons/react/solid';
 
-const Breadcrumbs: React.FC = ({}) => {
+const Breadcrumbs: React.FC = () => {
   const location = useLocation();
   const pathname = location.pathname.replace(/\/$/, ``);
   const parts: Array<[fullpath: string, segment: string]> = [];
