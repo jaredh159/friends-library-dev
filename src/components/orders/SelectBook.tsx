@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { gql } from '@apollo/client';
 import cx from 'classnames';
 import { v4 as uuid } from 'uuid';
 import { XCircleIcon } from '@heroicons/react/solid';
 import { OrderItem } from '../../types';
 import { GetOrderEditions } from '../../graphql/GetOrderEditions';
-import FullscreenLoading from '../FullscreenLoading';
-import InfoMessage from '../InfoMessage';
+import { useQueryResult } from '../../lib/query';
 import { Lang } from '../../graphql/globalTypes';
 import { printSizeVariantToPrintSize } from '../../lib/convert';
 
@@ -36,7 +35,7 @@ export const SelectBook: React.FC<Props> = ({ editions, onCancel, onSelect }) =>
   });
 
   return (
-    <div>
+    <>
       <button className="absolute left-4 top-4" onClick={onCancel}>
         <XCircleIcon className="h-10 w-10 text-flprimary ring-flprimary hover:ring-2 rounded-full" />
       </button>
@@ -121,25 +120,18 @@ export const SelectBook: React.FC<Props> = ({ editions, onCancel, onSelect }) =>
           </div>
         ))}
       </div>
-    </div>
+    </>
   );
 };
 
 // container
 
 const SelectBookContainer: React.FC<ContainerProps> = ({ onCancel, onSelect }) => {
-  const { data, loading, error } = useQuery<GetOrderEditions>(QUERY_ORDER_EDITIONS);
-  if (loading) {
-    return <FullscreenLoading />;
+  const query = useQueryResult<GetOrderEditions>(QUERY_ORDER_EDITIONS);
+  if (!query.isResolved) {
+    return query.unresolvedElement;
   }
-  if (!data || error) {
-    return (
-      <InfoMessage type="error">
-        {!error ? `Missing data` : `Error ${error.message}`}
-      </InfoMessage>
-    );
-  }
-  const editions = data.editions
+  const editions = query.data.editions
     .map((ed) => ({ ...ed, searchString: editionSearchString(ed) }))
     .filter((ed) => !ed.isDraft)
     .filter((ed) => !!ed.impression);

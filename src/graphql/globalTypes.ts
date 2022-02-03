@@ -13,6 +13,12 @@ export enum EditionType {
   updated = 'updated',
 }
 
+export enum Gender {
+  female = 'female',
+  male = 'male',
+  mixed = 'mixed',
+}
+
 export enum Lang {
   en = 'en',
   es = 'es',

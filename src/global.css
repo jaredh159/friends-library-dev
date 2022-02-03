@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.label {
+  @apply block text-sm font-light text-flprimary-600 select-none;
+}

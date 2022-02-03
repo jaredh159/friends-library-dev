@@ -12,11 +12,11 @@ interface Props {
   className?: string;
   autoFocus?: boolean;
   optional?: boolean;
-  subtle?: boolean;
   prefix?: string;
   suffix?: string;
   placeholder?: string;
   disabled?: boolean;
+  textareaSize?: string;
 }
 
 const TextInput: React.FC<Props> = ({
@@ -29,20 +29,19 @@ const TextInput: React.FC<Props> = ({
   className,
   autoFocus,
   optional,
-  subtle,
   prefix,
   suffix,
   placeholder,
   disabled,
+  textareaSize = `h-48`,
 }) => {
   const [valid, setValid] = useState(true);
   const inputClasses = cx(
     type === `number` ? `` : `pr-10`,
     !valid &&
-      `border-red-300 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500`,
+      `border-red-400 text-red-900 placeholder-red-300 focus:ring-red-500 focus:border-red-500`,
     `block w-full focus:outline-none sm:text-sm`,
-    `placeholder-gray-300 antialiased`,
-    subtle && `border-gray-300`,
+    `placeholder-gray-300 antialiased border-gray-300`,
     prefix && `rounded-tr-md rounded-br-md`,
     suffix && `rounded-tl-md rounded-bl-md`,
     !prefix && !suffix && `rounded-md`,
@@ -51,26 +50,14 @@ const TextInput: React.FC<Props> = ({
   return (
     <div className={className}>
       <div className="flex justify-between">
-        <label
-          className={cx(
-            `block text-sm`,
-            subtle ? `font-light text-flprimary-600` : `font-medium text-gray-700`,
-          )}
-        >
-          {label}
-        </label>
+        <label className="label">{label}</label>
         {optional && (
           <span className="italic opacity-70 text-sm text-gray-400 antialiased">
             *optional
           </span>
         )}
       </div>
-      <div
-        className={cx(
-          type === `number` && `w-[115px]`,
-          `mt-1 flex relative rounded-md shadow-sm`,
-        )}
-      >
+      <div className={cx(`mt-1 flex relative rounded-md shadow-sm`)}>
         {prefix && (
           <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 sm:text-sm">
             {prefix}
@@ -95,7 +82,7 @@ const TextInput: React.FC<Props> = ({
             onBlur={() => setValid(isValid(value ?? ``))}
             onChange={(e) => onChange(e.target.value)}
             value={value ?? ``}
-            className={cx(inputClasses, `h-24`)}
+            className={cx(inputClasses, textareaSize)}
             placeholder={placeholder}
           />
         )}

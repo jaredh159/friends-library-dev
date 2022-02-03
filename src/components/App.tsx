@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Breadcrumbs from './Breadcrumbs';
 import CreateOrder from './orders/CreateOrder';
+import ListFriends from './entities/ListFriends';
 import SignIn from './SignIn';
+import Home from './Home';
+import EditFriend from './entities/EditFriend';
 
 const App: React.FC = () => {
   const [token, setToken] = useState<string | null>(localStorage.getItem(`token`));
@@ -16,9 +21,17 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col items-center p-12" style={{ minHeight: `100vh` }}>
-      <div className="w-1/2 min-w-[600px]">
-        <CreateOrder />
+    <div className="flex flex-col items-center p-10" style={{ minHeight: `100vh` }}>
+      <div className="w-1/2 min-w-[800px]">
+        <BrowserRouter>
+          <Breadcrumbs />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/orders" element={<CreateOrder />} />
+            <Route path="/friends" element={<ListFriends />} />
+            <Route path="/friends/:id" element={<EditFriend />} />
+          </Routes>
+        </BrowserRouter>
       </div>
     </div>
   );

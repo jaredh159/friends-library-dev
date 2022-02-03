@@ -47,20 +47,22 @@ const CreateOrder: React.FC = () => {
 
   if (selectingBook) {
     return (
-      <SelectBook
-        onCancel={() => setSelectingBook(false)}
-        onSelect={(item) => {
-          setItems([...items, item]);
-          setSelectingBook(false);
-        }}
-      />
+      <Constrained to={`w-[550px]`}>
+        <SelectBook
+          onCancel={() => setSelectingBook(false)}
+          onSelect={(item) => {
+            setItems([...items, item]);
+            setSelectingBook(false);
+          }}
+        />
+      </Constrained>
     );
   }
 
   const addressIsValid = addressValid(address, email);
 
   return (
-    <>
+    <Constrained to={`w-[550px]`}>
       <h1 className="text-flprimary font-sans font-bold text-3xl uppercase text-center antialiased">
         Create Order
       </h1>
@@ -134,7 +136,6 @@ const CreateOrder: React.FC = () => {
           <TextInput
             type="text"
             label="Name"
-            subtle
             placeholder="John Doe"
             value={address.name}
             onChange={(newValue) => setAddress({ ...address, name: newValue })}
@@ -142,7 +143,6 @@ const CreateOrder: React.FC = () => {
           <TextInput
             type="email"
             label="Email"
-            subtle
             placeholder="you@example.com  —  tracking links will be sent here"
             value={email}
             onChange={(newValue) => setEmail(newValue)}
@@ -150,7 +150,6 @@ const CreateOrder: React.FC = () => {
           <TextInput
             type="text"
             label="Address"
-            subtle
             placeholder="Street Address, P.O. Box, C/O"
             value={address.street}
             isValid={(val) => val.length <= 30}
@@ -161,7 +160,6 @@ const CreateOrder: React.FC = () => {
             type="text"
             label="Address (continued)"
             placeholder="Apartment, suite, unit, etc"
-            subtle
             optional
             isValid={(val) => val.length <= 30}
             invalidMessage="Must be 30 characters or less"
@@ -172,7 +170,6 @@ const CreateOrder: React.FC = () => {
             type="text"
             label="City"
             placeholder="City"
-            subtle
             value={address.city}
             onChange={(newValue) => setAddress({ ...address, city: newValue })}
           />
@@ -180,7 +177,6 @@ const CreateOrder: React.FC = () => {
             type="text"
             label="State"
             placeholder="State / Province / Region"
-            subtle
             value={address.state}
             onChange={(newValue) => setAddress({ ...address, state: newValue })}
           />
@@ -188,7 +184,6 @@ const CreateOrder: React.FC = () => {
             type="text"
             label="Zip"
             placeholder="Zip / Postal Code"
-            subtle
             value={address.zip}
             onChange={(newValue) => setAddress({ ...address, zip: newValue })}
           />
@@ -201,7 +196,6 @@ const CreateOrder: React.FC = () => {
           <TextInput
             type="text"
             label="Request ID"
-            subtle
             optional
             placeholder="12034482-5410-4db7-a9f3-c12f34565a55"
             value={requestId}
@@ -271,7 +265,7 @@ const CreateOrder: React.FC = () => {
           </InfoMessage>
         )}
       </div>
-    </>
+    </Constrained>
   );
 };
 
@@ -335,3 +329,9 @@ function emptyAddress(): OrderAddress {
     country: `US`,
   };
 }
+
+const Constrained: React.FC<{ to: string }> = ({ to, children }) => (
+  <div className="flex justify-center">
+    <div className={to}>{children}</div>
+  </div>
+);
