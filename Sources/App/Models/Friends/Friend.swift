@@ -25,6 +25,12 @@ final class Friend: Codable {
     "\(lang)/\(slug)"
   }
 
+  var alphabeticalName: String {
+    let parts = name.split(separator: " ")
+    guard let last = parts.last else { return name }
+    return "\(last), \(parts.dropLast().joined(separator: " "))"
+  }
+
   init(
     id: Id = .init(),
     lang: Lang,

@@ -114,10 +114,12 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
 
   Query {
     AppSchema.getFriend
+    AppSchema.getFriends
     AppSchema.getFriendQuote
     AppSchema.getFriendResidence
     AppSchema.getFriendResidenceDuration
     AppSchema.getDocument
+    AppSchema.getDocuments
     AppSchema.getDocumentTag
     AppSchema.getEdition
     AppSchema.getEditions

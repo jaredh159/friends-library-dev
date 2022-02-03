@@ -18,6 +18,7 @@ extension AppSchema {
       Field("updatedAt", at: \.updatedAt)
       Field("isCompilations", at: \.isCompilations)
       Field("directoryPath", at: \.directoryPath)
+      Field("alphabeticalName", at: \.alphabeticalName)
       Field("documents", with: \.documents)
       Field("residences", with: \.residences)
       Field("quotes", with: \.quotes)
