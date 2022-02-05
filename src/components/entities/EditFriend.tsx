@@ -150,7 +150,10 @@ export const EditFriend: React.FC<Props> = ({ friend }) => {
                 with: value,
               })}
             deleteItem={(subpath) =>
-              dispatch({ type: `delete_item`, at: `documents[${index}].${subpath}` })
+              dispatch({
+                type: `delete_item`,
+                at: `documents[${index}].${subpath}`,
+              })
             }
             addItem={(subpath, item) =>
               dispatch({

@@ -10,11 +10,12 @@ import {
   EditDocumentVariables as Vars,
 } from '../../graphql/EditDocument';
 import reducer from './reducer';
-import { Lang } from '../../graphql/globalTypes';
+import { Lang, TagType } from '../../graphql/globalTypes';
 import NestedCollection from './NestedCollection';
 import LabeledToggle from '../LabeledToggle';
 import EditEdition from './EditEdition';
 import * as emptyEntities from '../../lib/empty-entities';
+import LabledCheckbox from '../LabledCheckbox';
 
 interface Props {
   document: EditableDocument;
@@ -93,6 +94,29 @@ export const EditDocument: React.FC<Props> = ({
           onChange={replace(`filename`)}
           className="w-1/2"
         />
+      </div>
+      <div className="pt-2 pb-1 space-x-4 flex justify-between">
+        <label className="label">Tags:</label>
+        {Object.values(TagType).map((tag) => (
+          <LabledCheckbox
+            key={`${doc.id}--${tag}`}
+            id={`${doc.id}--${tag}`}
+            label={tag === `spiritualLife` ? `spiritual life` : tag}
+            checked={doc.tags.some((t) => t.type === tag)}
+            onToggle={(checked) => {
+              const tags = [...doc.tags];
+              if (checked) {
+                tags.push({ __typename: `DocumentTag`, type: tag });
+              } else {
+                const index = tags.findIndex((t) => t.type === tag);
+                if (index !== -1) {
+                  tags.splice(index, 1);
+                }
+              }
+              replace(`tags`)(tags);
+            }}
+          />
+        ))}
       </div>
       <TextInput
         type="textarea"

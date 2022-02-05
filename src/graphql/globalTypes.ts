@@ -62,6 +62,17 @@ export enum ShippingLevel {
   priorityMail = 'priorityMail',
 }
 
+export enum TagType {
+  allegory = 'allegory',
+  doctrinal = 'doctrinal',
+  exhortation = 'exhortation',
+  history = 'history',
+  journal = 'journal',
+  letters = 'letters',
+  spiritualLife = 'spiritualLife',
+  treatise = 'treatise',
+}
+
 export interface CreateOrderInput {
   addressCity: string;
   addressCountry: string;

@@ -49,5 +49,6 @@ export function document(friend: EditableFriend): EditableDocument {
     },
     editions: [],
     altLanguageId: null,
+    tags: [],
   };
 }

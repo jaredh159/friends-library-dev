@@ -64,5 +64,8 @@ export const EDIT_DOCUMENT_FIELDS = gql`
     editions {
       ...EditEditionFields
     }
+    tags {
+      type
+    }
   }
 `;

@@ -80,7 +80,7 @@ const EditEdition: React.FC<Props> = ({ edition, replace }) => {
       <TextInput
         type="text"
         label="ISBN:"
-        className={cx(`w-[27%]`, !edition.isbn && `opacity-0`)}
+        className={cx(`w-[28%]`, !edition.isbn && `opacity-0`)}
         disabled
         value={edition.isbn?.code ?? ``}
         onChange={() => {}}

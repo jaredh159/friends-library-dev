@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { Lang, EditionType, PrintSizeVariant } from './globalTypes';
+import { Lang, EditionType, PrintSizeVariant, TagType } from './globalTypes';
 
 // ====================================================
 // GraphQL fragment: EditDocumentFields
@@ -30,6 +30,11 @@ export interface EditDocumentFields_editions {
   isDraft: boolean;
 }
 
+export interface EditDocumentFields_tags {
+  __typename: 'DocumentTag';
+  type: TagType;
+}
+
 export interface EditDocumentFields {
   __typename: 'Document';
   id: string;
@@ -45,4 +50,5 @@ export interface EditDocumentFields {
   featuredDescription: string | null;
   friend: EditDocumentFields_friend;
   editions: EditDocumentFields_editions[];
+  tags: EditDocumentFields_tags[];
 }

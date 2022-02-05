@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { Lang, Gender, EditionType, PrintSizeVariant } from './globalTypes';
+import { Lang, Gender, EditionType, PrintSizeVariant, TagType } from './globalTypes';
 
 // ====================================================
 // GraphQL query operation: EditFriend
@@ -38,6 +38,11 @@ export interface EditFriend_friend_documents_editions {
   isDraft: boolean;
 }
 
+export interface EditFriend_friend_documents_tags {
+  __typename: 'DocumentTag';
+  type: TagType;
+}
+
 export interface EditFriend_friend_documents {
   __typename: 'Document';
   id: string;
@@ -53,6 +58,7 @@ export interface EditFriend_friend_documents {
   featuredDescription: string | null;
   friend: EditFriend_friend_documents_friend;
   editions: EditFriend_friend_documents_editions[];
+  tags: EditFriend_friend_documents_tags[];
 }
 
 export interface EditFriend_friend {
