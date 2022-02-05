@@ -45,7 +45,9 @@ export const EditDocument: React.FC<Props> = ({
         />
         <TextInput
           type="text"
-          label={`${doc.friend.lang === Lang.en ? `Spanish` : `Enlish`} Document ID:`}
+          label={`${
+            doc.friend.lang === Lang.en ? `Spanish` : `English`
+          } Version Document ID:`}
           value={doc.altLanguageId}
           isValid={(fn) => !!fn.match(/^[A-Z][A-Za-z0-9_]+$/)}
           invalidMessage="Letters, numbers, and underscores only"

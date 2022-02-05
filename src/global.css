@@ -24,3 +24,7 @@
   .NestedCollection {
   @apply bg-gray-100/75;
 }
+
+.NestedCollection__Item .NestedCollection.closed {
+  margin-bottom: -15px;
+}

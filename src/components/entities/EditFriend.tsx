@@ -88,9 +88,89 @@ export const EditFriend: React.FC<Props> = ({ friend }) => {
         onChange={replace(`description`)}
       />
       <NestedCollection
+        label="Residence"
+        items={state.residences}
+        onAdd={() =>
+          dispatch({
+            type: `add_item`,
+            at: `residences`,
+            value: emptyEntities.friendResidence(),
+          })
+        }
+        onDelete={deleteFrom(`residences`)}
+        renderItem={(residence, residenceIndex) => (
+          <div className="space-y-4">
+            <div className="flex space-x-4">
+              <TextInput
+                type="text"
+                label="City:"
+                className="w-2/3"
+                value={residence.city}
+                onChange={replace(`residences[${residenceIndex}].city`)}
+              />
+              <LabeledSelect
+                label="Region"
+                className="w-1/3"
+                selected={residence.region}
+                setSelected={replace(`residences[${residenceIndex}].region`)}
+                options={[
+                  [`England`, `England`],
+                  [`Ireland`, `Ireland`],
+                  [`Pennsylvania`, `Pennsylvania`],
+                  [`Scotland`, `Scotland`],
+                  [`Wales`, `Wales`],
+                  [`Ohio`, `Ohio`],
+                  [`Rhode Island `, `Rhode Island`],
+                  [`Netherlands`, `Netherlands`],
+                  [`New York`, `New York`],
+                  [`Delaware`, `Delaware`],
+                  [`New Jersey`, `New Jersey`],
+                  [`Russia`, `Russia`],
+                  [`France`, `France`],
+                  [`Vermont`, `Vermont`],
+                ]}
+              />
+            </div>
+            <NestedCollection
+              label="Duration"
+              items={residence.durations}
+              onAdd={() =>
+                dispatch({
+                  type: `add_item`,
+                  at: `residences[${residenceIndex}].durations`,
+                  value: emptyEntities.friendResidenceDuration(),
+                })
+              }
+              onDelete={deleteFrom(`residences[${residenceIndex}].durations`)}
+              renderItem={(duration, durationIndex) => (
+                <div className="flex space-x-4">
+                  <TextInput
+                    className="w-1/2"
+                    type="number"
+                    label="Start:"
+                    value={String(duration.start)}
+                    onChange={replace(
+                      `residences[${residenceIndex}].durations[${durationIndex}].start`,
+                    )}
+                  />
+                  <TextInput
+                    className="w-1/2"
+                    type="number"
+                    label="End:"
+                    value={String(duration.end)}
+                    onChange={replace(
+                      `residences[${residenceIndex}].durations[${durationIndex}].end`,
+                    )}
+                  />
+                </div>
+              )}
+            />
+          </div>
+        )}
+      />
+      <NestedCollection
         label="Quote"
         items={state.quotes}
-        startsCollapsed={true}
         onDelete={deleteFrom(`quotes`)}
         onAdd={() =>
           dispatch({
@@ -138,7 +218,6 @@ export const EditFriend: React.FC<Props> = ({ friend }) => {
           })
         }
         onDelete={deleteFrom(`documents`)}
-        startsCollapsed={false}
         editLink="/documents/:id"
         renderItem={(item, index) => (
           <EditDocument
@@ -203,6 +282,16 @@ const QUERY_FRIEND = gql`
       }
       documents {
         ...EditDocumentFields
+      }
+      residences {
+        id
+        city
+        region
+        durations {
+          id
+          start
+          end
+        }
       }
     }
   }

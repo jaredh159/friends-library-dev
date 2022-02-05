@@ -29,7 +29,7 @@ export default function NestedCollection<State extends { id: UUID }>({
     <div
       className={cx(
         `NestedCollection bg-gray-100/75 rounded-lg p-4 relative`,
-        !collapsed && `open`,
+        collapsed ? `closed` : `open`,
       )}
     >
       <label
@@ -48,7 +48,10 @@ export default function NestedCollection<State extends { id: UUID }>({
       <div className={cx(collapsed ? `hidden` : `mt-2`)}>
         <div className="pl-6 pt-2 divide-y divide-dashed divide-gray-300 space-y-5 -mt-8">
           {items.map((item, index) => (
-            <div key={item.id} className="mt-4 pt-4 pb-2 relative group">
+            <div
+              key={item.id}
+              className="NestedCollection__Item mt-4 pt-4 pb-2 relative group"
+            >
               {renderItem(item, index)}
               {editLink && (
                 <Link

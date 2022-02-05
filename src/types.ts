@@ -21,6 +21,8 @@ export type OmitTypename<U> = Omit<U, '__typename'>;
 
 export type EditableFriend = EditFriendQuery['friend'];
 export type EditableFriendQuote = EditableFriend['quotes'][0];
+export type EditableFriendResidence = EditableFriend['residences'][0];
+export type EditableFriendResidenceDuration = EditableFriendResidence['durations'][0];
 export type EditableDocument = EditDocumentQuery['document'];
 export type EditableEdition = EditableDocument['editions'][0];
 

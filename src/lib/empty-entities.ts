@@ -5,6 +5,8 @@ import {
   EditableDocument,
   EditableEdition,
   EditableFriend,
+  EditableFriendResidence,
+  EditableFriendResidenceDuration,
 } from '../types';
 
 export function friendQuote(existing: EditableFriendQuote[]): EditableFriendQuote {
@@ -26,6 +28,25 @@ export function edition(): EditableEdition {
     paperbackOverrideSize: null,
     paperbackSplits: null,
     isbn: null,
+  };
+}
+
+export function friendResidence(): EditableFriendResidence {
+  return {
+    __typename: `FriendResidence`,
+    id: uuid(),
+    city: ``,
+    region: `England`,
+    durations: [],
+  };
+}
+
+export function friendResidenceDuration(): EditableFriendResidenceDuration {
+  return {
+    __typename: `FriendResidenceDuration`,
+    id: uuid(),
+    start: 1600,
+    end: 1700,
   };
 }
 

@@ -61,6 +61,21 @@ export interface EditFriend_friend_documents {
   tags: EditFriend_friend_documents_tags[];
 }
 
+export interface EditFriend_friend_residences_durations {
+  __typename: 'FriendResidenceDuration';
+  id: string;
+  start: number;
+  end: number;
+}
+
+export interface EditFriend_friend_residences {
+  __typename: 'FriendResidence';
+  id: string;
+  city: string;
+  region: string;
+  durations: EditFriend_friend_residences_durations[];
+}
+
 export interface EditFriend_friend {
   __typename: 'Friend';
   lang: Lang;
@@ -72,6 +87,7 @@ export interface EditFriend_friend {
   description: string;
   quotes: EditFriend_friend_quotes[];
   documents: EditFriend_friend_documents[];
+  residences: EditFriend_friend_residences[];
 }
 
 export interface EditFriend {
