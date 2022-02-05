@@ -8,7 +8,7 @@ import {
 } from '../../graphql/EditFriend';
 import TextInput from '../TextInput';
 import LabeledSelect from '../LabeledSelect';
-import { Gender } from '../../graphql/globalTypes';
+import { Gender, Lang } from '../../graphql/globalTypes';
 import reducer, { isValidYear } from './reducer';
 import NestedCollection from './NestedCollection';
 import { EditDocument } from './EditDocument';
@@ -21,8 +21,11 @@ interface Props {
   selectableDocuments: SelectableDocuments;
 }
 
-export const EditFriend: React.FC<Props> = ({ friend, selectableDocuments }) => {
-  const [state, dispatch] = useReducer<Reducer<EditableFriend>>(reducer, friend);
+export const EditFriend: React.FC<Props> = ({
+  friend: initialFriend,
+  selectableDocuments,
+}) => {
+  const [friend, dispatch] = useReducer<Reducer<EditableFriend>>(reducer, initialFriend);
   const replace: (path: string) => (value: unknown) => unknown = (path) => {
     return (value) => dispatch({ type: `replace_value`, at: path, with: value });
   };
@@ -32,12 +35,23 @@ export const EditFriend: React.FC<Props> = ({ friend, selectableDocuments }) => 
   return (
     <div className="mt-6 space-y-4">
       <div className="flex space-x-4">
+        {friend.id.startsWith(`_`) && (
+          <LabeledSelect
+            label="Lanugage"
+            selected={friend.lang}
+            setSelected={replace(`lang`)}
+            options={[
+              [Lang.en, `English`],
+              [Lang.es, `Spanish`],
+            ]}
+          />
+        )}
         <TextInput
           type="text"
           label="Name:"
           isValid={(name) => name.length > 5 && !!name.match(/^[A-Z].* [A-Z].*/)}
           invalidMessage="min length 5, first + last at least"
-          value={state.name}
+          value={friend.name}
           onChange={replace(`name`)}
           className="flex-grow"
         />
@@ -46,7 +60,7 @@ export const EditFriend: React.FC<Props> = ({ friend, selectableDocuments }) => 
           label="Slug:"
           isValid={(slug) => slug.length > 5 && !!slug.match(/^([a-z-]+)$/)}
           invalidMessage="min length 5, only lowercase letters and dashes"
-          value={state.slug}
+          value={friend.slug}
           onChange={replace(`slug`)}
           className="flex-grow"
         />
@@ -54,7 +68,7 @@ export const EditFriend: React.FC<Props> = ({ friend, selectableDocuments }) => 
       <div className="flex space-x-4">
         <LabeledSelect
           label="Gender:"
-          selected={state.gender}
+          selected={friend.gender}
           setSelected={replace(`gender`)}
           options={[
             [Gender.male, `male`],
@@ -68,7 +82,7 @@ export const EditFriend: React.FC<Props> = ({ friend, selectableDocuments }) => 
             type="number"
             label="Born:"
             isValid={isValidYear}
-            value={state.born === null ? `` : String(state.born)}
+            value={friend.born === null ? `` : String(friend.born)}
             onChange={(year) => dispatch({ type: `update_year`, at: `born`, with: year })}
             className="w-1/2"
           />
@@ -76,7 +90,7 @@ export const EditFriend: React.FC<Props> = ({ friend, selectableDocuments }) => 
             type="number"
             label="Died:"
             isValid={isValidYear}
-            value={state.died === null ? `` : String(state.died)}
+            value={friend.died === null ? `` : String(friend.died)}
             onChange={(year) => dispatch({ type: `update_year`, at: `died`, with: year })}
             className="w-1/2"
           />
@@ -85,12 +99,12 @@ export const EditFriend: React.FC<Props> = ({ friend, selectableDocuments }) => 
       <TextInput
         type="textarea"
         label="Description:"
-        value={state.description}
+        value={friend.description}
         onChange={replace(`description`)}
       />
       <NestedCollection
         label="Residence"
-        items={state.residences}
+        items={friend.residences}
         onAdd={() =>
           dispatch({
             type: `add_item`,
@@ -171,13 +185,13 @@ export const EditFriend: React.FC<Props> = ({ friend, selectableDocuments }) => 
       />
       <NestedCollection
         label="Quote"
-        items={state.quotes}
+        items={friend.quotes}
         onDelete={deleteFrom(`quotes`)}
         onAdd={() =>
           dispatch({
             type: `add_item`,
             at: `quotes`,
-            value: emptyEntities.friendQuote(state.quotes),
+            value: emptyEntities.friendQuote(friend.quotes),
           })
         }
         renderItem={(item, index) => (
@@ -202,7 +216,7 @@ export const EditFriend: React.FC<Props> = ({ friend, selectableDocuments }) => 
               type="textarea"
               textareaSize="h-32"
               label="Quote Text:"
-              value={state.quotes[index]?.text ?? ``}
+              value={friend.quotes[index]?.text ?? ``}
               onChange={replace(`quotes[${index}].text`)}
             />
           </div>
@@ -210,12 +224,12 @@ export const EditFriend: React.FC<Props> = ({ friend, selectableDocuments }) => 
       />
       <NestedCollection
         label="Document"
-        items={state.documents.slice(0, 2)}
+        items={friend.documents.slice(0, 2)}
         onAdd={() =>
           dispatch({
             type: `add_item`,
             at: `documents`,
-            value: emptyEntities.document(state),
+            value: emptyEntities.document(friend),
           })
         }
         onDelete={deleteFrom(`documents`)}
@@ -275,6 +289,7 @@ const QUERY_FRIEND = gql`
   ${SELECTABLE_DOCUMENTS_FIELDS}
   query EditFriend($id: UUID!) {
     friend: getFriend(id: $id) {
+      id
       lang
       name
       slug

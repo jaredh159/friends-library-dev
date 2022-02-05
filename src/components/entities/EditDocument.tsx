@@ -162,7 +162,9 @@ export const EditDocument: React.FC<Props> = ({
         onAdd={() =>
           replace(`relatedDocuments`)(
             [...doc.relatedDocuments].concat([
-              emptyEntities.relatedDocument(selectableDocuments[0]?.id ?? ``),
+              emptyEntities.relatedDocument(
+                [...selectableDocuments].sort(sortSelectableDocuments)[0]?.id ?? ``,
+              ),
             ]),
           )
         }
@@ -175,9 +177,7 @@ export const EditDocument: React.FC<Props> = ({
               setSelected={replace(`relatedDocuments[${index}].documentId`)}
               options={[...selectableDocuments]
                 .filter((selectableDoc) => selectableDoc.friend.lang === doc.friend.lang)
-                .sort((a, b) =>
-                  a.friend.alphabeticalName < b.friend.alphabeticalName ? -1 : 1,
-                )
+                .sort(sortSelectableDocuments)
                 .map((selectableDoc) => [
                   selectableDoc.id,
                   `${selectableDoc.friend.alphabeticalName}: ${selectableDoc.title}`,
@@ -262,3 +262,10 @@ const QUERY_DOCUMENT = gql`
     }
   }
 `;
+
+function sortSelectableDocuments(
+  a: SelectableDocuments[0],
+  b: SelectableDocuments[0],
+): number {
+  return a.friend.alphabeticalName < b.friend.alphabeticalName ? -1 : 1;
+}

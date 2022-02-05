@@ -7,7 +7,9 @@ const Home: React.FC = () => {
     <div>
       <ul className="space-y-2 text-xl text-flprimary">
         <Link to="/orders">Create an Order</Link>
-        <Link to="/friends">View Friends</Link>
+        <Link to="/friends">View Friend</Link>
+        <Link to="/friends/new">Create New Friend</Link>
+        <Link to="/documents">View Documents</Link>
       </ul>
     </div>
   );

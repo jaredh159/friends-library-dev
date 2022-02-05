@@ -86,6 +86,7 @@ export interface EditFriend_friend_residences {
 
 export interface EditFriend_friend {
   __typename: 'Friend';
+  id: string;
   lang: Lang;
   name: string;
   slug: string;

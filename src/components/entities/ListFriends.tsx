@@ -5,13 +5,16 @@ import { useQueryResult } from '../../lib/query';
 import { GetFriends } from '../../graphql/GetFriends';
 import { Lang } from '../../graphql/globalTypes';
 import TextInput from '../TextInput';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import PillButton from '../PillButton';
+import { PlusCircleIcon } from '@heroicons/react/solid';
 
 interface Props {
   friends: GetFriends['friends'];
 }
 
 const ListFriends: React.FC<Props> = ({ friends }) => {
+  const navigate = useNavigate();
   const [filterText, setFilterText] = useState(``);
   const filteredFriends = friends.filter((friend) => {
     if (filterText.length < 3) {
@@ -27,14 +30,24 @@ const ListFriends: React.FC<Props> = ({ friends }) => {
   });
   return (
     <div className="h-screen">
-      <TextInput
-        type="text"
-        label="Filter:"
-        value={filterText}
-        onChange={setFilterText}
-        autoFocus
-        className="my-4"
-      />
+      <div className="my-4 flex space-x-4 items-end">
+        <TextInput
+          type="text"
+          label=""
+          placeholder="filter friends..."
+          value={filterText}
+          onChange={setFilterText}
+          autoFocus
+          className="flex-grow"
+        />
+        <PillButton
+          onClick={() => navigate(`/friends/new`)}
+          className="mb-1"
+          Icon={PlusCircleIcon}
+        >
+          Add New Friend
+        </PillButton>
+      </div>
       <div className="grid grid-cols-3">
         {filteredFriends.map((friend) => (
           <Link

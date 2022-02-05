@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { EditionType } from '../graphql/globalTypes';
+import { EditionType, Gender, Lang } from '../graphql/globalTypes';
 import {
   EditableFriendQuote,
   EditableDocument,
@@ -10,6 +10,22 @@ import {
   EditableRelatedDocument,
 } from '../types';
 
+export function friend(): EditableFriend {
+  return {
+    __typename: `Friend`,
+    lang: Lang.en,
+    id: clientGeneratedId(),
+    name: ``,
+    slug: ``,
+    born: null,
+    died: null,
+    gender: Gender.male,
+    description: ``,
+    quotes: [],
+    documents: [],
+    residences: [],
+  };
+}
 export function friendQuote(existing: EditableFriendQuote[]): EditableFriendQuote {
   return {
     __typename: `FriendQuote`,
@@ -56,10 +72,7 @@ export function relatedDocument(documentId: UUID): EditableRelatedDocument {
     __typename: `RelatedDocument`,
     id: clientGeneratedId(),
     description: ``,
-    document: {
-      __typename: `Document`,
-      id: documentId,
-    },
+    documentId,
   };
 }
 

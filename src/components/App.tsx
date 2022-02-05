@@ -8,6 +8,7 @@ import Home from './Home';
 import EditFriend from './entities/EditFriend';
 import EditDocument from './entities/EditDocument';
 import ListDocuments from './entities/ListDocuments';
+import CreateFriend from './entities/CreateFriend';
 
 const App: React.FC = () => {
   const [token, setToken] = useState<string | null>(localStorage.getItem(`token`));
@@ -31,6 +32,7 @@ const App: React.FC = () => {
             <Route path="/" element={<Home />} />
             <Route path="/orders" element={<CreateOrder />} />
             <Route path="/friends" element={<ListFriends />} />
+            <Route path="/friends/new" element={<CreateFriend />} />
             <Route path="/friends/:id" element={<EditFriend />} />
             <Route path="/documents" element={<ListDocuments />} />
             <Route path="/documents/:id" element={<EditDocument />} />

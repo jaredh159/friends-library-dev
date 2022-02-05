@@ -30,7 +30,8 @@ const ListDocuments: React.FC<Props> = ({ documents }) => {
     <div className="h-screen">
       <TextInput
         type="text"
-        label="Filter:"
+        label=""
+        placeholder="filter documents..."
         value={filterText}
         onChange={setFilterText}
         autoFocus
