@@ -35,6 +35,13 @@ export interface EditDocumentFields_tags {
   type: TagType;
 }
 
+export interface EditDocumentFields_relatedDocuments {
+  __typename: 'RelatedDocument';
+  id: string;
+  description: string;
+  documentId: string;
+}
+
 export interface EditDocumentFields {
   __typename: 'Document';
   id: string;
@@ -51,4 +58,5 @@ export interface EditDocumentFields {
   friend: EditDocumentFields_friend;
   editions: EditDocumentFields_editions[];
   tags: EditDocumentFields_tags[];
+  relatedDocuments: EditDocumentFields_relatedDocuments[];
 }

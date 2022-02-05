@@ -7,12 +7,13 @@ import {
   EditableFriend,
   EditableFriendResidence,
   EditableFriendResidenceDuration,
+  EditableRelatedDocument,
 } from '../types';
 
 export function friendQuote(existing: EditableFriendQuote[]): EditableFriendQuote {
   return {
     __typename: `FriendQuote`,
-    id: uuid(),
+    id: clientGeneratedId(),
     source: ``,
     text: ``,
     order: Math.max(0, ...existing.map((q) => q.order)) + 10,
@@ -22,7 +23,7 @@ export function friendQuote(existing: EditableFriendQuote[]): EditableFriendQuot
 export function edition(): EditableEdition {
   return {
     __typename: `Edition`,
-    id: uuid(),
+    id: clientGeneratedId(),
     isDraft: true,
     type: EditionType.updated,
     paperbackOverrideSize: null,
@@ -34,7 +35,7 @@ export function edition(): EditableEdition {
 export function friendResidence(): EditableFriendResidence {
   return {
     __typename: `FriendResidence`,
-    id: uuid(),
+    id: clientGeneratedId(),
     city: ``,
     region: `England`,
     durations: [],
@@ -44,16 +45,28 @@ export function friendResidence(): EditableFriendResidence {
 export function friendResidenceDuration(): EditableFriendResidenceDuration {
   return {
     __typename: `FriendResidenceDuration`,
-    id: uuid(),
+    id: clientGeneratedId(),
     start: 1600,
     end: 1700,
+  };
+}
+
+export function relatedDocument(documentId: UUID): EditableRelatedDocument {
+  return {
+    __typename: `RelatedDocument`,
+    id: clientGeneratedId(),
+    description: ``,
+    document: {
+      __typename: `Document`,
+      id: documentId,
+    },
   };
 }
 
 export function document(friend: EditableFriend): EditableDocument {
   return {
     __typename: `Document`,
-    id: uuid(),
+    id: clientGeneratedId(),
     slug: ``,
     description: ``,
     title: ``,
@@ -71,5 +84,10 @@ export function document(friend: EditableFriend): EditableDocument {
     editions: [],
     altLanguageId: null,
     tags: [],
+    relatedDocuments: [],
   };
+}
+
+function clientGeneratedId(): string {
+  return `_${uuid()}`;
 }

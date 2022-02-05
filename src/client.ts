@@ -30,6 +30,17 @@ declare global {
   }
 }
 
+export const SELECTABLE_DOCUMENTS_FIELDS = gql`
+  fragment SelectableDocumentsFields on Document {
+    id
+    title
+    friend {
+      lang
+      alphabeticalName
+    }
+  }
+`;
+
 export const EDIT_EDITION_FIELDS = gql`
   fragment EditEditionFields on Edition {
     id
@@ -66,6 +77,11 @@ export const EDIT_DOCUMENT_FIELDS = gql`
     }
     tags {
       type
+    }
+    relatedDocuments {
+      id
+      description
+      documentId
     }
   }
 `;

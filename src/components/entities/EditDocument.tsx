@@ -1,8 +1,13 @@
 import React, { useReducer, useState } from 'react';
-import { ReducerReplace, Reducer, EditableDocument } from '../../types';
+import {
+  ReducerReplace,
+  Reducer,
+  EditableDocument,
+  SelectableDocuments,
+} from '../../types';
 import TextInput from '../TextInput';
 import { gql } from '@apollo/client';
-import { EDIT_DOCUMENT_FIELDS } from '../../client';
+import { EDIT_DOCUMENT_FIELDS, SELECTABLE_DOCUMENTS_FIELDS } from '../../client';
 import { useParams } from 'react-router-dom';
 import { useQueryResult } from '../../lib/query';
 import {
@@ -16,9 +21,11 @@ import LabeledToggle from '../LabeledToggle';
 import EditEdition from './EditEdition';
 import * as emptyEntities from '../../lib/empty-entities';
 import LabledCheckbox from '../LabledCheckbox';
+import LabeledSelect from '../LabeledSelect';
 
 interface Props {
   document: EditableDocument;
+  selectableDocuments: SelectableDocuments;
   replace: ReducerReplace;
   deleteItem(path: string): unknown;
   addItem(path: string, item: unknown): unknown;
@@ -29,6 +36,7 @@ export const EditDocument: React.FC<Props> = ({
   replace,
   addItem,
   deleteItem,
+  selectableDocuments,
 }) => {
   return (
     <div className="space-y-4">
@@ -149,6 +157,43 @@ export const EditDocument: React.FC<Props> = ({
         onChange={replace(`featuredDescription`)}
       />
       <NestedCollection
+        label="Related Document"
+        items={doc.relatedDocuments}
+        onAdd={() =>
+          replace(`relatedDocuments`)(
+            [...doc.relatedDocuments].concat([
+              emptyEntities.relatedDocument(selectableDocuments[0]?.id ?? ``),
+            ]),
+          )
+        }
+        onDelete={(index) => deleteItem(`relatedDocuments[${index}]`)}
+        renderItem={(related, index) => (
+          <div className="space-y-4">
+            <LabeledSelect
+              label="Document:"
+              selected={related.documentId}
+              setSelected={replace(`relatedDocuments[${index}].documentId`)}
+              options={[...selectableDocuments]
+                .filter((selectableDoc) => selectableDoc.friend.lang === doc.friend.lang)
+                .sort((a, b) =>
+                  a.friend.alphabeticalName < b.friend.alphabeticalName ? -1 : 1,
+                )
+                .map((selectableDoc) => [
+                  selectableDoc.id,
+                  `${selectableDoc.friend.alphabeticalName}: ${selectableDoc.title}`,
+                ])}
+            />
+            <TextInput
+              type="textarea"
+              label="Description:"
+              textareaSize="h-24"
+              value={related.description}
+              onChange={replace(`relatedDocuments[${index}].description`)}
+            />
+          </div>
+        )}
+      />
+      <NestedCollection
         label="Edition"
         items={doc.editions}
         startsCollapsed={false}
@@ -190,6 +235,7 @@ const EditDocumentContainer: React.FC = () => {
   return (
     <EditDocument
       document={document}
+      selectableDocuments={query.data.selectableDocuments}
       deleteItem={(path) => dispatch({ type: `delete_item`, at: path })}
       addItem={(path, item) => dispatch({ type: `add_item`, at: path, value: item })}
       replace={(path, preprocess) => (value) =>
@@ -206,9 +252,13 @@ export default EditDocumentContainer;
 
 const QUERY_DOCUMENT = gql`
   ${EDIT_DOCUMENT_FIELDS}
+  ${SELECTABLE_DOCUMENTS_FIELDS}
   query EditDocument($id: UUID!) {
     document: getDocument(id: $id) {
       ...EditDocumentFields
+    }
+    selectableDocuments: getDocuments {
+      ...SelectableDocumentsFields
     }
   }
 `;

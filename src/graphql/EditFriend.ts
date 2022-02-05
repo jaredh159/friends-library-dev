@@ -43,6 +43,13 @@ export interface EditFriend_friend_documents_tags {
   type: TagType;
 }
 
+export interface EditFriend_friend_documents_relatedDocuments {
+  __typename: 'RelatedDocument';
+  id: string;
+  description: string;
+  documentId: string;
+}
+
 export interface EditFriend_friend_documents {
   __typename: 'Document';
   id: string;
@@ -59,6 +66,7 @@ export interface EditFriend_friend_documents {
   friend: EditFriend_friend_documents_friend;
   editions: EditFriend_friend_documents_editions[];
   tags: EditFriend_friend_documents_tags[];
+  relatedDocuments: EditFriend_friend_documents_relatedDocuments[];
 }
 
 export interface EditFriend_friend_residences_durations {
@@ -90,8 +98,22 @@ export interface EditFriend_friend {
   residences: EditFriend_friend_residences[];
 }
 
+export interface EditFriend_selectableDocuments_friend {
+  __typename: 'Friend';
+  lang: Lang;
+  alphabeticalName: string;
+}
+
+export interface EditFriend_selectableDocuments {
+  __typename: 'Document';
+  id: string;
+  title: string;
+  friend: EditFriend_selectableDocuments_friend;
+}
+
 export interface EditFriend {
   friend: EditFriend_friend;
+  selectableDocuments: EditFriend_selectableDocuments[];
 }
 
 export interface EditFriendVariables {

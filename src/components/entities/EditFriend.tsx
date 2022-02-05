@@ -12,15 +12,16 @@ import { Gender } from '../../graphql/globalTypes';
 import reducer, { isValidYear } from './reducer';
 import NestedCollection from './NestedCollection';
 import { EditDocument } from './EditDocument';
-import { EDIT_DOCUMENT_FIELDS } from '../../client';
-import { EditableFriend, Reducer } from '../../types';
+import { EDIT_DOCUMENT_FIELDS, SELECTABLE_DOCUMENTS_FIELDS } from '../../client';
+import { EditableFriend, Reducer, SelectableDocuments } from '../../types';
 import * as emptyEntities from '../../lib/empty-entities';
 
 interface Props {
   friend: EditableFriend;
+  selectableDocuments: SelectableDocuments;
 }
 
-export const EditFriend: React.FC<Props> = ({ friend }) => {
+export const EditFriend: React.FC<Props> = ({ friend, selectableDocuments }) => {
   const [state, dispatch] = useReducer<Reducer<EditableFriend>>(reducer, friend);
   const replace: (path: string) => (value: unknown) => unknown = (path) => {
     return (value) => dispatch({ type: `replace_value`, at: path, with: value });
@@ -222,6 +223,7 @@ export const EditFriend: React.FC<Props> = ({ friend }) => {
         renderItem={(item, index) => (
           <EditDocument
             document={item}
+            selectableDocuments={selectableDocuments}
             replace={(path) => (value) =>
               dispatch({
                 type: `replace_value`,
@@ -258,13 +260,19 @@ const EditFriendContainer: React.FC = () => {
   if (!query.isResolved) {
     return query.unresolvedElement;
   }
-  return <EditFriend friend={query.data.friend} />;
+  return (
+    <EditFriend
+      friend={query.data.friend}
+      selectableDocuments={query.data.selectableDocuments}
+    />
+  );
 };
 
 export default EditFriendContainer;
 
 const QUERY_FRIEND = gql`
   ${EDIT_DOCUMENT_FIELDS}
+  ${SELECTABLE_DOCUMENTS_FIELDS}
   query EditFriend($id: UUID!) {
     friend: getFriend(id: $id) {
       lang
@@ -293,6 +301,9 @@ const QUERY_FRIEND = gql`
           end
         }
       }
+    }
+    selectableDocuments: getDocuments {
+      ...SelectableDocumentsFields
     }
   }
 `;
