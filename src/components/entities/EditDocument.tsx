@@ -1,4 +1,5 @@
 import React, { useReducer, useState } from 'react';
+import isEqual from 'lodash.isequal';
 import {
   ReducerReplace,
   Reducer,
@@ -22,6 +23,7 @@ import EditEdition from './EditEdition';
 import * as emptyEntities from '../../lib/empty-entities';
 import LabledCheckbox from '../LabledCheckbox';
 import LabeledSelect from '../LabeledSelect';
+import SaveChangesBar from './SaveChangesBar';
 
 interface Props {
   document: EditableDocument;
@@ -233,18 +235,27 @@ const EditDocumentContainer: React.FC = () => {
   }
 
   return (
-    <EditDocument
-      document={document}
-      selectableDocuments={query.data.selectableDocuments}
-      deleteItem={(path) => dispatch({ type: `delete_item`, at: path })}
-      addItem={(path, item) => dispatch({ type: `add_item`, at: path, value: item })}
-      replace={(path, preprocess) => (value) =>
-        dispatch({
-          type: `replace_value`,
-          at: path,
-          with: preprocess ? preprocess(value) : value,
-        })}
-    />
+    <>
+      <div className="mb-24">
+        <EditDocument
+          document={document}
+          selectableDocuments={query.data.selectableDocuments}
+          deleteItem={(path) => dispatch({ type: `delete_item`, at: path })}
+          addItem={(path, item) => dispatch({ type: `add_item`, at: path, value: item })}
+          replace={(path, preprocess) => (value) =>
+            dispatch({
+              type: `replace_value`,
+              at: path,
+              with: preprocess ? preprocess(value) : value,
+            })}
+        />
+      </div>
+      <SaveChangesBar
+        onSave={() => {}}
+        buttonText="Save Document"
+        disabled={isEqual(query.data.document, document)}
+      />
+    </>
   );
 };
 

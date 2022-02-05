@@ -1,4 +1,5 @@
 import React, { useReducer } from 'react';
+import isEqual from 'lodash.isequal';
 import { useParams } from 'react-router-dom';
 import { gql } from '@apollo/client';
 import { useQueryResult } from '../../lib/query';
@@ -15,6 +16,7 @@ import { EditDocument } from './EditDocument';
 import { EDIT_DOCUMENT_FIELDS, SELECTABLE_DOCUMENTS_FIELDS } from '../../client';
 import { EditableFriend, Reducer, SelectableDocuments } from '../../types';
 import * as emptyEntities from '../../lib/empty-entities';
+import SaveChangesBar from './SaveChangesBar';
 
 interface Props {
   friend: EditableFriend;
@@ -33,7 +35,12 @@ export const EditFriend: React.FC<Props> = ({
     return (index) => dispatch({ type: `delete_item`, at: `${path}[${index}]` });
   };
   return (
-    <div className="mt-6 space-y-4">
+    <div className="mt-6 space-y-4 mb-24">
+      <SaveChangesBar
+        onSave={() => {}}
+        buttonText="Save Friend"
+        disabled={isEqual(friend, initialFriend)}
+      />
       <div className="flex space-x-4">
         {friend.id.startsWith(`_`) && (
           <LabeledSelect
