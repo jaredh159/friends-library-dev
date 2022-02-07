@@ -118,7 +118,7 @@ export const EditDocument: React.FC<Props> = ({
             onToggle={(checked) => {
               const tags = [...doc.tags];
               if (checked) {
-                tags.push({ __typename: `DocumentTag`, type: tag });
+                tags.push(emptyEntities.documentTag(tag));
               } else {
                 const index = tags.findIndex((t) => t.type === tag);
                 if (index !== -1) {
@@ -251,7 +251,8 @@ const EditDocumentContainer: React.FC = () => {
         />
       </div>
       <SaveChangesBar
-        onSave={() => {}}
+        // @ts-ignore
+        getEntities={() => [document, query.data.document]}
         buttonText="Save Document"
         disabled={isEqual(query.data.document, document)}
       />

@@ -18,10 +18,10 @@ const Progress: React.FC<Props> = ({ steps }) => {
     (steps.filter((step) => step.status === `succeeded`).length / steps.length) * 100;
 
   return (
-    <div className="p-4 inline-flex flex-col">
+    <div className="p-8 rounded-lg inline-flex flex-col bg-white min-w-[400px]">
       <table className="text-sm antialiased">
         <thead>
-          <tr className="italic opacity-50 text-xs">
+          <tr className="italic opacity-40 text-xs">
             <td>Step</td>
             <td>Description</td>
             <td>Status</td>
@@ -56,7 +56,7 @@ const Status: React.FC<{ status: MutationStep['status'] }> = ({ status }) => {
     case `succeeded`:
     case `rollback succeeded`:
       return (
-        <span className="flex items-center text-green-600/60">
+        <span className="flex items-center text-green-700/60">
           <CheckCircleIcon className="mr-1 w-[15px] h-[15px]" />
           {status === `succeeded` ? `complete` : status}
         </span>

@@ -8,6 +8,7 @@ import {
   EditableFriendResidence,
   EditableFriendResidenceDuration,
   EditableRelatedDocument,
+  EditableDocumentTag,
 } from '../types';
 
 export function friend(): EditableFriend {
@@ -26,6 +27,7 @@ export function friend(): EditableFriend {
     residences: [],
   };
 }
+
 export function friendQuote(existing: EditableFriendQuote[]): EditableFriendQuote {
   return {
     __typename: `FriendQuote`,
@@ -98,6 +100,14 @@ export function document(friend: EditableFriend): EditableDocument {
     altLanguageId: null,
     tags: [],
     relatedDocuments: [],
+  };
+}
+
+export function documentTag(type: EditableDocumentTag['type']): EditableDocumentTag {
+  return {
+    __typename: `DocumentTag`,
+    id: clientGeneratedId(),
+    type,
   };
 }
 

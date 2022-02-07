@@ -8,7 +8,7 @@ import {
   CheckCircleIcon,
   CloudUploadIcon,
 } from '@heroicons/react/solid';
-import * as orders from '../../lib/api.orders';
+import * as orders from '../../lib/api/orders';
 import type { OrderAddress, OrderItem } from '../../types';
 import SelectBook from './SelectBook';
 import EmptyWell from '../EmptyWell';

@@ -37,7 +37,8 @@ export const EditFriend: React.FC<Props> = ({
   return (
     <div className="mt-6 space-y-4 mb-24">
       <SaveChangesBar
-        onSave={() => {}}
+        // @ts-ignore
+        getEntities={() => [friend, initialFriend]}
         buttonText="Save Friend"
         disabled={isEqual(friend, initialFriend)}
       />

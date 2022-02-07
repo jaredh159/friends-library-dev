@@ -52,6 +52,11 @@ export type MutationStep = {
     | 'rollback failed';
   description: string;
 };
+export type ErrorMsg = string;
+export type WorkItem = { step: MutationStep; exec: StepExec; rollback?: StepExec };
+export type StepExec = () => Promise<ErrorMsg | null>;
+export type WorkQueue = Array<WorkItem>;
+export type Progress = (steps: MutationStep[], error?: string) => unknown;
 
 export type ReducerDeleteFrom = (path: string) => (index: number) => unknown;
 

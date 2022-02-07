@@ -1,23 +1,23 @@
 import { v4 as uuid } from 'uuid';
 import { gql } from '@apollo/client';
-import client from '../client';
-import result from './result';
+import client from '../../client';
+import result from '../result';
 import {
   GetFreeOrderRequest,
   GetFreeOrderRequest_request_address as FreeOrderRequestAddress,
   GetFreeOrderRequestVariables,
-} from '../graphql/GetFreeOrderRequest';
+} from '../../graphql/GetFreeOrderRequest';
 import {
   GetPrintJobExploratoryMetadata,
   GetPrintJobExploratoryMetadataVariables,
-} from '../graphql/GetPrintJobExploratoryMetadata';
+} from '../../graphql/GetPrintJobExploratoryMetadata';
 import {
   CreateOrderWithItems,
   CreateOrderWithItemsVariables,
-} from '../graphql/CreateOrderWithItems';
-import { OrderAddress, OrderItem } from '../types';
-import { Lang, OrderSource, PrintJobStatus, PrintSize } from '../graphql/globalTypes';
-import * as price from '../lib/price';
+} from '../../graphql/CreateOrderWithItems';
+import { OrderAddress, OrderItem } from '../../types';
+import { Lang, OrderSource, PrintJobStatus, PrintSize } from '../../graphql/globalTypes';
+import * as price from '../../lib/price';
 
 /* CreateOrder */
 
