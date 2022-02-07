@@ -125,6 +125,18 @@ export interface ShippingAddressInput {
   zip: string;
 }
 
+export interface UpdateFriendInput {
+  born?: number | null;
+  description: string;
+  died?: number | null;
+  gender: Gender;
+  id: UUID;
+  lang: Lang;
+  name: string;
+  published?: string | null;
+  slug: string;
+}
+
 //==============================================================
 // END Enums and Input Objects
 //==============================================================

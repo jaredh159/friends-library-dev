@@ -33,14 +33,14 @@ export default function NestedCollection<State extends { id: UUID }>({
       )}
     >
       <label
-        className="label cursor-pointer"
+        className={cx(`label cursor-pointer`)}
         onClick={() => setIsCollapsed(!isCollapsed)}
       >
         <ChevronRightIcon
           className={cx(
             `inline mr-1 h-[20px] w-[20px]`,
             !isCollapsed && `rotate-90`,
-            items.length === 0 && `hidden`,
+            items.length === 0 && `opacity-0`,
           )}
         />
         {items.length === 0 ? `No ${label}s` : `${label}s (${items.length})`}

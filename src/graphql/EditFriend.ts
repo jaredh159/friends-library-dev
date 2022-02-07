@@ -40,6 +40,7 @@ export interface EditFriend_friend_documents_editions {
 
 export interface EditFriend_friend_documents_tags {
   __typename: 'DocumentTag';
+  id: string;
   type: TagType;
 }
 

@@ -19,8 +19,6 @@ import { OrderAddress, OrderItem } from '../types';
 import { Lang, OrderSource, PrintJobStatus, PrintSize } from '../graphql/globalTypes';
 import * as price from '../lib/price';
 
-// TODO 3: wrap a container around <CreateOrder /> (or select?) to query Editions
-
 /* CreateOrder */
 
 export async function createOrder(

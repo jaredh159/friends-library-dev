@@ -32,6 +32,7 @@ export interface EditDocument_document_editions {
 
 export interface EditDocument_document_tags {
   __typename: 'DocumentTag';
+  id: string;
   type: TagType;
 }
 

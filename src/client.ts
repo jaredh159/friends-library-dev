@@ -76,6 +76,7 @@ export const EDIT_DOCUMENT_FIELDS = gql`
       ...EditEditionFields
     }
     tags {
+      id
       type
     }
     relatedDocuments {
