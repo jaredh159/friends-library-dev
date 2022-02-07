@@ -19,6 +19,7 @@ export interface EditFriend_friend_quotes {
 
 export interface EditFriend_friend_documents_friend {
   __typename: 'Friend';
+  id: string;
   name: string;
   lang: Lang;
 }

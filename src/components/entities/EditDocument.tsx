@@ -59,9 +59,9 @@ export const EditDocument: React.FC<Props> = ({
             doc.friend.lang === Lang.en ? `Spanish` : `English`
           } Version Document ID:`}
           value={doc.altLanguageId}
-          isValid={(fn) => !!fn.match(/^[A-Z][A-Za-z0-9_]+$/)}
+          isValid={(fn) => !!fn.match(/^([a-f0-9-]){36}$/)}
           invalidMessage="Letters, numbers, and underscores only"
-          onChange={replace(`filename`)}
+          onChange={replace(`altLanguageId`)}
           className="w-1/2"
         />
       </div>

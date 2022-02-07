@@ -73,6 +73,33 @@ export enum TagType {
   treatise = 'treatise',
 }
 
+export interface CreateDocumentInput {
+  altLanguageId?: UUID | null;
+  description: string;
+  featuredDescription?: string | null;
+  filename: string;
+  friendId: UUID;
+  id?: UUID | null;
+  incomplete: boolean;
+  originalTitle?: string | null;
+  partialDescription: string;
+  published?: number | null;
+  slug: string;
+  title: string;
+}
+
+export interface CreateFriendInput {
+  born?: number | null;
+  description: string;
+  died?: number | null;
+  gender: Gender;
+  id?: UUID | null;
+  lang: Lang;
+  name: string;
+  published?: string | null;
+  slug: string;
+}
+
 export interface CreateOrderInput {
   addressCity: string;
   addressCountry: string;
@@ -123,6 +150,21 @@ export interface ShippingAddressInput {
   street: string;
   street2?: string | null;
   zip: string;
+}
+
+export interface UpdateDocumentInput {
+  altLanguageId?: UUID | null;
+  description: string;
+  featuredDescription?: string | null;
+  filename: string;
+  friendId: UUID;
+  id: UUID;
+  incomplete: boolean;
+  originalTitle?: string | null;
+  partialDescription: string;
+  published?: number | null;
+  slug: string;
+  title: string;
 }
 
 export interface UpdateFriendInput {

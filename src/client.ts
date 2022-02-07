@@ -69,6 +69,7 @@ export const EDIT_DOCUMENT_FIELDS = gql`
     partialDescription
     featuredDescription
     friend {
+      id
       name
       lang
     }

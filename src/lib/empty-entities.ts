@@ -93,6 +93,7 @@ export function document(friend: EditableFriend): EditableDocument {
     published: null,
     friend: {
       __typename: `Friend`,
+      id: friend.id,
       lang: friend.lang,
       name: friend.name,
     },

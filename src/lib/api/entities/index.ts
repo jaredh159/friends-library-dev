@@ -56,8 +56,8 @@ function getUpdateWork<T extends EditableEntity>(current: T, previous: T): WorkQ
   if (!isEqual(omit(current, children), omit(previous, children))) {
     queue.push({
       step: { description: `Update ${current.__typename}`, status: `not started` },
-      exec: () => updateEntity(current, previous),
-      rollback: () => updateEntity(previous, current),
+      exec: () => updateEntity(current),
+      rollback: () => updateEntity(previous),
     });
   }
 
@@ -134,6 +134,9 @@ function same<T extends EditableEntity>(entity: T): (item: T) => boolean {
 }
 
 function getOperation<T extends EditableEntity>(current?: T, previous?: T): Operation<T> {
+  if (previous?.id.startsWith(`_`)) {
+    previous = undefined;
+  }
   if (current && !previous) {
     return { type: `create`, entity: current };
   } else if (current && previous) {
@@ -203,6 +206,7 @@ export async function perform(queue: WorkQueue, progress: Progress): Promise<voi
     item.step.status = error === null ? `succeeded` : `failed`;
     updateProgress(error);
     if (error) {
+      console.error(`Error in step: ${item.step.description}`, error);
       return rollback();
     }
     completed.push(item);

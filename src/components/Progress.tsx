@@ -27,17 +27,19 @@ const Progress: React.FC<Props> = ({ steps }) => {
             <td>Status</td>
           </tr>
         </thead>
-        {steps.map((step, index) => (
-          <tr key={`step-${index}`} className={cx(``, index % 2 && `xbg-gray-50`)}>
-            <td className="pr-6 text-gray-500">
-              {index + 1}/{steps.length}
-            </td>
-            <td className="pr-6">{step.description}</td>
-            <td className="pr-6 italic">
-              <Status status={step.status} />
-            </td>
-          </tr>
-        ))}
+        <tbody>
+          {steps.map((step, index) => (
+            <tr key={`step-${index}`} className={cx(``, index % 2 && `xbg-gray-50`)}>
+              <td className="pr-6 text-gray-500">
+                {index + 1}/{steps.length}
+              </td>
+              <td className="pr-6">{step.description}</td>
+              <td className="pr-6 italic">
+                <Status status={step.status} />
+              </td>
+            </tr>
+          ))}
+        </tbody>
       </table>
       <div className="h-4 relative mt-5 bg-gray-200 rounded-full">
         <div

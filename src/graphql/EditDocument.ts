@@ -11,6 +11,7 @@ import { Lang, EditionType, PrintSizeVariant, TagType } from './globalTypes';
 
 export interface EditDocument_document_friend {
   __typename: 'Friend';
+  id: string;
   name: string;
   lang: Lang;
 }

@@ -21,7 +21,11 @@ const SaveChangesBar: React.FC<Props> = ({
   const [steps, setSteps] = useState<MutationStep[]>([]);
 
   if (error) {
-    throw new Error(`WIP: ${error}`);
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-gray-200/80 z-10">
+        <div className="text-red-700 bg-white p-8 rounded-lg mx-16">Error: {error}</div>
+      </div>
+    );
   }
 
   if (saving && steps.length > 0) {
