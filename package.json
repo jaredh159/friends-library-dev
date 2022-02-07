@@ -40,6 +40,7 @@
     "@friends-library/dev": "^4.5.0",
     "@friends-library/theme": "^1.2.0",
     "@friends-library/types": "^6.0.0",
+    "@htc-class/storylite": "^1.0.1",
     "@snowpack/plugin-dotenv": "^2.2.0",
     "@snowpack/plugin-postcss": "^1.4.3",
     "@tailwindcss/forms": "^0.4.0",

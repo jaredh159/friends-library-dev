@@ -40,6 +40,19 @@ export type EditableEntity =
 
 export type SelectableDocuments = EditDocumentQuery['selectableDocuments'];
 
+export type MutationStep = {
+  status:
+    | 'not started'
+    | 'in flight'
+    | 'succeeded'
+    | 'failed'
+    | 'no rollback'
+    | 'rolling back'
+    | 'rollback succeeded'
+    | 'rollback failed';
+  description: string;
+};
+
 export type ReducerDeleteFrom = (path: string) => (index: number) => unknown;
 
 export interface OrderItem {

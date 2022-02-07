@@ -7,25 +7,13 @@ import {
   EditableEntity,
   EditableFriend,
   EditableFriendResidence,
+  MutationStep,
 } from '../types';
 
-type StepData = {
-  status:
-    | 'not started'
-    | 'in flight'
-    | 'succeeded'
-    | 'failed'
-    | 'no rollback'
-    | 'rolling back'
-    | 'rollback succeeded'
-    | 'rollback failed';
-  description: string;
-};
-
 type ErrorMsg = string;
-type Progress = (steps: StepData[], error?: string) => unknown;
+type Progress = (steps: MutationStep[], error?: string) => unknown;
 type StepExec = () => Promise<ErrorMsg | null>;
-type WorkItem = { step: StepData; exec: StepExec; rollback?: StepExec };
+type WorkItem = { step: MutationStep; exec: StepExec; rollback?: StepExec };
 type WorkQueue = Array<WorkItem>;
 
 export async function updateFriendHeirarchy(
