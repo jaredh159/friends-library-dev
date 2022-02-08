@@ -7,13 +7,13 @@ import {
   EditableFriendResidence,
   Progress,
   WorkQueue,
+  EntityOperation,
+  CreateOperation,
+  UpdateOperation,
+  DeleteOperation,
+  Operation,
 } from '../../../types';
 import { createEntity, deleteEntity, updateEntity } from './crud.entities';
-
-type Operation<T extends EditableEntity> =
-  | { type: `create`; entity: T }
-  | { type: `update`; previous: T; current: T }
-  | { type: `delete`; entity: T };
 
 export async function save<T extends EditableEntity>(
   progress: Progress,
@@ -24,59 +24,48 @@ export async function save<T extends EditableEntity>(
   const operation = getOperation(current, previous);
   switch (operation.type) {
     case `create`:
-      work = getCreateWork(operation.entity);
+      work = getCreateWork(operation);
       break;
     case `update`:
-      work = getUpdateWork(operation.current, operation.previous);
+      work = getUpdateWork(operation);
       break;
     case `delete`:
-      work = getDeleteWork(operation.entity);
+      work = getDeleteWork(operation);
       break;
   }
   await perform(work, progress);
 }
 
-function getCreateWork(entity: EditableEntity): WorkQueue {
-  let queue: WorkQueue = [];
-  queue.push({
-    step: { description: `Create ${entity.__typename}`, status: `not started` },
-    exec: () => createEntity(entity),
-    rollback: () => deleteEntity(entity),
-  });
-
-  for (const [, extract] of subcollections(entity)) {
-    queue = queue.concat(collectionQueue({ type: `create`, entity }, extract));
+function getCreateWork<T extends EditableEntity>(
+  operation: CreateOperation<T>,
+): WorkQueue {
+  let queue: WorkQueue = [{ operation, status: `not started` }];
+  for (const [, extract] of subcollections(operation.entity)) {
+    queue = queue.concat(collectionQueue(operation, extract));
   }
   return queue;
 }
 
-function getUpdateWork<T extends EditableEntity>(current: T, previous: T): WorkQueue {
-  let queue: WorkQueue = [];
-  const children = subcollections(current).map(([key]) => key);
-  if (!isEqual(omit(current, children), omit(previous, children))) {
-    queue.push({
-      step: { description: `Update ${current.__typename}`, status: `not started` },
-      exec: () => updateEntity(current),
-      rollback: () => updateEntity(previous),
-    });
+function getUpdateWork<T extends EditableEntity>(
+  operation: UpdateOperation<T>,
+): WorkQueue {
+  let queue: WorkQueue = [{ operation, status: `not started` }];
+  const children = subcollections(operation.current).map(([key]) => key);
+  if (!isEqual(omit(operation.current, children), omit(operation.previous, children))) {
+    queue.push({ operation, status: `not started` });
   }
-
-  for (const [, extract] of subcollections(current)) {
-    queue = queue.concat(collectionQueue({ type: `update`, current, previous }, extract));
+  for (const [, extract] of subcollections(operation.current)) {
+    queue = queue.concat(collectionQueue(operation, extract));
   }
   return queue;
 }
 
-function getDeleteWork(entity: EditableEntity): WorkQueue {
-  let queue: WorkQueue = [];
-  queue.push({
-    step: { description: `Delete ${entity.__typename}`, status: `not started` },
-    exec: () => deleteEntity(entity),
-    rollback: () => createEntity(entity),
-  });
-
-  for (const [, extract] of subcollections(entity)) {
-    queue = queue.concat(collectionQueue({ type: `delete`, entity }, extract));
+function getDeleteWork<T extends EditableEntity>(
+  operation: DeleteOperation<T>,
+): WorkQueue {
+  let queue: WorkQueue = [{ operation, status: `not started` }];
+  for (const [, extract] of subcollections(operation.entity)) {
+    queue = queue.concat(collectionQueue(operation, extract));
   }
   return queue;
 }
@@ -91,7 +80,7 @@ function collectionQueue<T extends EditableEntity>(
     case `create`: {
       const collection = extract(operation.entity);
       for (const item of collection ?? []) {
-        queue = queue.concat(getCreateWork(item));
+        queue = queue.concat(getCreateWork({ type: `create`, entity: item }));
       }
       break;
     }
@@ -101,14 +90,16 @@ function collectionQueue<T extends EditableEntity>(
       for (const newItem of currentCollection ?? []) {
         const prevItem = findIn(newItem, previousCollection);
         if (prevItem && !isEqual(newItem, prevItem)) {
-          queue = queue.concat(getUpdateWork(newItem, prevItem));
+          queue = queue.concat(
+            getUpdateWork({ type: `update`, current: newItem, previous: prevItem }),
+          );
         } else if (!prevItem) {
-          queue = queue.concat(getCreateWork(newItem));
+          queue = queue.concat(getCreateWork({ type: `create`, entity: newItem }));
         }
       }
       for (const prevItem of previousCollection ?? []) {
         if (!findIn(prevItem, currentCollection)) {
-          queue = queue.concat(getDeleteWork(prevItem));
+          queue = queue.concat(getDeleteWork({ type: `delete`, entity: prevItem }));
         }
       }
       break;
@@ -116,7 +107,7 @@ function collectionQueue<T extends EditableEntity>(
     case `delete`: {
       const collection = extract(operation.entity);
       for (const item of collection ?? []) {
-        queue = queue.concat(getDeleteWork(item));
+        queue = queue.concat(getDeleteWork({ type: `delete`, entity: item }));
       }
       break;
     }
@@ -125,15 +116,10 @@ function collectionQueue<T extends EditableEntity>(
   return queue;
 }
 
-function findIn<T extends EditableEntity>(entity: T, collection?: T[]): T | undefined {
-  return (collection ?? []).find(same(entity));
-}
-
-function same<T extends EditableEntity>(entity: T): (item: T) => boolean {
-  return (item) => item.id === entity.id && item.__typename === entity.__typename;
-}
-
-function getOperation<T extends EditableEntity>(current?: T, previous?: T): Operation<T> {
+function getOperation<T extends EditableEntity>(
+  current?: T,
+  previous?: T,
+): EntityOperation {
   if (previous?.id.startsWith(`_`)) {
     previous = undefined;
   }
@@ -176,39 +162,75 @@ function subcollections(
 export async function perform(queue: WorkQueue, progress: Progress): Promise<void> {
   const updateProgress: (error?: string | null) => unknown = (error) =>
     progress(
-      queue.map((item) => ({ ...item.step })),
+      queue.map((item) => ({ ...item })),
       error ?? undefined,
     );
 
   const completed: WorkQueue = [];
+
   async function rollback(): Promise<void> {
     for (const completedItem of completed.reverse()) {
-      const rollback = completedItem.rollback;
-      if (rollback) {
-        completedItem.step.status = `rolling back`;
-        const rollbackError = await rollback();
-        completedItem.step.status = rollbackError
-          ? `rollback failed`
-          : `rollback succeeded`;
-        updateProgress(rollbackError);
-      } else {
-        completedItem.step.status = `no rollback`;
+      try {
+        let err: string | null = null;
+        completedItem.status = `rolling back`;
         updateProgress();
+        switch (completedItem.operation.type) {
+          case `create`:
+            err = await deleteEntity(completedItem.operation.entity);
+            break;
+          case `update`:
+            err = await updateEntity(completedItem.operation.previous);
+            break;
+          case `delete`:
+            err = await createEntity(completedItem.operation.entity);
+            break;
+        }
+        completedItem.status = err ? `rollback failed` : `rollback succeeded`;
+        updateProgress(err);
+      } catch (err: unknown) {
+        completedItem.status = `rollback failed`;
+        updateProgress(`Error rolling back: ${err}`);
       }
     }
   }
 
   updateProgress();
+
   for (const item of queue) {
-    item.step.status = `in flight`;
+    item.status = `in flight`;
     updateProgress();
-    const error = await item.exec();
-    item.step.status = error === null ? `succeeded` : `failed`;
-    updateProgress(error);
-    if (error) {
-      console.error(`Error in step: ${item.step.description}`, error);
+    try {
+      let err: string | null = null;
+      switch (item.operation.type) {
+        case `create`:
+          err = await createEntity(item.operation.entity);
+          break;
+        case `update`:
+          err = await updateEntity(item.operation.current);
+          break;
+        case `delete`:
+          err = await deleteEntity(item.operation.entity);
+          break;
+      }
+      item.status = err ? `failed` : `succeeded`;
+      updateProgress(err);
+      if (err) {
+        return rollback();
+      } else {
+        completed.push(item);
+      }
+    } catch (err: unknown) {
+      item.status = `failed`;
+      updateProgress(`Error saving item: ${err}`);
       return rollback();
     }
-    completed.push(item);
   }
+}
+
+function findIn<T extends EditableEntity>(entity: T, collection?: T[]): T | undefined {
+  return (collection ?? []).find(same(entity));
+}
+
+function same<T extends EditableEntity>(entity: T): (item: T) => boolean {
+  return (item) => item.id === entity.id && item.__typename === entity.__typename;
 }

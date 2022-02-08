@@ -19,6 +19,7 @@ export type ReducerReplace = (
 
 export type OmitTypename<U> = Omit<U, '__typename'>;
 
+export type SelectableDocuments = EditDocumentQuery['selectableDocuments'];
 export type EditableFriend = EditFriendQuery['friend'];
 export type EditableFriendQuote = EditableFriend['quotes'][0];
 export type EditableFriendResidence = EditableFriend['residences'][0];
@@ -38,25 +39,43 @@ export type EditableEntity =
   | EditableRelatedDocument
   | EditableEdition;
 
-export type SelectableDocuments = EditDocumentQuery['selectableDocuments'];
-
-export type MutationStep = {
-  status:
-    | 'not started'
-    | 'in flight'
-    | 'succeeded'
-    | 'failed'
-    | 'no rollback'
-    | 'rolling back'
-    | 'rollback succeeded'
-    | 'rollback failed';
-  description: string;
+export type CreateOperation<T extends EditableEntity> = {
+  type: `create`;
+  entity: T;
 };
+export type DeleteOperation<T extends EditableEntity> = {
+  type: `delete`;
+  entity: T;
+};
+export type UpdateOperation<T extends EditableEntity> = {
+  type: `update`;
+  previous: T;
+  current: T;
+};
+
+export type Operation<T extends EditableEntity> =
+  | CreateOperation<T>
+  | DeleteOperation<T>
+  | UpdateOperation<T>;
+
+export type EntityOperation = Operation<EditableEntity>;
+
+export type EntityOperationStatus =
+  | `not started`
+  | `in flight`
+  | `succeeded`
+  | `failed`
+  | `rolling back`
+  | `rollback succeeded`
+  | `rollback failed`;
+
 export type ErrorMsg = string;
-export type WorkItem = { step: MutationStep; exec: StepExec; rollback?: StepExec };
-export type StepExec = () => Promise<ErrorMsg | null>;
+export type WorkItem = {
+  operation: EntityOperation;
+  status: EntityOperationStatus;
+};
 export type WorkQueue = Array<WorkItem>;
-export type Progress = (steps: MutationStep[], error?: string) => unknown;
+export type Progress = (steps: WorkItem[], error?: string) => unknown;
 
 export type ReducerDeleteFrom = (path: string) => (index: number) => unknown;
 

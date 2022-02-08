@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import { MutationStep } from '../types';
+import { WorkItem } from '../types';
 import {
   CheckCircleIcon,
   PaperAirplaneIcon,
@@ -9,13 +9,13 @@ import {
 } from '@heroicons/react/solid';
 
 interface Props {
-  steps: MutationStep[];
+  items: WorkItem[];
   error?: string;
 }
 
-const Progress: React.FC<Props> = ({ steps }) => {
+const Progress: React.FC<Props> = ({ items }) => {
   const percentComplete =
-    (steps.filter((step) => step.status === `succeeded`).length / steps.length) * 100;
+    (items.filter((step) => step.status === `succeeded`).length / items.length) * 100;
 
   return (
     <div className="p-8 rounded-lg inline-flex flex-col bg-white min-w-[400px]">
@@ -28,14 +28,14 @@ const Progress: React.FC<Props> = ({ steps }) => {
           </tr>
         </thead>
         <tbody>
-          {steps.map((step, index) => (
+          {items.map((item, index) => (
             <tr key={`step-${index}`} className={cx(``, index % 2 && `xbg-gray-50`)}>
               <td className="pr-6 text-gray-500">
-                {index + 1}/{steps.length}
+                {index + 1}/{items.length}
               </td>
-              <td className="pr-6">{step.description}</td>
+              <td className="pr-6">{workItemDescription(item)}</td>
               <td className="pr-6 italic">
-                <Status status={step.status} />
+                <Status status={item.status} />
               </td>
             </tr>
           ))}
@@ -51,9 +51,20 @@ const Progress: React.FC<Props> = ({ steps }) => {
   );
 };
 
+function workItemDescription(item: WorkItem): string {
+  switch (item.operation.type) {
+    case `create`:
+      return `Create ${item.operation.entity.__typename}`;
+    case `update`:
+      return `Update ${item.operation.current.__typename}`;
+    case `delete`:
+      return `Delete ${item.operation.entity.__typename}`;
+  }
+}
+
 export default Progress;
 
-const Status: React.FC<{ status: MutationStep['status'] }> = ({ status }) => {
+const Status: React.FC<{ status: WorkItem['status'] }> = ({ status }) => {
   switch (status) {
     case `succeeded`:
     case `rollback succeeded`:
@@ -85,8 +96,6 @@ const Status: React.FC<{ status: MutationStep['status'] }> = ({ status }) => {
           in flight...
         </span>
       );
-    case `no rollback`:
-      return <span className="text-gray-400">no rollback possible</span>;
     case `not started`:
       return <span className="text-gray-400">waiting...</span>;
   }

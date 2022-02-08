@@ -1,21 +1,21 @@
 import React from 'react';
 import { Story, StoryGroup, StoryMeta } from '@htc-class/storylite';
 import Progress from '../components/Progress';
+import { EditableEntity, EntityOperation } from '../types';
 
 const ProgressStories: React.FC = () => (
   <StoryGroup>
     <Story title="Default">
       <Progress
-        steps={[
-          { description: `Update Friend`, status: `succeeded` },
-          { description: `Update Friend Residence #1`, status: `rolling back` },
-          { description: `Update Friend Residence #1`, status: `rollback succeeded` },
-          { description: `Update Friend Residence #1`, status: `no rollback` },
-          { description: `Update Friend Residence #2`, status: `in flight` },
-          { description: `Update Document`, status: `rollback failed` },
-          { description: `Update Document`, status: `not started` },
-          { description: `Update Edition`, status: `not started` },
-          { description: `Update Foobar`, status: `failed` },
+        items={[
+          { operation: op(`create`, `Friend`), status: `succeeded` },
+          { operation: op(`create`, `Document`), status: `rolling back` },
+          { operation: op(`update`, `Edition`), status: `rollback succeeded` },
+          { operation: op(`update`, `Edition`), status: `in flight` },
+          { operation: op(`delete`, `FriendResidence`), status: `rollback failed` },
+          { operation: op(`create`, `Isbn`), status: `not started` },
+          { operation: op(`update`, `Edition`), status: `not started` },
+          { operation: op(`update`, `Edition`), status: `failed` },
         ]}
       />
     </Story>
@@ -29,3 +29,14 @@ const meta: StoryMeta = {
 };
 
 export default meta;
+
+function op(type: EntityOperation['type'], entityTypeName: string): EntityOperation {
+  const entity = { __typename: entityTypeName } as EditableEntity;
+  switch (type) {
+    case `create`:
+    case `delete`:
+      return { type, entity };
+    case `update`:
+      return { type, current: entity, previous: entity };
+  }
+}

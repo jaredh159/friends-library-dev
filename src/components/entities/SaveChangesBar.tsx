@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Button from '../Button';
 import { CloudUploadIcon } from '@heroicons/react/solid';
-import { EditableEntity, MutationStep } from '../../types';
+import { EditableEntity, WorkItem } from '../../types';
 import { save } from '../../lib/api/entities';
 import Progress from '../Progress';
 
@@ -18,7 +18,7 @@ const SaveChangesBar: React.FC<Props> = ({
 }) => {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | undefined>();
-  const [steps, setSteps] = useState<MutationStep[]>([]);
+  const [steps, setSteps] = useState<WorkItem[]>([]);
 
   if (error) {
     return (
@@ -31,7 +31,7 @@ const SaveChangesBar: React.FC<Props> = ({
   if (saving && steps.length > 0) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-gray-200/80 z-10">
-        <Progress steps={steps} />
+        <Progress items={steps} />
       </div>
     );
   }
