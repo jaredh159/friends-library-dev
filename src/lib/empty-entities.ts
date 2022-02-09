@@ -83,12 +83,22 @@ export function friendResidenceDuration(
   };
 }
 
-export function relatedDocument(documentId: UUID): EditableRelatedDocument {
+export function relatedDocument(
+  documentId: UUID,
+  parentDocumentId: UUID,
+): EditableRelatedDocument {
   return {
     __typename: `RelatedDocument`,
     id: clientGeneratedId(),
     description: ``,
-    documentId,
+    document: {
+      __typename: `Document`,
+      id: documentId,
+    },
+    parentDocument: {
+      __typename: `Document`,
+      id: parentDocumentId,
+    },
   };
 }
 

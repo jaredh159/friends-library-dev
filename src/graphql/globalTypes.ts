@@ -160,6 +160,13 @@ export interface CreateOrderItemInput {
   unitPrice: number;
 }
 
+export interface CreateRelatedDocumentInput {
+  description: string;
+  documentId: UUID;
+  id?: UUID | null;
+  parentDocumentId: UUID;
+}
+
 export interface GetPrintJobExploratoryMetadataInput {
   address: ShippingAddressInput;
   items: PrintJobExploratoryItemInput[];
@@ -235,6 +242,13 @@ export interface UpdateFriendResidenceInput {
   friendId: UUID;
   id: UUID;
   region: string;
+}
+
+export interface UpdateRelatedDocumentInput {
+  description: string;
+  documentId: UUID;
+  id: UUID;
+  parentDocumentId: UUID;
 }
 
 //==============================================================

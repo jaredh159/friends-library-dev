@@ -86,7 +86,12 @@ export const EDIT_DOCUMENT_FIELDS = gql`
     relatedDocuments {
       id
       description
-      documentId
+      document {
+        id
+      }
+      parentDocument {
+        id
+      }
     }
   }
 `;

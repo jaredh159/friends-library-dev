@@ -166,6 +166,7 @@ export const EditDocument: React.FC<Props> = ({
             [...doc.relatedDocuments].concat([
               emptyEntities.relatedDocument(
                 [...selectableDocuments].sort(sortSelectableDocuments)[0]?.id ?? ``,
+                doc.id,
               ),
             ]),
           )
@@ -175,8 +176,8 @@ export const EditDocument: React.FC<Props> = ({
           <div className="space-y-4">
             <LabeledSelect
               label="Document:"
-              selected={related.documentId}
-              setSelected={replace(`relatedDocuments[${index}].documentId`)}
+              selected={related.document.id}
+              setSelected={replace(`relatedDocuments[${index}].document.id`)}
               options={[...selectableDocuments]
                 .filter((selectableDoc) => selectableDoc.friend.lang === doc.friend.lang)
                 .sort(sortSelectableDocuments)

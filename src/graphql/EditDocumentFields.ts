@@ -43,11 +43,22 @@ export interface EditDocumentFields_tags {
   document: EditDocumentFields_tags_document;
 }
 
+export interface EditDocumentFields_relatedDocuments_document {
+  __typename: 'Document';
+  id: string;
+}
+
+export interface EditDocumentFields_relatedDocuments_parentDocument {
+  __typename: 'Document';
+  id: string;
+}
+
 export interface EditDocumentFields_relatedDocuments {
   __typename: 'RelatedDocument';
   id: string;
   description: string;
-  documentId: string;
+  document: EditDocumentFields_relatedDocuments_document;
+  parentDocument: EditDocumentFields_relatedDocuments_parentDocument;
 }
 
 export interface EditDocumentFields {

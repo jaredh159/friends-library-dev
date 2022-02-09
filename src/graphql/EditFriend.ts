@@ -57,11 +57,22 @@ export interface EditFriend_friend_documents_tags {
   document: EditFriend_friend_documents_tags_document;
 }
 
+export interface EditFriend_friend_documents_relatedDocuments_document {
+  __typename: 'Document';
+  id: string;
+}
+
+export interface EditFriend_friend_documents_relatedDocuments_parentDocument {
+  __typename: 'Document';
+  id: string;
+}
+
 export interface EditFriend_friend_documents_relatedDocuments {
   __typename: 'RelatedDocument';
   id: string;
   description: string;
-  documentId: string;
+  document: EditFriend_friend_documents_relatedDocuments_document;
+  parentDocument: EditFriend_friend_documents_relatedDocuments_parentDocument;
 }
 
 export interface EditFriend_friend_documents {
