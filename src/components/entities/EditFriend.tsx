@@ -199,7 +199,7 @@ export const EditFriend: React.FC<Props> = ({
           dispatch({
             type: `add_item`,
             at: `quotes`,
-            value: emptyEntities.friendQuote(friend.quotes),
+            value: emptyEntities.friendQuote(friend),
           })
         }
         renderItem={(item, index) => (
@@ -310,6 +310,9 @@ const QUERY_FRIEND = gql`
         source
         text
         order
+        friend {
+          id
+        }
       }
       documents {
         ...EditDocumentFields

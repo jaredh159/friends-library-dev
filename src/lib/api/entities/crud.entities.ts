@@ -2,6 +2,7 @@ import * as friend from './crud.friend';
 import * as document from './crud.document';
 import * as residence from './crud.residence';
 import * as duration from './crud.duration';
+import * as quote from './crud.quote';
 import { EditableEntity, ErrorMsg } from '../../../types';
 
 export async function createEntity(entity: EditableEntity): Promise<ErrorMsg | null> {
@@ -9,6 +10,8 @@ export async function createEntity(entity: EditableEntity): Promise<ErrorMsg | n
   switch (entity.__typename) {
     case `Friend`:
       return friend.create(entity);
+    case `FriendQuote`:
+      return quote.create(entity);
     case `FriendResidence`:
       return residence.create(entity);
     case `FriendResidenceDuration`:
@@ -24,6 +27,9 @@ export async function deleteEntity(entity: EditableEntity): Promise<ErrorMsg | n
   console.log(`DELETE:`, entity);
   let err: ErrorMsg | null = null;
   switch (entity.__typename) {
+    case `FriendQuote`:
+      err = await quote.delete(entity);
+      break;
     case `FriendResidence`:
       err = await residence.delete(entity);
       break;
@@ -51,6 +57,8 @@ export async function updateEntity(entity: EditableEntity): Promise<ErrorMsg | n
   switch (entity.__typename) {
     case `Friend`:
       return friend.update(entity);
+    case `FriendQuote`:
+      return quote.update(entity);
     case `FriendResidence`:
       return residence.update(entity);
     case `FriendResidenceDuration`:

@@ -28,13 +28,17 @@ export function friend(): EditableFriend {
   };
 }
 
-export function friendQuote(existing: EditableFriendQuote[]): EditableFriendQuote {
+export function friendQuote(friend: EditableFriend): EditableFriendQuote {
   return {
     __typename: `FriendQuote`,
     id: clientGeneratedId(),
     source: ``,
     text: ``,
-    order: Math.max(0, ...existing.map((q) => q.order)) + 10,
+    friend: {
+      __typename: `Friend`,
+      id: friend.id,
+    },
+    order: Math.max(0, ...friend.quotes.map((q) => q.order)) + 1,
   };
 }
 

@@ -100,6 +100,15 @@ export interface CreateFriendInput {
   slug: string;
 }
 
+export interface CreateFriendQuoteInput {
+  context?: string | null;
+  friendId: UUID;
+  id?: UUID | null;
+  order: number;
+  source: string;
+  text: string;
+}
+
 export interface CreateFriendResidenceDurationInput {
   end: number;
   friendResidenceId: UUID;
@@ -191,6 +200,15 @@ export interface UpdateFriendInput {
   name: string;
   published?: string | null;
   slug: string;
+}
+
+export interface UpdateFriendQuoteInput {
+  context?: string | null;
+  friendId: UUID;
+  id: UUID;
+  order: number;
+  source: string;
+  text: string;
 }
 
 export interface UpdateFriendResidenceDurationInput {

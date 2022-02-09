@@ -9,12 +9,18 @@ import { Lang, Gender, EditionType, PrintSizeVariant, TagType } from './globalTy
 // GraphQL query operation: EditFriend
 // ====================================================
 
+export interface EditFriend_friend_quotes_friend {
+  __typename: 'Friend';
+  id: string;
+}
+
 export interface EditFriend_friend_quotes {
   __typename: 'FriendQuote';
   id: string;
   source: string;
   text: string;
   order: number;
+  friend: EditFriend_friend_quotes_friend;
 }
 
 export interface EditFriend_friend_documents_friend {
