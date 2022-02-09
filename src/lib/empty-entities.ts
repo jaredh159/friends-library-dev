@@ -42,7 +42,7 @@ export function friendQuote(friend: EditableFriend): EditableFriendQuote {
   };
 }
 
-export function edition(): EditableEdition {
+export function edition(documentId: UUID): EditableEdition {
   return {
     __typename: `Edition`,
     id: clientGeneratedId(),
@@ -51,6 +51,11 @@ export function edition(): EditableEdition {
     paperbackOverrideSize: null,
     paperbackSplits: null,
     isbn: null,
+    editor: null,
+    document: {
+      __typename: `Document`,
+      id: documentId,
+    },
   };
 }
 

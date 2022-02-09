@@ -21,14 +21,21 @@ export interface EditDocumentFields_editions_isbn {
   code: string;
 }
 
+export interface EditDocumentFields_editions_document {
+  __typename: 'Document';
+  id: string;
+}
+
 export interface EditDocumentFields_editions {
   __typename: 'Edition';
   id: string;
   type: EditionType;
   paperbackSplits: number[] | null;
   paperbackOverrideSize: PrintSizeVariant | null;
+  editor: string | null;
   isbn: EditDocumentFields_editions_isbn | null;
   isDraft: boolean;
+  document: EditDocumentFields_editions_document;
 }
 
 export interface EditDocumentFields_tags_document {

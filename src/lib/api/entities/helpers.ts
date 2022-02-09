@@ -19,6 +19,13 @@ export async function mutate<T>(
   }
 }
 
+export function nullEmptyString(input: string | null): string | null {
+  if (typeof input === `string` && input.trim() === ``) {
+    return null;
+  }
+  return input;
+}
+
 export function prepIds<T extends Record<string, unknown>>(record: T): T {
   for (const key of Object.keys(record)) {
     const value = record[key];

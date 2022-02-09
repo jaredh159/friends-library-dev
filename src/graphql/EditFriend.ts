@@ -35,14 +35,21 @@ export interface EditFriend_friend_documents_editions_isbn {
   code: string;
 }
 
+export interface EditFriend_friend_documents_editions_document {
+  __typename: 'Document';
+  id: string;
+}
+
 export interface EditFriend_friend_documents_editions {
   __typename: 'Edition';
   id: string;
   type: EditionType;
   paperbackSplits: number[] | null;
   paperbackOverrideSize: PrintSizeVariant | null;
+  editor: string | null;
   isbn: EditFriend_friend_documents_editions_isbn | null;
   isDraft: boolean;
+  document: EditFriend_friend_documents_editions_document;
 }
 
 export interface EditFriend_friend_documents_tags_document {

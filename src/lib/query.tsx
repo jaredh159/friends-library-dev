@@ -18,11 +18,14 @@ export function useQueryResult<Data, Vars = OperationVariables>(
   query: DocumentNode | TypedDocumentNode<Data, Vars>,
   options?: QueryHookOptions<Data, Vars>,
 ): QueryResult<Data> {
-  const { loading, data, error } = useQuery<Data, Vars>(query, options);
+  const { loading, data, error } = useQuery<Data, Vars>(query, {
+    ...options,
+    errorPolicy: `all`,
+  });
   if (loading) {
     return { isResolved: false, unresolvedElement: <FullscreenLoading /> };
   }
-  if (!data || error) {
+  if (!data) {
     return { isResolved: false, unresolvedElement: <QueryError error={error} /> };
   }
 

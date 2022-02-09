@@ -47,10 +47,14 @@ export const EDIT_EDITION_FIELDS = gql`
     type
     paperbackSplits
     paperbackOverrideSize
+    editor
     isbn {
       code
     }
     isDraft
+    document {
+      id
+    }
   }
 `;
 

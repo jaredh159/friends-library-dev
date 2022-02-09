@@ -94,6 +94,16 @@ export interface CreateDocumentTagInput {
   type: TagType;
 }
 
+export interface CreateEditionInput {
+  documentId: UUID;
+  editor?: string | null;
+  id?: UUID | null;
+  isDraft: boolean;
+  paperbackOverrideSize?: PrintSizeVariant | null;
+  paperbackSplits?: number[] | null;
+  type: EditionType;
+}
+
 export interface CreateFriendInput {
   born?: number | null;
   description: string;
@@ -207,6 +217,16 @@ export interface UpdateDocumentTagInput {
   documentId: UUID;
   id: UUID;
   type: TagType;
+}
+
+export interface UpdateEditionInput {
+  documentId: UUID;
+  editor?: string | null;
+  id: UUID;
+  isDraft: boolean;
+  paperbackOverrideSize?: PrintSizeVariant | null;
+  paperbackSplits?: number[] | null;
+  type: EditionType;
 }
 
 export interface UpdateFriendInput {

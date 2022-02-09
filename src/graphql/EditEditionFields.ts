@@ -14,12 +14,19 @@ export interface EditEditionFields_isbn {
   code: string;
 }
 
+export interface EditEditionFields_document {
+  __typename: 'Document';
+  id: string;
+}
+
 export interface EditEditionFields {
   __typename: 'Edition';
   id: string;
   type: EditionType;
   paperbackSplits: number[] | null;
   paperbackOverrideSize: PrintSizeVariant | null;
+  editor: string | null;
   isbn: EditEditionFields_isbn | null;
   isDraft: boolean;
+  document: EditEditionFields_document;
 }

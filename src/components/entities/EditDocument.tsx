@@ -200,10 +200,11 @@ export const EditDocument: React.FC<Props> = ({
         label="Edition"
         items={doc.editions}
         startsCollapsed={false}
-        onAdd={() => addItem(`editions`, emptyEntities.edition())}
+        onAdd={() => addItem(`editions`, emptyEntities.edition(doc.id))}
         onDelete={(index) => deleteItem(`editions[${index}]`)}
         renderItem={(item, index) => (
           <EditEdition
+            lang={doc.friend.lang}
             edition={item}
             replace={(path) => replace(`editions[${index}].${path}`)}
           />
