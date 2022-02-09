@@ -82,7 +82,14 @@ export default function NestedCollection<State extends { id: UUID }>({
           `absolute right-0 top-0 mt-[11.5px] mr-3`,
         )}
       >
-        <PillButton Icon={PlusCircleIcon} className="ml-auto" onClick={onAdd}>
+        <PillButton
+          Icon={PlusCircleIcon}
+          className="ml-auto"
+          onClick={() => {
+            onAdd();
+            setIsCollapsed(false);
+          }}
+        >
           Add
         </PillButton>
       </div>

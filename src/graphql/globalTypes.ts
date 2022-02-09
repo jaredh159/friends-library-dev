@@ -100,6 +100,20 @@ export interface CreateFriendInput {
   slug: string;
 }
 
+export interface CreateFriendResidenceDurationInput {
+  end: number;
+  friendResidenceId: UUID;
+  id?: UUID | null;
+  start: number;
+}
+
+export interface CreateFriendResidenceInput {
+  city: string;
+  friendId: UUID;
+  id?: UUID | null;
+  region: string;
+}
+
 export interface CreateOrderInput {
   addressCity: string;
   addressCountry: string;
@@ -177,6 +191,20 @@ export interface UpdateFriendInput {
   name: string;
   published?: string | null;
   slug: string;
+}
+
+export interface UpdateFriendResidenceDurationInput {
+  end: number;
+  friendResidenceId: UUID;
+  id: UUID;
+  start: number;
+}
+
+export interface UpdateFriendResidenceInput {
+  city: string;
+  friendId: UUID;
+  id: UUID;
+  region: string;
 }
 
 //==============================================================

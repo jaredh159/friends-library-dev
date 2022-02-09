@@ -117,7 +117,7 @@ export const EditFriend: React.FC<Props> = ({
           dispatch({
             type: `add_item`,
             at: `residences`,
-            value: emptyEntities.friendResidence(),
+            value: emptyEntities.friendResidence(friend),
           })
         }
         onDelete={deleteFrom(`residences`)}
@@ -161,7 +161,7 @@ export const EditFriend: React.FC<Props> = ({
                 dispatch({
                   type: `add_item`,
                   at: `residences[${residenceIndex}].durations`,
-                  value: emptyEntities.friendResidenceDuration(),
+                  value: emptyEntities.friendResidenceDuration(residence),
                 })
               }
               onDelete={deleteFrom(`residences[${residenceIndex}].durations`)}
@@ -322,6 +322,12 @@ const QUERY_FRIEND = gql`
           id
           start
           end
+          residence {
+            id
+          }
+        }
+        friend {
+          id
         }
       }
     }

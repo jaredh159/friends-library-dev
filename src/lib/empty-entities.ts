@@ -50,20 +50,30 @@ export function edition(): EditableEdition {
   };
 }
 
-export function friendResidence(): EditableFriendResidence {
+export function friendResidence(friend: EditableFriend): EditableFriendResidence {
   return {
     __typename: `FriendResidence`,
     id: clientGeneratedId(),
     city: ``,
     region: `England`,
     durations: [],
+    friend: {
+      __typename: `Friend`,
+      id: friend.id,
+    },
   };
 }
 
-export function friendResidenceDuration(): EditableFriendResidenceDuration {
+export function friendResidenceDuration(
+  residence: EditableFriendResidence,
+): EditableFriendResidenceDuration {
   return {
     __typename: `FriendResidenceDuration`,
     id: clientGeneratedId(),
+    residence: {
+      __typename: `FriendResidence`,
+      id: residence.id,
+    },
     start: 1600,
     end: 1700,
   };

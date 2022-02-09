@@ -18,3 +18,17 @@ export async function mutate<T>(
     return `Error ${verb} ${entityType}: ${err}`;
   }
 }
+
+export function prepIds<T extends Record<string, unknown>>(record: T): T {
+  for (const key of Object.keys(record)) {
+    const value = record[key];
+    if (typeof value === `string` && value.match(MATCH_CLIENT_GENERATED_ID)) {
+      // @ts-ignore
+      record[key] = value.replace(/^_/, ``);
+    }
+  }
+  return record;
+}
+
+const MATCH_CLIENT_GENERATED_ID =
+  /^_[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i;

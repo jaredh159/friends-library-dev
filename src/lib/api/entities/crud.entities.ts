@@ -1,5 +1,7 @@
 import * as friend from './crud.friend';
 import * as document from './crud.document';
+import * as residence from './crud.residence';
+import * as duration from './crud.duration';
 import { EditableEntity, ErrorMsg } from '../../../types';
 
 export async function createEntity(entity: EditableEntity): Promise<ErrorMsg | null> {
@@ -7,17 +9,41 @@ export async function createEntity(entity: EditableEntity): Promise<ErrorMsg | n
   switch (entity.__typename) {
     case `Friend`:
       return friend.create(entity);
+    case `FriendResidence`:
+      return residence.create(entity);
+    case `FriendResidenceDuration`:
+      return duration.create(entity);
     case `Document`:
       return document.create(entity);
+    default:
+      throw new Error(`Unsupported entity type for create: ${entity.__typename}`);
   }
-  await new Promise((res) => setTimeout(res, 2000));
-  return null;
 }
 
 export async function deleteEntity(entity: EditableEntity): Promise<ErrorMsg | null> {
   console.log(`DELETE:`, entity);
-  await new Promise((res) => setTimeout(res, 2000));
-  return null;
+  let err: ErrorMsg | null = null;
+  switch (entity.__typename) {
+    case `FriendResidence`:
+      err = await residence.delete(entity);
+      break;
+    case `FriendResidenceDuration`:
+      err = await duration.delete(entity);
+      break;
+    case `Document`:
+      err = await document.delete(entity);
+      break;
+    default:
+      throw new Error(`Unsupported entity type for delete: ${entity.__typename}`);
+  }
+
+  // foreign key cascades often mean that our entities get deleted
+  // when the parent is deleted, so treat a DELETE -> 404 as success
+  if (err && err.includes(`notFound`)) {
+    return null;
+  }
+
+  return err;
 }
 
 export async function updateEntity(entity: EditableEntity): Promise<ErrorMsg | null> {
@@ -25,9 +51,13 @@ export async function updateEntity(entity: EditableEntity): Promise<ErrorMsg | n
   switch (entity.__typename) {
     case `Friend`:
       return friend.update(entity);
+    case `FriendResidence`:
+      return residence.update(entity);
+    case `FriendResidenceDuration`:
+      return duration.update(entity);
     case `Document`:
       return document.update(entity);
+    default:
+      throw new Error(`Unsupported entity type for update: ${entity.__typename}`);
   }
-  await new Promise((res) => setTimeout(res, 2000));
-  return null;
 }

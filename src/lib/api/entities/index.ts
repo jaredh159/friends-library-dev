@@ -49,7 +49,7 @@ function getCreateWork<T extends EditableEntity>(
 function getUpdateWork<T extends EditableEntity>(
   operation: UpdateOperation<T>,
 ): WorkQueue {
-  let queue: WorkQueue = [{ operation, status: `not started` }];
+  let queue: WorkQueue = [];
   const children = subcollections(operation.current).map(([key]) => key);
   if (!isEqual(omit(operation.current, children), omit(operation.previous, children))) {
     queue.push({ operation, status: `not started` });
