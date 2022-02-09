@@ -88,6 +88,12 @@ export interface CreateDocumentInput {
   title: string;
 }
 
+export interface CreateDocumentTagInput {
+  documentId: UUID;
+  id?: UUID | null;
+  type: TagType;
+}
+
 export interface CreateFriendInput {
   born?: number | null;
   description: string;
@@ -188,6 +194,12 @@ export interface UpdateDocumentInput {
   published?: number | null;
   slug: string;
   title: string;
+}
+
+export interface UpdateDocumentTagInput {
+  documentId: UUID;
+  id: UUID;
+  type: TagType;
 }
 
 export interface UpdateFriendInput {

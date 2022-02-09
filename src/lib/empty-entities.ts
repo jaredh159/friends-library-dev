@@ -118,11 +118,18 @@ export function document(friend: EditableFriend): EditableDocument {
   };
 }
 
-export function documentTag(type: EditableDocumentTag['type']): EditableDocumentTag {
+export function documentTag(
+  type: EditableDocumentTag['type'],
+  document: EditableDocument,
+): EditableDocumentTag {
   return {
     __typename: `DocumentTag`,
     id: clientGeneratedId(),
     type,
+    document: {
+      __typename: `Document`,
+      id: document.id,
+    },
   };
 }
 

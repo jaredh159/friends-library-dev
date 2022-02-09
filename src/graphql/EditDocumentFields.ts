@@ -31,10 +31,16 @@ export interface EditDocumentFields_editions {
   isDraft: boolean;
 }
 
+export interface EditDocumentFields_tags_document {
+  __typename: 'Document';
+  id: string;
+}
+
 export interface EditDocumentFields_tags {
   __typename: 'DocumentTag';
   id: string;
   type: TagType;
+  document: EditDocumentFields_tags_document;
 }
 
 export interface EditDocumentFields_relatedDocuments {

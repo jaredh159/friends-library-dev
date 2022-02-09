@@ -45,10 +45,16 @@ export interface EditFriend_friend_documents_editions {
   isDraft: boolean;
 }
 
+export interface EditFriend_friend_documents_tags_document {
+  __typename: 'Document';
+  id: string;
+}
+
 export interface EditFriend_friend_documents_tags {
   __typename: 'DocumentTag';
   id: string;
   type: TagType;
+  document: EditFriend_friend_documents_tags_document;
 }
 
 export interface EditFriend_friend_documents_relatedDocuments {

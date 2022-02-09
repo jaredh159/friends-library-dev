@@ -3,6 +3,7 @@ import * as document from './crud.document';
 import * as residence from './crud.residence';
 import * as duration from './crud.duration';
 import * as quote from './crud.quote';
+import * as tag from './crud.tag';
 import { EditableEntity, ErrorMsg } from '../../../types';
 
 export async function createEntity(entity: EditableEntity): Promise<ErrorMsg | null> {
@@ -18,6 +19,8 @@ export async function createEntity(entity: EditableEntity): Promise<ErrorMsg | n
       return duration.create(entity);
     case `Document`:
       return document.create(entity);
+    case `DocumentTag`:
+      return tag.create(entity);
     default:
       throw new Error(`Unsupported entity type for create: ${entity.__typename}`);
   }
@@ -38,6 +41,9 @@ export async function deleteEntity(entity: EditableEntity): Promise<ErrorMsg | n
       break;
     case `Document`:
       err = await document.delete(entity);
+      break;
+    case `DocumentTag`:
+      err = await tag.delete(entity);
       break;
     default:
       throw new Error(`Unsupported entity type for delete: ${entity.__typename}`);
@@ -65,6 +71,8 @@ export async function updateEntity(entity: EditableEntity): Promise<ErrorMsg | n
       return duration.update(entity);
     case `Document`:
       return document.update(entity);
+    case `DocumentTag`:
+      return tag.update(entity);
     default:
       throw new Error(`Unsupported entity type for update: ${entity.__typename}`);
   }

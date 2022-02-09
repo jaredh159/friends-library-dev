@@ -23,7 +23,7 @@ const SaveChangesBar: React.FC<Props> = ({
   if (error) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-gray-200/80 z-10">
-        <div className="text-red-700 bg-white p-8 rounded-lg mx-16">Error: {error}</div>
+        <div className="text-red-700 bg-white p-8 rounded-lg mx-16">{error}</div>
       </div>
     );
   }

@@ -118,7 +118,7 @@ export const EditDocument: React.FC<Props> = ({
             onToggle={(checked) => {
               const tags = [...doc.tags];
               if (checked) {
-                tags.push(emptyEntities.documentTag(tag));
+                tags.push(emptyEntities.documentTag(tag, doc));
               } else {
                 const index = tags.findIndex((t) => t.type === tag);
                 if (index !== -1) {
