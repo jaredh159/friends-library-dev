@@ -127,7 +127,7 @@ enum DbError: Error, LocalizedError {
   case emptyBulkInsertInput
   case tooManyResultsForDeleteOne
 
-  var errorDescription: String? {
+  var errorMessage: String {
     switch self {
       case .notFound:
         return "Database error: Not found"
@@ -139,6 +139,26 @@ enum DbError: Error, LocalizedError {
         return "Database error: Empty bulk insert input"
       case .tooManyResultsForDeleteOne:
         return "Database error: Too many results for delete one"
+    }
+  }
+
+  var errorDescription: String? {
+    errorMessage
+  }
+}
+
+extension DbError: AbortError {
+  var reason: String { errorMessage }
+
+  var status: HTTPStatus {
+    switch self {
+      case .notFound:
+        return .notFound
+      case .decodingFailed,
+        .nonUniformBulkInsertInput,
+        .emptyBulkInsertInput,
+        .tooManyResultsForDeleteOne:
+        return .internalServerError
     }
   }
 }

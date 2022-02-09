@@ -23,7 +23,20 @@ extension Resolver {
   ) throws -> Future<Edition> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: Edition.self, on: req.eventLoop) {
-      try await Current.db.create(Edition(args.input))
+      let isbn: Isbn
+      do {
+        isbn = try await Current.db.query(Isbn.self)
+          .where(.isNull(.editionId))
+          .first()
+      } catch {
+        await slackError("Failed to query ISBN to assign to new edition: \(error)")
+        throw error
+      }
+
+      let edition = try await Current.db.create(Edition(args.input))
+      isbn.editionId = edition.id
+      try await Current.db.update(isbn)
+      return edition
     }
   }
 

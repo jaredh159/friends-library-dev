@@ -76,9 +76,13 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   // document types
   AppSchema.DocumentType
   AppSchema.CreateDocumentInputType
+  AppSchema.CreateDocumentTagInputType
   AppSchema.UpdateDocumentInputType
+  AppSchema.UpdateDocumentTagInputType
   AppSchema.DocumentTagType
   AppSchema.RelatedDocumentType
+  AppSchema.CreateRelatedDocumentInputType
+  AppSchema.UpdateRelatedDocumentInputType
 
   // edition types
   AppSchema.EditionImageType
@@ -121,6 +125,7 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
     AppSchema.getDocument
     AppSchema.getDocuments
     AppSchema.getDocumentTag
+    AppSchema.getDocumentTags
     AppSchema.getEdition
     AppSchema.getEditions
     AppSchema.getEditionImpression
@@ -170,6 +175,12 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
     AppSchema.createDocument
     AppSchema.updateDocument
     AppSchema.deleteDocument
+    AppSchema.createDocumentTag
+    AppSchema.updateDocumentTag
+    AppSchema.deleteDocumentTag
+    AppSchema.createRelatedDocument
+    AppSchema.updateRelatedDocument
+    AppSchema.deleteRelatedDocument
 
     // edition mutations
     AppSchema.createEdition

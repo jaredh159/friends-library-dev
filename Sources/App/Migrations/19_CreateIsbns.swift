@@ -10,7 +10,7 @@ struct CreateIsbns: Migration {
       .field(
         M19.editionId,
         .uuid,
-        .references(Edition.M17.tableName, .id, onDelete: .cascade)
+        .references(Edition.M17.tableName, .id, onDelete: .setNull)
       )
       .field(.createdAt, .datetime, .required)
       .field(.updatedAt, .datetime, .required)

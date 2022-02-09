@@ -27,7 +27,7 @@ final class Friend: Codable {
 
   var alphabeticalName: String {
     let parts = name.split(separator: " ")
-    guard let last = parts.last else { return name }
+    guard parts.count > 1, let last = parts.last else { return name }
     return "\(last), \(parts.dropLast().joined(separator: " "))"
   }
 

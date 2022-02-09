@@ -101,9 +101,9 @@ enum SQL {
     }
 
     let query = """
-    UPDATE "\(table)"
-    SET \(setPairs.list)\(WHERE)\(RETURNING);
-    """
+      UPDATE "\(table)"
+      SET \(setPairs.list)\(WHERE)\(RETURNING);
+      """
 
     return PreparedStatement(query: query, bindings: bindings)
   }
@@ -158,11 +158,11 @@ enum SQL {
     }
 
     let query = """
-    INSERT INTO "\(M.tableName)"
-    (\(columns.quotedList))
-    VALUES
-    \(placeholderGroups.list);
-    """
+      INSERT INTO "\(M.tableName)"
+      (\(columns.quotedList))
+      VALUES
+      \(placeholderGroups.list);
+      """
 
     return PreparedStatement(query: query, bindings: bindings)
   }
@@ -180,8 +180,8 @@ enum SQL {
     let ORDER_BY = Order<M>.sql(order)
     let LIMIT = limit.sql()
     let query = """
-    SELECT \(columns.sql) FROM "\(M.tableName)"\(WHERE)\(ORDER_BY)\(LIMIT);
-    """
+      SELECT \(columns.sql) FROM "\(M.tableName)"\(WHERE)\(ORDER_BY)\(LIMIT);
+      """
 
     return PreparedStatement(query: query, bindings: bindings)
   }
@@ -208,12 +208,14 @@ enum SQL {
       let id = UUID().uuidString.replacingOccurrences(of: "-", with: "").lowercased()
       name = "plan_\(id)"
       let insertPrepareSql = """
-      PREPARE \(name)(\(types)) AS
-      \(statement.query)
-      """
+        PREPARE \(name)(\(types)) AS
+        \(statement.query)
+        """
       await prepared.set(name, forKey: key)
       _ = try await db.raw("\(raw: insertPrepareSql)").all().get()
     }
+
+    Current.logger.info("Executing SQL:\n\n\(statement.query)\n")
 
     return try await db.raw("\(raw: "EXECUTE \(name)(\(params))")").all()
   }
@@ -240,12 +242,12 @@ enum SQL {
   }
 }
 
-private extension Sequence where Element == String {
-  var list: String {
+extension Sequence where Element == String {
+  fileprivate var list: String {
     joined(separator: ", ")
   }
 
-  var quotedList: String {
+  fileprivate var quotedList: String {
     "\"\(joined(separator: "\", \""))\""
   }
 }
@@ -258,8 +260,8 @@ func == <M: DuetModel>(lhs: M.ColumnName, rhs: UUIDStringable) -> SQL.WhereConst
   .init(column: lhs, operator: .equals, value: .uuid(rhs))
 }
 
-private extension Optional where Wrapped == Int {
-  func sql(prefixedBy prefix: String = "\n") -> String {
+extension Optional where Wrapped == Int {
+  fileprivate func sql(prefixedBy prefix: String = "\n") -> String {
     guard let limit = self else { return "" }
     return "\(prefix)LIMIT \(limit)"
   }
