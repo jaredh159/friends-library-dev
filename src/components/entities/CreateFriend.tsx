@@ -4,7 +4,7 @@ import { SELECTABLE_DOCUMENTS_FIELDS } from '../../client';
 import { SelectableDocuments } from '../../graphql/SelectableDocuments';
 import { EditFriend } from './EditFriend';
 import { useQueryResult } from '../../lib/query';
-import * as emptyEntities from '../../lib/empty-entities';
+import * as empty from './empty';
 
 const CreateFriend: React.FC = () => {
   const query = useQueryResult<SelectableDocuments>(QUERY_SELECTABLE_DOCUMENTS);
@@ -13,7 +13,7 @@ const CreateFriend: React.FC = () => {
   }
   return (
     <EditFriend
-      friend={emptyEntities.friend()}
+      friend={empty.friend()}
       selectableDocuments={query.data.selectableDocuments}
     />
   );

@@ -73,6 +73,32 @@ export enum TagType {
   treatise = 'treatise',
 }
 
+export interface CreateAudioInput {
+  editionId: UUID;
+  externalPlaylistIdHq?: Int64 | null;
+  externalPlaylistIdLq?: Int64 | null;
+  id?: UUID | null;
+  isIncomplete: boolean;
+  m4bSizeHq: number;
+  m4bSizeLq: number;
+  mp3ZipSizeHq: number;
+  mp3ZipSizeLq: number;
+  reader: string;
+}
+
+export interface CreateAudioPartInput {
+  audioId: UUID;
+  chapters: number[];
+  duration: number;
+  externalIdHq: Int64;
+  externalIdLq: Int64;
+  id?: UUID | null;
+  mp3SizeHq: number;
+  mp3SizeLq: number;
+  order: number;
+  title: string;
+}
+
 export interface CreateDocumentInput {
   altLanguageId?: UUID | null;
   description: string;
@@ -196,6 +222,32 @@ export interface ShippingAddressInput {
   street: string;
   street2?: string | null;
   zip: string;
+}
+
+export interface UpdateAudioInput {
+  editionId: UUID;
+  externalPlaylistIdHq?: Int64 | null;
+  externalPlaylistIdLq?: Int64 | null;
+  id: UUID;
+  isIncomplete: boolean;
+  m4bSizeHq: number;
+  m4bSizeLq: number;
+  mp3ZipSizeHq: number;
+  mp3ZipSizeLq: number;
+  reader: string;
+}
+
+export interface UpdateAudioPartInput {
+  audioId: UUID;
+  chapters: number[];
+  duration: number;
+  externalIdHq: Int64;
+  externalIdLq: Int64;
+  id: UUID;
+  mp3SizeHq: number;
+  mp3SizeLq: number;
+  order: number;
+  title: string;
 }
 
 export interface UpdateDocumentInput {

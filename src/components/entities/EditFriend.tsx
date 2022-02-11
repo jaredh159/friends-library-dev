@@ -14,8 +14,14 @@ import reducer, { isValidYear } from './reducer';
 import NestedCollection from './NestedCollection';
 import { EditDocument } from './EditDocument';
 import { EDIT_DOCUMENT_FIELDS, SELECTABLE_DOCUMENTS_FIELDS } from '../../client';
-import { EditableFriend, Reducer, SelectableDocuments } from '../../types';
-import * as emptyEntities from '../../lib/empty-entities';
+import {
+  EditableFriend,
+  Reducer,
+  ReducerReplace,
+  SelectableDocuments,
+} from '../../types';
+import * as empty from './empty';
+import * as sort from './sort';
 import SaveChangesBar from './SaveChangesBar';
 
 interface Props {
@@ -28,8 +34,13 @@ export const EditFriend: React.FC<Props> = ({
   selectableDocuments,
 }) => {
   const [friend, dispatch] = useReducer<Reducer<EditableFriend>>(reducer, initialFriend);
-  const replace: (path: string) => (value: unknown) => unknown = (path) => {
-    return (value) => dispatch({ type: `replace_value`, at: path, with: value });
+  const replace: ReducerReplace = (path, preprocess) => {
+    return (value) =>
+      dispatch({
+        type: `replace_value`,
+        at: path,
+        with: preprocess ? preprocess(value) : value,
+      });
   };
   const deleteFrom: (path: string) => (index: number) => unknown = (path) => {
     return (index) => dispatch({ type: `delete_item`, at: `${path}[${index}]` });
@@ -117,7 +128,7 @@ export const EditFriend: React.FC<Props> = ({
           dispatch({
             type: `add_item`,
             at: `residences`,
-            value: emptyEntities.friendResidence(friend),
+            value: empty.friendResidence(friend),
           })
         }
         onDelete={deleteFrom(`residences`)}
@@ -161,7 +172,7 @@ export const EditFriend: React.FC<Props> = ({
                 dispatch({
                   type: `add_item`,
                   at: `residences[${residenceIndex}].durations`,
-                  value: emptyEntities.friendResidenceDuration(residence),
+                  value: empty.friendResidenceDuration(residence),
                 })
               }
               onDelete={deleteFrom(`residences[${residenceIndex}].durations`)}
@@ -199,7 +210,7 @@ export const EditFriend: React.FC<Props> = ({
           dispatch({
             type: `add_item`,
             at: `quotes`,
-            value: emptyEntities.friendQuote(friend),
+            value: empty.friendQuote(friend),
           })
         }
         renderItem={(item, index) => (
@@ -208,16 +219,16 @@ export const EditFriend: React.FC<Props> = ({
               <TextInput
                 type="text"
                 className="flex-grow"
-                label={`Quote Source:`}
+                label="Quote Source:"
                 value={item.source}
                 onChange={replace(`quotes[${index}].source`)}
               />
               <TextInput
                 type="number"
-                label={`Quote Order:`}
+                label="Quote Order:"
                 isValid={(input) => Number.isInteger(Number(input))}
                 value={String(item.order)}
-                onChange={replace(`quotes[${index}].order`)}
+                onChange={replace(`quotes[${index}].order`, Number)}
               />
             </div>
             <TextInput
@@ -237,7 +248,7 @@ export const EditFriend: React.FC<Props> = ({
           dispatch({
             type: `add_item`,
             at: `documents`,
-            value: emptyEntities.document(friend),
+            value: empty.document(friend),
           })
         }
         onDelete={deleteFrom(`documents`)}
@@ -284,7 +295,7 @@ const EditFriendContainer: React.FC = () => {
   }
   return (
     <EditFriend
-      friend={query.data.friend}
+      friend={sort.friend({ ...query.data.friend })}
       selectableDocuments={query.data.selectableDocuments}
     />
   );

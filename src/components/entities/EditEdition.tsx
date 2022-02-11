@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import cx from 'classnames';
+import { PlusCircleIcon } from '@heroicons/react/solid';
 import { ReducerReplace, EditableEdition } from '../../types';
 import { EditionType, Lang, PrintSize } from '../../graphql/globalTypes';
 import LabeledSelect from '../LabeledSelect';
 import LabeledToggle from '../LabeledToggle';
 import TextInput from '../TextInput';
+import * as nonEmptyIntArray from './non-empty-int-array';
+import * as empty from './empty';
+import { EditAudio } from './EditAudio';
+import PillButton from '../PillButton';
 
 interface Props {
   edition: EditableEdition;
@@ -17,17 +22,10 @@ const EditEdition: React.FC<Props> = ({ edition, replace, lang }) => {
     edition.paperbackSplits ? JSON.stringify(edition.paperbackSplits) : ``,
   );
 
-  function updateSplits(value: string): void {
-    setSplits(value);
-    try {
-      const parsed = JSON.parse(value);
-      if (Array.isArray(parsed) && parsed.every((i) => Number.isInteger(i))) {
-        replace(`paperbackSplits`)(parsed);
-      }
-    } catch {
-      replace(`paperbackSplits`)(null);
-    }
-  }
+  const updateSplits = nonEmptyIntArray.makeUpdater(
+    setSplits,
+    replace(`paperbackSplits`),
+  );
 
   return (
     <div className="space-y-4">
@@ -86,23 +84,27 @@ const EditEdition: React.FC<Props> = ({ edition, replace, lang }) => {
           label="Splits:"
           className="w-1/5"
           value={splits}
-          isValid={(str) => {
-            if (str.trim() === ``) {
-              return true;
-            }
-            try {
-              const parsed = JSON.parse(str);
-              return (
-                Array.isArray(parsed) &&
-                parsed.every((i) => typeof i === `number` && Number.isInteger(i))
-              );
-            } catch {
-              return false;
-            }
-          }}
+          isValid={nonEmptyIntArray.makeValidator({ canBeNull: true })}
           onChange={updateSplits}
         />
       </div>
+      {edition.audio ? (
+        <EditAudio
+          audio={edition.audio}
+          replace={(path, preprocess) => replace(`audio.${path}`, preprocess)}
+        />
+      ) : (
+        <div className="flex space-between items-center py-2">
+          <span className="label">No Audio</span>
+          <PillButton
+            Icon={PlusCircleIcon}
+            className="ml-auto"
+            onClick={() => replace(`audio`)(empty.audio(edition.id))}
+          >
+            Add Audio
+          </PillButton>
+        </div>
+      )}
     </div>
   );
 };

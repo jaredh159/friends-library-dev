@@ -1,7 +1,10 @@
 import React from 'react';
 import { PrintSize, Lang } from '@friends-library/types';
 import { EditFriend as EditFriendQuery } from './graphql/EditFriend';
-import { EditDocument as EditDocumentQuery } from './graphql/EditDocument';
+import {
+  EditDocument as EditDocumentQuery,
+  EditDocument_document_editions_audio,
+} from './graphql/EditDocument';
 
 export type Action<State> =
   | { type: `replace`; state: State }
@@ -28,6 +31,8 @@ export type EditableDocument = EditDocumentQuery['document'];
 export type EditableDocumentTag = EditableDocument['tags'][0];
 export type EditableRelatedDocument = EditableDocument['relatedDocuments'][0];
 export type EditableEdition = EditableDocument['editions'][0];
+export type EditableAudio = EditDocument_document_editions_audio;
+export type EditableAudioPart = EditableAudio['parts'][0];
 
 export type EditableEntity =
   | EditableFriend
@@ -37,7 +42,9 @@ export type EditableEntity =
   | EditableDocument
   | EditableDocumentTag
   | EditableRelatedDocument
-  | EditableEdition;
+  | EditableEdition
+  | EditableAudio
+  | EditableAudioPart;
 
 export type CreateOperation<T extends EditableEntity> = {
   type: `create`;
@@ -52,11 +59,15 @@ export type UpdateOperation<T extends EditableEntity> = {
   previous: T;
   current: T;
 };
+export type NoopOperation = {
+  type: `noop`;
+};
 
 export type Operation<T extends EditableEntity> =
   | CreateOperation<T>
   | DeleteOperation<T>
-  | UpdateOperation<T>;
+  | UpdateOperation<T>
+  | NoopOperation;
 
 export type EntityOperation = Operation<EditableEntity>;
 

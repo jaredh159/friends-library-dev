@@ -12,6 +12,8 @@ import {
   UpdateOperation,
   DeleteOperation,
   Operation,
+  EditableEdition,
+  EditableAudio,
 } from '../../../types';
 import { createEntity, deleteEntity, updateEntity } from './crud.entities';
 
@@ -20,20 +22,24 @@ export async function save<T extends EditableEntity>(
   current?: T,
   previous?: T,
 ): Promise<void> {
-  let work: WorkQueue = [];
+  return perform(getWork(current, previous), progress);
+}
+
+function getWork<T extends EditableEntity>(
+  current: T | undefined,
+  previous: T | undefined,
+): WorkQueue {
   const operation = getOperation(current, previous);
   switch (operation.type) {
     case `create`:
-      work = getCreateWork(operation);
-      break;
+      return getCreateWork(operation);
     case `update`:
-      work = getUpdateWork(operation);
-      break;
+      return getUpdateWork(operation);
     case `delete`:
-      work = getDeleteWork(operation);
-      break;
+      return getDeleteWork(operation);
+    case `noop`:
+      return [];
   }
-  await perform(work, progress);
 }
 
 function getCreateWork<T extends EditableEntity>(
@@ -43,6 +49,12 @@ function getCreateWork<T extends EditableEntity>(
   for (const [, extract] of subcollections(operation.entity)) {
     queue = queue.concat(collectionQueue(operation, extract));
   }
+  for (const [, extract] of optionalChildren(operation.entity)) {
+    const child = extract(operation.entity);
+    if (child) {
+      queue = queue.concat(getCreateWork({ type: `create`, entity: child }));
+    }
+  }
   return queue;
 }
 
@@ -50,12 +62,17 @@ function getUpdateWork<T extends EditableEntity>(
   operation: UpdateOperation<T>,
 ): WorkQueue {
   let queue: WorkQueue = [];
-  const children = subcollections(operation.current).map(([key]) => key);
-  if (!isEqual(omit(operation.current, children), omit(operation.previous, children))) {
+  const omitKeys = omittable(operation.current);
+  if (!isEqual(omit(operation.current, omitKeys), omit(operation.previous, omitKeys))) {
     queue.push({ operation, status: `not started` });
   }
   for (const [, extract] of subcollections(operation.current)) {
     queue = queue.concat(collectionQueue(operation, extract));
+  }
+  for (const [, extract] of optionalChildren(operation.current)) {
+    const current = extract(operation.current);
+    const prev = extract(operation.previous);
+    queue = queue.concat(getWork(current ?? undefined, prev ?? undefined));
   }
   return queue;
 }
@@ -66,6 +83,12 @@ function getDeleteWork<T extends EditableEntity>(
   let queue: WorkQueue = [{ operation, status: `not started` }];
   for (const [, extract] of subcollections(operation.entity)) {
     queue = queue.concat(collectionQueue(operation, extract));
+  }
+  for (const [, extract] of optionalChildren(operation.entity)) {
+    const child = extract(operation.entity);
+    if (child) {
+      queue = queue.concat(getDeleteWork({ type: `delete`, entity: child }));
+    }
   }
   return queue;
 }
@@ -130,7 +153,32 @@ function getOperation<T extends EditableEntity>(
   } else if (!current && previous) {
     return { type: `delete`, entity: previous };
   } else {
-    throw new Error(`Invalid input to getOperation()`);
+    return { type: `noop` };
+  }
+}
+
+function omittable(entity: EditableEntity): string[] {
+  return subcollections(entity)
+    .map(([key]) => key)
+    .concat(optionalChildren(entity).map(([key]) => key));
+}
+
+function optionalChildren(
+  entity: EditableEntity,
+): Array<[key: string, extractor: (root: any) => EditableEntity | null]> {
+  switch (entity.__typename) {
+    case `Edition`:
+      return [[`audio`, (edition) => (edition as EditableEdition).audio]];
+    case `Friend`:
+    case `FriendResidence`:
+    case `Document`:
+    case `Audio`:
+    case `AudioPart`:
+    case `FriendQuote`:
+    case `FriendResidenceDuration`:
+    case `RelatedDocument`:
+    case `DocumentTag`:
+      return [];
   }
 }
 
@@ -154,7 +202,14 @@ function subcollections(
         [`relatedDocuments`, (doc) => (doc as EditableDocument).relatedDocuments],
         [`tags`, (doc) => (doc as EditableDocument).tags],
       ];
-    default:
+    case `Audio`:
+      return [[`parts`, (audio) => (audio as EditableAudio).parts]];
+    case `FriendQuote`:
+    case `FriendResidenceDuration`:
+    case `RelatedDocument`:
+    case `DocumentTag`:
+    case `Edition`:
+    case `AudioPart`:
       return [];
   }
 }

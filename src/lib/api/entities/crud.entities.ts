@@ -5,6 +5,8 @@ import * as duration from './crud.duration';
 import * as quote from './crud.quote';
 import * as tag from './crud.tag';
 import * as edition from './crud.edition';
+import * as audio from './crud.audio';
+import * as audioPart from './crud.audio-part';
 import * as relatedDocument from './crud.related-document';
 import { EditableEntity, ErrorMsg } from '../../../types';
 
@@ -27,6 +29,10 @@ export async function createEntity(entity: EditableEntity): Promise<ErrorMsg | n
       return relatedDocument.create(entity);
     case `Edition`:
       return edition.create(entity);
+    case `Audio`:
+      return audio.create(entity);
+    case `AudioPart`:
+      return audioPart.create(entity);
   }
 }
 
@@ -54,6 +60,12 @@ export async function deleteEntity(entity: EditableEntity): Promise<ErrorMsg | n
       break;
     case `Edition`:
       err = await edition.delete(entity);
+      break;
+    case `Audio`:
+      err = await audio.delete(entity);
+      break;
+    case `AudioPart`:
+      err = await audioPart.delete(entity);
       break;
     case `Friend`:
       throw new Error(`Deleting Friends not supported, use the postgres shell`);
@@ -87,5 +99,9 @@ export async function updateEntity(entity: EditableEntity): Promise<ErrorMsg | n
       return relatedDocument.update(entity);
     case `Edition`:
       return edition.update(entity);
+    case `Audio`:
+      return audio.update(entity);
+    case `AudioPart`:
+      return audioPart.update(entity);
   }
 }

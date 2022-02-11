@@ -31,6 +31,34 @@ export const EDIT_EDITION_FIELDS = gql`
     document {
       id
     }
+    audio {
+      id
+      reader
+      isIncomplete
+      mp3ZipSizeHq
+      mp3ZipSizeLq
+      m4bSizeHq
+      m4bSizeLq
+      externalPlaylistIdHq
+      externalPlaylistIdLq
+      edition {
+        id
+      }
+      parts {
+        id
+        order
+        title
+        duration
+        chapters
+        mp3SizeHq
+        mp3SizeLq
+        externalIdHq
+        externalIdLq
+        audio {
+          id
+        }
+      }
+    }
   }
 `;
 

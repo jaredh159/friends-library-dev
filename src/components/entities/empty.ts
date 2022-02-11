@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { EditionType, Gender, Lang } from '../graphql/globalTypes';
+import { EditionType, Gender, Lang } from '../../graphql/globalTypes';
 import {
   EditableFriendQuote,
   EditableDocument,
@@ -9,7 +9,9 @@ import {
   EditableFriendResidenceDuration,
   EditableRelatedDocument,
   EditableDocumentTag,
-} from '../types';
+  EditableAudio,
+  EditableAudioPart,
+} from '../../types';
 
 export function friend(): EditableFriend {
   return {
@@ -52,9 +54,49 @@ export function edition(documentId: UUID): EditableEdition {
     paperbackSplits: null,
     isbn: null,
     editor: null,
+    audio: null,
     document: {
       __typename: `Document`,
       id: documentId,
+    },
+  };
+}
+
+export function audio(editionId: UUID): EditableAudio {
+  return {
+    __typename: `Audio`,
+    id: clientGeneratedId(),
+    reader: ``,
+    isIncomplete: false,
+    m4bSizeHq: 0,
+    m4bSizeLq: 0,
+    mp3ZipSizeHq: 0,
+    mp3ZipSizeLq: 0,
+    externalPlaylistIdHq: 0,
+    externalPlaylistIdLq: 0,
+    parts: [],
+    edition: {
+      __typename: `Edition`,
+      id: editionId,
+    },
+  };
+}
+
+export function audioPart(audio: EditableAudio): EditableAudioPart {
+  return {
+    __typename: `AudioPart`,
+    id: clientGeneratedId(),
+    order: Math.max(0, ...audio.parts.map((part) => part.order)) + 1,
+    title: ``,
+    duration: 0,
+    chapters: [0],
+    mp3SizeHq: 0,
+    mp3SizeLq: 0,
+    externalIdHq: 0,
+    externalIdLq: 0,
+    audio: {
+      __typename: `Audio`,
+      id: audio.id,
     },
   };
 }

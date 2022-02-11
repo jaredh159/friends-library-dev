@@ -59,6 +59,8 @@ function workItemDescription(item: WorkItem): string {
       return `Update ${item.operation.current.__typename}`;
     case `delete`:
       return `Delete ${item.operation.entity.__typename}`;
+    case `noop`:
+      return ``;
   }
 }
 

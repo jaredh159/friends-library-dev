@@ -38,5 +38,7 @@ function op(type: EntityOperation['type'], entityTypeName: string): EntityOperat
       return { type, entity };
     case `update`:
       return { type, current: entity, previous: entity };
+    case `noop`:
+      return { type };
   }
 }

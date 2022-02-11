@@ -20,7 +20,8 @@ import { Lang, TagType } from '../../graphql/globalTypes';
 import NestedCollection from './NestedCollection';
 import LabeledToggle from '../LabeledToggle';
 import EditEdition from './EditEdition';
-import * as emptyEntities from '../../lib/empty-entities';
+import * as empty from './empty';
+import * as sort from './sort';
 import LabledCheckbox from '../LabledCheckbox';
 import LabeledSelect from '../LabeledSelect';
 import SaveChangesBar from './SaveChangesBar';
@@ -118,7 +119,7 @@ export const EditDocument: React.FC<Props> = ({
             onToggle={(checked) => {
               const tags = [...doc.tags];
               if (checked) {
-                tags.push(emptyEntities.documentTag(tag, doc));
+                tags.push(empty.documentTag(tag, doc));
               } else {
                 const index = tags.findIndex((t) => t.type === tag);
                 if (index !== -1) {
@@ -164,7 +165,7 @@ export const EditDocument: React.FC<Props> = ({
         onAdd={() =>
           replace(`relatedDocuments`)(
             [...doc.relatedDocuments].concat([
-              emptyEntities.relatedDocument(
+              empty.relatedDocument(
                 [...selectableDocuments].sort(sortSelectableDocuments)[0]?.id ?? ``,
                 doc.id,
               ),
@@ -199,14 +200,15 @@ export const EditDocument: React.FC<Props> = ({
       <NestedCollection
         label="Edition"
         items={doc.editions}
-        startsCollapsed={false}
-        onAdd={() => addItem(`editions`, emptyEntities.edition(doc.id))}
+        onAdd={() => addItem(`editions`, empty.edition(doc.id))}
         onDelete={(index) => deleteItem(`editions[${index}]`)}
         renderItem={(item, index) => (
           <EditEdition
             lang={doc.friend.lang}
             edition={item}
-            replace={(path) => replace(`editions[${index}].${path}`)}
+            replace={(path, preprocess) =>
+              replace(`editions[${index}].${path}`, preprocess)
+            }
           />
         )}
       />
@@ -233,7 +235,7 @@ const EditDocumentContainer: React.FC = () => {
 
   if (!loaded) {
     setLoaded(true);
-    dispatch({ type: `replace`, state: query.data.document });
+    dispatch({ type: `replace`, state: sort.document({ ...query.data.document }) });
   }
 
   return (
