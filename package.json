@@ -7,7 +7,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "graphql:codegen": "flp_graphql_codegen",
+    "graphql:codegen": "flp_gql_codegen",
     "test": "fldev test",
     "lint": "fldev lint --rule 'require-atomic-updates: off'",
     "lint:fix": "npm run lint -- --fix",

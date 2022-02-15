@@ -1,12 +1,11 @@
-import env from '@friends-library/env';
-import { getClient, gql } from '@friends-library/db';
-import fetch from 'cross-fetch';
+import { gql } from '@friends-library/db';
 import { Audio } from './types';
 import { GetAudios } from '../../graphql/GetAudios';
 import { UpdateAudioInput, UpdateAudioPartInput } from '../../graphql/globalTypes';
 import { UpdateAudio, UpdateAudioVariables } from '../../graphql/UpdateAudio';
 import { logError } from '../../sub-log';
 import { UpdateAudioPart, UpdateAudioPartVariables } from '../../graphql/UpdateAudioPart';
+import client from '../../api-client';
 
 export async function getAudios(): Promise<Audio[]> {
   const { data } = await client().query<GetAudios>({ query: QUERY_AUDIOS });
@@ -107,10 +106,3 @@ const QUERY_AUDIOS = gql`
     }
   }
 `;
-
-// helpers
-
-function client(): ReturnType<typeof getClient> {
-  const token = env.requireVar(`CLI_FLP_API_TOKEN`);
-  return getClient({ env: `dev`, fetch, token });
-}

@@ -29,6 +29,11 @@ export enum TagType {
   treatise = 'treatise',
 }
 
+export interface CreateArtifactProductionVersionInput {
+  id?: UUID | null;
+  version: string;
+}
+
 export interface UpdateAudioInput {
   editionId: UUID;
   externalPlaylistIdHq?: Int64 | null;

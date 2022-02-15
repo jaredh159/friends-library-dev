@@ -1,5 +1,8 @@
+import { gql } from '@friends-library/db';
 import { EditionType, Lang, TagType } from '../../../graphql/globalTypes';
 import { Audio } from '../types';
+
+// see below for query used to generate these
 
 export const turfordEn: Audio = {
   id: `26e7c6d5-93b0-43d1-8017-4d3efadd4a5b`,
@@ -63,8 +66,7 @@ export const turfordEn: Audio = {
       slug: `walk-in-the-spirit`,
       title: `Walk in the Spirit`,
       filename: `Walk_in_the_Spirit`,
-      description:
-        `The primitive Christians built on a sure rock, a living foundation, on Christ as He was in all ages, and still is—on His spiritual appearance as the light of the world, and the life of righteousness. His work of sanctification is inward, and is to be effected by inward means. Nothing but inward light can expel inward darkness; nothing less than eternal life can deliver our souls from the power of death. But this way of God’s salvation has been so long rejected, that few in our present age know what His Spirit is, where they may become acquainted with it, or how they may walk in it.`,
+      description: `The primitive Christians built on a sure rock, a living foundation, on Christ as He was in all ages, and still is—on His spiritual appearance as the light of the world, and the life of righteousness. His work of sanctification is inward, and is to be effected by inward means. Nothing but inward light can expel inward darkness; nothing less than eternal life can deliver our souls from the power of death. But this way of God’s salvation has been so long rejected, that few in our present age know what His Spirit is, where they may become acquainted with it, or how they may walk in it.`,
       __typename: `Document`,
       tags: [
         { type: TagType.doctrinal, __typename: `DocumentTag` },
@@ -126,8 +128,7 @@ export const story: Audio = {
       slug: `journal-selection`,
       title: `Selection from the Journal of Thomas Story`,
       filename: `Selection_Journal_of_Thomas_Story`,
-      description:
-        `Thomas Story (1662-1742) was an extremely gifted and serviceable minister in the Society of Friends, who traveled all over England, Ireland, Scotland, Holland, Jamaica, Barbados, and the American colonies in his service for the gospel. He was well-known for both his spiritual depth and his intellectual genius. His clear perception of spiritual truth, profound knowledge of Scripture, and facility of expression made him more than a match for the enemies of truth who attempted to slander and oppose the teachings of early Friends. The many compelling doctrinal arguments found in his journal became very influential among Quakers, and will still be read with great benefit by every genuine seeker of truth.`,
+      description: `Thomas Story (1662-1742) was an extremely gifted and serviceable minister in the Society of Friends, who traveled all over England, Ireland, Scotland, Holland, Jamaica, Barbados, and the American colonies in his service for the gospel. He was well-known for both his spiritual depth and his intellectual genius. His clear perception of spiritual truth, profound knowledge of Scripture, and facility of expression made him more than a match for the enemies of truth who attempted to slander and oppose the teachings of early Friends. The many compelling doctrinal arguments found in his journal became very influential among Quakers, and will still be read with great benefit by every genuine seeker of truth.`,
       __typename: `Document`,
       tags: [{ type: TagType.journal, __typename: `DocumentTag` }],
     },
@@ -186,8 +187,7 @@ export const webbEs: Audio = {
       slug: `carta`,
       title: `La Carta de Elizabeth Webb`,
       filename: `Carta_de_Elizabeth_Webb`,
-      description:
-        `Elizabeth Webb (1663-1726) fue una antigua ministra de la Sociedad de Amigos que viajó extensamente en su servicio por el evangelio. En el año 1712, mientras ejercía su ministerio en Londres, conoció a Anthony William Boehm, quien en ese entonces era capellán del Príncipe George de Dinamarca. En cierto momento después de su primer encuentro, Elizabeth Webb se sintió constreñida por el amor de Dios a escribirle a Boehm y enviarle una carta profundamente instructiva (la cual se encuentra en este libro), dándole un resumen de su viaje espiritual.`,
+      description: `Elizabeth Webb (1663-1726) fue una antigua ministra de la Sociedad de Amigos que viajó extensamente en su servicio por el evangelio. En el año 1712, mientras ejercía su ministerio en Londres, conoció a Anthony William Boehm, quien en ese entonces era capellán del Príncipe George de Dinamarca. En cierto momento después de su primer encuentro, Elizabeth Webb se sintió constreñida por el amor de Dios a escribirle a Boehm y enviarle una carta profundamente instructiva (la cual se encuentra en este libro), dándole un resumen de su viaje espiritual.`,
       __typename: `Document`,
       tags: [
         { type: TagType.letters, __typename: `DocumentTag` },
@@ -370,8 +370,7 @@ export const titipEn: Audio = {
       slug: `truth-in-the-inward-parts-v1`,
       title: `Truth in the Inward Parts -- Volume 1`,
       filename: `Truth_in_the_Inward_Parts_v1`,
-      description:
-        `This book contains the stories of ten men and women who knew the transforming work of “Truth in the inward parts.” Amidst a sea of Christian practice and profession, these believers would settle for nothing less than the light, power, and righteousness of Christ reigning in their purified vessels. They not only found the Pearl of great price by His own inward appearing, but they then sold all to buy this treasure, counting all things loss for the excellence of the knowledge of Christ Jesus their Lord. (Compiled and edited by Jason R. Henderson)`,
+      description: `This book contains the stories of ten men and women who knew the transforming work of “Truth in the inward parts.” Amidst a sea of Christian practice and profession, these believers would settle for nothing less than the light, power, and righteousness of Christ reigning in their purified vessels. They not only found the Pearl of great price by His own inward appearing, but they then sold all to buy this treasure, counting all things loss for the excellence of the knowledge of Christ Jesus their Lord. (Compiled and edited by Jason R. Henderson)`,
       __typename: `Document`,
       tags: [{ type: TagType.journal, __typename: `DocumentTag` }],
     },
@@ -430,8 +429,7 @@ export const wayOfLife: Audio = {
       slug: `way-of-life-revealed`,
       title: `The Way of Life Revealed and the Way of Death Discovered`,
       filename: `Way_of_Life_Revealed`,
-      description:
-        `Charles Marshall (1637-1698) was convinced of the Truth at age seventeen by the powerful ministry of John Audland and John Camm, and eventually became a worthy minister and elder himself in the early Society of Friends. This short treatise, written in 1673, describes the miserable condition of man in the fall, the means by which God restores the penitent soul into the image of God, and many snares, deceptions and temptations of the enemy of man’s happiness.`,
+      description: `Charles Marshall (1637-1698) was convinced of the Truth at age seventeen by the powerful ministry of John Audland and John Camm, and eventually became a worthy minister and elder himself in the early Society of Friends. This short treatise, written in 1673, describes the miserable condition of man in the fall, the means by which God restores the penitent soul into the image of God, and many snares, deceptions and temptations of the enemy of man’s happiness.`,
       __typename: `Document`,
       tags: [{ type: TagType.treatise, __typename: `DocumentTag` }],
     },
@@ -451,3 +449,69 @@ export const wayOfLife: Audio = {
   __typename: `Audio`,
   m4bSizeLq: 34387276,
 };
+
+// query
+
+export const __QUERY = `
+  query GetFixtures {
+    audios: getAudios {
+      __typename
+      id
+      isIncomplete
+      m4bSizeHq
+      m4bSizeLq
+      mp3ZipSizeHq
+      mp3ZipSizeLq
+      reader
+      externalPlaylistIdHq
+      externalPlaylistIdLq
+      parts {
+        __typename
+        id
+        chapters
+        duration
+        title
+        order
+        externalIdHq
+        externalIdLq
+        mp3SizeHq
+        mp3SizeLq
+      }
+      edition {
+        __typename
+        id
+        path: directoryPath
+        type
+        images {
+          __typename
+          square {
+            __typename
+            w1400 {
+              __typename
+              path
+            }
+          }
+        }
+        document {
+          __typename
+          filename
+          title
+          slug
+          description
+          tags {
+            __typename
+            type
+          }
+          friend {
+            __typename
+            lang
+            name
+            slug
+            alphabeticalName
+            isCompilations
+          }
+        }
+      }
+    }
+  }
+`;
