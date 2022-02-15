@@ -58,6 +58,22 @@ final class MockDatabase: DatabaseClient, InMemoryDatabase, HasEntityRepository 
     return selected
   }
 
+  func delete<M: DuetModel>(
+    _ Model: M.Type,
+    where constraints: [SQL.WhereConstraint<M>],
+    orderBy: SQL.Order<M>?,
+    limit: Int?
+  ) async throws -> [M] {
+    // @TODO, distinguish between softdeleteable and not
+    let keyPath = modelsKeyPath(of: M.self)
+    let selected = try await select(Model, where: constraints, orderBy: orderBy, limit: limit)
+    for model in selected {
+      self[keyPath: keyPath][model.id] = nil
+    }
+    if M.isPreloaded { await entityRepo.flush() }
+    return selected
+  }
+
   func models<M: DuetModel>(of Model: M.Type) async throws -> [M.IdValue: M] {
     self[keyPath: modelsKeyPath(of: M.self)]
   }

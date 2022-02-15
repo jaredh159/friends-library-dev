@@ -70,7 +70,7 @@ enum SQL {
     return PreparedStatement(query: query, bindings: bindings)
   }
 
-  static func softDelete<M: SoftDeletable>(
+  static func softDelete<M: DuetModel>(
     _ Model: M.Type,
     where constraints: [WhereConstraint<M>]? = nil
   ) -> PreparedStatement {

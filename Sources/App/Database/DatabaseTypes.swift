@@ -52,6 +52,14 @@ protocol SQLMutating {
   func update<M: DuetModel>(_ model: M) async throws -> M
 
   @discardableResult
+  func delete<M: DuetModel>(
+    _ Model: M.Type,
+    where constraints: [SQL.WhereConstraint<M>],
+    orderBy order: SQL.Order<M>?,
+    limit: Int?
+  ) async throws -> [M]
+
+  @discardableResult
   func forceDelete<M: DuetModel>(
     _ Model: M.Type,
     where: [SQL.WhereConstraint<M>],
@@ -155,9 +163,9 @@ extension DbError: AbortError {
       case .notFound:
         return .notFound
       case .decodingFailed,
-        .nonUniformBulkInsertInput,
-        .emptyBulkInsertInput,
-        .tooManyResultsForDeleteOne:
+           .nonUniformBulkInsertInput,
+           .emptyBulkInsertInput,
+           .tooManyResultsForDeleteOne:
         return .internalServerError
     }
   }

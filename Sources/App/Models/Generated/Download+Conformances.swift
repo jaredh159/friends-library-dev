@@ -8,6 +8,7 @@ extension Download: ApiModel {
 
 extension Download: DuetModel {
   static let tableName = M1.tableName
+  static var isSoftDeletable: Bool { false }
 }
 
 extension Download {

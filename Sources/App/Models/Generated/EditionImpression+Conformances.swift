@@ -11,6 +11,7 @@ extension EditionImpression: ApiModel {
 
 extension EditionImpression: DuetModel {
   static let tableName = M18.tableName
+  static var isSoftDeletable: Bool { false }
 }
 
 extension EditionImpression {

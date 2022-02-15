@@ -8,6 +8,7 @@ extension ArtifactProductionVersion: ApiModel {
 
 extension ArtifactProductionVersion: DuetModel {
   static let tableName = M8.tableName
+  static var isSoftDeletable: Bool { false }
 }
 
 extension ArtifactProductionVersion {

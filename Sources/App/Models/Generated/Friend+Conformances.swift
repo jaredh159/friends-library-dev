@@ -11,6 +11,7 @@ extension Friend: ApiModel {
 
 extension Friend: DuetModel {
   static let tableName = M11.tableName
+  static var isSoftDeletable: Bool { false }
 }
 
 extension Friend {

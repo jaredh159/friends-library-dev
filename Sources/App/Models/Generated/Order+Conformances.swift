@@ -8,6 +8,7 @@ extension Order: ApiModel {
 
 extension Order: DuetModel {
   static let tableName = M2.tableName
+  static var isSoftDeletable: Bool { false }
 }
 
 extension Order {

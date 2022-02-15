@@ -8,6 +8,7 @@ extension FreeOrderRequest: ApiModel {
 
 extension FreeOrderRequest: DuetModel {
   static let tableName = M6.tableName
+  static var isSoftDeletable: Bool { false }
 }
 
 extension FreeOrderRequest {

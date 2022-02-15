@@ -8,6 +8,7 @@ extension TokenScope: ApiModel {
 
 extension TokenScope: DuetModel {
   static let tableName = M5.tableName
+  static var isSoftDeletable: Bool { false }
 }
 
 extension TokenScope {

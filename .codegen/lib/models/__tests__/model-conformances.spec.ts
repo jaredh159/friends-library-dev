@@ -90,6 +90,7 @@ describe(`generateModelConformances()`, () => {
 
       extension Thing: DuetModel {
         static let tableName = "things"
+        static var isSoftDeletable: Bool { true }
       }
 
       extension Thing {

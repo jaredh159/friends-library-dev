@@ -1,7 +1,7 @@
 import Foundation
 
 struct DuetQuery<M: DuetModel> {
-  let db: SQLQuerying & SQLMutating
+  let db: DatabaseClient
   let constraints: [SQL.WhereConstraint<M>]
   let limit: Int?
   let order: SQL.Order<M>?
@@ -46,16 +46,15 @@ struct DuetQuery<M: DuetModel> {
   }
 
   func delete() async throws -> [M] {
-    let models = try await db.select(M.self, where: constraints, orderBy: order, limit: limit)
-    try await db.forceDelete(M.self, where: constraints, orderBy: order, limit: limit)
-    return models
+    try await db.delete(M.self, where: constraints, orderBy: order, limit: limit)
   }
 
   func deleteOne() async throws -> M {
     let models = try await db.select(M.self, where: constraints, orderBy: order, limit: limit)
+    guard !models.isEmpty else { throw DbError.notFound }
     guard models.count == 1 else { throw DbError.tooManyResultsForDeleteOne }
-    try await db.forceDelete(M.self, where: constraints, orderBy: order, limit: limit)
-    return try models.firstOrThrowNotFound()
+    try await db.delete(M.self, where: constraints, orderBy: order, limit: limit)
+    return models.first!
   }
 
   func all() async throws -> [M] {
@@ -64,34 +63,5 @@ struct DuetQuery<M: DuetModel> {
 
   func first() async throws -> M {
     try await all().firstOrThrowNotFound()
-  }
-}
-
-extension DuetQuery where M: SoftDeletable {
-  func all() async throws -> [M] {
-    try await db.select(
-      M.self,
-      where: constraints + [M.column("deleted_at") == .null],
-      orderBy: order,
-      limit: limit
-    )
-  }
-
-  func delete() async throws -> [M] {
-    let models = try await db.select(M.self, where: constraints, orderBy: order, limit: limit)
-    for var model in models {
-      model.deletedAt = Current.date()
-    }
-    try await db.update(models)
-    return models
-  }
-
-  func deleteOne() async throws -> M {
-    let models = try await db.select(M.self, where: constraints, orderBy: order, limit: limit)
-    guard models.count == 1 else { throw DbError.tooManyResultsForDeleteOne }
-    guard var model = models.first else { throw DbError.notFound }
-    model.deletedAt = Current.date()
-    try await db.update(model)
-    return model
   }
 }

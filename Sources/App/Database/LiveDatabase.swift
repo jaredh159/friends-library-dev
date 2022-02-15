@@ -57,12 +57,19 @@ struct LiveDatabase: SQLQuerying, SQLMutating, DatabaseClient {
   }
 
   @discardableResult
-  func delete<M: SoftDeletable>(
+  func delete<M: DuetModel>(
     _ Model: M.Type,
-    where constraints: [SQL.WhereConstraint<M>]? = nil
+    where constraints: [SQL.WhereConstraint<M>],
+    orderBy order: SQL.Order<M>? = nil,
+    limit: Int? = nil
   ) async throws -> [M] {
     let models = try await select(Model.self, where: constraints)
-    let prepared = SQL.softDelete(M.self, where: constraints)
+    let prepared: SQL.PreparedStatement
+    if Model.isSoftDeletable {
+      prepared = SQL.softDelete(M.self, where: constraints)
+    } else {
+      prepared = SQL.delete(from: M.self, where: constraints, orderBy: order, limit: limit)
+    }
     try await SQL.execute(prepared, on: db)
     if M.isPreloaded { await entityRepo.flush() }
     return models
@@ -74,14 +81,17 @@ struct LiveDatabase: SQLQuerying, SQLMutating, DatabaseClient {
     orderBy: SQL.Order<M>? = nil,
     limit: Int? = nil
   ) async throws -> [M] {
+    let selectConstraints = !Model.isSoftDeletable
+      ? constraints
+      : (constraints ?? []) + [try Model.column("deleted_at") == .null]
     if M.isPreloaded {
       return try await entityRepo.getEntities()
-        .select(M.self, where: constraints, orderBy: orderBy, limit: limit)
+        .select(M.self, where: selectConstraints, orderBy: orderBy, limit: limit)
     }
     let prepared = SQL.select(
       .all,
       from: M.self,
-      where: constraints ?? [],
+      where: selectConstraints ?? [],
       orderBy: orderBy,
       limit: limit
     )

@@ -11,6 +11,7 @@ extension FriendResidenceDuration: ApiModel {
 
 extension FriendResidenceDuration: DuetModel {
   static let tableName = M25.tableName
+  static var isSoftDeletable: Bool { false }
 }
 
 extension FriendResidenceDuration {

@@ -11,6 +11,7 @@ extension Edition: ApiModel {
 
 extension Edition: DuetModel {
   static let tableName = M17.tableName
+  static var isSoftDeletable: Bool { true }
 }
 
 extension Edition {

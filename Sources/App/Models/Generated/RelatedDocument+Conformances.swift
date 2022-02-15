@@ -11,6 +11,7 @@ extension RelatedDocument: ApiModel {
 
 extension RelatedDocument: DuetModel {
   static let tableName = M23.tableName
+  static var isSoftDeletable: Bool { false }
 }
 
 extension RelatedDocument {

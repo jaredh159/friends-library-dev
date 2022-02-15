@@ -8,6 +8,7 @@ extension Token: ApiModel {
 
 extension Token: DuetModel {
   static let tableName = M4.tableName
+  static var isSoftDeletable: Bool { false }
 }
 
 extension Token {

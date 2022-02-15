@@ -11,6 +11,7 @@ extension AudioPart: ApiModel {
 
 extension AudioPart: DuetModel {
   static let tableName = M21.tableName
+  static var isSoftDeletable: Bool { false }
 }
 
 extension AudioPart {

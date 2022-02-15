@@ -11,6 +11,7 @@ extension Document: ApiModel {
 
 extension Document: DuetModel {
   static let tableName = M14.tableName
+  static var isSoftDeletable: Bool { true }
 }
 
 extension Document {

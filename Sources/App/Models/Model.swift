@@ -150,6 +150,7 @@ protocol DuetModel: UUIDIdentifiable, SQLInspectable, ApiModel {
   static func columnName(_ column: ColumnName) -> String
   static var tableName: String { get }
   var insertValues: [ColumnName: Postgres.Data] { get }
+  static var isSoftDeletable: Bool { get }
 }
 
 extension DuetModel {
@@ -226,15 +227,15 @@ extension Tagged where RawValue == UUID {
   var lowercased: String { rawValue.lowercased }
 }
 
-protocol Auditable: DuetModel {
+protocol Auditable {
   var createdAt: Date { get set }
 }
 
-protocol Touchable: DuetModel {
+protocol Touchable {
   var updatedAt: Date { get set }
 }
 
-protocol SoftDeletable: DuetModel {
+protocol SoftDeletable {
   var deletedAt: Date? { get set }
 }
 

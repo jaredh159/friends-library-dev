@@ -1,7 +1,9 @@
 # Converge TODOs:
 
-- [ ] - FriendResidenceDuration might be better as an OptionalChild, since i don't think
-    we ever want more than one... or do we? think
+- [ ] - Look at @TODO in MockDatabase, soft deletes
+- [ ] - Would be nice to be able to Current.db.\* and assert on SQL produced (especially
+    soft-deletes)
+- [ ] - need to rethink/handle checking for NULL in db, current method stinky...
 
 - [ ] - ANOTHER_TODO
 

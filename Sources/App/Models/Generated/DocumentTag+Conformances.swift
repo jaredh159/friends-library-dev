@@ -11,6 +11,7 @@ extension DocumentTag: ApiModel {
 
 extension DocumentTag: DuetModel {
   static let tableName = M15.tableName
+  static var isSoftDeletable: Bool { false }
 }
 
 extension DocumentTag {

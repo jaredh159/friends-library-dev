@@ -32,7 +32,11 @@ export function generateModelConformances(
   const table = migrationNumber
     ? `M${migrationNumber}.tableName`
     : `"${pascalToSnake(name)}s"`;
-  code += `extension ${name}: DuetModel {\n  static let tableName = ${table}\n}\n`;
+
+  let isSoftDeletable = !!model.props.find((p) => p.name === `deletedAt`);
+  code += `extension ${name}: DuetModel {\n  static let tableName = ${table}\n`;
+  code += `  static var isSoftDeletable: Bool { ${isSoftDeletable} }\n`;
+  code += `}\n`;
 
   code += `\nextension ${name} {\n  typealias ColumnName = CodingKeys\n\n`;
   code += `  enum CodingKeys: String, CodingKey, CaseIterable {\n    `;

@@ -8,6 +8,7 @@ extension Isbn: ApiModel {
 
 extension Isbn: DuetModel {
   static let tableName = M19.tableName
+  static var isSoftDeletable: Bool { false }
 }
 
 extension Isbn {
