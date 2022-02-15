@@ -132,6 +132,7 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
     AppSchema.getIsbn
     AppSchema.getEditionChapter
     AppSchema.getAudio
+    AppSchema.getAudios
     AppSchema.getAudioPart
 
     Field("getLatestArtifactProductionVersion", at: Resolver.getLatestArtifactProductionVersion)

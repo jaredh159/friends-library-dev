@@ -8,6 +8,7 @@ extension Edition {
       let width: Int
       let height: Int
       let url: URL
+      let path: String
     }
 
     struct Square: Codable {
@@ -41,7 +42,7 @@ extension Edition {
   }
 
   var images: Images {
-    let path = "\(Env.CLOUD_STORAGE_BUCKET_URL)/\(directoryPath)/images"
+    let path = "\(directoryPath)/images"
     return Images(
       square: .init(
         w45: squareImage(45, path),
@@ -79,6 +80,7 @@ extension AppSchema {
       Field("width", at: \.width)
       Field("height", at: \.height)
       Field("url", at: \.url.absoluteString)
+      Field("path", at: \.path)
     }
   }
 
@@ -125,17 +127,21 @@ extension AppSchema {
 private let threeDImageAspectRatio: Double = 1120.0 / 1640.0
 
 private func squareImage(_ size: Int, _ path: String) -> Edition.Images.Image {
-  .init(
+  let filename = "cover--\(size)x\(size).png"
+  return .init(
     width: size,
     height: size,
-    url: URL(string: "\(path)/cover--\(size)x\(size).png")!
+    url: URL(string: "\(Env.CLOUD_STORAGE_BUCKET_URL)/\(path)/\(filename)")!,
+    path: "\(path)/\(filename)"
   )
 }
 
 private func threeDImage(_ width: Int, _ path: String) -> Edition.Images.Image {
-  .init(
+  let filename = "cover-3d--w\(width).png"
+  return .init(
     width: width,
     height: Int((Double(width) / threeDImageAspectRatio).rounded(.down)),
-    url: URL(string: "\(path)/cover-3d--w\(width).png")!
+    url: URL(string: "\(Env.CLOUD_STORAGE_BUCKET_URL)/\(path)/\(filename)")!,
+    path: path
   )
 }

@@ -237,6 +237,7 @@ extension DownloadableFile {
 extension AppSchema {
   static var DownloadableFileType: AppType<DownloadableFile> {
     Type(DownloadableFile.self) {
+      Field("filename", at: \.filename)
       Field("logPath", at: \.logPath)
       Field("sourcePath", at: \.sourcePath)
       Field("logUrl", at: \.logUrl.absoluteString)
