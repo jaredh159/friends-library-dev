@@ -1,5 +1,6 @@
 import FluentSQL
 import Foundation
+import Vapor
 
 enum SQL {
   enum OrderDirection {
@@ -45,8 +46,12 @@ enum SQL {
       column == .null
     }
 
-    func sql(boundTo binding: Int) -> String {
-      "\"\(M.columnName(column))\" \(self.operator.sql) $\(binding)"
+    func sql(boundTo binding: inout Int) -> String {
+      if `operator` == .equals, value == .null {
+        return "\"\(M.columnName(column))\" IS NULL"
+      }
+      defer { binding += 1 }
+      return "\"\(M.columnName(column))\" \(self.operator.sql) $\(binding)"
     }
   }
 
@@ -101,9 +106,9 @@ enum SQL {
     }
 
     let query = """
-      UPDATE "\(table)"
-      SET \(setPairs.list)\(WHERE)\(RETURNING);
-      """
+    UPDATE "\(table)"
+    SET \(setPairs.list)\(WHERE)\(RETURNING);
+    """
 
     return PreparedStatement(query: query, bindings: bindings)
   }
@@ -158,11 +163,11 @@ enum SQL {
     }
 
     let query = """
-      INSERT INTO "\(M.tableName)"
-      (\(columns.quotedList))
-      VALUES
-      \(placeholderGroups.list);
-      """
+    INSERT INTO "\(M.tableName)"
+    (\(columns.quotedList))
+    VALUES
+    \(placeholderGroups.list);
+    """
 
     return PreparedStatement(query: query, bindings: bindings)
   }
@@ -180,8 +185,8 @@ enum SQL {
     let ORDER_BY = Order<M>.sql(order)
     let LIMIT = limit.sql()
     let query = """
-      SELECT \(columns.sql) FROM "\(M.tableName)"\(WHERE)\(ORDER_BY)\(LIMIT);
-      """
+    SELECT \(columns.sql) FROM "\(M.tableName)"\(WHERE)\(ORDER_BY)\(LIMIT);
+    """
 
     return PreparedStatement(query: query, bindings: bindings)
   }
@@ -194,6 +199,7 @@ enum SQL {
     // e.g. SELECT statements with no WHERE clause have
     // no bindings, and so can't be sent as a pg prepared statement
     if statement.bindings.isEmpty {
+      logSql(statement.query)
       return try await db.raw("\(raw: statement.query)").all()
     }
 
@@ -208,15 +214,14 @@ enum SQL {
       let id = UUID().uuidString.replacingOccurrences(of: "-", with: "").lowercased()
       name = "plan_\(id)"
       let insertPrepareSql = """
-        PREPARE \(name)(\(types)) AS
-        \(statement.query)
-        """
+      PREPARE \(name)(\(types)) AS
+      \(statement.query)
+      """
       await prepared.set(name, forKey: key)
       _ = try await db.raw("\(raw: insertPrepareSql)").all().get()
     }
 
-    Current.logger.info("Executing SQL:\n\n\(statement.query)\n")
-
+    logSql(unPrepare(statement: statement))
     return try await db.raw("\(raw: "EXECUTE \(name)(\(params))")").all()
   }
 
@@ -230,9 +235,11 @@ enum SQL {
     var parts: [String] = []
     for (index, constraint) in constraints.enumerated() {
       let prefix = index == 0 ? "WHERE" : "AND"
-      bindings.append(constraint.value)
-      parts.append("\(prefix) \(constraint.sql(boundTo: binding))")
-      binding += 1
+      // yuck, fix
+      if constraint.value != .null {
+        bindings.append(constraint.value)
+      }
+      parts.append("\(prefix) \(constraint.sql(boundTo: &binding))")
     }
     return "\(separatedBy)\(parts.joined(separator: separatedBy))"
   }
@@ -242,12 +249,12 @@ enum SQL {
   }
 }
 
-extension Sequence where Element == String {
-  fileprivate var list: String {
+private extension Sequence where Element == String {
+  var list: String {
     joined(separator: ", ")
   }
 
-  fileprivate var quotedList: String {
+  var quotedList: String {
     "\"\(joined(separator: "\", \""))\""
   }
 }
@@ -260,8 +267,8 @@ func == <M: DuetModel>(lhs: M.ColumnName, rhs: UUIDStringable) -> SQL.WhereConst
   .init(column: lhs, operator: .equals, value: .uuid(rhs))
 }
 
-extension Optional where Wrapped == Int {
-  fileprivate func sql(prefixedBy prefix: String = "\n") -> String {
+private extension Optional where Wrapped == Int {
+  func sql(prefixedBy prefix: String = "\n") -> String {
     guard let limit = self else { return "" }
     return "\(prefix)LIMIT \(limit)"
   }
@@ -284,3 +291,17 @@ private actor PreparedStatements {
 }
 
 private var prepared = PreparedStatements()
+
+private func unPrepare(statement: SQL.PreparedStatement) -> String {
+  var sql = statement.query
+  for (index, binding) in statement.bindings.reversed().enumerated() {
+    sql = sql.replacingOccurrences(of: "$\(statement.bindings.count - index)", with: binding.param)
+  }
+  return sql
+}
+
+private func logSql(_ sql: String) {
+  if Vapor.Environment.get("LOG_SQL") != nil {
+    print("\n\u{001B}[0;35m\(sql)\u{001B}[0;0m")
+  }
+}

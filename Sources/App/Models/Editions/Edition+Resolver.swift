@@ -26,7 +26,7 @@ extension Resolver {
       let isbn: Isbn
       do {
         isbn = try await Current.db.query(Isbn.self)
-          .where(.isNull(.editionId))
+          .where(.editionId == .uuid(nil))
           .first()
       } catch {
         await slackError("Failed to query ISBN to assign to new edition: \(error)")

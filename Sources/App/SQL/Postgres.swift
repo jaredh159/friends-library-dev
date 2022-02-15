@@ -48,6 +48,37 @@ enum Postgres {
     case null
     case currentTimestamp
 
+    var isNullish: Bool {
+      switch self {
+        case .null:
+          return true
+        case .id, .currentTimestamp:
+          return false
+        case .string(let wrapped):
+          return wrapped == nil
+        case .intArray(let wrapped):
+          return wrapped == nil
+        case .int(let wrapped):
+          return wrapped == nil
+        case .int64(let wrapped):
+          return wrapped == nil
+        case .float(let wrapped):
+          return wrapped == nil
+        case .double(let wrapped):
+          return wrapped == nil
+        case .uuid(let wrapped):
+          return wrapped == nil
+        case .bool(let wrapped):
+          return wrapped == nil
+        case .date(let wrapped):
+          return wrapped == nil
+        case .enum(let wrapped):
+          return wrapped == nil
+        case .json(let wrapped):
+          return wrapped == nil
+      }
+    }
+
     var typeName: String {
       switch self {
         case .string:
@@ -165,6 +196,9 @@ extension Postgres.Data: ExpressibleByBooleanLiteral {
 
 extension Postgres.Data: Equatable {
   static func == (lhs: Postgres.Data, rhs: Postgres.Data) -> Bool {
-    [lhs.typeName, lhs.param] == [rhs.typeName, rhs.param]
+    if lhs.isNullish, rhs.isNullish {
+      return true
+    }
+    return [lhs.typeName, lhs.param] == [rhs.typeName, rhs.param]
   }
 }
