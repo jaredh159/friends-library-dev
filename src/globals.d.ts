@@ -1,3 +1,6 @@
+type UUID = string;
+type Int64 = number;
+
 declare module 'gmail-send' {
   export interface SendOptions {
     user?: string;

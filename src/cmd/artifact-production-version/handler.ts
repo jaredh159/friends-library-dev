@@ -30,10 +30,11 @@ export default async function handler({ sha }: Argv): Promise<void> {
   process.exit(1);
 }
 
-const MUTATION = gql`
-  mutation CreateArtifactProductionVersion($revision: String!) {
-    version: createArtifactProductionVersion(revision: $revision) {
-      sha: version
-    }
-  }
-`;
+const MUTATION = ``;
+// const MUTATION = gql`
+//   mutation CreateArtifactProductionVersion($revision: String!) {
+//     version: createArtifactProductionVersion(revision: $revision) {
+//       sha: version
+//     }
+//   }
+// `;

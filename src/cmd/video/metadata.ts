@@ -95,7 +95,7 @@ function timestamps(
     .slice(startIdx, nextVolIdx || Infinity)
     .map((part, idx) => {
       const line = `${durationStr(runningTotal)} - ${part.title}`;
-      runningTotal += durations[idx];
+      runningTotal += durations[idx]!;
       return line;
     })
     .join(`\n`);

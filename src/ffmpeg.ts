@@ -2,9 +2,9 @@ import fs from 'fs-extra';
 import { dirname, basename } from 'path';
 import { red } from 'x-chalk';
 import exec from 'x-exec';
-import { Audio } from '@friends-library/friends';
 import { AudioQuality } from '@friends-library/types';
 import { getPartTags } from './cmd/audio/tags';
+import { Audio } from './cmd/audio/types';
 
 export function makeVideo(
   workDir: string,
@@ -79,7 +79,7 @@ export function getDuration(audioFilePath: string): [string, number] {
   for (const line of lines) {
     if (line.trim().startsWith(`Duration: `)) {
       const str = line.replace(/ +Duration: (([^,])+)/, `$1`).replace(/,.*/, ``);
-      const [hours, minutes, seconds] = str.split(`:`).map(parseFloat);
+      const [hours = 0, minutes = 0, seconds = 0] = str.split(`:`).map(parseFloat);
       // prettier-ignore
       const num = seconds + (minutes * 60) + (hours * 60 * 60);
       return [str, num];

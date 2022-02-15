@@ -59,7 +59,7 @@ function dpcFromPath(doc: string, isolate?: number): FsDocPrecursor {
       let trimmed = ch.trimEnd();
       const lines = trimmed.split(`\n`);
       let context: string | undefined = undefined;
-      if (lines[lines.length - 1].match(/^\[.*\]$/)) {
+      if (lines[lines.length - 1]!.match(/^\[.*\]$/)) {
         context = lines.pop();
         trimmed = lines.join(`\n`);
       }
@@ -78,7 +78,7 @@ function dpcFromPath(doc: string, isolate?: number): FsDocPrecursor {
     .map((ch) => `${ch.trimEnd()}\n`);
 
   if (isolate && chapters[isolate - 1]) {
-    chapters = [chapters[isolate - 1]];
+    chapters = [chapters[isolate - 1]!];
   }
 
   dpc.asciidocFiles = chapters.map((ch, idx) => ({

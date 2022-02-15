@@ -1,14 +1,13 @@
 import { dirname } from 'path';
 import omit from 'lodash.omit';
 import env from '@friends-library/env';
-import { Audio } from '@friends-library/friends';
 import { AudioQuality, Lang } from '@friends-library/types';
 import { translate, setLocale } from '@friends-library/locale';
 import { utf8ShortTitle } from '@friends-library/adoc-utils';
 import { logDebug } from '../../sub-log';
 import Client from './SoundCloudClient';
 import { getPartTitle } from './tags';
-import { SoundCloudTrackAttrs, SoundCloudPlaylistAttrs } from './types';
+import { SoundCloudTrackAttrs, Audio, SoundCloudPlaylistAttrs } from './types';
 
 export function getTrack(trackId: number): Promise<null | Record<string, any>> {
   return getClient().getTrack(trackId);
@@ -73,7 +72,11 @@ export function playlistAttrs(
     trackIds: audio.parts.map((part) => part[trackIdProp]),
     title: utf8ShortTitle(document.title),
     description: document.description,
-    tags: soundcloudTags(document.tags, quality, lang),
+    tags: soundcloudTags(
+      document.tags.map((t) => t.type),
+      quality,
+      lang,
+    ),
   };
 }
 
@@ -111,8 +114,12 @@ export function trackAttrs(
     commentable: false,
     label_name: lang === `en` ? `Friends Library Publishing` : `Biblioteca de los Amigos`,
     title: getPartTitle(audio, partIndex),
-    description: edition.description || document.description,
-    tags: soundcloudTags(document.tags, quality, lang),
+    description: document.description,
+    tags: soundcloudTags(
+      document.tags.map((t) => t.type),
+      quality,
+      lang,
+    ),
   };
 }
 
@@ -135,9 +142,12 @@ export function attrsMatch(
     }
 
     if (key === `tags`) {
-      key = `tag_list`;
-      const apiTags = fromApi.tag_list.replace(/"/g, ``);
+      const apiTags = fromApi.tag_list.trim().replace(/"/g, ``);
       return apiTags !== value.join(` `);
+    }
+
+    if (key === `permalink`) {
+      return value !== fromApi.permalink_url.split(`/`).pop();
     }
 
     const attrMismatch = fromApi[key] !== value;

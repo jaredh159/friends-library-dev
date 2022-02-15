@@ -32,8 +32,8 @@ function makeCsv(): void {
 
   editions.forEach((edition) => {
     const document = edition.document;
-    const [authorFirst, authorLast = ``] = splitName(document.friend.name);
-    const [editorFirst, editorLast = ``] = splitName(edition.editor || ``);
+    const [authorFirst = ``, authorLast = ``] = splitName(document.friend.name);
+    const [editorFirst = ``, editorLast = ``] = splitName(edition.editor || ``);
     rows.push([
       edition.isbn,
       edition.type === `original`

@@ -67,7 +67,7 @@ async function makeSingleVolumes(
   while ((variant = variants.shift())) {
     log(c`     {magenta.dim ->} {gray size:} {cyan ${variant}}`);
     const size = variant === `xl--condensed` ? `xl` : variant;
-    const [manifest] = await paperbackManifest(dpc, {
+    const [manifest = {}] = await paperbackManifest(dpc, {
       printSize: size,
       frontmatter: true,
       allowSplits: false,
@@ -110,7 +110,7 @@ async function makeMultiVolumes(
     });
 
     for (let idx = 0; idx < manifests.length; idx++) {
-      const manifest = manifests[idx];
+      const manifest = manifests[idx]!;
       const vol = idx + 1;
       const volFilename = filename(dpc, variant, vol);
       const filepath = await artifacts.pdf(manifest, volFilename, opts);

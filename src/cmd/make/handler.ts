@@ -96,7 +96,7 @@ export async function makeDpc(
       const filename = makeFilename(dpc, type);
       const srcPath = makeSrcPath(dpc, type);
       const options = { namespace, srcPath, check: argv.check };
-      files.push(await artifacts.create(type, manifests[idx], filename, options));
+      files.push(await artifacts.create(type, manifests[idx]!, filename, options));
     }
   }
   return files;
@@ -170,7 +170,7 @@ function lint(dpcPath: string, fix: boolean, isolate?: number): void {
     if (matches.length !== 1) {
       throw new Error(`Unexpected result isolating ${isolate}`);
     }
-    [path] = matches;
+    path = matches[1]!;
   }
 
   if (fix === true) {
@@ -192,8 +192,8 @@ function lint(dpcPath: string, fix: boolean, isolate?: number): void {
 }
 
 async function appEbookWithCss(dpc: DocPrecursor): Promise<[FileManifest]> {
-  const [appManifest] = await manifest.appEbook(dpc);
-  const htmlFilename = Object.keys(appManifest)[0];
+  const [appManifest = {}] = await manifest.appEbook(dpc);
+  const htmlFilename = Object.keys(appManifest)[0]!;
   const { ARTIFACT_DIR } = artifacts.dirs({ namespace: `fl-make/_app-ebook-css` });
   const cssPath = `${ARTIFACT_DIR}/app-ebook.css`;
   fs.ensureDirSync(ARTIFACT_DIR);

@@ -27,7 +27,7 @@ export default async function handler(argv: CoverOptions): Promise<void> {
     });
 
     for (let i = 0; i < manifests.length; i++) {
-      const manifest = manifests[i];
+      const manifest = manifests[i]!;
       const filename = `cover-${dpc.document?.id}-${dpc.edition?.type}-${i}`;
       const pdfPath = await pdf(manifest, filename, { namespace: `fl-cover` });
       execSync(`open ${pdfPath}`);

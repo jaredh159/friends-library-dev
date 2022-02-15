@@ -1,22 +1,23 @@
 import fs from 'fs-extra';
-import { dirname } from 'path';
 import { sync as glob } from 'glob';
+import { dirname } from 'path';
 import exec from 'x-exec';
 import md5File from 'md5-file';
 import * as cloud from '@friends-library/cloud';
 import { c, log } from 'x-chalk';
-import { Audio } from '@friends-library/friends';
-import * as docMeta from '@friends-library/document-meta';
 import { AudioQuality, AUDIO_QUALITIES, Lang } from '@friends-library/types';
 import { AudioFsData } from './types';
 import { logDebug, logAction, logError } from '../../sub-log';
-import { getAudios } from '../../audio';
-import * as yml from '../../yml-writer';
 import * as ffmpeg from '../../ffmpeg';
 import * as cache from './cache';
 import * as m4bTool from './m4b';
 import * as soundcloud from './soundcloud';
 import getSrcFsData from './audio-fs-data';
+import { Audio } from './types';
+import { UpdateAudioInput, UpdateAudioPartInput } from '../../graphql/globalTypes';
+import SoundCloudResumableIds from './SoundCloudResumableIds';
+import isEqual from 'lodash.isequal';
+import * as api from './api';
 
 interface Argv {
   lang: Lang | 'both';
@@ -39,7 +40,8 @@ export default async function handler(passedArgv: Argv): Promise<void> {
   argv = passedArgv;
   ffmpeg.ensureExists();
   m4bTool.ensureExists();
-  for (const audio of getAudios(argv.lang, argv.limit, argv.pattern)) {
+  const audios = await getAudios();
+  for (const audio of audios) {
     await handleAudio(audio);
   }
   log(``);
@@ -55,9 +57,13 @@ async function handleAudio(audio: Audio): Promise<void> {
   await syncMp3s(audio, fsData);
   await syncMp3Zips(audio, fsData);
   await syncM4bs(audio, fsData);
-  await syncSoundCloudTracks(audio, fsData);
-  await syncSoundCloudPlaylists(audio, fsData);
-  await storeFilesizeMeta(audio, fsData);
+
+  const resumableIds = new SoundCloudResumableIds(audio.id);
+  await syncSoundCloudTracks(audio, fsData, resumableIds);
+  await syncSoundCloudPlaylists(audio, fsData, resumableIds);
+  await updateEntities(audio, fsData, resumableIds);
+  resumableIds.destroy();
+
   await cleanCacheFiles(fsData);
 
   if (argv.cleanDerivedDir && fsData.derivedPath) {
@@ -66,7 +72,7 @@ async function handleAudio(audio: Audio): Promise<void> {
 }
 
 async function ensureAudioImage(audio: Audio, fsData: AudioFsData): Promise<void> {
-  const cloudPath = `${fsData.relPath}/${fsData.basename}--${audio.edition.type}--audio.png`;
+  const cloudPath = audio.edition.images.square.w1400.path;
   const localPath = `${fsData.derivedPath}/cover.png`;
   if (fs.existsSync(localPath)) {
     const localHash = await md5File(localPath);
@@ -86,7 +92,7 @@ async function deriveUncachedMp3s(audio: Audio, fsData: AudioFsData): Promise<vo
   for (let idx = 0; idx < audio.parts.length; idx++) {
     const cached = cache.getPart(fsData, idx);
     for (const quality of AUDIO_QUALITIES) {
-      const mp3Path = fsData.parts[idx].mp3s[quality].localPath;
+      const mp3Path = fsData.parts[idx]!.mp3s[quality].localPath;
       const partDesc = `pt${idx + 1} (${quality})`;
       if (fs.existsSync(mp3Path) && !cached[quality]) {
         logAction(`storing cache data mp3 for ${c`{cyan ${partDesc}}`}`);
@@ -105,7 +111,7 @@ async function syncMp3s(audio: Audio, fsData: AudioFsData): Promise<void> {
   for (let idx = 0; idx < audio.parts.length; idx++) {
     const cached = cache.getPart(fsData, idx);
     for (const quality of AUDIO_QUALITIES) {
-      const mp3Info = fsData.parts[idx].mp3s[quality];
+      const mp3Info = fsData.parts[idx]!.mp3s[quality];
       const localHash = ensureCache(cached[quality]).mp3Hash;
       const remoteHash = await cloud.md5File(mp3Info.cloudPath);
       const partDesc = `pt${idx + 1} (${quality})`;
@@ -196,26 +202,28 @@ async function syncM4bs(audio: Audio, fsData: AudioFsData): Promise<void> {
   }
 }
 
-async function syncSoundCloudTracks(audio: Audio, fsData: AudioFsData): Promise<void> {
+async function syncSoundCloudTracks(
+  audio: Audio,
+  fsData: AudioFsData,
+  resumableIds: SoundCloudResumableIds,
+): Promise<void> {
   for (let idx = 0; idx < audio.parts.length; idx++) {
-    const part = audio.parts[idx];
+    const part = audio.parts[idx]!;
     const partCache = cache.getPart(fsData, idx);
     for (const quality of AUDIO_QUALITIES) {
-      const localPath = fsData.parts[idx].mp3s[quality].localPath;
+      const localPath = fsData.parts[idx]!.mp3s[quality].localPath;
       const trackIdProp = quality === `HQ` ? `externalIdHq` : `externalIdLq`;
       let trackId = part[trackIdProp];
       const fileDesc = `pt${idx + 1} (${quality})`;
 
-      // STEP 1: no track yet? upload it. (0 is my convention non-uploaded audios in .yml files)
+      // STEP 1: no track yet? upload it. (0 is my convention for non-uploaded audios)
       if (trackId === 0) {
         logAction(`uploading new soundcloud file for ${c`{cyan ${fileDesc}}`}`);
         if (!argv.dryRun) {
           await ensureLocalMp3(audio, fsData, idx, quality);
           trackId = await soundcloud.uploadNewTrack(audio, localPath, idx, quality);
           logAction(`soundcloud track added for ${fileDesc} ${c`{green ${trackId}}`}`);
-          updateYml(audio, (data) => {
-            data.parts[idx][`external_id_${quality.toLowerCase()}`] = trackId;
-          });
+          resumableIds.setPartId(idx, quality, trackId);
           logAction(`awaiting soundcloud track API data for ${c`{cyan ${fileDesc}}`}`);
           await newSoundcloudTrackReady(trackId);
         } else {
@@ -232,9 +240,11 @@ async function syncSoundCloudTracks(audio: Audio, fsData: AudioFsData): Promise<
       }
 
       // STEP 3: replace the remote file if it's not exactly the same size as local
-      const remoteSize = track.original_content_size;
-      const localSize = ensureCache(partCache[quality]).mp3Size;
-      if (localSize !== remoteSize) {
+      // HACK: we use the `release` track attribute to store our hashes
+      const [remoteArtworkHash = ``, remoteMp3Hash = ``] = `${track.release}`.split(`/`);
+      const localHash = partCache[quality]?.mp3Hash;
+
+      if (localHash !== remoteMp3Hash) {
         logAction(`replacing soundcloud file for ${c`{cyan ${fileDesc}}`}`);
         if (!argv.dryRun) {
           await ensureLocalMp3(audio, fsData, idx, quality);
@@ -245,9 +255,6 @@ async function syncSoundCloudTracks(audio: Audio, fsData: AudioFsData): Promise<
       }
 
       // STEP 4: (before check attrs!) replace remote artwork if not same as local
-      // hack: use the `release` attr to store artwork hash, since soundcloud
-      // doesn't give us access to the originally uploaded artwork to verify identity
-      const remoteArtworkHash = track.release;
       const localArtworkPath = `${fsData.derivedPath}/cover.png`;
       const localArtworkHash = await md5File(localArtworkPath);
       if (localArtworkHash !== remoteArtworkHash) {
@@ -259,7 +266,7 @@ async function syncSoundCloudTracks(audio: Audio, fsData: AudioFsData): Promise<
 
       // STEP 5: check all the track attributes, update if they don't match exactly
       const attrs = soundcloud.trackAttrs(audio, idx, quality);
-      attrs.release = localArtworkHash; // hack, see above ^^^
+      attrs.release = `${localArtworkHash}/${localHash}`; // hack, see above ^^^
       if (!soundcloud.attrsMatch(attrs, track)) {
         logAction(`updating soundcloud attrs for ${c`{cyan ${fileDesc}}`}`);
         !argv.dryRun && soundcloud.updateTrackAttrs(trackId, attrs);
@@ -270,23 +277,25 @@ async function syncSoundCloudTracks(audio: Audio, fsData: AudioFsData): Promise<
   }
 }
 
-async function syncSoundCloudPlaylists(audio: Audio, fsData: AudioFsData): Promise<void> {
+async function syncSoundCloudPlaylists(
+  audio: Audio,
+  fsData: AudioFsData,
+  resumableIds: SoundCloudResumableIds,
+): Promise<void> {
   if (audio.parts.length === 1) {
     return;
   }
 
   for (const quality of AUDIO_QUALITIES) {
     const propKey = quality === `HQ` ? `externalPlaylistIdHq` : `externalPlaylistIdLq`;
-    let playlistId = audio[propKey];
+    let playlistId = audio[propKey] ?? -1;
 
     // STEP 1: create the playlist if necessary
-    if (!playlistId) {
+    if (playlistId === -1) {
       logAction(`creating soundcloud playlist for ${c`{cyan (${quality})}`}`);
       if (!argv.dryRun) {
         playlistId = await soundcloud.createPlaylist(audio, quality);
-        updateYml(audio, (data) => {
-          data[`external_playlist_id_${quality.toLowerCase()}`] = playlistId;
-        });
+        resumableIds.setPlaylistId(quality, playlistId);
       } else {
         logError(`cannot continue in dry-run mode without playlistId`);
         continue;
@@ -321,66 +330,75 @@ async function syncSoundCloudPlaylists(audio: Audio, fsData: AudioFsData): Promi
   }
 }
 
-let meta: undefined | docMeta.DocumentMeta;
-
-async function storeFilesizeMeta(audio: Audio, fsData: AudioFsData): Promise<void> {
-  if (!meta) {
-    meta = await docMeta.fetchSingleton();
-  }
-
-  const editionMeta = meta.get(audio.edition.path);
-  if (!editionMeta) {
-    logError(`Edition meta not found\n`);
-    process.exit(1);
-  }
-
+async function updateEntities(
+  audio: Audio,
+  fsData: AudioFsData,
+  resumableIds: SoundCloudResumableIds,
+): Promise<void> {
   const cached = cache.get(fsData);
   const hqCache = ensureCache(cached.HQ);
   const lqCache = ensureCache(cached.LQ);
-  const combined: (string | number | undefined)[] = Object.values(hqCache).concat(
-    Object.values(lqCache),
-  );
 
-  if (combined.length !== 8 || combined.includes(undefined)) {
-    logError(`Unexpected missing cache for store filesizes\n`);
-    process.exit(1);
-  }
-
-  const localAudioMeta = {
-    durations: audio.parts.map(
-      (p, idx) => ffmpeg.getDuration(fsData.parts[idx].srcLocalPath)[1],
-    ),
-    LQ: {
-      mp3ZipSize: lqCache.mp3ZipSize ?? -1,
-      m4bSize: lqCache.m4bSize ?? -1,
-      parts: audio.parts.map((p, idx) => {
-        const partCache = cache.getPart(fsData, idx);
-        return { mp3Size: partCache.LQ?.mp3Size ?? -1 };
-      }),
-    },
-    HQ: {
-      mp3ZipSize: hqCache.mp3ZipSize ?? -1,
-      m4bSize: hqCache.m4bSize ?? -1,
-      parts: audio.parts.map((p, idx) => {
-        const partCache = cache.getPart(fsData, idx);
-        return { mp3Size: partCache.HQ?.mp3Size ?? -1 };
-      }),
-    },
+  const existingAudio: UpdateAudioInput = {
+    id: audio.id,
+    editionId: audio.edition.id,
+    isIncomplete: audio.isIncomplete,
+    externalPlaylistIdHq: audio.externalPlaylistIdHq,
+    externalPlaylistIdLq: audio.externalPlaylistIdLq,
+    m4bSizeHq: audio.m4bSizeHq,
+    m4bSizeLq: audio.m4bSizeLq,
+    mp3ZipSizeHq: audio.mp3ZipSizeHq,
+    mp3ZipSizeLq: audio.mp3ZipSizeLq,
+    reader: audio.reader,
   };
 
-  if (JSON.stringify(localAudioMeta) === JSON.stringify(editionMeta.audio)) {
-    logDebug(`skipping store meta - up to date`);
-    return;
+  const updatedAudio: UpdateAudioInput = {
+    ...existingAudio,
+    externalPlaylistIdHq: resumableIds.getPlaylistId(`HQ`),
+    externalPlaylistIdLq: resumableIds.getPlaylistId(`LQ`),
+    m4bSizeHq: assertDefined(hqCache.m4bSize),
+    m4bSizeLq: assertDefined(lqCache.m4bSize),
+    mp3ZipSizeHq: assertDefined(hqCache.mp3ZipSize),
+    mp3ZipSizeLq: assertDefined(lqCache.mp3ZipSize),
+  };
+
+  if (!isEqual(existingAudio, updatedAudio)) {
+    logAction(`updating audio entity`);
+    !argv.dryRun && (await api.updateAudio(updatedAudio));
+  } else {
+    logDebug(`skipping update audio entity, unchanged`);
   }
 
-  logAction(`saving changed filesizes`);
-  if (argv.dryRun) return;
-  meta.set(audio.edition.path, {
-    ...editionMeta,
-    updated: new Date().toISOString(),
-    audio: localAudioMeta,
-  });
-  await docMeta.save(meta);
+  for (let index = 0; index < audio.parts.length; index++) {
+    const part = assertDefined(audio.parts[index]);
+    const existingPart: UpdateAudioPartInput = {
+      id: part.id,
+      audioId: audio.id,
+      title: part.title,
+      order: part.order,
+      chapters: part.chapters,
+      duration: part.duration,
+      externalIdHq: part.externalIdHq,
+      externalIdLq: part.externalIdLq,
+      mp3SizeHq: part.mp3SizeHq,
+      mp3SizeLq: part.mp3SizeLq,
+    };
+
+    const updatedPart: UpdateAudioPartInput = {
+      ...existingPart,
+      externalIdHq: resumableIds.getPartId(index, `HQ`) ?? part.externalIdHq,
+      externalIdLq: resumableIds.getPartId(index, `LQ`) ?? part.externalIdLq,
+      mp3SizeHq: assertDefined(cache.getPart(fsData, index).HQ?.mp3Size),
+      mp3SizeLq: assertDefined(cache.getPart(fsData, index).LQ?.mp3Size),
+    };
+
+    if (!isEqual(existingPart, updatedPart)) {
+      logAction(`updating part entity  {cyan pt${index + 1}}`);
+      !argv.dryRun && (await api.updateAudioPart(updatedPart));
+    } else {
+      logDebug(`skipping update of unchanged audio part entity pt${index + 1}`);
+    }
+  }
 }
 
 async function ensureLocalM4b(
@@ -420,7 +438,7 @@ async function createMp3Zip(
 
   for (let idx = 0; idx < audio.parts.length; idx++) {
     await ensureLocalMp3(audio, fsData, idx, quality);
-    const mp3Data = fsData.parts[idx].mp3s[quality];
+    const mp3Data = fsData.parts[idx]!.mp3s[quality];
     const hashedPath = mp3Data.localPath;
     const unhashedPath = hashedPath.replace(mp3Data.localFilename, mp3Data.cloudFilename);
     unhashed.push(unhashedPath);
@@ -430,20 +448,6 @@ async function createMp3Zip(
 
   exec.exit(`zip ${zipFilename} ${mp3Filenames.join(` `)}`, fsData.derivedPath);
   unhashed.forEach((unhashedPath) => fs.unlinkSync(unhashedPath));
-}
-
-function updateYml(
-  audio: Audio,
-  updater: (audioData: Record<string, any>) => void,
-): void {
-  const edition = audio.edition;
-  const document = edition.document;
-  const friend = document.friend;
-  const ymlData = yml.load(friend.slug, friend.lang);
-  const docData = (ymlData.documents as any[]).find((doc) => doc.slug === document.slug);
-  const edData = (docData.editions as any[]).find((ed) => ed.type === edition.type);
-  updater(edData.audio);
-  yml.write(ymlData, friend.slug, friend.lang);
 }
 
 async function newSoundcloudTrackReady(trackId: number): Promise<void> {
@@ -461,7 +465,7 @@ async function createMp3(
   quality: AudioQuality,
   destPath: string,
 ): Promise<void> {
-  const part = fsData.parts[partIndex];
+  const part = fsData.parts[partIndex]!;
   if (!part.srcLocalFileExists) {
     const partDesc = `pt${partIndex + 1} (${quality})`;
     logAction(`downloading source .wav file for ${c`{cyan ${partDesc}}`}`);
@@ -479,7 +483,7 @@ async function ensureLocalMp3(
   partIndex: number,
   quality: AudioQuality,
 ): Promise<void> {
-  const mp3Path = fsData.parts[partIndex].mp3s[quality].localPath;
+  const mp3Path = fsData.parts[partIndex]!.mp3s[quality].localPath;
   if (fs.existsSync(mp3Path)) {
     return;
   }
@@ -489,7 +493,7 @@ async function ensureLocalMp3(
   const cached = cache.getPart(fsData, partIndex);
   const hasCache = !!cached[quality]?.mp3Hash;
   if (hasCache) {
-    const mp3Info = fsData.parts[partIndex].mp3s[quality];
+    const mp3Info = fsData.parts[partIndex]!.mp3s[quality];
     const localHash = ensureCache(cached[quality]).mp3Hash;
     const remoteHash = await cloud.md5File(mp3Info.cloudPath);
     if (localHash === remoteHash) {
@@ -521,4 +525,28 @@ function assertCache<T>(cached: T): asserts cached is NonNullable<T> {
     console.trace(`Unexpected Missing Cache`);
     process.exit(1);
   }
+}
+
+async function getAudios(): Promise<Audio[]> {
+  const audios = await api.getAudios();
+  return audios
+    .filter((audio) => {
+      if (argv.lang !== `both` && argv.lang !== audio.edition.document.friend.lang) {
+        return false;
+      }
+      if (argv.pattern && !audio.edition.path.includes(argv.pattern)) {
+        return false;
+      }
+      return true;
+    })
+    .slice(0, argv.limit);
+}
+
+function assertDefined<T>(x: T | undefined): T {
+  if (x === undefined) {
+    console.trace();
+    console.error(`Unexpected undefined value in assertDefined()`);
+    process.exit(1);
+  }
+  return x;
 }

@@ -65,7 +65,7 @@ export default async function publish(argv: PublishOptions): Promise<void> {
   const successes: string[] = [];
 
   for (let i = 0; i < dpcs.length; i++) {
-    const dpc = dpcs[i];
+    const dpc = dpcs[i]!;
     const assetStart = Date.now();
     const progress = c`{gray (${String(i + 1)}/${String(dpcs.length)})}`;
 
@@ -140,7 +140,7 @@ async function handleAppEbook(
     .filename(`app-ebook`)
     .replace(/\.html$/, ``);
 
-  const path = await artifacts.appEbook(appEbookManifest, filenameNoExt, opts);
+  const path = await artifacts.appEbook(appEbookManifest!, filenameNoExt, opts);
   uploads.set(path, cloudPath(dpc, `app-ebook`));
 
   // create and upload the shared app-ebook css only once
@@ -230,7 +230,7 @@ async function handleWebPdf(
   const filename = edition(dpc)
     .filename(`web-pdf`)
     .replace(/\.pdf$/, ``);
-  const path = await artifacts.pdf(webManifest, filename, opts);
+  const path = await artifacts.pdf(webManifest!, filename, opts);
   uploads.set(path, cloudPath(dpc, `web-pdf`));
 }
 
@@ -244,7 +244,7 @@ async function handleSpeech(
   const filename = edition(dpc)
     .filename(`speech`)
     .replace(/\.html$/, ``);
-  const path = await artifacts.speech(speechManifest, filename, opts);
+  const path = await artifacts.speech(speechManifest!, filename, opts);
   uploads.set(path, cloudPath(dpc, `speech`));
 }
 
@@ -286,7 +286,7 @@ async function handlePaperbackAndCover(
     const filename = edition(dpc)
       .filename(`paperback-cover`, fauxVolumeNumber)
       .replace(/\.pdf$/, ``);
-    const path = await artifacts.pdf(manifest, filename, opts);
+    const path = await artifacts.pdf(manifest!, filename, opts);
     uploads.set(path, cloudPath(dpc, `paperback-cover`, fauxVolumeNumber));
   }
 }
@@ -304,11 +304,11 @@ async function handleEbooks(
 
   log(c`   {gray Creating epub artifact...}`);
   const [epubMan] = await manifest.epub(dpc, { ...config, subType: `epub` });
-  const epub = await artifacts.create(`epub`, epubMan, base, { ...opts, check: true });
+  const epub = await artifacts.create(`epub`, epubMan!, base, { ...opts, check: true });
 
   log(c`   {gray Creating mobi artifact...}`);
   const [mobiMan] = await manifest.mobi(dpc, { ...config, subType: `mobi` });
-  const mobi = await artifacts.create(`mobi`, mobiMan, base, { ...opts, check: false });
+  const mobi = await artifacts.create(`mobi`, mobiMan!, base, { ...opts, check: false });
 
   uploads.set(epub, cloudPath(dpc, `epub`));
   uploads.set(mobi, cloudPath(dpc, `mobi`));
@@ -386,7 +386,7 @@ function safeSlackJson(strings: string[]): string[] {
       safeJson.push(`...and ${strings.length - 1 - i} more...`);
       return safeJson;
     }
-    safeJson.push(strings[i]);
+    safeJson.push(strings[i]!);
   }
   return safeJson;
 }

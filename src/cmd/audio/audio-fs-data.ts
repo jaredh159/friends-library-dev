@@ -1,22 +1,20 @@
 import path from 'path';
 import fs from 'fs-extra';
 import env from '@friends-library/env';
-import { Audio } from '@friends-library/friends';
 import * as cloud from '@friends-library/cloud';
 import { logError } from '../../sub-log';
-import { AudioFsData } from './types';
+import { AudioFsData, Audio } from './types';
 import { md5String } from './utils';
 
 export default async function getSrcFsData(audio: Audio): Promise<AudioFsData> {
   const { AUDIOS_PATH } = env.require(`AUDIOS_PATH`);
-  const DERIVED_DIR = path.resolve(`${__dirname}/../../../src/cmd/audio/derived`);
-  const basename = audio.edition.document.filenameBase;
+  const basename = audio.edition.document.filename;
   const errors: string[] = [];
   const cachedDataDir = `${AUDIOS_PATH}/${audio.edition.path}/_cached_audio_data`;
   const data: Omit<AudioFsData, 'm4bs' | 'mp3Zips'> = {
     relPath: audio.edition.path,
     abspath: `${AUDIOS_PATH}/${audio.edition.path}`,
-    derivedPath: `${DERIVED_DIR}/${audio.edition.path}`,
+    derivedPath: `${derivedDir()}/${audio.edition.path}`,
     cachedDataPath: ``,
     hash: ``,
     hashedBasename: ``,
@@ -107,4 +105,8 @@ export default async function getSrcFsData(audio: Audio): Promise<AudioFsData> {
       },
     },
   };
+}
+
+export function derivedDir(): string {
+  return path.resolve(`${__dirname}/../../../src/cmd/audio/derived`);
 }
