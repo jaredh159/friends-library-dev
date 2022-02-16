@@ -6,3 +6,4 @@ src/cmd/audio/derived/
 src/cmd/isbns/isbns.csv
 src/cmd/video/*.json
 .DS_Store
+*.swp
