@@ -1,9 +1,14 @@
 # Converge TODOs:
 
+- [ ] - creating an edition impression should DELETE others (on second thought, SQL unique
+    constraint should prevent dupes, and in publish/handler we UPDATE when there is an
+    existing... but think this through a bit)
 - [ ] - Look at @TODO in MockDatabase, soft deletes
 - [ ] - Would be nice to be able to Current.db.\* and assert on SQL produced (especially
     soft-deletes)
 - [ ] - need to rethink/handle checking for NULL in db, current method stinky...
+- [ ] - handle "entered into bowker" state for ISBN, see:
+    https://github.com/friends-library-dev/cli/blob/master/src/cmd/isbns/entered.ts
 
 - [ ] - ANOTHER_TODO
 

@@ -9,6 +9,7 @@ extension Edition {
       let height: Int
       let url: URL
       let path: String
+      let filename: String
     }
 
     struct Square: Codable {
@@ -23,6 +24,22 @@ extension Edition {
       let w900: Image
       let w1150: Image
       let w1400: Image
+
+      var all: [Image] {
+        [
+          w45,
+          w90,
+          w180,
+          w270,
+          w300,
+          w450,
+          w600,
+          w750,
+          w900,
+          w1150,
+          w1400,
+        ]
+      }
     }
 
     struct ThreeD: Codable {
@@ -35,6 +52,20 @@ extension Edition {
       let w850: Image
       let w1000: Image
       let w1120: Image
+
+      var all: [Image] {
+        [
+          w55,
+          w110,
+          w250,
+          w400,
+          w550,
+          w700,
+          w850,
+          w1000,
+          w1120,
+        ]
+      }
     }
 
     let square: Square
@@ -66,6 +97,7 @@ extension Edition {
         w700: threeDImage(700, path),
         w850: threeDImage(850, path),
         w1000: threeDImage(1000, path),
+        // keep largest size in sync with cli/src/cmd/publish/cover-server.ts
         w1120: threeDImage(1120, path)
       )
     )
@@ -81,6 +113,7 @@ extension AppSchema {
       Field("height", at: \.height)
       Field("url", at: \.url.absoluteString)
       Field("path", at: \.path)
+      Field("filename", at: \.filename)
     }
   }
 
@@ -97,6 +130,7 @@ extension AppSchema {
       Field("w900", at: \.w900)
       Field("w1150", at: \.w1150)
       Field("w1400", at: \.w1400)
+      Field("all", at: \.all)
     }
   }
 
@@ -111,6 +145,7 @@ extension AppSchema {
       Field("w850", at: \.w850)
       Field("w1000", at: \.w1000)
       Field("w1120", at: \.w1120)
+      Field("all", at: \.all)
     }
   }
 
@@ -132,7 +167,8 @@ private func squareImage(_ size: Int, _ path: String) -> Edition.Images.Image {
     width: size,
     height: size,
     url: URL(string: "\(Env.CLOUD_STORAGE_BUCKET_URL)/\(path)/\(filename)")!,
-    path: "\(path)/\(filename)"
+    path: "\(path)/\(filename)",
+    filename: filename
   )
 }
 
@@ -142,6 +178,7 @@ private func threeDImage(_ width: Int, _ path: String) -> Edition.Images.Image {
     width: width,
     height: Int((Double(width) / threeDImageAspectRatio).rounded(.down)),
     url: URL(string: "\(Env.CLOUD_STORAGE_BUCKET_URL)/\(path)/\(filename)")!,
-    path: path
+    path: "\(path)/\(filename)",
+    filename: filename
   )
 }
