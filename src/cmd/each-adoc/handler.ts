@@ -4,7 +4,7 @@ import { red } from 'x-chalk';
 import { query as dpcQuery } from '@friends-library/dpc-fs';
 
 export default async function handler({ pattern }: { pattern: string }): Promise<void> {
-  const dpcs = dpcQuery.getByPattern(pattern);
+  const dpcs = await dpcQuery.getByPattern(pattern);
   if (dpcs.length === 0) {
     red(`Pattern: \`${pattern}\` matched 0 docs.`);
     process.exit(1);

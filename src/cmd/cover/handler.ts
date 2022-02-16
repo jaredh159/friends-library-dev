@@ -10,11 +10,10 @@ interface CoverOptions {
 
 export default async function handler(argv: CoverOptions): Promise<void> {
   deleteNamespaceDir(`fl-cover`);
-  const dpcs = dpcQuery.getByPattern(argv.pattern);
+  const dpcs = await dpcQuery.getByPattern(argv.pattern);
   const meta = await docMeta.fetch();
 
   for (const dpc of dpcs) {
-    hydrate.meta(dpc);
     hydrate.customCode(dpc);
 
     const edMeta = meta.get(dpc.path);

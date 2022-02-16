@@ -18,6 +18,13 @@ export enum Lang {
   es = 'es',
 }
 
+export enum PrintSizeVariant {
+  m = 'm',
+  s = 's',
+  xl = 'xl',
+  xlCondensed = 'xlCondensed',
+}
+
 export enum TagType {
   allegory = 'allegory',
   doctrinal = 'doctrinal',
@@ -32,6 +39,16 @@ export enum TagType {
 export interface CreateArtifactProductionVersionInput {
   id?: UUID | null;
   version: string;
+}
+
+export interface CreateEditionImpressionInput {
+  adocLength: number;
+  editionId: UUID;
+  id?: UUID | null;
+  paperbackSize: PrintSizeVariant;
+  paperbackVolumes: number[];
+  productionToolchainRevision: string;
+  publishedRevision: string;
 }
 
 export interface UpdateAudioInput {
@@ -58,6 +75,16 @@ export interface UpdateAudioPartInput {
   mp3SizeLq: number;
   order: number;
   title: string;
+}
+
+export interface UpdateEditionImpressionInput {
+  adocLength: number;
+  editionId: UUID;
+  id: UUID;
+  paperbackSize: PrintSizeVariant;
+  paperbackVolumes: number[];
+  productionToolchainRevision: string;
+  publishedRevision: string;
 }
 
 //==============================================================

@@ -5,20 +5,33 @@ import { log, c } from 'x-chalk';
 import * as artifacts from '@friends-library/doc-artifacts';
 import { PrintSizeVariant, PrintSize, PRINT_SIZE_VARIANTS } from '@friends-library/types';
 import { paperbackInterior as paperbackManifest } from '@friends-library/doc-manifests';
-import { PageData, EditionMeta } from '@friends-library/document-meta';
 import { FsDocPrecursor } from '@friends-library/dpc-fs';
+import { logDebug } from '../../sub-log';
 
-type SinglePages = PageData['single'];
-type MultiPages = PageData['split'];
-type SingleFiles = { [keyof in PrintSizeVariant]: string };
-type MultiFiles = { m: string[]; xl: string[]; 'xl--condensed': string[] } | undefined;
+type SinglePages = { [K in PrintSizeVariant]: number };
+type SingleFiles = { [K in PrintSizeVariant]: string };
+type MultiPages = Omit<{ [K in PrintSizeVariant]: number[] }, 's'> | undefined;
+type MultiFiles = Omit<{ [K in PrintSizeVariant]: string[] }, 's'> | undefined;
 
 export async function publishPaperback(
   dpc: FsDocPrecursor,
   opts: { namespace: string; srcPath: string },
-): Promise<[EditionMeta['paperback'], string[]]> {
+): Promise<{
+  printSize: PrintSize;
+  printSizeVariant: PrintSizeVariant;
+  volumes: number[];
+  paths: string[];
+}> {
   const [singlePages, singleFiles] = await makeSingleVolumes(dpc, opts);
-  const [splitPages, splitFiles] = await makeMultiVolumes(dpc, opts);
+
+  let splitPages: MultiPages = undefined;
+  let splitFiles: MultiFiles = undefined;
+
+  if (!canSkipMultiVolumeCheck(singlePages)) {
+    [splitPages, splitFiles] = await makeMultiVolumes(dpc, opts);
+  } else {
+    logDebug(`Skipping unneeded multi-volume page size check`);
+  }
 
   let size: PrintSize = dpc.printSize || `s`;
   let condense = false;
@@ -36,29 +49,24 @@ export async function publishPaperback(
     volumes = splitPages[sizeVariant];
   }
 
-  const pageData: EditionMeta['paperback'] = {
-    size,
-    condense,
-    volumes,
-    pageData: {
-      single: singlePages,
-      ...(splitPages ? { split: splitPages } : {}),
-    },
-  };
-
-  const files =
+  const paths =
     splitFiles && sizeVariant !== `s`
       ? splitFiles[sizeVariant]
       : [singleFiles[sizeVariant]];
 
-  return [pageData, files];
+  return {
+    printSize: size,
+    printSizeVariant: sizeVariant,
+    volumes,
+    paths,
+  };
 }
 
 async function makeSingleVolumes(
   dpc: FsDocPrecursor,
   opts: { namespace: string; srcPath: string },
 ): Promise<[SinglePages, SingleFiles]> {
-  log(c`   {gray Determining paperback interior page counts...}`);
+  logDebug(`Determining paperback interior page counts...`);
   const pages: SinglePages = { s: 0, m: 0, xl: 0, 'xl--condensed': 0 };
   const files: SingleFiles = { s: ``, m: ``, xl: ``, 'xl--condensed': `` };
 
@@ -79,7 +87,7 @@ async function makeSingleVolumes(
     files[variant] = filepath;
     pages[variant] = await getPages(filepath);
     if (canSkipLargerSizes(variant, pages, dpc.printSize)) {
-      log(c`     {gray skipping unneeded page size checks: [${variants.join(`, `)}]}`);
+      logDebug(`Skipping unneeded page size checks: [${variants.join(`, `)}]`);
       return [pages, files];
     }
   }
@@ -91,14 +99,10 @@ async function makeMultiVolumes(
   dpc: FsDocPrecursor,
   opts: { namespace: string; srcPath: string },
 ): Promise<[MultiPages, MultiFiles]> {
-  if (!dpc.edition || !dpc.edition.splits) {
-    return [undefined, undefined];
-  }
-
   const pages: MultiPages = { m: [], xl: [], 'xl--condensed': [] };
   const files: MultiFiles = { m: [], xl: [], 'xl--condensed': [] };
 
-  log(c`   {gray Determining paperback interior page counts for split faux-volumes...}`);
+  logDebug(`Determining paperback interior page counts for split faux-volumes...`);
   for (const variant of [`m`, `xl`, `xl--condensed`] as const) {
     log(c`     {magenta.dim ->} {gray size (split):} {cyan ${variant}}`);
     const size = variant === `xl--condensed` ? `xl` : variant;
@@ -133,9 +137,10 @@ function filename(dpc: FsDocPrecursor, variant: string, volumeNumber?: number): 
     dpc.friendInitials.join(``),
     dpc.documentSlug,
     dpc.editionType,
-    dpc.documentId.substring(0, 8),
+    dpc.editionId.substring(0, 8),
     variant,
     volumeNumber,
+    `paperback-interior`,
   ]
     .filter((part) => !!part)
     .join(`--`);
@@ -164,4 +169,8 @@ function canSkipLargerSizes(
   } catch (err) {
     return false;
   }
+}
+
+function canSkipMultiVolumeCheck(single: SinglePages): boolean {
+  return single.m === 0 || single.xl < 600 || single[`xl--condensed`] < 600;
 }

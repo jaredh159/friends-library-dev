@@ -40,7 +40,7 @@ export interface MakeOptions {
 
 export default async function handler(argv: Arguments<MakeOptions>): Promise<void> {
   const { noOpen, pattern, isolate, email, skipLint, fix } = argv;
-  const dpcs = dpcQuery.getByPattern(pattern);
+  const dpcs = await dpcQuery.getByPattern(pattern);
   if (dpcs.length === 0) {
     red(`Pattern: \`${pattern}\` matched 0 docs.`);
     process.exit(1);
@@ -85,7 +85,7 @@ export default async function handler(argv: Arguments<MakeOptions>): Promise<voi
 }
 
 export async function makeDpc(
-  dpc: FsDocPrecursor,
+  dpc: DocPrecursor,
   argv: Arguments<MakeOptions>,
   namespace: string,
 ): Promise<string[]> {
@@ -145,8 +145,8 @@ function makeFilename(dpc: DocPrecursor, type: ArtifactType): string {
   return [
     dpc.friendInitials.join(``),
     dpc.documentSlug,
-    dpc.documentId.substring(0, 8),
     dpc.editionType,
+    dpc.editionId.substring(0, 8),
     suffix,
   ]
     .filter((p) => !!p)

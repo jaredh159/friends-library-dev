@@ -4,12 +4,12 @@ import { spawnSync } from 'child_process';
 import { sync as glob } from 'glob';
 import { deleteNamespaceDir, dirs } from '@friends-library/doc-artifacts';
 import { red, green } from 'x-chalk';
-import { query as dpcQuery, FsDocPrecursor, hydrate } from '@friends-library/dpc-fs';
+import { query as dpcQuery, FsDocPrecursor } from '@friends-library/dpc-fs';
 import { Asciidoc } from '@friends-library/types';
 import { ensureDockerImage } from '../../docker';
 
 export default async function handler({ pattern }: { pattern: string }): Promise<void> {
-  const dpcs = dpcQuery.getByPattern(pattern);
+  const dpcs = await dpcQuery.getByPattern(pattern);
   if (dpcs.length === 0) {
     red(`Pattern: \`${pattern}\` matched 0 docs.`);
     process.exit(1);
@@ -21,7 +21,6 @@ export default async function handler({ pattern }: { pattern: string }): Promise
   ensureDockerImage(TAG, __dirname.replace(`/dist/`, `/src/`));
 
   dpcs.forEach((dpc) => {
-    hydrate.entities(dpc);
     const docxFilepath = makeDocx(dpc, dir);
     green(`.docx created at path: ${docxFilepath}`);
     spawnSync(`open`, [docxFilepath]);

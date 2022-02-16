@@ -1,32 +1,27 @@
 import fs from 'fs-extra';
-import gql from 'x-syntax';
 import sharp from 'sharp';
+import { v4 as uuid } from 'uuid';
 import { dirname } from 'path';
 import { log, c, red } from 'x-chalk';
-import { isDefined } from 'x-ts-utils';
-import * as docMeta from '@friends-library/document-meta';
 import * as cloud from '@friends-library/cloud';
 import slack from '@friends-library/slack';
-import {
-  DocPrecursor,
-  ArtifactType,
-  SQUARE_COVER_IMAGE_SIZES,
-  THREE_D_COVER_IMAGE_WIDTHS,
-  LARGEST_THREE_D_COVER_IMAGE_WIDTH,
-} from '@friends-library/types';
+import { DocPrecursor } from '@friends-library/types';
 import * as artifacts from '@friends-library/doc-artifacts';
 import * as manifest from '@friends-library/doc-manifests';
 import { appEbook as appEbookCss } from '@friends-library/doc-css';
 import { hydrate, query as dpcQuery, FsDocPrecursor } from '@friends-library/dpc-fs';
-import { Edition } from '@friends-library/friends';
 import { ParserError } from '@friends-library/parser';
 import * as coverServer from './cover-server';
 import { ScreenshotTaker } from './cover-server';
 import validate from './validate';
 import { logDocStart, logDocComplete, logPublishComplete, logPublishStart } from './log';
 import { publishPaperback } from './paperback';
-import * as graphql from '../../graphql';
 import * as git from './git';
+import * as api from './api';
+import { logAction, logDebug, logError } from '../../sub-log';
+import { CloudFiles, emptyPendingUploads, PendingUploads, PublishData } from './types';
+import { PrintSizeVariant } from '../../graphql/globalTypes';
+import isEqual from 'lodash.isequal';
 
 interface PublishOptions {
   check: boolean;
@@ -45,22 +40,13 @@ export default async function publish(argv: PublishOptions): Promise<void> {
 
   logPublishStart();
 
-  // concurrently wait for startup meta tasks...
-  const [revisionResult, meta, COVER_PORT] = await Promise.all([
-    graphql.send<{ version: { sha: string } }>(REVISION_QUERY),
-    docMeta.fetch(),
+  const [COVER_PORT, productionRevision] = await Promise.all([
     argv.coverServerPort ? Promise.resolve(argv.coverServerPort) : coverServer.start(),
+    api.getlatestArtifactProductionVersion(),
   ]);
 
-  if (!revisionResult.success) {
-    log(c`\n{red.bold Error retrieving latest artifact production version:}`);
-    log(c`{gray ${revisionResult.error.body}}`);
-    process.exit(1);
-  }
-
-  const productionRevision = revisionResult.value.version.sha;
   const [makeScreenshot, closeHeadlessBrowser] = await coverServer.screenshot(COVER_PORT);
-  const dpcs = dpcQuery.getByPattern(argv.pattern);
+  const dpcs = await dpcQuery.getByPattern(argv.pattern);
   const errors: string[] = [];
   const successes: string[] = [];
 
@@ -71,39 +57,41 @@ export default async function publish(argv: PublishOptions): Promise<void> {
 
     try {
       logDocStart(dpc, progress);
-      if (!argv.force && shouldSkip(dpc, meta, productionRevision)) {
-        log(c`   {gray re-publish not needed, skipping}`);
+      const data = await initialData(dpc);
+
+      if (!argv.force && shouldSkip(data, productionRevision)) {
+        logDebug(`re-publish not needed, skipping`);
+        continue;
+      }
+
+      if (data.edition.isDraft) {
+        logDebug(`edition is draft, skipping`);
         continue;
       }
 
       hydrate.all([dpc]);
-      if (dpc.edition?.isDraft) {
-        continue;
-      }
-
       await validate(dpc);
-      const uploads = new Map<string, string>();
-      const fileId = getFileId(dpc);
-      const namespace = `fl-publish/${fileId}`;
-      const opts = { namespace, srcPath: fileId };
-      artifacts.deleteNamespaceDir(namespace);
+      artifacts.deleteNamespaceDir(data.artifactOptions.namespace);
+      fillInKnownEntityData(data, productionRevision);
+      await handleAppEbook(data, i);
+      await handlePaperbackAndCover(data);
+      await handleWebPdf(data);
+      await handleEbooks(data, makeScreenshot);
+      await handle3dPaperbackCoverImages(data, makeScreenshot);
+      await handleSquareCoverImages(data, makeScreenshot);
+      await handleSpeech(data);
 
-      await handleAppEbook(dpc, opts, uploads, i);
-      await handlePaperbackAndCover(dpc, opts, uploads, meta, productionRevision);
-      await handleWebPdf(dpc, opts, uploads);
-      await handleEbooks(dpc, opts, uploads, makeScreenshot);
-      await handle3dPaperbackCoverImages(dpc, opts, uploads, makeScreenshot);
-      await handleSquareCoverImages(dpc, opts, uploads, makeScreenshot);
-      await handleSpeech(dpc, opts, uploads);
-      log(c`   {gray Uploading generated files to cloud storage...}`);
-      await cloud.uploadFiles(uploads);
-      log(c`   {gray Saving edition meta...}`);
-      await docMeta.save(meta);
+      logDebug(`Saving EditionImpression...`);
+      const cloudPaths = await saveEditionImpression(data.impression);
+
+      logDebug(`Uploading generated files to cloud storage...`);
+      await uploadFiles(data.uploads, cloudPaths);
+
       successes.push(dpc.path);
     } catch (err) {
-      if (err instanceof ParserError) {
-        console.log(err.codeFrame);
-        errors.push(`${dpc.path} ${err.codeFrame}`);
+      if (err instanceof ParserError || `codeFrame` in (err as any)) {
+        console.log((err as any).codeFrame);
+        errors.push(`${dpc.path} ${(err as any).codeFrame}`);
       } else {
         red(err);
         errors.push(`${dpc.path} ${err}`);
@@ -128,20 +116,50 @@ export default async function publish(argv: PublishOptions): Promise<void> {
   }
 }
 
+async function initialData(dpc: FsDocPrecursor): Promise<PublishData> {
+  const edition = await api.getEdition(dpc.editionId);
+  const fileId = getFileId(dpc);
+  const previousImpression = edition.impression
+    ? {
+        id: edition.impression.id,
+        editionId: dpc.editionId,
+        adocLength: edition.impression.adocLength,
+        paperbackSize: edition.impression.paperbackSize,
+        paperbackVolumes: edition.impression.paperbackVolumes,
+        publishedRevision: edition.impression.publishedRevision,
+        productionToolchainRevision: edition.impression.productionToolchainRevision,
+      }
+    : null;
+
+  const currentImpression = previousImpression ?? {
+    id: uuid(),
+    editionId: dpc.editionId,
+    adocLength: -1,
+    paperbackSize: PrintSizeVariant.m,
+    paperbackVolumes: [],
+    publishedRevision: ``,
+    productionToolchainRevision: ``,
+  };
+
+  return {
+    dpc,
+    edition,
+    uploads: emptyPendingUploads(),
+    artifactOptions: { namespace: `fl-publish/${fileId}`, srcPath: fileId },
+    impression: { current: currentImpression, previous: previousImpression },
+  };
+}
+
 async function handleAppEbook(
-  dpc: FsDocPrecursor,
-  opts: { namespace: string; srcPath: string },
-  uploads: Map<string, string>,
+  { dpc, uploads, artifactOptions: opts }: PublishData,
   index: number,
 ): Promise<void> {
-  log(c`   {gray Creating app-ebook artifact...}`);
+  logDebug(`Creating app-ebook artifact...`);
   const [appEbookManifest] = await manifest.appEbook(dpc);
-  const filenameNoExt = edition(dpc)
-    .filename(`app-ebook`)
-    .replace(/\.html$/, ``);
+  const filenameNoExt = getFileId(dpc, `app-ebook`);
 
   const path = await artifacts.appEbook(appEbookManifest!, filenameNoExt, opts);
-  uploads.set(path, cloudPath(dpc, `app-ebook`));
+  uploads.ebook.app = path;
 
   // create and upload the shared app-ebook css only once
   if (index === 0) {
@@ -149,214 +167,146 @@ async function handleAppEbook(
     const cssPath = `${rootPublishDir}/_app-ebook.css`;
     fs.ensureDirSync(rootPublishDir);
     fs.writeFileSync(cssPath, appEbookCss());
-    uploads.set(cssPath, `static/app-ebook.css`);
+    uploads.ebook.appCss = cssPath;
   }
 }
 
 async function handleSquareCoverImages(
-  dpc: FsDocPrecursor,
-  opts: { namespace: string; srcPath: string },
-  uploads: Map<string, string>,
+  { dpc, edition, artifactOptions: opts, uploads }: PublishData,
   makeScreenshot: ScreenshotTaker,
 ): Promise<void> {
-  log(c`   {gray Creating square cover images...}`);
-  if (!dpc.edition) throw new Error(`Unexpected missing dpc.edition ${dpc.path}`);
+  logDebug(`Creating square cover images...`);
   const dirname = artifacts.dirs(opts).ARTIFACT_DIR;
   fs.ensureDirSync(dirname);
   const buffer = await makeScreenshot(dpc.path, `audio`);
-  const files = await Promise.all(
-    SQUARE_COVER_IMAGE_SIZES.flatMap((size) => {
-      const filenames = [dpc.edition!.squareCoverImageFilename(size)];
-      if (size === 1400) {
-        // legacy filename, before split out into multiple square image sizes
-        filenames.push(`${dpc.edition!.filenameBase}--audio.png`);
-      }
-      return filenames.filter(isDefined).map((filename) => ({
-        size,
+  const largestWidth = edition.images.square.all
+    .map(({ width }) => width)
+    .sort((a, b) => b - a)[0]!;
+  uploads.images.square = await Promise.all(
+    edition.images.square.all
+      .map(({ width, filename, path }) => ({
+        width,
         localPath: `${dirname}/${filename}`,
-        cloudPath: filename.endsWith(`--audio.png`)
-          ? `${dpc.path}/${filename}`
-          : dpc.edition!.squareCoverImagePath(size),
-      }));
-    }).map(async ({ size, localPath, cloudPath }) => {
-      if (size === 1400) {
-        await fs.writeFile(localPath, buffer);
-      } else {
-        await sharp(buffer).resize(size).toFile(localPath);
-      }
-      return { localPath, cloudPath };
-    }),
+        cloudPath: path,
+      }))
+      .map(async ({ width, localPath, cloudPath }) => {
+        if (width === largestWidth) {
+          await fs.writeFile(localPath, buffer);
+        } else {
+          await sharp(buffer).resize(width).toFile(localPath);
+        }
+        return { localPath, cloudPath };
+      }),
   );
-
-  files.forEach(({ localPath, cloudPath }) => uploads.set(localPath, cloudPath));
 }
 
 async function handle3dPaperbackCoverImages(
-  dpc: FsDocPrecursor,
-  opts: { namespace: string; srcPath: string },
-  uploads: Map<string, string>,
+  { dpc, edition, uploads, artifactOptions: opts }: PublishData,
   makeScreenshot: ScreenshotTaker,
 ): Promise<void> {
-  log(c`   {gray Creating 3d cover images...}`);
-  if (!dpc.edition) throw new Error(`Unexpected missing dpc.edition ${dpc.path}`);
+  logDebug(`Creating 3d cover images...`);
   const dirname = artifacts.dirs(opts).ARTIFACT_DIR;
   fs.ensureDirSync(dirname);
   const buffer = await makeScreenshot(dpc.path, `threeD`);
-  const files = await Promise.all(
-    THREE_D_COVER_IMAGE_WIDTHS.map((size) => ({
-      size,
-      localPath: `${dirname}/${dpc.edition!.threeDCoverImageFilename(size)}`,
-      cloudPath: dpc.edition!.threeDCoverImagePath(size),
-    })).map(async ({ size, localPath, cloudPath }) => {
-      if (size === LARGEST_THREE_D_COVER_IMAGE_WIDTH) {
-        await fs.writeFile(localPath, buffer);
-      } else {
-        await sharp(buffer).resize(size).toFile(localPath);
-      }
-      return { localPath, cloudPath };
-    }),
+  const largestWidth = edition.images.threeD.all
+    .map(({ width }) => width)
+    .sort((a, b) => b - a)[0]!;
+  uploads.images.threeD = await Promise.all(
+    edition.images.threeD.all
+      .map(({ width, filename, path }) => ({
+        width,
+        localPath: `${dirname}/${filename}`,
+        cloudPath: path,
+      }))
+      .map(async ({ width, localPath, cloudPath }) => {
+        if (width === largestWidth) {
+          await fs.writeFile(localPath, buffer);
+        } else {
+          await sharp(buffer).resize(width).toFile(localPath);
+        }
+        return { localPath, cloudPath };
+      }),
   );
-
-  files.forEach(({ localPath, cloudPath }) => uploads.set(localPath, cloudPath));
 }
 
-async function handleWebPdf(
-  dpc: FsDocPrecursor,
-  opts: { namespace: string; srcPath: string },
-  uploads: Map<string, string>,
-): Promise<void> {
-  log(c`   {gray Creating web-pdf artifact...}`);
-  const [webManifest] = await manifest.webPdf(dpc);
-  const filename = edition(dpc)
-    .filename(`web-pdf`)
-    .replace(/\.pdf$/, ``);
-  const path = await artifacts.pdf(webManifest!, filename, opts);
-  uploads.set(path, cloudPath(dpc, `web-pdf`));
+async function handleWebPdf(data: PublishData): Promise<void> {
+  logDebug(`Creating web-pdf artifact...`);
+  const [webManifest] = await manifest.webPdf(data.dpc);
+  const filename = getFileId(data.dpc, `web-pdf`);
+  const path = await artifacts.pdf(webManifest!, filename, data.artifactOptions);
+  data.uploads.ebook.pdf = path;
 }
 
-async function handleSpeech(
-  dpc: FsDocPrecursor,
-  opts: { namespace: string; srcPath: string },
-  uploads: Map<string, string>,
-): Promise<void> {
-  log(c`   {gray Creating speech artifact...}`);
-  const [speechManifest] = await manifest.speech(dpc);
-  const filename = edition(dpc)
-    .filename(`speech`)
-    .replace(/\.html$/, ``);
-  const path = await artifacts.speech(speechManifest!, filename, opts);
-  uploads.set(path, cloudPath(dpc, `speech`));
+async function handleSpeech(data: PublishData): Promise<void> {
+  logDebug(`Creating speech artifact...`);
+  const [speechManifest] = await manifest.speech(data.dpc);
+  const filename = getFileId(data.dpc, `speech`);
+  const path = await artifacts.speech(speechManifest!, filename, data.artifactOptions);
+  data.uploads.ebook.speech = path;
 }
 
-async function handlePaperbackAndCover(
-  dpc: FsDocPrecursor,
-  opts: { namespace: string; srcPath: string },
-  uploads: Map<string, string>,
-  meta: docMeta.DocumentMeta,
-  productionRevision: string,
-): Promise<void> {
-  log(c`   {gray Starting paperback interior generation...}`);
-  const [paperbackMeta, volumePaths] = await publishPaperback(dpc, opts);
-  volumePaths.forEach((path, idx) => {
-    const fauxVolNum = volumePaths.length > 1 ? idx + 1 : undefined;
-    uploads.set(path, cloudPath(dpc, `paperback-interior`, fauxVolNum));
-  });
+async function handlePaperbackAndCover(data: PublishData): Promise<void> {
+  logDebug(`Starting paperback interior generation...`);
+  const published = await publishPaperback(data.dpc, data.artifactOptions);
+  data.uploads.paperback.interior = published.paths;
+  data.impression.current.paperbackSize = published.printSizeVariant as PrintSizeVariant;
+  data.impression.current.paperbackVolumes = published.volumes;
 
-  const existingMeta = meta.get(dpc.path);
-  const now = new Date().toISOString();
-  meta.set(dpc.path, {
-    ...(existingMeta ? { ...existingMeta } : {}),
-    published: existingMeta?.published || now,
-    updated: now,
-    adocLength: dpc.asciidocFiles.reduce((acc, file) => acc + file.adoc.length, 0),
-    numSections: dpc.asciidocFiles.length,
-    paperback: paperbackMeta,
-    revision: git.dpcDocumentCurrentSha(dpc),
-    productionRevision,
-  });
-
-  const coverManifests = await manifest.paperbackCover(dpc, {
-    printSize: paperbackMeta.size,
-    volumes: paperbackMeta.volumes,
+  const coverManifests = await manifest.paperbackCover(data.dpc, {
+    printSize: published.printSize,
+    volumes: published.volumes,
   });
 
   for (let idx = 0; idx < coverManifests.length; idx++) {
     const manifest = coverManifests[idx];
-    const fauxVolumeNumber = coverManifests.length > 1 ? idx + 1 : undefined;
-    const filename = edition(dpc)
-      .filename(`paperback-cover`, fauxVolumeNumber)
-      .replace(/\.pdf$/, ``);
-    const path = await artifacts.pdf(manifest!, filename, opts);
-    uploads.set(path, cloudPath(dpc, `paperback-cover`, fauxVolumeNumber));
+    const filenameNoExt = getFileId(data.dpc, `paperback-cover`);
+    const path = await artifacts.pdf(manifest!, filenameNoExt, data.artifactOptions);
+    data.uploads.paperback.cover.push(path);
   }
 }
 
 async function handleEbooks(
-  dpc: FsDocPrecursor,
-  opts: { namespace: string; srcPath: string },
-  uploads: Map<string, string>,
+  { dpc, uploads, artifactOptions: opts }: PublishData,
   makeScreenshot: ScreenshotTaker,
 ): Promise<void> {
   const coverImg = await makeScreenshot(dpc.path, `ebook`);
   // to get a cover image .png file, see epub src files in `artifacts` dir after publish
   const config = { coverImg, frontmatter: true };
-  const base = edition(dpc).filename(`epub`).replace(/\..*$/, ``);
+  const base = getFileId(dpc, `ebook`);
 
-  log(c`   {gray Creating epub artifact...}`);
-  const [epubMan] = await manifest.epub(dpc, { ...config, subType: `epub` });
-  const epub = await artifacts.create(`epub`, epubMan!, base, { ...opts, check: true });
+  logDebug(`Creating epub artifact...`);
+  const [epubMan = {}] = await manifest.epub(dpc, { ...config, subType: `epub` });
+  const epub = await artifacts.create(`epub`, epubMan, base, { ...opts, check: true });
+  uploads.ebook.epub = epub;
 
-  log(c`   {gray Creating mobi artifact...}`);
-  const [mobiMan] = await manifest.mobi(dpc, { ...config, subType: `mobi` });
-  const mobi = await artifacts.create(`mobi`, mobiMan!, base, { ...opts, check: false });
-
-  uploads.set(epub, cloudPath(dpc, `epub`));
-  uploads.set(mobi, cloudPath(dpc, `mobi`));
+  logDebug(`Creating mobi artifact...`);
+  const [mobiMan = {}] = await manifest.mobi(dpc, { ...config, subType: `mobi` });
+  const mobi = await artifacts.create(`mobi`, mobiMan, base, { ...opts, check: false });
+  uploads.ebook.mobi = mobi;
 }
 
-function cloudPath(dpc: FsDocPrecursor, type: ArtifactType, volNum?: number): string {
-  return `${dpc.path}/${edition(dpc).filename(type, volNum)}`;
-}
-
-function getFileId(dpc: DocPrecursor): string {
+function getFileId(dpc: DocPrecursor, ...additionalSegments: string[]): string {
   return [
     dpc.friendInitials.join(``),
     dpc.documentSlug,
     dpc.editionType,
-    dpc.documentId.substring(0, 8),
+    dpc.editionId.substring(0, 8),
+    ...additionalSegments,
   ].join(`--`);
 }
 
-function edition(dpc: FsDocPrecursor): Edition {
-  if (!dpc.edition) throw new Error(`Unexpected lack of Edition on hydrated dpc`);
-  return dpc.edition;
-}
-
-const REVISION_QUERY = gql`
-  query GetLatestArtifactProductionVersion {
-    version: getLatestArtifactProductionVersion {
-      sha: version
-    }
-  }
-`;
-
-function shouldSkip(
-  dpc: FsDocPrecursor,
-  meta: docMeta.DocumentMeta,
-  prodVersion: string,
-): boolean {
-  const edMeta = meta.get(dpc.path);
-  if (!edMeta) {
-    // if we have no edition meta, it's a first-time publish
+function shouldSkip({ edition, dpc }: PublishData, prodVersion: string): boolean {
+  if (!edition.impression) {
+    // first-time publish
     return false;
   }
 
-  if (prodVersion !== edMeta.productionRevision) {
+  if (prodVersion !== edition.impression.productionToolchainRevision) {
     return false;
   }
 
   const docSha = git.dpcDocumentCurrentSha(dpc);
-  if (docSha !== edMeta.revision) {
+  if (docSha !== edition.impression.publishedRevision) {
     return false;
   }
 
@@ -389,4 +339,95 @@ function safeSlackJson(strings: string[]): string[] {
     safeJson.push(strings[i]!);
   }
   return safeJson;
+}
+
+function fillInKnownEntityData(
+  { impression: { current }, dpc }: PublishData,
+  productionToolchainRevision: string,
+) {
+  current.adocLength = dpc.asciidocFiles.reduce((acc, { adoc }) => acc + adoc.length, 0);
+  current.publishedRevision = git.dpcDocumentCurrentSha(dpc);
+  current.productionToolchainRevision = productionToolchainRevision;
+}
+
+async function saveEditionImpression(
+  impression: PublishData['impression'],
+): Promise<CloudFiles> {
+  if (isEqual(impression.current, impression.previous)) {
+    logDebug(`skipping save EditionImpression, all properties unchanged...`);
+    return await api.getEditionImpressionCloudFiles(impression.current.id);
+  }
+  try {
+    const result = await api.saveEditionImpression(impression.current);
+    if (!result) {
+      await rollbackSaveEditionImpression(impression);
+      throw new Error(`failed to save EditionImpression`);
+    } else {
+      return result.impression.files;
+    }
+  } catch (err) {
+    await rollbackSaveEditionImpression(impression);
+    throw new Error(`failed to save EditionImpression, error=${err}`);
+  }
+}
+
+async function rollbackSaveEditionImpression(
+  impression: PublishData['impression'],
+): Promise<void> {
+  logAction(`attempting to roll back save EditionImpression...`);
+  try {
+    if (!impression.previous) {
+      await api.deleteEditionImpression(impression.current.id);
+    } else {
+      await api.saveEditionImpression(impression.previous);
+    }
+    logAction(`rolled back save EditionImpression successfully`);
+  } catch (err) {
+    logError(`error rolling back save EditionImpression, error=${err}`);
+  }
+}
+
+async function uploadFiles(
+  uploads: PendingUploads,
+  cloudPaths: CloudFiles,
+): Promise<void> {
+  const files = new Map<string, string>();
+  files.set(uploads.ebook.epub, cloudPaths.ebook.epub.cloudPath);
+  files.set(uploads.ebook.mobi, cloudPaths.ebook.mobi.cloudPath);
+  files.set(uploads.ebook.pdf, cloudPaths.ebook.pdf.cloudPath);
+  files.set(uploads.ebook.speech, cloudPaths.ebook.speech.cloudPath);
+  files.set(uploads.ebook.app, cloudPaths.ebook.app.cloudPath);
+
+  uploads.images.square.forEach(({ localPath, cloudPath }) =>
+    files.set(localPath, cloudPath),
+  );
+
+  uploads.images.threeD.forEach(({ localPath, cloudPath }) =>
+    files.set(localPath, cloudPath),
+  );
+
+  if (uploads.ebook.appCss) {
+    files.set(uploads.ebook.appCss, `static/app-ebook.css`);
+  }
+
+  if (
+    uploads.paperback.cover.length !== uploads.paperback.interior.length ||
+    cloudPaths.paperback.cover.length !== cloudPaths.paperback.interior.length ||
+    uploads.paperback.cover.length !== cloudPaths.paperback.cover.length
+  ) {
+    throw new Error(`Unmatched paperback volume numbers`);
+  }
+
+  for (let index = 0; index < uploads.paperback.cover.length; index++) {
+    files.set(
+      uploads.paperback.cover[index]!,
+      cloudPaths.paperback.cover[index]!.cloudPath,
+    );
+    files.set(
+      uploads.paperback.interior[index]!,
+      cloudPaths.paperback.interior[index]!.cloudPath,
+    );
+  }
+
+  await cloud.uploadFiles(files);
 }
