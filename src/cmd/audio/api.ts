@@ -90,6 +90,7 @@ const QUERY_AUDIOS = gql`
           title
           slug
           description
+          path: directoryPath
           tags {
             type
           }

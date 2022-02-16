@@ -57,6 +57,7 @@ export interface GetAudios_audios_edition_document {
   title: string;
   slug: string;
   description: string;
+  path: string;
   tags: GetAudios_audios_edition_document_tags[];
   friend: GetAudios_audios_edition_document_friend;
 }

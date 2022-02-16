@@ -2,10 +2,11 @@ import fs from 'fs-extra';
 import { sync as glob } from 'glob';
 import { dirname } from 'path';
 import exec from 'x-exec';
+import isEqual from 'lodash.isequal';
 import md5File from 'md5-file';
-import * as cloud from '@friends-library/cloud';
 import { c, log } from 'x-chalk';
 import { AudioQuality, AUDIO_QUALITIES, Lang } from '@friends-library/types';
+import * as cloud from '@friends-library/cloud';
 import { AudioFsData } from './types';
 import { logDebug, logAction, logError } from '../../sub-log';
 import * as ffmpeg from '../../ffmpeg';
@@ -16,8 +17,8 @@ import getSrcFsData from './audio-fs-data';
 import { Audio } from './types';
 import { UpdateAudioInput, UpdateAudioPartInput } from '../../graphql/globalTypes';
 import SoundCloudResumableIds from './SoundCloudResumableIds';
-import isEqual from 'lodash.isequal';
 import * as api from './api';
+import { getAudios } from './query';
 
 interface Argv {
   lang: Lang | 'both';
@@ -40,7 +41,7 @@ export default async function handler(passedArgv: Argv): Promise<void> {
   argv = passedArgv;
   ffmpeg.ensureExists();
   m4bTool.ensureExists();
-  const audios = await getAudios();
+  const audios = await getAudios(argv.lang, argv.pattern, argv.limit);
   for (const audio of audios) {
     await handleAudio(audio);
   }
@@ -525,21 +526,6 @@ function assertCache<T>(cached: T): asserts cached is NonNullable<T> {
     console.trace(`Unexpected Missing Cache`);
     process.exit(1);
   }
-}
-
-async function getAudios(): Promise<Audio[]> {
-  const audios = await api.getAudios();
-  return audios
-    .filter((audio) => {
-      if (argv.lang !== `both` && argv.lang !== audio.edition.document.friend.lang) {
-        return false;
-      }
-      if (argv.pattern && !audio.edition.path.includes(argv.pattern)) {
-        return false;
-      }
-      return true;
-    })
-    .slice(0, argv.limit);
 }
 
 function assertDefined<T>(x: T | undefined): T {

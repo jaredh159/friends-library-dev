@@ -344,7 +344,7 @@ function safeSlackJson(strings: string[]): string[] {
 function fillInKnownEntityData(
   { impression: { current }, dpc }: PublishData,
   productionToolchainRevision: string,
-) {
+): void {
   current.adocLength = dpc.asciidocFiles.reduce((acc, { adoc }) => acc + adoc.length, 0);
   current.publishedRevision = git.dpcDocumentCurrentSha(dpc);
   current.productionToolchainRevision = productionToolchainRevision;

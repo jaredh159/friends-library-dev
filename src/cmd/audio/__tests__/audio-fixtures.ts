@@ -1,4 +1,3 @@
-import { gql } from '@friends-library/db';
 import { EditionType, Lang, TagType } from '../../../graphql/globalTypes';
 import { Audio } from '../types';
 
@@ -63,6 +62,7 @@ export const turfordEn: Audio = {
         alphabeticalName: `Turford, Hugh`,
         isCompilations: false,
       },
+      path: `en/hugh-turford/walk-in-the-spiri/`,
       slug: `walk-in-the-spirit`,
       title: `Walk in the Spirit`,
       filename: `Walk_in_the_Spirit`,
@@ -125,6 +125,7 @@ export const story: Audio = {
         alphabeticalName: `Story, Thomas`,
         isCompilations: false,
       },
+      path: `en/thomas-story/journal-selection`,
       slug: `journal-selection`,
       title: `Selection from the Journal of Thomas Story`,
       filename: `Selection_Journal_of_Thomas_Story`,
@@ -187,6 +188,7 @@ export const webbEs: Audio = {
       slug: `carta`,
       title: `La Carta de Elizabeth Webb`,
       filename: `Carta_de_Elizabeth_Webb`,
+      path: `es/elizabeth-webb/carta`,
       description: `Elizabeth Webb (1663-1726) fue una antigua ministra de la Sociedad de Amigos que viajó extensamente en su servicio por el evangelio. En el año 1712, mientras ejercía su ministerio en Londres, conoció a Anthony William Boehm, quien en ese entonces era capellán del Príncipe George de Dinamarca. En cierto momento después de su primer encuentro, Elizabeth Webb se sintió constreñida por el amor de Dios a escribirle a Boehm y enviarle una carta profundamente instructiva (la cual se encuentra en este libro), dándole un resumen de su viaje espiritual.`,
       __typename: `Document`,
       tags: [
@@ -367,6 +369,7 @@ export const titipEn: Audio = {
         alphabeticalName: `Compilations`,
         isCompilations: true,
       },
+      path: `en/compilations/truth-in-the-inward-parts-v1`,
       slug: `truth-in-the-inward-parts-v1`,
       title: `Truth in the Inward Parts -- Volume 1`,
       filename: `Truth_in_the_Inward_Parts_v1`,
@@ -426,6 +429,7 @@ export const wayOfLife: Audio = {
         alphabeticalName: `Marshall, Charles`,
         isCompilations: false,
       },
+      path: `en/charles-marshall/way-of-life-revealed`,
       slug: `way-of-life-revealed`,
       title: `The Way of Life Revealed and the Way of Death Discovered`,
       filename: `Way_of_Life_Revealed`,
@@ -498,6 +502,7 @@ export const __QUERY = `
           title
           slug
           description
+          path: directoryPath
           tags {
             __typename
             type
