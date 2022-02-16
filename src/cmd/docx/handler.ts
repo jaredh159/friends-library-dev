@@ -36,7 +36,7 @@ function makeDocx(dpc: FsDocPrecursor, dir: string): string {
   prepXml(`${tmpDir}/doc.xml`);
   dockerRun(`pandoc --from docbook --to docx --output doc.docx doc.xml`, tmpDir);
 
-  const docPath = `${dir}/${dpc.edition?.filenameBase}.docx`;
+  const docPath = `${dir}/${dpc.documentSlug}--${dpc.editionType}.docx`;
   fs.moveSync(`${tmpDir}/doc.docx`, docPath);
   fs.rmdirSync(tmpDir, { recursive: true });
   return docPath;
