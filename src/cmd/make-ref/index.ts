@@ -41,7 +41,7 @@ function dpcFromPath(doc: string, isolate?: number): DocPrecursor {
     blurb: ``,
     config: {},
     customCode: {
-      css: { 'paperback-interior': `.chapter { page-break-before: avoid;` },
+      css: { 'paperback-interior': `.chapter { page-break-before: avoid; }` },
       html: {},
     },
     paperbackSplits: [],

@@ -6,7 +6,7 @@ import { log, red } from 'x-chalk';
 import * as manifest from '@friends-library/doc-manifests';
 import * as artifacts from '@friends-library/doc-artifacts';
 import { appEbook as appEbookCss } from '@friends-library/doc-css';
-import { hydrate, query as dpcQuery, FsDocPrecursor } from '@friends-library/dpc-fs';
+import { hydrate, query as dpcQuery } from '@friends-library/dpc-fs';
 import { ParserError } from '@friends-library/parser';
 import {
   ArtifactType,

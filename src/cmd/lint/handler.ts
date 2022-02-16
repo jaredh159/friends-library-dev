@@ -33,7 +33,6 @@ export default function lintHandler(argv: Arguments<LintCommandOptions>): void {
         green(`${numFixed}/${numFixed} lint violations fixed! 😊 \n`);
       }
       process.exit(0);
-      return;
     }
 
     printLints(unfixable, limit || false);
