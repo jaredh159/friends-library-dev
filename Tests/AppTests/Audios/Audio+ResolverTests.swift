@@ -15,7 +15,7 @@ final class AudioResolverTests: AppTestCase {
     GraphQLTest(
       """
       mutation CreateAudio($input: CreateAudioInput!) {
-        download: createAudio(input: $input) {
+        audio: createAudio(input: $input) {
           id
         }
       }

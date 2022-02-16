@@ -12,7 +12,7 @@ final class FriendResolverTests: AppTestCase {
     GraphQLTest(
       """
       mutation CreateFriend($input: CreateFriendInput!) {
-        download: createFriend(input: $input) {
+        friend: createFriend(input: $input) {
           id
         }
       }

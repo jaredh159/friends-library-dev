@@ -14,7 +14,7 @@ final class AudioPartResolverTests: AppTestCase {
     GraphQLTest(
       """
       mutation CreateAudioPart($input: CreateAudioPartInput!) {
-        download: createAudioPart(input: $input) {
+        part: createAudioPart(input: $input) {
           id
         }
       }

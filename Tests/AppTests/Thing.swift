@@ -44,6 +44,7 @@ extension Thing: ApiModel {
 
 extension Thing: DuetModel {
   static let tableName = "things"
+  static let isSoftDeletable = true
 }
 
 extension Thing.Foobar: PostgresEnum {

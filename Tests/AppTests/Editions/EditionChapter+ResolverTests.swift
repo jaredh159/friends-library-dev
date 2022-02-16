@@ -14,7 +14,7 @@ final class EditionChapterResolverTests: AppTestCase {
     GraphQLTest(
       """
       mutation CreateEditionChapter($input: CreateEditionChapterInput!) {
-        download: createEditionChapter(input: $input) {
+        editionChapter: createEditionChapter(input: $input) {
           id
         }
       }

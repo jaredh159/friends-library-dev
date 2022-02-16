@@ -38,7 +38,7 @@ final class CheckPendingOrdersTests: AppTestCase {
     await OrderPrintJobCoordinator.checkPendingOrders()
     XCTAssertEqual(
       sent.slacks,
-      [.error("Error querying orders & print jobs: Abort.501: ThrowingSql.select")]
+      [.error("Error querying orders & print jobs: Abort.501: ThrowingDatabaseClient.select")]
     )
     Current.db = existingDb
   }

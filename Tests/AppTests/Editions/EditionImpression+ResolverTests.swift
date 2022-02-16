@@ -15,7 +15,7 @@ final class EditionImpressionResolverTests: AppTestCase {
     GraphQLTest(
       """
       mutation CreateEditionImpression($input: CreateEditionImpressionInput!) {
-        download: createEditionImpression(input: $input) {
+        editionImpression: createEditionImpression(input: $input) {
           id
         }
       }

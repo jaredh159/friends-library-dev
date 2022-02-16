@@ -14,7 +14,7 @@ final class FriendResidenceDurationResolverTests: AppTestCase {
     GraphQLTest(
       """
       mutation CreateFriendResidenceDuration($input: CreateFriendResidenceDurationInput!) {
-        download: createFriendResidenceDuration(input: $input) {
+        friendResidenceDuration: createFriendResidenceDuration(input: $input) {
           id
         }
       }

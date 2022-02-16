@@ -15,7 +15,7 @@ final class DocumentResolverTests: AppTestCase {
     GraphQLTest(
       """
       mutation CreateDocument($input: CreateDocumentInput!) {
-        download: createDocument(input: $input) {
+        document: createDocument(input: $input) {
           id
         }
       }

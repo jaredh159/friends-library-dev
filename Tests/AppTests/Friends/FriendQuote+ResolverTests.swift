@@ -14,7 +14,7 @@ final class FriendQuoteResolverTests: AppTestCase {
     GraphQLTest(
       """
       mutation CreateFriendQuote($input: CreateFriendQuoteInput!) {
-        download: createFriendQuote(input: $input) {
+        friendQuote: createFriendQuote(input: $input) {
           id
         }
       }

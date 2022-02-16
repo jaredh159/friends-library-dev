@@ -47,7 +47,7 @@ final class ThingResolverTests: AppTestCase {
     GraphQLTest(
       """
       mutation CreateThing($input: CreateThingInput!) {
-        download: createThing(input: $input) {
+        thing: createThing(input: $input) {
           id
         }
       }

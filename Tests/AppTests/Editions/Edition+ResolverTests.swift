@@ -6,6 +6,9 @@ import XCTVaporUtils
 final class EditionResolverTests: AppTestCase {
 
   func testCreateEdition() async throws {
+    let isbn = Isbn(code: .init(rawValue: UUID().uuidString), editionId: nil)
+    try await Current.db.deleteAll(Edition.self)
+    try await Current.db.create(isbn)
     let entities = await Entities.create()
     _ = try await Current.db.delete(entities.edition.id)
     let edition: Edition = .random
@@ -15,7 +18,7 @@ final class EditionResolverTests: AppTestCase {
     GraphQLTest(
       """
       mutation CreateEdition($input: CreateEditionInput!) {
-        download: createEdition(input: $input) {
+        edition: createEdition(input: $input) {
           id
         }
       }

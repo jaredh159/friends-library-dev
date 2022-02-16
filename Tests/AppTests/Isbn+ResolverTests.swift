@@ -13,7 +13,7 @@ final class IsbnResolverTests: AppTestCase {
     GraphQLTest(
       """
       mutation CreateIsbn($input: CreateIsbnInput!) {
-        download: createIsbn(input: $input) {
+        isbn: createIsbn(input: $input) {
           id
         }
       }
