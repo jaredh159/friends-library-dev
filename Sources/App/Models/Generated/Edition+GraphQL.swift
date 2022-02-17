@@ -17,6 +17,8 @@ extension AppSchema {
       Field("updatedAt", at: \.updatedAt)
       Field("directoryPath", at: \.directoryPath)
       Field("filename", at: \.filename)
+      Field("all", at: \.all)
+      Field("all", at: \.all)
       Field("images", at: \.images)
       Field("document", with: \.document)
       Field("impression", with: \.impression)

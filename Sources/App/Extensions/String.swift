@@ -20,6 +20,14 @@ public extension String {
     snakeCased.uppercased()
   }
 
+  func padLeft(toLength: Int, withPad: String) -> String {
+    String(
+      String(reversed())
+        .padding(toLength: toLength, withPad: withPad, startingAt: 0)
+        .reversed()
+    )
+  }
+
   private func processCamelCaseRegex(pattern: String) -> String? {
     let regex = try? NSRegularExpression(pattern: pattern, options: [])
     let range = NSRange(location: 0, length: count)
