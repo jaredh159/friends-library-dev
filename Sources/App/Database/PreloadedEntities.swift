@@ -43,15 +43,15 @@ actor PreloadedEntities: SQLQuerying, InMemoryDatabase {
     self.audioParts = audioParts
 
     for friend in friends.values {
-      friend.documents = .notLoaded
-      friend.residences = .notLoaded
-      friend.quotes = .notLoaded
+      friend.documents = .loaded([])
+      friend.residences = .loaded([])
+      friend.quotes = .loaded([])
     }
 
     for (_, document) in documents {
-      document.editions = .notLoaded
-      document.tags = .notLoaded
-      document.relatedDocuments = .notLoaded
+      document.editions = .loaded([])
+      document.tags = .loaded([])
+      document.relatedDocuments = .loaded([])
       if let friend = friends[document.friendId] {
         friend.documents.push(document)
         document.friend = .loaded(friend)
@@ -66,7 +66,7 @@ actor PreloadedEntities: SQLQuerying, InMemoryDatabase {
     }
 
     for (_, residence) in friendResidences {
-      residence.durations = .notLoaded
+      residence.durations = .loaded([])
       if let friend = friends[residence.friendId] {
         friend.residences.push(residence)
         residence.friend = .loaded(friend)
@@ -106,7 +106,7 @@ actor PreloadedEntities: SQLQuerying, InMemoryDatabase {
 
     for (_, edition) in editions {
       // do this BEFORE setting optional children (Impression, Audio)
-      edition.chapters = .notLoaded
+      edition.chapters = .loaded([])
       edition.impression = .loaded(nil)
       edition.audio = .loaded(nil)
 
@@ -124,7 +124,7 @@ actor PreloadedEntities: SQLQuerying, InMemoryDatabase {
     }
 
     for (_, audio) in audios {
-      audio.parts = .notLoaded
+      audio.parts = .loaded([])
       if let edition = editions[audio.editionId] {
         edition.audio = .loaded(audio)
         audio.edition = .loaded(edition)
