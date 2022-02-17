@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { EditionType, Lang, PrintSizeVariant } from './globalTypes';
+import { EditionType, Lang, PrintSize } from './globalTypes';
 
 // ====================================================
 // GraphQL query operation: GetOrderEditions
@@ -25,7 +25,7 @@ export interface GetOrderEditions_editions_document {
 export interface GetOrderEditions_editions_impression {
   __typename: 'EditionImpression';
   paperbackPriceInCents: number;
-  paperbackSize: PrintSizeVariant;
+  paperbackSize: PrintSize;
   paperbackVolumes: number[];
 }
 

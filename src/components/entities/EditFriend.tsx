@@ -295,7 +295,7 @@ const EditFriendContainer: React.FC = () => {
   }
   return (
     <EditFriend
-      friend={sort.friend({ ...query.data.friend })}
+      friend={sort.friend(JSON.parse(JSON.stringify(query.data.friend)))}
       selectableDocuments={query.data.selectableDocuments}
     />
   );

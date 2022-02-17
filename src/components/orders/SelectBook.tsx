@@ -3,11 +3,11 @@ import { gql } from '@apollo/client';
 import cx from 'classnames';
 import { v4 as uuid } from 'uuid';
 import { XCircleIcon } from '@heroicons/react/solid';
+import { PrintSize } from '@friends-library/types';
 import { OrderItem } from '../../types';
 import { GetOrderEditions } from '../../graphql/GetOrderEditions';
 import { useQueryResult } from '../../lib/query';
 import { Lang } from '../../graphql/globalTypes';
-import { printSizeVariantToPrintSize } from '../../lib/convert';
 
 interface ContainerProps {
   onCancel: () => unknown;
@@ -107,9 +107,7 @@ export const SelectBook: React.FC<Props> = ({ editions, onCancel, onSelect }) =>
                   author: edition.document.friend.name,
                   quantity: 1,
                   unitPrice: edition.impression!.paperbackPriceInCents,
-                  printSize: printSizeVariantToPrintSize(
-                    edition.impression!.paperbackSize,
-                  ),
+                  printSize: edition.impression!.paperbackSize as PrintSize,
                   pages: edition.impression!.paperbackVolumes,
                 });
               }}

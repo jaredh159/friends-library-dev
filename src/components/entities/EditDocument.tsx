@@ -235,7 +235,10 @@ const EditDocumentContainer: React.FC = () => {
 
   if (!loaded) {
     setLoaded(true);
-    dispatch({ type: `replace`, state: sort.document({ ...query.data.document }) });
+    dispatch({
+      type: `replace`,
+      state: sort.document(JSON.parse(JSON.stringify(query.data.document))),
+    });
   }
 
   return (
