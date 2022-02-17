@@ -93,7 +93,7 @@ function parseClassInterior(name: string, path: string, lines: string[]): Model 
 }
 
 function extractComputedProp(line: string, model: Model): boolean {
-  const computedPropMatch = line.match(/\s+var ([^ ]+):\s+([^ ]+)\s+{/);
+  const computedPropMatch = line.match(/^  var ([^ ]+):\s+([^ ]+)\s+{/);
   if (computedPropMatch) {
     const computedProp = { name: computedPropMatch[1], type: computedPropMatch[2] };
     model.computedProps.push(computedProp);

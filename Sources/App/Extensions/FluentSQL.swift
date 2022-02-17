@@ -56,7 +56,7 @@ extension Migration {
         _ = try await sql.raw(
           """
           INSERT INTO "_fluent_enums"
-          (id, name, case)
+          ("id", "name", "case")
           VALUES
           ('\(raw: UUID().lowercased)', '\(raw: enumName)', '\(raw: newCase)');
           """

@@ -17,7 +17,7 @@ struct CreateEditionImpressions: Migration {
             .required
           )
           .field(M18.adocLength, .int, .required)
-          .field(M18.paperbackSize, printSizeVariants, .required)
+          .field(M18.paperbackSizeVariant, printSizeVariants, .required)
           .field(M18.paperbackVolumes, .array(of: .int), .required)
           .field(M18.publishedRevision, .string, .required)
           .field(M18.productionToolchainRevision, .string, .required)
@@ -30,5 +30,17 @@ struct CreateEditionImpressions: Migration {
   func revert(on database: Database) -> Future<Void> {
     Current.logger.info("Running migration: CreateEditionImpressions DOWN")
     return database.schema(M18.tableName).delete()
+  }
+}
+
+extension EditionImpression {
+  enum M18 {
+    static let tableName = "edition_impressions"
+    static let editionId = FieldKey("edition_id")
+    static let adocLength = FieldKey("adoc_length")
+    static let publishedRevision = FieldKey("published_revision")
+    static let productionToolchainRevision = FieldKey("production_toolchain_revision")
+    static let paperbackSizeVariant = FieldKey("paperback_size_variant")
+    static let paperbackVolumes = FieldKey("paperback_volumes")
   }
 }

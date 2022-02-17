@@ -80,7 +80,7 @@ final class PrintJobsTests: AppTestCase {
           interior: entities.editionImpression.files.paperback.interior.first.sourceUrl
             .absoluteString,
           podPackageId: Lulu.podPackageId(
-            size: entities.editionImpression.paperbackSize.printSize,
+            size: entities.editionImpression.paperbackSizeVariant.printSize,
             pages: entities.editionImpression.paperbackVolumes.first
           ),
           quantity: item.quantity
@@ -125,7 +125,7 @@ final class PrintJobsTests: AppTestCase {
             interior: entities.editionImpression.files.paperback.interior.first.sourceUrl
               .absoluteString,
             podPackageId: Lulu.podPackageId(
-              size: entities.editionImpression.paperbackSize.printSize,
+              size: entities.editionImpression.paperbackSizeVariant.printSize,
               pages: entities.editionImpression.paperbackVolumes.first
             ),
             quantity: item.quantity
@@ -136,7 +136,7 @@ final class PrintJobsTests: AppTestCase {
             interior: entities.editionImpression.files.paperback.interior[1].sourceUrl
               .absoluteString,
             podPackageId: Lulu.podPackageId(
-              size: entities.editionImpression.paperbackSize.printSize,
+              size: entities.editionImpression.paperbackSizeVariant.printSize,
               pages: entities.editionImpression.paperbackVolumes.first
             ),
             quantity: item.quantity

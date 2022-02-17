@@ -9,7 +9,7 @@ extension EditionImpression {
     EditionImpression(
       editionId: .init(),
       adocLength: 42,
-      paperbackSize: .s,
+      paperbackSizeVariant: .s,
       paperbackVolumes: NonEmpty<[Int]>(42),
       publishedRevision: "@mock publishedRevision",
       productionToolchainRevision: "@mock productionToolchainRevision"
@@ -20,7 +20,7 @@ extension EditionImpression {
     EditionImpression(
       editionId: .init(),
       adocLength: 0,
-      paperbackSize: .s,
+      paperbackSizeVariant: .s,
       paperbackVolumes: NonEmpty<[Int]>(0),
       publishedRevision: "",
       productionToolchainRevision: ""
@@ -31,7 +31,7 @@ extension EditionImpression {
     EditionImpression(
       editionId: .init(),
       adocLength: Int.random,
-      paperbackSize: PrintSizeVariant.allCases.shuffled().first!,
+      paperbackSizeVariant: PrintSizeVariant.allCases.shuffled().first!,
       paperbackVolumes: NonEmpty<[Int]>(Int.random),
       publishedRevision: .init(rawValue: "@random".random),
       productionToolchainRevision: .init(rawValue: "@random".random)
@@ -43,7 +43,7 @@ extension EditionImpression {
       "id": .string(id.lowercased),
       "editionId": .string(editionId.lowercased),
       "adocLength": .number(Number(adocLength)),
-      "paperbackSize": .string(paperbackSize.rawValue),
+      "paperbackSizeVariant": .string(paperbackSizeVariant.rawValue),
       "paperbackVolumes": .array(paperbackVolumes.array.map { .number(Number($0)) }),
       "publishedRevision": .string(publishedRevision.rawValue),
       "productionToolchainRevision": .string(productionToolchainRevision.rawValue),

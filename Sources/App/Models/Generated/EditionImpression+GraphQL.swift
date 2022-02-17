@@ -9,11 +9,12 @@ extension AppSchema {
       Field("id", at: \.id.rawValue.lowercased)
       Field("editionId", at: \.editionId.rawValue.lowercased)
       Field("adocLength", at: \.adocLength)
-      Field("paperbackSize", at: \.paperbackSize)
+      Field("paperbackSizeVariant", at: \.paperbackSizeVariant)
       Field("paperbackVolumes", at: \.paperbackVolumes.rawValue)
       Field("publishedRevision", at: \.publishedRevision.rawValue)
       Field("productionToolchainRevision", at: \.productionToolchainRevision.rawValue)
       Field("createdAt", at: \.createdAt)
+      Field("paperbackSize", at: \.paperbackSize)
       Field("paperbackPriceInCents", at: \.paperbackPrice.rawValue)
       Field("files", at: \.files)
       Field("edition", with: \.edition)
@@ -24,7 +25,7 @@ extension AppSchema {
     let id: UUID?
     let editionId: UUID
     let adocLength: Int
-    let paperbackSize: PrintSizeVariant
+    let paperbackSizeVariant: PrintSizeVariant
     let paperbackVolumes: [Int]
     let publishedRevision: String
     let productionToolchainRevision: String
@@ -34,7 +35,7 @@ extension AppSchema {
     let id: UUID
     let editionId: UUID
     let adocLength: Int
-    let paperbackSize: PrintSizeVariant
+    let paperbackSizeVariant: PrintSizeVariant
     let paperbackVolumes: [Int]
     let publishedRevision: String
     let productionToolchainRevision: String
@@ -45,7 +46,7 @@ extension AppSchema {
       InputField("id", at: \.id)
       InputField("editionId", at: \.editionId)
       InputField("adocLength", at: \.adocLength)
-      InputField("paperbackSize", at: \.paperbackSize)
+      InputField("paperbackSizeVariant", at: \.paperbackSizeVariant)
       InputField("paperbackVolumes", at: \.paperbackVolumes)
       InputField("publishedRevision", at: \.publishedRevision)
       InputField("productionToolchainRevision", at: \.productionToolchainRevision)
@@ -57,7 +58,7 @@ extension AppSchema {
       InputField("id", at: \.id)
       InputField("editionId", at: \.editionId)
       InputField("adocLength", at: \.adocLength)
-      InputField("paperbackSize", at: \.paperbackSize)
+      InputField("paperbackSizeVariant", at: \.paperbackSizeVariant)
       InputField("paperbackVolumes", at: \.paperbackVolumes)
       InputField("publishedRevision", at: \.publishedRevision)
       InputField("productionToolchainRevision", at: \.productionToolchainRevision)
@@ -123,7 +124,7 @@ extension EditionImpression {
       id: .init(rawValue: input.id ?? UUID()),
       editionId: .init(rawValue: input.editionId),
       adocLength: input.adocLength,
-      paperbackSize: input.paperbackSize,
+      paperbackSizeVariant: input.paperbackSizeVariant,
       paperbackVolumes: try NonEmpty<[Int]>.fromArray(input.paperbackVolumes),
       publishedRevision: .init(rawValue: input.publishedRevision),
       productionToolchainRevision: .init(rawValue: input.productionToolchainRevision)
@@ -135,7 +136,7 @@ extension EditionImpression {
       id: .init(rawValue: input.id),
       editionId: .init(rawValue: input.editionId),
       adocLength: input.adocLength,
-      paperbackSize: input.paperbackSize,
+      paperbackSizeVariant: input.paperbackSizeVariant,
       paperbackVolumes: try NonEmpty<[Int]>.fromArray(input.paperbackVolumes),
       publishedRevision: .init(rawValue: input.publishedRevision),
       productionToolchainRevision: .init(rawValue: input.productionToolchainRevision)
@@ -145,7 +146,7 @@ extension EditionImpression {
   func update(_ input: AppSchema.UpdateEditionImpressionInput) throws {
     editionId = .init(rawValue: input.editionId)
     adocLength = input.adocLength
-    paperbackSize = input.paperbackSize
+    paperbackSizeVariant = input.paperbackSizeVariant
     paperbackVolumes = try NonEmpty<[Int]>.fromArray(input.paperbackVolumes)
     publishedRevision = .init(rawValue: input.publishedRevision)
     productionToolchainRevision = .init(rawValue: input.productionToolchainRevision)

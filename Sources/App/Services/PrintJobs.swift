@@ -34,7 +34,10 @@ enum PrintJobs {
           title: edition.document.require().title + titleSuffix,
           cover: impression.files.paperback.cover[index].sourceUrl.absoluteString,
           interior: impression.files.paperback.interior[index].sourceUrl.absoluteString,
-          podPackageId: Lulu.podPackageId(size: impression.paperbackSize.printSize, pages: pages),
+          podPackageId: Lulu.podPackageId(
+            size: impression.paperbackSizeVariant.printSize,
+            pages: pages
+          ),
           quantity: item.quantity
         )
       }

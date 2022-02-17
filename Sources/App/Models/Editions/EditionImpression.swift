@@ -6,7 +6,7 @@ final class EditionImpression: Codable {
   var id: Id
   var editionId: Edition.Id
   var adocLength: Int
-  var paperbackSize: PrintSizeVariant
+  var paperbackSizeVariant: PrintSizeVariant
   var paperbackVolumes: NonEmpty<[Int]>
   var publishedRevision: GitCommitSha
   var productionToolchainRevision: GitCommitSha
@@ -14,15 +14,19 @@ final class EditionImpression: Codable {
 
   var edition = Parent<Edition>.notLoaded
 
+  var paperbackSize: PrintSize {
+    paperbackSizeVariant.printSize
+  }
+
   var paperbackPrice: Cents<Int> {
-    Lulu.paperbackPrice(size: paperbackSize.printSize, volumes: paperbackVolumes)
+    Lulu.paperbackPrice(size: paperbackSizeVariant.printSize, volumes: paperbackVolumes)
   }
 
   init(
     id: Id = .init(),
     editionId: Edition.Id,
     adocLength: Int,
-    paperbackSize: PrintSizeVariant,
+    paperbackSizeVariant: PrintSizeVariant,
     paperbackVolumes: NonEmpty<[Int]>,
     publishedRevision: GitCommitSha,
     productionToolchainRevision: GitCommitSha
@@ -30,7 +34,7 @@ final class EditionImpression: Codable {
     self.id = id
     self.editionId = editionId
     self.adocLength = adocLength
-    self.paperbackSize = paperbackSize
+    self.paperbackSizeVariant = paperbackSizeVariant
     self.paperbackVolumes = paperbackVolumes
     self.publishedRevision = publishedRevision
     self.productionToolchainRevision = productionToolchainRevision

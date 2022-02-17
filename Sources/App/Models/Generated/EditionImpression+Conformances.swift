@@ -21,7 +21,7 @@ extension EditionImpression {
     case id
     case editionId
     case adocLength
-    case paperbackSize
+    case paperbackSizeVariant
     case paperbackVolumes
     case publishedRevision
     case productionToolchainRevision
@@ -35,7 +35,7 @@ extension EditionImpression {
       .id: .id(self),
       .editionId: .uuid(editionId),
       .adocLength: .int(adocLength),
-      .paperbackSize: .enum(paperbackSize),
+      .paperbackSizeVariant: .enum(paperbackSizeVariant),
       .paperbackVolumes: .intArray(paperbackVolumes.array),
       .publishedRevision: .string(publishedRevision.rawValue),
       .productionToolchainRevision: .string(productionToolchainRevision.rawValue),
@@ -53,8 +53,8 @@ extension EditionImpression: SQLInspectable {
         return .uuid(editionId) == constraint.value
       case .adocLength:
         return .int(adocLength) == constraint.value
-      case .paperbackSize:
-        return .enum(paperbackSize) == constraint.value
+      case .paperbackSizeVariant:
+        return .enum(paperbackSizeVariant) == constraint.value
       case .paperbackVolumes:
         return .intArray(paperbackVolumes.array) == constraint.value
       case .publishedRevision:

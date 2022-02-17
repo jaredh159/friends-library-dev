@@ -1,4 +1,3 @@
-import { isNotNull } from 'x-ts-utils';
 import stripIndent from 'strip-indent';
 import { GlobalTypes } from '../types';
 import Model, { Prop } from './Model';
