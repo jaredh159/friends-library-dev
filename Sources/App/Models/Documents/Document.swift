@@ -23,6 +23,13 @@ final class Document: Codable {
   var relatedDocuments = Children<RelatedDocument>.notLoaded
   var tags = Children<DocumentTag>.notLoaded
 
+  var primaryEdition: Edition? {
+    let allEditions = editions.require()
+    return allEditions.first { $0.type == .updated } ??
+      allEditions.first { $0.type == .original } ??
+      allEditions.first
+  }
+
   var directoryPath: String {
     "\(friend.require().directoryPath)/\(slug)"
   }

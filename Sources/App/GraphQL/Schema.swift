@@ -73,6 +73,15 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.CreateFriendResidenceDurationInputType
   AppSchema.UpdateFriendResidenceDurationInputType
 
+  // edition types
+  AppSchema.EditionImageType
+  AppSchema.EditionSquareImagesType
+  AppSchema.EditionThreeDImagesType
+  AppSchema.EditionImagesType
+  AppSchema.EditionType
+  AppSchema.CreateEditionInputType
+  AppSchema.UpdateEditionInputType
+
   // document types
   AppSchema.DocumentType
   AppSchema.CreateDocumentInputType
@@ -83,15 +92,6 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.RelatedDocumentType
   AppSchema.CreateRelatedDocumentInputType
   AppSchema.UpdateRelatedDocumentInputType
-
-  // edition types
-  AppSchema.EditionImageType
-  AppSchema.EditionSquareImagesType
-  AppSchema.EditionThreeDImagesType
-  AppSchema.EditionImagesType
-  AppSchema.EditionType
-  AppSchema.CreateEditionInputType
-  AppSchema.UpdateEditionInputType
 
   // edition impression types
   AppSchema.EditionImpressionEbookFilesType

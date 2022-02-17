@@ -19,6 +19,7 @@ extension AppSchema {
       Field("featuredDescription", at: \.featuredDescription)
       Field("createdAt", at: \.createdAt)
       Field("updatedAt", at: \.updatedAt)
+      Field("primaryEdition", at: \.primaryEdition)
       Field("directoryPath", at: \.directoryPath)
       Field("trimmedUtf8ShortTitle", at: \.trimmedUtf8ShortTitle)
       Field("friend", with: \.friend)
