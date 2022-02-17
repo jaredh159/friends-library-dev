@@ -21,6 +21,7 @@ extension AppSchema {
       Field("hasNonDraftDocument", at: \.hasNonDraftDocument)
       Field("relatedDocuments", at: \.relatedDocuments)
       Field("alphabeticalName", at: \.alphabeticalName)
+      Field("primaryResidence", at: \.primaryResidence)
       Field("documents", with: \.documents)
       Field("residences", with: \.residences)
       Field("quotes", with: \.quotes)

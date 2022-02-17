@@ -80,13 +80,13 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.UpdateRelatedDocumentInputType
 
   // friend types
+  AppSchema.FriendResidenceType
   AppSchema.FriendType
   AppSchema.CreateFriendInputType
   AppSchema.UpdateFriendInputType
   AppSchema.FriendQuoteType
   AppSchema.CreateFriendQuoteInputType
   AppSchema.UpdateFriendQuoteInputType
-  AppSchema.FriendResidenceType
   AppSchema.CreateFriendResidenceInputType
   AppSchema.UpdateFriendResidenceInputType
   AppSchema.FriendResidenceDurationType
