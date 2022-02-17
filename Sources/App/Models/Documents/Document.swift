@@ -34,6 +34,18 @@ final class Document: Codable {
     "\(friend.require().directoryPath)/\(slug)"
   }
 
+  var htmlTitle: String {
+    Asciidoc.htmlTitle(title)
+  }
+
+  var htmlShortTitle: String {
+    Asciidoc.htmlShortTitle(title)
+  }
+
+  var utf8ShortTitle: String {
+    Asciidoc.utf8ShortTitle(title)
+  }
+
   var trimmedUtf8ShortTitle: String {
     Asciidoc.trimmedUtf8ShortDocumentTitle(title, lang: friend.require().lang)
   }
