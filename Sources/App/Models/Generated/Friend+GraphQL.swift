@@ -18,6 +18,8 @@ extension AppSchema {
       Field("updatedAt", at: \.updatedAt)
       Field("isCompilations", at: \.isCompilations)
       Field("directoryPath", at: \.directoryPath)
+      Field("hasNonDraftDocument", at: \.hasNonDraftDocument)
+      Field("relatedDocuments", at: \.relatedDocuments)
       Field("alphabeticalName", at: \.alphabeticalName)
       Field("documents", with: \.documents)
       Field("residences", with: \.residences)

@@ -20,6 +20,7 @@ extension AppSchema {
       Field("createdAt", at: \.createdAt)
       Field("updatedAt", at: \.updatedAt)
       Field("primaryEdition", at: \.primaryEdition)
+      Field("hasNonDraftEdition", at: \.hasNonDraftEdition)
       Field("directoryPath", at: \.directoryPath)
       Field("htmlTitle", at: \.htmlTitle)
       Field("htmlShortTitle", at: \.htmlShortTitle)

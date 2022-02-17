@@ -25,6 +25,14 @@ final class Friend: Codable {
     "\(lang)/\(slug)"
   }
 
+  var hasNonDraftDocument: Bool {
+    documents.require().first { $0.hasNonDraftEdition } != nil
+  }
+
+  var relatedDocuments: [RelatedDocument] {
+    documents.require().flatMap { $0.relatedDocuments.require() }
+  }
+
   var alphabeticalName: String {
     let parts = name.split(separator: " ")
     guard parts.count > 1, let last = parts.last else { return name }

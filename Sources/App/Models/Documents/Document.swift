@@ -30,6 +30,10 @@ final class Document: Codable {
       allEditions.first
   }
 
+  var hasNonDraftEdition: Bool {
+    editions.require().first { $0.isDraft == false } != nil
+  }
+
   var directoryPath: String {
     "\(friend.require().directoryPath)/\(slug)"
   }

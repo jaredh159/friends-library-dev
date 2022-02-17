@@ -46,7 +46,7 @@ struct DownloadableFile: Encodable {
   }
 
   var logUrl: URL {
-    URL(string: "\(Env.CLOUD_STORAGE_BUCKET_URL)/\(logPath)")!
+    URL(string: "\(Env.SELF_URL)/\(logPath)")!
   }
 
   var filename: String {

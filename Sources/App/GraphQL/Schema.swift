@@ -59,20 +59,6 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.GetPrintJobExploratoryMetadataInputType
   AppSchema.PrintJobExploratoryMetadataType
 
-  // friend types
-  AppSchema.FriendType
-  AppSchema.CreateFriendInputType
-  AppSchema.UpdateFriendInputType
-  AppSchema.FriendQuoteType
-  AppSchema.CreateFriendQuoteInputType
-  AppSchema.UpdateFriendQuoteInputType
-  AppSchema.FriendResidenceType
-  AppSchema.CreateFriendResidenceInputType
-  AppSchema.UpdateFriendResidenceInputType
-  AppSchema.FriendResidenceDurationType
-  AppSchema.CreateFriendResidenceDurationInputType
-  AppSchema.UpdateFriendResidenceDurationInputType
-
   // edition types
   AppSchema.EditionImageType
   AppSchema.EditionSquareImagesType
@@ -92,6 +78,20 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.RelatedDocumentType
   AppSchema.CreateRelatedDocumentInputType
   AppSchema.UpdateRelatedDocumentInputType
+
+  // friend types
+  AppSchema.FriendType
+  AppSchema.CreateFriendInputType
+  AppSchema.UpdateFriendInputType
+  AppSchema.FriendQuoteType
+  AppSchema.CreateFriendQuoteInputType
+  AppSchema.UpdateFriendQuoteInputType
+  AppSchema.FriendResidenceType
+  AppSchema.CreateFriendResidenceInputType
+  AppSchema.UpdateFriendResidenceInputType
+  AppSchema.FriendResidenceDurationType
+  AppSchema.CreateFriendResidenceDurationInputType
+  AppSchema.UpdateFriendResidenceDurationInputType
 
   // edition impression types
   AppSchema.EditionImpressionEbookFilesType
