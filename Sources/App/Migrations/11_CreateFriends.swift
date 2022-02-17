@@ -5,6 +5,7 @@ struct CreateFriends: Migration {
   private typealias M11 = Friend.M11
 
   func prepare(on database: Database) -> Future<Void> {
+    Current.logger.info("Running migration: CreateFriends UP")
     let genderFuture = database.enum(M11.GenderEnum.name)
       .case(M11.GenderEnum.caseMale)
       .case(M11.GenderEnum.caseFemale)
@@ -33,6 +34,7 @@ struct CreateFriends: Migration {
   }
 
   func revert(on database: Database) -> Future<Void> {
-    database.schema(M11.tableName).delete()
+    Current.logger.info("Running migration: CreateFriends DOWN")
+    return database.schema(M11.tableName).delete()
   }
 }

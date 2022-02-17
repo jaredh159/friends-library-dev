@@ -4,7 +4,8 @@ import Vapor
 struct CreateArtifactProductionVersion: Migration {
 
   func prepare(on database: Database) -> Future<Void> {
-    database.schema(ArtifactProductionVersion.M8.tableName)
+    Current.logger.info("Running migration: CreateArtifactProductionVersion UP")
+    return database.schema(ArtifactProductionVersion.M8.tableName)
       .id()
       .field(ArtifactProductionVersion.M8.version, .string, .required)
       .field(.createdAt, .datetime, .required)
@@ -13,6 +14,7 @@ struct CreateArtifactProductionVersion: Migration {
   }
 
   func revert(on database: Database) -> Future<Void> {
-    database.schema(FreeOrderRequest.M6.tableName).delete()
+    Current.logger.info("Running migration: CreateArtifactProductionVersion DOWN")
+    return database.schema(FreeOrderRequest.M6.tableName).delete()
   }
 }

@@ -26,10 +26,10 @@ public func configure(_ app: Application) throws {
     as: .psql
   )
 
-  addMigrations(to: app)
-
   Current.db = LiveDatabase(db: app.db as! SQLDatabase)
   Current.logger = app.logger
+
+  addMigrations(to: app)
 
   app.get("download", "**") {
     try await downloadFileRouteHandler(req: $0)

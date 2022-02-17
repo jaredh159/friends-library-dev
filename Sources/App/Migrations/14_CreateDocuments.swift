@@ -5,7 +5,8 @@ struct CreateDocuments: Migration {
   private typealias M14 = Document.M14
 
   func prepare(on database: Database) -> Future<Void> {
-    database.schema(M14.tableName)
+    Current.logger.info("Running migration: CreateDocuments UP")
+    return database.schema(M14.tableName)
       .id()
       .field(
         M14.friendId,
@@ -36,6 +37,7 @@ struct CreateDocuments: Migration {
   }
 
   func revert(on database: Database) -> Future<Void> {
-    database.schema(M14.tableName).delete()
+    Current.logger.info("Running migration: CreateDocuments DOWN")
+    return database.schema(M14.tableName).delete()
   }
 }

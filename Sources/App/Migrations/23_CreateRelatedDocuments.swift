@@ -4,7 +4,8 @@ struct CreateRelatedDocuments: Migration {
   private typealias M23 = RelatedDocument.M23
 
   func prepare(on database: Database) -> Future<Void> {
-    database.schema(M23.tableName)
+    Current.logger.info("Running migration: CreateRelatedDocuments UP")
+    return database.schema(M23.tableName)
       .id()
       .field(
         M23.parentDocumentId,
@@ -25,6 +26,7 @@ struct CreateRelatedDocuments: Migration {
   }
 
   func revert(on database: Database) -> Future<Void> {
-    database.schema(M23.tableName).delete()
+    Current.logger.info("Running migration: CreateRelatedDocuments DOWN")
+    return database.schema(M23.tableName).delete()
   }
 }

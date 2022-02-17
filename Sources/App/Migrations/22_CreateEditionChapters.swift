@@ -4,7 +4,8 @@ struct CreateEditionChapters: Migration {
   private typealias M22 = EditionChapter.M22
 
   func prepare(on database: Database) -> Future<Void> {
-    database.schema(M22.tableName)
+    Current.logger.info("Running migration: CreateEditionChapters UP")
+    return database.schema(M22.tableName)
       .id()
       .field(
         M22.editionId,
@@ -25,6 +26,7 @@ struct CreateEditionChapters: Migration {
   }
 
   func revert(on database: Database) -> Future<Void> {
-    database.schema(M22.tableName).delete()
+    Current.logger.info("Running migration: CreateEditionChapters DOWN")
+    return database.schema(M22.tableName).delete()
   }
 }

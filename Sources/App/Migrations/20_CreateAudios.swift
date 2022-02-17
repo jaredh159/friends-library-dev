@@ -4,7 +4,8 @@ struct CreateAudios: Migration {
   private typealias M20 = Audio.M20
 
   func prepare(on database: Database) -> Future<Void> {
-    database.schema(M20.tableName)
+    Current.logger.info("Running migration: CreateAudios UP")
+    return database.schema(M20.tableName)
       .id()
       .field(
         M20.editionId,
@@ -27,6 +28,7 @@ struct CreateAudios: Migration {
   }
 
   func revert(on database: Database) -> Future<Void> {
-    database.schema(M20.tableName).delete()
+    Current.logger.info("Running migration: CreateAudios DOWN")
+    return database.schema(M20.tableName).delete()
   }
 }

@@ -4,7 +4,8 @@ struct CreateEditions: Migration {
   private typealias M17 = Edition.M17
 
   func prepare(on database: Database) -> Future<Void> {
-    database.enum(M17.PrintSizeVariantEnum.name)
+    Current.logger.info("Running migration: CreateEditions UP")
+    return database.enum(M17.PrintSizeVariantEnum.name)
       .case(M17.PrintSizeVariantEnum.caseS)
       .case(M17.PrintSizeVariantEnum.caseM)
       .case(M17.PrintSizeVariantEnum.caseXl)
@@ -37,7 +38,8 @@ struct CreateEditions: Migration {
   }
 
   func revert(on database: Database) -> Future<Void> {
-    database.schema(M17.tableName).delete()
+    Current.logger.info("Running migration: CreateEditions DOWN")
+    return database.schema(M17.tableName).delete()
       .flatMap {
         database.enum(M17.PrintSizeVariantEnum.name).delete()
       }

@@ -4,7 +4,8 @@ struct CreateIsbns: Migration {
   private typealias M19 = Isbn.M19
 
   func prepare(on database: Database) -> Future<Void> {
-    database.schema(M19.tableName)
+    Current.logger.info("Running migration: CreateIsbns UP")
+    return database.schema(M19.tableName)
       .id()
       .field(M19.code, .string, .required)
       .field(
@@ -19,6 +20,7 @@ struct CreateIsbns: Migration {
   }
 
   func revert(on database: Database) -> Future<Void> {
-    database.schema(M19.tableName).delete()
+    Current.logger.info("Running migration: CreateIsbns DOWN")
+    return database.schema(M19.tableName).delete()
   }
 }

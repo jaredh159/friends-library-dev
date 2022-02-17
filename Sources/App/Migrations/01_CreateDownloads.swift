@@ -5,6 +5,7 @@ struct CreateDownloads: Migration {
   private typealias M1 = Download.M1
 
   func prepare(on database: Database) -> Future<Void> {
+    Current.logger.info("Running migration: CreateDownloads UP")
     let editionTypeFuture = database.enum(M1.EditionTypeEnum.name)
       .case(M1.EditionTypeEnum.caseUpdated)
       .case(M1.EditionTypeEnum.caseModernized)
@@ -68,6 +69,7 @@ struct CreateDownloads: Migration {
   }
 
   func revert(on database: Database) -> Future<Void> {
-    database.schema(M1.tableName).delete()
+    Current.logger.info("Running migration: CreateDownloads DOWN")
+    return database.schema(M1.tableName).delete()
   }
 }

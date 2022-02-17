@@ -4,6 +4,7 @@ struct CreateOrders: Migration {
   private typealias M2 = Order.M2
 
   func prepare(on database: Database) -> Future<Void> {
+    Current.logger.info("Running migration: CreateOrders UP")
     let printJobStatusFuture = database.enum(M2.PrintJobStatusEnum.name)
       .case(M2.PrintJobStatusEnum.casePresubmit)
       .case(M2.PrintJobStatusEnum.casePending)
@@ -67,6 +68,7 @@ struct CreateOrders: Migration {
   }
 
   func revert(on database: Database) -> Future<Void> {
-    database.schema(M2.tableName).delete()
+    Current.logger.info("Running migration: CreateOrders DOWN")
+    return database.schema(M2.tableName).delete()
   }
 }

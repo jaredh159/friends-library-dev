@@ -17,6 +17,7 @@ struct Seeded {
 struct Seed: AsyncMigration {
 
   func prepare(on database: Database) async throws {
+    Current.logger.info("Running migration: Seeded UP")
     let tokens: [UUID: (String, [Scope])] = [
       Seeded.tokens.queryDownloads: ("queryDownloads", [.queryDownloads]),
       Seeded.tokens.mutateDownloads: ("mutateDownloads", [.mutateDownloads]),
@@ -36,5 +37,7 @@ struct Seed: AsyncMigration {
     }
   }
 
-  func revert(on database: Database) async throws {}
+  func revert(on database: Database) async throws {
+    Current.logger.info("Running migration: Seeded DOWN")
+  }
 }

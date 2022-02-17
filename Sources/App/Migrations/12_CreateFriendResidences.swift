@@ -5,7 +5,8 @@ struct CreateFriendResidences: Migration {
   private typealias M12 = FriendResidence.M12
 
   func prepare(on database: Database) -> Future<Void> {
-    database.schema(M12.tableName)
+    Current.logger.info("Running migration: CreateFriendResidences UP")
+    return database.schema(M12.tableName)
       .id()
       .field(
         M12.friendId,
@@ -22,6 +23,7 @@ struct CreateFriendResidences: Migration {
   }
 
   func revert(on database: Database) -> Future<Void> {
-    database.schema(M12.tableName).delete()
+    Current.logger.info("Running migration: CreateFriendResidences DOWN")
+    return database.schema(M12.tableName).delete()
   }
 }
