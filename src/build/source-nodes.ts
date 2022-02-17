@@ -20,21 +20,9 @@ const sourceNodes: GatsbyNode['sourceNodes'] = async ({
   createNodeId,
   createContentDigest,
 }: SourceNodesArgs) => {
+  const dpcCache = getDpcCache();
   const allFriends = await api.queryFriends();
   const friends = allFriends.filter((f) => f.lang === LANG && f.hasNonDraftDocument);
-  const dpcCache = getDpcCache();
-
-  const newsFeedItems = getNewsFeedItems(allFriends, LANG);
-  newsFeedItems.forEach((feedItem) => {
-    createNode({
-      ...feedItem,
-      id: createNodeId(`feed-item-${feedItem.date}${feedItem.title}${feedItem.url}`),
-      internal: {
-        type: `NewsFeedItem`,
-        contentDigest: createContentDigest(feedItem),
-      },
-    });
-  });
 
   friends.forEach((friend) => {
     const documents = friend.documents.filter((doc) => doc.hasNonDraftEdition);
@@ -174,6 +162,17 @@ const sourceNodes: GatsbyNode['sourceNodes'] = async ({
           contentDigest: createContentDigest(documentProps),
         },
       });
+    });
+  });
+
+  (await getNewsFeedItems(LANG)).forEach((feedItem) => {
+    createNode({
+      ...feedItem,
+      id: createNodeId(`feed-item-${feedItem.date}${feedItem.title}${feedItem.url}`),
+      internal: {
+        type: `NewsFeedItem`,
+        contentDigest: createContentDigest(feedItem),
+      },
     });
   });
 };

@@ -1,14 +1,51 @@
 import fetch from 'cross-fetch';
 import env from '@friends-library/env';
 import { gql, getClient } from '@friends-library/db';
-import { Friend } from './types';
+import { Document, Edition, Friend } from './types';
 import { Friends } from '../graphql/Friends';
 
+type DocumentEntities = {
+  document: Document;
+  friend: Friend;
+};
+
+type EditionEntities = DocumentEntities & {
+  edition: Edition;
+};
+
+let cachedFriends: Friend[] | null = null;
+
 export async function queryFriends(): Promise<Friend[]> {
+  if (cachedFriends) return cachedFriends;
   const TOKEN = env.requireVar(`EVANS_BUILD_FLP_API_TOKEN`);
   const client = getClient({ env: `dev`, fetch, token: TOKEN });
   const { data } = await client.query<Friends>({ query: QUERY });
+  cachedFriends = data.friends;
   return data.friends;
+}
+
+export async function queryDocuments(): Promise<DocumentEntities[]> {
+  const friends = await queryFriends();
+  const entities: DocumentEntities[] = [];
+  for (const friend of friends) {
+    for (const document of friend.documents) {
+      entities.push({ document, friend });
+    }
+  }
+  return entities;
+}
+
+export async function queryEditions(): Promise<EditionEntities[]> {
+  const friends = await queryFriends();
+  const entities: EditionEntities[] = [];
+  for (const friend of friends) {
+    for (const document of friend.documents) {
+      for (const edition of document.editions) {
+        entities.push({ edition, document, friend });
+      }
+    }
+  }
+  return entities;
 }
 
 const QUERY = gql`
@@ -36,9 +73,10 @@ const QUERY = gql`
         slug
         published
         incomplete
-        description
         directoryPath
+        description
         partialDescription
+        featuredDescription
         hasNonDraftEdition
         tags {
           type

@@ -3,19 +3,12 @@ import { sync as glob } from 'glob';
 import { safeLoad as ymlToJs } from 'js-yaml';
 import algoliasearch from 'algoliasearch';
 import { t, translateOptional } from '@friends-library/locale';
-import { htmlShortTitle } from '@friends-library/adoc-utils';
-import { Friend, Document } from '@friends-library/friends';
-import {
-  numPublishedBooks,
-  allPublishedFriends,
-  allPublishedAudiobooks,
-  allPublishedUpdatedEditions,
-  allFriends,
-} from '@friends-library/friends/query';
+import { Friend, Document } from './types';
 import env from '@friends-library/env';
 import { friendUrl, documentUrl } from '../lib/url';
 import { LANG } from '../env';
 import { PAGE_META_DESCS } from '../lib/seo';
+import * as api from './api';
 
 if (process.env.FORCE_ALGOLIA_SEND) {
   require(`@friends-library/env/load`);
@@ -28,10 +21,16 @@ export async function sendSearchDataToAlgolia(): Promise<void> {
     `ALGOLIA_ADMIN_KEY`,
   );
 
+  await setCounts();
   const client = algoliasearch(GATSBY_ALGOLIA_APP_ID, ALGOLIA_ADMIN_KEY);
-  const friends = allFriends()
+  const friends = (await api.queryFriends())
     .filter((f) => f.lang === LANG)
     .filter((f) => f.hasNonDraftDocument);
+
+  const documentEntities = (await api.queryDocuments())
+    .filter(({ friend }) => friend.lang === LANG)
+    .filter(({ friend }) => friend.hasNonDraftDocument)
+    .filter(({ document }) => document.hasNonDraftEdition);
 
   const friendsIndex = client.initIndex(`${LANG}_friends`);
   await friendsIndex.replaceAllObjects(friends.map(friendRecord));
@@ -43,12 +42,7 @@ export async function sendSearchDataToAlgolia(): Promise<void> {
   });
 
   const docsIndex = client.initIndex(`${LANG}_docs`);
-  await docsIndex.replaceAllObjects(
-    friends
-      .flatMap((f) => f.documents)
-      .filter((d) => d.hasNonDraftEdition)
-      .map(documentRecord),
-  );
+  await docsIndex.replaceAllObjects(documentEntities.map(documentRecord));
   await docsIndex.setSettings({
     paginationLimitedTo: 24,
     snippetEllipsisText: `[...]`,
@@ -89,7 +83,7 @@ function friendRecord(friend: Friend): Record<string, string> {
       `“` +
       friend.documents
         .filter((d) => d.hasNonDraftEdition)
-        .map((d) => shortTitle(d.title))
+        .map((d) => convertEntities(d.htmlShortTitle))
         .join(`”, “`) +
       `”`,
     residences: friend.residences
@@ -99,17 +93,23 @@ function friendRecord(friend: Friend): Record<string, string> {
   };
 }
 
-function documentRecord(doc: Document): Record<string, string | undefined> {
+function documentRecord({
+  document,
+  friend,
+}: {
+  document: Document;
+  friend: Friend;
+}): Record<string, string | undefined> {
   return {
-    objectID: doc.id,
-    title: shortTitle(doc.title),
-    authorName: doc.friend.name,
-    url: documentUrl(doc),
-    originalTitle: doc.originalTitle,
-    description: doc.description,
-    partialDescription: doc.partialDescription,
-    featuredDescription: doc.featuredDescription,
-    tags: doc.tags.join(`, `),
+    objectID: document.id,
+    title: convertEntities(document.htmlShortTitle),
+    authorName: friend.name,
+    url: documentUrl(document, friend),
+    originalTitle: document.originalTitle ?? undefined,
+    description: document.description,
+    partialDescription: document.partialDescription,
+    featuredDescription: document.featuredDescription ?? undefined,
+    tags: document.tags.join(`, `),
   };
 }
 
@@ -178,10 +178,6 @@ function customPageRecords(): Record<string, string | null>[] {
   ];
 }
 
-function shortTitle(title: string): string {
-  return convertEntities(htmlShortTitle(title));
-}
-
 function convertEntities(input: string): string {
   return input
     .replace(/&mdash;/g, `—`)
@@ -201,15 +197,6 @@ function removeMarkdownFormatting(md: string): string {
     .replace(/\[([^\]]+)\]\([^)]+\)/g, `$1`);
 }
 
-function replaceCounts(str: string): string {
-  return str
-    .replace(/%NUM_ENGLISH_BOOKS%/g, String(numPublishedBooks(`en`)))
-    .replace(/%NUM_SPANISH_BOOKS%/g, String(numPublishedBooks(`es`)))
-    .replace(/%NUM_FRIENDS%/g, String(allPublishedFriends(LANG).length))
-    .replace(/%NUM_UPDATED_EDITIONS%/g, String(allPublishedUpdatedEditions(LANG).length))
-    .replace(/%NUM_AUDIOBOOKS%/g, String(allPublishedAudiobooks(LANG).length));
-}
-
 function sanitizeMdParagraph(paragraph: string): string {
   return paragraph
     .split(`\n`)
@@ -219,4 +206,72 @@ function sanitizeMdParagraph(paragraph: string): string {
     .replace(/ {2,}/g, ` `)
     .replace(/^- /, ``)
     .trim();
+}
+
+let numPublished = {
+  friends: { en: ``, es: `` },
+  books: { en: ``, es: `` },
+  updatedEditions: { en: ``, es: `` },
+  audioBoooks: { en: ``, es: `` },
+};
+
+function replaceCounts(str: string): string {
+  return str
+    .replace(/%NUM_ENGLISH_BOOKS%/g, numPublished.books.en)
+    .replace(/%NUM_SPANISH_BOOKS%/g, numPublished.books.es)
+    .replace(/%NUM_FRIENDS%/g, numPublished.friends[LANG])
+    .replace(/%NUM_UPDATED_EDITIONS%/g, numPublished.updatedEditions[LANG])
+    .replace(/%NUM_AUDIOBOOKS%/g, numPublished.audioBoooks[LANG]);
+}
+
+async function setCounts(): Promise<void> {
+  const friends = await api.queryFriends();
+  const documentEntities = await api.queryDocuments();
+  const editionEntities = await api.queryEditions();
+
+  numPublished.friends.en = String(
+    friends.filter((f) => f.lang === `en` && f.hasNonDraftDocument).length,
+  );
+
+  numPublished.friends.es = String(
+    friends.filter((f) => f.lang === `es` && f.hasNonDraftDocument).length,
+  );
+
+  numPublished.books.en = String(
+    documentEntities.filter(
+      ({ document, friend }) => friend.lang === `en` && document.hasNonDraftEdition,
+    ),
+  );
+
+  numPublished.books.es = String(
+    documentEntities.filter(
+      ({ document, friend }) => friend.lang === `es` && document.hasNonDraftEdition,
+    ),
+  );
+
+  numPublished.updatedEditions.en = String(
+    editionEntities.filter(
+      ({ edition, friend }) =>
+        friend.lang === `en` && !edition.isDraft && edition.type === `updated`,
+    ),
+  );
+
+  numPublished.updatedEditions.es = String(
+    editionEntities.filter(
+      ({ edition, friend }) =>
+        friend.lang === `es` && !edition.isDraft && edition.type === `updated`,
+    ),
+  );
+
+  numPublished.audioBoooks.en = String(
+    editionEntities.filter(
+      ({ edition, friend }) => friend.lang === `en` && !edition.isDraft && edition.audio,
+    ).length,
+  );
+
+  numPublished.audioBoooks.es = String(
+    editionEntities.filter(
+      ({ edition, friend }) => friend.lang === `es` && !edition.isDraft && edition.audio,
+    ).length,
+  );
 }

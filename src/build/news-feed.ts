@@ -3,7 +3,7 @@ import { t } from '@friends-library/locale';
 import { spanishShortMonth } from '../lib/date';
 import { documentUrl } from '../lib/url';
 import { APP_ALT_URL } from '../env';
-import { Document, Edition, Friend } from './types';
+import * as api from './api';
 
 interface FeedItem {
   month: string;
@@ -16,15 +16,14 @@ interface FeedItem {
   date: string;
 }
 
-export function getNewsFeedItems(
-  friends: Friend[],
+export async function getNewsFeedItems(
   lang: Lang,
   outOfBandEvents?: (FeedItem & { lang: Lang[] })[],
-): FeedItem[] {
+): Promise<FeedItem[]> {
   const items: FeedItem[] = [];
   const formatter = new Intl.DateTimeFormat(`en-US`, { month: `short` });
-
-  for (const { edition, document, friend } of editionEntities(friends)) {
+  const editions = await api.queryEditions();
+  for (const { edition, document, friend } of editions) {
     if (friend.lang === lang) {
       if (edition.id === document.primaryEdition?.id && !document.incomplete) {
         items.push({
@@ -94,20 +93,6 @@ export function getNewsFeedItems(
       return a.date < b.date ? 1 : -1;
     })
     .slice(0, MAX_NUM_NEWS_FEED_ITEMS);
-}
-
-function editionEntities(
-  friends: Friend[],
-): Array<{ edition: Edition; document: Document; friend: Friend }> {
-  const entities: ReturnType<typeof editionEntities> = [];
-  for (const friend of friends) {
-    for (const document of friend.documents) {
-      for (const edition of document.editions) {
-        entities.push({ edition, document, friend });
-      }
-    }
-  }
-  return entities;
 }
 
 function dateFields(

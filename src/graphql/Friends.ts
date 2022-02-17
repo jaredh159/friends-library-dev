@@ -220,9 +220,10 @@ export interface Friends_friends_documents {
   slug: string;
   published: number | null;
   incomplete: boolean;
-  description: string;
   directoryPath: string;
+  description: string;
   partialDescription: string;
+  featuredDescription: string | null;
   hasNonDraftEdition: boolean;
   tags: Friends_friends_documents_tags[];
   altLanguageDocument: Friends_friends_documents_altLanguageDocument | null;
