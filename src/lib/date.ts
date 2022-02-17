@@ -1,29 +1,10 @@
 import { Lang } from '@friends-library/types';
+import { Document, Friend } from '../build/types';
 
-export interface DateableDocument {
-  path: string;
-  timelineDate?: number;
-  published?: number;
-  friend: {
-    isCompilationsQuasiFriend: boolean;
-    born?: number;
-    died?: number;
-  };
-}
-
-export function documentDate({
-  timelineDate,
-  published,
-  path,
-  friend,
-}: DateableDocument): number {
-  const { born, died, isCompilationsQuasiFriend } = friend;
-  if (timelineDate) {
-    return timelineDate;
-  }
-
-  if (published) {
-    return published;
+export function documentDate(document: Document, friend: Friend): number {
+  const { born, died, isCompilations } = friend;
+  if (document.published) {
+    return document.published;
   }
 
   // the James Parnell case
@@ -39,8 +20,10 @@ export function documentDate({
     return Math.floor(born + 0.75 * (died - born));
   }
 
-  if (!isCompilationsQuasiFriend) {
-    throw new Error(`Unexpected failure to determine document date: ${path}`);
+  if (!isCompilations) {
+    throw new Error(
+      `Unexpected failure to determine document date: ${document.directoryPath}`,
+    );
   }
 
   // compilations don't need a date, this will cause them

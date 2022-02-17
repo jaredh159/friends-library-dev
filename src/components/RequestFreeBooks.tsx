@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
 import cx from 'classnames';
-import gql from 'x-syntax';
 import ShippingAddress, { Props as ShippingAddressProps } from './ShippingAddress';
 import MessageThrobber from './checkout/MessageThrobber';
 import Button from './Button';
@@ -227,7 +226,8 @@ const Wrap: React.FC<{ onClose: () => unknown }> = ({ children, onClose }) => (
   </div>
 );
 
-const CREATE_FREE_ORDER_MUTATION = gql`
+// @TODO CONVERGE
+const CREATE_FREE_ORDER_MUTATION = `
   mutation CreateFreeOrderRequest($input: CreateFreeOrderRequestInput!) {
     request: createFreeOrderRequest(input: $input) {
       id

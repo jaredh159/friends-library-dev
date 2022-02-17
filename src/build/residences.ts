@@ -1,4 +1,4 @@
-import { Friend } from '@friends-library/friends';
+import { Friend } from './types';
 
 type Map = 'UK' | 'US' | 'Europe';
 

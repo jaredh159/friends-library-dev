@@ -1,11 +1,9 @@
-import { DocumentMeta } from '@friends-library/document-meta';
-import { Friend, Edition, Document } from '@friends-library/friends';
 import { Lang, NewsFeedType } from '@friends-library/types';
-import { htmlShortTitle } from '@friends-library/adoc-utils';
 import { t } from '@friends-library/locale';
 import { spanishShortMonth } from '../lib/date';
 import { documentUrl } from '../lib/url';
 import { APP_ALT_URL } from '../env';
+import { Document, Edition, Friend } from './types';
 
 interface FeedItem {
   month: string;
@@ -20,55 +18,48 @@ interface FeedItem {
 
 export function getNewsFeedItems(
   friends: Friend[],
-  meta: DocumentMeta,
   lang: Lang,
   outOfBandEvents?: (FeedItem & { lang: Lang[] })[],
 ): FeedItem[] {
   const items: FeedItem[] = [];
-  const [editions, docs] = entityMaps(friends);
   const formatter = new Intl.DateTimeFormat(`en-US`, { month: `short` });
 
-  for (const [path, edition] of [...editions]) {
-    const document = edition.document;
-    const friend = document.friend;
-    const title = htmlShortTitle(document.title);
-    const edMeta = meta.get(path);
+  for (const { edition, document, friend } of editionEntities(friends)) {
     if (friend.lang === lang) {
-      if (edMeta && edition === document.primaryEdition && document.isComplete) {
+      if (edition.id === document.primaryEdition?.id && !document.incomplete) {
         items.push({
           type: `book`,
-          url: documentUrl(document),
-          title,
+          url: documentUrl(document, friend),
+          title: document.htmlShortTitle,
           description:
             lang === `en`
               ? `Download free ebook or pdf, or purchase a paperback at cost.`
               : `Descárgalo en formato ebook o pdf, o compra el libro impreso a precio de costo.`,
-          ...dateFields(edMeta.published, formatter, lang),
+          ...dateFields(edition.impression!.createdAt, formatter, lang),
         });
       }
       if (edition.audio) {
         items.push({
-          title: `${title} &mdash; (${t`Audiobook`})`,
+          title: `${document.htmlShortTitle} &mdash; (${t`Audiobook`})`,
           type: `audiobook`,
-          url: `${documentUrl(document)}#audiobook`,
+          url: `${documentUrl(document, friend)}#audiobook`,
           description:
             lang === `en`
               ? `Free audiobook is now available for download or listening online.`
               : `El audiolibro ya está disponible para descargar gratuitamente o escuchar en línea.`,
-          ...dateFields(edition.audio.added.toISOString(), formatter, lang),
+          ...dateFields(edition.audio.createdAt, formatter, lang),
         });
       }
-    } else if (lang === `en` && edMeta && document.isComplete) {
-      const englishDoc = docs.get(document.altLanguageId || ``);
-      if (!englishDoc) throw new Error(`Missing alt language doc`);
+    } else if (lang === `en` && !document.incomplete && document.altLanguageDocument) {
+      const englishTitle = document.altLanguageDocument.htmlShortTitle;
       items.push({
-        title: `${title} &mdash; (Spanish)`,
+        title: `${document.htmlShortTitle} &mdash; (Spanish)`,
         type: `spanish_translation`,
-        url: `${APP_ALT_URL}${documentUrl(document)}`,
-        description: document.isCompilation
-          ? `<em>${englishDoc.title}</em> now translated and available on the Spanish site.`
-          : `${friend.name}&rsquo;s <em>${englishDoc.title}</em> now translated and available on the Spanish site.`,
-        ...dateFields(edMeta.published, formatter, lang),
+        url: `${APP_ALT_URL}${documentUrl(document, friend)}`,
+        description: friend.isCompilations
+          ? `<em>${englishTitle}</em> now translated and available on the Spanish site.`
+          : `${friend.name}&rsquo;s <em>${englishTitle}</em> now translated and available on the Spanish site.`,
+        ...dateFields(edition.impression!.createdAt, formatter, lang),
       });
     }
 
@@ -105,6 +96,20 @@ export function getNewsFeedItems(
     .slice(0, MAX_NUM_NEWS_FEED_ITEMS);
 }
 
+function editionEntities(
+  friends: Friend[],
+): Array<{ edition: Edition; document: Document; friend: Friend }> {
+  const entities: ReturnType<typeof editionEntities> = [];
+  for (const friend of friends) {
+    for (const document of friend.documents) {
+      for (const edition of document.editions) {
+        entities.push({ edition, document, friend });
+      }
+    }
+  }
+  return entities;
+}
+
 function dateFields(
   dateStr: string,
   formatter: Intl.DateTimeFormat,
@@ -122,22 +127,6 @@ function dateFields(
     day: String(date.getDate()),
     date: dateStr,
   };
-}
-
-function entityMaps(friends: Friend[]): [Map<string, Edition>, Map<string, Document>] {
-  const editionMap = new Map<string, Edition>();
-  const docMap = new Map<string, Document>();
-  friends.forEach((friend) =>
-    friend.documents.forEach((document) => {
-      docMap.set(document.id, document);
-      return document.editions.forEach((edition) => {
-        if (!edition.isDraft) {
-          editionMap.set(edition.path, edition);
-        }
-      });
-    }),
-  );
-  return [editionMap, docMap];
 }
 
 function getOutOfBandEvents(

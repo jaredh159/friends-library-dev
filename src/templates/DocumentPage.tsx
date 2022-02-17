@@ -59,10 +59,12 @@ interface Props {
           complete: boolean;
           externalPlaylistIdLq: null | number;
           externalPlaylistIdHq: null | number;
+
           m4bFilesizeHq: string;
           m4bFilesizeLq: string;
           mp3ZipFilesizeHq: string;
           mp3ZipFilesizeLq: string;
+
           m4bUrlLq: string;
           mp3ZipUrlLq: string;
           podcastUrlLq: string;

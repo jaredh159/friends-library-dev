@@ -28,7 +28,7 @@ interface Props {
     };
     friend: {
       gender: 'male' | 'female';
-      isCompilationsQuasiFriend: boolean;
+      isCompilations: boolean;
       name: Name;
       born: number | undefined;
       died: number | undefined;
@@ -70,7 +70,7 @@ const FriendPage: React.FC<Props> = ({ data: { friend, relatedDocuments, booksBg
           friend.description,
           friend.documents.map((d) => d.htmlShortTitle),
           friend.documents.filter((d) => d.hasAudio).length,
-          friend.isCompilationsQuasiFriend,
+          friend.isCompilations,
           LANG,
         )}
       />
@@ -80,7 +80,7 @@ const FriendPage: React.FC<Props> = ({ data: { friend, relatedDocuments, booksBg
       )}
       <div className="bg-flgray-100 px-8 pt-12 pb-4 lg:px-8">
         <h2 className="text-xl font-sans text-center tracking-wider font-bold mb-8">
-          {friend.isCompilationsQuasiFriend
+          {friend.isCompilations
             ? t`All Compilations (${friend.documents.length})`
             : t`Books by ${friend.name}`}
         </h2>
@@ -108,7 +108,7 @@ const FriendPage: React.FC<Props> = ({ data: { friend, relatedDocuments, booksBg
           })}
         </div>
       </div>
-      {!friend.isCompilationsQuasiFriend && (
+      {!friend.isCompilations && (
         <MapBlock
           bgImg={booksBg.image.fluid}
           friendName={friend.name}
@@ -175,7 +175,7 @@ export const query = graphql`
     friend(slug: { eq: $slug }) {
       name
       gender
-      isCompilationsQuasiFriend
+      isCompilations
       description
       quotes {
         source

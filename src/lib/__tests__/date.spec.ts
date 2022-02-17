@@ -3,7 +3,7 @@ import { documentDate, DateableDocument } from '../date';
 describe(`documentDate()`, () => {
   let doc: DateableDocument;
   beforeEach(() => {
-    doc = { path: `en/george-fox/journal`, friend: { isCompilationsQuasiFriend: false } };
+    doc = { path: `en/george-fox/journal`, friend: { isCompilations: false } };
   });
 
   it(`should use timelineDate if present`, () => {
@@ -35,7 +35,7 @@ describe(`documentDate()`, () => {
   });
 
   test(`compilations can have no determinable date`, () => {
-    doc.friend.isCompilationsQuasiFriend = true;
+    doc.friend.isCompilations = true;
     expect(documentDate(doc)).toBe(-1);
   });
 
