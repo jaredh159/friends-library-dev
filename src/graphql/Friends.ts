@@ -12,6 +12,7 @@ import { Lang, Gender, TagType, EditionType, PrintSize } from './globalTypes';
 export interface Friends_friends_primaryResidence {
   __typename: 'FriendResidence';
   region: string;
+  city: string;
 }
 
 export interface Friends_friends_documents_tags {
@@ -274,10 +275,13 @@ export interface Friends_friends_documents {
 export interface Friends_friends_relatedDocuments_document {
   __typename: 'Document';
   id: string;
+  htmlShortTitle: string;
+  description: string;
 }
 
 export interface Friends_friends_relatedDocuments {
   __typename: 'RelatedDocument';
+  description: string;
   document: Friends_friends_relatedDocuments_document;
 }
 
@@ -311,6 +315,7 @@ export interface Friends_friends {
   died: number | null;
   description: string;
   isCompilations: boolean;
+  published: Date | null;
   hasNonDraftDocument: boolean;
   primaryResidence: Friends_friends_primaryResidence | null;
   documents: Friends_friends_documents[];

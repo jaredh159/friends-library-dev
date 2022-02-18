@@ -8,7 +8,6 @@ import {
 import Layout from '../components/data/Layout';
 import ExploreBooksBlock from '../components/data/ExploreBooksBlock';
 import { LANG } from '../env';
-import { SiteMetadata } from '../types';
 import { coverPropsFromQueryData } from '../lib/covers';
 import HomeHeroBlock from '../components/pages/home/HeroBlock';
 import HomeGettingStartedBlock from '../components/pages/home/GettingStartedBlock';
@@ -17,10 +16,11 @@ import NewsFeedBlock from '../components/pages/home/news-feed/NewsFeedBlock';
 import HomeWhoWereTheQuakersBlock from '../components/pages/home/WhoWereTheQuakersBlock';
 import HomeFeaturedBooksBlock from '../components/pages/home/FeaturedBooksBlock';
 import HomeFormatsBlock from '../components/pages/home/FormatsBlock';
+import { NumPublishedBooks } from '../types';
 
 const HomePage: React.FC<Props> = ({ data }) => {
   const {
-    site,
+    numPublished,
     newsFeed,
     books11,
     london,
@@ -32,7 +32,7 @@ const HomePage: React.FC<Props> = ({ data }) => {
     formatsMobile,
     ...featured
   } = data;
-  const numBooks = site.meta[LANG === `en` ? `numEnglishBooks` : `numSpanishBooks`];
+  const numBooks = numPublished.books[LANG];
   return (
     <Layout>
       <HomeHeroBlock />
@@ -66,8 +66,7 @@ const HomePage: React.FC<Props> = ({ data }) => {
 export default HomePage;
 
 interface Props {
-  data: {
-    site: SiteMetadata;
+  data: NumPublishedBooks & {
     newsFeed: {
       items: {
         title: string;
@@ -101,8 +100,8 @@ interface Props {
 
 export const query = graphql`
   query HomePage {
-    site {
-      ...SiteMetadata
+    numPublished: publishedCounts {
+      ...PublishedBooks
     }
     newsFeed: allNewsFeedItem {
       items: nodes {

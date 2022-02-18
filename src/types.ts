@@ -1,10 +1,9 @@
 declare module '*.jpg';
 declare module '*.png';
 
-export interface SiteMetadata {
-  meta: {
-    numSpanishBooks: number;
-    numEnglishBooks: number;
+export interface NumPublishedBooks {
+  numPublished: {
+    books: { en: number; es: number };
   };
 }
 

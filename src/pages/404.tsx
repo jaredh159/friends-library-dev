@@ -4,21 +4,20 @@ import { FluidBgImageObject } from '@friends-library/types';
 import Layout from '../components/data/Layout';
 import ExploreBooksBlock from '../components/data/ExploreBooksBlock';
 import { APP_ALT_URL, LANG } from '../env';
-import { SiteMetadata } from '../types';
 import NotFoundHeroBlock from '../components/blocks/NotFoundHeroBlock';
 import HomeGettingStartedBlock from '../components/pages/home/GettingStartedBlock';
 import ExploreAltSiteBlock from '../components/pages/explore/AltSiteBlock';
+import { NumPublishedBooks } from '../types';
 
-interface Props {
-  data: {
-    site: SiteMetadata;
+type Props = {
+  data: NumPublishedBooks & {
     sheep: { image: { fluid: FluidBgImageObject } };
   };
-}
+};
 
-const NotFoundPage: React.FC<Props> = ({ data: { site, sheep } }) => {
-  const numBooks = site.meta[LANG === `en` ? `numEnglishBooks` : `numSpanishBooks`];
-  const numAltBooks = site.meta[LANG === `es` ? `numEnglishBooks` : `numSpanishBooks`];
+const NotFoundPage: React.FC<Props> = ({ data: { sheep, numPublished } }) => {
+  const numBooks = LANG === `en` ? numPublished.books.en : numPublished.books.es;
+  const numAltBooks = LANG === `es` ? numPublished.books.en : numPublished.books.es;
   return (
     <Layout>
       <NotFoundHeroBlock bgImg={sheep.image.fluid} />
@@ -33,8 +32,8 @@ export default NotFoundPage;
 
 export const query = graphql`
   query NotFound {
-    site {
-      ...SiteMetadata
+    numPublished: publishedCounts {
+      ...PublishedBooks
     }
     sheep: file(relativePath: { eq: "sheep.jpg" }) {
       image: childImageSharp {

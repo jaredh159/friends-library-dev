@@ -4,7 +4,6 @@ import { t } from '@friends-library/locale';
 import { EditionType, CoverProps, PrintSize, Lang } from '@friends-library/types';
 import { Layout, Seo } from '../components/data';
 import ExploreBooksBlock from '../components/data/ExploreBooksBlock';
-import { SiteMetadata } from '../types';
 import { LANG } from '../env';
 import { bookPageMetaDesc } from '../lib/seo';
 import { coverPropsFromQueryData, CoverData } from '../lib/covers';
@@ -13,10 +12,10 @@ import { makeScroller } from '../components/lib/scroll';
 import DocBlock from '../components/pages/document/DocBlock';
 import ListenBlock from '../components/pages/document/ListenBlock';
 import { Helmet } from 'react-helmet';
+import { NumPublishedBooks } from '../types';
 
 interface Props {
-  data: {
-    site: SiteMetadata;
+  data: NumPublishedBooks & {
     friend: {
       lang: Lang;
       name: string;
@@ -59,12 +58,10 @@ interface Props {
           complete: boolean;
           externalPlaylistIdLq: null | number;
           externalPlaylistIdHq: null | number;
-
           m4bFilesizeHq: string;
           m4bFilesizeLq: string;
           mp3ZipFilesizeHq: string;
           mp3ZipFilesizeLq: string;
-
           m4bUrlLq: string;
           mp3ZipUrlLq: string;
           podcastUrlLq: string;
@@ -88,14 +85,14 @@ interface Props {
 }
 
 const DocumentPage: React.FC<Props> = ({
-  data: { site, friend, document, otherDocuments },
+  data: { friend, document, otherDocuments, numPublished },
 }) => {
   useEffect(() => {
     if (window.location.hash === `#audiobook`) {
       setTimeout(makeScroller(`#audiobook`), 10);
     }
   }, []);
-  const numBooks = site.meta[LANG === `en` ? `numEnglishBooks` : `numSpanishBooks`];
+  const numBooks = numPublished.books[LANG];
   const otherBooks = otherDocuments.nodes;
   const mainEdition = document.editions[0];
   const audio = mainEdition.audio;
@@ -196,8 +193,8 @@ export default DocumentPage;
 
 export const query = graphql`
   query DocumentPage($documentSlug: String!, $friendSlug: String!) {
-    site {
-      ...SiteMetadata
+    numPublished: publishedCounts {
+      ...PublishedBooks
     }
     friend(slug: { eq: $friendSlug }) {
       id: friendId

@@ -180,7 +180,7 @@ export const query = graphql`
       }
     }
     recent: allFriend(
-      sort: { fields: added, order: DESC }
+      sort: { fields: published, order: DESC }
       limit: 2
       filter: { slug: { nin: ["compilations", "compilaciones"] } }
     ) {

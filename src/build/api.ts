@@ -1,7 +1,7 @@
 import fetch from 'cross-fetch';
 import env from '@friends-library/env';
 import { gql, getClient } from '@friends-library/db';
-import { Document, Edition, Friend } from './types';
+import { Document, Edition, Friend, PublishedCounts } from './types';
 import { Friends } from '../graphql/Friends';
 
 type DocumentEntities = {
@@ -48,6 +48,57 @@ export async function queryEditions(): Promise<EditionEntities[]> {
   return entities;
 }
 
+let publishedCounts: PublishedCounts = {
+  friends: { en: -1, es: -1 },
+  books: { en: -1, es: -1 },
+  updatedEditions: { en: -1, es: -1 },
+  audioBooks: { en: -1, es: -1 },
+};
+
+export async function queryPublishedCounts(): Promise<PublishedCounts> {
+  if (publishedCounts.friends.en !== -1) {
+    return publishedCounts;
+  }
+
+  const friends = await queryFriends();
+  const documentEntities = await queryDocuments();
+  const editionEntities = await queryEditions();
+
+  publishedCounts.friends.en = friends.filter(
+    (f) => f.lang === `en` && f.hasNonDraftDocument,
+  ).length;
+
+  publishedCounts.friends.es = friends.filter(
+    (f) => f.lang === `es` && f.hasNonDraftDocument,
+  ).length;
+
+  publishedCounts.books.en = documentEntities.filter(
+    (e) => e.friend.lang === `en` && e.document.hasNonDraftEdition,
+  ).length;
+
+  publishedCounts.books.es = documentEntities.filter(
+    (e) => e.friend.lang === `es` && e.document.hasNonDraftEdition,
+  ).length;
+
+  publishedCounts.updatedEditions.en = editionEntities.filter(
+    (e) => e.friend.lang === `en` && !e.edition.isDraft && e.edition.type === `updated`,
+  ).length;
+
+  publishedCounts.updatedEditions.es = editionEntities.filter(
+    (e) => e.friend.lang === `es` && !e.edition.isDraft && e.edition.type === `updated`,
+  ).length;
+
+  publishedCounts.audioBooks.en = editionEntities.filter(
+    (e) => e.friend.lang === `en` && !e.edition.isDraft && e.edition.audio,
+  ).length;
+
+  publishedCounts.audioBooks.es = editionEntities.filter(
+    (e) => e.friend.lang === `es` && !e.edition.isDraft && e.edition.audio,
+  ).length;
+
+  return publishedCounts;
+}
+
 const QUERY = gql`
   query Friends {
     friends: getFriends {
@@ -60,9 +111,11 @@ const QUERY = gql`
       died
       description
       isCompilations
+      published
       hasNonDraftDocument
       primaryResidence {
         region
+        city
       }
       documents {
         id
@@ -209,8 +262,11 @@ const QUERY = gql`
         }
       }
       relatedDocuments {
+        description
         document {
           id
+          htmlShortTitle
+          description
         }
       }
       quotes {

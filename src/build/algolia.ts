@@ -3,7 +3,7 @@ import { sync as glob } from 'glob';
 import { safeLoad as ymlToJs } from 'js-yaml';
 import algoliasearch from 'algoliasearch';
 import { t, translateOptional } from '@friends-library/locale';
-import { Friend, Document } from './types';
+import { Friend, Document, PublishedCounts } from './types';
 import env from '@friends-library/env';
 import { friendUrl, documentUrl } from '../lib/url';
 import { LANG } from '../env';
@@ -21,7 +21,7 @@ export async function sendSearchDataToAlgolia(): Promise<void> {
     `ALGOLIA_ADMIN_KEY`,
   );
 
-  await setCounts();
+  const counts = await api.queryPublishedCounts();
   const client = algoliasearch(GATSBY_ALGOLIA_APP_ID, ALGOLIA_ADMIN_KEY);
   const friends = (await api.queryFriends())
     .filter((f) => f.lang === LANG)
@@ -63,9 +63,12 @@ export async function sendSearchDataToAlgolia(): Promise<void> {
   });
 
   const pagesIndex = client.initIndex(`${LANG}_pages`);
-  await pagesIndex.replaceAllObjects([...mdxRecords(), ...customPageRecords()], {
-    autoGenerateObjectIDIfNotExist: true,
-  });
+  await pagesIndex.replaceAllObjects(
+    [...mdxRecords(counts), ...customPageRecords(counts)],
+    {
+      autoGenerateObjectIDIfNotExist: true,
+    },
+  );
   await pagesIndex.setSettings({
     paginationLimitedTo: 24,
     snippetEllipsisText: `[...]`,
@@ -113,7 +116,7 @@ function documentRecord({
   };
 }
 
-function mdxRecords(): Record<string, string | null>[] {
+function mdxRecords(counts: PublishedCounts): Record<string, string | null>[] {
   const paths = glob(`${__dirname}/../mdx/*.${LANG}.mdx`);
   return paths.flatMap((filePath) => {
     const content = fs.readFileSync(filePath).toString();
@@ -123,10 +126,12 @@ function mdxRecords(): Record<string, string | null>[] {
       {
         title: frontmatter.title,
         url: frontmatter.path,
-        text: convertEntities(replaceCounts(frontmatter.description)),
+        text: convertEntities(replaceCounts(frontmatter.description, counts)),
       },
     ];
-    const paras = removeMarkdownFormatting(convertEntities(replaceCounts(text.trim())))
+    const paras = removeMarkdownFormatting(
+      convertEntities(replaceCounts(text.trim(), counts)),
+    )
       .split(`\n\n`)
       .map(sanitizeMdParagraph)
       .filter(Boolean);
@@ -148,32 +153,32 @@ function mdxRecords(): Record<string, string | null>[] {
   });
 }
 
-function customPageRecords(): Record<string, string | null>[] {
+function customPageRecords(counts: PublishedCounts): Record<string, string | null>[] {
   return [
     {
       title: t`Audio Books`,
       url: t`/audiobooks`,
-      text: replaceCounts(PAGE_META_DESCS.audiobooks[LANG]),
+      text: replaceCounts(PAGE_META_DESCS.audiobooks[LANG], counts),
     },
     {
       title: t`Contact Us`,
       url: t`/contact`,
-      text: replaceCounts(PAGE_META_DESCS.contact[LANG]),
+      text: replaceCounts(PAGE_META_DESCS.contact[LANG], counts),
     },
     {
       title: t`Explore Books`,
       url: t`/explore`,
-      text: replaceCounts(PAGE_META_DESCS.explore[LANG]),
+      text: replaceCounts(PAGE_META_DESCS.explore[LANG], counts),
     },
     {
       title: t`All Friends`,
       url: t`/friends`,
-      text: replaceCounts(PAGE_META_DESCS.friends[LANG]),
+      text: replaceCounts(PAGE_META_DESCS.friends[LANG], counts),
     },
     {
       title: t`Getting Started`,
       url: t`/getting-started`,
-      text: replaceCounts(PAGE_META_DESCS[`getting-started`][LANG]),
+      text: replaceCounts(PAGE_META_DESCS[`getting-started`][LANG], counts),
     },
   ];
 }
@@ -208,70 +213,11 @@ function sanitizeMdParagraph(paragraph: string): string {
     .trim();
 }
 
-let numPublished = {
-  friends: { en: ``, es: `` },
-  books: { en: ``, es: `` },
-  updatedEditions: { en: ``, es: `` },
-  audioBoooks: { en: ``, es: `` },
-};
-
-function replaceCounts(str: string): string {
+function replaceCounts(str: string, numPublished: PublishedCounts): string {
   return str
-    .replace(/%NUM_ENGLISH_BOOKS%/g, numPublished.books.en)
-    .replace(/%NUM_SPANISH_BOOKS%/g, numPublished.books.es)
-    .replace(/%NUM_FRIENDS%/g, numPublished.friends[LANG])
-    .replace(/%NUM_UPDATED_EDITIONS%/g, numPublished.updatedEditions[LANG])
-    .replace(/%NUM_AUDIOBOOKS%/g, numPublished.audioBoooks[LANG]);
-}
-
-async function setCounts(): Promise<void> {
-  const friends = await api.queryFriends();
-  const documentEntities = await api.queryDocuments();
-  const editionEntities = await api.queryEditions();
-
-  numPublished.friends.en = String(
-    friends.filter((f) => f.lang === `en` && f.hasNonDraftDocument).length,
-  );
-
-  numPublished.friends.es = String(
-    friends.filter((f) => f.lang === `es` && f.hasNonDraftDocument).length,
-  );
-
-  numPublished.books.en = String(
-    documentEntities.filter(
-      ({ document, friend }) => friend.lang === `en` && document.hasNonDraftEdition,
-    ),
-  );
-
-  numPublished.books.es = String(
-    documentEntities.filter(
-      ({ document, friend }) => friend.lang === `es` && document.hasNonDraftEdition,
-    ),
-  );
-
-  numPublished.updatedEditions.en = String(
-    editionEntities.filter(
-      ({ edition, friend }) =>
-        friend.lang === `en` && !edition.isDraft && edition.type === `updated`,
-    ),
-  );
-
-  numPublished.updatedEditions.es = String(
-    editionEntities.filter(
-      ({ edition, friend }) =>
-        friend.lang === `es` && !edition.isDraft && edition.type === `updated`,
-    ),
-  );
-
-  numPublished.audioBoooks.en = String(
-    editionEntities.filter(
-      ({ edition, friend }) => friend.lang === `en` && !edition.isDraft && edition.audio,
-    ).length,
-  );
-
-  numPublished.audioBoooks.es = String(
-    editionEntities.filter(
-      ({ edition, friend }) => friend.lang === `es` && !edition.isDraft && edition.audio,
-    ).length,
-  );
+    .replace(/%NUM_ENGLISH_BOOKS%/g, String(numPublished.books.en))
+    .replace(/%NUM_SPANISH_BOOKS%/g, String(numPublished.books.es))
+    .replace(/%NUM_FRIENDS%/g, String(numPublished.friends[LANG]))
+    .replace(/%NUM_UPDATED_EDITIONS%/g, String(numPublished.updatedEditions[LANG]))
+    .replace(/%NUM_AUDIOBOOKS%/g, String(numPublished.audioBooks[LANG]));
 }

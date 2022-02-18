@@ -5,11 +5,10 @@ import { graphql } from 'gatsby';
 import { MDXRenderer } from 'gatsby-plugin-mdx';
 import BooksBgBlock, { WhiteOverlay } from '../components/data/BooksBgBlock';
 import { Layout, Seo } from '../components/data';
-import { SiteMetadata } from '../types';
+import { NumPublishedBooks } from '../types';
 
 interface Props {
-  data: {
-    site: SiteMetadata;
+  data: NumPublishedBooks & {
     audioBooks: {
       totalCount: number;
     };
@@ -80,13 +79,13 @@ const components: { [key: string]: React.FC } = {
 };
 
 const StaticPage: React.FC<Props> = ({ data }) => {
-  const { mdx, audioBooks, site } = data;
+  const { mdx, audioBooks } = data;
   const { body, frontmatter } = mdx;
   function replaceCounts(str: string): string {
     return str
       .replace(/%NUM_AUDIOBOOKS%/g, String(audioBooks.totalCount))
-      .replace(/%NUM_SPANISH_BOOKS%/g, String(site.meta.numSpanishBooks))
-      .replace(/%NUM_ENGLISH_BOOKS%/g, String(site.meta.numEnglishBooks))
+      .replace(/%NUM_SPANISH_BOOKS%/g, String(data.numPublished.books.es))
+      .replace(/%NUM_ENGLISH_BOOKS%/g, String(data.numPublished.books.en))
       .replace(/ -- /g, ` — `);
   }
   return (
@@ -115,8 +114,8 @@ export default StaticPage;
 
 export const pageQuery = graphql`
   query ($path: String!) {
-    site {
-      ...SiteMetadata
+    numPublished: publishedCounts {
+      ...PublishedBooks
     }
     audioBooks: allDocument(filter: { hasAudio: { eq: true } }) {
       totalCount

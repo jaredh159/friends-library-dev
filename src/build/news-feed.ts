@@ -25,7 +25,12 @@ export async function getNewsFeedItems(
   const editions = await api.queryEditions();
   for (const { edition, document, friend } of editions) {
     if (friend.lang === lang) {
-      if (edition.id === document.primaryEdition?.id && !document.incomplete) {
+      if (
+        edition.id === document.primaryEdition?.id &&
+        !document.incomplete &&
+        !edition.isDraft &&
+        edition.impression
+      ) {
         items.push({
           type: `book`,
           url: documentUrl(document, friend),
@@ -34,7 +39,7 @@ export async function getNewsFeedItems(
             lang === `en`
               ? `Download free ebook or pdf, or purchase a paperback at cost.`
               : `Descárgalo en formato ebook o pdf, o compra el libro impreso a precio de costo.`,
-          ...dateFields(edition.impression!.createdAt, formatter, lang),
+          ...dateFields(edition.impression.createdAt, formatter, lang),
         });
       }
       if (edition.audio) {

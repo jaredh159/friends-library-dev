@@ -13,21 +13,21 @@ import ExploreTimelineBlock from '../components/pages/explore/TimelineBlock';
 import ExploreAudioBooksBlock from '../components/pages/explore/AudioBooksBlock';
 import ExploreUpdatedEditionsBlock from '../components/pages/explore/UpdatedEditionsBlock';
 import ExploreGettingStartedLinkBlock from '../components/pages/explore/GettingStartedLinkBlock';
-import { SiteMetadata } from '../types';
 import { PAGE_META_DESCS } from '../lib/seo';
 import { coverPropsFromQueryData, CoverData } from '../lib/covers';
 import { APP_ALT_URL, LANG } from '../env';
 import Dual from '../components/Dual';
+import { NumPublishedBooks } from '../types';
 
 const ExplorePage: React.FC<Props> = ({
   data: {
+    numPublished,
     updatedEditions,
     audioBooks,
     newBooks,
     booksByDate,
     regionBooks,
     searchBooks,
-    site: { meta },
     headphones,
     books3,
     waterPath,
@@ -37,12 +37,11 @@ const ExplorePage: React.FC<Props> = ({
   <Layout>
     <Seo
       title={t`Explore Books`}
-      description={PAGE_META_DESCS.explore[LANG].replace(
-        /%NUM_ENGLISH_BOOKS%/g,
-        `${meta.numEnglishBooks}`,
-      )
+      // prettier-ignore
+      description={PAGE_META_DESCS.explore[LANG]
+        .replace( /%NUM_ENGLISH_BOOKS%/g, `${numPublished.books.en}`)
         .replace(/%NUM_UPDATED_EDITIONS%/g, `${updatedEditions.nodes.length}`)
-        .replace(/%NUM_SPANISH_BOOKS%/g, `${meta.numSpanishBooks}`)
+        .replace(/%NUM_SPANISH_BOOKS%/g, `${numPublished.books.es}`)
         .replace(/%NUM_AUDIOBOOKS%/g, `${audioBooks.nodes.length}`)}
     />
     <BooksBgBlock bright>
@@ -53,13 +52,13 @@ const ExplorePage: React.FC<Props> = ({
         </Dual.H1>
         <Dual.P className="body-text">
           <>
-            We currently have {meta.numEnglishBooks} books freely available on this site.
+            We currently have {numPublished.books.en} books freely available on this site.
             Overwhelmed? On this page you can browse all the titles by edition, region,
             time period, tags, and more&mdash;or search the full library to find exactly
             what you’re looking for.
           </>
           <>
-            Actualmente tenemos {meta.numSpanishBooks} libros disponibles de forma
+            Actualmente tenemos {numPublished.books.es} libros disponibles de forma
             gratuita en este sitio, y más están siendo traducidos y añadidos regularmente.
             En nuestra página de “Explorar” puedes navegar por todos nuestros libros y
             audiolibros, o buscar libros en la categoría particular que más te interese.
@@ -122,7 +121,7 @@ const ExplorePage: React.FC<Props> = ({
     )}
     <ExploreAltSiteBlock
       url={APP_ALT_URL}
-      numBooks={meta[LANG === `en` ? `numSpanishBooks` : `numEnglishBooks`]}
+      numBooks={numPublished.books[LANG === `en` ? `es` : `en`]}
     />
     <ExploreSearchBlock
       bgImg={waterPath.image.fluid}
@@ -142,8 +141,7 @@ const ExplorePage: React.FC<Props> = ({
 );
 
 interface Props {
-  data: {
-    site: SiteMetadata;
+  data: NumPublishedBooks & {
     searchBooks: {
       nodes: (CoverData & {
         documentUrl: string;
@@ -216,13 +214,12 @@ interface Props {
 
 export const query = graphql`
   query ExplorePage {
-    site {
-      ...SiteMetadata
+    numPublished: publishedCounts {
+      ...PublishedBooks
     }
     searchBooks: allDocument {
       nodes {
         ...CoverProps
-        tags
         period
         authorUrl
         documentUrl: url
