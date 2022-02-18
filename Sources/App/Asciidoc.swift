@@ -1,14 +1,27 @@
 import RomanNumeralKit
 
-enum HtmlEntities: String {
-  case leftDoubleQuote = "&#8220;"
-  case rightDoubleQuote = "&#8221;"
-  case leftSingleQuote = "&#8216;"
-  case rightSingleQuote = "&#8217;"
-  case mdash = "&#8212;"
-  case ampersand = "&#38;"
-  case ellipses = "&#8230;"
-  case nonBreakingSpace = "&#160;"
+enum HtmlEntities {
+  enum Numbered: String {
+    case leftDoubleQuote = "&#8220;"
+    case rightDoubleQuote = "&#8221;"
+    case leftSingleQuote = "&#8216;"
+    case rightSingleQuote = "&#8217;"
+    case mdash = "&#8212;"
+    case ampersand = "&#38;"
+    case ellipses = "&#8230;"
+    case nonBreakingSpace = "&#160;"
+  }
+
+  enum Named: String {
+    case leftDoubleQuote = "&ldquo;"
+    case rightDoubleQuote = "&rdquo;"
+    case leftSingleQuote = "&lsquo;"
+    case rightSingleQuote = "&rsquo;"
+    case mdash = "&mdash;"
+    case ampersand = "&amp;"
+    case ellipses = "&hellip;"
+    case nonBreakingSpace = "&nbsp;"
+  }
 }
 
 enum Asciidoc {
@@ -47,15 +60,25 @@ enum Asciidoc {
 
   static func utf8ShortTitle(_ title: String) -> String {
     htmlShortTitle(title)
-      .replacingOccurrences(of: HtmlEntities.mdash.rawValue, with: "–")
-      .replacingOccurrences(of: HtmlEntities.nonBreakingSpace.rawValue, with: " ")
+      .replacingOccurrences(of: HtmlEntities.Named.mdash.rawValue, with: "–")
+      .replacingOccurrences(of: HtmlEntities.Numbered.mdash.rawValue, with: "–")
+      .replacingOccurrences(of: HtmlEntities.Named.nonBreakingSpace.rawValue, with: " ")
+      .replacingOccurrences(of: HtmlEntities.Numbered.nonBreakingSpace.rawValue, with: " ")
+      .replacingOccurrences(of: HtmlEntities.Named.leftDoubleQuote.rawValue, with: "“")
+      .replacingOccurrences(of: HtmlEntities.Numbered.leftDoubleQuote.rawValue, with: "“")
+      .replacingOccurrences(of: HtmlEntities.Named.rightDoubleQuote.rawValue, with: "”")
+      .replacingOccurrences(of: HtmlEntities.Numbered.rightDoubleQuote.rawValue, with: "”")
+      .replacingOccurrences(of: HtmlEntities.Named.leftSingleQuote.rawValue, with: "‘")
+      .replacingOccurrences(of: HtmlEntities.Numbered.leftSingleQuote.rawValue, with: "‘")
+      .replacingOccurrences(of: HtmlEntities.Named.rightSingleQuote.rawValue, with: "’")
+      .replacingOccurrences(of: HtmlEntities.Numbered.rightSingleQuote.rawValue, with: "’")
   }
 
   static func htmlShortTitle(_ title: String) -> String {
     Asciidoc.htmlTitle(title)
       .replacingOccurrences(
         of: #"\bvolumen?\b "#,
-        with: "Vol.\(HtmlEntities.nonBreakingSpace.rawValue)",
+        with: "Vol.\(HtmlEntities.Numbered.nonBreakingSpace.rawValue)",
         options: [.regularExpression, .caseInsensitive]
       )
   }
@@ -84,7 +107,7 @@ enum Asciidoc {
           number = nil
       }
     }
-    return shortened.replacingOccurrences(of: "--", with: HtmlEntities.mdash.rawValue)
+    return shortened.replacingOccurrences(of: "--", with: HtmlEntities.Numbered.mdash.rawValue)
   }
 }
 
