@@ -17,18 +17,16 @@ final class Audio: Codable {
   var edition = Parent<Edition>.notLoaded
   var parts = Children<AudioPart>.notLoaded
 
+  var lang: Lang {
+    edition.require().lang
+  }
+
   var humanDurationClock: String {
-    AudioUtil.humanDuration(
-      partDurations: parts.require().map(\.duration),
-      style: .clock
-    )
+    AudioUtil.humanDuration(partDurations: parts.require().map(\.duration), style: .clock)
   }
 
   var humanDurationAbbrev: String {
-    AudioUtil.humanDuration(
-      partDurations: parts.require().map(\.duration),
-      style: .abbrev(edition.require().document.require().friend.require().lang)
-    )
+    AudioUtil.humanDuration(partDurations: parts.require().map(\.duration), style: .abbrev(lang))
   }
 
   init(

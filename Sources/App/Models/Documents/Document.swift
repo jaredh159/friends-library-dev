@@ -23,6 +23,10 @@ final class Document: Codable {
   var relatedDocuments = Children<RelatedDocument>.notLoaded
   var tags = Children<DocumentTag>.notLoaded
 
+  var lang: Lang {
+    friend.require().lang
+  }
+
   var primaryEdition: Edition? {
     let allEditions = editions.require()
     return allEditions.first { $0.type == .updated } ??

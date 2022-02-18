@@ -19,6 +19,10 @@ final class Edition: Codable {
   var audio = OptionalChild<Audio>.notLoaded
   var chapters = Children<EditionChapter>.notLoaded
 
+  var lang: Lang {
+    document.require().lang
+  }
+
   var directoryPath: String {
     "\(document.require().directoryPath)/\(type)"
   }

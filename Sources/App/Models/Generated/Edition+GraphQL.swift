@@ -15,6 +15,7 @@ extension AppSchema {
       Field("paperbackOverrideSize", at: \.paperbackOverrideSize)
       Field("createdAt", at: \.createdAt)
       Field("updatedAt", at: \.updatedAt)
+      Field("lang", at: \.lang)
       Field("directoryPath", at: \.directoryPath)
       Field("filename", at: \.filename)
       Field("images", at: \.images)

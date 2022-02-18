@@ -19,6 +19,7 @@ extension AppSchema {
       Field("featuredDescription", at: \.featuredDescription)
       Field("createdAt", at: \.createdAt)
       Field("updatedAt", at: \.updatedAt)
+      Field("lang", at: \.lang)
       Field("primaryEdition", at: \.primaryEdition)
       Field("hasNonDraftEdition", at: \.hasNonDraftEdition)
       Field("directoryPath", at: \.directoryPath)
