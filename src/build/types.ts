@@ -4,4 +4,5 @@ export type Friend = Friends['friends'][0];
 export type Document = Friend['documents'][0];
 export type Edition = Document['editions'][0];
 export type Audio = NonNullable<Edition['audio']>;
+export type AudioPart = Audio['parts'][0];
 export type Impression = NonNullable<Edition['impression']>;

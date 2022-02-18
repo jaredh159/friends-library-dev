@@ -42,6 +42,21 @@ export interface Friends_friends_documents_editions_isbn {
   code: string;
 }
 
+export interface Friends_friends_documents_editions_images_square_w1400 {
+  __typename: 'EditionImage';
+  url: string;
+}
+
+export interface Friends_friends_documents_editions_images_square {
+  __typename: 'EditionSquareImages';
+  w1400: Friends_friends_documents_editions_images_square_w1400;
+}
+
+export interface Friends_friends_documents_editions_images {
+  __typename: 'EditionImages';
+  square: Friends_friends_documents_editions_images_square;
+}
+
 export interface Friends_friends_documents_editions_impression_files_ebook_pdf {
   __typename: 'DownloadableFile';
   logUrl: string;
@@ -84,12 +99,32 @@ export interface Friends_friends_documents_editions_impression {
   files: Friends_friends_documents_editions_impression_files;
 }
 
+export interface Friends_friends_documents_editions_audio_parts_mp3File_hq {
+  __typename: 'DownloadableFile';
+  logUrl: string;
+}
+
+export interface Friends_friends_documents_editions_audio_parts_mp3File_lq {
+  __typename: 'DownloadableFile';
+  logUrl: string;
+}
+
+export interface Friends_friends_documents_editions_audio_parts_mp3File {
+  __typename: 'AudioFileQualities';
+  hq: Friends_friends_documents_editions_audio_parts_mp3File_hq;
+  lq: Friends_friends_documents_editions_audio_parts_mp3File_lq;
+}
+
 export interface Friends_friends_documents_editions_audio_parts {
   __typename: 'AudioPart';
   title: string;
   chapters: number[];
+  duration: number;
   externalIdHq: Int64;
   externalIdLq: Int64;
+  mp3SizeHq: number;
+  mp3SizeLq: number;
+  mp3File: Friends_friends_documents_editions_audio_parts_mp3File;
 }
 
 export interface Friends_friends_documents_editions_audio_files_m4b_hq {
@@ -127,11 +162,13 @@ export interface Friends_friends_documents_editions_audio_files_mp3s {
 export interface Friends_friends_documents_editions_audio_files_podcast_hq {
   __typename: 'DownloadableFile';
   logUrl: string;
+  sourcePath: string;
 }
 
 export interface Friends_friends_documents_editions_audio_files_podcast_lq {
   __typename: 'DownloadableFile';
   logUrl: string;
+  sourcePath: string;
 }
 
 export interface Friends_friends_documents_editions_audio_files_podcast {
@@ -171,6 +208,7 @@ export interface Friends_friends_documents_editions {
   path: string;
   chapters: Friends_friends_documents_editions_chapters[];
   isbn: Friends_friends_documents_editions_isbn | null;
+  images: Friends_friends_documents_editions_images;
   impression: Friends_friends_documents_editions_impression | null;
   audio: Friends_friends_documents_editions_audio | null;
 }
@@ -213,6 +251,7 @@ export interface Friends_friends_documents_relatedDocuments {
 export interface Friends_friends_documents {
   __typename: 'Document';
   id: string;
+  title: string;
   htmlTitle: string;
   htmlShortTitle: string;
   utf8ShortTitle: string;

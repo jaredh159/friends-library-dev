@@ -66,6 +66,7 @@ const QUERY = gql`
       }
       documents {
         id
+        title
         htmlTitle
         htmlShortTitle
         utf8ShortTitle
@@ -99,6 +100,13 @@ const QUERY = gql`
           }
           isbn {
             code
+          }
+          images {
+            square {
+              w1400 {
+                url
+              }
+            }
           }
           impression {
             paperbackPriceInCents
@@ -136,8 +144,19 @@ const QUERY = gql`
             parts {
               title
               chapters
+              duration
               externalIdHq
               externalIdLq
+              mp3SizeHq
+              mp3SizeLq
+              mp3File {
+                hq {
+                  logUrl
+                }
+                lq {
+                  logUrl
+                }
+              }
             }
             files {
               m4b {
@@ -159,9 +178,11 @@ const QUERY = gql`
               podcast {
                 hq {
                   logUrl
+                  sourcePath
                 }
                 lq {
                   logUrl
+                  sourcePath
                 }
               }
             }
