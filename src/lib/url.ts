@@ -14,7 +14,7 @@ export function friendUrl(friend: Pick<Friend, 'gender' | 'slug' | 'lang'>): Url
     return `/friend/${friend.slug}`;
   }
 
-  const pref = friend.gender == `male` ? `amigo` : `amiga`;
+  const pref = friend.gender === `male` ? `amigo` : `amiga`;
   return `/${pref}/${friend.slug}`;
 }
 

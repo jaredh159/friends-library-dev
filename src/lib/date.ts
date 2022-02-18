@@ -1,7 +1,10 @@
 import { Lang } from '@friends-library/types';
 import { Document, Friend } from '../build/types';
 
-export function documentDate(document: Document, friend: Friend): number {
+export function documentDate(
+  document: Pick<Document, 'published' | 'directoryPath'>,
+  friend: Pick<Friend, 'born' | 'died' | 'isCompilations'>,
+): number {
   const { born, died, isCompilations } = friend;
   if (document.published) {
     return document.published;

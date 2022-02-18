@@ -14,7 +14,7 @@ describe(`subtitle()`, () => {
     [
       [
         { reader: `Keren Alvaredo` },
-        { title: `A Letter of Elizabeth Webb` },
+        { title: `La Carta de Elizabeth Webb` },
         { name: `Elizabeth Webb`, lang: Lang.es, isCompilations: false },
       ],
       `Audiolibro de "La Carta de Elizabeth Webb" escrito por Elizabeth Webb, de la Biblioteca de los Amigos. Leído por Keren Alvaredo.`,
@@ -71,7 +71,7 @@ describe(`partDesc()`, () => {
     [
       [
         { title: `La Carta de Elizabeth Webb` },
-        { title: `A Letter of Elizabeth Webb` },
+        { title: `La Carta de Elizabeth Webb` },
         { name: `Elizabeth Webb`, lang: Lang.es },
         1,
         1,
