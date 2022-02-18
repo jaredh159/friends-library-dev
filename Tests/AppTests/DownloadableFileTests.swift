@@ -9,6 +9,8 @@ final class DownloadableFileTests: AppTestCase {
   var impression: EditionImpression { entities!.editionImpression }
   var edition: Edition { entities!.edition }
   var cloudUrl: String { Env.CLOUD_STORAGE_BUCKET_URL }
+  var selfUrl: String { Env.SELF_URL }
+  var websiteUrl: String { Env.WEBSITE_URL_EN }
 
   override func setUp() {
     super.setUp()
@@ -17,6 +19,7 @@ final class DownloadableFileTests: AppTestCase {
       try await Current.db.deleteAll(Download.self)
       try await Current.db.deleteAll(Friend.self)
       entities = await Entities.create {
+        $0.friend.lang = .en
         $0.edition.type = .updated
         $0.document.filename = "Journal"
       }
@@ -201,16 +204,44 @@ final class DownloadableFileTests: AppTestCase {
     for (format, pathEnd) in tests {
       let downloadable = DownloadableFile(edition: edition, format: format)
       XCTAssertEqual(downloadable.logPath, "download/\(edition.id.lowercased)/\(pathEnd)")
-      XCTAssertEqual(downloadable.logUrl.absoluteString, "\(cloudUrl)/\(downloadable.logPath)")
+      XCTAssertEqual(downloadable.logUrl.absoluteString, "\(selfUrl)/\(downloadable.logPath)")
     }
   }
 
   func testSourcePath() {
-    let file = DownloadableFile(edition: edition, format: .ebook(.epub))
-    XCTAssertEqual(file.sourcePath, "\(edition.directoryPath)/Journal--updated.epub")
+    let epub = DownloadableFile(edition: edition, format: .ebook(.epub))
+    XCTAssertEqual(epub.sourcePath, "\(edition.directoryPath)/Journal--updated.epub")
   }
 
-  func testFilenames() {
+  func testPodcastsSpecialSourcePathsUrls() {
+    let id = edition.id.lowercased
+    let tests: [(DownloadableFile.Format, String, String, String, String)] = [
+      (
+        .audio(.podcast(.high)),
+        "download/\(id)/audio/podcast/hq/podcast.rss",
+        "\(selfUrl)/download/\(id)/audio/podcast/hq/podcast.rss",
+        "\(edition.directoryPath.replace("^en/", ""))/podcast.rss",
+        "\(websiteUrl)/\(edition.directoryPath.replace("^en/", ""))/podcast.rss"
+      ),
+      (
+        .audio(.podcast(.low)),
+        "download/\(id)/audio/podcast/lq/podcast.rss",
+        "\(selfUrl)/download/\(id)/audio/podcast/lq/podcast.rss",
+        "\(edition.directoryPath.replace("^en/", ""))/lq/podcast.rss",
+        "\(websiteUrl)/\(edition.directoryPath.replace("^en/", ""))/lq/podcast.rss"
+      ),
+    ]
+
+    for (format, logPath, logUrl, sourcePath, sourceUrl) in tests {
+      let downloadable = DownloadableFile(edition: edition, format: format)
+      XCTAssertEqual(downloadable.logPath, logPath)
+      XCTAssertEqual(downloadable.logUrl.absoluteString, logUrl)
+      XCTAssertEqual(downloadable.sourcePath, sourcePath)
+      XCTAssertEqual(downloadable.sourceUrl.absoluteString, sourceUrl)
+    }
+  }
+
+  func testFilenamesAndUrls() {
     let tests: [(DownloadableFile.Format, String)] = [
       (.ebook(.epub), "Journal--updated.epub"),
       (.ebook(.mobi), "Journal--updated.mobi"),
@@ -229,8 +260,7 @@ final class DownloadableFileTests: AppTestCase {
       (.audio(.mp3(quality: .low, multipartIndex: nil)), "Journal--updated--lq.mp3"),
       (.audio(.mp3(quality: .high, multipartIndex: 0)), "Journal--updated--pt1.mp3"),
       (.audio(.mp3(quality: .low, multipartIndex: 0)), "Journal--updated--pt1--lq.mp3"),
-      (.audio(.podcast(.high)), "podcast.rss"),
-      (.audio(.podcast(.low)), "podcast.rss"),
+      // podcast paths/urls are unique, tested in their own test function above ^^^
     ]
 
     for (format, expectedFilename) in tests {

@@ -37,12 +37,28 @@ struct DownloadableFile: Encodable {
   let edition: Edition
   let format: Format
 
-  var sourcePath: String {
-    "\(edition.directoryPath)/\(filename)"
+  var sourceUrl: URL {
+    switch format {
+      case .ebook, .paperback, .audio(.mp3), .audio(.m4b), .audio(.mp3s):
+        return URL(string: "\(Env.CLOUD_STORAGE_BUCKET_URL)/\(sourcePath)")!
+      case .audio(.podcast):
+        let siteUrl = edition.lang == .en ? Env.WEBSITE_URL_EN : Env.WEBSITE_URL_ES
+        return URL(string: "\(siteUrl)/\(sourcePath)")!
+    }
   }
 
-  var sourceUrl: URL {
-    URL(string: "\(Env.CLOUD_STORAGE_BUCKET_URL)/\(sourcePath)")!
+  var sourcePath: String {
+    switch format {
+      case .ebook, .paperback, .audio(.mp3), .audio(.m4b), .audio(.mp3s):
+        return "\(edition.directoryPath)/\(filename)"
+      case .audio(.podcast(let quality)):
+        let pathWithoutLang = edition.directoryPath
+          .split(separator: "/")
+          .dropFirst()
+          .joined(separator: "/")
+        let qualitySegment = quality == .high ? "" : "lq/"
+        return "\(pathWithoutLang)/\(qualitySegment)\(filename)"
+    }
   }
 
   var logUrl: URL {
