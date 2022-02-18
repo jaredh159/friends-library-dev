@@ -1,5 +1,6 @@
 import fetch from 'cross-fetch';
 import env from '@friends-library/env';
+import { EditionType } from '@friends-library/types';
 import { gql, getClient } from '@friends-library/db';
 import { Document, Edition, Friend, PublishedCounts } from './types';
 import { Friends } from '../graphql/Friends';
@@ -20,7 +21,8 @@ export async function queryFriends(): Promise<Friend[]> {
   const TOKEN = env.requireVar(`EVANS_BUILD_FLP_API_TOKEN`);
   const client = getClient({ env: `dev`, fetch, token: TOKEN });
   const { data } = await client.query<Friends>({ query: QUERY });
-  cachedFriends = data.friends;
+  // break all of the apollo read-only stuff with JSON dance
+  cachedFriends = sortChildren(JSON.parse(JSON.stringify(data.friends)));
   return data.friends;
 }
 
@@ -97,6 +99,35 @@ export async function queryPublishedCounts(): Promise<PublishedCounts> {
   ).length;
 
   return publishedCounts;
+}
+
+function sortChildren(friends: Friend[]): Friend[] {
+  for (const friend of friends) {
+    friend.quotes.sort(byOrder);
+    for (const document of friend.documents) {
+      document.editions.sort(editionsByType);
+      for (const edition of document.editions) {
+        if (edition.audio) {
+          edition.audio.parts.sort(byOrder);
+        }
+      }
+    }
+  }
+  return friends;
+}
+
+function editionsByType<T extends { type: EditionType }>(a: T, b: T): number {
+  if (a.type === `updated`) {
+    return -1;
+  }
+  if (a.type === `modernized`) {
+    return b.type === `updated` ? 1 : -1;
+  }
+  return 1;
+}
+
+function byOrder<T extends { order: number }>(a: T, b: T): number {
+  return a.order < b.order ? -1 : 1;
 }
 
 const QUERY = gql`
@@ -196,6 +227,7 @@ const QUERY = gql`
             createdAt
             parts {
               title
+              order
               chapters
               duration
               externalIdHq
@@ -270,6 +302,7 @@ const QUERY = gql`
         }
       }
       quotes {
+        order
         source
         text
       }

@@ -56,7 +56,7 @@ export async function podcast(
         const num = index + 1;
         const desc = partDesc(part, document, friend, num, audio.parts.length);
         return `<item>
-      <title>${partTitle(part, num, audio.parts.length)}</title>
+      <title>${partTitle(document, num, audio.parts.length)}</title>
       <enclosure
         url="${part.mp3File[quality].logUrl}"
         length="${part[quality === `hq` ? `mp3SizeHq` : `mp3SizeLq`]}"

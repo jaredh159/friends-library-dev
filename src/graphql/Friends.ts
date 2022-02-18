@@ -119,6 +119,7 @@ export interface Friends_friends_documents_editions_audio_parts_mp3File {
 export interface Friends_friends_documents_editions_audio_parts {
   __typename: 'AudioPart';
   title: string;
+  order: number;
   chapters: number[];
   duration: number;
   externalIdHq: Int64;
@@ -287,6 +288,7 @@ export interface Friends_friends_relatedDocuments {
 
 export interface Friends_friends_quotes {
   __typename: 'FriendQuote';
+  order: number;
   source: string;
   text: string;
 }

@@ -107,6 +107,7 @@ const sourceNodes: GatsbyNode['sourceNodes'] = async ({
       const filteredEditions = document.editions.filter(
         (edition) => !edition.isDraft && edition.impression,
       );
+
       const editions = filteredEditions.map((edition) => {
         let dpcData: EditionCache = dpcCache.get(edition.path) || {
           initialized: false,
