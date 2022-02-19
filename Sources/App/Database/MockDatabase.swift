@@ -25,6 +25,10 @@ final class MockDatabase: DatabaseClient, InMemoryDatabase, HasEntityRepository 
 
   lazy var entityRepo: EntityRepository = MockEntityRepository(db: self)
 
+  func entities() async throws -> PreloadedEntities {
+    try await entityRepo.getEntities()
+  }
+
   func query<M: DuetModel>(_ Model: M.Type) -> DuetQuery<M> {
     DuetQuery<M>(db: self, constraints: [], limit: nil, order: nil)
   }

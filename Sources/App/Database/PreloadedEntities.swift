@@ -1,6 +1,8 @@
 import Foundation
 
 actor PreloadedEntities: SQLQuerying, InMemoryDatabase {
+  var legacyRestAppEditionsDataEnglish: Data?
+  var legacyRestAppEditionsDataSpanish: Data?
   var friends: [Friend.Id: Friend]
   var friendQuotes: [FriendQuote.Id: FriendQuote]
   var friendResidences: [FriendResidence.Id: FriendResidence]
@@ -146,6 +148,24 @@ actor PreloadedEntities: SQLQuerying, InMemoryDatabase {
     }
   }
 
+  func setLegacyAppEditions(data: Data, lang: Lang) {
+    switch lang {
+      case .en:
+        legacyRestAppEditionsDataEnglish = data
+      case .es:
+        legacyRestAppEditionsDataEnglish = data
+    }
+  }
+
+  func getLegacyAppEditions(lang: Lang) -> Data? {
+    switch lang {
+      case .en:
+        return legacyRestAppEditionsDataEnglish
+      case .es:
+        return legacyRestAppEditionsDataEnglish
+    }
+  }
+
   func flush() {
     friends = [:]
     friendQuotes = [:]
@@ -159,6 +179,8 @@ actor PreloadedEntities: SQLQuerying, InMemoryDatabase {
     editionChapters = [:]
     audios = [:]
     audioParts = [:]
+    legacyRestAppEditionsDataEnglish = nil
+    legacyRestAppEditionsDataSpanish = nil
   }
 
   convenience init(

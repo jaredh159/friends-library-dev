@@ -14,6 +14,22 @@ final class EditionChapter: Codable {
 
   var edition = Parent<Edition>.notLoaded
 
+  var slug: String {
+    "chapter-\(order)"
+  }
+
+  var htmlId: String {
+    customId ?? slug
+  }
+
+  var isSequenced: Bool {
+    sequenceNumber != nil
+  }
+
+  var hasNonSequenceTitle: Bool {
+    nonSequenceTitle != nil
+  }
+
   init(
     id: Id = .init(),
     editionId: Edition.Id,

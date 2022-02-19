@@ -9,6 +9,10 @@ struct LiveDatabase: SQLQuerying, SQLMutating, DatabaseClient {
     entityRepo = LiveEntityRepository(db: db)
   }
 
+  func entities() async throws -> PreloadedEntities {
+    try await entityRepo.getEntities()
+  }
+
   func query<M: DuetModel>(_ Model: M.Type) -> DuetQuery<M> {
     DuetQuery<M>(db: self, constraints: [], limit: nil, order: nil)
   }

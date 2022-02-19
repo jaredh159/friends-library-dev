@@ -76,6 +76,8 @@ protocol DatabaseClient: SQLQuerying, SQLMutating {
 
   @discardableResult
   func create<Model: DuetModel>(_ models: [Model]) async throws -> [Model]
+
+  func entities() async throws -> PreloadedEntities
 }
 
 extension DatabaseClient {
