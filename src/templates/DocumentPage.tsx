@@ -23,7 +23,6 @@ interface Props {
       url: string;
     };
     document: {
-      id: string;
       slug: string;
       title: string;
       htmlTitle: string;
@@ -36,6 +35,7 @@ interface Props {
       isCompilation: boolean;
       isComplete: boolean;
       editions: {
+        id: string;
         type: EditionType;
         isbn: string;
         price: number;
@@ -135,13 +135,14 @@ const DocumentPage: React.FC<Props> = ({
         authorUrl={friend.url}
         price={mainEdition.price}
         hasAudio={hasAudio}
-        documentId={document.id}
+        editionId={mainEdition.id}
         numChapters={mainEdition.numChapters}
         altLanguageUrl={document.altLanguageUrl}
         isComplete={document.isComplete}
         {...coverProps}
         pages={mainEdition.pages}
         editions={document.editions.map((edition) => ({
+          id: edition.id,
           title: document.title,
           type: edition.type,
           printSize: edition.printSize,
@@ -210,6 +211,7 @@ export const query = graphql`
       ogImageUrl
       originalTitle
       editions {
+        id
         type
         isbn
         description

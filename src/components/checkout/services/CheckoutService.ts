@@ -1,24 +1,33 @@
-import { checkoutErrors as Err } from '@friends-library/types';
-import CheckoutApi, { ApiResponse } from './CheckoutApi';
+import CheckoutApi from './CheckoutApi';
 import Cart from '../models/Cart';
 import { LANG } from '../../env';
+import {
+  CreateOrderInput,
+  CreateOrderItemInput,
+  Lang,
+  OrderSource,
+  PrintJobStatus,
+  PrintSize,
+  ShippingLevel,
+} from '../../../graphql/globalTypes';
 
 /**
- * CheckoutService exists to orchestrate the series of lambda invocations
+ * CheckoutService exists to orchestrate the series of API invocations
  * necessary for checking out. It builds up necessary intermediate state
  * (things like orderId, paymentIntentId) in order to pass correct
- * values to the various lambdas throughout the sequence. The CheckoutApi
+ * values to the various requests throughout the sequence. The CheckoutApi
  * is injected as an independent service for easier unit testing and usage
  * within Storybook.
  */
 export default class CheckoutService {
-  private errors: string[] = [];
   private stripeError?: string;
+  public token = ``;
   public orderId = ``;
   public paymentIntentId = ``;
   public paymentIntentClientSecret = ``;
-  public shippingLevel = ``;
-  public fees = {
+  public shippingLevel = ShippingLevel.mail;
+  public metadata = {
+    fees: 0,
     shipping: 0,
     taxes: 0,
     ccFeeOffset: 0,
@@ -31,83 +40,75 @@ export default class CheckoutService {
     this.resetState();
   }
 
-  public async calculateFees(): Promise<string | void> {
-    const payload = {
-      address: this.cart.address,
-      items: this.cart.items
-        .filter((i) => i.quantity > 0)
-        .flatMap((item) =>
-          item.numPages.map((pages) => ({
-            pages,
-            printSize: item.printSize,
-            quantity: item.quantity,
-          })),
-        ),
-    };
+  public async getExploratoryMetadata(): Promise<string | void> {
+    const items = this.cart.items
+      .filter((i) => i.quantity > 0)
+      .map((item) => ({
+        volumes: item.numPages,
+        printSize: item.printSize as PrintSize,
+        quantity: item.quantity,
+      }));
 
     if (!this.cart.address) throw new Error(`Missing address`);
 
-    const res = await this.api.calculateFees(payload);
-    if (res.ok) {
-      this.cart.address.unusable = false;
-      this.shippingLevel = res.data.shippingLevel;
-      this.fees = {
-        shipping: res.data.shipping,
-        taxes: res.data.taxes,
-        ccFeeOffset: res.data.ccFeeOffset,
-      };
-      return;
+    const result = await this.api.getExploratoryMetadata(items, this.cart.address);
+    switch (result.status) {
+      case `success`:
+        this.cart.address.unusable = false;
+        this.shippingLevel = result.data.data.shippingLevel;
+        this.metadata = {
+          fees: result.data.data.feesInCents,
+          shipping: result.data.data.shippingInCents,
+          taxes: result.data.data.taxesInCents,
+          ccFeeOffset: result.data.data.creditCardFeeOffsetInCents,
+        };
+        return;
+      case `shipping_not_possible`:
+        this.cart.address.unusable = true;
+        return `shipping_not_possible`;
+      case `error`:
+        return `unknown error`;
     }
-
-    if (res.data.msg === Err.SHIPPING_NOT_POSSIBLE) {
-      this.cart.address.unusable = true;
-    }
-
-    return this.resolve(res);
   }
 
-  public async createPaymentIntent(): Promise<string | void> {
-    const payload = { amount: this.cart.subTotal() + this.sumFees() };
-    const res = await this.api.createPaymentIntent(payload);
-    if (res.ok) {
-      this.paymentIntentId = res.data.paymentIntentId;
-      this.paymentIntentClientSecret = res.data.paymentIntentClientSecret;
-      this.orderId = res.data.orderId;
+  public async createOrderInitialization(): Promise<string | void> {
+    const amount = this.cart.subTotal() + this.sumFees();
+    const result = await this.api.createOrderInitialization(amount);
+    switch (result.success) {
+      case true:
+        this.token = result.data.data.token;
+        this.paymentIntentId = result.data.data.orderPaymentId;
+        this.paymentIntentClientSecret = result.data.data.stripeClientSecret;
+        this.orderId = result.data.data.orderId;
+        return;
+      case false:
+        return `error creating order initialization`;
     }
-    return this.resolve(res);
   }
 
   public async createOrder(): Promise<string | void> {
-    const res = await this.api.createOrder(this.createOrderPayload());
-    return this.resolve(res);
+    const success = await this.api.createOrder(...this.createOrderArgs());
+    return success ? undefined : `error creating order`;
   }
 
   public async chargeCreditCard(
     chargeCreditCard: () => Promise<Record<string, any>>,
   ): Promise<string | void> {
-    const res = await this.api.chargeCreditCard(chargeCreditCard);
-    if (!res.ok && typeof res.data.userMsg === `string`) {
-      this.stripeError = res.data.userMsg;
+    const result = await this.api.chargeCreditCard(chargeCreditCard);
+    switch (result.status) {
+      case `success`:
+        return;
+      case `user_actionable_error`:
+        this.stripeError = result.error;
+        return result.error;
+      case `error`:
+        return result.error;
     }
-    return this.resolve(res);
-  }
-
-  public async sendWakeup(): Promise<string | void> {
-    const res = await this.api.wakeup();
-    return this.resolve(res);
   }
 
   public async sendOrderConfirmationEmail(): Promise<string | void> {
-    const res = await this.api.sendOrderConfirmationEmail(this.orderId);
-    return this.resolve(res);
-  }
-
-  public popError(): string | undefined {
-    return this.errors.pop();
-  }
-
-  public lastError(): string | undefined {
-    return this.errors[this.errors.length - 1];
+    const success = await this.api.sendOrderConfirmationEmail(this.orderId);
+    return success ? undefined : `error creating order`;
   }
 
   public complete(): void {
@@ -125,59 +126,53 @@ export default class CheckoutService {
     return error;
   }
 
-  private resolve({ ok, data, statusCode }: ApiResponse): string | void {
-    if (!ok) {
-      const msg = data.msg || `Status: ${statusCode}`;
-      this.errors.push(msg);
-      return msg;
-    }
-  }
-
   private sumFees(): number {
-    return Object.values(this.fees).reduce((sum, fee) => sum + fee);
+    return Object.values(this.metadata).reduce((sum, fee) => sum + fee);
   }
 
-  private createOrderPayload(): Record<string, any> {
-    const { shipping, taxes, ccFeeOffset } = this.fees;
+  private createOrderArgs(): Parameters<InstanceType<typeof CheckoutApi>['createOrder']> {
+    const { shipping, taxes, ccFeeOffset } = this.metadata;
     if (!this.cart.address) throw new Error(`Missing address`);
-    return {
+    const items = this.cart.items
+      .filter((i) => i.quantity > 0)
+      .map(
+        (item): CreateOrderItemInput => ({
+          orderId: this.orderId,
+          editionId: item.editionId,
+          quantity: item.quantity,
+          unitPrice: item.price(),
+        }),
+      );
+    const order: CreateOrderInput = {
       id: this.orderId,
       paymentId: this.paymentIntentId,
       amount: this.cart.subTotal() + this.sumFees(),
       shipping,
       taxes,
       ccFeeOffset,
-      email: this.cart.email,
+      email: this.cart.email!,
       shippingLevel: this.shippingLevel,
-      address: {
-        name: this.cart.address.name,
-        street: this.cart.address.street,
-        street2: this.cart.address.street2,
-        city: this.cart.address.city,
-        state: this.cart.address.state,
-        zip: this.cart.address.zip,
-        country: this.cart.address.country,
-      },
-      lang: LANG,
-      items: this.cart.items
-        .filter((i) => i.quantity > 0)
-        .map((item) => ({
-          title: item.printJobTitle(),
-          documentId: item.documentId,
-          edition: item.edition,
-          quantity: item.quantity,
-          unitPrice: item.price(),
-        })),
+      addressName: this.cart.address.name,
+      addressStreet: this.cart.address.street,
+      addressStreet2: this.cart.address.street2,
+      addressCity: this.cart.address.city,
+      addressState: this.cart.address.state,
+      addressZip: this.cart.address.zip,
+      addressCountry: this.cart.address.country,
+      source: OrderSource.website,
+      printJobStatus: PrintJobStatus.presubmit,
+      lang: LANG as Lang,
     };
+    return [order, items, this.token];
   }
 
   private resetState(): void {
-    this.errors = [];
+    this.token = ``;
     this.orderId = ``;
     this.paymentIntentId = ``;
     this.paymentIntentClientSecret = ``;
-    this.shippingLevel = ``;
-    this.fees = { shipping: 0, taxes: 0, ccFeeOffset: 0 };
+    this.shippingLevel = ShippingLevel.mail;
+    this.metadata = { fees: 0, shipping: 0, taxes: 0, ccFeeOffset: 0 };
     delete this.stripeError;
   }
 }

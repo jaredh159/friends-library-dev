@@ -1,4 +1,4 @@
-import { isAddress, isItem, migrateArrayTitle } from '../integrity';
+import { isAddress, isItem } from '../integrity';
 
 describe(`isAddress`, () => {
   const cases: [unknown, boolean][] = [
@@ -85,7 +85,7 @@ describe(`isItem`, () => {
         printSize: `xl`,
         numPages: [333],
         displayTitle: `Journal of G. F.`,
-        documentId: `the-id`,
+        editionId: `the-id`,
         title: `Journal of G. F`,
         author: `G. F.`,
       },
@@ -98,7 +98,7 @@ describe(`isItem`, () => {
         printSize: `xl`,
         numPages: [333],
         displayTitle: `Journal of G. F.`,
-        documentId: `the-id`,
+        editionId: `the-id`,
         title: `Journal of G. F`,
         author: `G. F.`,
       },
@@ -111,7 +111,7 @@ describe(`isItem`, () => {
         printSize: `xl`,
         numPages: [333],
         displayTitle: `Journal of G. F.`,
-        documentId: `the-id`,
+        editionId: `the-id`,
         title: `Journal of G. F`,
         author: `G. F.`,
       },
@@ -124,7 +124,7 @@ describe(`isItem`, () => {
         printSize: `xxxl`,
         numPages: [333],
         displayTitle: `Journal of G. F.`,
-        documentId: `the-id`,
+        editionId: `the-id`,
         title: `Journal of G. F`,
         author: `G. F.`,
       },
@@ -137,7 +137,7 @@ describe(`isItem`, () => {
         printSize: `xl`,
         numPages: 333,
         displayTitle: `Journal of G. F.`,
-        documentId: `the-id`,
+        editionId: `the-id`,
         title: `Journal of G. F`,
         author: `G. F.`,
       },
@@ -149,7 +149,7 @@ describe(`isItem`, () => {
         quantity: 3,
         printSize: `xl`,
         numPages: [333],
-        documentId: `the-id`,
+        editionId: `the-id`,
         title: `Journal of G. F`,
         author: `G. F.`,
       },
@@ -162,7 +162,20 @@ describe(`isItem`, () => {
         printSize: `xl`,
         numPages: [333],
         displayTitle: `Journal of G. F.`,
-        documentId: 333444,
+        editionId: 333444,
+        title: `Journal of G. F`,
+        author: `G. F.`,
+      },
+      false,
+    ],
+    [
+      {
+        edition: `updated`,
+        quantity: 3,
+        printSize: `xl`,
+        numPages: [333],
+        displayTitle: `Journal of G. F.`,
+        documentId: 333444, // <-- legacy
         title: `Journal of G. F`,
         author: `G. F.`,
       },
@@ -172,19 +185,5 @@ describe(`isItem`, () => {
 
   test.each(cases)(`returns correct value`, (input, expected) => {
     expect(isItem(input)).toBe(expected);
-  });
-});
-
-describe(`migrateArrayTitle()`, () => {
-  it(`passes through unexpected input`, () => {
-    expect(migrateArrayTitle(null)).toBeNull();
-  });
-
-  it(`leaves untouched item not needing migration`, () => {
-    expect(migrateArrayTitle({ title: `foo` })).toMatchObject({ title: `foo` });
-  });
-
-  it(`migrates old-style array titles`, () => {
-    expect(migrateArrayTitle({ title: [`foo`] })).toMatchObject({ title: `foo` });
   });
 });

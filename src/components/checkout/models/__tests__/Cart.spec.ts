@@ -68,7 +68,7 @@ describe(`Cart`, () => {
             printSize: `xl`,
             numPages: [333],
             displayTitle: `Journal of G. F.`,
-            documentId: `the-id`,
+            editionId: `the-id`,
             title: `Journal of G. F`,
             author: `G. F.`,
           },
@@ -78,26 +78,6 @@ describe(`Cart`, () => {
       expect(cart.items).toHaveLength(1);
       expect(cart.address).toMatchObject(json.address);
       expect(cart.email).toBe(`jared@netrivet.com`);
-    });
-
-    it(`migrates old-style item array`, () => {
-      const json = {
-        items: [
-          {
-            edition: `updated`,
-            quantity: 3,
-            printSize: `xl`,
-            numPages: [333],
-            displayTitle: `Journal of G. F.`,
-            documentId: `the-id`,
-            title: [`Journal of G. F.`], // <-- array
-            author: `G. F.`,
-          },
-        ],
-      };
-      const cart = Cart.fromJson(json);
-      expect(cart.items).toHaveLength(1);
-      expect(cart.items[0].title).toBe(`Journal of G. F.`);
     });
   });
 });

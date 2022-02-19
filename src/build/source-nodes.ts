@@ -132,6 +132,7 @@ const sourceNodes: GatsbyNode['sourceNodes'] = async ({
         }
 
         return {
+          id: edition.id,
           type: edition.type,
           isbn: edition.isbn?.code ?? ``,
           ...published(impression.createdAt, LANG),

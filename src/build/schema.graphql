@@ -5,6 +5,7 @@ type Document implements Node {
 }
 
 type Edition @dontInfer {
+  id: String!
   description: String
   audio: Audio
   customCode: CustomCode!

@@ -6,7 +6,7 @@ export const cartItemData1: () => CartItemData = () => ({
   displayTitle: `Journal of George Fox`,
   title: `Journal of George Fox`,
   author: `George Fox`,
-  documentId: `e5a1ecfb-4f0a-4c71-80bf-3ee924d0f46c`,
+  editionId: `e5a1ecfb-4f0a-4c71-80bf-3ee924d0f46c`,
   edition: `original`,
   printSize: `xl`,
   quantity: 1,
@@ -16,7 +16,7 @@ export const cartItemData1: () => CartItemData = () => ({
 export const cartItemData2: () => CartItemData = () => ({
   displayTitle: `Journal of T. Shillitoe &mdash; Vol. I`,
   title: `Journal of T. Shillitoe`,
-  documentId: `9333dd0a-d92b-401e-a086-f611cc20f984`,
+  editionId: `9333dd0a-d92b-401e-a086-f611cc20f984`,
   author: `Thomas Shillitoe`,
   edition: `updated`,
   printSize: `xl`,
@@ -27,7 +27,7 @@ export const cartItemData2: () => CartItemData = () => ({
 export const cartItemData3: () => CartItemData = () => ({
   displayTitle: `The Journal and Writings of Ambrose Rigge`,
   title: `The Journal and Writings of Ambrose Rigge`,
-  documentId: `f6b0e134d-8d2e-48bc-8fa3-e8fc79793804`,
+  editionId: `f6b0e134d-8d2e-48bc-8fa3-e8fc79793804`,
   author: `Ambrose Rigge`,
   edition: `modernized`,
   printSize: `m`,

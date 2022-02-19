@@ -4,7 +4,7 @@ import { EditionType, PrintSize } from '@friends-library/types';
 export interface CartItemData {
   displayTitle: string;
   title: string;
-  documentId: string;
+  editionId: string;
   edition: EditionType;
   quantity: number;
   printSize: PrintSize;
@@ -15,7 +15,7 @@ export interface CartItemData {
 export default class CartItem {
   public displayTitle: string;
   public title: string;
-  public documentId: string;
+  public editionId: string;
   public edition: EditionType;
   public quantity: number;
   public printSize: PrintSize;
@@ -25,7 +25,7 @@ export default class CartItem {
   public constructor(config: CartItemData) {
     this.displayTitle = config.displayTitle;
     this.title = config.title;
-    this.documentId = config.documentId;
+    this.editionId = config.editionId;
     this.edition = config.edition;
     this.quantity = config.quantity;
     this.printSize = config.printSize;
@@ -46,7 +46,7 @@ export default class CartItem {
   }
 
   public equals(other: CartItem): boolean {
-    return this.documentId === other.documentId && this.edition === other.edition;
+    return this.editionId === other.editionId && this.edition === other.edition;
   }
 
   public toJSON(): CartItemData {
@@ -54,7 +54,7 @@ export default class CartItem {
       displayTitle: this.displayTitle,
       title: this.title,
       author: this.author,
-      documentId: this.documentId,
+      editionId: this.editionId,
       edition: this.edition,
       quantity: this.quantity,
       printSize: this.printSize,

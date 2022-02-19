@@ -8,7 +8,7 @@ import CheckoutFlow from '../checkout/Flow';
 import ErrorBoundary from '../ErrorBoundary';
 
 const store = CartStore.getSingleton();
-const api = new CheckoutApi(`/.netlify/functions/site`);
+const api = new CheckoutApi();
 const service = new CheckoutService(store.cart, api);
 const machine = new CheckoutMachine(service);
 machine.on(`close`, () => store.close());

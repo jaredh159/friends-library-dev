@@ -130,6 +130,7 @@ const RequestFreeBooksContainer: React.FC<{ currentPageBook: string }> = ({
   const dispatch = useContext(AppDispatch);
   const close: () => unknown = () => dispatch({ type: `show--app` });
 
+  // @TODO use Client
   const ENDPOINT =
     (process.env.GATSBY_NETLIFY_CONTEXT === `production`
       ? process.env.GATSBY_PROD_GRAPHQL_API_ENDPOINT

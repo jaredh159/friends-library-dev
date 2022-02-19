@@ -21,7 +21,7 @@ type Props = Omit<CoverProps, 'pages'> & {
   utf8ShortTitle: string;
   originalTitle?: string;
   authorUrl: string;
-  documentId: string;
+  editionId: string;
   author: string;
   price: number;
   hasAudio: boolean;
@@ -31,6 +31,7 @@ type Props = Omit<CoverProps, 'pages'> & {
   pages: number[];
   isComplete: boolean;
   editions: {
+    id: string;
     title: string;
     type: EditionType;
     printSize: PrintSize;
@@ -124,7 +125,7 @@ const DocBlock: React.FC<Props> = (props) => {
       new CartItem({
         displayTitle: props.htmlShortTitle,
         title: edition.title,
-        documentId: props.documentId,
+        editionId: edition.id,
         edition: edition.type,
         quantity: 1,
         printSize: edition.printSize,
