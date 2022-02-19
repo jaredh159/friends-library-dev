@@ -1,6 +1,6 @@
 import Vapor
 
-enum LegacyRest {
+extension LegacyRest {
 
   static func appEditions(lang: Lang) async throws -> Response {
     let data: Data

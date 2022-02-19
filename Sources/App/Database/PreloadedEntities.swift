@@ -1,8 +1,6 @@
 import Foundation
 
 actor PreloadedEntities: SQLQuerying, InMemoryDatabase {
-  var legacyRestAppEditionsDataEnglish: Data?
-  var legacyRestAppEditionsDataSpanish: Data?
   var friends: [Friend.Id: Friend]
   var friendQuotes: [FriendQuote.Id: FriendQuote]
   var friendResidences: [FriendResidence.Id: FriendResidence]
@@ -15,7 +13,11 @@ actor PreloadedEntities: SQLQuerying, InMemoryDatabase {
   var editionChapters: [EditionChapter.Id: EditionChapter]
   var audios: [Audio.Id: Audio]
   var audioParts: [AudioPart.Id: AudioPart]
-  // ⚠️ when adding new dictionary properties, make sure you flush them in self.flush()
+  var legacyRestAppEditionsDataEnglish: Data?
+  var legacyRestAppEditionsDataSpanish: Data?
+  var legacyRestAppAudiosDataEnglish: Data?
+  var legacyRestAppAudiosDataSpanish: Data?
+  // ⚠️ when adding new properties, make sure you flush them in self.flush()
 
   init(
     friends: [Friend.Id: Friend] = [:],
@@ -148,24 +150,6 @@ actor PreloadedEntities: SQLQuerying, InMemoryDatabase {
     }
   }
 
-  func setLegacyAppEditions(data: Data, lang: Lang) {
-    switch lang {
-      case .en:
-        legacyRestAppEditionsDataEnglish = data
-      case .es:
-        legacyRestAppEditionsDataEnglish = data
-    }
-  }
-
-  func getLegacyAppEditions(lang: Lang) -> Data? {
-    switch lang {
-      case .en:
-        return legacyRestAppEditionsDataEnglish
-      case .es:
-        return legacyRestAppEditionsDataEnglish
-    }
-  }
-
   func flush() {
     friends = [:]
     friendQuotes = [:]
@@ -181,6 +165,8 @@ actor PreloadedEntities: SQLQuerying, InMemoryDatabase {
     audioParts = [:]
     legacyRestAppEditionsDataEnglish = nil
     legacyRestAppEditionsDataSpanish = nil
+    legacyRestAppAudiosDataEnglish = nil
+    legacyRestAppAudiosDataSpanish = nil
   }
 
   convenience init(
@@ -245,10 +231,52 @@ actor PreloadedEntities: SQLQuerying, InMemoryDatabase {
   }
 }
 
+// helpers
+
 private func toDict<M: DuetModel>(_ models: [M]) -> [M.IdValue: M] {
   var dict = Dictionary<M.IdValue, M>.init(minimumCapacity: models.count)
   models.forEach { model in dict[model.id] = model }
   return dict
+}
+
+// extensions
+
+extension PreloadedEntities {
+  func setLegacyAppEditions(data: Data, lang: Lang) {
+    switch lang {
+      case .en:
+        legacyRestAppEditionsDataEnglish = data
+      case .es:
+        legacyRestAppEditionsDataSpanish = data
+    }
+  }
+
+  func getLegacyAppEditions(lang: Lang) -> Data? {
+    switch lang {
+      case .en:
+        return legacyRestAppEditionsDataEnglish
+      case .es:
+        return legacyRestAppEditionsDataSpanish
+    }
+  }
+
+  func setLegacyAppAudios(data: Data, lang: Lang) {
+    switch lang {
+      case .en:
+        legacyRestAppAudiosDataEnglish = data
+      case .es:
+        legacyRestAppAudiosDataSpanish = data
+    }
+  }
+
+  func getLegacyAppAudios(lang: Lang) -> Data? {
+    switch lang {
+      case .en:
+        return legacyRestAppAudiosDataEnglish
+      case .es:
+        return legacyRestAppAudiosDataSpanish
+    }
+  }
 }
 
 enum PreloadedEntitiesError: Error, LocalizedError {

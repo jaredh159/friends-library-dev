@@ -31,13 +31,10 @@ public func configure(_ app: Application) throws {
 
   addMigrations(to: app)
 
+  LegacyRest.addRoutes(app)
+
   app.get("download", "**") {
     try await downloadFileRouteHandler(req: $0)
-  }
-
-  app.get("app-editions", "*" /* "v1" | "latest" */, ":lang") { req -> Response in
-    let lang = req.parameters.get("lang") == "es" ? Lang.es : Lang.en
-    return try await LegacyRest.appEditions(lang: lang)
   }
 
   app
