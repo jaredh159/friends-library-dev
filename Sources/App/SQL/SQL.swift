@@ -38,20 +38,33 @@ enum SQL {
   }
 
   struct WhereConstraint<M: DuetModel> {
-    let column: M.ColumnName
-    let `operator`: Postgres.WhereOperator
-    let value: Postgres.Data
-
-    static func isNull(_ column: M.ColumnName) -> WhereConstraint<M> {
-      column == .null
+    enum Expression {
+      case value(Postgres.WhereOperator, Postgres.Data)
+      case isNull
+      case notNull
     }
 
-    func sql(boundTo binding: inout Int) -> String {
-      if `operator` == .equals, value == .null {
-        return "\"\(M.columnName(column))\" IS NULL"
+    let column: M.ColumnName
+    let expression: Expression
+
+    static func isNull(_ column: M.ColumnName) -> Self {
+      .init(column: column, expression: .isNull)
+    }
+
+    static func notNull(_ column: M.ColumnName) -> Self {
+      .init(column: column, expression: .notNull)
+    }
+
+    func sql(boundTo bindings: inout [Postgres.Data]) -> String {
+      switch expression {
+        case .isNull:
+          return "\"\(M.columnName(column))\" IS NULL"
+        case .notNull:
+          return "\"\(M.columnName(column))\" NOT NULL"
+        case .value(let op, let value):
+          bindings.append(value)
+          return "\"\(M.columnName(column))\" \(op.sql) $\(bindings.count)"
       }
-      defer { binding += 1 }
-      return "\"\(M.columnName(column))\" \(self.operator.sql) $\(binding)"
     }
   }
 
@@ -66,9 +79,8 @@ enum SQL {
     orderBy: Order<M>? = nil,
     limit: Int? = nil
   ) -> PreparedStatement {
-    var binding = 1
     var bindings: [Postgres.Data] = []
-    let WHERE = whereClause(constraints, currentBinding: &binding, bindings: &bindings)
+    let WHERE = whereClause(constraints, bindings: &bindings)
     let ORDER_BY = Order<M>.sql(orderBy)
     let LIMIT = limit.sql()
     let query = #"DELETE FROM "\#(Model.tableName)"\#(WHERE)\#(ORDER_BY)\#(LIMIT);"#
@@ -90,15 +102,13 @@ enum SQL {
   ) -> PreparedStatement {
     var bindings: [Postgres.Data] = []
     var setPairs: [String] = []
-    var currentBinding = 1
 
     for (column, value) in values.filter({ key, _ in key != "created_at" && key != "id" }) {
       bindings.append(value)
-      setPairs.append("\"\(column)\" = $\(currentBinding)")
-      currentBinding += 1
+      setPairs.append("\"\(column)\" = $\(bindings.count)")
     }
 
-    let WHERE = whereClause(constraints, currentBinding: &currentBinding, bindings: &bindings)
+    let WHERE = whereClause(constraints, bindings: &bindings)
 
     var RETURNING = ""
     if let returning = returning {
@@ -150,14 +160,12 @@ enum SQL {
     let columns = firstRecord.keys.sorted()
     var placeholderGroups: [String] = []
     var bindings: [Postgres.Data] = []
-    var currentBinding = 1
 
     for record in values {
       var placeholders: [String] = []
       for key in record.keys.sorted() {
         bindings.append(record[key]!)
-        placeholders.append("$\(currentBinding)")
-        currentBinding += 1
+        placeholders.append("$\(bindings.count)")
       }
       placeholderGroups.append("(\(placeholders.list))")
     }
@@ -179,15 +187,13 @@ enum SQL {
     orderBy order: Order<M>? = nil,
     limit: Int? = nil
   ) -> PreparedStatement {
-    var binding = 1
     var bindings: [Postgres.Data] = []
-    let WHERE = whereClause(constraints, currentBinding: &binding, bindings: &bindings)
+    let WHERE = whereClause(constraints, bindings: &bindings)
     let ORDER_BY = Order<M>.sql(order)
     let LIMIT = limit.sql()
     let query = """
     SELECT \(columns.sql) FROM "\(M.tableName)"\(WHERE)\(ORDER_BY)\(LIMIT);
     """
-
     return PreparedStatement(query: query, bindings: bindings)
   }
 
@@ -227,7 +233,6 @@ enum SQL {
 
   private static func whereClause<M: DuetModel>(
     _ constraints: [WhereConstraint<M>]?,
-    currentBinding binding: inout Int,
     bindings: inout [Postgres.Data],
     separatedBy: String = "\n"
   ) -> String {
@@ -235,11 +240,7 @@ enum SQL {
     var parts: [String] = []
     for (index, constraint) in constraints.enumerated() {
       let prefix = index == 0 ? "WHERE" : "AND"
-      // yuck, fix
-      if constraint.value != .null {
-        bindings.append(constraint.value)
-      }
-      parts.append("\(prefix) \(constraint.sql(boundTo: &binding))")
+      parts.append("\(prefix) \(constraint.sql(boundTo: &bindings))")
     }
     return "\(separatedBy)\(parts.joined(separator: separatedBy))"
   }
@@ -260,11 +261,11 @@ private extension Sequence where Element == String {
 }
 
 func == <M: DuetModel>(lhs: M.ColumnName, rhs: Postgres.Data) -> SQL.WhereConstraint<M> {
-  .init(column: lhs, operator: .equals, value: rhs)
+  .init(column: lhs, expression: .value(.equals, rhs))
 }
 
 func == <M: DuetModel>(lhs: M.ColumnName, rhs: UUIDStringable) -> SQL.WhereConstraint<M> {
-  .init(column: lhs, operator: .equals, value: .uuid(rhs))
+  .init(column: lhs, expression: .value(.equals, .uuid(rhs)))
 }
 
 private extension Optional where Wrapped == Int {

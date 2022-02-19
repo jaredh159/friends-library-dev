@@ -57,33 +57,33 @@ extension FreeOrderRequest: SQLInspectable {
   func satisfies(constraint: SQL.WhereConstraint<FreeOrderRequest>) -> Bool {
     switch constraint.column {
       case .id:
-        return .id(self) == constraint.value
+        return constraint.isSatisfiedBy(.id(self))
       case .name:
-        return .string(name) == constraint.value
+        return constraint.isSatisfiedBy(.string(name))
       case .email:
-        return .string(email.rawValue) == constraint.value
+        return constraint.isSatisfiedBy(.string(email.rawValue))
       case .requestedBooks:
-        return .string(requestedBooks) == constraint.value
+        return constraint.isSatisfiedBy(.string(requestedBooks))
       case .aboutRequester:
-        return .string(aboutRequester) == constraint.value
+        return constraint.isSatisfiedBy(.string(aboutRequester))
       case .addressStreet:
-        return .string(addressStreet) == constraint.value
+        return constraint.isSatisfiedBy(.string(addressStreet))
       case .addressStreet2:
-        return .string(addressStreet2) == constraint.value
+        return constraint.isSatisfiedBy(.string(addressStreet2))
       case .addressCity:
-        return .string(addressCity) == constraint.value
+        return constraint.isSatisfiedBy(.string(addressCity))
       case .addressState:
-        return .string(addressState) == constraint.value
+        return constraint.isSatisfiedBy(.string(addressState))
       case .addressZip:
-        return .string(addressZip) == constraint.value
+        return constraint.isSatisfiedBy(.string(addressZip))
       case .addressCountry:
-        return .string(addressCountry) == constraint.value
+        return constraint.isSatisfiedBy(.string(addressCountry))
       case .source:
-        return .string(source) == constraint.value
+        return constraint.isSatisfiedBy(.string(source))
       case .createdAt:
-        return .date(createdAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(createdAt))
       case .updatedAt:
-        return .date(updatedAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(updatedAt))
     }
   }
 }

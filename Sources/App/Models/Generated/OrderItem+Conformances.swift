@@ -41,17 +41,17 @@ extension OrderItem: SQLInspectable {
   func satisfies(constraint: SQL.WhereConstraint<OrderItem>) -> Bool {
     switch constraint.column {
       case .id:
-        return .id(self) == constraint.value
+        return constraint.isSatisfiedBy(.id(self))
       case .orderId:
-        return .uuid(orderId) == constraint.value
+        return constraint.isSatisfiedBy(.uuid(orderId))
       case .editionId:
-        return .uuid(editionId) == constraint.value
+        return constraint.isSatisfiedBy(.uuid(editionId))
       case .quantity:
-        return .int(quantity) == constraint.value
+        return constraint.isSatisfiedBy(.int(quantity))
       case .unitPrice:
-        return .int(unitPrice.rawValue) == constraint.value
+        return constraint.isSatisfiedBy(.int(unitPrice.rawValue))
       case .createdAt:
-        return .date(createdAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(createdAt))
     }
   }
 }

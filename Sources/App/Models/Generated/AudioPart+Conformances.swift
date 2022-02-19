@@ -56,29 +56,29 @@ extension AudioPart: SQLInspectable {
   func satisfies(constraint: SQL.WhereConstraint<AudioPart>) -> Bool {
     switch constraint.column {
       case .id:
-        return .id(self) == constraint.value
+        return constraint.isSatisfiedBy(.id(self))
       case .audioId:
-        return .uuid(audioId) == constraint.value
+        return constraint.isSatisfiedBy(.uuid(audioId))
       case .title:
-        return .string(title) == constraint.value
+        return constraint.isSatisfiedBy(.string(title))
       case .duration:
-        return .double(duration.rawValue) == constraint.value
+        return constraint.isSatisfiedBy(.double(duration.rawValue))
       case .chapters:
-        return .intArray(chapters.array) == constraint.value
+        return constraint.isSatisfiedBy(.intArray(chapters.array))
       case .order:
-        return .int(order) == constraint.value
+        return constraint.isSatisfiedBy(.int(order))
       case .mp3SizeHq:
-        return .int(mp3SizeHq.rawValue) == constraint.value
+        return constraint.isSatisfiedBy(.int(mp3SizeHq.rawValue))
       case .mp3SizeLq:
-        return .int(mp3SizeLq.rawValue) == constraint.value
+        return constraint.isSatisfiedBy(.int(mp3SizeLq.rawValue))
       case .externalIdHq:
-        return .int64(externalIdHq.rawValue) == constraint.value
+        return constraint.isSatisfiedBy(.int64(externalIdHq.rawValue))
       case .externalIdLq:
-        return .int64(externalIdLq.rawValue) == constraint.value
+        return constraint.isSatisfiedBy(.int64(externalIdLq.rawValue))
       case .createdAt:
-        return .date(createdAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(createdAt))
       case .updatedAt:
-        return .date(updatedAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(updatedAt))
     }
   }
 }

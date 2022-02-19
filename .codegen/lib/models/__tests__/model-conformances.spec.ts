@@ -33,6 +33,7 @@ describe(`generateModelConformances()`, () => {
 
       extension Thing: DuetModel {
         static let tableName = M8.tableName
+        static var isSoftDeletable: Bool { false }
       }
 
       extension Thing {
@@ -59,11 +60,11 @@ describe(`generateModelConformances()`, () => {
         func satisfies(constraint: SQL.WhereConstraint<Thing>) -> Bool {
           switch constraint.column {
             case .id:
-              return .id(self) == constraint.value
+              return constraint.isSatisfiedBy(.id(self))
             case .name:
-              return .string(name) == constraint.value
+              return constraint.isSatisfiedBy(.string(name))
             case .version:
-              return .string(version.rawValue) == constraint.value
+              return constraint.isSatisfiedBy(.string(version.rawValue))
           }
         }
       }
@@ -116,11 +117,11 @@ describe(`generateModelConformances()`, () => {
         func satisfies(constraint: SQL.WhereConstraint<Thing>) -> Bool {
           switch constraint.column {
             case .createdAt:
-              return .date(createdAt) == constraint.value
+              return constraint.isSatisfiedBy(.date(createdAt))
             case .updatedAt:
-              return .date(updatedAt) == constraint.value
+              return constraint.isSatisfiedBy(.date(updatedAt))
             case .deletedAt:
-              return .date(deletedAt) == constraint.value
+              return constraint.isSatisfiedBy(.date(deletedAt))
           }
         }
       }

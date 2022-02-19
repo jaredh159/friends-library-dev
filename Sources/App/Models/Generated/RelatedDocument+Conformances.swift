@@ -44,17 +44,17 @@ extension RelatedDocument: SQLInspectable {
   func satisfies(constraint: SQL.WhereConstraint<RelatedDocument>) -> Bool {
     switch constraint.column {
       case .id:
-        return .id(self) == constraint.value
+        return constraint.isSatisfiedBy(.id(self))
       case .description:
-        return .string(description) == constraint.value
+        return constraint.isSatisfiedBy(.string(description))
       case .documentId:
-        return .uuid(documentId) == constraint.value
+        return constraint.isSatisfiedBy(.uuid(documentId))
       case .parentDocumentId:
-        return .uuid(parentDocumentId) == constraint.value
+        return constraint.isSatisfiedBy(.uuid(parentDocumentId))
       case .createdAt:
-        return .date(createdAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(createdAt))
       case .updatedAt:
-        return .date(updatedAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(updatedAt))
     }
   }
 }

@@ -48,21 +48,21 @@ extension EditionImpression: SQLInspectable {
   func satisfies(constraint: SQL.WhereConstraint<EditionImpression>) -> Bool {
     switch constraint.column {
       case .id:
-        return .id(self) == constraint.value
+        return constraint.isSatisfiedBy(.id(self))
       case .editionId:
-        return .uuid(editionId) == constraint.value
+        return constraint.isSatisfiedBy(.uuid(editionId))
       case .adocLength:
-        return .int(adocLength) == constraint.value
+        return constraint.isSatisfiedBy(.int(adocLength))
       case .paperbackSizeVariant:
-        return .enum(paperbackSizeVariant) == constraint.value
+        return constraint.isSatisfiedBy(.enum(paperbackSizeVariant))
       case .paperbackVolumes:
-        return .intArray(paperbackVolumes.array) == constraint.value
+        return constraint.isSatisfiedBy(.intArray(paperbackVolumes.array))
       case .publishedRevision:
-        return .string(publishedRevision.rawValue) == constraint.value
+        return constraint.isSatisfiedBy(.string(publishedRevision.rawValue))
       case .productionToolchainRevision:
-        return .string(productionToolchainRevision.rawValue) == constraint.value
+        return constraint.isSatisfiedBy(.string(productionToolchainRevision.rawValue))
       case .createdAt:
-        return .date(createdAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(createdAt))
     }
   }
 }

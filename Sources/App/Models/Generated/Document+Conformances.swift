@@ -61,35 +61,35 @@ extension Document: SQLInspectable {
   func satisfies(constraint: SQL.WhereConstraint<Document>) -> Bool {
     switch constraint.column {
       case .id:
-        return .id(self) == constraint.value
+        return constraint.isSatisfiedBy(.id(self))
       case .friendId:
-        return .uuid(friendId) == constraint.value
+        return constraint.isSatisfiedBy(.uuid(friendId))
       case .altLanguageId:
-        return .uuid(altLanguageId) == constraint.value
+        return constraint.isSatisfiedBy(.uuid(altLanguageId))
       case .title:
-        return .string(title) == constraint.value
+        return constraint.isSatisfiedBy(.string(title))
       case .slug:
-        return .string(slug) == constraint.value
+        return constraint.isSatisfiedBy(.string(slug))
       case .filename:
-        return .string(filename) == constraint.value
+        return constraint.isSatisfiedBy(.string(filename))
       case .published:
-        return .int(published) == constraint.value
+        return constraint.isSatisfiedBy(.int(published))
       case .originalTitle:
-        return .string(originalTitle) == constraint.value
+        return constraint.isSatisfiedBy(.string(originalTitle))
       case .incomplete:
-        return .bool(incomplete) == constraint.value
+        return constraint.isSatisfiedBy(.bool(incomplete))
       case .description:
-        return .string(description) == constraint.value
+        return constraint.isSatisfiedBy(.string(description))
       case .partialDescription:
-        return .string(partialDescription) == constraint.value
+        return constraint.isSatisfiedBy(.string(partialDescription))
       case .featuredDescription:
-        return .string(featuredDescription) == constraint.value
+        return constraint.isSatisfiedBy(.string(featuredDescription))
       case .createdAt:
-        return .date(createdAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(createdAt))
       case .updatedAt:
-        return .date(updatedAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(updatedAt))
       case .deletedAt:
-        return .date(deletedAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(deletedAt))
     }
   }
 }

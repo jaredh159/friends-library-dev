@@ -39,15 +39,15 @@ extension Isbn: SQLInspectable {
   func satisfies(constraint: SQL.WhereConstraint<Isbn>) -> Bool {
     switch constraint.column {
       case .id:
-        return .id(self) == constraint.value
+        return constraint.isSatisfiedBy(.id(self))
       case .code:
-        return .string(code.rawValue) == constraint.value
+        return constraint.isSatisfiedBy(.string(code.rawValue))
       case .editionId:
-        return .uuid(editionId) == constraint.value
+        return constraint.isSatisfiedBy(.uuid(editionId))
       case .createdAt:
-        return .date(createdAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(createdAt))
       case .updatedAt:
-        return .date(updatedAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(updatedAt))
     }
   }
 }

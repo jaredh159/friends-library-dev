@@ -73,49 +73,49 @@ extension Order: SQLInspectable {
   func satisfies(constraint: SQL.WhereConstraint<Order>) -> Bool {
     switch constraint.column {
       case .id:
-        return .id(self) == constraint.value
+        return constraint.isSatisfiedBy(.id(self))
       case .lang:
-        return .enum(lang) == constraint.value
+        return constraint.isSatisfiedBy(.enum(lang))
       case .source:
-        return .enum(source) == constraint.value
+        return constraint.isSatisfiedBy(.enum(source))
       case .paymentId:
-        return .string(paymentId.rawValue) == constraint.value
+        return constraint.isSatisfiedBy(.string(paymentId.rawValue))
       case .printJobId:
-        return .int(printJobId?.rawValue) == constraint.value
+        return constraint.isSatisfiedBy(.int(printJobId?.rawValue))
       case .printJobStatus:
-        return .enum(printJobStatus) == constraint.value
+        return constraint.isSatisfiedBy(.enum(printJobStatus))
       case .amount:
-        return .int(amount.rawValue) == constraint.value
+        return constraint.isSatisfiedBy(.int(amount.rawValue))
       case .taxes:
-        return .int(taxes.rawValue) == constraint.value
+        return constraint.isSatisfiedBy(.int(taxes.rawValue))
       case .ccFeeOffset:
-        return .int(ccFeeOffset.rawValue) == constraint.value
+        return constraint.isSatisfiedBy(.int(ccFeeOffset.rawValue))
       case .shipping:
-        return .int(shipping.rawValue) == constraint.value
+        return constraint.isSatisfiedBy(.int(shipping.rawValue))
       case .shippingLevel:
-        return .enum(shippingLevel) == constraint.value
+        return constraint.isSatisfiedBy(.enum(shippingLevel))
       case .email:
-        return .string(email.rawValue) == constraint.value
+        return constraint.isSatisfiedBy(.string(email.rawValue))
       case .addressName:
-        return .string(addressName) == constraint.value
+        return constraint.isSatisfiedBy(.string(addressName))
       case .addressStreet:
-        return .string(addressStreet) == constraint.value
+        return constraint.isSatisfiedBy(.string(addressStreet))
       case .addressStreet2:
-        return .string(addressStreet2) == constraint.value
+        return constraint.isSatisfiedBy(.string(addressStreet2))
       case .addressCity:
-        return .string(addressCity) == constraint.value
+        return constraint.isSatisfiedBy(.string(addressCity))
       case .addressState:
-        return .string(addressState) == constraint.value
+        return constraint.isSatisfiedBy(.string(addressState))
       case .addressZip:
-        return .string(addressZip) == constraint.value
+        return constraint.isSatisfiedBy(.string(addressZip))
       case .addressCountry:
-        return .string(addressCountry) == constraint.value
+        return constraint.isSatisfiedBy(.string(addressCountry))
       case .freeOrderRequestId:
-        return .uuid(freeOrderRequestId) == constraint.value
+        return constraint.isSatisfiedBy(.uuid(freeOrderRequestId))
       case .createdAt:
-        return .date(createdAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(createdAt))
       case .updatedAt:
-        return .date(updatedAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(updatedAt))
     }
   }
 }

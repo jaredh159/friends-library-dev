@@ -83,7 +83,7 @@ struct LiveDatabase: SQLQuerying, SQLMutating, DatabaseClient {
   ) async throws -> [M] {
     let selectConstraints = !Model.isSoftDeletable
       ? constraints
-      : (constraints ?? []) + [try Model.column("deleted_at") == .null]
+      : (constraints ?? []) + [.isNull(try Model.column("deleted_at"))]
     if M.isPreloaded {
       return try await entityRepo.getEntities()
         .select(M.self, where: selectConstraints, orderBy: orderBy, limit: limit)

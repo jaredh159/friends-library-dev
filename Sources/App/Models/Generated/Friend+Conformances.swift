@@ -54,27 +54,27 @@ extension Friend: SQLInspectable {
   func satisfies(constraint: SQL.WhereConstraint<Friend>) -> Bool {
     switch constraint.column {
       case .id:
-        return .id(self) == constraint.value
+        return constraint.isSatisfiedBy(.id(self))
       case .lang:
-        return .enum(lang) == constraint.value
+        return constraint.isSatisfiedBy(.enum(lang))
       case .name:
-        return .string(name) == constraint.value
+        return constraint.isSatisfiedBy(.string(name))
       case .slug:
-        return .string(slug) == constraint.value
+        return constraint.isSatisfiedBy(.string(slug))
       case .gender:
-        return .enum(gender) == constraint.value
+        return constraint.isSatisfiedBy(.enum(gender))
       case .description:
-        return .string(description) == constraint.value
+        return constraint.isSatisfiedBy(.string(description))
       case .born:
-        return .int(born) == constraint.value
+        return constraint.isSatisfiedBy(.int(born))
       case .died:
-        return .int(died) == constraint.value
+        return constraint.isSatisfiedBy(.int(died))
       case .published:
-        return .date(published) == constraint.value
+        return constraint.isSatisfiedBy(.date(published))
       case .createdAt:
-        return .date(createdAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(createdAt))
       case .updatedAt:
-        return .date(updatedAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(updatedAt))
     }
   }
 }

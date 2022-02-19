@@ -52,25 +52,25 @@ extension EditionChapter: SQLInspectable {
   func satisfies(constraint: SQL.WhereConstraint<EditionChapter>) -> Bool {
     switch constraint.column {
       case .id:
-        return .id(self) == constraint.value
+        return constraint.isSatisfiedBy(.id(self))
       case .editionId:
-        return .uuid(editionId) == constraint.value
+        return constraint.isSatisfiedBy(.uuid(editionId))
       case .order:
-        return .int(order) == constraint.value
+        return constraint.isSatisfiedBy(.int(order))
       case .shortHeading:
-        return .string(shortHeading) == constraint.value
+        return constraint.isSatisfiedBy(.string(shortHeading))
       case .isIntermediateTitle:
-        return .bool(isIntermediateTitle) == constraint.value
+        return constraint.isSatisfiedBy(.bool(isIntermediateTitle))
       case .customId:
-        return .string(customId) == constraint.value
+        return constraint.isSatisfiedBy(.string(customId))
       case .sequenceNumber:
-        return .int(sequenceNumber) == constraint.value
+        return constraint.isSatisfiedBy(.int(sequenceNumber))
       case .nonSequenceTitle:
-        return .string(nonSequenceTitle) == constraint.value
+        return constraint.isSatisfiedBy(.string(nonSequenceTitle))
       case .createdAt:
-        return .date(createdAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(createdAt))
       case .updatedAt:
-        return .date(updatedAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(updatedAt))
     }
   }
 }

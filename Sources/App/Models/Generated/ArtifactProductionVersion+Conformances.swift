@@ -35,11 +35,11 @@ extension ArtifactProductionVersion: SQLInspectable {
   func satisfies(constraint: SQL.WhereConstraint<ArtifactProductionVersion>) -> Bool {
     switch constraint.column {
       case .id:
-        return .id(self) == constraint.value
+        return constraint.isSatisfiedBy(.id(self))
       case .version:
-        return .string(version.rawValue) == constraint.value
+        return constraint.isSatisfiedBy(.string(version.rawValue))
       case .createdAt:
-        return .date(createdAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(createdAt))
     }
   }
 }

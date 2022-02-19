@@ -51,25 +51,25 @@ extension Edition: SQLInspectable {
   func satisfies(constraint: SQL.WhereConstraint<Edition>) -> Bool {
     switch constraint.column {
       case .id:
-        return .id(self) == constraint.value
+        return constraint.isSatisfiedBy(.id(self))
       case .documentId:
-        return .uuid(documentId) == constraint.value
+        return constraint.isSatisfiedBy(.uuid(documentId))
       case .type:
-        return .enum(type) == constraint.value
+        return constraint.isSatisfiedBy(.enum(type))
       case .editor:
-        return .string(editor) == constraint.value
+        return constraint.isSatisfiedBy(.string(editor))
       case .isDraft:
-        return .bool(isDraft) == constraint.value
+        return constraint.isSatisfiedBy(.bool(isDraft))
       case .paperbackSplits:
-        return .intArray(paperbackSplits?.array) == constraint.value
+        return constraint.isSatisfiedBy(.intArray(paperbackSplits?.array))
       case .paperbackOverrideSize:
-        return .enum(paperbackOverrideSize) == constraint.value
+        return constraint.isSatisfiedBy(.enum(paperbackOverrideSize))
       case .createdAt:
-        return .date(createdAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(createdAt))
       case .updatedAt:
-        return .date(updatedAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(updatedAt))
       case .deletedAt:
-        return .date(deletedAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(deletedAt))
     }
   }
 }

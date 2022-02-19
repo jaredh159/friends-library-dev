@@ -48,11 +48,9 @@ enum Postgres {
     case null
     case currentTimestamp
 
-    var isNullish: Bool {
+    var holdsNull: Bool {
       switch self {
-        case .null:
-          return true
-        case .id, .currentTimestamp:
+        case .id, .currentTimestamp, .null:
           return false
         case .string(let wrapped):
           return wrapped == nil
@@ -196,9 +194,22 @@ extension Postgres.Data: ExpressibleByBooleanLiteral {
 
 extension Postgres.Data: Equatable {
   static func == (lhs: Postgres.Data, rhs: Postgres.Data) -> Bool {
-    if lhs.isNullish, rhs.isNullish {
-      return true
+    [lhs.typeName, lhs.param] == [rhs.typeName, rhs.param]
+  }
+}
+
+extension SQL.WhereConstraint {
+  func isSatisfiedBy(_ data: Postgres.Data) -> Bool {
+    switch expression {
+      case .isNull:
+        return data.holdsNull
+      case .notNull:
+        return !data.holdsNull
+      case .value(let op, let value):
+        switch op {
+          case .equals:
+            return data == value
+        }
     }
-    return [lhs.typeName, lhs.param] == [rhs.typeName, rhs.param]
   }
 }

@@ -40,13 +40,13 @@ extension DocumentTag: SQLInspectable {
   func satisfies(constraint: SQL.WhereConstraint<DocumentTag>) -> Bool {
     switch constraint.column {
       case .id:
-        return .id(self) == constraint.value
+        return constraint.isSatisfiedBy(.id(self))
       case .documentId:
-        return .uuid(documentId) == constraint.value
+        return constraint.isSatisfiedBy(.uuid(documentId))
       case .type:
-        return .enum(type) == constraint.value
+        return constraint.isSatisfiedBy(.enum(type))
       case .createdAt:
-        return .date(createdAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(createdAt))
     }
   }
 }

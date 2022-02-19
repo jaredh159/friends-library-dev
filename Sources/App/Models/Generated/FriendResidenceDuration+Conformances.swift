@@ -42,15 +42,15 @@ extension FriendResidenceDuration: SQLInspectable {
   func satisfies(constraint: SQL.WhereConstraint<FriendResidenceDuration>) -> Bool {
     switch constraint.column {
       case .id:
-        return .id(self) == constraint.value
+        return constraint.isSatisfiedBy(.id(self))
       case .friendResidenceId:
-        return .uuid(friendResidenceId) == constraint.value
+        return constraint.isSatisfiedBy(.uuid(friendResidenceId))
       case .start:
-        return .int(start) == constraint.value
+        return constraint.isSatisfiedBy(.int(start))
       case .end:
-        return .int(end) == constraint.value
+        return constraint.isSatisfiedBy(.int(end))
       case .createdAt:
-        return .date(createdAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(createdAt))
     }
   }
 }

@@ -39,15 +39,15 @@ extension Token: SQLInspectable {
   func satisfies(constraint: SQL.WhereConstraint<Token>) -> Bool {
     switch constraint.column {
       case .id:
-        return .id(self) == constraint.value
+        return constraint.isSatisfiedBy(.id(self))
       case .value:
-        return .uuid(value) == constraint.value
+        return constraint.isSatisfiedBy(.uuid(value))
       case .description:
-        return .string(description) == constraint.value
+        return constraint.isSatisfiedBy(.string(description))
       case .uses:
-        return .int(uses) == constraint.value
+        return constraint.isSatisfiedBy(.int(uses))
       case .createdAt:
-        return .date(createdAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(createdAt))
     }
   }
 }

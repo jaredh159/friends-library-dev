@@ -44,17 +44,17 @@ extension FriendResidence: SQLInspectable {
   func satisfies(constraint: SQL.WhereConstraint<FriendResidence>) -> Bool {
     switch constraint.column {
       case .id:
-        return .id(self) == constraint.value
+        return constraint.isSatisfiedBy(.id(self))
       case .friendId:
-        return .uuid(friendId) == constraint.value
+        return constraint.isSatisfiedBy(.uuid(friendId))
       case .city:
-        return .string(city) == constraint.value
+        return constraint.isSatisfiedBy(.string(city))
       case .region:
-        return .string(region) == constraint.value
+        return constraint.isSatisfiedBy(.string(region))
       case .createdAt:
-        return .date(createdAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(createdAt))
       case .updatedAt:
-        return .date(updatedAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(updatedAt))
     }
   }
 }

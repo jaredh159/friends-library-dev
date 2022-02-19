@@ -48,15 +48,10 @@ export function generateModelConformances(
   code += INSPECTABLE_PATTERN.replace(/Thing/g, model.name).replace(
     `// CASES_HERE`,
     model.props
-      .flatMap((prop) => [
-        `case .${prop.name}:`,
-        `  return ${toPostgresData(
-          prop,
-          model,
-          types,
-          `forInspect`,
-        )} == constraint.value`,
-      ])
+      .flatMap((prop) => {
+        const data = toPostgresData(prop, model, types, `forInspect`);
+        return [`case .${prop.name}:`, `  return constraint.isSatisfiedBy(${data})`];
+      })
       .join(`\n      `),
   );
 

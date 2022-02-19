@@ -48,21 +48,21 @@ extension FriendQuote: SQLInspectable {
   func satisfies(constraint: SQL.WhereConstraint<FriendQuote>) -> Bool {
     switch constraint.column {
       case .id:
-        return .id(self) == constraint.value
+        return constraint.isSatisfiedBy(.id(self))
       case .friendId:
-        return .uuid(friendId) == constraint.value
+        return constraint.isSatisfiedBy(.uuid(friendId))
       case .source:
-        return .string(source) == constraint.value
+        return constraint.isSatisfiedBy(.string(source))
       case .text:
-        return .string(text) == constraint.value
+        return constraint.isSatisfiedBy(.string(text))
       case .order:
-        return .int(order) == constraint.value
+        return constraint.isSatisfiedBy(.int(order))
       case .context:
-        return .string(context) == constraint.value
+        return constraint.isSatisfiedBy(.string(context))
       case .createdAt:
-        return .date(createdAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(createdAt))
       case .updatedAt:
-        return .date(updatedAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(updatedAt))
     }
   }
 }

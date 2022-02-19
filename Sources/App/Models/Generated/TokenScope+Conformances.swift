@@ -37,13 +37,13 @@ extension TokenScope: SQLInspectable {
   func satisfies(constraint: SQL.WhereConstraint<TokenScope>) -> Bool {
     switch constraint.column {
       case .id:
-        return .id(self) == constraint.value
+        return constraint.isSatisfiedBy(.id(self))
       case .scope:
-        return .enum(scope) == constraint.value
+        return constraint.isSatisfiedBy(.enum(scope))
       case .tokenId:
-        return .uuid(tokenId) == constraint.value
+        return constraint.isSatisfiedBy(.uuid(tokenId))
       case .createdAt:
-        return .date(createdAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(createdAt))
     }
   }
 }

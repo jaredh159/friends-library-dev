@@ -69,45 +69,45 @@ extension Download: SQLInspectable {
   func satisfies(constraint: SQL.WhereConstraint<Download>) -> Bool {
     switch constraint.column {
       case .id:
-        return .id(self) == constraint.value
+        return constraint.isSatisfiedBy(.id(self))
       case .editionId:
-        return .uuid(editionId) == constraint.value
+        return constraint.isSatisfiedBy(.uuid(editionId))
       case .format:
-        return .enum(format) == constraint.value
+        return constraint.isSatisfiedBy(.enum(format))
       case .source:
-        return .enum(source) == constraint.value
+        return constraint.isSatisfiedBy(.enum(source))
       case .audioQuality:
-        return .enum(audioQuality) == constraint.value
+        return constraint.isSatisfiedBy(.enum(audioQuality))
       case .audioPartNumber:
-        return .int(audioPartNumber) == constraint.value
+        return constraint.isSatisfiedBy(.int(audioPartNumber))
       case .isMobile:
-        return .bool(isMobile) == constraint.value
+        return constraint.isSatisfiedBy(.bool(isMobile))
       case .userAgent:
-        return .string(userAgent) == constraint.value
+        return constraint.isSatisfiedBy(.string(userAgent))
       case .os:
-        return .string(os) == constraint.value
+        return constraint.isSatisfiedBy(.string(os))
       case .browser:
-        return .string(browser) == constraint.value
+        return constraint.isSatisfiedBy(.string(browser))
       case .platform:
-        return .string(platform) == constraint.value
+        return constraint.isSatisfiedBy(.string(platform))
       case .referrer:
-        return .string(referrer) == constraint.value
+        return constraint.isSatisfiedBy(.string(referrer))
       case .ip:
-        return .string(ip) == constraint.value
+        return constraint.isSatisfiedBy(.string(ip))
       case .city:
-        return .string(city) == constraint.value
+        return constraint.isSatisfiedBy(.string(city))
       case .region:
-        return .string(region) == constraint.value
+        return constraint.isSatisfiedBy(.string(region))
       case .postalCode:
-        return .string(postalCode) == constraint.value
+        return constraint.isSatisfiedBy(.string(postalCode))
       case .country:
-        return .string(country) == constraint.value
+        return constraint.isSatisfiedBy(.string(country))
       case .latitude:
-        return .string(latitude) == constraint.value
+        return constraint.isSatisfiedBy(.string(latitude))
       case .longitude:
-        return .string(longitude) == constraint.value
+        return constraint.isSatisfiedBy(.string(longitude))
       case .createdAt:
-        return .date(createdAt) == constraint.value
+        return constraint.isSatisfiedBy(.date(createdAt))
     }
   }
 }
