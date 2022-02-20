@@ -12,6 +12,8 @@ enum Scope: String, Codable, CaseIterable, Equatable {
   case mutateEntities
   case queryCoverProps
   case mutateCoverProps
+  case queryTokens
+  case mutateTokens
 }
 
 final class TokenScope: Codable {

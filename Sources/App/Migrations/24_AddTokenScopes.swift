@@ -12,6 +12,8 @@ struct AddTokenScopes: AsyncMigration {
       TokenScope.M24.Scope.caseMutateCoverProps,
       TokenScope.M24.Scope.caseQueryEntities,
       TokenScope.M24.Scope.caseMutateEntities,
+      TokenScope.M24.Scope.caseQueryTokens,
+      TokenScope.M24.Scope.caseMutateTokens,
     ])
   }
 
@@ -30,6 +32,8 @@ extension TokenScope {
       static let caseMutateCoverProps = "mutateCoverProps"
       static let caseQueryEntities = "queryEntities"
       static let caseMutateEntities = "mutateEntities"
+      static let caseQueryTokens = "queryTokens"
+      static let caseMutateTokens = "mutateTokens"
     }
   }
 }

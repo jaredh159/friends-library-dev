@@ -28,21 +28,21 @@ extension Resolver {
 
 extension Resolver {
   func getOrder(req: Req, args: IdentifyEntityArgs) throws -> Future<Order> {
-    try req.requirePermission(to: .queryEntities)
+    try req.requirePermission(to: .queryOrders)
     return future(of: Order.self, on: req.eventLoop) {
       try await Current.db.find(Order.self, byId: args.id)
     }
   }
 
   func getOrders(req: Req, args: NoArgs) throws -> Future<[Order]> {
-    try req.requirePermission(to: .queryEntities)
+    try req.requirePermission(to: .queryOrders)
     return future(of: [Order].self, on: req.eventLoop) {
       try await Current.db.query(Order.self).all()
     }
   }
 
   func createOrder(req: Req, args: InputArgs<AppSchema.CreateOrderInput>) throws -> Future<Order> {
-    try req.requirePermission(to: .mutateEntities)
+    try req.requirePermission(to: .mutateOrders)
     return future(of: Order.self, on: req.eventLoop) {
       try await Current.db.create(Order(args.input))
     }
@@ -52,14 +52,14 @@ extension Resolver {
     req: Req,
     args: InputArgs<[AppSchema.CreateOrderInput]>
   ) throws -> Future<[Order]> {
-    try req.requirePermission(to: .mutateEntities)
+    try req.requirePermission(to: .mutateOrders)
     return future(of: [Order].self, on: req.eventLoop) {
       try await Current.db.create(args.input.map(Order.init))
     }
   }
 
   func updateOrder(req: Req, args: InputArgs<AppSchema.UpdateOrderInput>) throws -> Future<Order> {
-    try req.requirePermission(to: .mutateEntities)
+    try req.requirePermission(to: .mutateOrders)
     return future(of: Order.self, on: req.eventLoop) {
       try await Current.db.update(Order(args.input))
     }
@@ -69,14 +69,14 @@ extension Resolver {
     req: Req,
     args: InputArgs<[AppSchema.UpdateOrderInput]>
   ) throws -> Future<[Order]> {
-    try req.requirePermission(to: .mutateEntities)
+    try req.requirePermission(to: .mutateOrders)
     return future(of: [Order].self, on: req.eventLoop) {
       try await Current.db.update(args.input.map(Order.init))
     }
   }
 
   func deleteOrder(req: Req, args: IdentifyEntityArgs) throws -> Future<Order> {
-    try req.requirePermission(to: .mutateEntities)
+    try req.requirePermission(to: .mutateOrders)
     return future(of: Order.self, on: req.eventLoop) {
       try await Current.db.delete(Order.self, byId: args.id)
     }

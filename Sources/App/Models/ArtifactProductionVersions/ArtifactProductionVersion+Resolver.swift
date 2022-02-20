@@ -20,7 +20,7 @@ extension Resolver {
     req: Req,
     args: IdentifyEntityArgs
   ) throws -> Future<ArtifactProductionVersion> {
-    try req.requirePermission(to: .queryEntities)
+    try req.requirePermission(to: .queryArtifactProductionVersions)
     return future(of: ArtifactProductionVersion.self, on: req.eventLoop) {
       try await Current.db.find(ArtifactProductionVersion.self, byId: args.id)
     }
@@ -30,7 +30,7 @@ extension Resolver {
     req: Req,
     args: NoArgs
   ) throws -> Future<[ArtifactProductionVersion]> {
-    try req.requirePermission(to: .queryEntities)
+    try req.requirePermission(to: .queryArtifactProductionVersions)
     return future(of: [ArtifactProductionVersion].self, on: req.eventLoop) {
       try await Current.db.query(ArtifactProductionVersion.self).all()
     }
@@ -40,7 +40,7 @@ extension Resolver {
     req: Req,
     args: InputArgs<AppSchema.CreateArtifactProductionVersionInput>
   ) throws -> Future<ArtifactProductionVersion> {
-    try req.requirePermission(to: .mutateEntities)
+    try req.requirePermission(to: .mutateArtifactProductionVersions)
     return future(of: ArtifactProductionVersion.self, on: req.eventLoop) {
       try await Current.db.create(ArtifactProductionVersion(args.input))
     }
@@ -50,7 +50,7 @@ extension Resolver {
     req: Req,
     args: InputArgs<[AppSchema.CreateArtifactProductionVersionInput]>
   ) throws -> Future<[ArtifactProductionVersion]> {
-    try req.requirePermission(to: .mutateEntities)
+    try req.requirePermission(to: .mutateArtifactProductionVersions)
     return future(of: [ArtifactProductionVersion].self, on: req.eventLoop) {
       try await Current.db.create(args.input.map(ArtifactProductionVersion.init))
     }
@@ -60,7 +60,7 @@ extension Resolver {
     req: Req,
     args: InputArgs<AppSchema.UpdateArtifactProductionVersionInput>
   ) throws -> Future<ArtifactProductionVersion> {
-    try req.requirePermission(to: .mutateEntities)
+    try req.requirePermission(to: .mutateArtifactProductionVersions)
     return future(of: ArtifactProductionVersion.self, on: req.eventLoop) {
       try await Current.db.update(ArtifactProductionVersion(args.input))
     }
@@ -70,7 +70,7 @@ extension Resolver {
     req: Req,
     args: InputArgs<[AppSchema.UpdateArtifactProductionVersionInput]>
   ) throws -> Future<[ArtifactProductionVersion]> {
-    try req.requirePermission(to: .mutateEntities)
+    try req.requirePermission(to: .mutateArtifactProductionVersions)
     return future(of: [ArtifactProductionVersion].self, on: req.eventLoop) {
       try await Current.db.update(args.input.map(ArtifactProductionVersion.init))
     }
@@ -80,7 +80,7 @@ extension Resolver {
     req: Req,
     args: IdentifyEntityArgs
   ) throws -> Future<ArtifactProductionVersion> {
-    try req.requirePermission(to: .mutateEntities)
+    try req.requirePermission(to: .mutateArtifactProductionVersions)
     return future(of: ArtifactProductionVersion.self, on: req.eventLoop) {
       try await Current.db.delete(ArtifactProductionVersion.self, byId: args.id)
     }
