@@ -32,7 +32,7 @@ extension Resolver {
   ) throws -> Future<GenericResponse> {
     let forOrder = "for bricked order `\(args.input.orderId ?? "<no order id>")`"
     return future(of: GenericResponse.self, on: req.eventLoop) {
-      if let paymentIntentId = args.input.orderPaymentId {
+      if let paymentIntentId = args.input.orderPaymentId, !paymentIntentId.isEmpty {
         do {
           let refund = try await Current.stripeClient.createRefund(paymentIntentId)
           await slackError("Created stripe refund `\(refund.id)` \(forOrder)")
