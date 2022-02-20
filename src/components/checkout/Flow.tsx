@@ -81,6 +81,7 @@ const CheckoutFlow: React.FC<Props> = ({ machine, recommendedBooks }) => {
               shipping={machine.service.metadata.shipping}
               taxes={machine.service.metadata.taxes}
               ccFeeOffset={machine.service.metadata.ccFeeOffset}
+              handling={machine.service.metadata.fees}
               onPay={(chargeCard) => machine.dispatch(`next`, chargeCard)}
             />
           </Elements>

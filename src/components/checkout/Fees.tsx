@@ -5,12 +5,20 @@ import './Fees.css';
 interface Props {
   subTotal: number;
   shipping: number;
+  handling: number;
   taxes: number;
   ccFeeOffset: number;
   className: string;
 }
 
-const Fees: React.FC<Props> = ({ className, subTotal, shipping, taxes, ccFeeOffset }) => {
+const Fees: React.FC<Props> = ({
+  className,
+  subTotal,
+  shipping,
+  taxes,
+  ccFeeOffset,
+  handling,
+}) => {
   return (
     <table className={`${className} Fees border-separate border-gray-400`}>
       <tbody>
@@ -23,13 +31,19 @@ const Fees: React.FC<Props> = ({ className, subTotal, shipping, taxes, ccFeeOffs
           <td>{money(shipping)}</td>
         </tr>
         <tr>
+          <td>Handling Fee</td>
+          <td>{money(handling)}</td>
+        </tr>
+        <tr>
           <td>{t`Credit Card Fee Offset`}</td>
           <td>{money(ccFeeOffset)}</td>
         </tr>
-        <tr>
-          <td>{t`Taxes`}</td>
-          <td>{money(taxes)}</td>
-        </tr>
+        {taxes > 0 && (
+          <tr>
+            <td>{t`Taxes`}</td>
+            <td>{money(taxes)}</td>
+          </tr>
+        )}
         <tr className="text-black font-bold">
           <td>{t`Grand Total`}</td>
           <td>{money(subTotal + shipping + taxes + ccFeeOffset)}</td>
