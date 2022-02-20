@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
+import gql from 'x-syntax';
 import cx from 'classnames';
 import ShippingAddress, { Props as ShippingAddressProps } from './ShippingAddress';
 import MessageThrobber from './checkout/MessageThrobber';
@@ -6,6 +7,11 @@ import Button from './Button';
 import { CloseButton } from './checkout/Modal';
 import { useAddress } from './lib/hooks';
 import { AppDispatch } from './lib/app-state';
+import Client from './checkout/services/Client';
+import {
+  CreateFreeOrderRequest,
+  CreateFreeOrderRequestVariables,
+} from '../graphql/CreateFreeOrderRequest';
 
 type AddressProps = Omit<ShippingAddressProps, 'autoFocusFirst'>;
 
@@ -97,7 +103,7 @@ export const RequestFreeBooks: React.FC<Props> = (props) => {
     case `submit_success`:
       return (
         <Wrap onClose={props.onClose}>
-          <p className="font-serif p-3 bg-green-200 text-green-800 mx-6 sm:mx-8 mt-12 max-w-lg text-center rounded-lg">
+          <p className="font-serif py-3 px-6 bg-green-200 text-green-800 mx-6 sm:mx-8 mt-12 max-w-lg text-center rounded-lg">
             Gracias, enviado con éxito. Pronto recibirás noticias nuestras.
           </p>
         </Wrap>
@@ -105,7 +111,7 @@ export const RequestFreeBooks: React.FC<Props> = (props) => {
     case `submit_error`:
       return (
         <Wrap onClose={props.onClose}>
-          <p className="font-serif p-3 bg-red-200 text-red-800 mx-6 sm:mx-8 mt-12 max-w-lg text-center rounded-lg">
+          <p className="font-serif py-3 px-6 bg-red-200 text-red-800 mx-6 sm:mx-8 mt-12 max-w-lg text-center rounded-lg">
             Hubo un error al enviar tu solicitud, por favor,{` `}
             <span
               onClick={props.onRetry}
@@ -130,12 +136,6 @@ const RequestFreeBooksContainer: React.FC<{ currentPageBook: string }> = ({
   const dispatch = useContext(AppDispatch);
   const close: () => unknown = () => dispatch({ type: `show--app` });
 
-  // @TODO use Client
-  const ENDPOINT =
-    (process.env.GATSBY_NETLIFY_CONTEXT === `production`
-      ? process.env.GATSBY_PROD_GRAPHQL_API_ENDPOINT
-      : process.env.GATSBY_TEST_GRAPHQL_API_ENDPOINT) || ``;
-
   switch (state) {
     case `default`:
       return (
@@ -159,29 +159,11 @@ const RequestFreeBooksContainer: React.FC<{ currentPageBook: string }> = ({
               addressCountry: address.country,
               source: window.location.href,
             };
-
-            try {
-              const res = await window.fetch(ENDPOINT, {
-                method: `POST`,
-                headers: { 'Content-Type': `application/json` },
-                body: JSON.stringify({
-                  query: CREATE_FREE_ORDER_MUTATION,
-                  variables: { input },
-                }),
-              });
-              if (res.status !== 200) {
-                setState(`submit_error`);
-                return;
-              }
-              const json = await res.json();
-              if (typeof json.data?.request?.id === `string`) {
-                setState(`submit_success`);
-              } else {
-                setState(`submit_error`);
-              }
-            } catch {
-              setState(`submit_error`);
-            }
+            const { success } = await new Client().mutate<
+              CreateFreeOrderRequest,
+              CreateFreeOrderRequestVariables
+            >({ mutation: CREATE_FREE_ORDER_MUTATION, variables: { input } });
+            setState(success ? `submit_success` : `submit_error`);
           }}
           onClose={close}
         />
@@ -227,8 +209,7 @@ const Wrap: React.FC<{ onClose: () => unknown }> = ({ children, onClose }) => (
   </div>
 );
 
-// @TODO CONVERGE
-const CREATE_FREE_ORDER_MUTATION = `
+const CREATE_FREE_ORDER_MUTATION = gql`
   mutation CreateFreeOrderRequest($input: CreateFreeOrderRequestInput!) {
     request: createFreeOrderRequest(input: $input) {
       id

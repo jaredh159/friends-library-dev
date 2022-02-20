@@ -73,6 +73,21 @@ export interface BrickOrderInput {
   userAgent?: string | null;
 }
 
+export interface CreateFreeOrderRequestInput {
+  aboutRequester: string;
+  addressCity: string;
+  addressCountry: string;
+  addressState: string;
+  addressStreet: string;
+  addressStreet2?: string | null;
+  addressZip: string;
+  email: string;
+  id?: UUID | null;
+  name: string;
+  requestedBooks: string;
+  source: string;
+}
+
 export interface CreateOrderInitializationInput {
   amount: number;
 }

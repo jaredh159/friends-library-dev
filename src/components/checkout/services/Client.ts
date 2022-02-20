@@ -1,5 +1,13 @@
 export default class Client {
-  public constructor(private endpoint = process.env.GATSBY_API_ENDPOINT ?? ``) {}
+  private endpoint: string;
+
+  public constructor(endpoint?: string) {
+    const fallback =
+      (process.env.GATSBY_NETLIFY_CONTEXT === `production`
+        ? process.env.GATSBY_PROD_GRAPHQL_API_ENDPOINT
+        : process.env.GATSBY_TEST_GRAPHQL_API_ENDPOINT) || ``;
+    this.endpoint = endpoint ?? fallback;
+  }
 
   public async query<Data, Variables>(input: {
     query: string;
