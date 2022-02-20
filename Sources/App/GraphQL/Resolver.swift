@@ -32,6 +32,16 @@ extension AppSchema {
       Field("success", at: \.success)
     }
   }
+
+  static var ModelsCountsType: AppType<ModelsCounts> {
+    Type(ModelsCounts.self) {
+      Field("friends", at: \.friends)
+    }
+  }
+
+  static var getModelsCounts: AppField<ModelsCounts, NoArgs> {
+    Field("getModelsCounts", at: Resolver.getModelsCounts)
+  }
 }
 
 final class Resolver {

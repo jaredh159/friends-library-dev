@@ -24,6 +24,7 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   Enum(AppSchema.SubmitContactFormInput.Subject.self)
 
   AppSchema.GenericResponseType
+  AppSchema.ModelsCountsType
   AppSchema.ShippingAddressType
   AppSchema.ShippingAddressInputType
   AppSchema.SubmitContactFormInputType
@@ -117,6 +118,7 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.UpdateAudioPartInputType
 
   Query {
+    AppSchema.getModelsCounts
     AppSchema.getFriend
     AppSchema.getFriends
     AppSchema.getFriendQuote
