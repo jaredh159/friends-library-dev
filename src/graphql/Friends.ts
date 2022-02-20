@@ -317,7 +317,7 @@ export interface Friends_friends {
   died: number | null;
   description: string;
   isCompilations: boolean;
-  published: Date | null;
+  published: string | null;
   hasNonDraftDocument: boolean;
   primaryResidence: Friends_friends_primaryResidence | null;
   documents: Friends_friends_documents[];

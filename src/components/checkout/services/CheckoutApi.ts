@@ -18,6 +18,10 @@ import {
 } from '../../../graphql/globalTypes';
 import { CreateOrderInput } from '../../../graphql/globalTypes';
 import { CreateOrderItemInput } from '../../../graphql/globalTypes';
+import {
+  SendOrderConfirmationEmail,
+  SendOrderConfirmationEmailVariables,
+} from '../../../graphql/SendOrderConfirmationEmail';
 import Client from './Client';
 
 export default class CheckoutApi {
@@ -120,8 +124,18 @@ export default class CheckoutApi {
   }
 
   public async sendOrderConfirmationEmail(orderId: string): Promise<boolean> {
-    // @TODO yahooo...
-    throw new Error(`WIP: order confirmation: ${orderId}`);
+    try {
+      const { success } = await this.client.mutate<
+        SendOrderConfirmationEmail,
+        SendOrderConfirmationEmailVariables
+      >({
+        mutation: SEND_ORDER_CONFIRMATION_EMAIL_MUTATION,
+        variables: { id: orderId },
+      });
+      return success;
+    } catch {
+      return false;
+    }
   }
 }
 
@@ -163,6 +177,14 @@ const CREATE_ORDER_MUTATION = gql`
   ) {
     order: createOrderWithItems(order: $order, items: $items) {
       id
+    }
+  }
+`;
+
+const SEND_ORDER_CONFIRMATION_EMAIL_MUTATION = gql`
+  mutation SendOrderConfirmationEmail($id: UUID!) {
+    response: sendOrderConfirmationEmail(id: $id) {
+      success
     }
   }
 `;
