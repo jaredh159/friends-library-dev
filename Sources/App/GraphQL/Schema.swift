@@ -187,6 +187,7 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
     AppSchema.createEdition
     AppSchema.updateEdition
     AppSchema.deleteEdition
+    AppSchema.deleteEditionEditionChapters
 
     // edition impression mutations
     AppSchema.createEditionImpression
@@ -195,6 +196,7 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
 
     // edition chapter mutations
     AppSchema.createEditionChapter
+    AppSchema.createEditionChapters
     AppSchema.updateEditionChapter
     AppSchema.deleteEditionChapter
 

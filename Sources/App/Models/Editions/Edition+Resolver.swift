@@ -1,19 +1,16 @@
+import Graphiti
 import Vapor
 
-// below auto-generated
-
 extension Resolver {
-  func getEdition(req: Req, args: IdentifyEntityArgs) throws -> Future<Edition> {
-    try req.requirePermission(to: .queryEntities)
-    return future(of: Edition.self, on: req.eventLoop) {
-      try await Current.db.find(Edition.self, byId: args.id)
-    }
-  }
-
-  func getEditions(req: Req, args: NoArgs) throws -> Future<[Edition]> {
-    try req.requirePermission(to: .queryEntities)
-    return future(of: [Edition].self, on: req.eventLoop) {
-      try await Current.db.query(Edition.self).all()
+  func deleteEditionEditionChapters(
+    req: Req,
+    args: IdentifyEntityArgs
+  ) throws -> Future<[EditionChapter]> {
+    try req.requirePermission(to: .mutateEntities)
+    return future(of: [EditionChapter].self, on: req.eventLoop) {
+      return try await Current.db.query(EditionChapter.self)
+        .where(.editionId == args.id)
+        .delete()
     }
   }
 
@@ -37,6 +34,32 @@ extension Resolver {
       isbn.editionId = edition.id
       try await Current.db.update(isbn)
       return edition
+    }
+  }
+}
+
+extension AppSchema {
+  static var deleteEditionEditionChapters: AppField<[EditionChapter], IdentifyEntityArgs> {
+    Field("deleteEditionEditionChapters", at: Resolver.deleteEditionEditionChapters) {
+      Argument("id", at: \.id)
+    }
+  }
+}
+
+// below auto-generated
+
+extension Resolver {
+  func getEdition(req: Req, args: IdentifyEntityArgs) throws -> Future<Edition> {
+    try req.requirePermission(to: .queryEntities)
+    return future(of: Edition.self, on: req.eventLoop) {
+      try await Current.db.find(Edition.self, byId: args.id)
+    }
+  }
+
+  func getEditions(req: Req, args: NoArgs) throws -> Future<[Edition]> {
+    try req.requirePermission(to: .queryEntities)
+    return future(of: [Edition].self, on: req.eventLoop) {
+      try await Current.db.query(Edition.self).all()
     }
   }
 
