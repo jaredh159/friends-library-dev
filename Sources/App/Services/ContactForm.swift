@@ -12,7 +12,7 @@ extension Resolver {
       from: EmailBuilder.fromAddress(lang: args.input.lang),
       replyTo: .init(email: args.input.email, name: args.input.name),
       subject: args.input.lang |> subject,
-      html: args.input |> emailBody
+      text: args.input |> emailBody
     )
     return future(of: GenericResponse.self, on: req.eventLoop) {
       try await Current.sendGridClient.send(email)

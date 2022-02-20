@@ -214,6 +214,7 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
     AppSchema.createFreeOrderRequest
     AppSchema.createOrderInitialization
     AppSchema.brickOrder
+    AppSchema.sendOrderConfirmationEmail
     Field("createOrderWithItems", at: Resolver.createOrderWithItems) {
       Argument("order", at: \.order)
       Argument("items", at: \.items)

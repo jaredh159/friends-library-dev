@@ -26,7 +26,7 @@ private func sendFreeOrderRequestNotifications(
       to: .init(email: emailTo),
       from: .friendsLibrary,
       subject: "[,] Free Book Request - \(id)",
-      html:
+      text:
       """
       \(entry("Name", order.name))
       \(entry("Email", order.email.rawValue))

@@ -40,6 +40,10 @@ extension Slack {
 }
 
 extension Slack.Message {
+  static func link(to url: String, withText text: String) -> String {
+    "<\(url)|\(text)>"
+  }
+
   static func error(_ text: String, emoji: Slack.Emoji = .fireEngine) -> Slack.Message {
     .init(text: text, channel: .errors, emoji: emoji)
   }

@@ -16,6 +16,8 @@ private struct SendResponse: Decodable {
   let error: String?
 }
 
+private let MAX_SAFE_SLACK_MSG_LENGTH = 2900
+
 private func send(_ slack: Slack.Message) async {
   switch slack.channel {
     case .info, .orders, .downloads, .other:
@@ -26,11 +28,13 @@ private func send(_ slack: Slack.Message) async {
       Current.logger.debug("Sent a slack to `\(slack.channel)`: \(slack.text)")
   }
 
+  let safeText = slack.text.dropLast(max(0, slack.text.count - MAX_SAFE_SLACK_MSG_LENGTH))
+
   do {
     let response = try await HTTP.postJson(
       [
         "channel": slack.channel.string,
-        "text": slack.text,
+        "text": String(safeText),
         "icon_emoji": slack.emoji.description,
         "username": slack.username,
         "unfurl_links": "false",

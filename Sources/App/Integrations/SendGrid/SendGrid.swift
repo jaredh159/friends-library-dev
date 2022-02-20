@@ -54,7 +54,7 @@ enum SendGrid {
       personalizations.first.to.first
     }
 
-    var html: String {
+    var text: String {
       content.first.value
     }
 
@@ -63,13 +63,13 @@ enum SendGrid {
       from: EmailAddress,
       replyTo: EmailAddress? = nil,
       subject: String,
-      html: String
+      text: String
     ) {
       personalizations = .init(Personalization(to: .init(to)))
       self.from = from
       self.subject = subject
       self.replyTo = replyTo
-      content = .init(Content(type: "text/html", value: html))
+      content = .init(Content(type: "text/plain", value: text))
     }
   }
 }

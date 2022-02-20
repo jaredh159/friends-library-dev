@@ -8,7 +8,7 @@ extension EmailBuilder {
       subject: order.lang == .en
         ? "[,] Friends Library Order Shipped"
         : "[,] Pedido Enviado – Biblioteca de Amigos",
-      html: order.lang == .en
+      text: order.lang == .en
         ? try await shippedBodyEn(for: order, trackingUrl: trackingUrl)
         : try await shippedBodyEs(for: order, trackingUrl: trackingUrl)
     )
@@ -21,7 +21,7 @@ extension EmailBuilder {
       subject: order.lang == .en
         ? "[,] Friends Library Order Confirmation"
         : "[,] Confirmación de Pedido – Biblioteca de Amigos",
-      html: order.lang == .en
+      text: order.lang == .en
         ? try await confirmationBodyEn(for: order)
         : try await confirmationBodyEs(for: order)
     )

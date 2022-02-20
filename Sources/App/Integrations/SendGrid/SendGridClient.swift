@@ -38,7 +38,7 @@ extension SendGrid.Client.SlackErrorLogging {
       Response: `\(String(data: errorData, encoding: .utf8) ?? "<no data>")`
       To: \(email.firstRecipient.email)
       Subject: \(email.subject)
-      Body: \(email.html)
+      Body: \(email.text)
       """
       await Current.slackClient.send(.error(msg))
     }
