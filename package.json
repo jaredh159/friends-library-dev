@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "graphql:codegen": "flp-gql-codegen",
+    "graphql:codegen": "flp-gql-codegen --convert-dates-to-string",
     "start": "snowpack dev",
     "build": "snowpack build",
     "compile": "fldev ts:compile",
@@ -20,7 +20,7 @@
   "license": "ISC",
   "dependencies": {
     "@apollo/client": "^3.5.8",
-    "@friends-library/db": "^3.0.0-beta.10",
+    "@friends-library/db": "^3.0.0-beta.13",
     "@headlessui/react": "^1.4.3",
     "@heroicons/react": "^1.0.4",
     "classnames": "^2.3.1",

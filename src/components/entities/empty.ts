@@ -24,6 +24,7 @@ export function friend(): EditableFriend {
     died: null,
     gender: Gender.male,
     description: ``,
+    published: null,
     quotes: [],
     documents: [],
     residences: [],

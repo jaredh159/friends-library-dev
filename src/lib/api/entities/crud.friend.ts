@@ -53,7 +53,7 @@ function friendInput(friend: EditableFriend): UpdateFriendInput {
     id: friend.id,
     lang: friend.lang,
     name: friend.name,
-    published: null, // @TODO friend.published,
+    published: friend.published,
     slug: friend.slug,
   });
 }

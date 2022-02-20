@@ -178,6 +178,7 @@ export interface EditFriend_friend {
   born: number | null;
   died: number | null;
   description: string;
+  published: string | null;
   quotes: EditFriend_friend_quotes[];
   documents: EditFriend_friend_documents[];
   residences: EditFriend_friend_residences[];

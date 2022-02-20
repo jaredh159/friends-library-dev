@@ -23,6 +23,7 @@ import {
 import * as empty from './empty';
 import * as sort from './sort';
 import SaveChangesBar from './SaveChangesBar';
+import LabeledToggle from '../LabeledToggle';
 
 interface Props {
   friend: EditableFriend;
@@ -112,6 +113,15 @@ export const EditFriend: React.FC<Props> = ({
             value={friend.died === null ? `` : String(friend.died)}
             onChange={(year) => dispatch({ type: `update_year`, at: `died`, with: year })}
             className="w-1/2"
+          />
+          <LabeledToggle
+            label="Published:"
+            enabled={friend.published !== null}
+            setEnabled={(enabled) =>
+              replace(`published`)(
+                enabled ? initialFriend.published ?? new Date().toISOString : null,
+              )
+            }
           />
         </div>
       </div>
@@ -316,6 +326,7 @@ const QUERY_FRIEND = gql`
       born
       died
       description
+      published
       quotes {
         id
         source
