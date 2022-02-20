@@ -3,17 +3,19 @@ import parsePdf from 'pdf-parse';
 import { choosePrintSize } from '@friends-library/lulu';
 import { log, c } from 'x-chalk';
 import * as artifacts from '@friends-library/doc-artifacts';
+import { evaluate } from '@friends-library/evaluator';
 import { PrintSizeVariant, PrintSize, PRINT_SIZE_VARIANTS } from '@friends-library/types';
 import { paperbackInterior as paperbackManifest } from '@friends-library/doc-manifests';
 import { FsDocPrecursor } from '@friends-library/dpc-fs';
 import { logDebug } from '../../sub-log';
+import { CreateEditionChapterInput } from '../../graphql/globalTypes';
 
 type SinglePages = { [K in PrintSizeVariant]: number };
 type SingleFiles = { [K in PrintSizeVariant]: string };
 type MultiPages = Omit<{ [K in PrintSizeVariant]: number[] }, 's'> | undefined;
 type MultiFiles = Omit<{ [K in PrintSizeVariant]: string[] }, 's'> | undefined;
 
-export async function publishPaperback(
+export async function publish(
   dpc: FsDocPrecursor,
   opts: { namespace: string; srcPath: string },
 ): Promise<{
@@ -60,6 +62,18 @@ export async function publishPaperback(
     volumes,
     paths,
   };
+}
+
+export function editionChapters(dpc: FsDocPrecursor): CreateEditionChapterInput[] {
+  return evaluate.toPdfSrcHtml(dpc).chapters.map((chapterResult, index) => ({
+    editionId: dpc.editionId,
+    order: index + 1,
+    shortHeading: chapterResult.shortHeading,
+    isIntermediateTitle: chapterResult.isIntermediateTitle,
+    sequenceNumber: chapterResult.sequenceNumber,
+    nonSequenceTitle: chapterResult.nonSequenceTitle,
+    customId: chapterResult.id === chapterResult.slug ? undefined : chapterResult.id,
+  }));
 }
 
 async function makeSingleVolumes(

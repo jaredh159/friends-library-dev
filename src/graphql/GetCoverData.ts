@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { EditionType, PrintSizeVariant } from './globalTypes';
+import { EditionType, PrintSize } from './globalTypes';
 
 // ====================================================
 // GraphQL query operation: GetCoverData
@@ -12,7 +12,7 @@ import { EditionType, PrintSizeVariant } from './globalTypes';
 export interface GetCoverData_edition_impression {
   __typename: 'EditionImpression';
   paperbackVolumes: number[];
-  paperbackSize: PrintSizeVariant;
+  paperbackSize: PrintSize;
 }
 
 export interface GetCoverData_edition {

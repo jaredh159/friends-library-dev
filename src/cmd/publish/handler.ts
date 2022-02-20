@@ -15,7 +15,7 @@ import * as coverServer from './cover-server';
 import { ScreenshotTaker } from './cover-server';
 import validate from './validate';
 import { logDocStart, logDocComplete, logPublishComplete, logPublishStart } from './log';
-import { publishPaperback } from './paperback';
+import * as paperback from './paperback';
 import * as git from './git';
 import * as api from './api';
 import { logAction, logDebug, logError } from '../../sub-log';
@@ -84,6 +84,9 @@ export default async function publish(argv: PublishOptions): Promise<void> {
       logDebug(`Saving EditionImpression...`);
       const cloudPaths = await saveEditionImpression(data.impression);
 
+      logDebug(`Replacing EditionChapters...`);
+      await replaceEditionChapters(dpc);
+
       logDebug(`Uploading generated files to cloud storage...`);
       await uploadFiles(data.uploads, cloudPaths);
 
@@ -124,7 +127,7 @@ async function initialData(dpc: FsDocPrecursor): Promise<PublishData> {
         id: edition.impression.id,
         editionId: dpc.editionId,
         adocLength: edition.impression.adocLength,
-        paperbackSize: edition.impression.paperbackSize,
+        paperbackSizeVariant: edition.impression.paperbackSizeVariant,
         paperbackVolumes: edition.impression.paperbackVolumes,
         publishedRevision: edition.impression.publishedRevision,
         productionToolchainRevision: edition.impression.productionToolchainRevision,
@@ -135,7 +138,7 @@ async function initialData(dpc: FsDocPrecursor): Promise<PublishData> {
     id: uuid(),
     editionId: dpc.editionId,
     adocLength: -1,
-    paperbackSize: PrintSizeVariant.m,
+    paperbackSizeVariant: PrintSizeVariant.m,
     paperbackVolumes: [],
     publishedRevision: ``,
     productionToolchainRevision: ``,
@@ -247,9 +250,10 @@ async function handleSpeech(data: PublishData): Promise<void> {
 
 async function handlePaperbackAndCover(data: PublishData): Promise<void> {
   logDebug(`Starting paperback interior generation...`);
-  const published = await publishPaperback(data.dpc, data.artifactOptions);
+  const published = await paperback.publish(data.dpc, data.artifactOptions);
   data.uploads.paperback.interior = published.paths;
-  data.impression.current.paperbackSize = published.printSizeVariant as PrintSizeVariant;
+  data.impression.current.paperbackSizeVariant =
+    published.printSizeVariant as PrintSizeVariant;
   data.impression.current.paperbackVolumes = published.volumes;
 
   const coverManifests = await manifest.paperbackCover(data.dpc, {
@@ -430,4 +434,16 @@ async function uploadFiles(
   }
 
   await cloud.uploadFiles(files);
+}
+
+async function replaceEditionChapters(dpc: FsDocPrecursor): Promise<void> {
+  const deleteSuccess = await api.deleteEditionEditionChapters(dpc.editionId);
+  if (!deleteSuccess) {
+    throw new Error(`Error deleting existing EditionChapter entities for ${dpc.path}`);
+  }
+  const inputs = paperback.editionChapters(dpc);
+  const createSuccess = await api.createEditionChapters(inputs);
+  if (!createSuccess) {
+    throw new Error(`Error creating EditionChapter entities for ${dpc.path}`);
+  }
 }

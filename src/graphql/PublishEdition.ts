@@ -43,7 +43,7 @@ export interface PublishEdition_edition_impression {
   __typename: 'EditionImpression';
   id: string;
   adocLength: number;
-  paperbackSize: PrintSizeVariant;
+  paperbackSizeVariant: PrintSizeVariant;
   paperbackVolumes: number[];
   publishedRevision: string;
   productionToolchainRevision: string;

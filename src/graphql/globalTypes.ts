@@ -18,6 +18,12 @@ export enum Lang {
   es = 'es',
 }
 
+export enum PrintSize {
+  m = 'm',
+  s = 's',
+  xl = 'xl',
+}
+
 export enum PrintSizeVariant {
   m = 'm',
   s = 's',
@@ -41,11 +47,22 @@ export interface CreateArtifactProductionVersionInput {
   version: string;
 }
 
+export interface CreateEditionChapterInput {
+  customId?: string | null;
+  editionId: UUID;
+  id?: UUID | null;
+  isIntermediateTitle: boolean;
+  nonSequenceTitle?: string | null;
+  order: number;
+  sequenceNumber?: number | null;
+  shortHeading: string;
+}
+
 export interface CreateEditionImpressionInput {
   adocLength: number;
   editionId: UUID;
   id?: UUID | null;
-  paperbackSize: PrintSizeVariant;
+  paperbackSizeVariant: PrintSizeVariant;
   paperbackVolumes: number[];
   productionToolchainRevision: string;
   publishedRevision: string;
@@ -81,7 +98,7 @@ export interface UpdateEditionImpressionInput {
   adocLength: number;
   editionId: UUID;
   id: UUID;
-  paperbackSize: PrintSizeVariant;
+  paperbackSizeVariant: PrintSizeVariant;
   paperbackVolumes: number[];
   productionToolchainRevision: string;
   publishedRevision: string;

@@ -1,7 +1,10 @@
 import client, { gql } from '../../api-client';
 import { PublishEdition, PublishEditionVariables } from '../../graphql/PublishEdition';
 import { GetLatestArtifactProductionVersion } from '../../graphql/GetLatestArtifactProductionVersion';
-import { CreateEditionImpressionInput } from '../../graphql/globalTypes';
+import {
+  CreateEditionChapterInput,
+  CreateEditionImpressionInput,
+} from '../../graphql/globalTypes';
 import { CloudFiles, Edition } from './types';
 import {
   UpdateEditionImpression,
@@ -19,6 +22,14 @@ import {
   GetEditionImpressionCloudFiles,
   GetEditionImpressionCloudFilesVariables,
 } from '../../graphql/GetEditionImpressionCloudFiles';
+import {
+  DeleteEditionEditionChapters,
+  DeleteEditionEditionChaptersVariables,
+} from '../../graphql/DeleteEditionEditionChapters';
+import {
+  CreateEditionChapters,
+  CreateEditionChaptersVariables,
+} from '../../graphql/CreateEditionChapters';
 
 // edition impression crud
 
@@ -139,6 +150,56 @@ const DELETE_IMPRESSION_MUTATION = gql`
   }
 `;
 
+// edition chapter crud
+
+export async function deleteEditionEditionChapters(editionId: UUID): Promise<boolean> {
+  try {
+    const { data } = await client().mutate<
+      DeleteEditionEditionChapters,
+      DeleteEditionEditionChaptersVariables
+    >({
+      mutation: DELETE_EDITION_EDITION_CHAPTERS_MUTATION,
+      variables: { id: editionId },
+    });
+    return !!data;
+  } catch {
+    return false;
+  }
+}
+
+export async function createEditionChapters(
+  chapters: CreateEditionChapterInput[],
+): Promise<boolean> {
+  try {
+    const { data } = await client().mutate<
+      CreateEditionChapters,
+      CreateEditionChaptersVariables
+    >({
+      mutation: CREATE_EDITION_CHAPTERS_MUTATION,
+      variables: { input: chapters },
+    });
+    return !!data;
+  } catch {
+    return false;
+  }
+}
+
+const DELETE_EDITION_EDITION_CHAPTERS_MUTATION = gql`
+  mutation DeleteEditionEditionChapters($id: UUID!) {
+    chapters: deleteEditionEditionChapters(id: $id) {
+      id
+    }
+  }
+`;
+
+const CREATE_EDITION_CHAPTERS_MUTATION = gql`
+  mutation CreateEditionChapters($input: [CreateEditionChapterInput!]!) {
+    chapters: createEditionChapters(input: $input) {
+      id
+    }
+  }
+`;
+
 // query individual edition
 
 export async function getEdition(id: UUID): Promise<Edition> {
@@ -172,7 +233,7 @@ const EDITION_QUERY = gql`
       impression {
         id
         adocLength
-        paperbackSize
+        paperbackSizeVariant
         paperbackVolumes
         publishedRevision
         productionToolchainRevision
