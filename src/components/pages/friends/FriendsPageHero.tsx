@@ -1,10 +1,10 @@
 import React from 'react';
 import BackgroundImage from 'gatsby-background-image-preact';
-import { FluidBgImageObject } from '@friends-library/types';
 import { t } from '@friends-library/locale';
 import Dual from '../../Dual';
 import { makeScroller } from '../../lib/scroll';
 import { bgLayer } from '../../lib/color';
+import { FluidBgImageObject } from '../../../types';
 import './FriendsPageHero.css';
 
 interface Props {

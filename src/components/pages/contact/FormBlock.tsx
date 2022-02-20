@@ -1,11 +1,11 @@
 import React from 'react';
 import BackgroundImage from 'gatsby-background-image-preact';
-import { FluidBgImageObject } from '@friends-library/types';
 import { t } from '@friends-library/locale';
 import Dual from '../../Dual';
 import Form from './Form';
 import Stack from '../../layout/Stack';
 import { bgLayer } from '../../lib/color';
+import { FluidBgImageObject } from '../../../types';
 
 interface Props {
   onSubmit: (formData: Record<string, string>) => Promise<boolean>;

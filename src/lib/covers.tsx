@@ -1,6 +1,6 @@
 import React from 'react';
 import { ThreeD } from '@friends-library/cover-component';
-import { PrintSize, EditionType, ISBN, CoverProps } from '@friends-library/types';
+import { PrintSize, EditionType, CoverProps } from '@friends-library/types';
 import { LANG } from '../env';
 
 export interface CoverData {
@@ -11,7 +11,7 @@ export interface CoverData {
     size: PrintSize;
     type: EditionType;
     blurb: string;
-    isbn: ISBN;
+    isbn: string;
     pages: number[];
     code: {
       css: {

@@ -1,7 +1,6 @@
-import { Url } from '@friends-library/types';
 import { Document, Friend } from '../build/types';
 
-export function friendUrl(friend: Pick<Friend, 'gender' | 'slug' | 'lang'>): Url {
+export function friendUrl(friend: Pick<Friend, 'gender' | 'slug' | 'lang'>): string {
   if (friend.slug === `compilations`) {
     return `/compilations`;
   }
@@ -21,6 +20,6 @@ export function friendUrl(friend: Pick<Friend, 'gender' | 'slug' | 'lang'>): Url
 export function documentUrl(
   document: Pick<Document, 'slug'>,
   friend: Pick<Friend, 'slug'>,
-): Url {
+): string {
   return `/${friend.slug}/${document.slug}`;
 }

@@ -4,7 +4,6 @@ import { useStaticQuery, graphql } from 'gatsby';
 import cx from 'classnames';
 import { Helmet } from 'react-helmet';
 import { t } from '@friends-library/locale';
-import { FluidBgImageObject } from '@friends-library/types';
 import Checkout from './Checkout';
 import Slideover from '../Slideover';
 import { LANG } from '../env';
@@ -20,7 +19,7 @@ import PopUnder from '../PopUnder';
 import { appReducer, appInitialState, AppDispatch } from '../lib/app-state';
 import RequestFreeBooks from '../RequestFreeBooks';
 import { APP_URL } from '../../env';
-import { NumPublishedBooks } from '../../types';
+import { FluidBgImageObject, NumPublishedBooks } from '../../types';
 
 const store = CartStore.getSingleton();
 

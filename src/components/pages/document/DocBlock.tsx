@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'gatsby-link';
-import { CoverProps, PrintSize, EditionType, Html } from '@friends-library/types';
+import { CoverProps, PrintSize, EditionType } from '@friends-library/types';
 import { bookDims } from '@friends-library/lulu';
 import { t } from '@friends-library/locale';
 import DownloadWizard from './DownloadWizard';
@@ -335,7 +335,7 @@ function ensureWizardInViewport(): void {
   }
 }
 
-function titleHtml({ htmlTitle, isComplete }: Props): Html {
+function titleHtml({ htmlTitle, isComplete }: Props): string {
   let html = htmlTitle;
   if (!isComplete) {
     html += `<sup class="text-flprimary-800">*</sup>`;

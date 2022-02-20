@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import BackgroundImage from 'gatsby-background-image-preact';
-import { FluidBgImageObject } from '@friends-library/types';
 import { t } from '@friends-library/locale';
 import { Book, Region } from './types';
 import { bgLayer } from '../../lib/color';
 import SearchControls from './SearchControls';
 import SearchResult from './SearchResult';
+import { FluidBgImageObject } from '../../../types';
 
 interface Props {
   initialFilters?: string[];

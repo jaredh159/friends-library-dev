@@ -1,9 +1,10 @@
-import { Lang, NewsFeedType } from '@friends-library/types';
+import { Lang } from '@friends-library/types';
 import { t } from '@friends-library/locale';
 import { spanishShortMonth } from '../lib/date';
 import { documentUrl } from '../lib/url';
 import { APP_ALT_URL } from '../env';
 import * as api from './api';
+import { NewsFeedType } from '../types';
 
 interface FeedItem {
   month: string;

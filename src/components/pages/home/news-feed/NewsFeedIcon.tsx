@@ -1,12 +1,12 @@
 import React from 'react';
 import cx from 'classnames';
-import { NewsFeedType } from '@friends-library/types';
 import BookIcon from '../../../icons/Book';
 import StarIcon from '../../../icons/Star';
 import GlobeIcon from '../../../icons/Globe';
 import BookmarkIcon from '../../../icons/Bookmark';
 import HeadphonesIcon from '../../../icons/Headphones';
 import { COLOR_MAP } from './news-feed';
+import { NewsFeedType } from '../../../../types';
 
 interface Props {
   type: NewsFeedType;

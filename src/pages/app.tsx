@@ -1,7 +1,6 @@
 import React from 'react';
 import Link from 'gatsby-link';
 import { graphql } from 'gatsby';
-import { FluidImageObject } from '@friends-library/types';
 import Image from 'gatsby-image';
 import BooksBgBlock, { WhiteOverlay } from '../components/data/BooksBgBlock';
 import { t } from '@friends-library/locale';
@@ -10,6 +9,7 @@ import { Layout, Seo } from '../components/data';
 import Dual from '../components/Dual';
 import * as AppBadges from '../components/AppBadges';
 import { LANG } from '../env';
+import { FluidImageObject } from '../types';
 
 interface Screenshot {
   image: { fluid: FluidImageObject };

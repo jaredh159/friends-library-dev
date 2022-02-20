@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import BackgroundImage from 'gatsby-background-image-preact';
-import { FluidBgImageObject } from '@friends-library/types';
 import { Book } from './types';
 import PillDropdown from '../../PillDropdown';
 import PillDropdownItem from '../../PillDropdownItem';
@@ -11,6 +10,7 @@ import { useWindowWidth } from '../../hooks/window-width';
 import { SCREEN_MD } from '../../lib/constants';
 import { bgLayer } from '../../lib/color';
 import BgWordBlock from './BgWordBlock';
+import { FluidBgImageObject } from '../../../types';
 import './TimelineBlock.css';
 
 interface Props {

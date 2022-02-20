@@ -33,7 +33,7 @@
     "@friends-library/cover-component": "^3.1.5",
     "@friends-library/locale": "^2.1.0",
     "@friends-library/lulu": "^1.3.1",
-    "@friends-library/types": "^7.0.0-beta.2",
+    "@friends-library/types": "^7.0.0-beta.3",
     "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
     "@reach/accordion": "^0.11.2",
@@ -70,7 +70,7 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-typescript": "^7.11.0",
-    "@friends-library/db": "^3.0.0-beta.10",
+    "@friends-library/db": "^3.0.0-beta.13",
     "@friends-library/dev": "~4.5.1",
     "@friends-library/dpc-fs": "^4.0.0-beta.2",
     "@friends-library/env": "^1.4.0",

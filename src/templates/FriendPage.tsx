@@ -1,7 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
 import { graphql } from 'gatsby';
-import { Name, Description, FluidBgImageObject } from '@friends-library/types';
 import { t, translateOptional as trans } from '@friends-library/locale';
 import { coverPropsFromQueryData, CoverData } from '../lib/covers';
 import { Layout, Seo } from '../components/data';
@@ -14,6 +13,7 @@ import FeaturedQuoteBlock from '../components/pages/friend/FeaturedQuoteBlock';
 import FriendBlock from '../components/pages/friend/FriendBlock';
 import MapBlock from '../components/pages/friend/MapBlock';
 import TestimonialsBlock from '../components/pages/friend/TestimonialsBlock';
+import { FluidBgImageObject } from '../types';
 
 interface Props {
   data: {
@@ -29,10 +29,10 @@ interface Props {
     friend: {
       gender: 'male' | 'female';
       isCompilations: boolean;
-      name: Name;
+      name: string;
       born: number | undefined;
       died: number | undefined;
-      description: Description;
+      description: string;
       documents: (CoverData & {
         htmlShortTitle: string;
         tags: string[];

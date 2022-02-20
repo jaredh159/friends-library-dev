@@ -1,9 +1,9 @@
 import React from 'react';
 import BackgroundImage from 'gatsby-background-image-preact';
-import { FluidBgImageObject } from '@friends-library/types';
 import Dual from '../../../Dual';
 import { bgLayer } from '../../../lib/color';
 import NewsFeed from './NewsFeed';
+import { FluidBgImageObject } from '../../../../types';
 
 interface Props {
   items: React.ComponentProps<typeof NewsFeed>['items'];

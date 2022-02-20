@@ -1,11 +1,11 @@
 import React from 'react';
 import BackgroundImage from 'gatsby-background-image-preact';
-import { FluidBgImageObject } from '@friends-library/types';
 import { t } from '@friends-library/locale';
 import Dual from '../../Dual';
 import Button from '../../Button';
 import Heading from '../../Heading';
 import { bgLayer } from '../../lib/color';
+import { FluidBgImageObject } from '../../../types';
 import './WhoWereTheQuakersBlock.css';
 
 interface Props {

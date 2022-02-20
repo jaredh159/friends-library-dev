@@ -1,11 +1,11 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-import { FluidBgImageObject } from '@friends-library/types';
 import ContactFormBlock from '../components/pages/contact/FormBlock';
 import { t } from '@friends-library/locale';
 import { PAGE_META_DESCS } from '../lib/seo';
 import { Layout, Seo } from '../components/data';
 import { LANG } from '../env';
+import { FluidBgImageObject } from '../types';
 
 interface Props {
   data: {
