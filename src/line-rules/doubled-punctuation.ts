@@ -1,10 +1,9 @@
-import { Asciidoc, LintResult } from '@friends-library/types';
 import { toArabic } from 'roman-numerals';
-import { LineRule } from '../types';
+import { LineRule, LintResult } from '../types';
 
 const rule: LineRule = (
-  line: Asciidoc,
-  lines: Asciidoc[],
+  line: string,
+  lines: string[],
   lineNumber: number,
 ): LintResult[] => {
   if (line === ``) {
@@ -124,7 +123,7 @@ function specialCase(double: string, line: string, column: number): boolean {
 }
 
 function getLint(
-  line: Asciidoc,
+  line: string,
   lineNumber: number,
   double: string,
   colIndex: number,

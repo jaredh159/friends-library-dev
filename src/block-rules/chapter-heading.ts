@@ -1,7 +1,6 @@
-import { Asciidoc, LintResult } from '@friends-library/types';
-import { BlockRule } from '../types';
+import { BlockRule, LintResult } from '../types';
 
-const rule: BlockRule = (block: Asciidoc): LintResult[] => {
+const rule: BlockRule = (block: string): LintResult[] => {
   const lines = block.split(`\n`);
   const chapterHeadings: number[] = lines.reduce((acc, line, index) => {
     if (line && line.substring(0, 3) === `== ` && line.match(/^== +[^\s\n]/)) {

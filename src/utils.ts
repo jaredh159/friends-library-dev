@@ -1,10 +1,8 @@
-import { Asciidoc } from '@friends-library/types';
-
-export function isAsciidocBracketLine(line: Asciidoc): boolean {
+export function isAsciidocBracketLine(line: string): boolean {
   return line[0] === `[` && line[line.length - 1] === `]`;
 }
 
-export function isTableLine(line: Asciidoc): boolean {
+export function isTableLine(line: string): boolean {
   if (line === `|==`) {
     return true;
   }
@@ -15,8 +13,8 @@ export function isTableLine(line: Asciidoc): boolean {
 }
 
 export function isFootnotePoetryLine(
-  line: Asciidoc,
-  lines: Asciidoc[],
+  line: string,
+  lines: string[],
   number: number,
 ): boolean {
   if (line.match(/^` {4}/)) {

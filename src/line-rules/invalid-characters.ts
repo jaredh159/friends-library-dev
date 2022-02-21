@@ -1,12 +1,11 @@
-import { Asciidoc, LintResult, LintOptions } from '@friends-library/types';
 import gitConflictMarkers from './git-conflict-markers';
 import characterName from '../character-name';
-import { LineRule } from '../types';
+import { LineRule, LintOptions, LintResult } from '../types';
 import { isTableLine } from '../utils';
 
 const rule: LineRule = (
-  line: Asciidoc,
-  lines: Asciidoc[],
+  line: string,
+  lines: string[],
   lineNumber: number,
   options: LintOptions,
 ): LintResult[] => {
@@ -65,7 +64,7 @@ function delimitsXref(char: string, index: number, line: string): boolean {
 
 function getLint(
   char: string,
-  line: Asciidoc,
+  line: string,
   lineNumber: number,
   column: number,
   name: string,
@@ -83,7 +82,7 @@ function getLint(
   };
 }
 
-function fixable(name: string, line: Asciidoc, column: number): string | false {
+function fixable(name: string, line: string, column: number): string | false {
   switch (name) {
     case `EN DASH`:
       return line.replace(/–/g, `-`);
@@ -107,7 +106,7 @@ function fixable(name: string, line: Asciidoc, column: number): string | false {
   }
 }
 
-function nbsp(line: Asciidoc, column: number): Asciidoc {
+function nbsp(line: string, column: number): string {
   if (column === 1) {
     return line.replace(/^ +/, ``); // eslint-disable-line no-irregular-whitespace
   }

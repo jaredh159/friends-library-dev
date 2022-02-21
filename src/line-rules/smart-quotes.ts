@@ -1,10 +1,9 @@
-import { Asciidoc, LintResult } from '@friends-library/types';
 import { quotifyLine } from '@friends-library/adoc-utils';
-import { LineRule } from '../types';
+import { LineRule, LintResult } from '../types';
 
 const rule: LineRule = (
-  line: Asciidoc,
-  lines: Asciidoc[],
+  line: string,
+  lines: string[],
   lineNumber: number,
 ): LintResult[] => {
   const fixed = quotifyLine(line);

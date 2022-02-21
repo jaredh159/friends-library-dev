@@ -1,9 +1,8 @@
-import { Asciidoc, LintResult, LintOptions } from '@friends-library/types';
-import { LineRule } from '../types';
+import { LineRule, LintOptions, LintResult } from '../types';
 
 const rule: LineRule = (
-  line: Asciidoc,
-  lines: Asciidoc[],
+  line: string,
+  lines: string[],
   lineNumber: number,
   lintOptions: LintOptions,
 ): LintResult[] => {

@@ -1,9 +1,8 @@
-import { Asciidoc, LintResult } from '@friends-library/types';
-import { LineRule } from '../types';
+import { LineRule, LintResult } from '../types';
 
 const rule: LineRule = (
-  line: Asciidoc,
-  lines: Asciidoc[],
+  line: string,
+  lines: string[],
   lineNumber: number,
 ): LintResult[] => {
   if (line === `` || line[line.length - 1] !== `-` || line[line.length - 2] === `-`) {
@@ -29,7 +28,7 @@ const rule: LineRule = (
   ];
 };
 
-function getRecommendation(line: Asciidoc, next: Asciidoc | null): string | false {
+function getRecommendation(line: string, next: string | null): string | false {
   if (!next) {
     return false;
   }

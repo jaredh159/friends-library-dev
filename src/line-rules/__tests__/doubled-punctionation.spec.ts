@@ -1,5 +1,4 @@
 import doubledPunctuation from '../doubled-punctuation';
-import { Asciidoc } from '@friends-library/types';
 
 const opts = { lang: `en` as const };
 
@@ -18,7 +17,7 @@ describe(`doubledPunctuation()`, () => {
     });
   });
 
-  const violations: [Asciidoc, Asciidoc?, boolean?][] = [
+  const violations: [string, string?, boolean?][] = [
     [`Foo\`'\`'`, `Foo\`'`, false],
     [`Foo;;`, `Foo;`, true],
     [`Foo., bar`, undefined, undefined],

@@ -1,5 +1,4 @@
-import { Asciidoc, LintResult } from '@friends-library/types';
-import { BlockRule } from '../types';
+import { BlockRule, LintResult } from '../types';
 
 interface Delimiter {
   line: number;
@@ -7,7 +6,7 @@ interface Delimiter {
   flagged: boolean;
 }
 
-const rule: BlockRule = (block: Asciidoc): LintResult[] => {
+const rule: BlockRule = (block: string): LintResult[] => {
   const lines = block.split(`\n`);
   const delimiters = lines.reduce((delims, line, index) => {
     if (line !== `--`) {

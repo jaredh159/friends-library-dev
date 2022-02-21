@@ -1,10 +1,9 @@
-import { Asciidoc, LintResult, LintOptions } from '@friends-library/types';
-import { LineRule, BlockRule } from './types';
+import { LineRule, BlockRule, LintOptions, LintResult } from './types';
 import * as lineLints from './line-rules';
 import * as blockLints from './block-rules';
 
 export default function lint(
-  adoc: Asciidoc,
+  adoc: string,
   options: LintOptions = { lang: `en` },
 ): LintResult[] {
   const lineRules: LineRule[] = Object.values(lineLints);
@@ -53,7 +52,7 @@ export default function lint(
 function runRule(
   rule: LineRule | BlockRule,
   options: LintOptions,
-  prevLine?: Asciidoc,
+  prevLine?: string,
 ): boolean {
   const { include, exclude } = options;
 
@@ -80,7 +79,7 @@ function runRule(
   return true;
 }
 
-function disabledByComment(ruleSlug: string, prevLine?: Asciidoc): boolean {
+function disabledByComment(ruleSlug: string, prevLine?: string): boolean {
   return !!(
     prevLine &&
     prevLine[0] === `/` &&
@@ -88,15 +87,15 @@ function disabledByComment(ruleSlug: string, prevLine?: Asciidoc): boolean {
   );
 }
 
-function isLintComment(line: Asciidoc): boolean {
+function isLintComment(line: string): boolean {
   return isComment(line) && !!line.match(/lint-(disable|ignore)/);
 }
 
-function isComment(line: Asciidoc): boolean {
+function isComment(line: string): boolean {
   return line[0] === `/` && line[1] === `/`;
 }
 
-function isPassthroughBlockDelim(line: Asciidoc): boolean {
+function isPassthroughBlockDelim(line: string): boolean {
   return line === `++++`;
 }
 

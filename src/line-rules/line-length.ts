@@ -1,14 +1,14 @@
 import * as hilkiah from '@friends-library/hilkiah';
-import { Asciidoc, LintResult } from '@friends-library/types';
+
 import { makeSplitLines } from '@friends-library/adoc-utils';
-import { LineRule } from '../types';
+import { LineRule, LintResult } from '../types';
 import { isTableLine } from '../utils';
 
 const split = makeSplitLines(90, 45);
 
 const rule: LineRule = (
-  line: Asciidoc,
-  lines: Asciidoc[],
+  line: string,
+  lines: string[],
   lineNumber: number,
 ): LintResult[] => {
   if (lengthOk(line)) {
@@ -29,7 +29,7 @@ const rule: LineRule = (
   ];
 };
 
-function lengthOk(line: Asciidoc): boolean {
+function lengthOk(line: string): boolean {
   if (line.length < 100) {
     return true;
   }
@@ -53,7 +53,7 @@ function lengthOk(line: Asciidoc): boolean {
   return false;
 }
 
-function getRecommendation(line: Asciidoc): Asciidoc | false {
+function getRecommendation(line: string): string | false {
   // hilkiah will be undefined in the browser, for bundle-size management
   const refs: ReturnType<typeof hilkiah.find> =
     hilkiah && typeof hilkiah.find === `function` ? hilkiah.find(line) : [];

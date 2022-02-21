@@ -1,10 +1,9 @@
-import { Asciidoc, LintResult } from '@friends-library/types';
 import { isFootnotePoetryLine } from '../utils';
-import { LineRule } from '../types';
+import { LineRule, LintResult } from '../types';
 
 const rule: LineRule = (
-  line: Asciidoc,
-  lines: Asciidoc[],
+  line: string,
+  lines: string[],
   lineNumber: number,
 ): LintResult[] => {
   if (!line.length || line[0] !== ` `) {

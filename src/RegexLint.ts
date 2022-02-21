@@ -1,11 +1,11 @@
-import { Lang, EditionType, Asciidoc } from '@friends-library/types';
+import { Lang, EditionType } from '@friends-library/types';
 
 interface ReplacerFn {
   (substr: string, ...args: any[]): string;
 }
 
 interface FixableFn {
-  (match: RegExpMatchArray, line: Asciidoc, lineNumber: number): boolean;
+  (match: RegExpMatchArray, line: string, lineNumber: number): boolean;
 }
 
 export interface RegexLintOptions {
@@ -65,7 +65,7 @@ export default class RegexLint {
     this.discardIfIdenticalRecommendation = this.data.discardIfIdenticalRecommendation;
   }
 
-  public isFixable(match: RegExpMatchArray, line: Asciidoc, lineNumber: number): boolean {
+  public isFixable(match: RegExpMatchArray, line: string, lineNumber: number): boolean {
     const { fixable } = this.data;
     return typeof fixable === `function` ? fixable(match, line, lineNumber) : fixable;
   }

@@ -1,7 +1,7 @@
-import { LintResult, Asciidoc } from '@friends-library/types';
 import singlePassFix from '../fix-single-pass';
 import stripIndent from 'strip-indent';
 import lint from '../lint';
+import { LintResult } from '../types';
 
 describe(`singlePassFix()`, () => {
   it(`can fix a single line`, () => {
@@ -236,7 +236,7 @@ describe(`singlePassFix()`, () => {
     expect(fixed).toBe(expected);
   });
 
-  const unspacedOpenBlocks: [Asciidoc][] = [
+  const unspacedOpenBlocks: [string][] = [
     [
       stripIndent(`
         [.embedded-content-document.letter]
@@ -293,7 +293,7 @@ describe(`singlePassFix()`, () => {
     expect(unfixed).toBe(0);
   });
 
-  const unspacedWrappingBlocks: [Asciidoc][] = [
+  const unspacedWrappingBlocks: [string][] = [
     [
       stripIndent(`
         [.postscript]

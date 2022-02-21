@@ -1,5 +1,5 @@
-import { LintResult, Asciidoc, LintOptions } from '@friends-library/types';
 import RegexLint, { RegexLintData, RegexLintOptions } from './RegexLint';
+import { LintOptions, LintResult } from './types';
 
 export default class RegexLintRunner {
   protected lints: RegexLint[];
@@ -15,9 +15,9 @@ export default class RegexLintRunner {
   }
 
   public getLineLintResults(
-    line: Asciidoc,
+    line: string,
     lineNumber: number,
-    lines: Asciidoc[],
+    lines: string[],
     options: LintOptions,
   ): LintResult[] {
     let results: LintResult[] = [];
@@ -46,8 +46,8 @@ export default class RegexLintRunner {
 
   protected getLineMatches(
     lint: RegexLint,
-    line: Asciidoc,
-    lines: Asciidoc[],
+    line: string,
+    lines: string[],
     lineNumber: number,
   ): RegExpExecArray[] {
     const matches: RegExpExecArray[] = [];
@@ -74,7 +74,7 @@ export default class RegexLintRunner {
 
   protected getLintResult(
     match: RegExpExecArray,
-    line: Asciidoc,
+    line: string,
     lineNumber: number,
     lint: RegexLint,
   ): LintResult {

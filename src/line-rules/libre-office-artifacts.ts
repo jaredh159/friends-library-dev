@@ -1,9 +1,8 @@
-import { Asciidoc, LintResult } from '@friends-library/types';
-import { LineRule } from '../types';
+import { LineRule, LintResult } from '../types';
 
 const rule: LineRule = (
-  line: Asciidoc,
-  lines: Asciidoc[],
+  line: string,
+  lines: string[],
   lineNumber: number,
 ): LintResult[] => {
   if (line === `` || !line.includes(`++++++`)) {

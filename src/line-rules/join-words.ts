@@ -1,6 +1,5 @@
-import { Asciidoc, LintResult, LintOptions } from '@friends-library/types';
 import escape from 'escape-string-regexp';
-import { LineRule } from '../types';
+import { LineRule, LintOptions, LintResult } from '../types';
 
 // @see https://books.google.com/ngrams for data backing up choices
 const sets = [
@@ -78,8 +77,8 @@ const firstParts = new RegExp(
 );
 
 const rule: LineRule = (
-  line: Asciidoc,
-  lines: Asciidoc[],
+  line: string,
+  lines: string[],
   lineNumber: number,
   { lang }: LintOptions,
 ): LintResult[] => {

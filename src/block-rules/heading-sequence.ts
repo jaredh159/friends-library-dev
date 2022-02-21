@@ -1,7 +1,6 @@
-import { Asciidoc, LintResult } from '@friends-library/types';
-import { BlockRule } from '../types';
+import { BlockRule, LintResult } from '../types';
 
-const rule: BlockRule = (block: Asciidoc): LintResult[] => {
+const rule: BlockRule = (block: string): LintResult[] => {
   const lines = block.split(`\n`);
 
   const lints: LintResult[] = [];

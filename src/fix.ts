@@ -1,12 +1,12 @@
-import { Asciidoc, LintResult, LintOptions } from '@friends-library/types';
 import lint from './lint';
 import singlePassFix from './fix-single-pass';
+import { LintOptions, LintResult } from './types';
 
 export default function fix(
-  adoc: Asciidoc,
+  adoc: string,
   options: LintOptions = { lang: `en` },
 ): {
-  fixed: Asciidoc;
+  fixed: string;
   numFixed: number;
   unfixable: LintResult[];
 } {

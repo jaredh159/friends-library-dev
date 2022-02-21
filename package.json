@@ -1,6 +1,6 @@
 {
   "name": "@friends-library/adoc-lint",
-  "version": "1.14.0",
+  "version": "2.0.0-beta.1",
   "author": "Jared Henderson <jared@netrivet.com>",
   "repository": "github:friends-library-dev/adoc-lint",
   "description": "linting of asciidoc for FLP",
@@ -24,9 +24,9 @@
     "npub:precheck": "fldev ci"
   },
   "dependencies": {
-    "@friends-library/adoc-utils": "^1.3.2",
-    "@friends-library/hilkiah": "^1.3.1",
-    "@friends-library/types": "^5.1.0",
+    "@friends-library/adoc-utils": "^2.0.1",
+    "@friends-library/hilkiah": "^1.3.2",
+    "@friends-library/types": "^7.0.0",
     "escape-string-regexp": "^2.0.0",
     "roman-numerals": "^0.3.2",
     "strip-indent": "^3.0.0",
@@ -34,7 +34,7 @@
     "uuid": "^3.3.3"
   },
   "devDependencies": {
-    "@friends-library/dev": "~4.3.1",
+    "@friends-library/dev": "~4.5.1",
     "@types/escape-string-regexp": "^2.0.1",
     "@types/glob": "^7.1.3",
     "@types/lodash": "^4.14.161",

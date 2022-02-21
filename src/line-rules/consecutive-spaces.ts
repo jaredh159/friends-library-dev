@@ -1,10 +1,9 @@
-import { Asciidoc, LintResult } from '@friends-library/types';
 import { isFootnotePoetryLine, isTableLine } from '../utils';
-import { LineRule } from '../types';
+import { LineRule, LintResult } from '../types';
 
 const rule: LineRule = (
-  line: Asciidoc,
-  lines: Asciidoc[],
+  line: string,
+  lines: string[],
   lineNumber: number,
 ): LintResult[] => {
   if (line === `` || line.indexOf(`  `) === -1) {
@@ -35,7 +34,7 @@ const rule: LineRule = (
   return results;
 };
 
-function getLint(column: number, line: Asciidoc, lineNumber: number): LintResult {
+function getLint(column: number, line: string, lineNumber: number): LintResult {
   return {
     line: lineNumber,
     column,
