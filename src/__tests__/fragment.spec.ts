@@ -1,5 +1,6 @@
-import { backtickQuotesToEntities } from '../fragment';
-import { ADOC_SYNTAX as a, HTML_DEC_ENTITIES as h } from '@friends-library/types';
+import { describe, test, expect } from '@jest/globals';
+import { HTML_DEC_ENTITIES as h } from '@friends-library/types';
+import { backtickQuotesToEntities, ADOC_SYNTAX as a } from '../fragment';
 
 describe(`backTickQuotesToEntities()`, () => {
   const cases = [

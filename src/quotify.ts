@@ -1,10 +1,8 @@
-import { Asciidoc } from '@friends-library/types';
-
-export function quotify(adoc: Asciidoc): Asciidoc {
+export function quotify(adoc: string): string {
   return adoc.split(`\n`).map(quotifyLine).join(`\n`);
 }
 
-export function quotifyLine(line: Asciidoc): Asciidoc {
+export function quotifyLine(line: string): string {
   if (line === `'''`) {
     return line;
   }
@@ -19,7 +17,7 @@ export function quotifyLine(line: Asciidoc): Asciidoc {
   const expr = /"|'/g;
 
   while ((match = expr.exec(line))) {
-    const type = match[0];
+    const type = match[0] ?? ``;
     const { index } = match;
     const before = line.substring(0, index);
     const after = line.substring(index + 1);
@@ -66,7 +64,7 @@ export function quotifyLine(line: Asciidoc): Asciidoc {
       continue;
     }
 
-    if ([`?`, `.`, `,`].includes(charBefore)) {
+    if ([`?`, `.`, `,`].includes(charBefore ?? ``)) {
       mod[index] = left(type);
       continue;
     }

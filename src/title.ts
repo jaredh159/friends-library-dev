@@ -1,11 +1,11 @@
 import { toRoman } from 'roman-numerals';
-import { Asciidoc, Html, HTML_DEC_ENTITIES as HEX } from '@friends-library/types';
+import { HTML_DEC_ENTITIES as HEX } from '@friends-library/types';
 
-export function htmlShortTitle(title: Asciidoc): Html {
+export function htmlShortTitle(title: string): string {
   return htmlTitle(title.replace(/\bvolumen? \b/i, `Vol.${HEX.NON_BREAKING_SPACE}`));
 }
 
-export function htmlTitle(title: Asciidoc): Html {
+export function htmlTitle(title: string): string {
   return title
     .replace(/\b(\d+)\b(.)?/g, (_, digits, next) => {
       const number = Number(digits);
@@ -17,7 +17,7 @@ export function htmlTitle(title: Asciidoc): Html {
     .replace(/--/g, HEX.MDASH);
 }
 
-export function utf8ShortTitle(title: Asciidoc): string {
+export function utf8ShortTitle(title: string): string {
   return htmlShortTitle(title)
     .replace(new RegExp(HEX.MDASH, `g`), `–`)
     .replace(new RegExp(HEX.NON_BREAKING_SPACE, `g`), ` `);

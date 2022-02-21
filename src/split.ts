@@ -45,7 +45,7 @@ function splitIntoSentences(input: string): string[] {
     .replace(
       splitSentencesRegExp,
       regex.groupsFirst((groups, match) => {
-        const { lastWord, punctuation, trailingQuote = ``, nextCharacter } = groups;
+        const { lastWord, punctuation, trailingQuote = ``, nextCharacter = `` } = groups;
         if (lastWord === `viz`) {
           return match;
         }
@@ -132,8 +132,8 @@ function getWordSplitCandidate(words: string[], splitLen: number): string[] {
   const chunks: string[][] = [[]];
   let lineIndex = 0;
   words.forEach((word) => {
-    if (chunks[lineIndex].join(` `).length < splitLen) {
-      chunks[lineIndex].push(word);
+    if (chunks[lineIndex]!.join(` `).length < splitLen) {
+      chunks[lineIndex]!.push(word);
       return;
     }
     lineIndex++;
@@ -186,7 +186,7 @@ function scoreSplitBetweenWords(arr: string[], minLen: number, maxLen: number): 
 
 function cleanup(lines: string[], line: string, index: number): string[] {
   // this fixes lines like ^Oh,$
-  if (lines[index - 1] && lines[index - 1].match(/^[A-Z][a-z]{1,3},$/)) {
+  if (lines[index - 1] && lines[index - 1]?.match(/^[A-Z][a-z]{1,3},$/)) {
     lines[index - 1] = `${lines[index - 1]} ${line}`;
     return lines;
   }
@@ -222,7 +222,7 @@ const getLeadingRef = memoize((line: string): number | null => {
 
   const refs = find(line);
 
-  if (refs.length === 0 || refs[0].position.start !== 0) {
+  if (refs.length === 0 || refs[0]?.position.start !== 0) {
     return null;
   }
 
