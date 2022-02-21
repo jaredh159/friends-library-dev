@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { basename } from 'path';
 import { sync as glob } from 'glob';
-import FsDocPrecursor from '../FsDocPrecursor';
+import { FsDocPrecursor } from '../types';
 
 export interface HydrateAsciidocConfig {
   isolate?: number;

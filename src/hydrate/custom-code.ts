@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { DocPrecursor } from '@friends-library/types';
 import { sync as glob } from 'glob';
-import FsDocPrecursor from '../FsDocPrecursor';
+import { FsDocPrecursor } from '../types';
 
 export default function customCode(dpc: FsDocPrecursor): void {
   const docDir = path.resolve(dpc.fullPath, `..`);

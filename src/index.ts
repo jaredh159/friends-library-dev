@@ -1,5 +1,5 @@
-import FsDocPrecursor from './FsDocPrecursor';
+import { FsDocPrecursor } from './types';
 import * as query from './query';
 import * as hydrate from './hydrate';
 
-export { hydrate, FsDocPrecursor, query };
+export { hydrate, query, FsDocPrecursor };

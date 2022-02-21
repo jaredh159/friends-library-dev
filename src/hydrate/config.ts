@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import FsDocPrecursor from '../FsDocPrecursor';
+import { FsDocPrecursor } from '../types';
 
 export default function config(dpc: FsDocPrecursor): void {
   const configPath = path.resolve(dpc.fullPath, `..`, `config.json`);

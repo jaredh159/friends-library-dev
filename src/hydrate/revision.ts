@@ -1,7 +1,6 @@
 import path from 'path';
 import { execSync } from 'child_process';
-import FsDocPrecursor from '../FsDocPrecursor';
-import { Sha, Url } from '@friends-library/types';
+import { FsDocPrecursor } from '../types';
 
 export default function revision(dpc: FsDocPrecursor): void {
   const cmd = `git log --max-count=1 --pretty="%h|%ct" -- .`;
@@ -19,7 +18,7 @@ export default function revision(dpc: FsDocPrecursor): void {
   };
 }
 
-function revisionUrl(dpc: FsDocPrecursor, sha: Sha): Url {
+function revisionUrl(dpc: FsDocPrecursor, sha: string): string {
   const org = dpc.lang === `en` ? `friends-library` : `biblioteca-de-los-amigos`;
   return [
     `https://github.com/${org}`,

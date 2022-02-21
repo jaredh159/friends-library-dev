@@ -1,6 +1,6 @@
 {
   "name": "@friends-library/dpc-fs",
-  "version": "3.0.1",
+  "version": "4.0.0",
   "description": "DocPrecursor from the filesystem",
   "main": "./dist/index.js",
   "browser": false,
@@ -8,22 +8,25 @@
   "repository": "github:friends-library-dev/dpc-fs",
   "license": "MIT",
   "scripts": {
+    "graphql:codegen": "flp-gql-codegen",
     "test": "true",
     "lint": "fldev lint",
     "lint:fix": "fldev lint:fix",
     "ts:check": "fldev ts:check",
     "format": "fldev format",
     "compile": "fldev ts:compile",
-    "prepublishOnly": "npm run compile"
+    "prepublishOnly": "npm run compile",
+    "npub:precheck": "fldev ci"
   },
   "dependencies": {
-    "@friends-library/env": "^1.3.1",
-    "@friends-library/friends": "^4.1.1",
-    "@friends-library/types": "^5.0.3",
+    "@friends-library/db": "3.0.2",
+    "@friends-library/env": "^1.4.0",
+    "@friends-library/types": "7.0.0",
+    "cross-fetch": "^3.1.5",
     "glob": "^7.1.4"
   },
   "devDependencies": {
-    "@friends-library/dev": "~4.3.1",
+    "@friends-library/dev": "~4.5.1",
     "@types/glob": "^7.1.3"
   }
 }

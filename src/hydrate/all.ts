@@ -1,5 +1,4 @@
-import FsDocPrecursor from '../FsDocPrecursor';
-import meta from './meta';
+import { FsDocPrecursor } from '../types';
 import revision from './revision';
 import config from './config';
 import customCode from './custom-code';
@@ -9,7 +8,6 @@ export default function all(
   dpcs: FsDocPrecursor[],
   adocConfig: HydrateAsciidocConfig = {},
 ): void {
-  dpcs.forEach(meta);
   dpcs.forEach(revision);
   dpcs.forEach(config);
   dpcs.forEach(customCode);
