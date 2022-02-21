@@ -1,6 +1,6 @@
 {
   "name": "@friends-library/evaluator",
-  "version": "2.0.0-beta.1",
+  "version": "1.4.5",
   "description": "evaluate asciidoc AST producing various output formats",
   "main": "./dist/index.js",
   "browser": false,
