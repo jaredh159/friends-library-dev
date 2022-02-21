@@ -3,7 +3,7 @@ import path from 'path';
 import { sync as glob } from 'glob';
 import chokidar from 'chokidar';
 import throttle from 'lodash/throttle';
-import { Html, Asciidoc, genericDpc } from '@friends-library/types';
+import { genericDpc } from '@friends-library/types';
 import { paperbackInterior } from '@friends-library/doc-css';
 import { evaluate, ParserError } from '@friends-library/evaluator';
 
@@ -29,7 +29,7 @@ function regen(): void {
     ),
   );
   const files = glob(adocGlob);
-  const frags: { [k: string]: { html: Html; adoc: Asciidoc } } = {};
+  const frags: { [k: string]: { html: string; adoc: string } } = {};
 
   files.forEach((file) => {
     const adoc = normalizeAdoc(fs.readFileSync(file).toString());
@@ -57,7 +57,7 @@ function regen(): void {
   notify();
 }
 
-function normalizeAdoc(adoc: Asciidoc): Asciidoc {
+function normalizeAdoc(adoc: string): string {
   if (adoc.match(/(^|\n)== /)) {
     return adoc;
   }
