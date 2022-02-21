@@ -1,7 +1,6 @@
-import { Css } from '@friends-library/types';
 import * as css from './css';
 
-export default function appEbookCss(): Css {
+export default function appEbookCss(): string {
   return [
     css.common,
     css.signedSections,

@@ -1,7 +1,6 @@
-import { Css } from '@friends-library/types';
 import * as css from './css';
 
-export function epub(config: { customCss?: Css } = {}): Css {
+export function epub(config: { customCss?: string } = {}): string {
   return [
     css.common,
     css.signedSections,
@@ -14,7 +13,7 @@ export function epub(config: { customCss?: Css } = {}): Css {
   ].join(`\n\n`);
 }
 
-export function mobi(config: { customCss?: Css } = {}): Css {
+export function mobi(config: { customCss?: string } = {}): string {
   let mobiCss = [
     css.common,
     css.signedSections,

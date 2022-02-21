@@ -1,7 +1,6 @@
-import { Css } from '@friends-library/types';
 import * as css from './css';
 
-export default function webPdfCss(config: { customCss?: Css }): Css {
+export default function webPdfCss(config: { customCss?: string }): string {
   return [
     css.common,
     css.signedSections,

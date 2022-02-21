@@ -1,6 +1,6 @@
 import mapValues from 'lodash.mapvalues';
-import { Css, PrintSize, PrintSizeDetails } from '@friends-library/types';
-import { getPrintSizeDetails } from '@friends-library/lulu';
+import { PrintSize } from '@friends-library/types';
+import { getPrintSizeDetails, PrintSizeDetails } from '@friends-library/lulu';
 import * as css from './css';
 import { replaceVars } from './helpers';
 
@@ -8,9 +8,9 @@ export default function paperbackInteriorCss(config: {
   runningHeadTitle: string;
   printSize: PrintSize;
   numFootnotes: number;
-  customCss?: Css;
+  customCss?: string;
   condense?: boolean;
-}): Css {
+}): string {
   const joined = [
     css.common,
     css.signedSections,
