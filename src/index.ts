@@ -1,9 +1,7 @@
-import { PrintSize, PrintSizeDetails } from '@friends-library/types';
-import { PageData } from '@friends-library/document-meta';
-import LuluClient from './client';
-import { LuluAPI } from './types';
+import { PrintSize } from '@friends-library/types';
+import { PrintSizeDetails } from './types';
 
-export { LuluClient, LuluAPI };
+export { PrintSizeDetails };
 
 const defaultMargins = {
   top: 0.85,
@@ -108,46 +106,5 @@ export function getPrintSizeDetails(id: string): PrintSizeDetails {
   return size;
 }
 
-export function choosePrintSize(
-  singlePages: PageData['single'],
-  splitPages: PageData['split'],
-): [PrintSize, boolean] {
-  if (splitPages) {
-    const numVols = splitPages.m.length;
-    const average = {
-      s: Infinity,
-      m: splitPages.m.reduce(add) / numVols,
-      xl: splitPages.xl.reduce(add) / numVols,
-      'xl--condensed': splitPages[`xl--condensed`].reduce(add) / numVols,
-    };
-    return choosePrintSize(average, undefined);
-  }
-
-  if (singlePages.s <= sizes.s.maxPages) {
-    return [`s`, NOT_CONDENSED];
-  }
-
-  if (singlePages.m <= sizes.m.maxPages) {
-    return [`m`, NOT_CONDENSED];
-  }
-
-  if (singlePages.xl <= CONDENSE_THRESHOLD) {
-    return [`xl`, NOT_CONDENSED];
-  }
-
-  if (singlePages[`xl--condensed`] > sizes.xl.maxPages) {
-    throw new RangeError(`Max book size exceeded`);
-  }
-
-  return [`xl`, CONDENSED];
-}
-
-function add(a: number, b: number): number {
-  return a + b;
-}
-
 export const PAGES_PER_INCH = 444;
-const CONDENSE_THRESHOLD = 650;
-const CONDENSED = true;
-const NOT_CONDENSED = false;
 const PRICE_PER_PAGE = 1.4;
