@@ -1,5 +1,4 @@
-import { Uuid, ISBN, Sha, Url } from './primitive';
-import { Lang, EditionType, Css, Html, Asciidoc, PrintSize } from '.';
+import { Lang, EditionType, PrintSize } from '.';
 
 export interface DocPrecursor {
   lang: Lang;
@@ -7,26 +6,23 @@ export interface DocPrecursor {
   friendInitials: string[];
   documentSlug: string;
   path: string;
-  documentId: Uuid;
+  editionId: string;
   isCompilation: boolean;
   editionType: EditionType;
-  asciidocFiles: Array<{
-    adoc: Asciidoc;
-    filename: string;
-  }>;
+  asciidocFiles: Array<{ adoc: string; filename: string }>;
   paperbackSplits: number[];
   printSize?: PrintSize;
   blurb: string;
   config: { [key: string]: any };
   customCode: {
-    css: { [k in ArtifactType | 'all' | 'pdf' | 'ebook']?: Css };
-    html: { [k in ArtifactType | 'all' | 'pdf' | 'ebook']?: Html };
+    css: { [k in ArtifactType | 'all' | 'pdf' | 'ebook']?: string };
+    html: { [k in ArtifactType | 'all' | 'pdf' | 'ebook']?: string };
   };
   meta: {
     title: string;
     originalTitle?: string;
     published?: number;
-    isbn: ISBN;
+    isbn: string;
     editor?: string;
     author: {
       name: string;
@@ -35,8 +31,8 @@ export interface DocPrecursor {
   };
   revision: {
     timestamp: number;
-    sha: Sha;
-    url: Url;
+    sha: string;
+    url: string;
   };
 }
 
@@ -47,7 +43,7 @@ export function genericDpc(): DocPrecursor {
     friendInitials: [`G`, `F`],
     documentSlug: `journal`,
     path: `en/george-fox/journal/original`,
-    documentId: `9414033c-4b70-4b4b-8e48-fec037822173`,
+    editionId: `9414033c-4b70-4b4b-8e48-fec037822173`,
     isCompilation: false,
     editionType: `original`,
     asciidocFiles: [{ adoc: ``, filename: `01-journal.adoc` }],
@@ -75,23 +71,3 @@ export const ARTIFACT_TYPES = [
 ] as const;
 
 export type ArtifactType = typeof ARTIFACT_TYPES[number];
-
-export interface PaperbackInteriorConfig {
-  printSize: PrintSize;
-  frontmatter: boolean;
-  condense: boolean;
-  allowSplits: boolean;
-}
-
-export interface PaperbackCoverConfig {
-  printSize: PrintSize;
-  volumes: number[];
-  showGuides?: boolean;
-}
-
-export interface EbookConfig {
-  frontmatter: boolean;
-  subType: 'epub' | 'mobi';
-  coverImg?: Buffer;
-  randomizeForLocalTesting?: boolean;
-}
