@@ -38,7 +38,7 @@ export async function saveEditionImpression(
 ): Promise<UpdateEditionImpression> {
   let data: UpdateEditionImpression | null | undefined = undefined;
   if (input.id) {
-    ({ data } = await client().mutate<
+    ({ data } = await client.mutate<
       UpdateEditionImpression,
       UpdateEditionImpressionVariables
     >({
@@ -46,7 +46,7 @@ export async function saveEditionImpression(
       variables: { input: { ...input, id: input.id } },
     }));
   } else {
-    ({ data } = await client().mutate<
+    ({ data } = await client.mutate<
       CreateEditionImpression,
       CreateEditionImpressionVariables
     >({
@@ -62,7 +62,7 @@ export async function saveEditionImpression(
 
 export async function deleteEditionImpression(id: UUID): Promise<boolean> {
   try {
-    const { data } = await client().mutate<
+    const { data } = await client.mutate<
       DeleteEditionImpression,
       DeleteEditionImpressionVariables
     >({ mutation: DELETE_IMPRESSION_MUTATION, variables: { id } });
@@ -73,7 +73,7 @@ export async function deleteEditionImpression(id: UUID): Promise<boolean> {
 }
 
 export async function getEditionImpressionCloudFiles(id: UUID): Promise<CloudFiles> {
-  const { data } = await client().query<
+  const { data } = await client.query<
     GetEditionImpressionCloudFiles,
     GetEditionImpressionCloudFilesVariables
   >({
@@ -154,7 +154,7 @@ const DELETE_IMPRESSION_MUTATION = gql`
 
 export async function deleteEditionEditionChapters(editionId: UUID): Promise<boolean> {
   try {
-    const { data } = await client().mutate<
+    const { data } = await client.mutate<
       DeleteEditionEditionChapters,
       DeleteEditionEditionChaptersVariables
     >({
@@ -171,7 +171,7 @@ export async function createEditionChapters(
   chapters: CreateEditionChapterInput[],
 ): Promise<boolean> {
   try {
-    const { data } = await client().mutate<
+    const { data } = await client.mutate<
       CreateEditionChapters,
       CreateEditionChaptersVariables
     >({
@@ -203,7 +203,7 @@ const CREATE_EDITION_CHAPTERS_MUTATION = gql`
 // query individual edition
 
 export async function getEdition(id: UUID): Promise<Edition> {
-  const { data } = await client().query<PublishEdition, PublishEditionVariables>({
+  const { data } = await client.query<PublishEdition, PublishEditionVariables>({
     query: EDITION_QUERY,
     variables: { id },
   });
@@ -248,7 +248,7 @@ const EDITION_QUERY = gql`
 // latest artifact production version
 
 export async function getlatestArtifactProductionVersion(): Promise<string> {
-  const { data } = await client().query<GetLatestArtifactProductionVersion>({
+  const { data } = await client.query<GetLatestArtifactProductionVersion>({
     query: REVISION_QUERY,
   });
   return data.version.sha;

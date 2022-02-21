@@ -3,6 +3,7 @@ import sharp from 'sharp';
 import { v4 as uuid } from 'uuid';
 import { dirname } from 'path';
 import { log, c, red } from 'x-chalk';
+import isEqual from 'lodash.isequal';
 import * as cloud from '@friends-library/cloud';
 import slack from '@friends-library/slack';
 import { DocPrecursor } from '@friends-library/types';
@@ -21,7 +22,6 @@ import * as api from './api';
 import { logAction, logDebug, logError } from '../../sub-log';
 import { CloudFiles, emptyPendingUploads, PendingUploads, PublishData } from './types';
 import { PrintSizeVariant } from '../../graphql/globalTypes';
-import isEqual from 'lodash.isequal';
 
 interface PublishOptions {
   check: boolean;

@@ -17,7 +17,7 @@ export default async function handler(argv: CoverOptions): Promise<void> {
   for (const dpc of dpcs) {
     hydrate.customCode(dpc);
 
-    const { data } = await client().query<GetCoverData, GetCoverDataVariables>({
+    const { data } = await client.query<GetCoverData, GetCoverDataVariables>({
       query: QUERY_VOLUMES,
       variables: { id: dpc.editionId },
     });

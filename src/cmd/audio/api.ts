@@ -7,13 +7,13 @@ import { UpdateAudioPart, UpdateAudioPartVariables } from '../../graphql/UpdateA
 import client, { gql } from '../../api-client';
 
 export async function getAudios(): Promise<Audio[]> {
-  const { data } = await client().query<GetAudios>({ query: QUERY_AUDIOS });
+  const { data } = await client.query<GetAudios>({ query: QUERY_AUDIOS });
   return data.audios;
 }
 
 export async function updateAudio(input: UpdateAudioInput): Promise<void> {
   const variables: UpdateAudioVariables = { input };
-  const { data } = await client().mutate<UpdateAudio>({
+  const { data } = await client.mutate<UpdateAudio>({
     mutation: UPDATE_AUDIO,
     variables,
   });
@@ -24,7 +24,7 @@ export async function updateAudio(input: UpdateAudioInput): Promise<void> {
 
 export async function updateAudioPart(input: UpdateAudioPartInput): Promise<void> {
   const variables: UpdateAudioPartVariables = { input };
-  const { data } = await client().mutate<UpdateAudioPart>({
+  const { data } = await client.mutate<UpdateAudioPart>({
     mutation: UPDATE_AUDIO_PART,
     variables,
   });

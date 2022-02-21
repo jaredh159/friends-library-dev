@@ -1,6 +1,6 @@
 import { c, log } from 'x-chalk';
 import { gql } from '@friends-library/db';
-import getClient from '../../api-client';
+import client from '../../api-client';
 import {
   CreateArtifactProductionVersion,
   CreateArtifactProductionVersionVariables,
@@ -12,7 +12,7 @@ interface Argv {
 
 export default async function handler({ sha }: Argv): Promise<void> {
   try {
-    const response = await getClient().mutate<
+    const response = await client.mutate<
       CreateArtifactProductionVersion,
       CreateArtifactProductionVersionVariables
     >({ mutation: MUTATION, variables: { input: { version: sha } } });
