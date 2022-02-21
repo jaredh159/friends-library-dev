@@ -4,7 +4,7 @@ import { SELECTABLE_DOCUMENTS_FIELDS } from '../../client';
 import { SelectableDocuments } from '../../graphql/SelectableDocuments';
 import { EditFriend } from './EditFriend';
 import { useQueryResult } from '../../lib/query';
-import * as empty from './empty';
+import * as empty from '../../lib/empty';
 
 const CreateFriend: React.FC = () => {
   const query = useQueryResult<SelectableDocuments>(QUERY_SELECTABLE_DOCUMENTS);

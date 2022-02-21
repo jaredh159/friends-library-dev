@@ -14,6 +14,7 @@ import {
   Operation,
   EditableEdition,
   EditableAudio,
+  EditableToken,
 } from '../../../types';
 import { createEntity, deleteEntity, updateEntity } from './crud.entities';
 
@@ -178,6 +179,8 @@ function optionalChildren(
     case `FriendResidenceDuration`:
     case `RelatedDocument`:
     case `DocumentTag`:
+    case `Token`:
+    case `TokenScope`:
       return [];
   }
 }
@@ -204,12 +207,15 @@ function subcollections(
       ];
     case `Audio`:
       return [[`parts`, (audio) => (audio as EditableAudio).parts]];
+    case `Token`:
+      return [[`scopes`, (token) => (token as EditableToken).scopes]];
     case `FriendQuote`:
     case `FriendResidenceDuration`:
     case `RelatedDocument`:
     case `DocumentTag`:
     case `Edition`:
     case `AudioPart`:
+    case `TokenScope`:
       return [];
   }
 }

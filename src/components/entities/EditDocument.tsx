@@ -15,16 +15,16 @@ import {
   EditDocument as EditDocumentQuery,
   EditDocumentVariables as Vars,
 } from '../../graphql/EditDocument';
-import reducer from './reducer';
+import reducer from '../../lib/reducer';
 import { Lang, TagType } from '../../graphql/globalTypes';
 import NestedCollection from './NestedCollection';
 import LabeledToggle from '../LabeledToggle';
 import EditEdition from './EditEdition';
-import * as empty from './empty';
+import * as empty from '../../lib/empty';
 import * as sort from './sort';
 import LabledCheckbox from '../LabledCheckbox';
 import LabeledSelect from '../LabeledSelect';
-import SaveChangesBar from './SaveChangesBar';
+import SaveChangesBar from '../SaveChangesBar';
 
 interface Props {
   document: EditableDocument;
@@ -258,10 +258,10 @@ const EditDocumentContainer: React.FC = () => {
         />
       </div>
       <SaveChangesBar
+        entityName="Document"
+        disabled={isEqual(query.data.document, document)}
         // @ts-ignore
         getEntities={() => [document, query.data.document]}
-        buttonText="Save Document"
-        disabled={isEqual(query.data.document, document)}
       />
     </>
   );

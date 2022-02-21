@@ -7,7 +7,7 @@ import LabeledSelect from '../LabeledSelect';
 import LabeledToggle from '../LabeledToggle';
 import TextInput from '../TextInput';
 import * as nonEmptyIntArray from './non-empty-int-array';
-import * as empty from './empty';
+import * as empty from '../../lib/empty';
 import { EditAudio } from './EditAudio';
 import PillButton from '../PillButton';
 

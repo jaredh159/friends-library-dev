@@ -45,7 +45,9 @@ const TextInput: React.FC<Props> = ({
     prefix && `rounded-tr-md rounded-br-md`,
     suffix && `rounded-tl-md rounded-bl-md`,
     !prefix && !suffix && `rounded-md`,
-    disabled ? `bg-gray-200 text-gray-500/80 cursor-not-allowed` : `text-gray-600`,
+    disabled
+      ? `bg-gray-200 text-gray-500/80 cursor-not-allowed pointer-events-none`
+      : `text-gray-600`,
   );
   return (
     <div className={className}>

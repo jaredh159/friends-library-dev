@@ -5,6 +5,7 @@ import {
   EditDocument as EditDocumentQuery,
   EditDocument_document_editions_audio,
 } from './graphql/EditDocument';
+import { EditToken } from './graphql/EditToken';
 
 export type Action<State> =
   | { type: `replace`; state: State }
@@ -33,6 +34,8 @@ export type EditableRelatedDocument = EditableDocument['relatedDocuments'][0];
 export type EditableEdition = EditableDocument['editions'][0];
 export type EditableAudio = EditDocument_document_editions_audio;
 export type EditableAudioPart = EditableAudio['parts'][0];
+export type EditableToken = EditToken['token'];
+export type EditableTokenScope = EditableToken['scopes'][0];
 
 export type EditableEntity =
   | EditableFriend
@@ -44,7 +47,9 @@ export type EditableEntity =
   | EditableRelatedDocument
   | EditableEdition
   | EditableAudio
-  | EditableAudioPart;
+  | EditableAudioPart
+  | EditableToken
+  | EditableTokenScope;
 
 export type CreateOperation<T extends EditableEntity> = {
   type: `create`;

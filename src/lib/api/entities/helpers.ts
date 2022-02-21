@@ -29,12 +29,16 @@ export function nullEmptyString(input: string | null): string | null {
 export function prepIds<T extends Record<string, unknown>>(record: T): T {
   for (const key of Object.keys(record)) {
     const value = record[key];
-    if (typeof value === `string` && value.match(MATCH_CLIENT_GENERATED_ID)) {
+    if (isClientGeneratedId(value)) {
       // @ts-ignore
       record[key] = value.replace(/^_/, ``);
     }
   }
   return record;
+}
+
+export function isClientGeneratedId(id: unknown): boolean {
+  return !!(typeof id === `string` && id.match(MATCH_CLIENT_GENERATED_ID));
 }
 
 const MATCH_CLIENT_GENERATED_ID =

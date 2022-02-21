@@ -20,7 +20,7 @@
   "license": "ISC",
   "dependencies": {
     "@apollo/client": "^3.5.8",
-    "@friends-library/db": "^3.0.0-beta.13",
+    "@friends-library/db": "^3.0.4",
     "@headlessui/react": "^1.4.3",
     "@heroicons/react": "^1.0.4",
     "classnames": "^2.3.1",
@@ -38,7 +38,7 @@
   "devDependencies": {
     "@friends-library/dev": "^4.5.1",
     "@friends-library/theme": "^1.2.0",
-    "@friends-library/types": "^6.0.0",
+    "@friends-library/types": "^7.0.0",
     "@htc-class/storylite": "^1.0.1",
     "@snowpack/plugin-dotenv": "^2.2.0",
     "@snowpack/plugin-postcss": "^1.4.3",

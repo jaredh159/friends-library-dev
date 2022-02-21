@@ -1,6 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { gql } from '@apollo/client';
-import client from '../../client';
+import client, { gql } from '../../client';
 import result from '../result';
 import {
   GetFreeOrderRequest,

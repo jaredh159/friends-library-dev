@@ -19,7 +19,7 @@ const LabledCheckbox: React.FC<Props> = ({ id, label, onToggle, checked, classNa
       htmlFor={id}
     >
       <input
-        className="border-px border-gray-300 hover:border-flprimary-500 rounded-sm mr-1 -translate-y-px text-flprimary-500 focus:outline-none focus:ring-transparent"
+        className="border-px border-gray-300 hover:border-flprimary-500 rounded-sm mr-1.5 -translate-y-px text-flprimary-500 focus:outline-none focus:ring-transparent"
         onChange={(event) => {
           onToggle(event.target.checked);
         }}

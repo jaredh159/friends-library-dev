@@ -2,9 +2,11 @@ import { gql } from '@apollo/client';
 import { getClient } from '@friends-library/db';
 
 export default getClient({
-  env: `dev`,
-  token: localStorage.getItem(`token`),
+  env: `dev`, // @TODO
+  token: localStorage.getItem(`token`) ?? ``,
 });
+
+export { gql };
 
 export const SELECTABLE_DOCUMENTS_FIELDS = gql`
   fragment SelectableDocumentsFields on Document {

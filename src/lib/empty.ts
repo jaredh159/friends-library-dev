@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { EditionType, Gender, Lang } from '../../graphql/globalTypes';
+import { EditionType, Gender, Lang, Scope as TokenScope } from '../graphql/globalTypes';
 import {
   EditableFriendQuote,
   EditableDocument,
@@ -11,7 +11,9 @@ import {
   EditableDocumentTag,
   EditableAudio,
   EditableAudioPart,
-} from '../../types';
+  EditableToken,
+  EditableTokenScope,
+} from '../types';
 
 export function friend(): EditableFriend {
   return {
@@ -187,6 +189,30 @@ export function documentTag(
     document: {
       __typename: `Document`,
       id: document.id,
+    },
+  };
+}
+
+export function token(): EditableToken {
+  return {
+    __typename: `Token`,
+    id: clientGeneratedId(),
+    createdAt: new Date().toISOString(),
+    description: ``,
+    value: uuid(),
+    uses: null,
+    scopes: [],
+  };
+}
+
+export function tokenScope(tokenId: UUID, type: TokenScope): EditableTokenScope {
+  return {
+    __typename: `TokenScope`,
+    id: clientGeneratedId(),
+    type,
+    token: {
+      __typename: `Token`,
+      id: tokenId,
     },
   };
 }

@@ -52,6 +52,20 @@ export enum PrintSizeVariant {
   xlCondensed = 'xlCondensed',
 }
 
+export enum Scope {
+  all = 'all',
+  mutateArtifactProductionVersions = 'mutateArtifactProductionVersions',
+  mutateDownloads = 'mutateDownloads',
+  mutateEntities = 'mutateEntities',
+  mutateOrders = 'mutateOrders',
+  mutateTokens = 'mutateTokens',
+  queryArtifactProductionVersions = 'queryArtifactProductionVersions',
+  queryDownloads = 'queryDownloads',
+  queryEntities = 'queryEntities',
+  queryOrders = 'queryOrders',
+  queryTokens = 'queryTokens',
+}
+
 export enum ShippingLevel {
   expedited = 'expedited',
   express = 'express',
@@ -203,6 +217,19 @@ export interface CreateRelatedDocumentInput {
   parentDocumentId: UUID;
 }
 
+export interface CreateTokenInput {
+  description: string;
+  id?: UUID | null;
+  uses?: number | null;
+  value: UUID;
+}
+
+export interface CreateTokenScopeInput {
+  id?: UUID | null;
+  scope: Scope;
+  tokenId: UUID;
+}
+
 export interface GetPrintJobExploratoryMetadataInput {
   address: ShippingAddressInput;
   items: PrintJobExploratoryItemInput[];
@@ -321,6 +348,19 @@ export interface UpdateRelatedDocumentInput {
   documentId: UUID;
   id: UUID;
   parentDocumentId: UUID;
+}
+
+export interface UpdateTokenInput {
+  description: string;
+  id: UUID;
+  uses?: number | null;
+  value: UUID;
+}
+
+export interface UpdateTokenScopeInput {
+  id: UUID;
+  scope: Scope;
+  tokenId: UUID;
 }
 
 //==============================================================

@@ -6,7 +6,7 @@ import LabeledToggle from '../LabeledToggle';
 import TextInput from '../TextInput';
 import NestedCollection from './NestedCollection';
 import * as nonEmptyIntArray from './non-empty-int-array';
-import * as empty from './empty';
+import * as empty from '../../lib/empty';
 
 interface AudioProps {
   audio: EditableAudio;

@@ -2,8 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+.subtle-text {
+  @apply block text-sm font-light select-none;
+}
+
 .label {
-  @apply block text-sm font-light text-flprimary-600 select-none;
+  @apply text-flprimary-600 subtle-text;
 }
 
 .NestedCollection .NestedCollection.open,

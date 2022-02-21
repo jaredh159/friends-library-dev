@@ -9,6 +9,9 @@ import EditFriend from './entities/EditFriend';
 import EditDocument from './entities/EditDocument';
 import ListDocuments from './entities/ListDocuments';
 import CreateFriend from './entities/CreateFriend';
+import ListTokens from './tokens/ListTokens';
+import EditToken from './tokens/EditToken';
+import CreateToken from './tokens/CreateToken';
 
 const App: React.FC = () => {
   const [token, setToken] = useState<string | null>(localStorage.getItem(`token`));
@@ -30,12 +33,15 @@ const App: React.FC = () => {
           <Breadcrumbs />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/orders" element={<CreateOrder />} />
+            <Route path="/orders/new" element={<CreateOrder />} />
             <Route path="/friends" element={<ListFriends />} />
             <Route path="/friends/new" element={<CreateFriend />} />
             <Route path="/friends/:id" element={<EditFriend />} />
             <Route path="/documents" element={<ListDocuments />} />
             <Route path="/documents/:id" element={<EditDocument />} />
+            <Route path="/tokens" element={<ListTokens />} />
+            <Route path="/tokens/:id" element={<EditToken />} />
+            <Route path="/tokens/new" element={<CreateToken />} />
           </Routes>
         </BrowserRouter>
       </div>

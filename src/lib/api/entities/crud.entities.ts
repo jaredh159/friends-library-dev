@@ -8,6 +8,8 @@ import * as edition from './crud.edition';
 import * as audio from './crud.audio';
 import * as audioPart from './crud.audio-part';
 import * as relatedDocument from './crud.related-document';
+import * as token from './crud.token';
+import * as tokenScope from './crud.token-scope';
 import { EditableEntity, ErrorMsg } from '../../../types';
 
 export async function createEntity(entity: EditableEntity): Promise<ErrorMsg | null> {
@@ -33,6 +35,10 @@ export async function createEntity(entity: EditableEntity): Promise<ErrorMsg | n
       return audio.create(entity);
     case `AudioPart`:
       return audioPart.create(entity);
+    case `Token`:
+      return token.create(entity);
+    case `TokenScope`:
+      return tokenScope.create(entity);
   }
 }
 
@@ -67,8 +73,15 @@ export async function deleteEntity(entity: EditableEntity): Promise<ErrorMsg | n
     case `AudioPart`:
       err = await audioPart.delete(entity);
       break;
+    case `Token`:
+      err = await token.delete(entity);
+      break;
+    case `TokenScope`:
+      err = await tokenScope.delete(entity);
+      break;
     case `Friend`:
-      throw new Error(`Deleting Friends not supported, use the postgres shell`);
+      err = await friend.delete(entity);
+      break;
   }
 
   // foreign key cascades often mean that our entities get deleted
@@ -103,5 +116,9 @@ export async function updateEntity(entity: EditableEntity): Promise<ErrorMsg | n
       return audio.update(entity);
     case `AudioPart`:
       return audioPart.update(entity);
+    case `Token`:
+      return token.update(entity);
+    case `TokenScope`:
+      return tokenScope.update(entity);
   }
 }

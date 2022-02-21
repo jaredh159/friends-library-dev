@@ -10,7 +10,7 @@ import {
 import TextInput from '../TextInput';
 import LabeledSelect from '../LabeledSelect';
 import { Gender, Lang } from '../../graphql/globalTypes';
-import reducer, { isValidYear } from './reducer';
+import reducer, { isValidYear } from '../../lib/reducer';
 import NestedCollection from './NestedCollection';
 import { EditDocument } from './EditDocument';
 import { EDIT_DOCUMENT_FIELDS, SELECTABLE_DOCUMENTS_FIELDS } from '../../client';
@@ -20,9 +20,9 @@ import {
   ReducerReplace,
   SelectableDocuments,
 } from '../../types';
-import * as empty from './empty';
+import * as empty from '../../lib/empty';
 import * as sort from './sort';
-import SaveChangesBar from './SaveChangesBar';
+import SaveChangesBar from '../SaveChangesBar';
 import LabeledToggle from '../LabeledToggle';
 
 interface Props {
@@ -49,10 +49,10 @@ export const EditFriend: React.FC<Props> = ({
   return (
     <div className="mt-6 space-y-4 mb-24">
       <SaveChangesBar
+        entityName="Friend"
+        disabled={isEqual(friend, initialFriend)}
         // @ts-ignore
         getEntities={() => [friend, initialFriend]}
-        buttonText="Save Friend"
-        disabled={isEqual(friend, initialFriend)}
       />
       <div className="flex space-x-4">
         {friend.id.startsWith(`_`) && (

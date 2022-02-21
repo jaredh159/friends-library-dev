@@ -37,7 +37,7 @@ const ListDocuments: React.FC<Props> = ({ documents }) => {
         autoFocus
         className="my-4"
       />
-      <div className="">
+      <div>
         {filteredDocs.map((doc) => (
           <Link
             key={doc.id}

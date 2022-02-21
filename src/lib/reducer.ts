@@ -1,7 +1,7 @@
 import set from 'lodash.set';
 import get from 'lodash.get';
 import produce from 'immer';
-import { Action } from '../../types';
+import { Action } from '../types';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export default function reducer<State extends object>(
