@@ -1,2 +1,2 @@
-export { default as Client } from './Client';
-export { CreateDownloadInput, UpdateOrderInput, Order, CreateOrderInput } from './types';
+export { gql } from '@apollo/client';
+export { getClient, ClientConfig, ClientType } from './Client';
