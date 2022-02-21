@@ -1,15 +1,15 @@
 import '@friends-library/env/load';
 import env from '@friends-library/env';
-import { getClient, gql, ClientOptions, ClientType } from '@friends-library/db';
+import { getClient, gql, ClientConfig, ClientType } from '@friends-library/db';
 import { FsDocPrecursor } from './types';
 import fetch from 'cross-fetch';
 import { Editions } from './graphql/Editions';
 
 export async function getByPattern(
   pattern?: string,
-  dbOptions?: ClientOptions,
+  clientConfig?: ClientConfig,
 ): Promise<FsDocPrecursor[]> {
-  const { data, errors } = await client(dbOptions).query<Editions>({ query: QUERY });
+  const { data, errors } = await client(clientConfig).query<Editions>({ query: QUERY });
   if (errors) {
     throw new Error(
       `Error querying editions: ${errors.map((e) => e.message).join(`, `)}`,
@@ -62,14 +62,6 @@ function editionToFsDpc(
   };
 }
 
-function client(options?: ClientOptions): ClientType {
-  if (!options) {
-    const token = env.requireVar(`DPCFS_FLP_API_TOKEN`);
-    return getClient({ mode: `production`, fetch, token });
-  }
-  return getClient({ ...options, fetch });
-}
-
 const QUERY = gql`
   query Editions {
     editions: getEditions {
@@ -98,3 +90,10 @@ const QUERY = gql`
     }
   }
 `;
+
+function client(config?: ClientConfig): ClientType {
+  return getClient({
+    ...(config ? config : { env: `infer`, process }),
+    fetch,
+  });
+}
