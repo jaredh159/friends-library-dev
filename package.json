@@ -1,6 +1,6 @@
 {
   "name": "@friends-library/evaluator",
-  "version": "1.4.4",
+  "version": "2.0.0-beta.1",
   "description": "evaluate asciidoc AST producing various output formats",
   "main": "./dist/index.js",
   "browser": false,
@@ -21,10 +21,10 @@
   "dependencies": {
     "@friends-library/locale": "^2.1.0",
     "@friends-library/parser": "^1.5.1",
-    "@friends-library/types": "^6.0.0"
+    "@friends-library/types": "^7.0.0"
   },
   "devDependencies": {
-    "@friends-library/dev": "~4.4.1",
+    "@friends-library/dev": "~4.5.1",
     "strip-indent": "^3.0.0"
   }
 }

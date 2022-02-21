@@ -1,4 +1,4 @@
-import { DocPrecursor, Html } from '@friends-library/types';
+import { DocPrecursor } from '@friends-library/types';
 import { Parser, traverse, AstNode } from '@friends-library/parser';
 import visitor from './speech-visitor';
 
@@ -14,7 +14,7 @@ export function toSpeechText(dpc: DocPrecursor): string {
     .trim();
 }
 
-export function toSpeechHtml(dpc: DocPrecursor): Html {
+export function toSpeechHtml(dpc: DocPrecursor): string {
   return `<!DOCTYPE html>
 <html>
 <head>
