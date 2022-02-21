@@ -1,11 +1,10 @@
 import fs from 'fs';
-import { FilePath } from '@friends-library/types';
 import { filesFromPath } from '../../lint/path';
 import { green } from 'x-chalk';
 
 interface Argv {
-  path: FilePath;
-  compare?: FilePath;
+  path: string;
+  compare?: string;
   threshold: number;
   write: boolean;
 }

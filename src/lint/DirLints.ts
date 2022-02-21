@@ -1,23 +1,23 @@
-import { Asciidoc, LintResult, FilePath } from '@friends-library/types';
+import { LintResult } from '@friends-library/adoc-lint';
 
 interface FileLintData {
   lints: LintResult[];
-  path: FilePath;
-  adoc: Asciidoc;
+  path: string;
+  adoc: string;
 }
 
 export default class DirLints {
-  protected map: Map<FilePath, FileLintData>;
+  protected map: Map<string, FileLintData>;
 
   public constructor() {
     this.map = new Map();
   }
 
-  public set(path: FilePath, data: { adoc: Asciidoc; lints: LintResult[] }): void {
+  public set(path: string, data: { adoc: string; lints: LintResult[] }): void {
     this.map.set(path, { ...data, path });
   }
 
-  public get(path: FilePath): FileLintData | undefined {
+  public get(path: string): FileLintData | undefined {
     return this.map.get(path);
   }
 
@@ -47,11 +47,11 @@ export default class DirLints {
     return this.unfixable().length;
   }
 
-  public toArray(): [FilePath, FileLintData][] {
+  public toArray(): [string, FileLintData][] {
     return [...this.map];
   }
 
-  public [Symbol.iterator](): [FilePath, FileLintData][] {
+  public [Symbol.iterator](): [string, FileLintData][] {
     // @ts-ignore
     return this.map[Symbol.iterator]();
   }

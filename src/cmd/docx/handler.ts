@@ -5,7 +5,6 @@ import { sync as glob } from 'glob';
 import { deleteNamespaceDir, dirs } from '@friends-library/doc-artifacts';
 import { red, green } from 'x-chalk';
 import { query as dpcQuery, FsDocPrecursor } from '@friends-library/dpc-fs';
-import { Asciidoc } from '@friends-library/types';
 import { ensureDockerImage } from '../../docker';
 
 export default async function handler({ pattern }: { pattern: string }): Promise<void> {
@@ -50,7 +49,7 @@ function dockerRun(cmd: string, volume: string): void {
   );
 }
 
-function getJoinedAsciidoc(fullPath: string): Asciidoc {
+function getJoinedAsciidoc(fullPath: string): string {
   return glob(`${fullPath}/*.adoc`)
     .map((path) => fs.readFileSync(path, `utf8`))
     .join(`\n\n`);

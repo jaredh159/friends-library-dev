@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import parsePdf from 'pdf-parse';
-import { choosePrintSize } from '@friends-library/lulu';
+import { sizes } from '@friends-library/lulu';
 import { log, c } from 'x-chalk';
 import * as artifacts from '@friends-library/doc-artifacts';
 import { evaluate } from '@friends-library/evaluator';
@@ -188,3 +188,45 @@ function canSkipLargerSizes(
 function canSkipMultiVolumeCheck(single: SinglePages): boolean {
   return single.m === 0 || single.xl < 600 || single[`xl--condensed`] < 600;
 }
+
+export function choosePrintSize(
+  singlePages: SinglePages,
+  splitPages: MultiPages,
+): [PrintSize, boolean] {
+  if (splitPages) {
+    const numVols = splitPages.m.length;
+    const average = {
+      s: Infinity,
+      m: splitPages.m.reduce(add) / numVols,
+      xl: splitPages.xl.reduce(add) / numVols,
+      'xl--condensed': splitPages[`xl--condensed`].reduce(add) / numVols,
+    };
+    return choosePrintSize(average, undefined);
+  }
+
+  if (singlePages.s <= sizes.s.maxPages) {
+    return [`s`, NOT_CONDENSED];
+  }
+
+  if (singlePages.m <= sizes.m.maxPages) {
+    return [`m`, NOT_CONDENSED];
+  }
+
+  if (singlePages.xl <= CONDENSE_THRESHOLD) {
+    return [`xl`, NOT_CONDENSED];
+  }
+
+  if (singlePages[`xl--condensed`] > sizes.xl.maxPages) {
+    throw new RangeError(`Max book size exceeded`);
+  }
+
+  return [`xl`, CONDENSED];
+}
+
+function add(a: number, b: number): number {
+  return a + b;
+}
+
+const CONDENSE_THRESHOLD = 650;
+const CONDENSED = true;
+const NOT_CONDENSED = false;

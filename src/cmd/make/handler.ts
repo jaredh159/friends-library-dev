@@ -12,8 +12,6 @@ import {
   ArtifactType,
   DocPrecursor,
   FileManifest,
-  PaperbackInteriorConfig,
-  EbookConfig,
   PrintSize,
 } from '@friends-library/types';
 import lintFixPath from '../../lint/lint-fix-path';
@@ -111,7 +109,7 @@ async function getTypeManifests(
     case `web-pdf`:
       return manifest.webPdf(dpc);
     case `paperback-interior`: {
-      const conf: PaperbackInteriorConfig = {
+      const conf: manifest.PaperbackInteriorConfig = {
         frontmatter: !argv.noFrontmatter,
         printSize: argv.printSize || `m`,
         condense: argv.condense,
@@ -125,7 +123,7 @@ async function getTypeManifests(
       return appEbookWithCss(dpc);
     case `mobi`:
     case `epub`: {
-      const conf: EbookConfig = {
+      const conf: manifest.EbookConfig = {
         frontmatter: !argv.noFrontmatter,
         subType: type,
         randomizeForLocalTesting: true,
