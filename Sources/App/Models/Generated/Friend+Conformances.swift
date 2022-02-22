@@ -11,7 +11,7 @@ extension Friend: ApiModel {
 
 extension Friend: DuetModel {
   static let tableName = M11.tableName
-  static var isSoftDeletable: Bool { false }
+  static var isSoftDeletable: Bool { true }
 }
 
 extension Friend {
@@ -29,6 +29,7 @@ extension Friend {
     case published
     case createdAt
     case updatedAt
+    case deletedAt
   }
 }
 
@@ -75,6 +76,8 @@ extension Friend: SQLInspectable {
         return constraint.isSatisfiedBy(.date(createdAt))
       case .updatedAt:
         return constraint.isSatisfiedBy(.date(updatedAt))
+      case .deletedAt:
+        return constraint.isSatisfiedBy(.date(deletedAt))
     }
   }
 }

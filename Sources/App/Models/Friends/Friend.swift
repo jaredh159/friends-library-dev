@@ -12,6 +12,7 @@ final class Friend: Codable {
   var published: Date?
   var createdAt = Current.date()
   var updatedAt = Current.date()
+  var deletedAt: Date?
 
   var documents = Children<Document>.notLoaded
   var residences = Children<FriendResidence>.notLoaded
