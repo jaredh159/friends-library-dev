@@ -4,6 +4,7 @@ on: push
 
 env:
   LOG_LEVEL: info
+  SWIFT_DETERMINISTIC_HASHING: true
   DATABASE_USERNAME: vapor_username
   DATABASE_PASSWORD: vapor_password
   TEST_DATABASE_NAME: vapor_database
@@ -12,6 +13,23 @@ env:
   SENDGRID_API_KEY: not-real
   SLACK_API_TOKEN: not-real
   PSQL_PATH: /usr/local/bin/psql
+  SLACK_API_TOKEN_WORKSPACE_MAIN: not-real
+  SLACK_API_TOKEN_WORKSPACE_BOT: not-real
+  DATABASE_NAME: vapor_database
+  CLOUD_STORAGE_BUCKET_URL: /not-real
+  LULU_API_ENDPOINT: /not-real
+  LULU_CLIENT_KEY: not-real
+  LULU_CLIENT_SECRET: not-real
+  STRIPE_PUBLISHABLE_KEY: not-real
+  STRIPE_SECRET_KEY: not-real
+  JARED_CONTACT_FORM_EMAIL: you@example.com
+  JASON_CONTACT_FORM_EMAIL: you@example.com
+  PARSE_USERAGENT_BIN: not-real
+  NODE_BIN: not-real
+  LOCATION_API_KEY: not-real
+  SELF_URL: /not-real
+  WEBSITE_URL_EN: /not-real
+  WEBSITE_URL_ES: /not-real
 
 jobs:
   linux:
