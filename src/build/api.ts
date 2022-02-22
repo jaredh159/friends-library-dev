@@ -16,6 +16,14 @@ type EditionEntities = DocumentEntities & {
 
 let cachedFriends: Friend[] | null = null;
 
+// where might this build?
+// -------------------------
+// locally for dev
+// locally -> staging
+// locally -> prod
+// github action -> staging
+// github action -> prod
+
 export async function queryFriends(): Promise<Friend[]> {
   if (cachedFriends) return cachedFriends;
   const TOKEN = env.requireVar(`EVANS_BUILD_FLP_API_TOKEN`);

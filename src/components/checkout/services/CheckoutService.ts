@@ -131,7 +131,7 @@ export default class CheckoutService {
   }
 
   private createOrderArgs(): Parameters<InstanceType<typeof CheckoutApi>['createOrder']> {
-    const { shipping, taxes, ccFeeOffset } = this.metadata;
+    const { shipping, taxes, ccFeeOffset, fees } = this.metadata;
     if (!this.cart.address) throw new Error(`Missing address`);
     const items = this.cart.items
       .filter((i) => i.quantity > 0)
@@ -150,6 +150,7 @@ export default class CheckoutService {
       shipping,
       taxes,
       ccFeeOffset,
+      fees,
       email: this.cart.email!,
       shippingLevel: this.shippingLevel,
       addressName: this.cart.address.name,

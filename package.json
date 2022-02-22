@@ -27,7 +27,7 @@
     "xgraphql:codegen": "flp-gql-codegen --convert-dates-to-string",
     "pregraphql:codegen": "mv src/build/schema.{graphql,txt}; true",
     "postgraphql:codegen": "mv src/build/schema.{txt,graphql}",
-    "graphql:codegen": "node /Users/jared/fl/libs/db/scripts/codegen.js --convert-dates-to-string"
+    "graphql:codegen": "flp-gql-codegen --convert-dates-to-string"
   },
   "dependencies": {
     "@friends-library/cover-component": "^3.1.5",
