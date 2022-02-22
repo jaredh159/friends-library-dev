@@ -30,7 +30,7 @@ enum HTTP {
     let encoder = JSONEncoder()
     encoder.keyEncodingStrategy = keyEncodingStrategy
     request.httpBody = try encoder.encode(body)
-    return try convertResponse(try await URLSession.shared.data(for: request))
+    return try convertResponse(try await data(for: request))
   }
 
   static func postJson<Body: Encodable, Response: Decodable>(
@@ -62,7 +62,7 @@ enum HTTP {
     request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
     let query = params.map { key, value in "\(key)=\(value)" }.joined(separator: "&")
     request.httpBody = query.data(using: .utf8)
-    return try convertResponse(await URLSession.shared.data(for: request))
+    return try convertResponse(await data(for: request))
   }
 
   static func get(
@@ -71,7 +71,7 @@ enum HTTP {
     auth: AuthType? = nil
   ) async throws -> (Data, HTTPURLResponse) {
     let request = try urlRequest(to: urlString, method: .get, headers: headers, auth: auth)
-    return try convertResponse(await URLSession.shared.data(for: request))
+    return try convertResponse(await data(for: request))
   }
 
   static func get<T: Decodable>(
@@ -91,7 +91,7 @@ enum HTTP {
     auth: AuthType? = nil
   ) async throws -> (Data, HTTPURLResponse) {
     let request = try urlRequest(to: urlString, method: .post, headers: headers, auth: auth)
-    return try convertResponse(await URLSession.shared.data(for: request))
+    return try convertResponse(await data(for: request))
   }
 
   static func post<T: Decodable>(
@@ -130,6 +130,7 @@ enum HttpError: Error, LocalizedError {
   case base64EncodingFailed
   case decodingError(Error, String)
   case unexpectedResponseType
+  case missingDataOrResponse
 
   var errorDescription: String? {
     switch self {
@@ -141,6 +142,8 @@ enum HttpError: Error, LocalizedError {
         return "JSON decoding failed. Error=\(error), Raw=\(raw)"
       case .unexpectedResponseType:
         return "Unexpected response type, could not convert to HTTPURLResponse"
+      case .missingDataOrResponse:
+        return "Unexpectedly missing data or response"
     }
   }
 }
@@ -201,5 +204,24 @@ private func decode<T: Decodable>(
     return try decoder.decode(T.self, from: data)
   } catch {
     throw HttpError.decodingError(error, String(data: data, encoding: .utf8) ?? "")
+  }
+}
+
+// corelibsfoundation on Linux doesn't support URLSession.data(for:) async method,
+// so recreating it here -- once this is no longer a limitation, remove and switch
+// back just calling URLSession.shared.data(for:)
+private func data(for request: URLRequest) async throws -> (Data, URLResponse) {
+  try await withCheckedThrowingContinuation { continuation in
+    URLSession.shared.dataTask(with: request) { data, response, err in
+      if let err = err {
+        continuation.resume(throwing: err)
+        return
+      }
+      guard let data = data, let response = response else {
+        continuation.resume(throwing: HttpError.missingDataOrResponse)
+        return
+      }
+      continuation.resume(returning: (data, response))
+    }.resume()
   }
 }
