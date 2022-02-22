@@ -64,7 +64,7 @@ export const EditToken: React.FC<Props> = ({ token: initialToken }) => {
           onChange={() => {}}
         />
         <TextInput
-          className="w-[35%]"
+          className="w-[31%]"
           type="text"
           label="Created:"
           value={token.createdAt}
