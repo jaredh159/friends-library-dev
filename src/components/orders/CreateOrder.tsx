@@ -8,28 +8,20 @@ import {
   CheckCircleIcon,
   CloudUploadIcon,
 } from '@heroicons/react/solid';
-import Loading from './Loading';
-import * as api from '../lib/api';
-import type { Edition, OrderAddress, OrderItem, Result } from '../types';
+import * as orders from '../../lib/api/orders';
+import type { OrderAddress, OrderItem } from '../../types';
 import SelectBook from './SelectBook';
-import EmptyWell from './EmptyWell';
-import PillButton from './PillButton';
-import TextInput from './TextInput';
-import LabeledSelect from './LabeledSelect';
-import COUNTRIES from '../lib/countries';
-import * as price from '../lib/price';
-import Button from './Button';
-import InfoMessage from './InfoMessage';
+import EmptyWell from '../EmptyWell';
+import PillButton from '../PillButton';
+import TextInput from '../TextInput';
+import LabeledSelect from '../LabeledSelect';
+import COUNTRIES from '../../lib/countries';
+import * as price from '../../lib/price';
+import Button from '../Button';
+import InfoMessage from '../InfoMessage';
 
 const CreateOrder: React.FC = () => {
-  let initialEditions: Edition[] | null = null;
-  const storedEditionsJson: string | null = sessionStorage.getItem(`editions`);
-  if (storedEditionsJson) {
-    initialEditions = JSON.parse(storedEditionsJson);
-  }
-
   const [selectingBook, setSelectingBook] = useState(false);
-  const [editions, setEditions] = useState<Edition[] | null>(initialEditions);
   const [items, setItems] = useState<OrderItem[]>([]);
   const [checkingAddress, setCheckingAddress] = useState(false);
   const [submittingOrder, setSubmittingOrder] = useState(false);
@@ -43,52 +35,34 @@ const CreateOrder: React.FC = () => {
     const requestId = query.get(`request`);
     if (!requestId) return;
     setRequestId(requestId);
-    api.getFreeOrderRequest(requestId).then((result) => {
+    orders.getFreeOrderRequest(requestId).then((result) => {
       if (!result.success) {
         alert(`Failed to retrieve order data for id=${requestId}`);
         return;
       }
       setEmail(result.value.email);
-      setAddress(result.value);
+      setAddress(result.value.address);
     });
   }, []);
 
-  useEffect(() => {
-    if (editions === null) {
-      api.getEditions().then((editions) => {
-        sessionStorage.setItem(`editions`, JSON.stringify(editions));
-        setEditions(editions);
-      });
-    }
-  }, [editions]);
-
-  if (editions === null) {
-    return (
-      <div className="w-full h-screen flex items-center justify-center">
-        <Loading />
-      </div>
-    );
-  }
-
   if (selectingBook) {
     return (
-      <Wrap>
+      <Constrained to={`w-[550px]`}>
         <SelectBook
-          editions={editions}
           onCancel={() => setSelectingBook(false)}
           onSelect={(item) => {
             setItems([...items, item]);
             setSelectingBook(false);
           }}
         />
-      </Wrap>
+      </Constrained>
     );
   }
 
   const addressIsValid = addressValid(address, email);
 
   return (
-    <Wrap>
+    <Constrained to={`w-[550px]`}>
       <h1 className="text-flprimary font-sans font-bold text-3xl uppercase text-center antialiased">
         Create Order
       </h1>
@@ -115,7 +89,7 @@ const CreateOrder: React.FC = () => {
                     {item.author}
                   </h4>
                 </div>
-                <div className="flex-grow pr-4 grow flex justify-end space-x-4">
+                <div className="flex-grow pr-4 flex justify-end space-x-4">
                   <div className="flex items-center space-x-1.5">
                     <code className="antialiased select-none">{item.quantity}</code>
                     <div className="flex flex-col -translate-y-0.5 select-none">
@@ -162,7 +136,6 @@ const CreateOrder: React.FC = () => {
           <TextInput
             type="text"
             label="Name"
-            subtle
             placeholder="John Doe"
             value={address.name}
             onChange={(newValue) => setAddress({ ...address, name: newValue })}
@@ -170,7 +143,6 @@ const CreateOrder: React.FC = () => {
           <TextInput
             type="email"
             label="Email"
-            subtle
             placeholder="you@example.com  —  tracking links will be sent here"
             value={email}
             onChange={(newValue) => setEmail(newValue)}
@@ -178,7 +150,6 @@ const CreateOrder: React.FC = () => {
           <TextInput
             type="text"
             label="Address"
-            subtle
             placeholder="Street Address, P.O. Box, C/O"
             value={address.street}
             isValid={(val) => val.length <= 30}
@@ -189,7 +160,6 @@ const CreateOrder: React.FC = () => {
             type="text"
             label="Address (continued)"
             placeholder="Apartment, suite, unit, etc"
-            subtle
             optional
             isValid={(val) => val.length <= 30}
             invalidMessage="Must be 30 characters or less"
@@ -200,7 +170,6 @@ const CreateOrder: React.FC = () => {
             type="text"
             label="City"
             placeholder="City"
-            subtle
             value={address.city}
             onChange={(newValue) => setAddress({ ...address, city: newValue })}
           />
@@ -208,7 +177,6 @@ const CreateOrder: React.FC = () => {
             type="text"
             label="State"
             placeholder="State / Province / Region"
-            subtle
             value={address.state}
             onChange={(newValue) => setAddress({ ...address, state: newValue })}
           />
@@ -216,7 +184,6 @@ const CreateOrder: React.FC = () => {
             type="text"
             label="Zip"
             placeholder="Zip / Postal Code"
-            subtle
             value={address.zip}
             onChange={(newValue) => setAddress({ ...address, zip: newValue })}
           />
@@ -229,7 +196,6 @@ const CreateOrder: React.FC = () => {
           <TextInput
             type="text"
             label="Request ID"
-            subtle
             optional
             placeholder="12034482-5410-4db7-a9f3-c12f34565a55"
             value={requestId}
@@ -246,9 +212,7 @@ const CreateOrder: React.FC = () => {
             onClick={async () => {
               if (!addressIsValid) return;
               setCheckingAddress(true);
-              const checkResult = await api.getPrintJobFees(address, [
-                { pages: [100], printSize: `m`, quantity: 1 },
-              ]);
+              const checkResult = await orders.isAddressValid(address);
               setCheckingAddress(false);
               setTimeout(() => {
                 if (checkResult.success) {
@@ -269,8 +233,7 @@ const CreateOrder: React.FC = () => {
           fullWidth
           onClick={async () => {
             setSubmittingOrder(true);
-            const token = localStorage.getItem(`token`) ?? ``;
-            const result = await api.createOrder(address, items, email, requestId, token);
+            const result = await orders.createOrder(address, items, email, requestId);
             setSubmittingOrder(false);
             setSubmitResult(result);
             if (result.success) {
@@ -302,19 +265,11 @@ const CreateOrder: React.FC = () => {
           </InfoMessage>
         )}
       </div>
-    </Wrap>
+    </Constrained>
   );
 };
 
 export default CreateOrder;
-
-const Wrap: React.FC = ({ children }) => {
-  return (
-    <div className="flex flex-col items-center p-12" style={{ minHeight: `100vh` }}>
-      <div className="w-1/2 min-w-[600px]">{children}</div>
-    </div>
-  );
-};
 
 const countries = Object.entries(COUNTRIES);
 
@@ -374,3 +329,9 @@ function emptyAddress(): OrderAddress {
     country: `US`,
   };
 }
+
+const Constrained: React.FC<{ to: string }> = ({ to, children }) => (
+  <div className="flex justify-center">
+    <div className={to}>{children}</div>
+  </div>
+);

@@ -1,0 +1,107 @@
+import React, { useState } from 'react';
+import { ExclamationIcon, CheckCircleIcon } from '@heroicons/react/solid';
+import { EditableAudio, EditableAudioPart, ReducerReplace } from '../../types';
+import LabeledSelect from '../LabeledSelect';
+import LabeledToggle from '../LabeledToggle';
+import TextInput from '../TextInput';
+import NestedCollection from './NestedCollection';
+import * as nonEmptyIntArray from './non-empty-int-array';
+import * as empty from '../../lib/empty';
+
+interface AudioProps {
+  audio: EditableAudio;
+  replace: ReducerReplace;
+}
+
+export const EditAudio: React.FC<AudioProps> = ({ audio, replace }) => (
+  <div className="bg-white rounded-lg pt-2 pb-3 px-3">
+    <label className="label pb-2">Audio:</label>
+    <div className="flex space-x-4 pl-4">
+      <LabeledSelect
+        label="Reader:"
+        className="flex-grow"
+        selected={audio.reader}
+        setSelected={replace(`reader`)}
+        options={[
+          [`Jessie Henderson`, `Jessie Henderson`],
+          [`Jason R. Henderson`, `Jason R. Henderson`],
+          [`Keren Alvaredo`, `Keren Alvaredo`],
+          [`Josué Rodriguez`, `Josué Rodriguez`],
+          [`Jared Henderson`, `Jared Henderson`],
+          [`Ryan McMaster`, `Ryan McMaster`],
+        ]}
+      />
+      <LabeledToggle
+        label="Incomplete:"
+        enabled={audio.isIncomplete}
+        setEnabled={replace(`isIncomplete`)}
+      />
+      <div className="w-[25%] items-center justify-center flex">
+        <div className="flex items-center mt-6">
+          {audio.m4bSizeHq === 0 ? (
+            <>
+              <ExclamationIcon className="text-gray-400 mr-1.5 w-[19px] h-[19px]" />
+              <span className="text-sm font-light text-gray-500">Not published</span>
+            </>
+          ) : (
+            <>
+              <CheckCircleIcon className="text-flprimary mr-1.5 w-[19px] h-[19px]" />
+              <span className="label">Published</span>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+    <NestedCollection
+      label="Part"
+      items={audio.parts}
+      onAdd={() => replace(`parts`)([...audio.parts].concat(empty.audioPart(audio)))}
+      onDelete={(index) => {
+        const parts = [...audio.parts.filter((_, partIndex) => index !== partIndex)];
+        replace(`parts`)(parts);
+      }}
+      renderItem={(item, index) => (
+        <EditAudioPart
+          part={item}
+          replace={(path, preprocess) => replace(`parts[${index}].${path}`, preprocess)}
+        />
+      )}
+    />
+  </div>
+);
+
+interface AudioPartProps {
+  part: EditableAudioPart;
+  replace: ReducerReplace;
+}
+
+export const EditAudioPart: React.FC<AudioPartProps> = ({ part, replace }) => {
+  const [chapters, setChapters] = useState(JSON.stringify(part.chapters));
+  const updateChapters = nonEmptyIntArray.makeUpdater(setChapters, replace(`chapters`));
+  return (
+    <div className="flex space-x-4">
+      <TextInput
+        label="Title:"
+        type="text"
+        className="w-[75%]"
+        value={part.title}
+        onChange={replace(`title`)}
+      />
+      <TextInput
+        type="text"
+        label="Chapters:"
+        value={chapters}
+        isValid={nonEmptyIntArray.makeValidator({ canBeNull: false })}
+        onChange={updateChapters}
+      />
+      <TextInput
+        type="number"
+        label="Order:"
+        className="w-1/6"
+        value={String(part.order)}
+        isValid={(input) => Number.isInteger(Number(input))}
+        onChange={replace(`order`, Number)}
+      />
+    </div>
+  );
+};

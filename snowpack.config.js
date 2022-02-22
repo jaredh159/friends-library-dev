@@ -7,6 +7,7 @@ module.exports = {
   plugins: [`@snowpack/plugin-postcss`, `@snowpack/plugin-dotenv`],
   packageOptions: {
     types: true,
+    knownEntryPoints: [`@apollo/client/link/context`],
   },
   devOptions: {
     port: 5757,

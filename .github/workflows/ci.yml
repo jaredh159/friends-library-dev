@@ -3,9 +3,7 @@ name: basic-ci
 on: push
 
 env:
-  SNOWPACK_PUBLIC_FLP_REST_API_ENDPOINT: http://notreal.com
   SNOWPACK_PUBLIC_FLP_GRAPHQL_API_ENDPOINT: http://notreal.com
-  SNOWPACK_PUBLIC_PRINT_JOB_FEES_ENDPOINT: http://notreal.com
 
 jobs:
   ci:
