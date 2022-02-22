@@ -86,7 +86,6 @@ extension OrderItem {
   }
 }
 
-// @TODO this will be replaced last minute with final export data
 extension HandleEditionIds {
   var editionIdMigrationMap: [String: String] {
     [

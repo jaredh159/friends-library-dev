@@ -9,5 +9,3 @@ extension Graphiti.Field {
   typealias ToOptionalParent<M: ApiModel> = WritableKeyPath<ObjectType, OptionalParent<M>>
   typealias ToParent<M: ApiModel> = WritableKeyPath<ObjectType, Parent<M>>
 }
-
-// helpers

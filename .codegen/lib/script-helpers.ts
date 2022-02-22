@@ -1,10 +1,9 @@
-import { DbClientProps, GlobalTypes } from './types';
+import { GlobalTypes } from './types';
 import path from 'path';
 import fs from 'fs';
 import { sync as glob } from 'glob';
 import { extractGlobalTypes, extractModels } from './models/model-attrs';
 import Model from './models/Model';
-import { extractClientProps, repositories } from './db-client';
 
 type ScriptData = {
   isDryRun: boolean;
@@ -13,7 +12,6 @@ type ScriptData = {
   files: Array<{ path: string; source: string }>;
   types: GlobalTypes;
   models: Model[];
-  repositories: string[];
 };
 
 export function requireModel(
@@ -58,7 +56,6 @@ export function scriptData(): ScriptData & { model?: Model } {
     types,
     models,
     model,
-    repositories: repositories(files),
   };
 }
 

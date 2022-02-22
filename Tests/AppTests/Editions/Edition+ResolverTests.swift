@@ -10,7 +10,7 @@ final class EditionResolverTests: AppTestCase {
     try await Current.db.deleteAll(Edition.self)
     try await Current.db.create(isbn)
     let entities = await Entities.create()
-    _ = try await Current.db.delete(entities.edition.id)
+    _ = try await Current.db.delete(entities.edition.id, force: true)
     let edition: Edition = .random
     edition.documentId = entities.document.id
     let map = edition.gqlMap()
