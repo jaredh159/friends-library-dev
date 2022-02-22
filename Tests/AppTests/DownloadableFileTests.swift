@@ -27,6 +27,7 @@ final class DownloadableFileTests: AppTestCase {
   }
 
   func testPodcastAgentsIdentifiedAsPodcast() async throws {
+    guard Vapor.Environment.get("CI") == nil else { return }
     let userAgents = [
       "lol podcasts",
       "Apple Podcasts",
@@ -49,6 +50,7 @@ final class DownloadableFileTests: AppTestCase {
   }
 
   func testBotDownload() async throws {
+    guard Vapor.Environment.get("CI") == nil else { return }
     let botUa = "GoogleBot"
     let file = DownloadableFile(edition: edition, format: .ebook(.epub))
     let res = try await logAndRedirect(file: file, userAgent: botUa)
@@ -61,6 +63,7 @@ final class DownloadableFileTests: AppTestCase {
   }
 
   func testDownloadHappyPathNoLocationFound() async throws {
+    guard Vapor.Environment.get("CI") == nil else { return }
     Current.ipApiClient.getIpData = { _ in throw "whoops" }
     let userAgent = "FriendsLibrary".random
     let device = UserAgentDeviceData(userAgent: userAgent)
@@ -92,6 +95,7 @@ final class DownloadableFileTests: AppTestCase {
   }
 
   func testDownloadHappyPathLocationFound() async throws {
+    guard Vapor.Environment.get("CI") == nil else { return }
     Current.ipApiClient.getIpData = { ip in
       XCTAssertEqual(ip, "1.2.3.4")
       return .init(
@@ -136,6 +140,7 @@ final class DownloadableFileTests: AppTestCase {
   }
 
   func testAppUaIsNotCountedAsBot() async throws {
+    guard Vapor.Environment.get("CI") == nil else { return }
     let userAgent = "FriendsLibrary GoogleBot".random
     let file = DownloadableFile(edition: edition, format: .ebook(.epub))
     _ = try await logAndRedirect(file: file, userAgent: userAgent)
