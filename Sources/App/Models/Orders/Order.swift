@@ -10,6 +10,7 @@ final class Order: Codable {
   var printJobStatus: PrintJobStatus
   var amount: Cents<Int>
   var taxes: Cents<Int>
+  var fees: Cents<Int>
   var ccFeeOffset: Cents<Int>
   var shipping: Cents<Int>
   var shippingLevel: ShippingLevel
@@ -49,6 +50,7 @@ final class Order: Codable {
     printJobStatus: PrintJobStatus,
     amount: Cents<Int>,
     taxes: Cents<Int>,
+    fees: Cents<Int>,
     ccFeeOffset: Cents<Int>,
     shipping: Cents<Int>,
     shippingLevel: ShippingLevel,
@@ -70,6 +72,7 @@ final class Order: Codable {
     self.printJobStatus = printJobStatus
     self.amount = amount
     self.taxes = taxes
+    self.fees = fees
     self.ccFeeOffset = ccFeeOffset
     self.shipping = shipping
     self.shippingLevel = shippingLevel
@@ -97,6 +100,7 @@ extension Order {
     printJobStatus: PrintJobStatus,
     amount: Cents<Int>,
     taxes: Cents<Int>,
+    fees: Cents<Int>,
     ccFeeOffset: Cents<Int>,
     shipping: Cents<Int>,
     shippingLevel: ShippingLevel,
@@ -113,6 +117,7 @@ extension Order {
       printJobStatus: printJobStatus,
       amount: amount,
       taxes: taxes,
+      fees: fees,
       ccFeeOffset: ccFeeOffset,
       shipping: shipping,
       shippingLevel: shippingLevel,

@@ -23,6 +23,7 @@ extension Order {
     case printJobStatus
     case amount
     case taxes
+    case fees
     case ccFeeOffset
     case shipping
     case shippingLevel
@@ -51,6 +52,7 @@ extension Order {
       .printJobStatus: .enum(printJobStatus),
       .amount: .int(amount.rawValue),
       .taxes: .int(taxes.rawValue),
+      .fees: .int(fees.rawValue),
       .ccFeeOffset: .int(ccFeeOffset.rawValue),
       .shipping: .int(shipping.rawValue),
       .shippingLevel: .enum(shippingLevel),
@@ -88,6 +90,8 @@ extension Order: SQLInspectable {
         return constraint.isSatisfiedBy(.int(amount.rawValue))
       case .taxes:
         return constraint.isSatisfiedBy(.int(taxes.rawValue))
+      case .fees:
+        return constraint.isSatisfiedBy(.int(fees.rawValue))
       case .ccFeeOffset:
         return constraint.isSatisfiedBy(.int(ccFeeOffset.rawValue))
       case .shipping:

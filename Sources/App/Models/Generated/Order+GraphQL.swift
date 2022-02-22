@@ -13,6 +13,7 @@ extension AppSchema {
       Field("printJobStatus", at: \.printJobStatus)
       Field("amount", at: \.amount.rawValue)
       Field("taxes", at: \.taxes.rawValue)
+      Field("fees", at: \.fees.rawValue)
       Field("ccFeeOffset", at: \.ccFeeOffset.rawValue)
       Field("shipping", at: \.shipping.rawValue)
       Field("shippingLevel", at: \.shippingLevel)
@@ -42,6 +43,7 @@ extension AppSchema {
     let printJobStatus: Order.PrintJobStatus
     let amount: Int
     let taxes: Int
+    let fees: Int
     let ccFeeOffset: Int
     let shipping: Int
     let shippingLevel: Order.ShippingLevel
@@ -65,6 +67,7 @@ extension AppSchema {
     let printJobStatus: Order.PrintJobStatus
     let amount: Int
     let taxes: Int
+    let fees: Int
     let ccFeeOffset: Int
     let shipping: Int
     let shippingLevel: Order.ShippingLevel
@@ -89,6 +92,7 @@ extension AppSchema {
       InputField("printJobStatus", at: \.printJobStatus)
       InputField("amount", at: \.amount)
       InputField("taxes", at: \.taxes)
+      InputField("fees", at: \.fees)
       InputField("ccFeeOffset", at: \.ccFeeOffset)
       InputField("shipping", at: \.shipping)
       InputField("shippingLevel", at: \.shippingLevel)
@@ -114,6 +118,7 @@ extension AppSchema {
       InputField("printJobStatus", at: \.printJobStatus)
       InputField("amount", at: \.amount)
       InputField("taxes", at: \.taxes)
+      InputField("fees", at: \.fees)
       InputField("ccFeeOffset", at: \.ccFeeOffset)
       InputField("shipping", at: \.shipping)
       InputField("shippingLevel", at: \.shippingLevel)
@@ -181,6 +186,7 @@ extension Order {
       printJobStatus: input.printJobStatus,
       amount: .init(rawValue: input.amount),
       taxes: .init(rawValue: input.taxes),
+      fees: .init(rawValue: input.fees),
       ccFeeOffset: .init(rawValue: input.ccFeeOffset),
       shipping: .init(rawValue: input.shipping),
       shippingLevel: input.shippingLevel,
@@ -207,6 +213,7 @@ extension Order {
       printJobStatus: input.printJobStatus,
       amount: .init(rawValue: input.amount),
       taxes: .init(rawValue: input.taxes),
+      fees: .init(rawValue: input.fees),
       ccFeeOffset: .init(rawValue: input.ccFeeOffset),
       shipping: .init(rawValue: input.shipping),
       shippingLevel: input.shippingLevel,
@@ -231,6 +238,7 @@ extension Order {
     printJobStatus = input.printJobStatus
     amount = .init(rawValue: input.amount)
     taxes = .init(rawValue: input.taxes)
+    fees = .init(rawValue: input.fees)
     ccFeeOffset = .init(rawValue: input.ccFeeOffset)
     shipping = .init(rawValue: input.shipping)
     shippingLevel = input.shippingLevel
