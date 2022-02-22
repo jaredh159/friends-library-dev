@@ -8,8 +8,6 @@ struct AddTokenScopes: AsyncMigration {
     try await addDbEnumCases(db: database, enumName: TokenScope.M5.dbEnumName, newCases: [
       TokenScope.M24.Scope.caseAll,
       TokenScope.M24.Scope.caseQueryArtifactProductionVersions,
-      TokenScope.M24.Scope.caseQueryCoverProps,
-      TokenScope.M24.Scope.caseMutateCoverProps,
       TokenScope.M24.Scope.caseQueryEntities,
       TokenScope.M24.Scope.caseMutateEntities,
       TokenScope.M24.Scope.caseQueryTokens,
@@ -28,8 +26,6 @@ extension TokenScope {
     enum Scope {
       static let caseAll = "all"
       static let caseQueryArtifactProductionVersions = "queryArtifactProductionVersions"
-      static let caseQueryCoverProps = "queryCoverProps"
-      static let caseMutateCoverProps = "mutateCoverProps"
       static let caseQueryEntities = "queryEntities"
       static let caseMutateEntities = "mutateEntities"
       static let caseQueryTokens = "queryTokens"

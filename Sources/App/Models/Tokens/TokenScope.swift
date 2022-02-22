@@ -10,8 +10,6 @@ enum Scope: String, Codable, CaseIterable, Equatable {
   case mutateArtifactProductionVersions
   case queryEntities
   case mutateEntities
-  case queryCoverProps
-  case mutateCoverProps
   case queryTokens
   case mutateTokens
 }
