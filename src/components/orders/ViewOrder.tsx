@@ -92,17 +92,19 @@ export const ViewOrder: React.FC<Props> = ({ order }) => {
               <ListItem label="Subtotal:">
                 {money(
                   order.items.reduce(
-                    (acc, item) => acc + item.unitPrice * item.quantity,
+                    (acc, item) => acc + item.unitPriceInCents * item.quantity,
                     0,
                   ),
                 )}
-                {` `}
               </ListItem>
-              <ListItem label="Shipping:">{money(order.shipping)}</ListItem>
-              <ListItem label="Taxes:">{money(order.taxes)} </ListItem>
-              <ListItem label="CC Fee Offset:">{money(order.ccFeeOffset)}</ListItem>
+              <ListItem label="Shipping:">{money(order.shippingInCents)}</ListItem>
+              <ListItem label="Taxes:">{money(order.taxesInCents)} </ListItem>
+              <ListItem label="Other fees:">{money(order.feesInCents)} </ListItem>
+              <ListItem label="CC Fee Offset:">
+                {money(order.ccFeeOffsetInCents)}
+              </ListItem>
               <ListItem label="Total:">
-                <b>{money(order.amount)}</b>
+                <b>{money(order.amountInCents)}</b>
               </ListItem>
             </ul>
           </div>
@@ -140,7 +142,7 @@ export const ViewOrder: React.FC<Props> = ({ order }) => {
                 </div>
                 <div className="flex">
                   <span className="label pr-1.5">Price:</span>
-                  <div className="subtle-text">{money(item.unitPrice)}</div>
+                  <div className="subtle-text">{money(item.unitPriceInCents)}</div>
                 </div>
               </div>
             </div>
@@ -170,12 +172,12 @@ const QUERY_ORDER = gql`
       id
       printJobStatus
       printJobId
-      amount
-      shipping
-      taxes
-      ccFeeOffset
+      amountInCents
+      shippingInCents
+      taxesInCents
+      ccFeeOffsetInCents
+      feesInCents
       paymentId
-      # fees # TODO
       email
       address {
         name
@@ -192,7 +194,7 @@ const QUERY_ORDER = gql`
       items {
         id
         quantity
-        unitPrice
+        unitPriceInCents
         edition {
           type
           document {

@@ -59,7 +59,7 @@ export interface ViewOrder_order_items {
   __typename: 'OrderItem';
   id: string;
   quantity: number;
-  unitPrice: number;
+  unitPriceInCents: number;
   edition: ViewOrder_order_items_edition;
 }
 
@@ -68,10 +68,11 @@ export interface ViewOrder_order {
   id: string;
   printJobStatus: PrintJobStatus;
   printJobId: number | null;
-  amount: number;
-  shipping: number;
-  taxes: number;
-  ccFeeOffset: number;
+  amountInCents: number;
+  shippingInCents: number;
+  taxesInCents: number;
+  ccFeeOffsetInCents: number;
+  feesInCents: number;
   paymentId: string;
   email: string;
   address: ViewOrder_order_address;

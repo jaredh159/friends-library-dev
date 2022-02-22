@@ -55,6 +55,7 @@ export async function createOrder(
     amount: totalCents,
     shipping: shippingInCents,
     taxes: taxesInCents,
+    fees: feesInCents,
     ccFeeOffset: 0, // it's our own credit card, so no need to offset
     printJobStatus: PrintJobStatus.presubmit,
     shippingLevel,

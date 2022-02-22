@@ -190,6 +190,7 @@ export interface CreateOrderInput {
   amount: number;
   ccFeeOffset: number;
   email: string;
+  fees: number;
   freeOrderRequestId?: UUID | null;
   id?: UUID | null;
   lang: Lang;

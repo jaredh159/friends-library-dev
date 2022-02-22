@@ -26,7 +26,7 @@ export const ListOrders: React.FC<Props> = ({ orders }) => {
           <span className="subtle-text capitalize">
             {order.addressName.toLocaleLowerCase()}
           </span>
-          <span className="label">{money(order.amount)}</span>
+          <span className="label">{money(order.amountInCents)}</span>
           {order.source === OrderSource.internal && (
             <span className="text-[10px] px-2 py-px bg-flgreen/75 text-white antialiased font-light uppercase rounded-lg">
               free
@@ -56,7 +56,7 @@ const QUERY = gql`
   query ListOrders {
     orders: getOrders {
       id
-      amount
+      amountInCents
       addressName
       printJobStatus
       source

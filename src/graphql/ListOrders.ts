@@ -12,7 +12,7 @@ import { PrintJobStatus, OrderSource } from './globalTypes';
 export interface ListOrders_orders {
   __typename: 'Order';
   id: string;
-  amount: number;
+  amountInCents: number;
   addressName: string;
   printJobStatus: PrintJobStatus;
   source: OrderSource;
