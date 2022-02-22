@@ -33,7 +33,7 @@ final class SendTrackingEmailsTests: AppTestCase {
     XCTAssertEqual(retrieved.printJobStatus, .shipped)
     XCTAssertEqual(sent.emails.count, 1)
     XCTAssertEqual(sent.emails.first?.firstRecipient.email, "foo@bar.com")
-    XCTAssert(sent.emails.first?.html.contains("/track/me") == true)
+    XCTAssert(sent.emails.first?.text.contains("/track/me") == true)
     XCTAssertEqual(sent.slacks, [.order("Order \(order.id.lowercased) shipped")])
   }
 

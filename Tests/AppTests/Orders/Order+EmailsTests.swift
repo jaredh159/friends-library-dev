@@ -25,10 +25,10 @@ final class OrderEmailsTests: AppTestCase {
 
     XCTAssertEqual(email.from, .init(email: "noreply@friendslibrary.com", name: "Friends Library"))
     XCTAssertEqual("[,] Friends Library Order Shipped", email.subject)
-    XCTAssertTrue(email.html.hasPrefix("Bob,"))
-    XCTAssertTrue(email.html.contains("(\(order.id.lowercased))"))
-    XCTAssertTrue(email.html.contains("* (1) \(docTitle)"))
-    XCTAssertTrue(email.html.contains("/track/123"))
+    XCTAssertTrue(email.text.hasPrefix("Bob,"))
+    XCTAssertTrue(email.text.contains("(\(order.id.lowercased))"))
+    XCTAssertTrue(email.text.contains("* (1) \(docTitle)"))
+    XCTAssertTrue(email.text.contains("/track/123"))
   }
 
   func testSpanishShippedEmail() async throws {
@@ -40,10 +40,10 @@ final class OrderEmailsTests: AppTestCase {
       .init(email: "noreply@bibliotecadelosamigos.org", name: "Biblioteca de los Amigos")
     )
     XCTAssertEqual("[,] Pedido Enviado – Biblioteca de Amigos", email.subject)
-    XCTAssertTrue(email.html.hasPrefix("Bob,"))
-    XCTAssertTrue(email.html.contains("(\(order.id.lowercased))"))
-    XCTAssertTrue(email.html.contains("* (1) \(docTitle)"))
-    XCTAssertTrue(email.html.contains("/track/123"))
+    XCTAssertTrue(email.text.hasPrefix("Bob,"))
+    XCTAssertTrue(email.text.contains("(\(order.id.lowercased))"))
+    XCTAssertTrue(email.text.contains("* (1) \(docTitle)"))
+    XCTAssertTrue(email.text.contains("/track/123"))
   }
 
   func testFallbacks() async throws {
@@ -53,9 +53,9 @@ final class OrderEmailsTests: AppTestCase {
     esOrder.addressName = ""
     let enEmail = try await EmailBuilder.orderShipped(enOrder, trackingUrl: nil)
     let esEmail = try await EmailBuilder.orderShipped(esOrder, trackingUrl: nil)
-    XCTAssertTrue(enEmail.html.hasPrefix("Hello!"))
-    XCTAssertTrue(esEmail.html.hasPrefix("¡Hola!"))
-    XCTAssertTrue(enEmail.html.contains("<em>Sorry, not available</em>"))
-    XCTAssertTrue(esEmail.html.contains("<em>Lo sentimos, no disponible</em>"))
+    XCTAssertTrue(enEmail.text.hasPrefix("Hello!"))
+    XCTAssertTrue(esEmail.text.hasPrefix("¡Hola!"))
+    XCTAssertTrue(enEmail.text.contains("<em>Sorry, not available</em>"))
+    XCTAssertTrue(esEmail.text.contains("<em>Lo sentimos, no disponible</em>"))
   }
 }
