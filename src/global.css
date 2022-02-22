@@ -3,11 +3,15 @@
 @tailwind utilities;
 
 .subtle-text {
-  @apply block text-sm font-light select-none;
+  @apply text-sm font-light select-none;
 }
 
 .label {
-  @apply text-flprimary-600 subtle-text;
+  @apply block text-flprimary-600 subtle-text antialiased;
+}
+
+.serif {
+  font-family: Baskerville, Georgia, 'Times New Roman', Times, serif;
 }
 
 .NestedCollection .NestedCollection.open,

@@ -37,9 +37,7 @@ const ListTokens: React.FC<Props> = ({ tokens }) => {
             </span>
 
             <span className="label pl-2">Description:</span>
-            <span className="subtle-text antialiased flex-grow truncate">
-              {token.description}
-            </span>
+            <span className="subtle-text flex-grow truncate">{token.description}</span>
           </Link>
         );
       })}
