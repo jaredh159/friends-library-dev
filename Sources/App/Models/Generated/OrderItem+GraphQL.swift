@@ -9,7 +9,7 @@ extension AppSchema {
       Field("orderId", at: \.orderId.rawValue.lowercased)
       Field("editionId", at: \.editionId.rawValue.lowercased)
       Field("quantity", at: \.quantity)
-      Field("unitPrice", at: \.unitPrice.rawValue)
+      Field("unitPriceInCents", at: \.unitPrice.rawValue)
       Field("createdAt", at: \.createdAt)
       Field("order", with: \.order)
       Field("edition", with: \.edition)

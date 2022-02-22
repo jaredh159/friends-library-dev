@@ -82,7 +82,11 @@ export function schemaTypeFieldParts(
 ): Array<[string, string, string]> {
   const parts: Array<[string, string, string]> = model.props
     .filter((p) => p.name !== `deletedAt`)
-    .map(({ name, type }) => [name, `at`, keyPath(name, type, model, types)]);
+    .map(({ name, type }) => [
+      type === `Cents<Int>` ? `${name}InCents` : name,
+      `at`,
+      keyPath(name, type, model, types),
+    ]);
 
   for (const { name, type } of model.computedProps) {
     const fieldName = type === `Cents<Int>` ? `${name}InCents` : name;

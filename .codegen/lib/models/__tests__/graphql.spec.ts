@@ -138,7 +138,7 @@ describe(`schemaTypeFieldParts()`, () => {
     [`jimJam`, `at`, `\\.jimJam`],
     [`value`, `at`, `\\.value.rawValue.lowercased`],
     [`email`, `at`, `\\.email.rawValue`],
-    [`price`, `at`, `\\.price.rawValue`],
+    [`priceInCents`, `at`, `\\.price.rawValue`],
     [`parentId`, `at`, `\\.parentId.rawValue.lowercased`],
     [`optionalParentId`, `at`, `\\.optionalParentId?.rawValue.lowercased`],
     [`printJobId`, `at`, `\\.printJobId?.rawValue`],
@@ -184,7 +184,7 @@ describe(`generateModelGraphQLTypes()`, () => {
             Field("jimJam", at: \\.jimJam)
             Field("value", at: \\.value.rawValue.lowercased)
             Field("email", at: \\.email.rawValue)
-            Field("price", at: \\.price.rawValue)
+            Field("priceInCents", at: \\.price.rawValue)
             Field("parentId", at: \\.parentId.rawValue.lowercased)
             Field("optionalParentId", at: \\.optionalParentId?.rawValue.lowercased)
             Field("printJobId", at: \\.printJobId?.rawValue)

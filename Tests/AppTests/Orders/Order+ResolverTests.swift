@@ -32,7 +32,7 @@ final class OrderResolverTests: AppTestCase {
         source
         items {
           quantity
-          unitPrice
+          unitPriceInCents
           order {
             itemOrderId: id
           }
@@ -60,7 +60,7 @@ final class OrderResolverTests: AppTestCase {
       "lang": orderMap["lang"],
       "source": orderMap["source"],
       "quantity": itemMap["quantity"],
-      "unitPrice": itemMap["unitPrice"],
+      "unitPriceInCents": itemMap["unitPrice"],
     ])
 
     GraphQLTest(
