@@ -28,7 +28,7 @@ enum Asciidoc {
   static func trimmedUtf8ShortDocumentTitle(_ title: String, lang: Lang) -> String {
     if lang == .en {
       return
-        title
+        utf8ShortTitle(title)
           .replacingOccurrences(
             of: #"^(The|A) "#,
             with: "",
@@ -45,7 +45,7 @@ enum Asciidoc {
     if shortTitle.count < 25 { return shortTitle }
 
     return
-      title
+      shortTitle
         .replacingOccurrences(
           of: #"^Selección de(l| la) (.*)"#,
           with: "$2 (Selección)",
