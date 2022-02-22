@@ -43,7 +43,7 @@ private func sendFreeOrderRequestNotifications(
       <br />
       <br />
 
-      <a href="https://orders.friendslibrary.com?request=\(id)">
+      <a href="https://admin.friendslibrary.com/orders/new?request=\(id)">
         Create Order &raquo;
       </a>
       """

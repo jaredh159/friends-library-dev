@@ -42,8 +42,13 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.DownloadType
   AppSchema.CreateDownloadInputType
 
+  // token types
   AppSchema.TokenType
   AppSchema.TokenScopeType
+  AppSchema.CreateTokenInputType
+  AppSchema.CreateTokenScopeInputType
+  AppSchema.UpdateTokenInputType
+  AppSchema.UpdateTokenScopeInputType
 
   // order types
   AppSchema.OrderType
@@ -136,6 +141,8 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
     AppSchema.getAudio
     AppSchema.getAudios
     AppSchema.getAudioPart
+    AppSchema.getToken
+    AppSchema.getTokens
 
     Field("getLatestArtifactProductionVersion", at: Resolver.getLatestArtifactProductionVersion)
 
@@ -145,6 +152,7 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
 
     // order queries
     AppSchema.getOrder
+    AppSchema.getOrders
     AppSchema.getFreeOrderRequest
     AppSchema.getPrintJobExploratoryMetadata
   }
@@ -154,6 +162,14 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
     AppSchema.createDownload
     AppSchema.createArtifactProductionVersion
     AppSchema.logJsError
+
+    // token mutations
+    AppSchema.createToken
+    AppSchema.updateToken
+    AppSchema.deleteToken
+    AppSchema.createTokenScope
+    AppSchema.updateTokenScope
+    AppSchema.deleteTokenScope
 
     // isbn mutations
     AppSchema.createIsbn
