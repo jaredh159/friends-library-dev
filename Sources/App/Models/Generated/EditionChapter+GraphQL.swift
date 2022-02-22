@@ -15,6 +15,10 @@ extension AppSchema {
       Field("nonSequenceTitle", at: \.nonSequenceTitle)
       Field("createdAt", at: \.createdAt)
       Field("updatedAt", at: \.updatedAt)
+      Field("slug", at: \.slug)
+      Field("htmlId", at: \.htmlId)
+      Field("isSequenced", at: \.isSequenced)
+      Field("hasNonSequenceTitle", at: \.hasNonSequenceTitle)
       Field("edition", with: \.edition)
     }
   }
