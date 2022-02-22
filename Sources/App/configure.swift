@@ -6,6 +6,9 @@ import Vapor
 import VaporUtils
 
 typealias Future = EventLoopFuture
+typealias Env = Vapor.Environment
+typealias Req = Vapor.Request
+typealias NoArgs = Graphiti.NoArguments
 
 public func configure(_ app: Application) throws {
   app.middleware.use(corsMiddleware(app), at: .beginning)
@@ -13,19 +16,30 @@ public func configure(_ app: Application) throws {
   let dbPrefix = app.environment == .testing ? "TEST_" : ""
   app.databases.use(
     .postgres(
-      hostname: Environment.get("DATABASE_HOST") ?? "localhost",
-      port: Environment.get("DATABASE_PORT").flatMap(Int.init(_:))
+      hostname: Env.get("DATABASE_HOST") ?? "localhost",
+      port: Env.get("DATABASE_PORT").flatMap(Int.init(_:))
         ?? PostgresConfiguration.ianaPortNumber,
-      username: Environment.DATABASE_USERNAME,
-      password: Environment.DATABASE_PASSWORD,
-      database: Environment.get("\(dbPrefix)DATABASE_NAME")!
-    ), as: .psql)
+      username: Env.DATABASE_USERNAME,
+      password: Env.DATABASE_PASSWORD,
+      database: Env.get("\(dbPrefix)DATABASE_NAME")!
+    ),
+    as: .psql
+  )
+
+  Current.db = LiveDatabase(db: app.db as! SQLDatabase)
+  Current.logger = app.logger
 
   addMigrations(to: app)
 
+  LegacyRest.addRoutes(app)
+
+  app.get("download", "**") {
+    try await downloadFileRouteHandler(req: $0)
+  }
+
   app
     .grouped(UserAuthenticator())
-    .register(graphQLSchema: AppSchema, withResolver: Resolver())
+    .register(graphQLSchema: appSchema, withResolver: Resolver())
 
   if app.environment == .production {
     try configureScheduledJobs(app)
@@ -48,8 +62,27 @@ private func addMigrations(to app: Application) {
   app.migrations.add(AddOrderRequestId())
   app.migrations.add(CreateArtifactProductionVersion())
   app.migrations.add(AddMutateArtifactProductionVersionScope())
+  app.migrations.add(HandleEditionIds())
+  app.migrations.add(CreateFriends())
+  app.migrations.add(CreateFriendResidences())
+  app.migrations.add(CreateFriendQuotes())
+  app.migrations.add(CreateDocuments())
+  app.migrations.add(CreateTags())
+  app.migrations.add(AddShippingLevelGroundBus())
+  app.migrations.add(CreateEditions())
+  app.migrations.add(CreateEditionImpressions())
+  app.migrations.add(CreateIsbns())
+  app.migrations.add(CreateAudios())
+  app.migrations.add(CreateAudioParts())
+  app.migrations.add(CreateEditionChapters())
+  app.migrations.add(CreateRelatedDocuments())
+  app.migrations.add(AddTokenScopes())
+  app.migrations.add(CreateFriendResidenceDurations())
+  app.migrations.add(AddEditionIdForeignKeys())
+  app.migrations.add(AddTokenUses())
+  app.migrations.add(AddOrderFeesColumn())
 
-  if Environment.get("SEED_DB") == "true" || app.environment == .testing {
+  if Env.get("SEED_DB") == "true" || app.environment == .testing {
     app.migrations.add(Seed())
   }
 }
@@ -64,9 +97,9 @@ private func configureScheduledJobs(_ app: Application) throws {
 
   let backupJob = BackupJob(
     appName: "FLP",
-    dbName: Environment.DATABASE_NAME,
-    pgDumpPath: Environment.PG_DUMP_PATH,
-    sendGridApiKey: Environment.SENDGRID_API_KEY,
+    dbName: Env.DATABASE_NAME,
+    pgDumpPath: Env.PG_DUMP_PATH,
+    sendGridApiKey: Env.SENDGRID_API_KEY,
     fromEmail: .init(
       email: "notifications@graphql-api.friendslibrary.com",
       name: "FLP GraphQL"
@@ -74,6 +107,7 @@ private func configureScheduledJobs(_ app: Application) throws {
   )
 
   app.queues.schedule(backupJob).daily().at(.midnight)
+  app.queues.schedule(ProcessOrdersJob()).hourly().at(15)
 
   try app.queues.startScheduledJobs()
 }

@@ -14,9 +14,10 @@ struct Seeded {
   static let tokens = Tokens()
 }
 
-struct Seed: Migration {
+struct Seed: AsyncMigration {
 
-  func prepare(on database: Database) -> Future<Void> {
+  func prepare(on database: Database) async throws {
+    Current.logger.info("Running migration: Seeded UP")
     let tokens: [UUID: (String, [Scope])] = [
       Seeded.tokens.queryDownloads: ("queryDownloads", [.queryDownloads]),
       Seeded.tokens.mutateDownloads: ("mutateDownloads", [.mutateDownloads]),
@@ -26,33 +27,20 @@ struct Seed: Migration {
         "mutateArtifactProductionVersions",
         [.mutateArtifactProductionVersions]
       ),
-      Seeded.tokens.allScopes: (
-        "allScopes",
-        [
-          .queryDownloads,
-          .queryOrders,
-          .mutateDownloads,
-          .mutateOrders,
-          .mutateArtifactProductionVersions,
-        ]
-      ),
+      Seeded.tokens.allScopes: ("allScopes", [.all]),
     ]
 
-    var futures: [Future<Void>] = []
-
     for (tokenValue, (description, scopes)) in tokens {
-      let token = Token(value: tokenValue, description: description)
-      let future = token.create(on: database).flatMap {
-        scopes
-          .map { TokenScope(tokenId: token.id!, scope: $0) }
-          .create(on: database)
+      let token = Token(value: .init(rawValue: tokenValue), description: description)
+      token.scopes = .loaded(scopes.map { TokenScope(tokenId: token.id, scope: $0) })
+      try await Current.db.create(token)
+      for tokenScope in token.scopes.require() {
+        try await Current.db.create(tokenScope)
       }
-      futures.append(future)
     }
-    return futures.flatten(on: database.eventLoop)
   }
 
-  func revert(on database: Database) -> Future<Void> {
-    return database.eventLoop.makeSucceededVoidFuture()
+  func revert(on database: Database) async throws {
+    Current.logger.info("Running migration: Seeded DOWN")
   }
 }

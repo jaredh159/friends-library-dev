@@ -5,43 +5,54 @@ struct User: Authenticatable {
   var token: Token
 
   func hasScope(_ scope: Scope) -> Bool {
-    token.scopes.contains { $0.scope == scope }
+    switch token.scopes {
+      case .notLoaded:
+        Current.logger.error("Non-loaded token scopes in User authentication")
+        return false
+      case .loaded(let scopes):
+        return scopes.contains { $0.scope == scope || $0.scope == .all }
+    }
   }
 }
 
-struct UserAuthenticator: BearerAuthenticator {
-  func authenticate(
-    bearer: BearerAuthorization,
-    for request: Request
-  ) -> EventLoopFuture<Void> {
-    guard let tokenValue = UUID(uuidString: bearer.token) else {
-      return request.eventLoop.makeSucceededVoidFuture()
-    }
+struct UserAuthenticator: AsyncBearerAuthenticator {
 
-    return Token.query(on: request.db)
-      .with(\.$scopes)
-      .filter(\.$value == tokenValue)
-      .first()
-      .flatMap { token in
-        if let token = token {
-          request.auth.login(User(token: token))
+  func authenticate(bearer: BearerAuthorization, for request: Request) async throws {
+    guard let tokenValue = UUID(uuidString: bearer.token) else {
+      return
+    }
+    do {
+      let token = try await Current.db.query(Token.self)
+        .where(.value == tokenValue)
+        .first()
+
+      let scopes = try await Current.db.query(TokenScope.self)
+        .where(.tokenId == token.id)
+        .all()
+
+      connect(token, \.scopes, to: scopes, \.token)
+
+      // handle limited use tokens
+      if let remaining = token.uses {
+        if remaining < 2 {
+          try await Current.db.delete(token.id)
+        } else {
+          token.uses = remaining - 1
+          try await Current.db.update(token)
         }
-        return request.eventLoop.makeSucceededVoidFuture()
       }
+
+      request.auth.login(User(token: token))
+    } catch {
+      return
+    }
   }
 }
 
 extension Request {
   func requirePermission(to scope: Scope) throws {
-    guard self.userCan(scope) else {
+    guard Current.auth.userCan(auth.get(User.self), scope) else {
       throw Abort(.unauthorized)
     }
-  }
-
-  func userCan(_ scope: Scope) -> Bool {
-    guard let user = self.auth.get(User.self), user.hasScope(scope) else {
-      return false
-    }
-    return true
   }
 }

@@ -4,7 +4,8 @@ import Vapor
 struct AddOrderRequestId: Migration {
 
   func prepare(on database: Database) -> Future<Void> {
-    database.schema(Order.M2.tableName)
+    Current.logger.info("Running migration: AddOrderRequestId UP")
+    return database.schema(Order.M2.tableName)
       .field(
         Order.M7.freeOrderRequestId,
         .uuid,
@@ -18,7 +19,8 @@ struct AddOrderRequestId: Migration {
   }
 
   func revert(on database: Database) -> Future<Void> {
-    database.schema(Order.M2.tableName)
+    Current.logger.info("Running migration: AddOrderRequestId DOWN")
+    return database.schema(Order.M2.tableName)
       .deleteField(Order.M7.freeOrderRequestId)
       .update()
   }

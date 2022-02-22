@@ -49,6 +49,9 @@ if (ENV === `staging`) {
   withCommandOutput(`npm run test`);
 }
 
+log(c`{green npm:} {gray ensuring parse-useragent bin available}`);
+withCommandOutput(`sudo npm install -g @jaredh159/parse-useragent@latest`);
+
 log(c`{green pm2:} {gray setting serve script for pm2} {magenta ${SERVE_CMD}}`);
 inDeployDir(`echo \\"#!/usr/bin/bash\\" > ./serve.sh`);
 inDeployDir(`echo \\"${SERVE_CMD}\\" >> ./serve.sh`);

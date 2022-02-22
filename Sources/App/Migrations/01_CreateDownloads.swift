@@ -1,70 +1,75 @@
 import Fluent
+import NonEmpty
 
 struct CreateDownloads: Migration {
+  private typealias M1 = Download.M1
+
   func prepare(on database: Database) -> Future<Void> {
-    let editionTypeFuture = database.enum("edition_type")
-      .case("updated")
-      .case("original")
-      .case("modernized")
+    Current.logger.info("Running migration: CreateDownloads UP")
+    let editionTypeFuture = database.enum(M1.EditionTypeEnum.name)
+      .case(M1.EditionTypeEnum.caseUpdated)
+      .case(M1.EditionTypeEnum.caseModernized)
+      .case(M1.EditionTypeEnum.caseOriginal)
       .create()
 
-    let audioQualityFuture = database.enum("audio_quality")
-      .case("lq")
-      .case("hq")
+    let audioQualityFuture = database.enum(M1.AudioQualityEnum.name)
+      .case(M1.AudioQualityEnum.caseLq)
+      .case(M1.AudioQualityEnum.caseHq)
       .create()
 
-    let formatFuture = database.enum("download_format")
-      .case("epub")
-      .case("mobi")
-      .case("webPdf")
-      .case("mp3Zip")
-      .case("m4b")
-      .case("mp3")
-      .case("speech")
-      .case("podcast")
-      .case("appEbook")
+    let formatFuture = database.enum(M1.FormatEnum.name)
+      .case(M1.FormatEnum.caseEpub)
+      .case(M1.FormatEnum.caseMobi)
+      .case(M1.FormatEnum.caseWebPdf)
+      .case(M1.FormatEnum.caseMp3Zip)
+      .case(M1.FormatEnum.caseM4b)
+      .case(M1.FormatEnum.caseMp3)
+      .case(M1.FormatEnum.caseSpeech)
+      .case(M1.FormatEnum.casePodcast)
+      .case(M1.FormatEnum.caseAppEbook)
       .create()
 
-    let sourceFuture = database.enum("download_source")
-      .case("website")
-      .case("podcast")
-      .case("app")
+    let sourceFuture = database.enum(M1.SourceEnum.name)
+      .case(M1.SourceEnum.caseWebsite)
+      .case(M1.SourceEnum.casePodcast)
+      .case(M1.SourceEnum.caseApp)
       .create()
 
     return
       editionTypeFuture
-      .and(audioQualityFuture)
-      .and(formatFuture)
-      .and(sourceFuture)
-      .flatMap { types in
-        let (((editionType, audioQuality), format), source) = types
-        return database.schema("downloads")
-          .id()
-          .field("document_id", .uuid, .required)
-          .field("edition_type", editionType, .required)
-          .field("format", format, .required)
-          .field("source", source, .required)
-          .field("is_mobile", .bool, .required)
-          .field("audio_quality", audioQuality)
-          .field("audio_part_number", .int)
-          .field("user_agent", .string)
-          .field("os", .string)
-          .field("browser", .string)
-          .field("platform", .string)
-          .field("referrer", .string)
-          .field("ip", .string)
-          .field("city", .string)
-          .field("region", .string)
-          .field("postal_code", .string)
-          .field("country", .string)
-          .field("latitude", .string)
-          .field("longitude", .string)
-          .field("created_at", .datetime, .required)
-          .create()
-      }
+        .and(audioQualityFuture)
+        .and(formatFuture)
+        .and(sourceFuture)
+        .flatMap { types in
+          let (((editionType, audioQuality), format), source) = types
+          return database.schema(M1.tableName)
+            .id()
+            .field(M1.documentId, .uuid, .required)
+            .field(M1.editionType, editionType, .required)
+            .field(M1.format, format, .required)
+            .field(M1.source, source, .required)
+            .field(M1.isMobile, .bool, .required)
+            .field(M1.audioQuality, audioQuality)
+            .field(M1.audioPartNumber, .int)
+            .field(M1.userAgent, .string)
+            .field(M1.os, .string)
+            .field(M1.browser, .string)
+            .field(M1.platform, .string)
+            .field(M1.referrer, .string)
+            .field(M1.ip, .string)
+            .field(M1.city, .string)
+            .field(M1.region, .string)
+            .field(M1.postalCode, .string)
+            .field(M1.country, .string)
+            .field(M1.latitude, .string)
+            .field(M1.longitude, .string)
+            .field(.createdAt, .datetime, .required)
+            .create()
+        }
   }
 
   func revert(on database: Database) -> Future<Void> {
-    return database.schema("downloads").delete()
+    Current.logger.info("Running migration: CreateDownloads DOWN")
+    return database.schema(M1.tableName).delete()
   }
 }

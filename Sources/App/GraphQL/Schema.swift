@@ -3,244 +3,241 @@ import Foundation
 import Graphiti
 import Vapor
 
-let AppSchema = try! Graphiti.Schema<Resolver, Request> {
+let appSchema = try! Graphiti.Schema<Resolver, Request> {
   Scalar(UUID.self)
+  Scalar(Int64.self)
   DateScalar(formatter: ISO8601DateFormatter())
 
   Enum(EditionType.self)
   Enum(Lang.self)
-
   Enum(Download.Format.self)
   Enum(Download.AudioQuality.self)
   Enum(Download.DownloadSource.self)
   Enum(Order.PrintJobStatus.self)
   Enum(Order.ShippingLevel.self)
   Enum(Order.OrderSource.self)
+  Enum(DocumentTag.TagType.self)
   Enum(Scope.self)
+  Enum(Friend.Gender.self)
+  Enum(PrintSize.self)
+  Enum(PrintSizeVariant.self)
+  Enum(AppSchema.SubmitContactFormInput.Subject.self)
 
-  Input(CreateDownloadInput.self) {
-    InputField("documentId", at: \.documentId)
-    InputField("editionType", at: \.editionType)
-    InputField("format", at: \.format)
-    InputField("source", at: \.source)
-    InputField("isMobile", at: \.isMobile)
-    InputField("audioQuality", at: \.audioQuality)
-    InputField("audioPartNumber", at: \.audioPartNumber)
-    InputField("userAgent", at: \.userAgent)
-    InputField("os", at: \.os)
-    InputField("browser", at: \.browser)
-    InputField("platform", at: \.platform)
-    InputField("referrer", at: \.referrer)
-    InputField("ip", at: \.ip)
-    InputField("city", at: \.city)
-    InputField("region", at: \.region)
-    InputField("postalCode", at: \.postalCode)
-    InputField("country", at: \.country)
-    InputField("latitude", at: \.latitude)
-    InputField("longitude", at: \.longitude)
-  }
+  AppSchema.GenericResponseType
+  AppSchema.ModelsCountsType
+  AppSchema.ShippingAddressType
+  AppSchema.ShippingAddressInputType
+  AppSchema.SubmitContactFormInputType
+  AppSchema.LogJsErrorDataInputType
+  AppSchema.DownloadableFileType
 
-  Type(TokenScope.self) {
-    Field("id", at: \.id)
-    Field("scope", at: \.scope)
-    Field("createdAt", at: \.createdAt)
-    Field("token", with: \.$token)
-  }
+  // isbn types
+  AppSchema.IsbnType
+  AppSchema.CreateIsbnInputType
+  AppSchema.UpdateIsbnInputType
 
-  Type(Token.self) {
-    Field("id", at: \.id)
-    Field("value", at: \.value)
-    Field("description", at: \.description)
-    Field("createdAt", at: \.createdAt)
-    Field("scopes", with: \.$scopes)
-  }
+  AppSchema.ArtifactProductionVersionType
+  AppSchema.CreateArtifactProductionVersionInputType
 
-  Type(ModelsCounts.self) {
-    Field("downloads", at: \.downloads)
-    Field("orders", at: \.orders)
-    Field("orderItems", at: \.orderItems)
-  }
+  AppSchema.DownloadType
+  AppSchema.CreateDownloadInputType
 
-  Type(FreeOrderRequest.self) {
-    Field("id", at: \.id)
-    Field("email", at: \.email)
-    Field("requestedBooks", at: \.requestedBooks)
-    Field("aboutRequester", at: \.aboutRequester)
-    Field("name", at: \.name)
-    Field("addressStreet", at: \.addressStreet)
-    Field("addressStreet2", at: \.addressStreet2)
-    Field("addressCity", at: \.addressCity)
-    Field("addressState", at: \.addressState)
-    Field("addressZip", at: \.addressZip)
-    Field("addressCountry", at: \.addressCountry)
-    Field("source", at: \.source)
-    Field("createdAt", at: \.createdAt)
-    Field("updatedAt", at: \.updatedAt)
-  }
+  // token types
+  AppSchema.TokenType
+  AppSchema.TokenScopeType
+  AppSchema.CreateTokenInputType
+  AppSchema.CreateTokenScopeInputType
+  AppSchema.UpdateTokenInputType
+  AppSchema.UpdateTokenScopeInputType
 
-  Type(Order.self) {
-    Field("id", at: \.id)
-    Field("paymentId", at: \.paymentId)
-    Field("printJobStatus", at: \.printJobStatus)
-    Field("printJobId", at: \.printJobId)
-    Field("amount", at: \.amount)
-    Field("shipping", at: \.shipping)
-    Field("taxes", at: \.taxes)
-    Field("ccFeeOffset", at: \.ccFeeOffset)
-    Field("shippingLevel", at: \.shippingLevel)
-    Field("email", at: \.email)
-    Field("addressName", at: \.addressName)
-    Field("addressStreet", at: \.addressStreet)
-    Field("addressStreet2", at: \.addressStreet2)
-    Field("addressCity", at: \.addressCity)
-    Field("addressState", at: \.addressState)
-    Field("addressZip", at: \.addressZip)
-    Field("addressCountry", at: \.addressCountry)
-    Field("lang", at: \.lang)
-    Field("source", at: \.source)
-    Field("createdAt", at: \.createdAt)
-    Field("updatedAt", at: \.updatedAt)
-    Field("items", with: \.$items)
-    Field("freeOrderRequest", with: \.$freeOrderRequest)
-  }
+  // order types
+  AppSchema.OrderType
+  AppSchema.OrderItemType
+  AppSchema.CreateOrderInputType
+  AppSchema.CreateOrderItemInputType
+  AppSchema.UpdateOrderInputType
+  AppSchema.FreeOrderRequestType
+  AppSchema.CreateFreeOrderRequestInputType
+  AppSchema.OrderInitializationType
+  AppSchema.CreateOrderInitializationInputType
+  AppSchema.BrickOrderInputType
+  AppSchema.PrintJobExploratoryItemInputType
+  AppSchema.GetPrintJobExploratoryMetadataInputType
+  AppSchema.PrintJobExploratoryMetadataType
 
-  Type(OrderItem.self) {
-    Field("title", at: \.title)
-    Field("documentId", at: \.documentId)
-    Field("editionType", at: \.editionType)
-    Field("quantity", at: \.quantity)
-    Field("unitPrice", at: \.unitPrice)
-    Field("order", with: \.$order)
-  }
+  // edition types
+  AppSchema.EditionImageType
+  AppSchema.EditionSquareImagesType
+  AppSchema.EditionThreeDImagesType
+  AppSchema.EditionImagesType
+  AppSchema.EditionType
+  AppSchema.CreateEditionInputType
+  AppSchema.UpdateEditionInputType
 
-  Type(ArtifactProductionVersion.self) {
-    Field("id", at: \.id)
-    Field("version", at: \.version)
-    Field("createdAt", at: \.createdAt)
-  }
+  // document types
+  AppSchema.DocumentType
+  AppSchema.CreateDocumentInputType
+  AppSchema.CreateDocumentTagInputType
+  AppSchema.UpdateDocumentInputType
+  AppSchema.UpdateDocumentTagInputType
+  AppSchema.DocumentTagType
+  AppSchema.RelatedDocumentType
+  AppSchema.CreateRelatedDocumentInputType
+  AppSchema.UpdateRelatedDocumentInputType
 
-  Input(UpdateOrderInput.self) {
-    InputField("id", at: \.id)
-    InputField("printJobStatus", at: \.printJobStatus)
-    InputField("printJobId", at: \.printJobId)
-  }
+  // friend types
+  AppSchema.FriendResidenceType
+  AppSchema.FriendType
+  AppSchema.CreateFriendInputType
+  AppSchema.UpdateFriendInputType
+  AppSchema.FriendQuoteType
+  AppSchema.CreateFriendQuoteInputType
+  AppSchema.UpdateFriendQuoteInputType
+  AppSchema.CreateFriendResidenceInputType
+  AppSchema.UpdateFriendResidenceInputType
+  AppSchema.FriendResidenceDurationType
+  AppSchema.CreateFriendResidenceDurationInputType
+  AppSchema.UpdateFriendResidenceDurationInputType
 
-  Input(CreateOrderInput.Item.self) {
-    InputField("title", at: \.title)
-    InputField("documentId", at: \.documentId)
-    InputField("editionType", at: \.editionType)
-    InputField("quantity", at: \.quantity)
-    InputField("unitPrice", at: \.unitPrice)
-  }
+  // edition impression types
+  AppSchema.EditionImpressionEbookFilesType
+  AppSchema.EditionImpressionPaperbackFilesType
+  AppSchema.EditionImpressionFilesType
+  AppSchema.EditionImpressionType
+  AppSchema.CreateEditionImpressionInputType
+  AppSchema.UpdateEditionImpressionInputType
 
-  Input(CreateFreeOrderRequestInput.self) {
-    InputField("email", at: \.email)
-    InputField("name", at: \.name)
-    InputField("requestedBooks", at: \.requestedBooks)
-    InputField("aboutRequester", at: \.aboutRequester)
-    InputField("addressStreet", at: \.addressStreet)
-    InputField("addressStreet2", at: \.addressStreet2)
-    InputField("addressCity", at: \.addressCity)
-    InputField("addressState", at: \.addressState)
-    InputField("addressZip", at: \.addressZip)
-    InputField("addressCountry", at: \.addressCountry)
-    InputField("source", at: \.source)
-  }
+  // edition chapter types
+  AppSchema.EditionChapterType
+  AppSchema.CreateEditionChapterInputType
+  AppSchema.UpdateEditionChapterInputType
 
-  Input(CreateOrderInput.self) {
-    InputField("id", at: \.id)
-    InputField("freeOrderRequestId", at: \.freeOrderRequestId)
-    InputField("paymentId", at: \.paymentId)
-    InputField("printJobStatus", at: \.printJobStatus)
-    InputField("printJobId", at: \.printJobId)
-    InputField("amount", at: \.amount)
-    InputField("shipping", at: \.shipping)
-    InputField("taxes", at: \.taxes)
-    InputField("ccFeeOffset", at: \.ccFeeOffset)
-    InputField("shippingLevel", at: \.shippingLevel)
-    InputField("email", at: \.email)
-    InputField("addressName", at: \.addressName)
-    InputField("addressStreet", at: \.addressStreet)
-    InputField("addressStreet2", at: \.addressStreet2)
-    InputField("addressCity", at: \.addressCity)
-    InputField("addressState", at: \.addressState)
-    InputField("addressZip", at: \.addressZip)
-    InputField("addressCountry", at: \.addressCountry)
-    InputField("lang", at: \.lang)
-    InputField("source", at: \.source)
-    InputField("items", at: \.items)
-  }
-
-  Type(Download.self) {
-    Field("id", at: \.id)
-    Field("documentId", at: \.documentId)
-    Field("editionType", at: \.editionType)
-    Field("format", at: \.format)
-    Field("source", at: \.source)
-    Field("isMobile", at: \.isMobile)
-    Field("audioQuality", at: \.audioQuality)
-    Field("audioPartNumber", at: \.audioPartNumber)
-    Field("userAgent", at: \.userAgent)
-    Field("os", at: \.os)
-    Field("browser", at: \.browser)
-    Field("platform", at: \.platform)
-    Field("referrer", at: \.referrer)
-    Field("ip", at: \.ip)
-    Field("city", at: \.city)
-    Field("region", at: \.region)
-    Field("postalCode", at: \.postalCode)
-    Field("country", at: \.country)
-    Field("latitude", at: \.latitude)
-    Field("longitude", at: \.longitude)
-  }
+  // audio types
+  AppSchema.AudioFileQualitiesType
+  AppSchema.AudioFilesType
+  AppSchema.AudioType
+  AppSchema.CreateAudioInputType
+  AppSchema.UpdateAudioInputType
+  AppSchema.AudioPartType
+  AppSchema.CreateAudioPartInputType
+  AppSchema.UpdateAudioPartInputType
 
   Query {
-    Field("getOrder", at: Resolver.getOrder) {
-      Argument("id", at: \.id)
-    }
+    AppSchema.getModelsCounts
+    AppSchema.getFriend
+    AppSchema.getFriends
+    AppSchema.getFriendQuote
+    AppSchema.getFriendResidence
+    AppSchema.getFriendResidenceDuration
+    AppSchema.getDocument
+    AppSchema.getDocuments
+    AppSchema.getDocumentTag
+    AppSchema.getDocumentTags
+    AppSchema.getEdition
+    AppSchema.getEditions
+    AppSchema.getEditionImpression
+    AppSchema.getIsbn
+    AppSchema.getEditionChapter
+    AppSchema.getAudio
+    AppSchema.getAudios
+    AppSchema.getAudioPart
+    AppSchema.getToken
+    AppSchema.getTokens
 
-    Field("getOrders", at: Resolver.getOrders) {
-      Argument("printJobStatus", at: \.printJobStatus)
-    }
+    Field("getLatestArtifactProductionVersion", at: Resolver.getLatestArtifactProductionVersion)
 
     Field("getTokenByValue", at: Resolver.getTokenByValue) {
       Argument("value", at: \.value)
     }
 
-    Field("getModelsCounts", at: Resolver.getModelsCounts)
-
-    Field("getFreeOrderRequest", at: Resolver.getFreeOrderRequest) {
-      Argument("id", at: \.id)
-    }
-
-    Field("getLatestArtifactProductionVersion", at: Resolver.getLatestArtifactProductionVersion)
+    // order queries
+    AppSchema.getOrder
+    AppSchema.getOrders
+    AppSchema.getFreeOrderRequest
+    AppSchema.getPrintJobExploratoryMetadata
   }
 
   Mutation {
-    Field("createDownload", at: Resolver.createDownload) {
-      Argument("input", at: \.input)
-    }
+    AppSchema.submitContactForm
+    AppSchema.createDownload
+    AppSchema.createArtifactProductionVersion
+    AppSchema.logJsError
 
-    Field("createOrder", at: Resolver.createOrder) {
-      Argument("input", at: \.input)
-    }
+    // token mutations
+    AppSchema.createToken
+    AppSchema.updateToken
+    AppSchema.deleteToken
+    AppSchema.createTokenScope
+    AppSchema.updateTokenScope
+    AppSchema.deleteTokenScope
 
-    Field("updateOrder", at: Resolver.updateOrder) {
-      Argument("input", at: \.input)
-    }
+    // isbn mutations
+    AppSchema.createIsbn
+    AppSchema.updateIsbn
+    AppSchema.deleteIsbn
 
-    Field("updateOrders", at: Resolver.updateOrders) {
-      Argument("input", at: \.input)
-    }
+    // friend mutations
+    AppSchema.createFriend
+    AppSchema.updateFriend
+    AppSchema.deleteFriend
+    AppSchema.createFriendQuote
+    AppSchema.updateFriendQuote
+    AppSchema.deleteFriendQuote
+    AppSchema.createFriendResidence
+    AppSchema.updateFriendResidence
+    AppSchema.deleteFriendResidence
+    AppSchema.createFriendResidenceDuration
+    AppSchema.updateFriendResidenceDuration
+    AppSchema.deleteFriendResidenceDuration
 
-    Field("createFreeOrderRequest", at: Resolver.createFreeOrderRequest) {
-      Argument("input", at: \.input)
-    }
+    // document mutations
+    AppSchema.createDocument
+    AppSchema.updateDocument
+    AppSchema.deleteDocument
+    AppSchema.createDocumentTag
+    AppSchema.updateDocumentTag
+    AppSchema.deleteDocumentTag
+    AppSchema.createRelatedDocument
+    AppSchema.updateRelatedDocument
+    AppSchema.deleteRelatedDocument
 
-    Field("createArtifactProductionVersion", at: Resolver.createArtifactProductionVersion) {
-      Argument("revision", at: \.revision)
+    // edition mutations
+    AppSchema.createEdition
+    AppSchema.updateEdition
+    AppSchema.deleteEdition
+    AppSchema.deleteEditionEditionChapters
+
+    // edition impression mutations
+    AppSchema.createEditionImpression
+    AppSchema.updateEditionImpression
+    AppSchema.deleteEditionImpression
+
+    // edition chapter mutations
+    AppSchema.createEditionChapter
+    AppSchema.createEditionChapters
+    AppSchema.updateEditionChapter
+    AppSchema.deleteEditionChapter
+
+    // audio mutations
+    AppSchema.createAudio
+    AppSchema.updateAudio
+    AppSchema.deleteAudio
+    AppSchema.createAudioPart
+    AppSchema.updateAudioPart
+    AppSchema.deleteAudioPart
+
+    // order mutations
+    AppSchema.updateOrder
+    AppSchema.updateOrders
+    AppSchema.createFreeOrderRequest
+    AppSchema.createOrderInitialization
+    AppSchema.brickOrder
+    AppSchema.sendOrderConfirmationEmail
+    Field("createOrderWithItems", at: Resolver.createOrderWithItems) {
+      Argument("order", at: \.order)
+      Argument("items", at: \.items)
     }
   }
 
-  Types(OrderItem.self, TokenScope.self)
+  Types(OrderItem.self, TokenScope.self, RelatedDocument.self)
 }

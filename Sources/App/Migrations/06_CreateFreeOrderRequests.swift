@@ -4,7 +4,8 @@ import Vapor
 struct CreateFreeOrderRequests: Migration {
 
   func prepare(on database: Database) -> Future<Void> {
-    database.schema(FreeOrderRequest.M6.tableName)
+    Current.logger.info("Running migration: CreateFreeOrderRequests UP")
+    return database.schema(FreeOrderRequest.M6.tableName)
       .id()
       .field(FreeOrderRequest.M6.name, .string, .required)
       .field(FreeOrderRequest.M6.email, .string, .required)
@@ -17,12 +18,13 @@ struct CreateFreeOrderRequests: Migration {
       .field(FreeOrderRequest.M6.addressZip, .string, .required)
       .field(FreeOrderRequest.M6.addressCountry, .string, .required)
       .field(FreeOrderRequest.M6.source, .string, .required)
-      .field(FieldKey.createdAt, .datetime, .required)
-      .field(FieldKey.updatedAt, .datetime, .required)
+      .field(.createdAt, .datetime, .required)
+      .field(.updatedAt, .datetime, .required)
       .create()
   }
 
   func revert(on database: Database) -> Future<Void> {
+    Current.logger.info("Running migration: CreateFreeOrderRequests DOWN")
     return database.schema(FreeOrderRequest.M6.tableName).delete()
   }
 }

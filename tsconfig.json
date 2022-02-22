@@ -1,4 +1,8 @@
 {
-  "strict": true,
-  "esModuleInterop": true,
+  "compilerOptions": {
+    "strict": true,
+   "esModuleInterop": true,
+   "allowSyntheticDefaultImports": true,
+    "lib": ["ESNext"]
+  }
 }

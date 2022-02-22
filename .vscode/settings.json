@@ -1,5 +1,6 @@
 {
   "files.exclude": {
+    "jest.config.js": true,
     "**/schema.json": true,
     ".swiftpm/": true,
     "**/*.swp": true,
