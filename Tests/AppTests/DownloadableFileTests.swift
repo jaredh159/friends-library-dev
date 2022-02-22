@@ -17,7 +17,7 @@ final class DownloadableFileTests: AppTestCase {
     guard entities == nil else { return }
     sync { [self] in
       try await Current.db.deleteAll(Download.self)
-      try await Current.db.deleteAll(Friend.self)
+      try await Current.db.deleteAll(Friend.self, force: true)
       entities = await Entities.create {
         $0.friend.lang = .en
         $0.edition.type = .updated

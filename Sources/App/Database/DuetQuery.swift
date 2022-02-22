@@ -45,15 +45,23 @@ struct DuetQuery<M: DuetModel> {
     )
   }
 
-  func delete() async throws -> [M] {
-    try await db.delete(M.self, where: constraints, orderBy: order, limit: limit)
+  func delete(force: Bool = false) async throws -> [M] {
+    if force {
+      return try await db.forceDelete(M.self, where: constraints, orderBy: order, limit: limit)
+    } else {
+      return try await db.delete(M.self, where: constraints, orderBy: order, limit: limit)
+    }
   }
 
-  func deleteOne() async throws -> M {
+  func deleteOne(force: Bool = false) async throws -> M {
     let models = try await db.select(M.self, where: constraints, orderBy: order, limit: limit)
     guard !models.isEmpty else { throw DbError.notFound }
     guard models.count == 1 else { throw DbError.tooManyResultsForDeleteOne }
-    try await db.delete(M.self, where: constraints, orderBy: order, limit: limit)
+    if force {
+      try await db.forceDelete(M.self, where: constraints, orderBy: order, limit: limit)
+    } else {
+      try await db.delete(M.self, where: constraints, orderBy: order, limit: limit)
+    }
     return models.first!
   }
 

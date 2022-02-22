@@ -100,17 +100,21 @@ extension DatabaseClient {
   }
 
   @discardableResult
-  func delete<M: DuetModel>(_ Model: M.Type, byId id: UUIDStringable) async throws -> M {
-    try await query(M.self).where(M.column("id") == id).deleteOne()
+  func delete<M: DuetModel>(
+    _ Model: M.Type,
+    byId id: UUIDStringable,
+    force: Bool = false
+  ) async throws -> M {
+    try await query(M.self).where(M.column("id") == id).deleteOne(force: force)
   }
 
   @discardableResult
-  func delete<M: DuetModel>(_ id: Tagged<M, UUID>) async throws -> M {
-    try await query(M.self).where(M.column("id") == id).deleteOne()
+  func delete<M: DuetModel>(_ id: Tagged<M, UUID>, force: Bool = false) async throws -> M {
+    try await query(M.self).where(M.column("id") == id).deleteOne(force: force)
   }
 
-  func deleteAll<M: DuetModel>(_ Model: M.Type) async throws {
-    _ = try await query(M.self).delete()
+  func deleteAll<M: DuetModel>(_ Model: M.Type, force: Bool = false) async throws {
+    _ = try await query(M.self).delete(force: force)
   }
 }
 
