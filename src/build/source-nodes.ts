@@ -1,8 +1,6 @@
 import '@friends-library/env/load';
 import { GatsbyNode, SourceNodesArgs } from 'gatsby';
 import filesize from 'filesize';
-// @TODO can i remove Lulu as a dep? deprecate it as a lib?
-// import { price } from '@friends-library/lulu';
 import { query, hydrate, FsDocPrecursor } from '@friends-library/dpc-fs';
 import { getDpcCache, persistDpcCache, EditionCache } from './dpc-cache';
 import residences from './residences';
@@ -211,6 +209,6 @@ let dpcs: FsDocPrecursor[] | null = null;
 
 async function getDpcs(): Promise<FsDocPrecursor[]> {
   if (dpcs) return dpcs;
-  dpcs = await query.getByPattern();
+  dpcs = await query.getByPattern(undefined, api.clientConfig());
   return dpcs;
 }

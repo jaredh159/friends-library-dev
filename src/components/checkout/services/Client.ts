@@ -2,11 +2,16 @@ export default class Client {
   private endpoint: string;
 
   public constructor(endpoint?: string) {
-    const fallback =
-      (process.env.GATSBY_NETLIFY_CONTEXT === `production`
-        ? process.env.GATSBY_PROD_GRAPHQL_API_ENDPOINT
-        : process.env.GATSBY_TEST_GRAPHQL_API_ENDPOINT) || ``;
-    this.endpoint = endpoint ?? fallback;
+    if (!endpoint) {
+      this.endpoint = `http://127.0.0.1:8080/graphql`;
+      if (process.env.GATSBY_NETLIFY_CONTEXT === `production`) {
+        this.endpoint = process.env.GATSBY_FLP_API_ENDPOINT_PROD ?? `/`;
+      } else if (process.env.GATSBY_NETLIFY_CONTEXT === `preview`) {
+        this.endpoint = process.env.GATSBY_FLP_API_ENDPOINT_STAGING ?? `/`;
+      }
+    } else {
+      this.endpoint = endpoint;
+    }
   }
 
   public async query<Data, Variables>(input: {

@@ -119,6 +119,7 @@ describe(`CheckoutService()`, () => {
           id: service.orderId,
           shipping: 1,
           taxes: 0,
+          fees: 0,
           ccFeeOffset: 1,
           source: `website`,
           printJobStatus: `presubmit`,

@@ -1,7 +1,7 @@
 import fetch from 'cross-fetch';
-import env from '@friends-library/env';
+import { c, log } from 'x-chalk';
 import { EditionType } from '@friends-library/types';
-import { gql, getClient } from '@friends-library/db';
+import { gql, getClient, ClientType, ClientConfig } from '@friends-library/db';
 import { Document, Edition, Friend, PublishedCounts } from './types';
 import { Friends } from '../graphql/Friends';
 
@@ -16,19 +16,9 @@ type EditionEntities = DocumentEntities & {
 
 let cachedFriends: Friend[] | null = null;
 
-// where might this build?
-// -------------------------
-// locally for dev
-// locally -> staging
-// locally -> prod
-// github action -> staging
-// github action -> prod
-
 export async function queryFriends(): Promise<Friend[]> {
   if (cachedFriends) return cachedFriends;
-  const TOKEN = env.requireVar(`EVANS_BUILD_FLP_API_TOKEN`);
-  const client = getClient({ env: `dev`, fetch, token: TOKEN });
-  const { data } = await client.query<Friends>({ query: QUERY });
+  const { data } = await client().query<Friends>({ query: QUERY });
   // break all of the apollo read-only stuff with JSON dance
   cachedFriends = sortChildren(JSON.parse(JSON.stringify(data.friends)));
   return data.friends;
@@ -325,3 +315,39 @@ const QUERY = gql`
     }
   }
 `;
+
+function client(): ClientType {
+  return getClient(clientConfig());
+}
+
+let config: ClientConfig | null = null;
+
+export function clientConfig(): ClientConfig {
+  if (config) return config;
+
+  // default to assuming we want to talk to the production API
+  let env: 'dev' | 'staging' | 'production' = `production`;
+  let key = `FLP_API_TOKEN_PROD`;
+
+  if (
+    process.env.API_STAGING ||
+    process.env.GATSBY_NETLIFY_CONTEXT === `preview` ||
+    process.argv.includes(`--api-staging`)
+  ) {
+    env = `staging`;
+    key = `FLP_API_TOKEN_STAGING`;
+  } else if (process.env.API_DEV || process.argv.includes(`--api-dev`)) {
+    env = `dev`;
+    key = `FLP_API_TOKEN_DEV`;
+  }
+
+  const token = process.env[key];
+  if (!token) {
+    console.error(`Missing required api token process.env.${key}`);
+    process.exit(1);
+  }
+
+  log(c`\n{magenta [,]} FLP API client configured for env: {green ${env}}\n`);
+  config = { env, fetch, token };
+  return config!;
+}
