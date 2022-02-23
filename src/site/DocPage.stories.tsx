@@ -130,7 +130,7 @@ export const DocBlock_ = fullscreen(
       hasAudio={true}
       numChapters={15}
       altLanguageUrl="https://www.bibliotecadelosamigos.org/james-parnell/vida"
-      documentId="123abc"
+      editionId="123abc"
       editions={[]}
     />
   )),

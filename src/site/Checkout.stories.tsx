@@ -46,41 +46,39 @@ export const Empty_Cart = () => (
 );
 
 export const Payment_ = () => (
-  <div className="p-8">
-    <StripeProvider apiKey="pk_test_DAZbsOWXXbvBe51IEVvVfc4H">
-      <Elements>
-        <Payment
-          throbbing={false}
-          onPay={a(`on pay`)}
-          onBack={a(`on back`)}
-          subTotal={1298}
-          shipping={399}
-          taxes={132}
-          ccFeeOffset={42}
-          paymentIntentClientSecret="pi_123_secret_345"
-        />
-      </Elements>
-    </StripeProvider>
-  </div>
+  <StripeProvider apiKey="pk_test_DAZbsOWXXbvBe51IEVvVfc4H">
+    <Elements>
+      <Payment
+        throbbing={false}
+        onPay={a(`on pay`)}
+        onBack={a(`on back`)}
+        subTotal={1298}
+        shipping={399}
+        taxes={132}
+        ccFeeOffset={42}
+        handling={150}
+        paymentIntentClientSecret="pi_123_secret_345"
+      />
+    </Elements>
+  </StripeProvider>
 );
 
 export const PaymentThrobbing = () => (
-  <div className="p-8">
-    <StripeProvider apiKey="pk_test_DAZbsOWXXbvBe51IEVvVfc4H">
-      <Elements>
-        <Payment
-          throbbing={true}
-          onPay={a(`on pay`)}
-          onBack={a(`on back`)}
-          subTotal={1298}
-          shipping={399}
-          taxes={132}
-          ccFeeOffset={42}
-          paymentIntentClientSecret="pi_123_secret_345"
-        />
-      </Elements>
-    </StripeProvider>
-  </div>
+  <StripeProvider apiKey="pk_test_DAZbsOWXXbvBe51IEVvVfc4H">
+    <Elements>
+      <Payment
+        throbbing={true}
+        onPay={a(`on pay`)}
+        onBack={a(`on back`)}
+        subTotal={1298}
+        shipping={399}
+        taxes={132}
+        ccFeeOffset={42}
+        handling={150}
+        paymentIntentClientSecret="pi_123_secret_345"
+      />
+    </Elements>
+  </StripeProvider>
 );
 
 export const ProgressOrder = () => <Progress step="Order" />;
