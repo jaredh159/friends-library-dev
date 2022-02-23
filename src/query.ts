@@ -93,7 +93,7 @@ const QUERY = gql`
 
 function client(config?: ClientConfig): ClientType {
   return getClient({
-    ...(config ? config : { env: `infer`, process }),
+    ...(config ? config : { env: `infer_node`, process }),
     fetch,
   });
 }

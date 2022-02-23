@@ -19,7 +19,7 @@
     "npub:precheck": "fldev ci"
   },
   "dependencies": {
-    "@friends-library/db": "3.0.4",
+    "@friends-library/db": "3.0.5",
     "@friends-library/env": "^1.4.0",
     "@friends-library/types": "7.0.0",
     "cross-fetch": "^3.1.5",
