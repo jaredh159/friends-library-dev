@@ -1,6 +1,6 @@
 {
   "name": "@friends-library/dpc-fs",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "DocPrecursor from the filesystem",
   "main": "./dist/index.js",
   "browser": false,
