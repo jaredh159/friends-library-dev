@@ -14,6 +14,7 @@ export function documentRegion(friend: Friend): string {
     case `Wales`:
     case `Netherlands`:
     case `France`:
+      return `Other`;
     case `Ohio`:
       return `Western US`;
     case `Delaware`:

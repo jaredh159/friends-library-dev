@@ -37,6 +37,7 @@ const ExplorePage: React.FC<Props> = ({
   audioBooks.nodes.sort((a, b) =>
     (a.ed[0]?.audio?.added ?? ``) < (b.ed[0]?.audio?.added ?? ``) ? 1 : -1,
   );
+  regionBooks.nodes.sort((a, b) => (a.authorName < b.authorName ? -1 : 1));
   return (
     <Layout>
       <Seo
@@ -179,6 +180,7 @@ interface Props {
     regionBooks: {
       nodes: (CoverData & {
         authorUrl: string;
+        authorName: string;
         documentUrl: string;
         region: string;
         htmlShortTitle: string;
@@ -235,6 +237,7 @@ export const query = graphql`
         documentUrl: url
         htmlShortTitle
         region
+        tags
       }
     }
     regionBooks: allDocument(filter: { region: { ne: "Other" } }) {
@@ -243,6 +246,7 @@ export const query = graphql`
         documentUrl: url
         htmlShortTitle
         authorUrl
+        authorName
         region
       }
     }
