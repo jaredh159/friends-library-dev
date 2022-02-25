@@ -2,12 +2,11 @@ import fs from 'fs-extra';
 import exec from 'x-exec';
 import { c, log } from 'x-chalk';
 import { Lang } from '@friends-library/types';
-import * as docMeta from '@friends-library/document-meta';
 import * as cloud from '@friends-library/cloud';
 import * as ffmpeg from '../../ffmpeg';
 import * as posterApp from './poster-server';
 import getAudioFsData from '../audio/audio-fs-data';
-import { logAction, logDebug, logError } from '../../sub-log';
+import { logAction, logDebug } from '../../sub-log';
 import { AudioFsData, Audio } from '../audio/types';
 import { slideshowConcatFileLines } from './slideshow';
 import { metadata } from './metadata';
@@ -32,19 +31,6 @@ async function handleAudio(audio: Audio, argv: Argv): Promise<void> {
   const { edition } = audio;
   log(c`\nHandling audio: {magenta ${edition.path}}`);
 
-  const meta = await docMeta.fetchSingleton();
-  const editionMeta = meta.get(edition.path);
-  if (!editionMeta) {
-    logError(`edition meta not found\n`);
-    process.exit(1);
-  }
-
-  const audioMeta = editionMeta.audio;
-  if (!audioMeta) {
-    logError(`edition audio meta not found\n`);
-    process.exit(1);
-  }
-
   logDebug(`preparing audio source data`);
   const audioFsData = await getAudioFsData(audio);
   const workDir = audioFsData.derivedPath;
@@ -54,11 +40,12 @@ async function handleAudio(audio: Audio, argv: Argv): Promise<void> {
   }
 
   exec.exit(`open ${workDir}`);
-  const splits = splitVolumes(audio, audioMeta.durations);
+  const durations = audio.parts.map((p) => p.duration);
+  const splits = splitVolumes(durations);
   for (let idx = 0; idx < splits.length; idx++) {
     await makeVideo(
       audio,
-      audioMeta.durations,
+      durations,
       splits[idx]!,
       splits[idx + 1],
       idx + 1,
@@ -73,7 +60,7 @@ async function handleAudio(audio: Audio, argv: Argv): Promise<void> {
   fs.writeFileSync(`${workDir}/yt-uploaded.txt`, ``);
 }
 
-function splitVolumes(audio: Audio, durations: number[]): number[] {
+function splitVolumes(durations: number[]): number[] {
   const MAX_VIDEO_LENGTH = 60 * 60 * 12; // youtube rule, must be shorter than 12 hrs
   const startPoints = [0];
   let videoDuration = 0;
