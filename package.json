@@ -8,7 +8,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "start": "npm run tasks",
-    "prestart": "npm run friends -- --api-dev",
+    "prestart": "npm run friends",
     "graphql:codegen": "flp-gql-codegen",
     "test": "true",
     "test:watch": "fldev test:watch",
@@ -43,7 +43,7 @@
     "react-keyboard-event-handler": "^1.4.1"
   },
   "devDependencies": {
-    "@friends-library/dev": "~4.5.1",
+    "@friends-library/dev": "~4.5.2",
     "@types/classnames": "^2.2.10",
     "@types/lodash": "^4.14.161",
     "@types/react": "16.9.11",
