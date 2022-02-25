@@ -1,5 +1,5 @@
 {
-  "name": "@friends-library/graphql",
+  "name": "@friends-library/api",
   "version": "1.0.0",
   "description": "",
   "private": true,
@@ -37,7 +37,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@friends-library/dev": "^4.5.0",
+    "@friends-library/dev": "^4.5.2",
     "@friends-library/env": "^1.4.0",
     "apollo": "^2.33.4",
     "x-chalk": "^1.0.1",
