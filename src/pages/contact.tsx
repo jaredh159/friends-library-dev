@@ -52,20 +52,21 @@ async function submit(
   subject: ContactFormSubject,
 ): Promise<boolean> {
   try {
-    let result = await new Client().mutate<SubmitContactForm, SubmitContactFormVariables>(
-      {
-        mutation: SUBMIT_MUTATION,
-        variables: {
-          input: {
-            lang: LANG == `es` ? Lang.es : Lang.en,
-            name,
-            email,
-            message,
-            subject,
-          },
+    const result = await new Client().mutate<
+      SubmitContactForm,
+      SubmitContactFormVariables
+    >({
+      mutation: SUBMIT_MUTATION,
+      variables: {
+        input: {
+          lang: LANG === `es` ? Lang.es : Lang.en,
+          name,
+          email,
+          message,
+          subject,
         },
       },
-    );
+    });
     return result.success;
   } catch {
     return false;

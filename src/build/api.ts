@@ -102,6 +102,7 @@ export async function queryPublishedCounts(): Promise<PublishedCounts> {
 function sortChildren(friends: Friend[]): Friend[] {
   for (const friend of friends) {
     friend.quotes.sort(byOrder);
+    friend.documents.sort(sortDocuments);
     for (const document of friend.documents) {
       document.editions.sort(editionsByType);
       for (const edition of document.editions) {
@@ -126,6 +127,24 @@ function editionsByType<T extends { type: EditionType }>(a: T, b: T): number {
 
 function byOrder<T extends { order: number }>(a: T, b: T): number {
   return a.order < b.order ? -1 : 1;
+}
+
+type SortableDoc = {
+  primaryEdition: null | { type: EditionType };
+  title: string;
+};
+
+export function sortDocuments(a: SortableDoc, b: SortableDoc): number {
+  if (a.primaryEdition?.type !== b.primaryEdition?.type) {
+    if (a.primaryEdition?.type === `updated`) {
+      return -1;
+    }
+    if (a.primaryEdition?.type === `modernized`) {
+      return b.primaryEdition?.type === `updated` ? 1 : -1;
+    }
+    return 1;
+  }
+  return a.title < b.title ? -1 : 1;
 }
 
 const QUERY = gql`
