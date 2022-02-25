@@ -11,8 +11,6 @@ env:
   SEED_DB: true
   PG_DUMP_PATH: not-real
   SENDGRID_API_KEY: not-real
-  SLACK_API_TOKEN: not-real
-  PSQL_PATH: /usr/local/bin/psql
   SLACK_API_TOKEN_WORKSPACE_MAIN: not-real
   SLACK_API_TOKEN_WORKSPACE_BOT: not-real
   DATABASE_NAME: vapor_database
