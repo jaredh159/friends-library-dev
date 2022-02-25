@@ -1,7 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
 import { graphql } from 'gatsby';
-import { Name, Description, FluidBgImageObject } from '@friends-library/types';
 import { t, translateOptional as trans } from '@friends-library/locale';
 import { coverPropsFromQueryData, CoverData } from '../lib/covers';
 import { Layout, Seo } from '../components/data';
@@ -14,6 +13,7 @@ import FeaturedQuoteBlock from '../components/pages/friend/FeaturedQuoteBlock';
 import FriendBlock from '../components/pages/friend/FriendBlock';
 import MapBlock from '../components/pages/friend/MapBlock';
 import TestimonialsBlock from '../components/pages/friend/TestimonialsBlock';
+import { FluidBgImageObject } from '../types';
 
 interface Props {
   data: {
@@ -28,11 +28,11 @@ interface Props {
     };
     friend: {
       gender: 'male' | 'female';
-      isCompilationsQuasiFriend: boolean;
-      name: Name;
+      isCompilations: boolean;
+      name: string;
       born: number | undefined;
       died: number | undefined;
-      description: Description;
+      description: string;
       documents: (CoverData & {
         htmlShortTitle: string;
         tags: string[];
@@ -42,7 +42,7 @@ interface Props {
         description: string;
       })[];
       quotes?: { source: string; text: string }[];
-      relatedDocuments: { id: string; description: string }[];
+      relatedDocuments: { description: string; document: { id: string } }[];
       residences: {
         city: string;
         region: string;
@@ -70,7 +70,7 @@ const FriendPage: React.FC<Props> = ({ data: { friend, relatedDocuments, booksBg
           friend.description,
           friend.documents.map((d) => d.htmlShortTitle),
           friend.documents.filter((d) => d.hasAudio).length,
-          friend.isCompilationsQuasiFriend,
+          friend.isCompilations,
           LANG,
         )}
       />
@@ -80,7 +80,7 @@ const FriendPage: React.FC<Props> = ({ data: { friend, relatedDocuments, booksBg
       )}
       <div className="bg-flgray-100 px-8 pt-12 pb-4 lg:px-8">
         <h2 className="text-xl font-sans text-center tracking-wider font-bold mb-8">
-          {friend.isCompilationsQuasiFriend
+          {friend.isCompilations
             ? t`All Compilations (${friend.documents.length})`
             : t`Books by ${friend.name}`}
         </h2>
@@ -108,7 +108,7 @@ const FriendPage: React.FC<Props> = ({ data: { friend, relatedDocuments, booksBg
           })}
         </div>
       </div>
-      {!friend.isCompilationsQuasiFriend && (
+      {!friend.isCompilations && (
         <MapBlock
           bgImg={booksBg.image.fluid}
           friendName={friend.name}
@@ -145,7 +145,7 @@ const FriendPage: React.FC<Props> = ({ data: { friend, relatedDocuments, booksBg
         titleEl="h3"
         books={relatedDocuments.nodes.map((relatedDoc) => {
           const friendDoc = friend.relatedDocuments.find(
-            (doc) => doc.id === relatedDoc.id,
+            (doc) => doc.document.id === relatedDoc.id,
           );
           if (!friendDoc) throw new Error(`Missing related doc`);
           return {
@@ -175,15 +175,17 @@ export const query = graphql`
     friend(slug: { eq: $slug }) {
       name
       gender
-      isCompilationsQuasiFriend
+      isCompilations
       description
       quotes {
         source
         text
       }
       relatedDocuments {
-        id
         description
+        document {
+          id
+        }
       }
       born
       died

@@ -1,6 +1,4 @@
 require(`@friends-library/env/load`);
-const proxy = require(`http-proxy-middleware`);
-const { numPublishedBooks } = require(`@friends-library/friends/query`);
 
 const LANG = process.env.GATSBY_LANG === `es` ? `es` : `en`;
 
@@ -12,8 +10,6 @@ module.exports = {
         ? `https://www.friendslibrary.com`
         : `https://www.bibliotecadelosamigos.org`,
     title: LANG === `en` ? `Friends Library` : `La Biblioteca de los Amigos`,
-    numSpanishBooks: numPublishedBooks(`es`),
-    numEnglishBooks: numPublishedBooks(`en`),
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -81,18 +77,4 @@ module.exports = {
       },
     },
   ],
-
-  // for avoiding CORS while developing Netlify Functions locally
-  // read more: https://www.gatsbyjs.org/docs/api-proxy/#advanced-proxying
-  developMiddleware: (app) => {
-    app.use(
-      `/.netlify/functions/`,
-      proxy({
-        target: `http://[::1]:2345`,
-        pathRewrite: {
-          '/.netlify/functions/': ``,
-        },
-      }),
-    );
-  },
 };

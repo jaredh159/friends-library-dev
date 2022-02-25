@@ -2,6 +2,7 @@ import { cartPlusData } from '../../models/__tests__/fixtures';
 import Cart from '../../models/Cart';
 import CheckoutService from '../CheckoutService';
 import CheckoutApi from '../CheckoutApi';
+import { ShippingLevel } from '../../../../graphql/globalTypes';
 
 const { endpoint, origin } = urls();
 
@@ -18,29 +19,23 @@ describe(`CheckoutService()`, () => {
     service = new CheckoutService(cart, api);
   });
 
-  test(`wakeup should return 204 OK`, async () => {
-    const res = await api.wakeup();
-    expect(res.ok).toBe(true);
-    expect(res.statusCode).toBe(204);
-  });
-
   test(`sequential, stateful checkout fns`, async () => {
     let err: string | void;
 
     // step 1: calculate fees -- skip on CI, lulu sandbox is flaky
     if (!process.env.CI) {
-      err = await service.calculateFees();
+      err = await service.getExploratoryMetadata();
       expect(err).toBeUndefined();
-      expect(service.fees).toEqual({ shipping: 399, taxes: 0, ccFeeOffset: 42 });
-      expect(service.shippingLevel).toBe(`MAIL`);
+      expect(service.metadata).toEqual({ shipping: 399, taxes: 0, ccFeeOffset: 42 });
+      expect(service.shippingLevel).toBe(ShippingLevel.mail);
       expect(service.orderId).toBe(``);
     } else {
-      service.fees = { shipping: 399, taxes: 0, ccFeeOffset: 42 };
-      service.shippingLevel = `MAIL`;
+      service.metadata = { fees: 0, shipping: 399, taxes: 0, ccFeeOffset: 42 };
+      service.shippingLevel = ShippingLevel.mail;
     }
 
     // step 2, create payment intent
-    err = await service.createPaymentIntent();
+    err = await service.createOrderInitialization();
     expect(err).toBeUndefined();
     expect(service.paymentIntentId).toMatch(/^pi_\w+$/i);
     expect(service.paymentIntentClientSecret).toMatch(/^pi_\w+?_secret_\w+$/i);

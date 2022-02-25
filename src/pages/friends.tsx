@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { graphql } from 'gatsby';
-import { FluidBgImageObject } from '@friends-library/types';
 import { t } from '@friends-library/locale';
 import { LANG } from '../components/env';
 import { PAGE_META_DESCS } from '../lib/seo';
@@ -10,6 +9,7 @@ import FriendCard from '../components/pages/friends/FriendCard';
 import FriendsPageHero from '../components/pages/friends/FriendsPageHero';
 import FriendsPageControlsBlock from '../components/pages/friends/ControlsBlock';
 import FriendsPageCompilationsBlock from '../components/pages/friends/CompilationsBlock';
+import { FluidBgImageObject } from '../types';
 
 const FriendsPage: React.FC<Props> = ({
   data: { allFriend, recent, street, village },
@@ -180,7 +180,7 @@ export const query = graphql`
       }
     }
     recent: allFriend(
-      sort: { fields: added, order: DESC }
+      sort: { fields: published, order: DESC }
       limit: 2
       filter: { slug: { nin: ["compilations", "compilaciones"] } }
     ) {

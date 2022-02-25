@@ -1,9 +1,9 @@
 import React from 'react';
 import Link from 'gatsby-link';
 import cx from 'classnames';
-import { NewsFeedType } from '@friends-library/types';
 import NewsFeedIcon from './NewsFeedIcon';
 import { COLOR_MAP } from './news-feed';
+import { NewsFeedType } from '../../../../types';
 
 interface Props {
   type: NewsFeedType;
@@ -40,7 +40,7 @@ const NewsFeedItem: React.FC<Props> = ({
           {month} {day}
         </p>
       </div>
-      <div className="flex-grow pr-2 border-l border-gray-400 py-3 pl-4 sm:pl-6 pr-6 sm:pr-8 sm:flex items-center">
+      <div className="flex-grow border-l border-gray-400 py-3 pl-4 sm:pl-6 pr-6 sm:pr-8 sm:flex items-center">
         <NewsFeedIcon className="hidden sm:block mr-6" type={type} />
         <div>
           <h3

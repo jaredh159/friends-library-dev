@@ -9,16 +9,15 @@ on:
 
 env:
   CLOUD_STORAGE_BUCKET_URL: ${{ secrets.CLOUD_STORAGE_BUCKET_URL }}
-  DOCUMENT_META_AUTH_TOKEN: ${{ secrets.DOCUMENT_META_AUTH_TOKEN }}
-  DOCUMENT_META_GIST_ID: ${{ secrets.DOCUMENT_META_GIST_ID }}
-  DOCUMENT_META_GIST_FILENAME: ${{ secrets.DOCUMENT_META_GIST_FILENAME }}
   GATSBY_ALGOLIA_APP_ID: ${{ secrets.GATSBY_ALGOLIA_APP_ID }}
   ALGOLIA_ADMIN_KEY: ${{ secrets.ALGOLIA_ADMIN_KEY }}
+  FLP_API_TOKEN_STAGING: ${{ secrets.FLP_API_TOKEN_STAGING }}
+  FLP_API_TOKEN_PROD: ${{ secrets.FLP_API_TOKEN_PROD }}
   GATSBY_ALGOLIA_SEARCH_ONLY_KEY: ${{ secrets.GATSBY_ALGOLIA_SEARCH_ONLY_KEY }}
   GATSBY_TEST_STRIPE_PUBLISHABLE_KEY: ${{ secrets.GATSBY_TEST_STRIPE_PUBLISHABLE_KEY }}
   GATSBY_PROD_STRIPE_PUBLISHABLE_KEY: ${{ secrets.GATSBY_PROD_STRIPE_PUBLISHABLE_KEY }}
-  GATSBY_TEST_GRAPHQL_API_ENDPOINT: ${{ secrets.GATSBY_TEST_GRAPHQL_API_ENDPOINT }}
-  GATSBY_PROD_GRAPHQL_API_ENDPOINT: ${{ secrets.GATSBY_PROD_GRAPHQL_API_ENDPOINT }}
+  GATSBY_FLP_API_ENDPOINT_PROD: ${{ secrets.GATSBY_FLP_API_ENDPOINT_PROD }}
+  GATSBY_FLP_API_ENDPOINT_STAGING: ${{ secrets.GATSBY_FLP_API_ENDPOINT_STAGING }}
   DOCS_REPOS_ROOT: ${{ github.workspace }}/evans
   DEPLOYING: true
   GATSBY_NETLIFY_CONTEXT:
@@ -80,13 +79,6 @@ jobs:
       - uses: bahmutov/npm-install@v1
         with:
           working-directory: evans
-      - uses: actions/checkout@v2
-        with:
-          repository: friends-library-dev/functions
-          path: functions
-      - uses: bahmutov/npm-install@v1
-        with:
-          working-directory: functions
       - name: clone-friend-repos
         run: cd evans && npx friend-repos-clone-all .
       - name: build:en
@@ -123,7 +115,6 @@ jobs:
           netlify_api_token: ${{ secrets.NETLIFY_API_TOKEN }}
           site_id: ${{ secrets.DEPLOY_SITE_ID_EN }}
           build_dir: evans/public
-          functions_dir: functions/dist
           github_token: ${{ github.token }}
 
   build-es:
@@ -142,13 +133,6 @@ jobs:
       - uses: bahmutov/npm-install@v1
         with:
           working-directory: evans
-      - uses: actions/checkout@v2
-        with:
-          repository: friends-library-dev/functions
-          path: functions
-      - uses: bahmutov/npm-install@v1
-        with:
-          working-directory: functions
       - name: clone-friend-repos
         run: cd evans && npx friend-repos-clone-all .
       - name: build:es
@@ -160,7 +144,6 @@ jobs:
           netlify_api_token: ${{ secrets.NETLIFY_API_TOKEN }}
           site_id: ${{ secrets.DEPLOY_SITE_ID_ES }}
           build_dir: evans/public
-          functions_dir: functions/dist
           github_token: ${{ github.token }}
 
   comment:

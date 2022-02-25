@@ -1,12 +1,12 @@
 import React from 'react';
 import Link from 'gatsby-link';
-import { FluidBgImageObject } from '@friends-library/types';
 import cx from 'classnames';
 import { t } from '@friends-library/locale';
 import { Book } from './types';
 import AudiobooksHero from '../../blocks/AudiobooksHero';
 import Button from '../../Button';
 import Album from '../../Album';
+import { FluidBgImageObject } from '../../../types';
 import './AudioBooksBlock.css';
 
 interface Props {

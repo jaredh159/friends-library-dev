@@ -1,11 +1,18 @@
 import React from 'react';
+import gql from 'x-syntax';
 import { graphql } from 'gatsby';
-import { FluidBgImageObject } from '@friends-library/types';
 import ContactFormBlock from '../components/pages/contact/FormBlock';
 import { t } from '@friends-library/locale';
 import { PAGE_META_DESCS } from '../lib/seo';
 import { Layout, Seo } from '../components/data';
 import { LANG } from '../env';
+import { FluidBgImageObject } from '../types';
+import Client from '../components/lib/Client';
+import {
+  SubmitContactForm,
+  SubmitContactFormVariables,
+} from '../graphql/SubmitContactForm';
+import { Lang, Subject as ContactFormSubject } from '../graphql/globalTypes';
 
 interface Props {
   data: {
@@ -38,19 +45,38 @@ export const query = graphql`
   }
 `;
 
-async function submit(data: Record<string, string>): Promise<boolean> {
+async function submit(
+  name: string,
+  email: string,
+  message: string,
+  subject: ContactFormSubject,
+): Promise<boolean> {
   try {
-    const { status } = await window.fetch(`/.netlify/functions/site/contact`, {
-      method: `POST`,
-      credentials: `omit`,
-      body: JSON.stringify({ ...data, lang: LANG }),
-      headers: {
-        'Content-Type': `application/json`,
-        Accept: `application/json`,
+    const result = await new Client().mutate<
+      SubmitContactForm,
+      SubmitContactFormVariables
+    >({
+      mutation: SUBMIT_MUTATION,
+      variables: {
+        input: {
+          lang: LANG === `es` ? Lang.es : Lang.en,
+          name,
+          email,
+          message,
+          subject,
+        },
       },
     });
-    return status === 204;
+    return result.success;
   } catch {
     return false;
   }
 }
+
+const SUBMIT_MUTATION = gql`
+  mutation SubmitContactForm($input: SubmitContactFormInput!) {
+    result: submitContactForm(input: $input) {
+      success
+    }
+  }
+`;

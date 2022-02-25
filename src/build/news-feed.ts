@@ -1,11 +1,10 @@
-import { DocumentMeta } from '@friends-library/document-meta';
-import { Friend, Edition, Document } from '@friends-library/friends';
-import { Lang, NewsFeedType } from '@friends-library/types';
-import { htmlShortTitle } from '@friends-library/adoc-utils';
+import { Lang } from '@friends-library/types';
 import { t } from '@friends-library/locale';
 import { spanishShortMonth } from '../lib/date';
 import { documentUrl } from '../lib/url';
 import { APP_ALT_URL } from '../env';
+import * as api from './api';
+import { NewsFeedType } from '../types';
 
 interface FeedItem {
   month: string;
@@ -18,57 +17,54 @@ interface FeedItem {
   date: string;
 }
 
-export function getNewsFeedItems(
-  friends: Friend[],
-  meta: DocumentMeta,
+export async function getNewsFeedItems(
   lang: Lang,
   outOfBandEvents?: (FeedItem & { lang: Lang[] })[],
-): FeedItem[] {
+): Promise<FeedItem[]> {
   const items: FeedItem[] = [];
-  const [editions, docs] = entityMaps(friends);
   const formatter = new Intl.DateTimeFormat(`en-US`, { month: `short` });
-
-  for (const [path, edition] of [...editions]) {
-    const document = edition.document;
-    const friend = document.friend;
-    const title = htmlShortTitle(document.title);
-    const edMeta = meta.get(path);
+  const editions = await api.queryEditions();
+  for (const { edition, document, friend } of editions) {
     if (friend.lang === lang) {
-      if (edMeta && edition === document.primaryEdition && document.isComplete) {
+      if (
+        edition.id === document.primaryEdition?.id &&
+        !document.incomplete &&
+        !edition.isDraft &&
+        edition.impression
+      ) {
         items.push({
           type: `book`,
-          url: documentUrl(document),
-          title,
+          url: documentUrl(document, friend),
+          title: document.htmlShortTitle,
           description:
             lang === `en`
               ? `Download free ebook or pdf, or purchase a paperback at cost.`
               : `Descárgalo en formato ebook o pdf, o compra el libro impreso a precio de costo.`,
-          ...dateFields(edMeta.published, formatter, lang),
+          ...dateFields(edition.impression.createdAt, formatter, lang),
         });
       }
       if (edition.audio) {
         items.push({
-          title: `${title} &mdash; (${t`Audiobook`})`,
+          title: `${document.htmlShortTitle} &mdash; (${t`Audiobook`})`,
           type: `audiobook`,
-          url: `${documentUrl(document)}#audiobook`,
+          url: `${documentUrl(document, friend)}#audiobook`,
           description:
             lang === `en`
               ? `Free audiobook is now available for download or listening online.`
               : `El audiolibro ya está disponible para descargar gratuitamente o escuchar en línea.`,
-          ...dateFields(edition.audio.added.toISOString(), formatter, lang),
+          ...dateFields(edition.audio.createdAt, formatter, lang),
         });
       }
-    } else if (lang === `en` && edMeta && document.isComplete) {
-      const englishDoc = docs.get(document.altLanguageId || ``);
-      if (!englishDoc) throw new Error(`Missing alt language doc`);
+    } else if (lang === `en` && !document.incomplete && document.altLanguageDocument) {
+      const englishTitle = document.altLanguageDocument.htmlShortTitle;
       items.push({
-        title: `${title} &mdash; (Spanish)`,
+        title: `${document.htmlShortTitle} &mdash; (Spanish)`,
         type: `spanish_translation`,
-        url: `${APP_ALT_URL}${documentUrl(document)}`,
-        description: document.isCompilation
-          ? `<em>${englishDoc.title}</em> now translated and available on the Spanish site.`
-          : `${friend.name}&rsquo;s <em>${englishDoc.title}</em> now translated and available on the Spanish site.`,
-        ...dateFields(edMeta.published, formatter, lang),
+        url: `${APP_ALT_URL}${documentUrl(document, friend)}`,
+        description: friend.isCompilations
+          ? `<em>${englishTitle}</em> now translated and available on the Spanish site.`
+          : `${friend.name}&rsquo;s <em>${englishTitle}</em> now translated and available on the Spanish site.`,
+        ...dateFields(edition.impression!.createdAt, formatter, lang),
       });
     }
 
@@ -122,22 +118,6 @@ function dateFields(
     day: String(date.getDate()),
     date: dateStr,
   };
-}
-
-function entityMaps(friends: Friend[]): [Map<string, Edition>, Map<string, Document>] {
-  const editionMap = new Map<string, Edition>();
-  const docMap = new Map<string, Document>();
-  friends.forEach((friend) =>
-    friend.documents.forEach((document) => {
-      docMap.set(document.id, document);
-      return document.editions.forEach((edition) => {
-        if (!edition.isDraft) {
-          editionMap.set(edition.path, edition);
-        }
-      });
-    }),
-  );
-  return [editionMap, docMap];
 }
 
 function getOutOfBandEvents(

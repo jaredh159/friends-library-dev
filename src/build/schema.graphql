@@ -5,6 +5,7 @@ type Document implements Node {
 }
 
 type Edition @dontInfer {
+  id: String!
   description: String
   audio: Audio
   customCode: CustomCode!
@@ -12,7 +13,6 @@ type Edition @dontInfer {
   isbn: String!
   path: String!
   paperbackCoverBlurb: String!
-  filename: EditionFilename!
   numChapters: Int!
   friendSlug: String!
   documentSlug: String!
@@ -31,14 +31,6 @@ type EditionDownloadUrl {
   mobi: String!
   epub: String!
   speech: String!
-}
-
-type EditionFilename {
-  epub: String!
-  mobi: String!
-  web_pdf: String! @proxy(from: "web-pdf")
-  paperback_cover: String! @proxy(from: "paperback-cover")
-  paperback_interior: String! @proxy(from: "paperback-interior")
 }
 
 type Audio {
@@ -64,9 +56,6 @@ type Audio {
 }
 
 type AudioPart {
-  seconds: Int!
-  filesizeHq: Int!
-  filesizeLq: Int!
   externalIdHq: Int!
   externalIdLq: Int!
   title: String!

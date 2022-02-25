@@ -1,14 +1,9 @@
 import { ReallySmallEvents as EventEmitter } from 'really-small-events';
-import { checkoutErrors as Err } from '@friends-library/types';
 import CheckoutService from './CheckoutService';
 
 const states = {
   cart: {
-    next(this: CheckoutMachine) {
-      this.transitionTo(`delivery`);
-      // don't await, fire & forget to wakeup in background
-      this.service.sendWakeup();
-    },
+    next: `delivery`,
     continueBrowsing(this: CheckoutMachine) {
       this.close();
     },
@@ -20,15 +15,15 @@ const states = {
   },
 
   calculateFees: {
-    onEnter: `Service.calculateFees`,
+    onEnter: `Service.getExploratoryMetadata`,
     success: `createPaymentIntent`,
-    failure(this: CheckoutMachine, err: string) {
-      this.transitionTo(err === Err.SHIPPING_NOT_POSSIBLE ? `delivery` : `brickSession`);
+    failure(this: CheckoutMachine, err: 'shipping_not_possible' | string) {
+      this.transitionTo(err === `shipping_not_possible` ? `delivery` : `brickSession`);
     },
   },
 
   createPaymentIntent: {
-    onEnter: `Service.createPaymentIntent`,
+    onEnter: `Service.createOrderInitialization`,
     success: `payment`,
     failure: `brickSession`,
   },

@@ -19,6 +19,7 @@ import PopUnder from '../PopUnder';
 import { appReducer, appInitialState, AppDispatch } from '../lib/app-state';
 import RequestFreeBooks from '../RequestFreeBooks';
 import { APP_URL } from '../../env';
+import { FluidBgImageObject, NumPublishedBooks } from '../../types';
 
 const store = CartStore.getSingleton();
 
@@ -61,13 +62,17 @@ const Layout: React.FC = ({ children }) => {
 
   useEscapeable(`.Slideover`, menuOpen, setMenuOpen);
 
-  const data = useStaticQuery(graphql`
+  type QueryData = NumPublishedBooks & {
+    mountains: { image: { fluid: FluidBgImageObject } };
+  };
+
+  const data = useStaticQuery<QueryData>(graphql`
     query LayoutQuery {
-      site {
-        ...SiteMetadata
+      numPublished: publishedCounts {
+        ...PublishedBooks
       }
       mountains: file(relativePath: { eq: "mountains.jpg" }) {
-        childImageSharp {
+        image: childImageSharp {
           fluid(quality: 90, maxWidth: 1920) {
             ...GatsbyImageSharpFluid_withWebp
           }
@@ -77,8 +82,8 @@ const Layout: React.FC = ({ children }) => {
   `);
 
   const metaDesc = [
-    `Friends Library exists to freely share the writings of early members of the Religious Society of Friends (Quakers), believing that no other collection of Christian writings more accurately communicates or powerfully illustrates the soul-transforming power of the gospel of Jesus Christ. We have ${data.site.meta.numEnglishBooks} books available for free download in multiple editions and digital formats (including PDF, MOBI, and EPUB), and a growing number of them are also recorded as audiobooks. Paperback copies are also available at very low cost.`,
-    `La Biblioteca de los Amigos ha sido creada para compartir gratuitamente los escritos de los primeros miembros de la Sociedad de Amigos (Cuáqueros), ya que creemos que no existe ninguna otra colección de escritos cristianos que comunique con mayor precisión, o que ilustre con más pureza, el poder del evangelio de Jesucristo que transforma el alma. Actualmente tenemos ${data.site.meta.numSpanishBooks} libros disponibles para descargarse gratuitamente en múltiples ediciones y formatos digitales, y un número creciente de estos libros están siendo grabados como audiolibros. Libros impresos también están disponibles por un precio muy económico. `,
+    `Friends Library exists to freely share the writings of early members of the Religious Society of Friends (Quakers), believing that no other collection of Christian writings more accurately communicates or powerfully illustrates the soul-transforming power of the gospel of Jesus Christ. We have ${data.numPublished.books.en} books available for free download in multiple editions and digital formats (including PDF, MOBI, and EPUB), and a growing number of them are also recorded as audiobooks. Paperback copies are also available at very low cost.`,
+    `La Biblioteca de los Amigos ha sido creada para compartir gratuitamente los escritos de los primeros miembros de la Sociedad de Amigos (Cuáqueros), ya que creemos que no existe ninguna otra colección de escritos cristianos que comunique con mayor precisión, o que ilustre con más pureza, el poder del evangelio de Jesucristo que transforma el alma. Actualmente tenemos ${data.numPublished.books.es} libros disponibles para descargarse gratuitamente en múltiples ediciones y formatos digitales, y un número creciente de estos libros están siendo grabados como audiolibros. Libros impresos también están disponibles por un precio muy económico. `,
   ][LANG === `en` ? 0 : 1];
 
   return (
@@ -136,7 +141,7 @@ const Layout: React.FC = ({ children }) => {
               className="Content flex flex-col relative overflow-hidden bg-white min-h-screen"
             >
               {children}
-              <Footer bgImg={data.mountains.childImageSharp.fluid} />
+              <Footer bgImg={data.mountains.image.fluid} />
             </div>
           </>
         )}

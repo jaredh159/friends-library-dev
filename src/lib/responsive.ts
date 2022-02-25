@@ -1,11 +1,9 @@
-import { Title, Name, Html } from '@friends-library/types';
-
 const REPLACE = `<span class="d-none d-sm-inline">$&</span>`;
 
 export default function responsiveDocumentTitle(
-  originalTitle: Title,
-  friendName: Name,
-): Html {
+  originalTitle: string,
+  friendName: string,
+): string {
   let title = originalTitle;
   if (title.length <= 35) {
     return title;

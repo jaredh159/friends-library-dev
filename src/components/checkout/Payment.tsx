@@ -26,6 +26,7 @@ type Props = ReactStripeElements.InjectedStripeProps & {
   taxes: number;
   error?: string;
   ccFeeOffset: number;
+  handling: number;
   throbbing: boolean;
   onPay: (authorizePayment: () => Promise<Record<string, any>>) => void;
   paymentIntentClientSecret: string;
@@ -97,7 +98,11 @@ class Payment extends React.Component<Props, State> {
           <div className={cx(`md:flex mt-4`, throbbing && `blur pointer-events-none`)}>
             <Fees
               className="w-full md:w-1/2 md:mr-10 md:border-b md:pb-2 md:mb-4"
-              {...this.props}
+              subTotal={this.props.subTotal}
+              shipping={this.props.shipping}
+              handling={this.props.handling}
+              taxes={this.props.taxes}
+              ccFeeOffset={this.props.ccFeeOffset}
             />
             <div className="md:w-1/2 mt-4 md:mt-0">
               <h3 className="hidden md:block pt-0 mt-2 mb-6 text-gray-600 antialiased tracking-wider font-sans font-normal text-lg">

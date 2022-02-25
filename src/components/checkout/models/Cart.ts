@@ -1,7 +1,7 @@
 import { ReallySmallEvents as EventEmitter } from 'really-small-events';
 import CartItem, { CartItemData } from './CartItem';
 import { Address } from '../../../types';
-import { isAddress, isItem, migrateArrayTitle } from './integrity';
+import { isAddress, isItem } from './integrity';
 
 interface CartData {
   items: CartItemData[];
@@ -30,7 +30,7 @@ export default class Cart extends EventEmitter {
 
       let validItems: CartItemData[] = [];
       if (Array.isArray(items)) {
-        validItems = items.map(migrateArrayTitle).filter(isItem);
+        validItems = items.filter(isItem);
       }
 
       return new Cart(

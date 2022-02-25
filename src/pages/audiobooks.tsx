@@ -1,6 +1,5 @@
 import React from 'react';
 import { graphql, Link } from 'gatsby';
-import { FluidBgImageObject } from '@friends-library/types';
 import { t } from '@friends-library/locale';
 import { coverPropsFromQueryData, CoverData } from '../lib/covers';
 import { PAGE_META_DESCS } from '../lib/seo';
@@ -11,6 +10,7 @@ import BookTeaserCard from '../components/BookTeaserCard';
 import Dual from '../components/Dual';
 import Stack from '../components/layout/Stack';
 import Audiobook from '../components/pages/audiobooks/Audiobook';
+import { FluidBgImageObject } from '../types';
 
 type AudioBookNode = CoverData & {
   authorUrl: string;

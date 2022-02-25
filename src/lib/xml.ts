@@ -1,37 +1,20 @@
 import { encode } from 'he';
 import moment from 'moment';
-import { Audio, Document, Edition, AudioPart } from '@friends-library/friends';
-import { AudioQuality, LARGEST_SQUARE_COVER_IMAGE_SIZE } from '@friends-library/types';
-import env from '@friends-library/env';
-import * as docMeta from '@friends-library/document-meta';
+import { Audio, Document, Edition, AudioPart, Friend } from '../build/types';
+import { AudioQuality } from '@friends-library/types';
 import { LANG, APP_URL } from '../env';
-import { podcastUrl, mp3PartDownloadUrl } from './url';
 
 export async function podcast(
-  document: Document,
   edition: Edition,
-  quality: AudioQuality,
+  document: Document,
+  friend: Friend,
+  qualityType: AudioQuality,
 ): Promise<string> {
-  const { friend } = document;
-  const { audio } = edition;
-  if (!audio) {
-    throw new Error(`Document has no audio`);
-  }
-
-  const meta = await docMeta.fetchSingleton();
-  const edMeta = meta.get(edition.path);
-  if (!edMeta) {
-    throw new Error(`Missing edition meta for podcast xml creation: ${edition.path}`);
-  }
-  if (!edMeta.audio) {
-    throw new Error(`Edition meta missing audio info: ${edition.path}`);
-  }
-
-  const CLOUD_URL = env.requireVar(`CLOUD_STORAGE_BUCKET_URL`);
+  const audio = edition.audio!;
+  const quality = qualityType === `HQ` ? `hq` : `lq`;
   const launchDate = moment(`2020-03-27`);
-  const imageUrl = `${CLOUD_URL}/${edition.squareCoverImagePath(
-    LARGEST_SQUARE_COVER_IMAGE_SIZE,
-  )}`;
+  const imageUrl = edition.images.square.w1400.url;
+  const podcastUrl = audio.files.podcast[quality].logUrl;
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <rss
@@ -41,13 +24,13 @@ export async function podcast(
 >
   <channel>
     <atom:link
-      href="${APP_URL}${podcastUrl(audio, quality)}"
+      href="${podcastUrl}"
       rel="self"
       type="application/rss+xml"
     />
     <title>${encode(document.title)}</title>
-    <itunes:subtitle>${subtitle(audio)}</itunes:subtitle>
-    <link>${APP_URL}${podcastUrl(audio, quality)}</link>
+    <itunes:subtitle>${subtitle(audio, document, friend)}</itunes:subtitle>
+    <link>${podcastUrl}</link>
     <language>${LANG}</language>
     <itunes:author>${encode(friend.name)}</itunes:author>
     <description>${encode(document.description)}</description>
@@ -63,7 +46,7 @@ export async function podcast(
     <image>
       <url>${imageUrl}</url>
       <title>${encode(document.title)}</title>
-      <link>${APP_URL}${podcastUrl(audio, quality)}</link>
+      <link>${podcastUrl}</link>
     </image>
     <itunes:category text="Religion &amp; Spirituality">
       <itunes:category text="Christianity" />
@@ -71,27 +54,26 @@ export async function podcast(
     ${audio.parts
       .map((part, index) => {
         const num = index + 1;
-        const desc = partDesc(part, num, audio.parts.length);
+        const desc = partDesc(part, document, friend, num, audio.parts.length);
         return `<item>
-      <title>${partTitle(part, num, audio.parts.length)}</title>
+      <title>${partTitle(document, num, audio.parts.length)}</title>
       <enclosure
-        url="${APP_URL}${mp3PartDownloadUrl(audio, quality, index)}"
-        length="${edMeta.audio?.[quality].parts[index].mp3Size}"
+        url="${part.mp3File[quality].logUrl}"
+        length="${part[quality === `hq` ? `mp3SizeHq` : `mp3SizeLq`]}"
         type="audio/mpeg"
       />
       <itunes:author>${encode(friend.name)}</itunes:author>
       <itunes:summary>${desc}</itunes:summary>
       <itunes:subtitle>${desc}</itunes:subtitle>
       <description>${desc}</description>
-      <guid isPermaLink="false">${podcastUrl(
-        audio,
-        quality,
-      )} pt-${num} at ${APP_URL}</guid>
-      <pubDate>${(moment(audio.added).isBefore(launchDate)
+      <guid isPermaLink="false">${
+        audio.files.podcast[quality].sourcePath
+      } pt-${num} at ${APP_URL}</guid>
+      <pubDate>${(moment(audio.createdAt).isBefore(launchDate)
         ? launchDate
-        : moment(audio.added)
+        : moment(audio.createdAt)
       ).format(`ddd, DD MMM YYYY hh:mm:ss ZZ`)}</pubDate>
-      <itunes:duration>${edMeta.audio?.durations[index]}</itunes:duration>
+      <itunes:duration>${part.duration}</itunes:duration>
       <itunes:order>${num}</itunes:order>
       <itunes:explicit>clean</itunes:explicit>
       <itunes:episodeType>full</itunes:episodeType>
@@ -103,32 +85,39 @@ export async function podcast(
 `;
 }
 
-export function subtitle(audio: Audio): string {
-  const doc = audio.edition.document;
-  const friend = doc.friend;
+export function subtitle(
+  audio: Pick<Audio, 'reader'>,
+  document: Pick<Document, 'title'>,
+  friend: Pick<Friend, 'isCompilations' | 'name' | 'lang'>,
+): string {
   if (friend.lang === `es`) {
-    return `Audiolibro de "${doc.title}"${
-      doc.isCompilation ? `` : ` escrito por ${friend.name}`
+    return `Audiolibro de "${document.title}"${
+      friend.isCompilations ? `` : ` escrito por ${friend.name}`
     }, de la Biblioteca de los Amigos. Leído por ${audio.reader}.`;
   }
-  return `Audiobook of ${doc.isCompilation ? `` : `${friend.name}'s `}"${
-    doc.title
+  return `Audiobook of ${friend.isCompilations ? `` : `${friend.name}'s `}"${
+    document.title
   }" from The Friends Library. Read by ${audio.reader}.`;
 }
 
-export function partDesc(part: AudioPart, partNumber: number, numParts: number): string {
-  const document = part.audio.edition.document;
-  const lang = document.friend.lang;
+export function partDesc(
+  part: Pick<AudioPart, 'title'>,
+  document: Pick<Document, 'title'>,
+  friend: Pick<Friend, 'name' | 'lang'>,
+  partNumber: number,
+  numParts: number,
+): string {
+  const lang = friend.lang;
   const by = lang === `en` ? `by` : `escrito por`;
   const Of = lang === `en` ? `of` : `de`;
   const Part = lang === `en` ? `Part` : `Parte`;
-  const byLine = `"${encode(document.title)}" ${by} ${encode(document.friend.name)}`;
+  const byLine = `"${encode(document.title)}" ${by} ${encode(friend.name)}`;
   if (numParts === 1) {
     return lang === `en` ? `Audiobook version of ${byLine}` : `Audiolibro de ${byLine}`;
   }
 
   let desc = [
-    `${Part} ${partNumber} ${Of} ${part.audio.parts.length}`,
+    `${Part} ${partNumber} ${Of} ${numParts}`,
     lang === `en` ? `of the audiobook version of` : `del audiolibro de`,
     byLine,
   ].join(` `);
@@ -143,10 +132,13 @@ export function partDesc(part: AudioPart, partNumber: number, numParts: number):
   return desc;
 }
 
-export function partTitle(part: AudioPart, partNumber: number, numParts: number): string {
-  const title = part.audio.edition.document.title;
+export function partTitle(
+  document: Pick<Document, 'title'>,
+  partNumber: number,
+  numParts: number,
+): string {
   if (numParts === 1) {
-    return title;
+    return document.title;
   }
-  return `${title}, pt. ${partNumber}`;
+  return `${document.title}, pt. ${partNumber}`;
 }

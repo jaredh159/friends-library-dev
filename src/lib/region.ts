@@ -1,19 +1,19 @@
-import { Document } from '@friends-library/friends';
+import { Friend } from '../build/types';
 
-export function documentRegion(doc: Document): string {
-  if (doc.region) {
-    return doc.region;
+export function documentRegion(friend: Friend): string {
+  if (friend.isCompilations) {
+    return `Other`;
   }
-  const residence = doc.friend.primaryResidence;
-  switch (residence.region) {
+  switch (friend.primaryResidence?.region) {
     case `Ireland`:
+      return `Ireland`;
     case `England`:
+      return `England`;
     case `Scotland`:
-      return residence.region;
+      return `Scotland`;
     case `Wales`:
     case `Netherlands`:
     case `France`:
-    case `mixed (compilation)`:
       return `Other`;
     case `Ohio`:
       return `Western US`;
@@ -25,6 +25,8 @@ export function documentRegion(doc: Document): string {
     case `Vermont`:
       return `Eastern US`;
     default:
-      throw new Error(`Error inferring explore region from doc: ${doc.path}`);
+      throw new Error(
+        `Error inferring explore region for friend: ${friend.name}/${friend.lang}`,
+      );
   }
 }

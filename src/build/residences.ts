@@ -1,4 +1,4 @@
-import { Friend } from '@friends-library/friends';
+import { FriendResidence } from './types';
 
 type Map = 'UK' | 'US' | 'Europe';
 
@@ -8,21 +8,18 @@ interface Position {
   map: Map;
 }
 
-export default function (residences: Friend['residences']): Record<string, any>[] {
-  const positions = residences.map(position);
+export default function (
+  residences: Array<Pick<FriendResidence, 'city' | 'region'>>,
+): Array<Pick<FriendResidence, 'city' | 'region'> & Position> {
+  const positions = residences.map(getPosition);
   const map = deriveMap(positions);
-
-  return residences.map((res) => {
-    const pos = position(res);
-    if (pos.map !== map) {
-      pos.top = -1000;
-      pos.left = -1000;
+  return residences.map((residence) => {
+    const position = getPosition(residence);
+    if (position.map !== map) {
+      position.top = -1000;
+      position.left = -1000;
     }
-    return {
-      ...res,
-      ...pos,
-      map,
-    };
+    return { ...residence, ...position, map };
   });
 }
 
@@ -37,7 +34,7 @@ function deriveMap(positions: Position[]): 'UK' | 'US' | 'Europe' {
   return arrays[0][0];
 }
 
-function position(residence: { city: string; region: string }): Position {
+function getPosition(residence: Pick<FriendResidence, 'city' | 'region'>): Position {
   const place = [residence.city, residence.region].join(`, `);
   switch (place) {
     case `St. Petersburg, Russia`:

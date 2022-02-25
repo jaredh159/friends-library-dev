@@ -74,7 +74,9 @@ const BookByFriend: React.FC<Props> = (props) => {
           </li>
           <li className="text-sans w-1/2 capitalize whitespace-no-wrap mb-2">
             <TagsIcon className="mr-2" />
-            {props.tags.map(translate).join(`, `)}
+            {props.tags
+              .map((t) => translate(t.replace(`spiritualLife`, `spiritual life`)))
+              .join(`, `)}
           </li>
           {hasAudio && (
             <li className="text-sans w-1/2 whitespace-no-wrap mb-2">

@@ -1,14 +1,20 @@
 import React from 'react';
 import BackgroundImage from 'gatsby-background-image-preact';
-import { FluidBgImageObject } from '@friends-library/types';
 import { t } from '@friends-library/locale';
 import Dual from '../../Dual';
 import Form from './Form';
 import Stack from '../../layout/Stack';
 import { bgLayer } from '../../lib/color';
+import { FluidBgImageObject } from '../../../types';
+import { Subject as ContactFormSubject } from '../../../graphql/globalTypes';
 
 interface Props {
-  onSubmit: (formData: Record<string, string>) => Promise<boolean>;
+  onSubmit: (
+    name: string,
+    email: string,
+    message: string,
+    subject: ContactFormSubject,
+  ) => Promise<boolean>;
   bgImg: FluidBgImageObject;
 }
 

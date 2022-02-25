@@ -28,7 +28,7 @@ const Item: React.FC<Props> = ({
 }) => (
   <div className="Cart__Item flex py-2 md:py-6 border-b border-gray-300">
     <div className="w-2/3 md:w-3/5 flex">
-      <div className="CoverWrap hidden mr-1 flex flex-col justify-center">
+      <div className="CoverWrap mr-1 flex flex-col justify-center">
         <FrontCover
           lang={LANG}
           isCompilation={author.startsWith(`Compila`)} // TODO

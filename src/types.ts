@@ -1,10 +1,9 @@
 declare module '*.jpg';
 declare module '*.png';
 
-export interface SiteMetadata {
-  meta: {
-    numSpanishBooks: number;
-    numEnglishBooks: number;
+export interface NumPublishedBooks {
+  numPublished: {
+    books: { en: number; es: number };
   };
 }
 
@@ -20,3 +19,34 @@ export interface Address {
 }
 
 export type AddressWithEmail = Address & { email: string };
+
+export interface FluidBgImageObject {
+  aspectRatio: number;
+  src: string;
+  srcSet: string;
+  sizes?: string;
+  base64?: string;
+  tracedSVG?: string;
+  srcWebp?: string;
+  srcSetWebp?: string;
+  media?: string;
+}
+
+export interface FluidImageObject {
+  aspectRatio: number;
+  src: string;
+  srcSet: string;
+  sizes: string;
+  base64?: string;
+  tracedSVG?: string;
+  srcWebp?: string;
+  srcSetWebp?: string;
+  media?: string;
+}
+
+export type NewsFeedType =
+  | `book`
+  | `audiobook`
+  | `spanish_translation`
+  | `feature`
+  | `chapter`;

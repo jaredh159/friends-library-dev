@@ -4,7 +4,6 @@ import { t } from '@friends-library/locale';
 import { EditionType, CoverProps, PrintSize, Lang } from '@friends-library/types';
 import { Layout, Seo } from '../components/data';
 import ExploreBooksBlock from '../components/data/ExploreBooksBlock';
-import { SiteMetadata } from '../types';
 import { LANG } from '../env';
 import { bookPageMetaDesc } from '../lib/seo';
 import { coverPropsFromQueryData, CoverData } from '../lib/covers';
@@ -13,10 +12,10 @@ import { makeScroller } from '../components/lib/scroll';
 import DocBlock from '../components/pages/document/DocBlock';
 import ListenBlock from '../components/pages/document/ListenBlock';
 import { Helmet } from 'react-helmet';
+import { NumPublishedBooks } from '../types';
 
 interface Props {
-  data: {
-    site: SiteMetadata;
+  data: NumPublishedBooks & {
     friend: {
       lang: Lang;
       name: string;
@@ -24,7 +23,6 @@ interface Props {
       url: string;
     };
     document: {
-      id: string;
       slug: string;
       title: string;
       htmlTitle: string;
@@ -37,6 +35,7 @@ interface Props {
       isCompilation: boolean;
       isComplete: boolean;
       editions: {
+        id: string;
         type: EditionType;
         isbn: string;
         price: number;
@@ -86,14 +85,14 @@ interface Props {
 }
 
 const DocumentPage: React.FC<Props> = ({
-  data: { site, friend, document, otherDocuments },
+  data: { friend, document, otherDocuments, numPublished },
 }) => {
   useEffect(() => {
     if (window.location.hash === `#audiobook`) {
       setTimeout(makeScroller(`#audiobook`), 10);
     }
   }, []);
-  const numBooks = site.meta[LANG === `en` ? `numEnglishBooks` : `numSpanishBooks`];
+  const numBooks = numPublished.books[LANG];
   const otherBooks = otherDocuments.nodes;
   const mainEdition = document.editions[0];
   const audio = mainEdition.audio;
@@ -136,13 +135,14 @@ const DocumentPage: React.FC<Props> = ({
         authorUrl={friend.url}
         price={mainEdition.price}
         hasAudio={hasAudio}
-        documentId={document.id}
+        editionId={mainEdition.id}
         numChapters={mainEdition.numChapters}
         altLanguageUrl={document.altLanguageUrl}
         isComplete={document.isComplete}
         {...coverProps}
         pages={mainEdition.pages}
         editions={document.editions.map((edition) => ({
+          id: edition.id,
           title: document.title,
           type: edition.type,
           printSize: edition.printSize,
@@ -194,8 +194,8 @@ export default DocumentPage;
 
 export const query = graphql`
   query DocumentPage($documentSlug: String!, $friendSlug: String!) {
-    site {
-      ...SiteMetadata
+    numPublished: publishedCounts {
+      ...PublishedBooks
     }
     friend(slug: { eq: $friendSlug }) {
       id: friendId
@@ -211,6 +211,7 @@ export const query = graphql`
       ogImageUrl
       originalTitle
       editions {
+        id
         type
         isbn
         description

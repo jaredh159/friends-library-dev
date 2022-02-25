@@ -1,151 +1,166 @@
 import CheckoutService from '../CheckoutService';
 import CheckoutApi from '../CheckoutApi';
 import { cartPlusData } from '../../models/__tests__/fixtures';
+import { ShippingLevel } from '../../../../graphql/globalTypes';
 
 jest.useFakeTimers();
 
 describe(`CheckoutService()`, () => {
   let service: CheckoutService;
-  const calculateFees = jest.fn();
-  const createOrder = jest.fn();
+  const apiGetExploratoryMetadata = jest.fn();
+  const apiCreateOrder = jest.fn();
 
   beforeEach(() => {
     service = new CheckoutService(cartPlusData(), {
-      calculateFees,
-      createOrder,
+      getExploratoryMetadata: apiGetExploratoryMetadata,
+      createOrder: apiCreateOrder,
     } as unknown as CheckoutApi);
     service.orderId = `order-id`;
   });
 
-  describe(`.calculateFees()`, () => {
+  describe(`.getExploratoryMetadata()`, () => {
+    function successResponse(
+      input: Partial<{
+        shippingLevel: ShippingLevel;
+        shippingInCents: number;
+        taxesInCents: number;
+        feesInCents: number;
+        creditCardFeeOffsetInCents: number;
+      }> = {},
+    ): ReturnType<InstanceType<typeof CheckoutApi>['getExploratoryMetadata']> {
+      return Promise.resolve({
+        status: `success`,
+        data: {
+          data: {
+            __typename: `PrintJobExploratoryMetadata`,
+            shippingLevel: input.shippingLevel ?? ShippingLevel.mail,
+            shippingInCents: input.shippingInCents ?? 399,
+            taxesInCents: input.taxesInCents ?? 0,
+            feesInCents: input.feesInCents ?? 0,
+            creditCardFeeOffsetInCents: input.creditCardFeeOffsetInCents ?? 42,
+          },
+        },
+      });
+    }
+
     beforeEach(() => {
-      calculateFees.mockClear();
+      apiGetExploratoryMetadata.mockClear();
     });
 
     it(`passes correct payload to api`, async () => {
-      calculateFees.mockResolvedValue({ ok: true, data: {} });
+      apiGetExploratoryMetadata.mockReturnValue(successResponse());
 
-      await service.calculateFees();
+      await service.getExploratoryMetadata();
 
-      expect(calculateFees).toHaveBeenCalledWith({
-        address: service.cart.address,
-        items: service.cart.items.flatMap((i) =>
-          i.numPages.map((pages) => ({
-            pages,
-            printSize: i.printSize,
-            quantity: i.quantity,
-          })),
-        ),
-      });
+      expect(apiGetExploratoryMetadata).toHaveBeenCalledWith(
+        service.cart.items.map((i) => ({
+          volumes: i.numPages,
+          printSize: i.printSize,
+          quantity: i.quantity,
+        })),
+        service.cart.address,
+      );
     });
 
     it(`should return null error and set internal state if success`, async () => {
-      calculateFees.mockResolvedValue({
-        ok: true,
-        data: {
-          shippingLevel: `MAIL`,
-          shipping: 399,
-          taxes: 0,
-          ccFeeOffset: 42,
-        },
-      });
-
-      const err = await service.calculateFees();
+      apiGetExploratoryMetadata.mockReturnValue(
+        successResponse({ shippingInCents: 399, creditCardFeeOffsetInCents: 42 }),
+      );
+      const err = await service.getExploratoryMetadata();
 
       expect(err).toBeUndefined();
-      expect(service.shippingLevel).toBe(`MAIL`);
-      expect(service.fees).toEqual({
+      expect(service.shippingLevel).toBe(ShippingLevel.mail);
+      expect(service.metadata).toEqual({
         shipping: 399,
         taxes: 0,
         ccFeeOffset: 42,
+        fees: 0,
       });
     });
 
     it(`should not send data about item with quantity = 0`, async () => {
-      calculateFees.mockResolvedValue({ ok: true, data: {} });
+      apiGetExploratoryMetadata.mockResolvedValue(successResponse());
       service.cart.items[0].quantity = 0;
-      await service.calculateFees();
-      const payloadItems = calculateFees.mock.calls[0][0].items;
+
+      await service.getExploratoryMetadata();
+
+      const payloadItems = apiGetExploratoryMetadata.mock.calls[0][0];
       expect(payloadItems[0].quantity).not.toBe(0);
-      expect(payloadItems).toHaveLength(2);
+      expect(payloadItems).toHaveLength(1);
     });
 
     it(`returns error if error`, async () => {
-      calculateFees.mockResolvedValue({
-        ok: false,
-        data: { msg: `shipping_not_possible` },
-      });
+      apiGetExploratoryMetadata.mockResolvedValue({ status: `shipping_not_possible` });
 
-      const err = await service.calculateFees();
+      const err = await service.getExploratoryMetadata();
 
       expect(err).toBe(`shipping_not_possible`);
     });
   });
 
   describe(`createOrder()`, () => {
-    beforeEach(() => createOrder.mockClear());
+    beforeEach(() => apiCreateOrder.mockClear());
 
     it(`passes correct payload to api`, async () => {
-      service.shippingLevel = `EXPEDITED`;
+      service.shippingLevel = ShippingLevel.expedited;
       service.paymentIntentId = `pi_123abc`;
-      service.fees = { shipping: 1, taxes: 0, ccFeeOffset: 1 };
-      createOrder.mockResolvedValue({ ok: true, data: {} });
+      service.token = `rad-token`;
+      service.metadata = { fees: 0, shipping: 1, taxes: 0, ccFeeOffset: 1 };
+      apiCreateOrder.mockResolvedValue(true);
 
       await service.createOrder();
 
-      expect(createOrder).toHaveBeenCalledWith({
-        lang: `en`,
-        amount: service.cart.subTotal() + 2, // 2 = sum of all fees
-        paymentId: service.paymentIntentId,
-        shippingLevel: service.shippingLevel,
-        id: service.orderId,
-        shipping: 1,
-        taxes: 0,
-        ccFeeOffset: 1,
-        email: service.cart.email,
-        address: {
-          name: service.cart.address!.name,
-          street: service.cart.address!.street,
-          street2: service.cart.address!.street2,
-          city: service.cart.address!.city,
-          state: service.cart.address!.state,
-          zip: service.cart.address!.zip,
-          country: service.cart.address!.country,
+      expect(apiCreateOrder).toHaveBeenCalledWith(
+        {
+          lang: `en`,
+          amount: service.cart.subTotal() + 2, // 2 = sum of all fees
+          paymentId: service.paymentIntentId,
+          shippingLevel: service.shippingLevel,
+          id: service.orderId,
+          shipping: 1,
+          taxes: 0,
+          fees: 0,
+          ccFeeOffset: 1,
+          source: `website`,
+          printJobStatus: `presubmit`,
+          email: service.cart.email,
+          addressName: service.cart.address!.name,
+          addressStreet: service.cart.address!.street,
+          addressStreet2: service.cart.address!.street2,
+          addressCity: service.cart.address!.city,
+          addressState: service.cart.address!.state,
+          addressZip: service.cart.address!.zip,
+          addressCountry: service.cart.address!.country,
         },
-        items: service.cart.items.map((i) => ({
-          title: i.printJobTitle(),
-          documentId: i.documentId,
-          edition: i.edition,
+        service.cart.items.map((i) => ({
+          orderId: `order-id`,
+          editionId: i.editionId,
           quantity: i.quantity,
           unitPrice: i.price(),
         })),
-      });
+        `rad-token`,
+      );
     });
 
     it(`should not send item with quantity = 0`, async () => {
       service.cart.items[0].quantity = 0;
-      createOrder.mockResolvedValue({ ok: true, data: {} });
+      apiCreateOrder.mockResolvedValue(true);
       await service.createOrder();
-      const payloadItems = createOrder.mock.calls[0][0].items;
+      const payloadItems = apiCreateOrder.mock.calls[0][1];
       expect(payloadItems[0].quantity).not.toBe(0);
       expect(payloadItems).toHaveLength(1);
     });
 
     it(`should return null error if success`, async () => {
-      createOrder.mockResolvedValue({ ok: true, data: { id: `order-id` } });
+      apiCreateOrder.mockResolvedValue(true);
       const err = await service.createOrder();
       expect(err).toBeUndefined();
     });
 
     it(`returns error if error`, async () => {
-      createOrder.mockResolvedValue({
-        ok: false,
-        data: { msg: `error_saving_flp_order` },
-      });
-
+      apiCreateOrder.mockResolvedValue(false);
       const err = await service.createOrder();
-
-      expect(err).toBe(`error_saving_flp_order`);
+      expect(err).toBe(`error creating order`);
     });
   });
 });

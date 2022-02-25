@@ -2,7 +2,6 @@ import React from 'react';
 import cx from 'classnames';
 import { graphql } from 'gatsby';
 import { t } from '@friends-library/locale';
-import { SiteMetadata } from '../types';
 import { LANG } from '../components/env';
 import { PAGE_META_DESCS } from '../lib/seo';
 import { Layout, Seo } from '../components/data';
@@ -13,24 +12,19 @@ import Dual from '../components/Dual';
 import EmbeddedAudio from '../components/EmbeddedAudio';
 import Heading from '../components/Heading';
 import { makeScroller } from '../components/lib/scroll';
+import { NumPublishedBooks } from '../types';
 
 interface Props {
-  data: {
-    site: SiteMetadata;
-  };
+  data: NumPublishedBooks;
 }
 
-const GettingStartedPage: React.FC<Props> = ({
-  data: {
-    site: { meta },
-  },
-}) => (
+const GettingStartedPage: React.FC<Props> = ({ data: { numPublished } }) => (
   <Layout>
     <Seo
       title={t`Getting Started`}
       description={PAGE_META_DESCS[`getting-started`][LANG].replace(
         /%NUM_ENGLISH_BOOKS%/g,
-        String(meta.numEnglishBooks),
+        String(numPublished.books.en),
       )}
     />
     <BooksBgBlock className="flex flex-col items-center">
@@ -43,10 +37,10 @@ const GettingStartedPage: React.FC<Props> = ({
       <Dual.P className="text-center body-text text-white text-lg leading-loose max-w-4xl md:text-left">
         <>
           Interested in reading something from the early Quakers, but picking from{` `}
-          {LANG === `en` ? meta.numEnglishBooks : meta.numSpanishBooks} books seems
-          daunting? No worries&mdash;on this page we’ve selected some of our favorite
-          books and arranged them into four categories. Plus we’ve got an introductory
-          audio to help introduce you to the early Friends.
+          {numPublished.books[LANG]} books seems daunting? No worries&mdash;on this page
+          we’ve selected some of our favorite books and arranged them into four
+          categories. Plus we’ve got an introductory audio to help introduce you to the
+          early Friends.
         </>
         <>
           ¿Estás interesado en leer algo de los primeros Cuáqueros, pero no estás seguro
@@ -185,8 +179,8 @@ const PathIntro: React.FC<PathIntroProps> = ({
 
 export const query = graphql`
   query GettingStartedPage {
-    site {
-      ...SiteMetadata
+    numPublished: publishedCounts {
+      ...PublishedBooks
     }
   }
 `;

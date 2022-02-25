@@ -41,11 +41,11 @@ export function friendPageMetaDesc(
   description: string,
   titles: string[],
   numAudioBooks: number,
-  isCompilationsQuasiFriend: boolean,
+  isCompilations: boolean,
   lang: Lang,
 ): string {
   const quotedTitles = titles.map((t) => `“${t}”`);
-  const comp = isCompilationsQuasiFriend;
+  const comp = isCompilations;
   const EN = lang === `en`;
   const ES = lang === `es`;
   const plural = quotedTitles.length > 1;

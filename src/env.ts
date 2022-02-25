@@ -1,11 +1,11 @@
-import { Lang, NodeEnv, Url } from '@friends-library/types';
+import { Lang } from '@friends-library/types';
 
-export const NODE_ENV: NodeEnv =
+export const NODE_ENV =
   process.env.NODE_ENV === `production` ? `production` : `development`;
 
 export const LANG: Lang = process.env.GATSBY_LANG === `es` ? `es` : `en`;
 
-export const APP_URL: Url = (() => {
+export const APP_URL: string = (() => {
   if (NODE_ENV === `development`) {
     return `http://localhost:${process.env.GATSBY_PORT}`;
   }
@@ -19,7 +19,7 @@ export const APP_URL: Url = (() => {
     : `https://www.bibliotecadelosamigos.org`;
 })();
 
-export const APP_ALT_URL: Url = (() => {
+export const APP_ALT_URL: string = (() => {
   if (NODE_ENV === `development`) {
     return `http://localhost:${process.env.GATSBY_ALT_PORT}`;
   }

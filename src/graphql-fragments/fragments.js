@@ -39,11 +39,11 @@ export const RecommendedBook = graphql`
   }
 `;
 
-export const SiteMetadata = graphql`
-  fragment SiteMetadata on Site {
-    meta: siteMetadata {
-      numSpanishBooks
-      numEnglishBooks
+export const PublishedBooks = graphql`
+  fragment PublishedBooks on PublishedCounts {
+    books {
+      en
+      es
     }
   }
 `;

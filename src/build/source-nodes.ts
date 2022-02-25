@@ -1,14 +1,7 @@
 import '@friends-library/env/load';
 import { GatsbyNode, SourceNodesArgs } from 'gatsby';
 import filesize from 'filesize';
-import { PrintSize } from '@friends-library/types';
-import { allFriends } from '@friends-library/friends/query';
-import { price } from '@friends-library/lulu';
-import { fetch } from '@friends-library/document-meta';
-import { query, hydrate } from '@friends-library/dpc-fs';
-import { red } from 'x-chalk';
-import { htmlShortTitle, htmlTitle, utf8ShortTitle } from '@friends-library/adoc-utils';
-import { allDocsMap, audioDurationStr } from './helpers';
+import { query, hydrate, FsDocPrecursor } from '@friends-library/dpc-fs';
 import { getDpcCache, persistDpcCache, EditionCache } from './dpc-cache';
 import residences from './residences';
 import * as url from '../lib/url';
@@ -16,6 +9,7 @@ import { documentDate, periodFromDate, published } from '../lib/date';
 import { documentRegion } from '../lib/region';
 import { APP_ALT_URL, LANG } from '../env';
 import { getNewsFeedItems } from './news-feed';
+import * as api from './api';
 
 const humansize = filesize.partial({ round: 0, spacer: `` });
 
@@ -24,28 +18,39 @@ const sourceNodes: GatsbyNode['sourceNodes'] = async ({
   createNodeId,
   createContentDigest,
 }: SourceNodesArgs) => {
-  const meta = await fetch();
-  const friends = allFriends().filter((f) => f.lang === LANG && f.hasNonDraftDocument);
-  const docs = allDocsMap();
   const dpcCache = getDpcCache();
+  const dpcs = await getDpcs();
+  const counts = await api.queryPublishedCounts();
+  const allFriends = await api.queryFriends();
+  const friends = allFriends.filter((f) => f.lang === LANG && f.hasNonDraftDocument);
 
-  const newsFeedItems = getNewsFeedItems(allFriends(), meta, LANG);
-  newsFeedItems.forEach((feedItem) => {
-    createNode({
-      ...feedItem,
-      id: createNodeId(`feed-item-${feedItem.date}${feedItem.title}${feedItem.url}`),
-      internal: {
-        type: `NewsFeedItem`,
-        contentDigest: createContentDigest(feedItem),
-      },
-    });
+  createNode({
+    ...counts,
+    id: createNodeId(`published-counts`),
+    children: [],
+    internal: {
+      type: `PublishedCounts`,
+      contentDigest: createContentDigest(counts),
+    },
   });
 
   friends.forEach((friend) => {
     const documents = friend.documents.filter((doc) => doc.hasNonDraftEdition);
     const friendProps = {
-      ...friend.toJSON(),
       friendId: friend.id,
+      name: friend.name,
+      slug: friend.slug,
+      gender: friend.gender,
+      born: friend.born,
+      died: friend.died,
+      lang: friend.lang,
+      published: friend.published,
+      primaryResidence: friend.primaryResidence,
+      isCompilations: friend.isCompilations,
+      description: friend.description,
+      quotes: friend.quotes,
+      hasNonDraftDocument: friend.hasNonDraftDocument,
+      relatedDocuments: friend.relatedDocuments,
       residences: residences(friend.residences),
       url: url.friendUrl(friend),
     };
@@ -62,49 +67,52 @@ const sourceNodes: GatsbyNode['sourceNodes'] = async ({
 
     documents.forEach((document) => {
       const documentProps: Record<string, any> = {
-        ...document.toJSON(),
-        htmlTitle: htmlTitle(document.title),
-        htmlShortTitle: htmlShortTitle(document.title),
-        utf8ShortTitle: utf8ShortTitle(document.title),
+        slug: document.slug,
+        title: document.title,
+        htmlTitle: document.htmlTitle,
+        htmlShortTitle: document.htmlShortTitle,
+        utf8ShortTitle: document.utf8ShortTitle,
         originalTitle: document.originalTitle,
-        region: documentRegion(document),
-        date: documentDate(document),
-        period: periodFromDate(documentDate(document)),
-        url: url.documentUrl(document),
+        description: document.description,
+        featuredDescription: document.featuredDescription,
+        partialDescription: document.partialDescription,
+        isCompilation: friend.isCompilations,
+        isComplete: !document.incomplete,
+        hasNonDraftEdition: document.hasNonDraftEdition,
+        hasAudio: document.editions.some((ed) => !!ed.audio),
+        tags: document.tags.map((t) => t.type),
+        region: documentRegion(friend),
+        date: documentDate(document, friend),
+        period: periodFromDate(documentDate(document, friend)),
+        url: url.documentUrl(document, friend),
         authorUrl: url.friendUrl(friend),
         documentId: document.id,
         friendSlug: friend.slug,
         authorName: friend.name,
-        ogImageUrl: `https://flp-assets.nyc3.digitaloceanspaces.com/${document.path}/${document.primaryEdition.type}/images/cover-3d--w700.png`,
+        ogImageUrl: document.primaryEdition!.images.threeD.w700.url,
       };
 
-      if (document.altLanguageId) {
-        const altDoc = docs.get(document.altLanguageId);
-        if (!altDoc) throw new Error(`Missing alt language doc from ${document.path}`);
-        if (altDoc.hasNonDraftEdition) {
-          documentProps.altLanguageUrl = `${APP_ALT_URL}${url.documentUrl(altDoc)}`;
-        }
+      if (
+        document.altLanguageDocument &&
+        document.altLanguageDocument.hasNonDraftEdition
+      ) {
+        documentProps.altLanguageUrl = `${APP_ALT_URL}${url.documentUrl(
+          document.altLanguageDocument,
+          document.altLanguageDocument.friend,
+        )}`;
       }
 
-      const filteredEditions = document.editions.filter((ed) => !ed.isDraft);
-      const editions = filteredEditions.map((edition) => {
-        const editionMeta = meta.get(edition.path);
-        let printSize: PrintSize = `m`;
-        let pages = [175];
-        if (editionMeta) {
-          printSize = editionMeta.paperback.size;
-          pages = editionMeta.paperback.volumes;
-        } else {
-          red(`Edition meta not found for ${edition.path}`);
-          process.exit(1);
-        }
+      const filteredEditions = document.editions.filter(
+        (edition) => !edition.isDraft && edition.impression,
+      );
 
+      const editions = filteredEditions.map((edition) => {
         let dpcData: EditionCache = dpcCache.get(edition.path) || {
           initialized: false,
           customCode: { css: {}, html: {} },
         };
         if (!dpcData.initialized) {
-          const [dpc] = query.getByPattern(edition.path);
+          const dpc = dpcs.find((dpc) => dpc.path === edition.path);
           if (dpc) {
             hydrate.customCode(dpc);
             dpcData = {
@@ -116,52 +124,55 @@ const sourceNodes: GatsbyNode['sourceNodes'] = async ({
           }
         }
 
-        if (edition.audio && !editionMeta.audio) {
-          red(`Unexpected missing audio meta data: ${edition.path}`);
-        }
-
-        if (!editionMeta.published) {
-          red(`Unexpected missing publish date for edition: ${edition.path}`);
-          process.exit(1);
+        const impression = edition.impression;
+        if (!impression) {
+          throw new Error(`Unexpected missing EditionImpression for ${edition.path}`);
         }
 
         return {
-          ...edition.toJSON(),
-          ...published(editionMeta.published, LANG),
+          id: edition.id,
+          type: edition.type,
+          isbn: edition.isbn?.code ?? ``,
+          ...published(impression.createdAt, LANG),
+          paperbackCoverBlurb: document.description,
           friendSlug: friend.slug,
           documentSlug: document.slug,
-          printSize,
-          pages,
+          printSize: impression.paperbackSize,
+          pages: impression.paperbackVolumes,
           downloadUrl: {
-            web_pdf: url.artifactDownloadUrl(edition, `web-pdf`),
-            epub: url.artifactDownloadUrl(edition, `epub`),
-            mobi: url.artifactDownloadUrl(edition, `mobi`),
-            speech: url.artifactDownloadUrl(edition, `speech`),
+            web_pdf: impression.files.ebook.pdf.logUrl,
+            epub: impression.files.ebook.epub.logUrl,
+            mobi: impression.files.ebook.mobi.logUrl,
+            speech: impression.files.ebook.speech.logUrl,
           },
-          price: price(printSize, pages),
+          price: impression.paperbackPriceInCents,
           customCode: dpcData.customCode,
-          numChapters: editionMeta.numSections,
+          numChapters: edition.chapters.length,
           audio: edition.audio
             ? {
                 reader: edition.audio.reader,
-                added: edition.audio.added.toISOString(),
-                complete: edition.audio.complete,
-                duration: audioDurationStr(editionMeta.audio?.durations ?? [0]),
-                publishedDate: published(edition.audio.added.toISOString(), LANG)
-                  .publishedDate,
-                parts: edition.audio.parts.map((part) => part.toJSON()),
-                m4bFilesizeHq: humansize(editionMeta.audio?.HQ.m4bSize ?? 0),
-                m4bFilesizeLq: humansize(editionMeta.audio?.LQ.m4bSize ?? 0),
-                mp3ZipFilesizeHq: humansize(editionMeta.audio?.HQ.mp3ZipSize ?? 0),
-                mp3ZipFilesizeLq: humansize(editionMeta.audio?.LQ.mp3ZipSize ?? 0),
-                m4bUrlHq: url.m4bDownloadUrl(edition.audio, `HQ`),
-                m4bUrlLq: url.m4bDownloadUrl(edition.audio, `LQ`),
-                mp3ZipUrlHq: url.mp3ZipDownloadUrl(edition.audio, `HQ`),
-                mp3ZipUrlLq: url.mp3ZipDownloadUrl(edition.audio, `LQ`),
-                podcastUrlHq: url.podcastUrl(edition.audio, `HQ`),
-                podcastUrlLq: url.podcastUrl(edition.audio, `LQ`),
-                externalPlaylistIdHq: edition.audio.externalPlaylistIdHq || null,
-                externalPlaylistIdLq: edition.audio.externalPlaylistIdLq || null,
+                added: edition.audio.createdAt,
+                complete: !edition.audio.isIncomplete,
+                duration: edition.audio.humanDurationClock,
+                publishedDate: published(edition.audio.createdAt, LANG).publishedDate,
+                m4bFilesizeHq: humansize(edition.audio.m4bSizeHq),
+                m4bFilesizeLq: humansize(edition.audio.m4bSizeLq),
+                mp3ZipFilesizeHq: humansize(edition.audio.mp3ZipSizeHq),
+                mp3ZipFilesizeLq: humansize(edition.audio.mp3ZipSizeLq),
+                m4bUrlHq: edition.audio.files.m4b.hq.logUrl,
+                m4bUrlLq: edition.audio.files.m4b.lq.logUrl,
+                mp3ZipUrlHq: edition.audio.files.mp3s.hq.logUrl,
+                mp3ZipUrlLq: edition.audio.files.mp3s.lq.logUrl,
+                podcastUrlHq: edition.audio.files.podcast.hq.logUrl,
+                podcastUrlLq: edition.audio.files.podcast.lq.logUrl,
+                externalPlaylistIdHq: edition.audio.externalPlaylistIdHq,
+                externalPlaylistIdLq: edition.audio.externalPlaylistIdLq,
+                parts: edition.audio.parts.map((part) => ({
+                  title: part.title,
+                  chapters: part.chapters,
+                  externalIdHq: part.externalIdHq,
+                  externalIdLq: part.externalIdLq,
+                })),
               }
             : undefined,
         };
@@ -179,6 +190,25 @@ const sourceNodes: GatsbyNode['sourceNodes'] = async ({
       });
     });
   });
+
+  (await getNewsFeedItems(LANG)).forEach((feedItem) => {
+    createNode({
+      ...feedItem,
+      id: createNodeId(`feed-item-${feedItem.date}${feedItem.title}${feedItem.url}`),
+      internal: {
+        type: `NewsFeedItem`,
+        contentDigest: createContentDigest(feedItem),
+      },
+    });
+  });
 };
 
 export default sourceNodes;
+
+let dpcs: FsDocPrecursor[] | null = null;
+
+async function getDpcs(): Promise<FsDocPrecursor[]> {
+  if (dpcs) return dpcs;
+  dpcs = await query.getByPattern(undefined, api.clientConfig());
+  return dpcs;
+}
