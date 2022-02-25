@@ -18,7 +18,7 @@ extension Resolver {
       try await Current.sendGridClient.send(email)
       await slackInfo(
         """
-        **Contact form submission:**
+        *Contact form submission:*
         _Name:_ \(args.input.name)
         _Message:_ \(args.input.message)
         """
