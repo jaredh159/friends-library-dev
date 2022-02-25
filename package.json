@@ -1,5 +1,5 @@
 {
-  "name": "@friends-library/orders",
+  "name": "@friends-library/admin",
   "version": "1.0.0",
   "private": true,
   "description": "",
@@ -36,7 +36,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@friends-library/dev": "^4.5.1",
+    "@friends-library/dev": "^4.5.2",
     "@friends-library/theme": "^1.2.0",
     "@friends-library/types": "^7.0.0",
     "@htc-class/storylite": "^1.0.1",
