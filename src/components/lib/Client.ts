@@ -1,3 +1,7 @@
+import gql from 'x-syntax';
+import { LogJsErrorDataInput } from '../../graphql/globalTypes';
+import { JsError, JsErrorVariables } from '../../graphql/JsError';
+
 export default class Client {
   private endpoint: string;
 
@@ -73,4 +77,19 @@ export default class Client {
       return { success: false, errors: [{ message: `${error}` }] };
     }
   }
+}
+
+const ERROR_MUTATION = gql`
+  mutation JsError($input: LogJsErrorDataInput!) {
+    error: logJsError(input: $input) {
+      success
+    }
+  }
+`;
+
+export function sendJsError(input: LogJsErrorDataInput): void {
+  new Client().mutate<JsError, JsErrorVariables>({
+    mutation: ERROR_MUTATION,
+    variables: { input },
+  });
 }

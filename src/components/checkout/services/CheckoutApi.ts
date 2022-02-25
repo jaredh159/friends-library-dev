@@ -22,7 +22,7 @@ import {
   SendOrderConfirmationEmail,
   SendOrderConfirmationEmailVariables,
 } from '../../../graphql/SendOrderConfirmationEmail';
-import Client from './Client';
+import Client from '../../lib/Client';
 
 export default class CheckoutApi {
   private client: Client;

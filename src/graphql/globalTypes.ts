@@ -129,6 +129,20 @@ export interface GetPrintJobExploratoryMetadataInput {
   items: PrintJobExploratoryItemInput[];
 }
 
+export interface LogJsErrorDataInput {
+  additionalInfo?: string | null;
+  colNumber?: number | null;
+  errorMessage?: string | null;
+  errorName?: string | null;
+  errorStack?: string | null;
+  event?: string | null;
+  lineNumber?: number | null;
+  location: string;
+  source?: string | null;
+  url: string;
+  userAgent: string;
+}
+
 export interface PrintJobExploratoryItemInput {
   printSize: PrintSize;
   quantity: number;

@@ -1,3 +1,5 @@
+// @ts-check
+import { sendJsError } from './src/components/lib/Client';
 import './src/css/fontawesome.css';
 import './src/css/tailwind.css';
 import './src/css/cover.css';
@@ -25,27 +27,25 @@ export function onClientEntry() {
 
     // polyfill document.querySelectorAll().forEach support
     if (window.NodeList && !NodeList.prototype.forEach) {
+      // @ts-ignore
       NodeList.prototype.forEach = Array.prototype.forEach;
     }
 
     // catch uncaught errors
     if (process.env.NODE_ENV !== `development`) {
       window.onerror = (event, source, lineno, colno, err) => {
-        window.fetch(`/.netlify/functions/site/log-error`, {
-          method: `POST`,
-          headers: {
-            'Content-Type': `application/json`,
-          },
-          body: JSON.stringify({
-            error: err,
-            event: event,
-            source: source,
-            lineno: lineno,
-            colno: colno,
-            location: `window.onerror`,
-            url: window.location.href,
-            userAgent: navigator.userAgent,
-          }),
+        sendJsError({
+          errorMessage: err.message,
+          errorName: err.name,
+          errorStack: err.stack,
+          event: String(event),
+          lineNumber: lineno,
+          colNumber: colno,
+          location: `window.onerror`,
+          source: source,
+          url: window.location.href,
+          userAgent: navigator.userAgent,
+          additionalInfo: null,
         });
       };
     }

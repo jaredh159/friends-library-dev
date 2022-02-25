@@ -7,7 +7,7 @@ import Button from './Button';
 import { CloseButton } from './checkout/Modal';
 import { useAddress } from './lib/hooks';
 import { AppDispatch } from './lib/app-state';
-import Client from './checkout/services/Client';
+import Client from './lib/Client';
 import {
   CreateFreeOrderRequest,
   CreateFreeOrderRequestVariables,

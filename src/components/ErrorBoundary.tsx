@@ -1,6 +1,8 @@
 import React from 'react';
 import Dual from './Dual';
 import { NODE_ENV } from '../env';
+import { sendJsError } from './lib/Client';
+import { LogJsErrorDataInput } from '../graphql/globalTypes';
 
 interface State {
   hasError: boolean;
@@ -23,28 +25,27 @@ export default class ErrorBoundary extends React.Component<Props, State> {
       return;
     }
 
-    let err = error;
+    const data: LogJsErrorDataInput = {
+      errorMessage: String(error),
+      additionalInfo: errorInfo === undefined ? null : String(errorInfo),
+      location: this.props.location,
+      url: window.location.href,
+      userAgent: navigator.userAgent,
+      colNumber: null,
+      errorName: null,
+      errorStack: null,
+      event: null,
+      lineNumber: null,
+      source: null,
+    };
+
     if (error instanceof Error) {
-      err = {
-        message: error.message,
-        name: error.name,
-        stack: error.stack,
-      };
+      data.errorMessage = error.message;
+      data.errorName = error.name;
+      data.errorStack = error.stack ?? null;
     }
 
-    window.fetch(`/.netlify/functions/site/log-error`, {
-      method: `POST`,
-      headers: {
-        'Content-Type': `application/json`,
-      },
-      body: JSON.stringify({
-        error: err,
-        info: errorInfo,
-        location: this.props.location,
-        url: window.location.href,
-        userAgent: navigator.userAgent,
-      }),
-    });
+    sendJsError(data);
   }
 
   render(): React.ReactNode {
