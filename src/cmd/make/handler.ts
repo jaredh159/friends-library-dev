@@ -6,14 +6,12 @@ import { log, red } from 'x-chalk';
 import * as manifest from '@friends-library/doc-manifests';
 import * as artifacts from '@friends-library/doc-artifacts';
 import { appEbook as appEbookCss } from '@friends-library/doc-css';
-import { hydrate, query as dpcQuery, FsDocPrecursor } from '@friends-library/dpc-fs';
+import { hydrate, query as dpcQuery } from '@friends-library/dpc-fs';
 import { ParserError } from '@friends-library/parser';
 import {
   ArtifactType,
   DocPrecursor,
   FileManifest,
-  PaperbackInteriorConfig,
-  EbookConfig,
   PrintSize,
 } from '@friends-library/types';
 import lintFixPath from '../../lint/lint-fix-path';
@@ -40,7 +38,7 @@ export interface MakeOptions {
 
 export default async function handler(argv: Arguments<MakeOptions>): Promise<void> {
   const { noOpen, pattern, isolate, email, skipLint, fix } = argv;
-  const dpcs = dpcQuery.getByPattern(pattern);
+  const dpcs = await dpcQuery.getByPattern(pattern);
   if (dpcs.length === 0) {
     red(`Pattern: \`${pattern}\` matched 0 docs.`);
     process.exit(1);
@@ -85,7 +83,7 @@ export default async function handler(argv: Arguments<MakeOptions>): Promise<voi
 }
 
 export async function makeDpc(
-  dpc: FsDocPrecursor,
+  dpc: DocPrecursor,
   argv: Arguments<MakeOptions>,
   namespace: string,
 ): Promise<string[]> {
@@ -96,7 +94,7 @@ export async function makeDpc(
       const filename = makeFilename(dpc, type);
       const srcPath = makeSrcPath(dpc, type);
       const options = { namespace, srcPath, check: argv.check };
-      files.push(await artifacts.create(type, manifests[idx], filename, options));
+      files.push(await artifacts.create(type, manifests[idx]!, filename, options));
     }
   }
   return files;
@@ -111,7 +109,7 @@ async function getTypeManifests(
     case `web-pdf`:
       return manifest.webPdf(dpc);
     case `paperback-interior`: {
-      const conf: PaperbackInteriorConfig = {
+      const conf: manifest.PaperbackInteriorConfig = {
         frontmatter: !argv.noFrontmatter,
         printSize: argv.printSize || `m`,
         condense: argv.condense,
@@ -125,7 +123,7 @@ async function getTypeManifests(
       return appEbookWithCss(dpc);
     case `mobi`:
     case `epub`: {
-      const conf: EbookConfig = {
+      const conf: manifest.EbookConfig = {
         frontmatter: !argv.noFrontmatter,
         subType: type,
         randomizeForLocalTesting: true,
@@ -145,8 +143,8 @@ function makeFilename(dpc: DocPrecursor, type: ArtifactType): string {
   return [
     dpc.friendInitials.join(``),
     dpc.documentSlug,
-    dpc.documentId.substring(0, 8),
     dpc.editionType,
+    dpc.editionId.substring(0, 8),
     suffix,
   ]
     .filter((p) => !!p)
@@ -170,7 +168,7 @@ function lint(dpcPath: string, fix: boolean, isolate?: number): void {
     if (matches.length !== 1) {
       throw new Error(`Unexpected result isolating ${isolate}`);
     }
-    [path] = matches;
+    path = matches[1]!;
   }
 
   if (fix === true) {
@@ -192,8 +190,8 @@ function lint(dpcPath: string, fix: boolean, isolate?: number): void {
 }
 
 async function appEbookWithCss(dpc: DocPrecursor): Promise<[FileManifest]> {
-  const [appManifest] = await manifest.appEbook(dpc);
-  const htmlFilename = Object.keys(appManifest)[0];
+  const [appManifest = {}] = await manifest.appEbook(dpc);
+  const htmlFilename = Object.keys(appManifest)[0]!;
   const { ARTIFACT_DIR } = artifacts.dirs({ namespace: `fl-make/_app-ebook-css` });
   const cssPath = `${ARTIFACT_DIR}/app-ebook.css`;
   fs.ensureDirSync(ARTIFACT_DIR);

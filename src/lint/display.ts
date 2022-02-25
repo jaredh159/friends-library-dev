@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { LintResult } from '@friends-library/types';
+import { LintResult } from '@friends-library/adoc-lint';
 import { c, log, red, green, grey, yellow } from 'x-chalk';
 import DirLints from './DirLints';
 

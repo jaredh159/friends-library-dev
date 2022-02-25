@@ -58,7 +58,7 @@ function handleSinglepartAudio(duration: number, lines: string[]): void {
   let typeIdx = 0;
   const types: [string, string, string] = [freeBooks, appTease, cover];
   while (remainingDuration > 0) {
-    lines.push(types[typeIdx]);
+    lines.push(types[typeIdx]!);
     let slideLength = Math.min(INTERVAL, remainingDuration);
     remainingDuration -= slideLength;
     if (remainingDuration < INTERVAL / 3) {

@@ -28,7 +28,7 @@ export function get(fsData: AudioFsData): AudioCachedData {
 
 export function getPart(fsData: AudioFsData, partIdx: number): AudioPartCachedData {
   const emptyPartData: AudioPartCachedData = {};
-  const cachedDataPath = fsData.parts[partIdx].cachedDataPath;
+  const cachedDataPath = fsData.parts[partIdx]!.cachedDataPath;
   if (!fs.existsSync(cachedDataPath)) {
     return emptyPartData;
   }
@@ -75,7 +75,7 @@ export async function setPartQuality(
   partIdx: number,
   quality: AudioQuality,
 ): Promise<void> {
-  const mp3Path = fsData.parts[partIdx].mp3s[quality].localPath;
+  const mp3Path = fsData.parts[partIdx]!.mp3s[quality].localPath;
   const mp3Hash = await md5File(mp3Path);
   const mp3Size = fs.statSync(mp3Path).size;
   const partData = getPart(fsData, partIdx);
@@ -93,7 +93,7 @@ function savePart(
   partIdx: number,
   partData: AudioPartCachedData,
 ): void {
-  const cachedDataPath = fsData.parts[partIdx].cachedDataPath;
+  const cachedDataPath = fsData.parts[partIdx]!.cachedDataPath;
   fs.writeFileSync(cachedDataPath, JSON.stringify(partData, null, 2));
 }
 

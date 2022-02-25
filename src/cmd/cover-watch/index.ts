@@ -19,7 +19,7 @@ export async function handler({ exec }: { exec: boolean }): Promise<void> {
     fs.unlinkSync(path);
     artifacts.deleteNamespaceDir(`fl-cover-watch`);
     const [coverManifest] = paperbackCoverFromProps(props);
-    const filePath = await artifacts.pdf(coverManifest, `cover--${Date.now()}`, {
+    const filePath = await artifacts.pdf(coverManifest!, `cover--${Date.now()}`, {
       namespace: `fl-cover-watch`,
     });
     execSync(`open ${filePath}`);

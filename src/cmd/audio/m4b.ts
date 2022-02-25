@@ -2,7 +2,6 @@ import fs from 'fs-extra';
 import os from 'os';
 import exec from 'x-exec';
 import { red, c } from 'x-chalk';
-import { Audio } from '@friends-library/friends';
 import { AudioQuality } from '@friends-library/types';
 import * as cloud from '@friends-library/cloud';
 import { AudioFsData } from './types';
@@ -10,6 +9,7 @@ import { utf8ShortTitle } from '@friends-library/adoc-utils';
 import * as ffmpeg from '../../ffmpeg';
 import { suffixThe } from './tags';
 import { logAction } from '../../sub-log';
+import { Audio } from './types';
 
 export async function create(
   audio: Audio,
@@ -34,7 +34,7 @@ export async function create(
   const chapterFileLines: string[] = [];
 
   src.parts.forEach(async (part, idx) => {
-    chapterFileLines.push(`${secsToStr(durationAccum)} ${audio.parts[idx].title}`);
+    chapterFileLines.push(`${secsToStr(durationAccum)} ${audio.parts[idx]!.title}`);
     if (!fs.existsSync(part.srcLocalPath)) {
       logAction(`downloading source .wav file ${c`{cyan pt. ${idx + 1}}`} for m4b`);
       const buffer = await cloud.downloadFile(part.srcCloudPath);

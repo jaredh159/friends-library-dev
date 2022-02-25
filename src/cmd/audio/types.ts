@@ -1,3 +1,7 @@
+import { GetAudios } from '../../graphql/GetAudios';
+
+export type Audio = GetAudios['audios'][0];
+
 interface FileFsData {
   localFilename: string;
   localPath: string;
@@ -46,7 +50,7 @@ interface SoundCloudSharedAttrs {
   title: string;
   description: string;
   tags: string[];
-  /* we use this unimportant (to us) field to store artwork file hash */
+  /* we use this unimportant (to us) field to store artwork/mp3 file hashes */
   release?: null | string;
 }
 

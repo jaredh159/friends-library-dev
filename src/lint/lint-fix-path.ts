@@ -1,12 +1,11 @@
 import fs from 'fs';
-import { LintOptions, FilePath } from '@friends-library/types';
+import { lintFix, LintOptions } from '@friends-library/adoc-lint';
 import lintPath from './lint-path';
-import { lintFix } from '@friends-library/adoc-lint';
 import DirLints from './DirLints';
 import { langFromPath, editionTypeFromPath } from './path';
 
 export default function lintFixPath(
-  path: FilePath,
+  path: string,
   options: LintOptions = { lang: `en` },
 ): { unfixable: DirLints; numFixed: number } {
   const lints = lintPath(path, options);

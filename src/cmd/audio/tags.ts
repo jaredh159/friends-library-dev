@@ -1,5 +1,5 @@
-import { Audio } from '@friends-library/friends';
 import { utf8ShortTitle } from '@friends-library/adoc-utils';
+import { Audio } from './types';
 
 export function getPartTags(audio: Audio, partIndex: number): Record<string, string> {
   const edition = audio.edition;
@@ -18,7 +18,7 @@ export function getPartTags(audio: Audio, partIndex: number): Record<string, str
     publisher,
   };
 
-  if (friend.isCompilationsQuasiFriend) {
+  if (friend.isCompilations) {
     return withSortTags({
       ...tags,
       artist: docShortTitle,
@@ -38,7 +38,7 @@ export function getPartTags(audio: Audio, partIndex: number): Record<string, str
 }
 
 export function getPartTitle(audio: Audio, partIndex: number): string {
-  const partTitle = audio.parts[partIndex].title;
+  const partTitle = audio.parts[partIndex]!.title;
   const docShortTitle = utf8ShortTitle(audio.edition.document.title);
 
   if (audio.parts.length > 1) {
@@ -71,6 +71,6 @@ function withSortTags(tags: Record<string, string>): Record<string, string> {
   return tags;
 }
 
-export function suffixThe(str: string): string {
-  return str.replace(/^The (.*)/, `$1, The`);
+export function suffixThe(str?: string): string {
+  return (str ?? ``).replace(/^The (.*)/, `$1, The`);
 }

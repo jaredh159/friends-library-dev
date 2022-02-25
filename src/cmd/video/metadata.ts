@@ -1,6 +1,6 @@
 import { utf8ShortTitle } from '@friends-library/adoc-utils';
-import { Audio } from '@friends-library/friends';
 import { Lang } from '@friends-library/types';
+import { Audio } from '../audio/types';
 
 export function metadata(
   audio: Audio,
@@ -95,7 +95,7 @@ function timestamps(
     .slice(startIdx, nextVolIdx || Infinity)
     .map((part, idx) => {
       const line = `${durationStr(runningTotal)} - ${part.title}`;
-      runningTotal += durations[idx];
+      runningTotal += durations[idx]!;
       return line;
     })
     .join(`\n`);

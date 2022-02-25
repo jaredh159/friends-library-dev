@@ -2,10 +2,6 @@ import puppeteer from 'puppeteer-core';
 import { exec, execSync } from 'child_process';
 import env from '@friends-library/env';
 import { green } from 'x-chalk';
-import {
-  LARGEST_THREE_D_COVER_IMAGE_WIDTH,
-  THREE_D_COVER_IMAGE_ASPECT_RATIO,
-} from '@friends-library/types';
 
 export async function start(): Promise<number> {
   const port = 51515;
@@ -44,8 +40,9 @@ export async function screenshot(
 
   return [
     async (id: string, type: 'ebook' | 'audio' | 'threeD'): Promise<Buffer> => {
-      const widthThreeD = LARGEST_THREE_D_COVER_IMAGE_WIDTH;
-      const heightThreeD = widthThreeD / THREE_D_COVER_IMAGE_ASPECT_RATIO;
+      // @TODO, get these magic numbers from API, until then, must keep in sync with API
+      const widthThreeD = 1120.0;
+      const heightThreeD = widthThreeD / (1120.0 / 1640.0);
       await page.setViewport(
         type === `threeD`
           ? { width: widthThreeD, height: Math.floor(heightThreeD) }

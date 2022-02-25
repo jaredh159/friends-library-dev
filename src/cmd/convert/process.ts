@@ -1,6 +1,4 @@
-import { Asciidoc } from '@friends-library/types';
-
-export function processAsciidoc(adoc: Asciidoc): Asciidoc {
+export function processAsciidoc(adoc: string): string {
   return adoc
     .replace(/(?<!footnote:)\[/gm, `+++[+++`)
     .replace(/\n\n(1[678][0-9]{2})\. /gm, `\n\n$1+++.+++ `)
