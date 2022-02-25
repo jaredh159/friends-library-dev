@@ -4,18 +4,24 @@ import { t } from '@friends-library/locale';
 import Dual from '../../Dual';
 import Button from '../../Button';
 import { makeScroller } from '../../lib/scroll';
+import { Subject } from '../../../graphql/globalTypes';
 import './Form.css';
 
 interface Props {
   className?: string;
-  onSubmit: (formData: Record<string, string>) => Promise<boolean>;
+  onSubmit: (
+    name: string,
+    email: string,
+    message: string,
+    subject: Subject,
+  ) => Promise<boolean>;
 }
 
 const ContactForm: React.FC<Props> = ({ className, onSubmit }) => {
   const [name, setName] = useState<string>(``);
   const [email, setEmail] = useState<string>(``);
   const [message, setMessage] = useState<string>(``);
-  const [subject, setSubject] = useState<'tech' | 'other'>(`tech`);
+  const [subject, setSubject] = useState<Subject>(Subject.tech);
   const [success, setSuccess] = useState<boolean>(false);
   const [state, setState] = useState<'default' | 'submitting' | 'submitted'>(`default`);
   return (
@@ -25,7 +31,7 @@ const ContactForm: React.FC<Props> = ({ className, onSubmit }) => {
           event.preventDefault();
           setSuccess(false);
           setState(`submitting`);
-          const success = await onSubmit({ name, email, message, subject });
+          const success = await onSubmit(name, email, message, subject);
           setSuccess(success);
           if (success) {
             setMessage(``);
@@ -101,7 +107,7 @@ const ContactForm: React.FC<Props> = ({ className, onSubmit }) => {
               checked={subject === `tech`}
               id="subject-tech"
               className="sr-only"
-              onChange={() => setSubject(`tech`)}
+              onChange={() => setSubject(Subject.tech)}
             />
             <Dual.Span>
               <>Website / technical questions</>
@@ -112,7 +118,7 @@ const ContactForm: React.FC<Props> = ({ className, onSubmit }) => {
             <input
               type="radio"
               checked={subject === `other`}
-              onChange={() => setSubject(`other`)}
+              onChange={() => setSubject(Subject.other)}
               id="subject-other"
               className="sr-only"
             />

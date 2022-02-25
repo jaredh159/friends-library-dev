@@ -55,6 +55,11 @@ export enum ShippingLevel {
   priorityMail = 'priorityMail',
 }
 
+export enum Subject {
+  other = 'other',
+  tech = 'tech',
+}
+
 export enum TagType {
   allegory = 'allegory',
   doctrinal = 'doctrinal',
@@ -157,6 +162,14 @@ export interface ShippingAddressInput {
   street: string;
   street2?: string | null;
   zip: string;
+}
+
+export interface SubmitContactFormInput {
+  email: string;
+  lang: Lang;
+  message: string;
+  name: string;
+  subject: Subject;
 }
 
 //==============================================================

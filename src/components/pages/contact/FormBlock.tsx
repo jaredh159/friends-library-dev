@@ -6,9 +6,15 @@ import Form from './Form';
 import Stack from '../../layout/Stack';
 import { bgLayer } from '../../lib/color';
 import { FluidBgImageObject } from '../../../types';
+import { Subject as ContactFormSubject } from '../../../graphql/globalTypes';
 
 interface Props {
-  onSubmit: (formData: Record<string, string>) => Promise<boolean>;
+  onSubmit: (
+    name: string,
+    email: string,
+    message: string,
+    subject: ContactFormSubject,
+  ) => Promise<boolean>;
   bgImg: FluidBgImageObject;
 }
 
