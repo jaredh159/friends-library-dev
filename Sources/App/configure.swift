@@ -116,7 +116,7 @@ private func corsMiddleware(_ app: Application) -> CORSMiddleware {
   let corsConfiguration = CORSMiddleware.Configuration(
     allowedOrigin: app.environment == .production
       ? .any([
-        "https://orders.friendslibrary.com",
+        "https://admin.friendslibrary.com",
         "https://www.friendslibrary.com",
         "https://www.bibliotecadelosamigos.org",
       ]) : .all,
