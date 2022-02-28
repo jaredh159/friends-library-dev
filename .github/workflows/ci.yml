@@ -4,6 +4,7 @@ on: push
 
 env:
   FLP_API_URL: ${{ secrets.FLP_API_URL }}
+  DOCS_REPOS_ROOT: /not-real
 
 jobs:
   ci:

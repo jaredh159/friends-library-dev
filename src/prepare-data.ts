@@ -1,29 +1,30 @@
 import '@friends-library/env/load';
 import fs from 'fs';
 import { exec } from 'child_process';
-import fetch from 'node-fetch';
-import { allPublishedAudiobooks } from '@friends-library/friends/query';
-import { Edition } from '@friends-library/friends';
+import fetch from 'cross-fetch';
 import env from '@friends-library/env';
-
-const { FLP_API_URL } = env.require(`FLP_API_URL`);
-const audiobooks: Edition[] = process.argv.includes(`--empty`)
-  ? []
-  : allPublishedAudiobooks(`en`).concat(allPublishedAudiobooks(`es`));
+import { CoverProps, PrintSize } from '@friends-library/types';
+import { gql, getClient } from '@friends-library/db';
+import { GetAudios } from './graphql/GetAudios';
 
 async function main(): Promise<void> {
-  const promises = audiobooks.map((audiobook) => {
-    return fetch(`${FLP_API_URL}/cover-props/v1/${audiobook.path}`)
-      .then((res) => {
-        if (res.status !== 200) {
-          throw new Error(`Failed to fetch cover props for ${audiobook.path}`);
-        }
-        return res.json();
-      })
-      .then((json) => [audiobook.path, json]);
+  const docsRoot = env.requireVar(`DOCS_REPOS_ROOT`);
+  const audios = await getAudios();
+  const map: Record<string, CoverProps> = {};
+  audios.forEach((audio) => {
+    map[audio.edition.path] = {
+      lang: audio.edition.document.friend.lang,
+      title: audio.edition.document.title,
+      isCompilation: audio.edition.document.friend.isCompilations,
+      author: audio.edition.document.friend.name,
+      size: (audio.edition.impression?.paperbackSize ?? `m`) as PrintSize,
+      pages: audio.edition.impression?.paperbackVolumes[0] ?? 222,
+      edition: audio.edition.type,
+      isbn: audio.edition.isbn?.code ?? ``,
+      blurb: audio.edition.document.description,
+      ...customCode(audio.edition.document.directoryPath, docsRoot),
+    };
   });
-
-  const map = Object.fromEntries(await Promise.all(promises));
   fs.writeFileSync(
     `${__dirname}/cover-props.ts`,
     [
@@ -39,9 +40,8 @@ async function main(): Promise<void> {
   exec(`prettier --write ${__dirname}/cover-props.ts`);
 
   const partTitles: Record<string, string[]> = {};
-  audiobooks.forEach((audiobook) => {
-    /* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */
-    partTitles[audiobook.path] = audiobook.audio!.parts.map((p) => p.title);
+  audios.forEach((audio) => {
+    partTitles[audio.edition.path] = audio.parts.map((p) => p.title);
   });
 
   fs.writeFileSync(
@@ -56,5 +56,63 @@ async function main(): Promise<void> {
 
   exec(`prettier --write ${__dirname}/part-titles.ts`);
 }
+
+async function getAudios(): Promise<GetAudios['audios']> {
+  if (process.argv.includes(`--empty`)) {
+    return [];
+  }
+  const client = getClient({ env: `infer_node`, process, fetch });
+  const { data } = await client.query<GetAudios>({ query: QUERY });
+  return data.audios.filter(({ edition }) => !edition.isDraft);
+}
+
+function customCode(
+  relPath: string,
+  docsRoot: string,
+): Pick<CoverProps, 'customCss' | 'customHtml'> {
+  let customCss = ``;
+  let customHtml = ``;
+  const cssPath = `${docsRoot}/${relPath}/paperback-cover.css`;
+  if (fs.existsSync(cssPath)) {
+    customCss = fs.readFileSync(cssPath, `utf8`);
+  }
+  const htmlPath = `${docsRoot}/${relPath}/paperback-cover.html`;
+  if (fs.existsSync(htmlPath)) {
+    customHtml = fs.readFileSync(htmlPath, `utf8`);
+  }
+  return { customCss, customHtml };
+}
+
+const QUERY = gql`
+  query GetAudios {
+    audios: getAudios {
+      parts {
+        title
+      }
+      edition {
+        type
+        isDraft
+        path: directoryPath
+        isbn {
+          code
+        }
+        document {
+          description
+          title
+          directoryPath
+          friend {
+            lang
+            isCompilations
+            name
+          }
+        }
+        impression {
+          paperbackSize
+          paperbackVolumes
+        }
+      }
+    }
+  }
+`;
 
 main();

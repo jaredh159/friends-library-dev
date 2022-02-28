@@ -82,7 +82,12 @@ const App: React.FC = () => {
   }
 
   if (poster === null) {
-    return <h1>Unknown path</h1>;
+    setTimeout(() => (window.location.href = `/free-books/en`), 5000);
+    return (
+      <h1 style={{ textAlign: `center`, fontSize: 40, color: `white`, padding: `3em` }}>
+        Unknown path. Redirecting...
+      </h1>
+    );
   }
 
   return (
