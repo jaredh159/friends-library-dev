@@ -1,6 +1,6 @@
 {
   "name": "@friends-library/cloud",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "description": "cloud storage api for FLP",
   "main": "./dist/index.js",
   "author": "Jared Henderson <jared@netrivet.com>",
