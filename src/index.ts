@@ -37,12 +37,12 @@ export function downloadFile(cloudFilePath: CloudFilePath): Promise<Buffer> {
         Bucket: CLOUD_STORAGE_BUCKET,
         Key: cloudFilePath,
       },
-      (err, { Body }) => {
+      (err, response) => {
         if (err) {
           reject(err);
           return;
         }
-        resolve(Body as Buffer);
+        resolve(response.Body as Buffer);
       },
     );
   });
