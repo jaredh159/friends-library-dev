@@ -14,3 +14,4 @@ package.json
 postcss.config.js 
 tailwind.config.js
 _redirects
+_headers
