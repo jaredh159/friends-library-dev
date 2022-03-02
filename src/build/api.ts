@@ -1,9 +1,9 @@
 import fetch from 'cross-fetch';
 import { c, log } from 'x-chalk';
-import { EditionType } from '@friends-library/types';
 import { gql, getClient, ClientType, ClientConfig } from '@friends-library/db';
 import { Document, Edition, Friend, PublishedCounts } from './types';
 import { Friends } from '../graphql/Friends';
+import { QUERY, sortFriends } from './query';
 
 type DocumentEntities = {
   document: Document;
@@ -18,9 +18,9 @@ let cachedFriends: Friend[] | null = null;
 
 export async function queryFriends(): Promise<Friend[]> {
   if (cachedFriends) return cachedFriends;
-  const { data } = await client().query<Friends>({ query: QUERY });
+  const { data } = await client().query<Friends>({ query: gql(QUERY) });
   // break all of the apollo read-only stuff with JSON dance
-  cachedFriends = sortChildren(JSON.parse(JSON.stringify(data.friends)));
+  cachedFriends = sortFriends(JSON.parse(JSON.stringify(data.friends)));
   return data.friends;
 }
 
@@ -98,242 +98,6 @@ export async function queryPublishedCounts(): Promise<PublishedCounts> {
 
   return publishedCounts;
 }
-
-function sortChildren(friends: Friend[]): Friend[] {
-  for (const friend of friends) {
-    friend.quotes.sort(byOrder);
-    friend.documents.sort(sortDocuments);
-    for (const document of friend.documents) {
-      document.editions.sort(editionsByType);
-      for (const edition of document.editions) {
-        if (edition.audio) {
-          edition.audio.parts.sort(byOrder);
-        }
-      }
-    }
-  }
-  return friends;
-}
-
-function editionsByType<T extends { type: EditionType }>(a: T, b: T): number {
-  if (a.type === `updated`) {
-    return -1;
-  }
-  if (a.type === `modernized`) {
-    return b.type === `updated` ? 1 : -1;
-  }
-  return 1;
-}
-
-function byOrder<T extends { order: number }>(a: T, b: T): number {
-  return a.order < b.order ? -1 : 1;
-}
-
-type SortableDoc = {
-  primaryEdition: null | { type: EditionType };
-  title: string;
-};
-
-export function sortDocuments(a: SortableDoc, b: SortableDoc): number {
-  if (a.primaryEdition?.type !== b.primaryEdition?.type) {
-    if (a.primaryEdition?.type === `updated`) {
-      return -1;
-    }
-    if (a.primaryEdition?.type === `modernized`) {
-      return b.primaryEdition?.type === `updated` ? 1 : -1;
-    }
-    return 1;
-  }
-  return a.title < b.title ? -1 : 1;
-}
-
-const QUERY = gql`
-  query Friends {
-    friends: getFriends {
-      id
-      lang
-      slug
-      gender
-      name
-      born
-      died
-      description
-      isCompilations
-      published
-      hasNonDraftDocument
-      primaryResidence {
-        region
-        city
-      }
-      documents {
-        id
-        title
-        htmlTitle
-        htmlShortTitle
-        utf8ShortTitle
-        originalTitle
-        slug
-        published
-        incomplete
-        directoryPath
-        description
-        partialDescription
-        featuredDescription
-        hasNonDraftEdition
-        tags {
-          type
-        }
-        altLanguageDocument {
-          slug
-          htmlShortTitle
-          hasNonDraftEdition
-          friend {
-            slug
-          }
-        }
-        editions {
-          id
-          type
-          isDraft
-          path: directoryPath
-          chapters {
-            id
-          }
-          isbn {
-            code
-          }
-          images {
-            square {
-              w1400 {
-                url
-              }
-            }
-          }
-          impression {
-            paperbackPriceInCents
-            paperbackSize
-            paperbackVolumes
-            createdAt
-            files {
-              ebook {
-                pdf {
-                  logUrl
-                }
-                mobi {
-                  logUrl
-                }
-                epub {
-                  logUrl
-                }
-                speech {
-                  logUrl
-                }
-              }
-            }
-          }
-          audio {
-            reader
-            isIncomplete
-            externalPlaylistIdHq
-            externalPlaylistIdLq
-            m4bSizeHq
-            m4bSizeLq
-            mp3ZipSizeHq
-            mp3ZipSizeLq
-            humanDurationClock
-            createdAt
-            parts {
-              title
-              order
-              chapters
-              duration
-              externalIdHq
-              externalIdLq
-              mp3SizeHq
-              mp3SizeLq
-              mp3File {
-                hq {
-                  logUrl
-                }
-                lq {
-                  logUrl
-                }
-              }
-            }
-            files {
-              m4b {
-                hq {
-                  logUrl
-                }
-                lq {
-                  logUrl
-                }
-              }
-              mp3s {
-                hq {
-                  logUrl
-                }
-                lq {
-                  logUrl
-                }
-              }
-              podcast {
-                hq {
-                  logUrl
-                  sourcePath
-                }
-                lq {
-                  logUrl
-                  sourcePath
-                }
-              }
-            }
-          }
-        }
-        primaryEdition {
-          id
-          type
-          images {
-            threeD {
-              w700 {
-                url
-              }
-            }
-          }
-        }
-        relatedDocuments {
-          description
-          document {
-            id
-            htmlShortTitle
-            description
-          }
-        }
-      }
-      relatedDocuments {
-        description
-        document {
-          id
-          htmlShortTitle
-          description
-        }
-      }
-      quotes {
-        order
-        source
-        text
-      }
-      residences {
-        city
-        region
-        durations {
-          start
-          end
-        }
-      }
-    }
-  }
-`;
 
 function client(): ClientType {
   return getClient(clientConfig());
