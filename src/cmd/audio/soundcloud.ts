@@ -160,7 +160,7 @@ export function attrsMatch(
     }
 
     const attrMismatch = fromApi[key] !== value;
-    if (attrMismatch && process.argv.includes(`--verbose`)) {
+    if (attrMismatch && process.argv.includes(`--verbose`) && key !== `track_type`) {
       logDebug(`soundcloud attrs mismatch: ${key} != ${value}, api=${fromApi[key]}`);
     }
 
