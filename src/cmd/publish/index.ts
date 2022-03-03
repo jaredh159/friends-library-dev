@@ -20,6 +20,12 @@ export const builder: CommandBuilder = function (yargs) {
       default: false,
       demand: false,
     })
+    .option(`draft`, {
+      type: `boolean`,
+      description: `publish even if edition is draft (for first-time publishing)`,
+      default: false,
+      demand: false,
+    })
     .option(`force`, {
       alias: `f`,
       type: `boolean`,

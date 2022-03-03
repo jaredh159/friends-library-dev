@@ -28,6 +28,7 @@ interface PublishOptions {
   pattern?: string;
   coverServerPort?: number;
   allowStatus: boolean;
+  draft: boolean;
   force: boolean;
   slack: boolean;
 }
@@ -64,7 +65,9 @@ export default async function publish(argv: PublishOptions): Promise<void> {
         continue;
       }
 
-      if (data.edition.isDraft) {
+      if (data.edition.isDraft && argv.draft) {
+        logAction(`publishing draft edition due to --draft flag`);
+      } else if (data.edition.isDraft) {
         logDebug(`edition is draft, skipping`);
         continue;
       }
@@ -362,12 +365,15 @@ async function saveEditionImpression(
     return await api.getEditionImpressionCloudFiles(impression.current.id);
   }
   try {
-    const result = await api.saveEditionImpression(impression.current);
+    const result = await api.saveEditionImpression(
+      impression.current,
+      impression.previous,
+    );
     if (!result) {
       await rollbackSaveEditionImpression(impression);
       throw new Error(`failed to save EditionImpression`);
     } else {
-      return result.impression.files;
+      return result;
     }
   } catch (err) {
     await rollbackSaveEditionImpression(impression);
@@ -383,7 +389,7 @@ async function rollbackSaveEditionImpression(
     if (!impression.previous) {
       await api.deleteEditionImpression(impression.current.id);
     } else {
-      await api.saveEditionImpression(impression.previous);
+      await api.saveEditionImpression(impression.previous, null);
     }
     logAction(`rolled back save EditionImpression successfully`);
   } catch (err) {

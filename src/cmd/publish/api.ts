@@ -3,7 +3,7 @@ import { PublishEdition, PublishEditionVariables } from '../../graphql/PublishEd
 import { GetLatestArtifactProductionVersion } from '../../graphql/GetLatestArtifactProductionVersion';
 import {
   CreateEditionChapterInput,
-  CreateEditionImpressionInput,
+  UpdateEditionImpressionInput,
 } from '../../graphql/globalTypes';
 import { CloudFiles, Edition } from './types';
 import {
@@ -34,30 +34,34 @@ import {
 // edition impression crud
 
 export async function saveEditionImpression(
-  input: CreateEditionImpressionInput,
-): Promise<UpdateEditionImpression> {
-  let data: UpdateEditionImpression | null | undefined = undefined;
-  if (input.id) {
-    ({ data } = await client.mutate<
+  current: UpdateEditionImpressionInput,
+  previous: UpdateEditionImpressionInput | null,
+): Promise<CloudFiles> {
+  if (previous) {
+    const { data } = await client.mutate<
       UpdateEditionImpression,
       UpdateEditionImpressionVariables
     >({
       mutation: UPDATE_IMPRESSION_MUTATION,
-      variables: { input: { ...input, id: input.id } },
-    }));
+      variables: { input: { ...current, id: current.id } },
+    });
+    if (!data) {
+      throw new Error(`Failed to update EditionImpression`);
+    }
+    return data.impression.files;
   } else {
-    ({ data } = await client.mutate<
+    const { data } = await client.mutate<
       CreateEditionImpression,
       CreateEditionImpressionVariables
     >({
       mutation: CREATE_IMPRESSION_MUTATION,
-      variables: { input },
-    }));
+      variables: { input: current },
+    });
+    if (!data) {
+      throw new Error(`Failed to create EditionImpression`);
+    }
+    return getEditionImpressionCloudFiles(data.impression.id);
   }
-  if (!data) {
-    throw new Error(`Failed to save EditionImpression`);
-  }
-  return data;
 }
 
 export async function deleteEditionImpression(id: UUID): Promise<boolean> {
@@ -128,7 +132,7 @@ const CREATE_IMPRESSION_MUTATION = gql`
   ${IMPRESSION_CLOUD_FILES_FIELDS}
   mutation CreateEditionImpression($input: CreateEditionImpressionInput!) {
     impression: createEditionImpression(input: $input) {
-      ...EditionImpressionCloudFiles
+      id
     }
   }
 `;
