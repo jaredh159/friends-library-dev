@@ -270,7 +270,7 @@ async function syncSoundCloudTracks(
       attrs.release = `${localArtworkHash}/${localHash}`; // hack, see above ^^^
       if (!soundcloud.attrsMatch(attrs, track)) {
         logAction(`updating soundcloud attrs for ${c`{cyan ${fileDesc}}`}`);
-        !argv.dryRun && soundcloud.updateTrackAttrs(trackId, attrs);
+        !argv.dryRun && (await soundcloud.updateTrackAttrs(trackId, attrs));
       } else {
         logDebug(`soundcloud attrs verified for ${fileDesc}`);
       }

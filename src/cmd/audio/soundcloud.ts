@@ -7,9 +7,14 @@ import { utf8ShortTitle } from '@friends-library/adoc-utils';
 import { logDebug } from '../../sub-log';
 import Client from './SoundCloudClient';
 import { getPartTitle } from './tags';
-import { SoundCloudTrackAttrs, Audio, SoundCloudPlaylistAttrs } from './types';
+import {
+  SoundCloudTrackAttrs,
+  Audio,
+  SoundCloudPlaylistAttrs,
+  SoundCloudTrack,
+} from './types';
 
-export function getTrack(trackId: number): Promise<null | Record<string, any>> {
+export function getTrack(trackId: number): Promise<null | SoundCloudTrack> {
   return getClient().getTrack(trackId);
 }
 
@@ -123,6 +128,10 @@ export function trackAttrs(
   };
 }
 
+export function permalinkFromUrl(permalinkUrl: string): string {
+  return permalinkUrl.split(`/`).pop() ?? ``;
+}
+
 export function attrsMatch(
   proposed: SoundCloudPlaylistAttrs | SoundCloudTrackAttrs,
   fromApi: Record<string, any>,
@@ -147,7 +156,7 @@ export function attrsMatch(
     }
 
     if (key === `permalink`) {
-      return value !== fromApi.permalink_url.split(`/`).pop();
+      return value !== permalinkFromUrl(fromApi.permalink_url);
     }
 
     const attrMismatch = fromApi[key] !== value;
@@ -171,7 +180,9 @@ function soundcloudTags(
 ): string[] {
   setLocale(lang);
   return [
-    ...documentTags.map(translate),
+    ...documentTags.map((tag) =>
+      translate(tag.replace(`spiritualLife`, `spiritual life`)),
+    ),
     lang === `en` ? `quakers` : `cuáqueros`,
     lang === `en` ? `early-quakers` : `primeros-cuáqueros`,
     lang === `en` ? `christianity` : `cristiandad`,

@@ -8,6 +8,9 @@ export async function getAudios(
   limit?: number,
 ): Promise<Audio[]> {
   const audios = await api.getAudios();
+  for (const audio of audios) {
+    audio.parts = audio.parts.sort((a, b) => (a.order < b.order ? -1 : 1));
+  }
   return audios
     .filter((audio) => {
       if (lang !== `both` && lang !== audio.edition.document.friend.lang) {

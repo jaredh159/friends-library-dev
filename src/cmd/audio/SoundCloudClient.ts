@@ -4,7 +4,7 @@ import omit from 'lodash.omit';
 import fetch, { Response } from 'node-fetch';
 import querystring from 'querystring';
 import FormData from 'form-data';
-import { SoundCloudTrackAttrs, SoundCloudPlaylistAttrs } from './types';
+import { SoundCloudTrackAttrs, SoundCloudTrack, SoundCloudPlaylistAttrs } from './types';
 
 interface Config {
   username: string;
@@ -18,7 +18,7 @@ export default class SoundCloudClient {
 
   public constructor(private config: Config) {}
 
-  public async getTrack(trackId: number): Promise<null | Record<string, any>> {
+  public async getTrack(trackId: number): Promise<null | SoundCloudTrack> {
     if (!this.token) await this.getToken();
     const res = await fetch(this.endpoint(`tracks/${trackId}`), {
       headers: { Authorization: `OAuth ${this.token}` },
@@ -27,7 +27,7 @@ export default class SoundCloudClient {
       return null;
     }
     if (res.status >= 300) {
-      throw new Error(`Error getting track: ${trackId}. ${res.status}/${res.statusText}`);
+      throw new Error(`Error getting track: ${trackId}. ${await errInfo(res)}`);
     }
     return await res.json();
   }
@@ -41,9 +41,7 @@ export default class SoundCloudClient {
       return null;
     }
     if (res.status >= 300) {
-      throw new Error(
-        `Error getting track: ${playlistId}. ${res.status}/${res.statusText}`,
-      );
+      throw new Error(`Error getting track: ${playlistId}. ${await errInfo(res)}`);
     }
     return await res.json();
   }
@@ -55,7 +53,7 @@ export default class SoundCloudClient {
     const body = { playlist: this.playlistData(playlist) };
     const res = await this.sendJson(`playlists/${playlistId}`, body, `PUT`);
     if (res.status >= 300) {
-      throw new Error(`Error setting playlist attrs. ${res.status}/${res.statusText}`);
+      throw new Error(`Error setting playlist attrs. ${await errInfo(res)}`);
     }
     return true;
   }
@@ -73,7 +71,7 @@ export default class SoundCloudClient {
     });
 
     if (res.status >= 300) {
-      throw new Error(`Error setting track artwork. ${res.status}/${res.statusText}`);
+      throw new Error(`Error setting track artwork. ${await errInfo(res)}`);
     }
     return true;
   }
@@ -94,7 +92,7 @@ export default class SoundCloudClient {
     });
 
     if (res.status >= 300) {
-      throw new Error(`Error setting playlist artwork. ${res.status}/${res.statusText}`);
+      throw new Error(`Error setting playlist artwork. ${await errInfo(res)}`);
     }
     return true;
   }
@@ -113,9 +111,7 @@ export default class SoundCloudClient {
     });
 
     if (res.status >= 300) {
-      throw new Error(
-        `Error creating soundcloud playlist. ${res.status}/${res.statusText}`,
-      );
+      throw new Error(`Error creating soundcloud playlist. ${await errInfo(res)}`);
     }
     const json = await res.json();
     return json.id;
@@ -129,7 +125,7 @@ export default class SoundCloudClient {
 
     const res = await this.sendJson(`tracks/${trackId}`, { track: attrs }, `PUT`);
     if (res.status >= 300) {
-      throw new Error(`Error updating track attributes. ${res.status}/${res.statusText}`);
+      throw new Error(`Error updating track attributes. ${await errInfo(res)}`);
     }
     return await res.json();
   }
@@ -147,9 +143,7 @@ export default class SoundCloudClient {
     });
 
     if (res.status >= 300) {
-      throw new Error(
-        `Error replacing soundcloud track. ${res.status}/${res.statusText}`,
-      );
+      throw new Error(`Error replacing soundcloud track. ${await errInfo(res)}`);
     }
 
     return true;
@@ -186,9 +180,7 @@ export default class SoundCloudClient {
     });
 
     if (res.status >= 300) {
-      throw new Error(
-        `Error uploading soundcloud track. ${res.status}/${res.statusText}`,
-      );
+      throw new Error(`Error uploading soundcloud track. ${await errInfo(res)}`);
     }
     const json = await res.json();
     return json.id;
@@ -258,4 +250,8 @@ export default class SoundCloudClient {
   private endpoint(path: string): string {
     return `https://api.soundcloud.com/${path}`;
   }
+}
+
+async function errInfo(res: Response): Promise<string> {
+  return `Status: ${res.status}/${res.statusText}, JSON: ${await res.text()}`;
 }
