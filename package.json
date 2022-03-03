@@ -18,7 +18,7 @@
     "npub:precheck": "fldev ci"
   },
   "devDependencies": {
-    "@friends-library/dev": "~4.3.1",
-    "@friends-library/types": "^5.1.0"
+    "@friends-library/dev": "~4.5.2",
+    "@friends-library/types": "^7.0.0"
   }
 }

@@ -143,6 +143,7 @@ const strings: { [k: string]: string } = {
   // Cart / Checkout
   'Your Order': `Tu Pedido`,
   'Continue Browsing': `Continuar Explorando`,
+  'Handling Fee': `Gastos de Gestión`,
   Order: `Pedido`,
   Delivery: `Envío`,
   Payment: `Pago`,
