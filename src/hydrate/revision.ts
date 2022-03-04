@@ -8,7 +8,7 @@ export default function revision(dpc: FsDocPrecursor): void {
   const [sha, timestamp] = execSync(cmd, { cwd }).toString().split(`|`);
 
   if (!sha || !timestamp) {
-    throw new Error(`Could not determine git revision info for path: ${path}`);
+    throw new Error(`Could not determine git revision info for path: ${dpc.path}`);
   }
 
   dpc.revision = {
