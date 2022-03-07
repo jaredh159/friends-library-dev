@@ -40,8 +40,8 @@ export async function writeEbookManifest(
   await Promise.all(promises);
 
   if (opts.check && ebookType === `epub`) {
-    const check = await epubCheck(SRC_DIR);
-    if (!check.pass) {
+    const check: { pass: boolean; messages: unknown[] } = await epubCheck(SRC_DIR);
+    if (!check.pass && check.messages.length > 0) {
       logEpubCheckFail(basename, check.messages);
       throw new Error(`epubCheck failed for ${basename}`);
     }
