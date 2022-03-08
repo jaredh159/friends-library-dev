@@ -10,7 +10,7 @@ import { CreateEditionChapterInput } from './globalTypes';
 // ====================================================
 
 export interface CreateEditionChapters_chapters {
-  __typename: 'EditionChapter';
+  __typename: 'IdentifyEntity';
   id: string;
 }
 

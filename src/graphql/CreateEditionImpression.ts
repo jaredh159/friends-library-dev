@@ -10,7 +10,7 @@ import { CreateEditionImpressionInput } from './globalTypes';
 // ====================================================
 
 export interface CreateEditionImpression_impression {
-  __typename: 'EditionImpression';
+  __typename: 'IdentifyEntity';
   id: string;
 }
 
