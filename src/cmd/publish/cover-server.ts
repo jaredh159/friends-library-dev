@@ -1,5 +1,6 @@
-import puppeteer from 'puppeteer-core';
+import puppeteer from 'puppeteer';
 import { exec, execSync } from 'child_process';
+import xExec from 'x-exec';
 import env from '@friends-library/env';
 import { green } from 'x-chalk';
 
@@ -7,6 +8,7 @@ import { green } from 'x-chalk';
 import Png from 'png-js';
 
 export async function start(): Promise<number> {
+  xExec.exit(`which serve`);
   const port = 51515;
   const { DEV_APPS_PATH } = env.require(`DEV_APPS_PATH`);
   green(`Building cover app...`);
@@ -33,11 +35,11 @@ interface BrowserCloser {
 export async function screenshot(
   port: number,
 ): Promise<[ScreenshotTaker, BrowserCloser]> {
-  const EXEC_PATH = env.requireVar(`PUPPETEER_EXEC_PATH`);
   const browser = await puppeteer.launch({
-    // @ts-ignore
+    // NOTE: need PUPPETEER_PRODUCT=firefox when installing npm
     product: `firefox`,
-    executablePath: EXEC_PATH,
+    headless: true, // false to see what it's doing
+    dumpio: false, // true to see verbose console stuff in terminal
   });
   const page = await browser.newPage();
 
@@ -53,8 +55,8 @@ export async function screenshot(
       );
       const clip = type === `audio` ? { clip: getAudioImageClip() } : {};
       const url = `http://localhost:${port}?capture=${type}&path=${path}`;
-      await page.goto(url);
-      const buffer = await page.screenshot(clip);
+      await page.goto(url, { timeout: 5000 });
+      const buffer = (await page.screenshot({ ...clip, encoding: `binary` })) as Buffer;
       if (await isEmptyImage(buffer)) {
         throw new Error(`Got an empty ${type} image from url: ${url}`);
       }

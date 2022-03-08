@@ -1,4 +1,4 @@
-import puppeteer from 'puppeteer-core';
+import puppeteer from 'puppeteer';
 import env from '@friends-library/env';
 
 export interface ScreenshotTaker {
@@ -20,7 +20,7 @@ export async function screenshot(
   return [
     async (path: string): Promise<Buffer> => {
       await page.goto(`http://localhost:${port}/${path}`);
-      return page.screenshot({ encoding: `binary` });
+      return page.screenshot({ encoding: `binary` }) as Promise<Buffer>;
     },
     async () => await browser.close(),
   ];
