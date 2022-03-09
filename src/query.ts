@@ -9,6 +9,7 @@ export async function getByPattern(
   pattern?: string,
   clientConfig?: ClientConfig,
 ): Promise<FsDocPrecursor[]> {
+  const DOCS_REPOS_ROOT = env.requireVar(`DOCS_REPOS_ROOT`);
   const { data, errors } = await client(clientConfig).query<Editions>({ query: QUERY });
   if (errors) {
     throw new Error(
@@ -16,7 +17,11 @@ export async function getByPattern(
     );
   }
 
-  const DOCS_REPOS_ROOT = env.requireVar(`DOCS_REPOS_ROOT`);
+  // special case: prevent non-match when running cli commands like `fl make` with full paths
+  if (pattern && DOCS_REPOS_ROOT.length > 4) {
+    pattern = pattern.replace(`${DOCS_REPOS_ROOT}/`, ``);
+  }
+
   return data.editions
     .filter((edition) => !pattern || edition.directoryPath.includes(pattern))
     .map((edition) => editionToFsDpc(edition, DOCS_REPOS_ROOT));
