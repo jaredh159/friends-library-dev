@@ -16,7 +16,7 @@
     "ts:check": "fldev ts:check",
     "format": "fldev format",
     "data": "fldev tsnode ./src/prepare-data.ts",
-    "prestart": "npm run data",
+    "prestart": "rm -rf .cache/ dist/ && npm run data",
     "start": "parcel --port 3535 index.html",
     "postinstall": "test -f ./src/cover-props.ts || npm run data -- --empty"
   },
