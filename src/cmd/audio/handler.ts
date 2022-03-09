@@ -310,7 +310,7 @@ async function syncSoundCloudPlaylists(
       process.exit(1);
     }
 
-    const remoteArtworkHash = playlist.tracks[0]?.release;
+    const remoteArtworkHash = playlist.tracks[0]?.release.split(`/`).shift();
     const localArtworkPath = `${fsData.derivedPath}/cover.png`;
     const localArtworkHash = await md5File(localArtworkPath);
     if (localArtworkHash !== remoteArtworkHash) {
