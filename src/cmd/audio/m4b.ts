@@ -53,15 +53,6 @@ export async function create(
     fs.writeFileSync(chaptersFilePath, chapterFileLines.join(`\n`));
   }
 
-  const user = exec.exit(`echo "$(id -u):$(id -g)"`).trim();
-  const dockerArgs = [
-    `docker run`,
-    `--rm`,
-    `--user ${user}`,
-    `--volume "${m4bDir}":/mnt`,
-    IMAGE,
-  ];
-
   const m4bToolArgs = [
     `merge`,
     `"${relWorkDir}"`,
@@ -79,28 +70,20 @@ export async function create(
     `--sortartist="${friend.alphabeticalName}"`,
   ];
 
-  exec.exit(`${dockerArgs.join(` `)} ${m4bToolArgs.join(` `)}`);
+  exec.exit(`m4b-tool ${m4bToolArgs.join(` `)}`, m4bDir);
   const filename = `${src.hashedBasename}${quality === `LQ` ? `--lq` : ``}.m4b`;
   exec.exit(`mv ${m4bDir}/merged.m4b ${src.derivedPath}/${filename}`);
 }
 
 export function ensureExists(): void {
-  if (!exec.success(`docker --version`)) {
-    red(`Docker required to run m4b-tool`);
-    process.exit(1);
-  }
-
-  if (!exec.success(`docker image inspect ${IMAGE}`)) {
-    red(`Missing docker image for 'm4b-tool'.`);
-    red(`To install, clone https://github.com/sandreas/m4b-tool,`);
-    red(`reset to commit 5d1fb52 (known working version),`);
-    red(`then cd into the dir and run 'docker build . -t m4b-tool'.`);
+  if (!exec.success(`which m4b-tool`)) {
+    red(`Missing required binary 'm4b-tool'.`);
+    red(`Install directions at https://github.com/sandreas/m4b-tool`);
+    red(`Don't use docker, install with homebrew.`);
     red(`Repo is forked into jaredh159 if needed.`);
     process.exit(1);
   }
 }
-
-const IMAGE = `m4b-tool`;
 
 /**
  * Takes a duration in seconds (3114.05) and returns

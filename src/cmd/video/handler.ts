@@ -34,11 +34,6 @@ async function handleAudio(audio: Audio, argv: Argv): Promise<void> {
   logDebug(`preparing audio source data`);
   const audioFsData = await getAudioFsData(audio);
   const workDir = audioFsData.derivedPath;
-  if (fs.existsSync(`${workDir}/yt-uploaded.txt`)) {
-    logDebug(`skipping, already uploaded`);
-    return;
-  }
-
   exec.exit(`open ${workDir}`);
   const durations = audio.parts.map((p) => p.duration);
   const splits = splitVolumes(durations);
@@ -57,7 +52,6 @@ async function handleAudio(audio: Audio, argv: Argv): Promise<void> {
   }
 
   logAction(`please manually upload to youtube`);
-  fs.writeFileSync(`${workDir}/yt-uploaded.txt`, ``);
 }
 
 function splitVolumes(durations: number[]): number[] {

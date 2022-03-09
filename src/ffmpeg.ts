@@ -89,15 +89,7 @@ export function getDuration(wavFilepath: string): [string, number] {
 }
 
 function ffmpeg(ffmpegArgs: string[], hostDir: string): ReturnType<typeof exec> {
-  const user = exec.exit(`echo "$(id -u):$(id -g)"`).trim();
-  const dockerArgs = [
-    `docker run`,
-    `--rm`,
-    `--user ${user}`,
-    `--volume ${hostDir}:/tmp/workdir`,
-    IMAGE,
-  ];
-  return exec(`${dockerArgs.join(` `)} ${ffmpegArgs.join(` `)}`);
+  return exec(`ffmpeg ${ffmpegArgs.join(` `)}`, hostDir);
 }
 
 function getTagArgs(audio: Audio, partIndex: number): string {
@@ -107,16 +99,9 @@ function getTagArgs(audio: Audio, partIndex: number): string {
 }
 
 export function ensureExists(): void {
-  if (!exec.success(`docker --version`)) {
-    red(`Docker required to run ffmpeg`);
+  if (!exec.success(`which ffmpeg`)) {
+    red(`Missing required 'ffmpeg' binary`);
+    red(`Follow install directions at https://github.com/sandreas/m4b-tool`);
     process.exit(1);
   }
-
-  if (!exec.success(`docker image inspect ${IMAGE}`)) {
-    exec.exit(`docker pull ${IMAGE}`);
-  }
-
-  exec.exit(`docker image inspect ${IMAGE}`);
 }
-
-const IMAGE = `jrottenberg/ffmpeg:4.1-ubuntu`;
