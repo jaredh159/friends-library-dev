@@ -54,6 +54,18 @@ interface SoundCloudSharedAttrs {
   release?: null | string;
 }
 
+// @see https://developers.soundcloud.com/docs/api/explorer/open-api#/tracks/get_tracks__track_id_
+// click "Schema"
+export type SoundCloudTrack = {
+  id: number;
+  release: string;
+  permalink_url: string;
+  tag_list: string;
+  user: {
+    permalink: string;
+  };
+};
+
 export type SoundCloudTrackAttrs = SoundCloudSharedAttrs & {
   track_type: `spoken`;
   commentable: false;

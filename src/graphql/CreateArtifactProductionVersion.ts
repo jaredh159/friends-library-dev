@@ -10,8 +10,8 @@ import { CreateArtifactProductionVersionInput } from './globalTypes';
 // ====================================================
 
 export interface CreateArtifactProductionVersion_created {
-  __typename: 'ArtifactProductionVersion';
-  version: string;
+  __typename: 'IdentifyEntity';
+  id: string;
 }
 
 export interface CreateArtifactProductionVersion {

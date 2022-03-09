@@ -4,11 +4,11 @@ import { UpdateAudioInput, UpdateAudioPartInput } from '../../graphql/globalType
 import { UpdateAudio, UpdateAudioVariables } from '../../graphql/UpdateAudio';
 import { logError } from '../../sub-log';
 import { UpdateAudioPart, UpdateAudioPartVariables } from '../../graphql/UpdateAudioPart';
-import client, { gql } from '../../api-client';
+import client, { gql, writable } from '../../api-client';
 
 export async function getAudios(): Promise<Audio[]> {
   const { data } = await client.query<GetAudios>({ query: QUERY_AUDIOS });
-  return data.audios;
+  return writable(data.audios);
 }
 
 export async function updateAudio(input: UpdateAudioInput): Promise<void> {

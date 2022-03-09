@@ -1,9 +1,14 @@
-import puppeteer from 'puppeteer-core';
+import puppeteer from 'puppeteer';
 import { exec, execSync } from 'child_process';
+import xExec from 'x-exec';
 import env from '@friends-library/env';
 import { green } from 'x-chalk';
 
+// @ts-ignore
+import Png from 'png-js';
+
 export async function start(): Promise<number> {
+  xExec.exit(`which serve`);
   const port = 51515;
   const { DEV_APPS_PATH } = env.require(`DEV_APPS_PATH`);
   green(`Building cover app...`);
@@ -20,7 +25,7 @@ export function stop(port: number): void {
 }
 
 export interface ScreenshotTaker {
-  (id: string, type: 'ebook' | 'audio' | `threeD`): Promise<Buffer>;
+  (path: string, type: 'ebook' | 'audio' | `threeD`): Promise<Buffer>;
 }
 
 interface BrowserCloser {
@@ -30,16 +35,16 @@ interface BrowserCloser {
 export async function screenshot(
   port: number,
 ): Promise<[ScreenshotTaker, BrowserCloser]> {
-  const EXEC_PATH = env.requireVar(`PUPPETEER_EXEC_PATH`);
   const browser = await puppeteer.launch({
-    // @ts-ignore
+    // NOTE: need PUPPETEER_PRODUCT=firefox when installing npm
     product: `firefox`,
-    executablePath: EXEC_PATH,
+    headless: true, // false to see what it's doing
+    dumpio: false, // true to see verbose console stuff in terminal
   });
   const page = await browser.newPage();
 
   return [
-    async (id: string, type: 'ebook' | 'audio' | 'threeD'): Promise<Buffer> => {
+    async (path: string, type: 'ebook' | 'audio' | 'threeD'): Promise<Buffer> => {
       // @TODO, get these magic numbers from API, until then, must keep in sync with API
       const widthThreeD = 1120.0;
       const heightThreeD = widthThreeD / (1120.0 / 1640.0);
@@ -49,8 +54,13 @@ export async function screenshot(
           : { width: 1600, height: 2400 },
       );
       const clip = type === `audio` ? { clip: getAudioImageClip() } : {};
-      await page.goto(`http://localhost:${port}?capture=${type}&id=${id}`);
-      return page.screenshot(clip);
+      const url = `http://localhost:${port}?capture=${type}&path=${path}`;
+      await page.goto(url, { timeout: 5000 });
+      const buffer = (await page.screenshot({ ...clip, encoding: `binary` })) as Buffer;
+      if (await isEmptyImage(buffer)) {
+        throw new Error(`Got an empty ${type} image from url: ${url}`);
+      }
+      return buffer;
     },
     async () => await browser.close(),
   ];
@@ -80,4 +90,25 @@ function getAudioImageClip(): {
     width: FULL_WIDTH - ZOOM,
     height: FULL_WIDTH - ZOOM,
   };
+}
+
+async function isEmptyImage(pngBuffer: Buffer): Promise<boolean> {
+  const pixelBuffer: Buffer = await new Promise((res) => new Png(pngBuffer).decode(res));
+  let currentPixelRgba = pixelBuffer.subarray(0, 4);
+  let lastPixelRgba = currentPixelRgba;
+  let index = 0;
+  while (currentPixelRgba.length === 4) {
+    index += 4;
+    if (!lastPixelRgba) {
+      lastPixelRgba = currentPixelRgba;
+    } else if (currentPixelRgba.length < 4) {
+      return true;
+    } else if (currentPixelRgba.toString() !== lastPixelRgba.toString()) {
+      return false;
+    } else {
+      lastPixelRgba = currentPixelRgba;
+      currentPixelRgba = pixelBuffer.subarray(index, index + 4);
+    }
+  }
+  return true;
 }

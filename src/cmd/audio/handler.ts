@@ -270,7 +270,7 @@ async function syncSoundCloudTracks(
       attrs.release = `${localArtworkHash}/${localHash}`; // hack, see above ^^^
       if (!soundcloud.attrsMatch(attrs, track)) {
         logAction(`updating soundcloud attrs for ${c`{cyan ${fileDesc}}`}`);
-        !argv.dryRun && soundcloud.updateTrackAttrs(trackId, attrs);
+        !argv.dryRun && (await soundcloud.updateTrackAttrs(trackId, attrs));
       } else {
         logDebug(`soundcloud attrs verified for ${fileDesc}`);
       }
@@ -310,7 +310,7 @@ async function syncSoundCloudPlaylists(
       process.exit(1);
     }
 
-    const remoteArtworkHash = playlist.tracks[0]?.release;
+    const remoteArtworkHash = playlist.tracks[0]?.release.split(`/`).shift();
     const localArtworkPath = `${fsData.derivedPath}/cover.png`;
     const localArtworkHash = await md5File(localArtworkPath);
     if (localArtworkHash !== remoteArtworkHash) {
@@ -355,8 +355,8 @@ async function updateEntities(
 
   const updatedAudio: UpdateAudioInput = {
     ...existingAudio,
-    externalPlaylistIdHq: resumableIds.getPlaylistId(`HQ`),
-    externalPlaylistIdLq: resumableIds.getPlaylistId(`LQ`),
+    externalPlaylistIdHq: resumableIds.getPlaylistId(`HQ`) ?? audio.externalPlaylistIdHq,
+    externalPlaylistIdLq: resumableIds.getPlaylistId(`LQ`) ?? audio.externalPlaylistIdLq,
     m4bSizeHq: assertDefined(hqCache.m4bSize),
     m4bSizeLq: assertDefined(lqCache.m4bSize),
     mp3ZipSizeHq: assertDefined(hqCache.mp3ZipSize),
@@ -391,10 +391,11 @@ async function updateEntities(
       externalIdLq: resumableIds.getPartId(index, `LQ`) ?? part.externalIdLq,
       mp3SizeHq: assertDefined(cache.getPart(fsData, index).HQ?.mp3Size),
       mp3SizeLq: assertDefined(cache.getPart(fsData, index).LQ?.mp3Size),
+      duration: ffmpeg.getDuration(assertDefined(fsData.parts[index]?.srcLocalPath))[1],
     };
 
     if (!isEqual(existingPart, updatedPart)) {
-      logAction(`updating part entity  {cyan pt${index + 1}}`);
+      logAction(`updating part entity ${c`{cyan pt${index + 1}}`}`);
       !argv.dryRun && (await api.updateAudioPart(updatedPart));
     } else {
       logDebug(`skipping update of unchanged audio part entity pt${index + 1}`);

@@ -50,7 +50,9 @@ export default class SoundCloudResumableIds {
   }
 
   public destroy(): void {
-    fs.rmSync(this.cacheLocation());
+    if (fs.existsSync(this.cacheLocation())) {
+      fs.rmSync(this.cacheLocation());
+    }
   }
 
   // helpers

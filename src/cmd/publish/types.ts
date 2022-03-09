@@ -39,7 +39,7 @@ export interface PublishData {
   uploads: PendingUploads;
   artifactOptions: { namespace: string; srcPath: string };
   impression: {
-    previous: UpdateEditionImpressionInput | null;
     current: UpdateEditionImpressionInput;
+    previous: UpdateEditionImpressionInput | null;
   };
 }

@@ -16,8 +16,8 @@ export default async function handler({ sha }: Argv): Promise<void> {
       CreateArtifactProductionVersion,
       CreateArtifactProductionVersionVariables
     >({ mutation: MUTATION, variables: { input: { version: sha } } });
-    if (response.data?.created.version) {
-      log(c`\nSuccessfully added version {green ${response.data.created.version}}\n`);
+    if (response.data?.created.id) {
+      log(c`\nSuccessfully added version {green ${sha}}\n`);
     } else {
       log(c`\n{red Unexpected error, see raw response below:}`);
       log(c`Response: {gray ${response}}\n`);
@@ -40,7 +40,7 @@ const MUTATION = gql`
     $input: CreateArtifactProductionVersionInput!
   ) {
     created: createArtifactProductionVersion(input: $input) {
-      version
+      id
     }
   }
 `;
