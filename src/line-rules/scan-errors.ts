@@ -84,7 +84,7 @@ const runner = new RegexLintRunner(
       test: `fife`, // --> life
       search: /\bfife\b/g,
       replace: `life`,
-      allowIfNear: /\bfiddle\b|\bplay/i,
+      allowIfNear: /\bfiddle\b|\bplay|\bdrum\b/i,
     },
     {
       test: `Fie`, // --> He

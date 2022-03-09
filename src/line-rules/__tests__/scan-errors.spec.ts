@@ -111,6 +111,7 @@ describe(`scanErrors()`, () => {
 
     // fife > life
     `appearances were discouraging, the fife and fiddle playing,`,
+    `if they had a fife and a drum, they would be ready for a march`,
   ];
 
   test.each(allowed)(`\`%s\` is not a lint violation`, (line) => {
