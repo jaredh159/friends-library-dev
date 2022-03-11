@@ -41,7 +41,7 @@ import XCTVaporUtils
 final class ThingResolverTests: AppTestCase {
 
   func testCreateThing() async throws {
-    let thing = Thing.random
+    let thing = Thing.valid
     let map = thing.gqlMap()
 
     GraphQLTest(
@@ -58,7 +58,7 @@ final class ThingResolverTests: AppTestCase {
   }
 
   func testGetThing() async throws {
-    let thing = try await Current.db.create(Thing.random)
+    let thing = try await Current.db.create(Thing.valid)
 
     GraphQLTest(
       """
@@ -74,7 +74,7 @@ final class ThingResolverTests: AppTestCase {
   }
 
   func testUpdateThing() async throws {
-    let thing = try await Current.db.create(Thing.random)
+    let thing = try await Current.db.create(Thing.valid)
 
     // do some updates here ---vvv
     thing.someProp = "new value"
@@ -93,7 +93,7 @@ final class ThingResolverTests: AppTestCase {
   }
 
   func testDeleteThing() async throws {
-    let thing = try await Current.db.create(Thing.random)
+    let thing = try await Current.db.create(Thing.valid)
 
     GraphQLTest(
       """

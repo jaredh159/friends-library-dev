@@ -10,6 +10,7 @@ extension AppSchema {
       Field("description", at: \.description)
       Field("uses", at: \.uses)
       Field("createdAt", at: \.createdAt)
+      Field("isValid", at: \.isValid)
       Field("scopes", with: \.scopes)
     }
   }
@@ -46,7 +47,7 @@ extension AppSchema {
     }
   }
 
-  static var getToken: AppField<Token, IdentifyEntity> {
+  static var getToken: AppField<Token, IdentifyEntityArgs> {
     Field("getToken", at: Resolver.getToken) {
       Argument("id", at: \.id)
     }
@@ -56,13 +57,13 @@ extension AppSchema {
     Field("getTokens", at: Resolver.getTokens)
   }
 
-  static var createToken: AppField<IdentifyEntity, InputArgs<CreateTokenInput>> {
+  static var createToken: AppField<Token, InputArgs<CreateTokenInput>> {
     Field("createToken", at: Resolver.createToken) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createTokens: AppField<[IdentifyEntity], InputArgs<[CreateTokenInput]>> {
+  static var createTokens: AppField<[Token], InputArgs<[CreateTokenInput]>> {
     Field("createTokens", at: Resolver.createTokens) {
       Argument("input", at: \.input)
     }
@@ -80,7 +81,7 @@ extension AppSchema {
     }
   }
 
-  static var deleteToken: AppField<Token, IdentifyEntity> {
+  static var deleteToken: AppField<Token, IdentifyEntityArgs> {
     Field("deleteToken", at: Resolver.deleteToken) {
       Argument("id", at: \.id)
     }

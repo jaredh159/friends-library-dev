@@ -11,7 +11,7 @@ final class EditionResolverTests: AppTestCase {
     try await Current.db.create(isbn)
     let entities = await Entities.create()
     _ = try await Current.db.delete(entities.edition.id, force: true)
-    let edition: Edition = .random
+    let edition: Edition = .valid
     edition.documentId = entities.document.id
     let map = edition.gqlMap()
 
@@ -52,10 +52,10 @@ final class EditionResolverTests: AppTestCase {
   }
 
   func testUpdateEdition() async throws {
-    let edition = await Entities.create().edition
+    let edition = await Entities.create { $0.edition.type = .updated }.edition
 
     // do some updates here ---vvv
-    edition.editor = "new value"
+    edition.editor = "Bob Smith"
 
     GraphQLTest(
       """
@@ -65,7 +65,7 @@ final class EditionResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["editor": "new value"]),
+      expectedData: .containsKVPs(["editor": "Bob Smith"]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": edition.gqlMap()])
   }

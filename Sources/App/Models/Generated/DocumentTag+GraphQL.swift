@@ -9,6 +9,7 @@ extension AppSchema {
       Field("documentId", at: \.documentId.rawValue.lowercased)
       Field("type", at: \.type)
       Field("createdAt", at: \.createdAt)
+      Field("isValid", at: \.isValid)
       Field("document", with: \.document)
     }
   }
@@ -41,7 +42,7 @@ extension AppSchema {
     }
   }
 
-  static var getDocumentTag: AppField<DocumentTag, IdentifyEntity> {
+  static var getDocumentTag: AppField<DocumentTag, IdentifyEntityArgs> {
     Field("getDocumentTag", at: Resolver.getDocumentTag) {
       Argument("id", at: \.id)
     }
@@ -51,13 +52,13 @@ extension AppSchema {
     Field("getDocumentTags", at: Resolver.getDocumentTags)
   }
 
-  static var createDocumentTag: AppField<IdentifyEntity, InputArgs<CreateDocumentTagInput>> {
+  static var createDocumentTag: AppField<DocumentTag, InputArgs<CreateDocumentTagInput>> {
     Field("createDocumentTag", at: Resolver.createDocumentTag) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createDocumentTags: AppField<[IdentifyEntity], InputArgs<[CreateDocumentTagInput]>> {
+  static var createDocumentTags: AppField<[DocumentTag], InputArgs<[CreateDocumentTagInput]>> {
     Field("createDocumentTags", at: Resolver.createDocumentTags) {
       Argument("input", at: \.input)
     }
@@ -75,7 +76,7 @@ extension AppSchema {
     }
   }
 
-  static var deleteDocumentTag: AppField<DocumentTag, IdentifyEntity> {
+  static var deleteDocumentTag: AppField<DocumentTag, IdentifyEntityArgs> {
     Field("deleteDocumentTag", at: Resolver.deleteDocumentTag) {
       Argument("id", at: \.id)
     }

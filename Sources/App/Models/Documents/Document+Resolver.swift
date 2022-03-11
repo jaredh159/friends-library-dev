@@ -3,7 +3,7 @@ import Vapor
 // below auto-generated
 
 extension Resolver {
-  func getDocument(req: Req, args: IdentifyEntity) throws -> Future<Document> {
+  func getDocument(req: Req, args: IdentifyEntityArgs) throws -> Future<Document> {
     try req.requirePermission(to: .queryEntities)
     return future(of: Document.self, on: req.eventLoop) {
       try await Current.db.find(Document.self, byId: args.id)
@@ -20,20 +20,28 @@ extension Resolver {
   func createDocument(
     req: Req,
     args: InputArgs<AppSchema.CreateDocumentInput>
-  ) throws -> Future<IdentifyEntity> {
+  ) throws -> Future<Document> {
     try req.requirePermission(to: .mutateEntities)
-    return future(of: IdentifyEntity.self, on: req.eventLoop) {
-      try await Current.db.create(Document(args.input)).identity
+    return future(of: Document.self, on: req.eventLoop) {
+      let document = Document(args.input)
+      guard document.isValid else { throw DbError.invalidEntity }
+      let created = try await Current.db.create(document)
+      return try await Current.db.find(created.id)
     }
   }
 
   func createDocuments(
     req: Req,
     args: InputArgs<[AppSchema.CreateDocumentInput]>
-  ) throws -> Future<[IdentifyEntity]> {
+  ) throws -> Future<[Document]> {
     try req.requirePermission(to: .mutateEntities)
-    return future(of: [IdentifyEntity].self, on: req.eventLoop) {
-      try await Current.db.create(args.input.map(Document.init)).map(\.identity)
+    return future(of: [Document].self, on: req.eventLoop) {
+      let documents = args.input.map(Document.init)
+      guard documents.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      let created = try await Current.db.create(documents)
+      return try await Current.db.query(Document.self)
+        .where(.id |=| created.map(\.id))
+        .all()
     }
   }
 
@@ -43,7 +51,10 @@ extension Resolver {
   ) throws -> Future<Document> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: Document.self, on: req.eventLoop) {
-      try await Current.db.update(Document(args.input))
+      let document = Document(args.input)
+      guard document.isValid else { throw DbError.invalidEntity }
+      try await Current.db.update(document)
+      return try await Current.db.find(document.id)
     }
   }
 
@@ -53,11 +64,16 @@ extension Resolver {
   ) throws -> Future<[Document]> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [Document].self, on: req.eventLoop) {
-      try await Current.db.update(args.input.map(Document.init))
+      let documents = args.input.map(Document.init)
+      guard documents.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      let created = try await Current.db.update(documents)
+      return try await Current.db.query(Document.self)
+        .where(.id |=| created.map(\.id))
+        .all()
     }
   }
 
-  func deleteDocument(req: Req, args: IdentifyEntity) throws -> Future<Document> {
+  func deleteDocument(req: Req, args: IdentifyEntityArgs) throws -> Future<Document> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: Document.self, on: req.eventLoop) {
       try await Current.db.delete(Document.self, byId: args.id)

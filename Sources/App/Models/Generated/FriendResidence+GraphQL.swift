@@ -49,7 +49,7 @@ extension AppSchema {
     }
   }
 
-  static var getFriendResidence: AppField<FriendResidence, IdentifyEntity> {
+  static var getFriendResidence: AppField<FriendResidence, IdentifyEntityArgs> {
     Field("getFriendResidence", at: Resolver.getFriendResidence) {
       Argument("id", at: \.id)
     }
@@ -60,7 +60,7 @@ extension AppSchema {
   }
 
   static var createFriendResidence: AppField<
-    IdentifyEntity,
+    FriendResidence,
     InputArgs<CreateFriendResidenceInput>
   > {
     Field("createFriendResidence", at: Resolver.createFriendResidence) {
@@ -69,7 +69,7 @@ extension AppSchema {
   }
 
   static var createFriendResidences: AppField<
-    [IdentifyEntity],
+    [FriendResidence],
     InputArgs<[CreateFriendResidenceInput]>
   > {
     Field("createFriendResidences", at: Resolver.createFriendResidences) {
@@ -95,7 +95,7 @@ extension AppSchema {
     }
   }
 
-  static var deleteFriendResidence: AppField<FriendResidence, IdentifyEntity> {
+  static var deleteFriendResidence: AppField<FriendResidence, IdentifyEntityArgs> {
     Field("deleteFriendResidence", at: Resolver.deleteFriendResidence) {
       Argument("id", at: \.id)
     }

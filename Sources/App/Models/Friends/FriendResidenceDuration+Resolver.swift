@@ -5,7 +5,7 @@ import Vapor
 extension Resolver {
   func getFriendResidenceDuration(
     req: Req,
-    args: IdentifyEntity
+    args: IdentifyEntityArgs
   ) throws -> Future<FriendResidenceDuration> {
     try req.requirePermission(to: .queryEntities)
     return future(of: FriendResidenceDuration.self, on: req.eventLoop) {
@@ -26,20 +26,28 @@ extension Resolver {
   func createFriendResidenceDuration(
     req: Req,
     args: InputArgs<AppSchema.CreateFriendResidenceDurationInput>
-  ) throws -> Future<IdentifyEntity> {
+  ) throws -> Future<FriendResidenceDuration> {
     try req.requirePermission(to: .mutateEntities)
-    return future(of: IdentifyEntity.self, on: req.eventLoop) {
-      try await Current.db.create(FriendResidenceDuration(args.input)).identity
+    return future(of: FriendResidenceDuration.self, on: req.eventLoop) {
+      let friendResidenceDuration = FriendResidenceDuration(args.input)
+      guard friendResidenceDuration.isValid else { throw DbError.invalidEntity }
+      let created = try await Current.db.create(friendResidenceDuration)
+      return try await Current.db.find(created.id)
     }
   }
 
   func createFriendResidenceDurations(
     req: Req,
     args: InputArgs<[AppSchema.CreateFriendResidenceDurationInput]>
-  ) throws -> Future<[IdentifyEntity]> {
+  ) throws -> Future<[FriendResidenceDuration]> {
     try req.requirePermission(to: .mutateEntities)
-    return future(of: [IdentifyEntity].self, on: req.eventLoop) {
-      try await Current.db.create(args.input.map(FriendResidenceDuration.init)).map(\.identity)
+    return future(of: [FriendResidenceDuration].self, on: req.eventLoop) {
+      let friendResidenceDurations = args.input.map(FriendResidenceDuration.init)
+      guard friendResidenceDurations.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      let created = try await Current.db.create(friendResidenceDurations)
+      return try await Current.db.query(FriendResidenceDuration.self)
+        .where(.id |=| created.map(\.id))
+        .all()
     }
   }
 
@@ -49,7 +57,10 @@ extension Resolver {
   ) throws -> Future<FriendResidenceDuration> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: FriendResidenceDuration.self, on: req.eventLoop) {
-      try await Current.db.update(FriendResidenceDuration(args.input))
+      let friendResidenceDuration = FriendResidenceDuration(args.input)
+      guard friendResidenceDuration.isValid else { throw DbError.invalidEntity }
+      try await Current.db.update(friendResidenceDuration)
+      return try await Current.db.find(friendResidenceDuration.id)
     }
   }
 
@@ -59,13 +70,18 @@ extension Resolver {
   ) throws -> Future<[FriendResidenceDuration]> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [FriendResidenceDuration].self, on: req.eventLoop) {
-      try await Current.db.update(args.input.map(FriendResidenceDuration.init))
+      let friendResidenceDurations = args.input.map(FriendResidenceDuration.init)
+      guard friendResidenceDurations.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      let created = try await Current.db.update(friendResidenceDurations)
+      return try await Current.db.query(FriendResidenceDuration.self)
+        .where(.id |=| created.map(\.id))
+        .all()
     }
   }
 
   func deleteFriendResidenceDuration(
     req: Req,
-    args: IdentifyEntity
+    args: IdentifyEntityArgs
   ) throws -> Future<FriendResidenceDuration> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: FriendResidenceDuration.self, on: req.eventLoop) {

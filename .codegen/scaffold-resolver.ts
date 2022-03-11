@@ -10,8 +10,12 @@ if (isDryRun) {
 } else {
   if (fs.existsSync(path)) {
     const contents = fs.readFileSync(path, `utf-8`);
-    if (!contents.includes(`below auto-generated`)) {
-      fs.writeFileSync(path, `${contents}\n\n${code}`);
+    if (contents.includes(`// below auto-generated`)) {
+      const [before = ``] = contents.split(`// below auto-generated`);
+      const replace = `${before}${code}`;
+      fs.writeFileSync(path, replace);
+    } else {
+      fs.writeFileSync(path, `import Vapor\n\n${code}`);
     }
   } else {
     fs.writeFileSync(path, `import Vapor\n\n${code}`);

@@ -140,6 +140,7 @@ enum DbError: Error, LocalizedError {
   case nonUniformBulkInsertInput
   case emptyBulkInsertInput
   case tooManyResultsForDeleteOne
+  case invalidEntity
 
   var errorMessage: String {
     switch self {
@@ -153,6 +154,8 @@ enum DbError: Error, LocalizedError {
         return "Database error: Empty bulk insert input"
       case .tooManyResultsForDeleteOne:
         return "Database error: Too many results for delete one"
+      case .invalidEntity:
+        return "Database error: Attempt to create or update entity in invalid state"
     }
   }
 
@@ -166,6 +169,8 @@ extension DbError: AbortError {
 
   var status: HTTPStatus {
     switch self {
+      case .invalidEntity:
+        return .badRequest
       case .notFound:
         return .notFound
       case .decodingFailed,

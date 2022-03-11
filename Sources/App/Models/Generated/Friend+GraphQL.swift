@@ -81,7 +81,7 @@ extension AppSchema {
     }
   }
 
-  static var getFriend: AppField<Friend, IdentifyEntity> {
+  static var getFriend: AppField<Friend, IdentifyEntityArgs> {
     Field("getFriend", at: Resolver.getFriend) {
       Argument("id", at: \.id)
     }
@@ -91,13 +91,13 @@ extension AppSchema {
     Field("getFriends", at: Resolver.getFriends)
   }
 
-  static var createFriend: AppField<IdentifyEntity, InputArgs<CreateFriendInput>> {
+  static var createFriend: AppField<Friend, InputArgs<CreateFriendInput>> {
     Field("createFriend", at: Resolver.createFriend) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createFriends: AppField<[IdentifyEntity], InputArgs<[CreateFriendInput]>> {
+  static var createFriends: AppField<[Friend], InputArgs<[CreateFriendInput]>> {
     Field("createFriends", at: Resolver.createFriends) {
       Argument("input", at: \.input)
     }
@@ -115,7 +115,7 @@ extension AppSchema {
     }
   }
 
-  static var deleteFriend: AppField<Friend, IdentifyEntity> {
+  static var deleteFriend: AppField<Friend, IdentifyEntityArgs> {
     Field("deleteFriend", at: Resolver.deleteFriend) {
       Argument("id", at: \.id)
     }

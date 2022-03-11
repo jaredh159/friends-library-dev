@@ -6,7 +6,8 @@ import XCTVaporUtils
 final class IsbnResolverTests: AppTestCase {
 
   func testCreateIsbn() async throws {
-    let isbn = Isbn.random
+    _ = try await Current.db.query(Isbn.self).delete()
+    let isbn = Isbn.valid
     isbn.editionId = nil
     let map = isbn.gqlMap()
 
@@ -24,7 +25,8 @@ final class IsbnResolverTests: AppTestCase {
   }
 
   func testGetIsbn() async throws {
-    let isbn = Isbn.random
+    _ = try await Current.db.query(Isbn.self).delete()
+    let isbn = Isbn.valid
     isbn.editionId = nil
     try await Current.db.create(isbn)
 
@@ -42,12 +44,13 @@ final class IsbnResolverTests: AppTestCase {
   }
 
   func testUpdateIsbn() async throws {
-    let isbn = Isbn.random
+    _ = try await Current.db.query(Isbn.self).delete()
+    let isbn = Isbn.valid
     isbn.editionId = nil
     try await Current.db.create(isbn)
 
     // do some updates here ---vvv
-    isbn.code = .init(rawValue: "new value".random)
+    isbn.code = .init(rawValue: "978-1-64476-123-1")
 
     GraphQLTest(
       """
@@ -57,13 +60,14 @@ final class IsbnResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["code": isbn.code.rawValue]),
+      expectedData: .containsKVPs(["code": "978-1-64476-123-1"]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": isbn.gqlMap()])
   }
 
   func testDeleteIsbn() async throws {
-    let isbn = Isbn.random
+    _ = try await Current.db.query(Isbn.self).delete()
+    let isbn = Isbn.valid
     isbn.editionId = nil
     try await Current.db.create(isbn)
 

@@ -3,7 +3,7 @@ import Vapor
 // below auto-generated
 
 extension Resolver {
-  func getFriendQuote(req: Req, args: IdentifyEntity) throws -> Future<FriendQuote> {
+  func getFriendQuote(req: Req, args: IdentifyEntityArgs) throws -> Future<FriendQuote> {
     try req.requirePermission(to: .queryEntities)
     return future(of: FriendQuote.self, on: req.eventLoop) {
       try await Current.db.find(FriendQuote.self, byId: args.id)
@@ -20,20 +20,28 @@ extension Resolver {
   func createFriendQuote(
     req: Req,
     args: InputArgs<AppSchema.CreateFriendQuoteInput>
-  ) throws -> Future<IdentifyEntity> {
+  ) throws -> Future<FriendQuote> {
     try req.requirePermission(to: .mutateEntities)
-    return future(of: IdentifyEntity.self, on: req.eventLoop) {
-      try await Current.db.create(FriendQuote(args.input)).identity
+    return future(of: FriendQuote.self, on: req.eventLoop) {
+      let friendQuote = FriendQuote(args.input)
+      guard friendQuote.isValid else { throw DbError.invalidEntity }
+      let created = try await Current.db.create(friendQuote)
+      return try await Current.db.find(created.id)
     }
   }
 
   func createFriendQuotes(
     req: Req,
     args: InputArgs<[AppSchema.CreateFriendQuoteInput]>
-  ) throws -> Future<[IdentifyEntity]> {
+  ) throws -> Future<[FriendQuote]> {
     try req.requirePermission(to: .mutateEntities)
-    return future(of: [IdentifyEntity].self, on: req.eventLoop) {
-      try await Current.db.create(args.input.map(FriendQuote.init)).map(\.identity)
+    return future(of: [FriendQuote].self, on: req.eventLoop) {
+      let friendQuotes = args.input.map(FriendQuote.init)
+      guard friendQuotes.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      let created = try await Current.db.create(friendQuotes)
+      return try await Current.db.query(FriendQuote.self)
+        .where(.id |=| created.map(\.id))
+        .all()
     }
   }
 
@@ -43,7 +51,10 @@ extension Resolver {
   ) throws -> Future<FriendQuote> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: FriendQuote.self, on: req.eventLoop) {
-      try await Current.db.update(FriendQuote(args.input))
+      let friendQuote = FriendQuote(args.input)
+      guard friendQuote.isValid else { throw DbError.invalidEntity }
+      try await Current.db.update(friendQuote)
+      return try await Current.db.find(friendQuote.id)
     }
   }
 
@@ -53,11 +64,16 @@ extension Resolver {
   ) throws -> Future<[FriendQuote]> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [FriendQuote].self, on: req.eventLoop) {
-      try await Current.db.update(args.input.map(FriendQuote.init))
+      let friendQuotes = args.input.map(FriendQuote.init)
+      guard friendQuotes.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      let created = try await Current.db.update(friendQuotes)
+      return try await Current.db.query(FriendQuote.self)
+        .where(.id |=| created.map(\.id))
+        .all()
     }
   }
 
-  func deleteFriendQuote(req: Req, args: IdentifyEntity) throws -> Future<FriendQuote> {
+  func deleteFriendQuote(req: Req, args: IdentifyEntityArgs) throws -> Future<FriendQuote> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: FriendQuote.self, on: req.eventLoop) {
       try await Current.db.delete(FriendQuote.self, byId: args.id)

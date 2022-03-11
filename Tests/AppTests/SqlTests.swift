@@ -7,6 +7,37 @@ import XCTest
 
 final class SqlTests: XCTestCase {
 
+  func testWhereIn() throws {
+    let ids: [Thing.IdValue] = [
+      .init(rawValue: UUID(uuidString: "6b9cfcdc-22a8-4c40-9ea8-eb409725dc34")!),
+      .init(rawValue: UUID(uuidString: "c5bfe387-1e7a-426a-87ff-1aa472057acc")!),
+    ]
+
+    let stmt = SQL.select(.all, from: Thing.self, where: [.id |=| ids])
+
+    let expectedQuery = """
+    SELECT * FROM "things"
+    WHERE "id" IN ($1, $2);
+    """
+
+    XCTAssertEqual(stmt.query, expectedQuery)
+    XCTAssertEqual(stmt.bindings, ids.map { .uuid($0.rawValue) })
+  }
+
+  func testWhereInEmptyValues() throws {
+    let ids: [Thing.IdValue] = []
+
+    let stmt = SQL.select(.all, from: Thing.self, where: [.id |=| ids])
+
+    let expectedQuery = """
+    SELECT * FROM "things"
+    WHERE FALSE;
+    """
+
+    XCTAssertEqual(stmt.query, expectedQuery)
+    XCTAssertEqual(stmt.bindings, [])
+  }
+
   func testSimpleSelect() throws {
     let stmt = SQL.select(.all, from: Thing.self)
 

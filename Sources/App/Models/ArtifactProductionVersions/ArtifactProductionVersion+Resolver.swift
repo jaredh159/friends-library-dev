@@ -18,7 +18,7 @@ extension Resolver {
 extension Resolver {
   func getArtifactProductionVersion(
     req: Req,
-    args: IdentifyEntity
+    args: IdentifyEntityArgs
   ) throws -> Future<ArtifactProductionVersion> {
     try req.requirePermission(to: .queryArtifactProductionVersions)
     return future(of: ArtifactProductionVersion.self, on: req.eventLoop) {
@@ -39,20 +39,20 @@ extension Resolver {
   func createArtifactProductionVersion(
     req: Req,
     args: InputArgs<AppSchema.CreateArtifactProductionVersionInput>
-  ) throws -> Future<IdentifyEntity> {
+  ) throws -> Future<ArtifactProductionVersion> {
     try req.requirePermission(to: .mutateArtifactProductionVersions)
-    return future(of: IdentifyEntity.self, on: req.eventLoop) {
-      try await Current.db.create(ArtifactProductionVersion(args.input)).identity
+    return future(of: ArtifactProductionVersion.self, on: req.eventLoop) {
+      try await Current.db.create(ArtifactProductionVersion(args.input))
     }
   }
 
   func createArtifactProductionVersions(
     req: Req,
     args: InputArgs<[AppSchema.CreateArtifactProductionVersionInput]>
-  ) throws -> Future<[IdentifyEntity]> {
+  ) throws -> Future<[ArtifactProductionVersion]> {
     try req.requirePermission(to: .mutateArtifactProductionVersions)
-    return future(of: [IdentifyEntity].self, on: req.eventLoop) {
-      try await Current.db.create(args.input.map(ArtifactProductionVersion.init)).map(\.identity)
+    return future(of: [ArtifactProductionVersion].self, on: req.eventLoop) {
+      try await Current.db.create(args.input.map(ArtifactProductionVersion.init))
     }
   }
 
@@ -78,7 +78,7 @@ extension Resolver {
 
   func deleteArtifactProductionVersion(
     req: Req,
-    args: IdentifyEntity
+    args: IdentifyEntityArgs
   ) throws -> Future<ArtifactProductionVersion> {
     try req.requirePermission(to: .mutateArtifactProductionVersions)
     return future(of: ArtifactProductionVersion.self, on: req.eventLoop) {

@@ -3,7 +3,7 @@ import Vapor
 // below auto-generated
 
 extension Resolver {
-  func getIsbn(req: Req, args: IdentifyEntity) throws -> Future<Isbn> {
+  func getIsbn(req: Req, args: IdentifyEntityArgs) throws -> Future<Isbn> {
     try req.requirePermission(to: .queryEntities)
     return future(of: Isbn.self, on: req.eventLoop) {
       try await Current.db.find(Isbn.self, byId: args.id)
@@ -20,20 +20,28 @@ extension Resolver {
   func createIsbn(
     req: Req,
     args: InputArgs<AppSchema.CreateIsbnInput>
-  ) throws -> Future<IdentifyEntity> {
+  ) throws -> Future<Isbn> {
     try req.requirePermission(to: .mutateEntities)
-    return future(of: IdentifyEntity.self, on: req.eventLoop) {
-      try await Current.db.create(Isbn(args.input)).identity
+    return future(of: Isbn.self, on: req.eventLoop) {
+      let isbn = Isbn(args.input)
+      guard isbn.isValid else { throw DbError.invalidEntity }
+      let created = try await Current.db.create(isbn)
+      return try await Current.db.find(created.id)
     }
   }
 
   func createIsbns(
     req: Req,
     args: InputArgs<[AppSchema.CreateIsbnInput]>
-  ) throws -> Future<[IdentifyEntity]> {
+  ) throws -> Future<[Isbn]> {
     try req.requirePermission(to: .mutateEntities)
-    return future(of: [IdentifyEntity].self, on: req.eventLoop) {
-      try await Current.db.create(args.input.map(Isbn.init)).map(\.identity)
+    return future(of: [Isbn].self, on: req.eventLoop) {
+      let isbns = args.input.map(Isbn.init)
+      guard isbns.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      let created = try await Current.db.create(isbns)
+      return try await Current.db.query(Isbn.self)
+        .where(.id |=| created.map(\.id))
+        .all()
     }
   }
 
@@ -43,7 +51,10 @@ extension Resolver {
   ) throws -> Future<Isbn> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: Isbn.self, on: req.eventLoop) {
-      try await Current.db.update(Isbn(args.input))
+      let isbn = Isbn(args.input)
+      guard isbn.isValid else { throw DbError.invalidEntity }
+      try await Current.db.update(isbn)
+      return try await Current.db.find(isbn.id)
     }
   }
 
@@ -53,11 +64,16 @@ extension Resolver {
   ) throws -> Future<[Isbn]> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [Isbn].self, on: req.eventLoop) {
-      try await Current.db.update(args.input.map(Isbn.init))
+      let isbns = args.input.map(Isbn.init)
+      guard isbns.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      let created = try await Current.db.update(isbns)
+      return try await Current.db.query(Isbn.self)
+        .where(.id |=| created.map(\.id))
+        .all()
     }
   }
 
-  func deleteIsbn(req: Req, args: IdentifyEntity) throws -> Future<Isbn> {
+  func deleteIsbn(req: Req, args: IdentifyEntityArgs) throws -> Future<Isbn> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: Isbn.self, on: req.eventLoop) {
       try await Current.db.delete(Isbn.self, byId: args.id)

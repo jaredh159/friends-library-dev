@@ -72,7 +72,7 @@ extension AppSchema {
     }
   }
 
-  static var getEditionChapter: AppField<EditionChapter, IdentifyEntity> {
+  static var getEditionChapter: AppField<EditionChapter, IdentifyEntityArgs> {
     Field("getEditionChapter", at: Resolver.getEditionChapter) {
       Argument("id", at: \.id)
     }
@@ -82,14 +82,14 @@ extension AppSchema {
     Field("getEditionChapters", at: Resolver.getEditionChapters)
   }
 
-  static var createEditionChapter: AppField<IdentifyEntity, InputArgs<CreateEditionChapterInput>> {
+  static var createEditionChapter: AppField<EditionChapter, InputArgs<CreateEditionChapterInput>> {
     Field("createEditionChapter", at: Resolver.createEditionChapter) {
       Argument("input", at: \.input)
     }
   }
 
   static var createEditionChapters: AppField<
-    [IdentifyEntity],
+    [EditionChapter],
     InputArgs<[CreateEditionChapterInput]>
   > {
     Field("createEditionChapters", at: Resolver.createEditionChapters) {
@@ -112,7 +112,7 @@ extension AppSchema {
     }
   }
 
-  static var deleteEditionChapter: AppField<EditionChapter, IdentifyEntity> {
+  static var deleteEditionChapter: AppField<EditionChapter, IdentifyEntityArgs> {
     Field("deleteEditionChapter", at: Resolver.deleteEditionChapter) {
       Argument("id", at: \.id)
     }

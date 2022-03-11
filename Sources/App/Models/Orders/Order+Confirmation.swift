@@ -4,7 +4,7 @@ import Vapor
 extension Resolver {
   func sendOrderConfirmationEmail(
     req: Req,
-    args: IdentifyEntity
+    args: IdentifyEntityArgs
   ) throws -> Future<GenericResponse> {
     future(of: GenericResponse.self, on: req.eventLoop) {
       let order = try await Current.db.find(Order.self, byId: args.id)
@@ -23,7 +23,7 @@ extension Resolver {
 }
 
 extension AppSchema {
-  static var sendOrderConfirmationEmail: AppField<GenericResponse, IdentifyEntity> {
+  static var sendOrderConfirmationEmail: AppField<GenericResponse, IdentifyEntityArgs> {
     Field("sendOrderConfirmationEmail", at: Resolver.sendOrderConfirmationEmail) {
       Argument("id", at: \.id)
     }

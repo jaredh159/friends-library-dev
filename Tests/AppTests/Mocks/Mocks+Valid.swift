@@ -1,10 +1,12 @@
+import Foundation
+
 @testable import App
 
 extension Friend {
   static var valid: Friend {
     let friend = Friend.empty
     friend.name = "George Fox"
-    friend.slug = "george-fox"
+    friend.slug = "george-fox-\(UUID().lowercased)"
     friend.born = 1620
     friend.died = 1693
     precondition(friend.isValid)
@@ -12,12 +14,33 @@ extension Friend {
   }
 }
 
+extension FriendQuote {
+  static var valid: FriendQuote {
+    let quote = FriendQuote.empty
+    quote.source = "Bob Smith"
+    quote.text = "So good"
+    quote.order = Int.random
+    precondition(quote.isValid)
+    return quote
+  }
+}
+
+extension FriendResidenceDuration {
+  static var valid: FriendResidenceDuration {
+    let duration = FriendResidenceDuration.empty
+    duration.start = 1690
+    duration.end = 1700
+    precondition(duration.isValid)
+    return duration
+  }
+}
+
 extension Document {
   static var valid: Document {
     let document = Document.empty
-    document.filename = "No_Cross_No_Crown"
-    document.title = "No Cross, No Crown"
-    document.slug = "no-cross-no-crown"
+    document.filename = "No_Cross_No_Crown_\(UUID())"
+    document.title = "No Cross, No Crown \(Int.random)"
+    document.slug = "no-cross-no-crown-\(UUID().lowercased)"
     document.published = nil
     precondition(document.isValid)
     return document
@@ -37,7 +60,7 @@ extension Edition {
 extension EditionChapter {
   static var valid: EditionChapter {
     let chapter = EditionChapter.empty
-    chapter.order = 1
+    chapter.order = Int.random(in: 1 ... 300)
     chapter.shortHeading = "Chapter 1"
     chapter.sequenceNumber = 1
     precondition(chapter.isValid)
@@ -85,5 +108,14 @@ extension Audio {
     audio.externalPlaylistIdLq = nil
     precondition(audio.isValid)
     return audio
+  }
+}
+
+extension Isbn {
+  static var valid: Isbn {
+    let isbn = Isbn.empty
+    isbn.code = "978-1-64476-999-9"
+    precondition(isbn.isValid)
+    return isbn
   }
 }
