@@ -48,6 +48,7 @@ export default async function publish(argv: PublishOptions): Promise<void> {
 
   const [makeScreenshot, closeHeadlessBrowser] = await coverServer.screenshot(COVER_PORT);
   const dpcs = await dpcQuery.getByPattern(argv.pattern);
+  dpcs.sort((a, b) => (a.path < b.path ? -1 : 1));
   const errors: string[] = [];
   const successes: string[] = [];
 
@@ -137,15 +138,17 @@ async function initialData(dpc: FsDocPrecursor): Promise<PublishData> {
       }
     : null;
 
-  const currentImpression = previousImpression ?? {
-    id: uuid(),
-    editionId: dpc.editionId,
-    adocLength: -1,
-    paperbackSizeVariant: PrintSizeVariant.m,
-    paperbackVolumes: [],
-    publishedRevision: ``,
-    productionToolchainRevision: ``,
-  };
+  const currentImpression = previousImpression
+    ? { ...previousImpression }
+    : {
+        id: uuid(),
+        editionId: dpc.editionId,
+        adocLength: -1,
+        paperbackSizeVariant: PrintSizeVariant.m,
+        paperbackVolumes: [],
+        publishedRevision: ``,
+        productionToolchainRevision: ``,
+      };
 
   return {
     dpc,
@@ -385,6 +388,10 @@ async function rollbackSaveEditionImpression(
   impression: PublishData['impression'],
 ): Promise<void> {
   logAction(`attempting to roll back save EditionImpression...`);
+
+  // in case the problem caused the server to crash, give time for it to restart...
+  await new Promise((res) => setTimeout(res, 5000));
+
   try {
     if (!impression.previous) {
       await api.deleteEditionImpression(impression.current.id);
