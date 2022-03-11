@@ -25,6 +25,7 @@ extension AppSchema {
       Field("latitude", at: \.latitude)
       Field("longitude", at: \.longitude)
       Field("createdAt", at: \.createdAt)
+      Field("isValid", at: \.isValid)
       Field("edition", with: \.edition)
     }
   }

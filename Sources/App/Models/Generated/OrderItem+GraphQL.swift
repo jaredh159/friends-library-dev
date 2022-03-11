@@ -11,6 +11,7 @@ extension AppSchema {
       Field("quantity", at: \.quantity)
       Field("unitPriceInCents", at: \.unitPrice.rawValue)
       Field("createdAt", at: \.createdAt)
+      Field("isValid", at: \.isValid)
       Field("order", with: \.order)
       Field("edition", with: \.edition)
     }

@@ -9,6 +9,7 @@ extension AppSchema {
       Field("documentId", at: \.documentId.rawValue.lowercased)
       Field("type", at: \.type)
       Field("createdAt", at: \.createdAt)
+      Field("isValid", at: \.isValid)
       Field("document", with: \.document)
     }
   }

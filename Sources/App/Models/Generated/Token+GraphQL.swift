@@ -10,6 +10,7 @@ extension AppSchema {
       Field("description", at: \.description)
       Field("uses", at: \.uses)
       Field("createdAt", at: \.createdAt)
+      Field("isValid", at: \.isValid)
       Field("scopes", with: \.scopes)
     }
   }
