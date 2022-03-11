@@ -82,6 +82,7 @@ private func addMigrations(to app: Application) {
   app.migrations.add(AddEditionIdForeignKeys())
   app.migrations.add(AddTokenUses())
   app.migrations.add(AddOrderFeesColumn())
+  app.migrations.add(DropFriendResidenceDurationCol())
 
   if Env.get("SEED_DB") == "true" || Env.mode == .test {
     app.migrations.add(Seed())
