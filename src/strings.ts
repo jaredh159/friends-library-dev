@@ -50,6 +50,7 @@ const strings: { [k: string]: string } = {
   // tags, tag-like
   'Spiritual Life': `Vida Espiritual`,
   'spiritual life': `vida espiritual`,
+  'spiritual-life': `vida-espiritual`,
   doctrinal: `doctrinal`,
   Doctrine: `Doctrinal`,
   history: `historia`,
