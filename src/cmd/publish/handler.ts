@@ -258,8 +258,10 @@ async function handlePaperbackAndCover(data: PublishData): Promise<void> {
   logDebug(`Starting paperback interior generation...`);
   const published = await paperback.publish(data.dpc, data.artifactOptions);
   data.uploads.paperback.interior = published.paths;
-  data.impression.current.paperbackSizeVariant =
-    published.printSizeVariant as PrintSizeVariant;
+  data.impression.current.paperbackSizeVariant = published.printSizeVariant.replace(
+    `xl--condensed`,
+    `xlCondensed`,
+  ) as PrintSizeVariant;
   data.impression.current.paperbackVolumes = published.volumes;
 
   const coverManifests = await manifest.paperbackCover(data.dpc, {
