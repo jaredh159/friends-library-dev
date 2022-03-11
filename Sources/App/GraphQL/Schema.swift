@@ -23,7 +23,6 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   Enum(PrintSizeVariant.self)
   Enum(AppSchema.SubmitContactFormInput.Subject.self)
 
-  AppSchema.IdentifyEntityType
   AppSchema.GenericResponseType
   AppSchema.ModelsCountsType
   AppSchema.ShippingAddressType

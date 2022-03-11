@@ -87,7 +87,7 @@ extension AppSchema {
     }
   }
 
-  static var getFreeOrderRequest: AppField<FreeOrderRequest, IdentifyEntity> {
+  static var getFreeOrderRequest: AppField<FreeOrderRequest, IdentifyEntityArgs> {
     Field("getFreeOrderRequest", at: Resolver.getFreeOrderRequest) {
       Argument("id", at: \.id)
     }
@@ -98,7 +98,7 @@ extension AppSchema {
   }
 
   static var createFreeOrderRequest: AppField<
-    IdentifyEntity,
+    FreeOrderRequest,
     InputArgs<CreateFreeOrderRequestInput>
   > {
     Field("createFreeOrderRequest", at: Resolver.createFreeOrderRequest) {
@@ -107,7 +107,7 @@ extension AppSchema {
   }
 
   static var createFreeOrderRequests: AppField<
-    [IdentifyEntity],
+    [FreeOrderRequest],
     InputArgs<[CreateFreeOrderRequestInput]>
   > {
     Field("createFreeOrderRequests", at: Resolver.createFreeOrderRequests) {
@@ -133,7 +133,7 @@ extension AppSchema {
     }
   }
 
-  static var deleteFreeOrderRequest: AppField<FreeOrderRequest, IdentifyEntity> {
+  static var deleteFreeOrderRequest: AppField<FreeOrderRequest, IdentifyEntityArgs> {
     Field("deleteFreeOrderRequest", at: Resolver.deleteFreeOrderRequest) {
       Argument("id", at: \.id)
     }

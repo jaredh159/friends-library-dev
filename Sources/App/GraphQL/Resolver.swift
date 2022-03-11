@@ -18,7 +18,7 @@ struct InputArgs<Input: Codable>: Codable {
   let input: Input
 }
 
-struct IdentifyEntity: Codable {
+struct IdentifyEntityArgs: Codable {
   let id: UUID
 }
 
@@ -27,12 +27,6 @@ struct GenericResponse: Codable {
 }
 
 extension AppSchema {
-  static var IdentifyEntityType: AppType<IdentifyEntity> {
-    Type(IdentifyEntity.self) {
-      Field("id", at: \.id.lowercased)
-    }
-  }
-
   static var GenericResponseType: AppType<GenericResponse> {
     Type(GenericResponse.self) {
       Field("success", at: \.success)

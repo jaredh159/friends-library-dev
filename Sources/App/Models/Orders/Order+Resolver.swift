@@ -27,7 +27,7 @@ extension Resolver {
 // below auto-generated
 
 extension Resolver {
-  func getOrder(req: Req, args: IdentifyEntity) throws -> Future<Order> {
+  func getOrder(req: Req, args: IdentifyEntityArgs) throws -> Future<Order> {
     try req.requirePermission(to: .queryOrders)
     return future(of: Order.self, on: req.eventLoop) {
       try await Current.db.find(Order.self, byId: args.id)
@@ -41,23 +41,20 @@ extension Resolver {
     }
   }
 
-  func createOrder(
-    req: Req,
-    args: InputArgs<AppSchema.CreateOrderInput>
-  ) throws -> Future<IdentifyEntity> {
+  func createOrder(req: Req, args: InputArgs<AppSchema.CreateOrderInput>) throws -> Future<Order> {
     try req.requirePermission(to: .mutateOrders)
-    return future(of: IdentifyEntity.self, on: req.eventLoop) {
-      try await Current.db.create(Order(args.input)).identity
+    return future(of: Order.self, on: req.eventLoop) {
+      try await Current.db.create(Order(args.input))
     }
   }
 
   func createOrders(
     req: Req,
     args: InputArgs<[AppSchema.CreateOrderInput]>
-  ) throws -> Future<[IdentifyEntity]> {
+  ) throws -> Future<[Order]> {
     try req.requirePermission(to: .mutateOrders)
-    return future(of: [IdentifyEntity].self, on: req.eventLoop) {
-      try await Current.db.create(args.input.map(Order.init)).map(\.identity)
+    return future(of: [Order].self, on: req.eventLoop) {
+      try await Current.db.create(args.input.map(Order.init))
     }
   }
 
@@ -78,7 +75,7 @@ extension Resolver {
     }
   }
 
-  func deleteOrder(req: Req, args: IdentifyEntity) throws -> Future<Order> {
+  func deleteOrder(req: Req, args: IdentifyEntityArgs) throws -> Future<Order> {
     try req.requirePermission(to: .mutateOrders)
     return future(of: Order.self, on: req.eventLoop) {
       try await Current.db.delete(Order.self, byId: args.id)

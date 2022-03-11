@@ -3,7 +3,7 @@ import Vapor
 // below auto-generated
 
 extension Resolver {
-  func getFriendQuote(req: Req, args: IdentifyEntity) throws -> Future<FriendQuote> {
+  func getFriendQuote(req: Req, args: IdentifyEntityArgs) throws -> Future<FriendQuote> {
     try req.requirePermission(to: .queryEntities)
     return future(of: FriendQuote.self, on: req.eventLoop) {
       try await Current.db.find(FriendQuote.self, byId: args.id)
@@ -20,20 +20,20 @@ extension Resolver {
   func createFriendQuote(
     req: Req,
     args: InputArgs<AppSchema.CreateFriendQuoteInput>
-  ) throws -> Future<IdentifyEntity> {
+  ) throws -> Future<FriendQuote> {
     try req.requirePermission(to: .mutateEntities)
-    return future(of: IdentifyEntity.self, on: req.eventLoop) {
-      try await Current.db.create(FriendQuote(args.input)).identity
+    return future(of: FriendQuote.self, on: req.eventLoop) {
+      try await Current.db.create(FriendQuote(args.input))
     }
   }
 
   func createFriendQuotes(
     req: Req,
     args: InputArgs<[AppSchema.CreateFriendQuoteInput]>
-  ) throws -> Future<[IdentifyEntity]> {
+  ) throws -> Future<[FriendQuote]> {
     try req.requirePermission(to: .mutateEntities)
-    return future(of: [IdentifyEntity].self, on: req.eventLoop) {
-      try await Current.db.create(args.input.map(FriendQuote.init)).map(\.identity)
+    return future(of: [FriendQuote].self, on: req.eventLoop) {
+      try await Current.db.create(args.input.map(FriendQuote.init))
     }
   }
 
@@ -57,7 +57,7 @@ extension Resolver {
     }
   }
 
-  func deleteFriendQuote(req: Req, args: IdentifyEntity) throws -> Future<FriendQuote> {
+  func deleteFriendQuote(req: Req, args: IdentifyEntityArgs) throws -> Future<FriendQuote> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: FriendQuote.self, on: req.eventLoop) {
       try await Current.db.delete(FriendQuote.self, byId: args.id)

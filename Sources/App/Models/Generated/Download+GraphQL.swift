@@ -121,7 +121,7 @@ extension AppSchema {
     }
   }
 
-  static var getDownload: AppField<Download, IdentifyEntity> {
+  static var getDownload: AppField<Download, IdentifyEntityArgs> {
     Field("getDownload", at: Resolver.getDownload) {
       Argument("id", at: \.id)
     }
@@ -131,13 +131,13 @@ extension AppSchema {
     Field("getDownloads", at: Resolver.getDownloads)
   }
 
-  static var createDownload: AppField<IdentifyEntity, InputArgs<CreateDownloadInput>> {
+  static var createDownload: AppField<Download, InputArgs<CreateDownloadInput>> {
     Field("createDownload", at: Resolver.createDownload) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createDownloads: AppField<[IdentifyEntity], InputArgs<[CreateDownloadInput]>> {
+  static var createDownloads: AppField<[Download], InputArgs<[CreateDownloadInput]>> {
     Field("createDownloads", at: Resolver.createDownloads) {
       Argument("input", at: \.input)
     }
@@ -155,7 +155,7 @@ extension AppSchema {
     }
   }
 
-  static var deleteDownload: AppField<Download, IdentifyEntity> {
+  static var deleteDownload: AppField<Download, IdentifyEntityArgs> {
     Field("deleteDownload", at: Resolver.deleteDownload) {
       Argument("id", at: \.id)
     }

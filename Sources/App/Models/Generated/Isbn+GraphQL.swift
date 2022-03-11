@@ -43,7 +43,7 @@ extension AppSchema {
     }
   }
 
-  static var getIsbn: AppField<Isbn, IdentifyEntity> {
+  static var getIsbn: AppField<Isbn, IdentifyEntityArgs> {
     Field("getIsbn", at: Resolver.getIsbn) {
       Argument("id", at: \.id)
     }
@@ -53,13 +53,13 @@ extension AppSchema {
     Field("getIsbns", at: Resolver.getIsbns)
   }
 
-  static var createIsbn: AppField<IdentifyEntity, InputArgs<CreateIsbnInput>> {
+  static var createIsbn: AppField<Isbn, InputArgs<CreateIsbnInput>> {
     Field("createIsbn", at: Resolver.createIsbn) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createIsbns: AppField<[IdentifyEntity], InputArgs<[CreateIsbnInput]>> {
+  static var createIsbns: AppField<[Isbn], InputArgs<[CreateIsbnInput]>> {
     Field("createIsbns", at: Resolver.createIsbns) {
       Argument("input", at: \.input)
     }
@@ -77,7 +77,7 @@ extension AppSchema {
     }
   }
 
-  static var deleteIsbn: AppField<Isbn, IdentifyEntity> {
+  static var deleteIsbn: AppField<Isbn, IdentifyEntityArgs> {
     Field("deleteIsbn", at: Resolver.deleteIsbn) {
       Argument("id", at: \.id)
     }
