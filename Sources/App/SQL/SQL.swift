@@ -1,5 +1,6 @@
 import FluentSQL
 import Foundation
+import NonEmpty
 import Vapor
 
 enum SQL {
@@ -39,7 +40,9 @@ enum SQL {
 
   struct WhereConstraint<M: DuetModel> {
     enum Expression {
-      case value(Postgres.WhereOperator, Postgres.Data)
+      case equals(Postgres.Data)
+      case `in`([Postgres.Data])
+      case notIn([Postgres.Data])
       case isNull
       case notNull
     }
@@ -61,9 +64,25 @@ enum SQL {
           return "\"\(M.columnName(column))\" IS NULL"
         case .notNull:
           return "\"\(M.columnName(column))\" NOT NULL"
-        case .value(let op, let value):
+        case .equals(let value):
           bindings.append(value)
-          return "\"\(M.columnName(column))\" \(op.sql) $\(bindings.count)"
+          return "\"\(M.columnName(column))\" = $\(bindings.count)"
+        case .notIn(let values):
+          guard !values.isEmpty else { return "TRUE" }
+          var placeholders: [String] = []
+          for value in values {
+            bindings.append(value)
+            placeholders.append("$\(bindings.count)")
+          }
+          return "\"\(M.columnName(column))\" NOT IN (\(placeholders.list))"
+        case .in(let values):
+          guard !values.isEmpty else { return "FALSE" }
+          var placeholders: [String] = []
+          for value in values {
+            bindings.append(value)
+            placeholders.append("$\(bindings.count)")
+          }
+          return "\"\(M.columnName(column))\" IN (\(placeholders.list))"
       }
     }
   }
@@ -261,11 +280,18 @@ private extension Sequence where Element == String {
 }
 
 func == <M: DuetModel>(lhs: M.ColumnName, rhs: Postgres.Data) -> SQL.WhereConstraint<M> {
-  .init(column: lhs, expression: .value(.equals, rhs))
+  .init(column: lhs, expression: .equals(rhs))
 }
 
 func == <M: DuetModel>(lhs: M.ColumnName, rhs: UUIDStringable) -> SQL.WhereConstraint<M> {
-  .init(column: lhs, expression: .value(.equals, .uuid(rhs)))
+  .init(column: lhs, expression: .equals(.uuid(rhs)))
+}
+
+infix operator |=|
+
+// WHERE <column> IN (values...)
+func |=| <M: DuetModel>(lhs: M.ColumnName, rhs: [M.IdValue]) -> SQL.WhereConstraint<M> {
+  .init(column: lhs, expression: .in(rhs.map { .uuid($0) }))
 }
 
 private extension Optional where Wrapped == Int {

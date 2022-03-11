@@ -21,17 +21,6 @@ enum Postgres {
     }
   }
 
-  enum WhereOperator {
-    case equals
-
-    var sql: String {
-      switch self {
-        case .equals:
-          return "="
-      }
-    }
-  }
-
   enum Data {
     case id(UUIDIdentifiable)
     case string(String?)
@@ -205,11 +194,12 @@ extension SQL.WhereConstraint {
         return data.holdsNull
       case .notNull:
         return !data.holdsNull
-      case .value(let op, let value):
-        switch op {
-          case .equals:
-            return data == value
-        }
+      case .equals(let value):
+        return data == value
+      case .in(let values):
+        return values.contains { value in data == value }
+      case .notIn(let values):
+        return values.contains { value in data != value }
     }
   }
 }
