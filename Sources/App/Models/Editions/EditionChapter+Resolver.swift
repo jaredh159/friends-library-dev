@@ -23,7 +23,10 @@ extension Resolver {
   ) throws -> Future<EditionChapter> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: EditionChapter.self, on: req.eventLoop) {
-      try await Current.db.create(EditionChapter(args.input))
+      let editionChapter = EditionChapter(args.input)
+      guard editionChapter.isValid else { throw DbError.invalidEntity }
+      let created = try await Current.db.create(editionChapter)
+      return try await Current.db.find(created.id)
     }
   }
 
@@ -33,7 +36,12 @@ extension Resolver {
   ) throws -> Future<[EditionChapter]> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [EditionChapter].self, on: req.eventLoop) {
-      try await Current.db.create(args.input.map(EditionChapter.init))
+      let editionChapters = args.input.map(EditionChapter.init)
+      guard editionChapters.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      let created = try await Current.db.create(editionChapters)
+      return try await Current.db.query(EditionChapter.self)
+        .where(.id |=| created.map(\.id))
+        .all()
     }
   }
 
@@ -43,7 +51,10 @@ extension Resolver {
   ) throws -> Future<EditionChapter> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: EditionChapter.self, on: req.eventLoop) {
-      try await Current.db.update(EditionChapter(args.input))
+      let editionChapter = EditionChapter(args.input)
+      guard editionChapter.isValid else { throw DbError.invalidEntity }
+      try await Current.db.update(editionChapter)
+      return try await Current.db.find(editionChapter.id)
     }
   }
 
@@ -53,7 +64,12 @@ extension Resolver {
   ) throws -> Future<[EditionChapter]> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [EditionChapter].self, on: req.eventLoop) {
-      try await Current.db.update(args.input.map(EditionChapter.init))
+      let editionChapters = args.input.map(EditionChapter.init)
+      guard editionChapters.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      let created = try await Current.db.update(editionChapters)
+      return try await Current.db.query(EditionChapter.self)
+        .where(.id |=| created.map(\.id))
+        .all()
     }
   }
 

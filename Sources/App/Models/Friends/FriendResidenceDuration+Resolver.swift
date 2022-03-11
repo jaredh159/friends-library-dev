@@ -29,7 +29,10 @@ extension Resolver {
   ) throws -> Future<FriendResidenceDuration> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: FriendResidenceDuration.self, on: req.eventLoop) {
-      try await Current.db.create(FriendResidenceDuration(args.input))
+      let friendResidenceDuration = FriendResidenceDuration(args.input)
+      guard friendResidenceDuration.isValid else { throw DbError.invalidEntity }
+      let created = try await Current.db.create(friendResidenceDuration)
+      return try await Current.db.find(created.id)
     }
   }
 
@@ -39,7 +42,12 @@ extension Resolver {
   ) throws -> Future<[FriendResidenceDuration]> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [FriendResidenceDuration].self, on: req.eventLoop) {
-      try await Current.db.create(args.input.map(FriendResidenceDuration.init))
+      let friendResidenceDurations = args.input.map(FriendResidenceDuration.init)
+      guard friendResidenceDurations.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      let created = try await Current.db.create(friendResidenceDurations)
+      return try await Current.db.query(FriendResidenceDuration.self)
+        .where(.id |=| created.map(\.id))
+        .all()
     }
   }
 
@@ -49,7 +57,10 @@ extension Resolver {
   ) throws -> Future<FriendResidenceDuration> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: FriendResidenceDuration.self, on: req.eventLoop) {
-      try await Current.db.update(FriendResidenceDuration(args.input))
+      let friendResidenceDuration = FriendResidenceDuration(args.input)
+      guard friendResidenceDuration.isValid else { throw DbError.invalidEntity }
+      try await Current.db.update(friendResidenceDuration)
+      return try await Current.db.find(friendResidenceDuration.id)
     }
   }
 
@@ -59,7 +70,12 @@ extension Resolver {
   ) throws -> Future<[FriendResidenceDuration]> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [FriendResidenceDuration].self, on: req.eventLoop) {
-      try await Current.db.update(args.input.map(FriendResidenceDuration.init))
+      let friendResidenceDurations = args.input.map(FriendResidenceDuration.init)
+      guard friendResidenceDurations.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      let created = try await Current.db.update(friendResidenceDurations)
+      return try await Current.db.query(FriendResidenceDuration.self)
+        .where(.id |=| created.map(\.id))
+        .all()
     }
   }
 

@@ -23,7 +23,10 @@ extension Resolver {
   ) throws -> Future<Document> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: Document.self, on: req.eventLoop) {
-      try await Current.db.create(Document(args.input))
+      let document = Document(args.input)
+      guard document.isValid else { throw DbError.invalidEntity }
+      let created = try await Current.db.create(document)
+      return try await Current.db.find(created.id)
     }
   }
 
@@ -33,7 +36,12 @@ extension Resolver {
   ) throws -> Future<[Document]> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [Document].self, on: req.eventLoop) {
-      try await Current.db.create(args.input.map(Document.init))
+      let documents = args.input.map(Document.init)
+      guard documents.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      let created = try await Current.db.create(documents)
+      return try await Current.db.query(Document.self)
+        .where(.id |=| created.map(\.id))
+        .all()
     }
   }
 
@@ -43,7 +51,10 @@ extension Resolver {
   ) throws -> Future<Document> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: Document.self, on: req.eventLoop) {
-      try await Current.db.update(Document(args.input))
+      let document = Document(args.input)
+      guard document.isValid else { throw DbError.invalidEntity }
+      try await Current.db.update(document)
+      return try await Current.db.find(document.id)
     }
   }
 
@@ -53,7 +64,12 @@ extension Resolver {
   ) throws -> Future<[Document]> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [Document].self, on: req.eventLoop) {
-      try await Current.db.update(args.input.map(Document.init))
+      let documents = args.input.map(Document.init)
+      guard documents.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      let created = try await Current.db.update(documents)
+      return try await Current.db.query(Document.self)
+        .where(.id |=| created.map(\.id))
+        .all()
     }
   }
 

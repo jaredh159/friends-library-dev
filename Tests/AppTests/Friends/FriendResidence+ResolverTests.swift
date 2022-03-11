@@ -44,7 +44,7 @@ final class FriendResidenceResolverTests: AppTestCase {
     let friendResidence = await Entities.create().friendResidence
 
     // do some updates here ---vvv
-    friendResidence.city = "new value"
+    friendResidence.city = "New value"
 
     GraphQLTest(
       """
@@ -54,7 +54,7 @@ final class FriendResidenceResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["city": "new value"]),
+      expectedData: .containsKVPs(["city": "New value"]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": friendResidence.gqlMap()])
   }

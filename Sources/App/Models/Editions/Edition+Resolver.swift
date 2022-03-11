@@ -22,18 +22,17 @@ extension Resolver {
     return future(of: Edition.self, on: req.eventLoop) {
       let isbn: Isbn
       do {
-        isbn = try await Current.db.query(Isbn.self)
-          .where(.isNull(.editionId))
-          .first()
+        isbn = try await Current.db.query(Isbn.self).where(.isNull(.editionId)).first()
       } catch {
         await slackError("Failed to query ISBN to assign to new edition: \(error)")
         throw error
       }
-
-      let edition = try await Current.db.create(Edition(args.input))
-      isbn.editionId = edition.id
+      let edition = try Edition(args.input)
+      guard edition.isValid else { throw DbError.invalidEntity }
+      let created = try await Current.db.create(edition)
+      isbn.editionId = created.id
       try await Current.db.update(isbn)
-      return edition
+      return try await Current.db.find(created.id)
     }
   }
 }
@@ -69,7 +68,12 @@ extension Resolver {
   ) throws -> Future<[Edition]> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [Edition].self, on: req.eventLoop) {
-      try await Current.db.create(args.input.map(Edition.init))
+      let editions = try args.input.map(Edition.init)
+      guard editions.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      let created = try await Current.db.create(editions)
+      return try await Current.db.query(Edition.self)
+        .where(.id |=| created.map(\.id))
+        .all()
     }
   }
 
@@ -79,7 +83,10 @@ extension Resolver {
   ) throws -> Future<Edition> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: Edition.self, on: req.eventLoop) {
-      try await Current.db.update(Edition(args.input))
+      let edition = try Edition(args.input)
+      guard edition.isValid else { throw DbError.invalidEntity }
+      try await Current.db.update(edition)
+      return try await Current.db.find(edition.id)
     }
   }
 
@@ -89,7 +96,12 @@ extension Resolver {
   ) throws -> Future<[Edition]> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [Edition].self, on: req.eventLoop) {
-      try await Current.db.update(args.input.map(Edition.init))
+      let editions = try args.input.map(Edition.init)
+      guard editions.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      let created = try await Current.db.update(editions)
+      return try await Current.db.query(Edition.self)
+        .where(.id |=| created.map(\.id))
+        .all()
     }
   }
 

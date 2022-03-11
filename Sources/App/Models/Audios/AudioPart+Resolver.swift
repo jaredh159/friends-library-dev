@@ -23,7 +23,10 @@ extension Resolver {
   ) throws -> Future<AudioPart> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: AudioPart.self, on: req.eventLoop) {
-      try await Current.db.create(AudioPart(args.input))
+      let audiopart = try AudioPart(args.input)
+      guard audiopart.isValid else { throw DbError.invalidEntity }
+      let created = try await Current.db.create(audiopart)
+      return try await Current.db.find(created.id)
     }
   }
 
@@ -33,7 +36,12 @@ extension Resolver {
   ) throws -> Future<[AudioPart]> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [AudioPart].self, on: req.eventLoop) {
-      try await Current.db.create(args.input.map(AudioPart.init))
+      let audioparts = try args.input.map(AudioPart.init)
+      guard audioparts.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      let created = try await Current.db.create(audioparts)
+      return try await Current.db.query(AudioPart.self)
+        .where(.id |=| created.map(\.id))
+        .all()
     }
   }
 
@@ -43,7 +51,10 @@ extension Resolver {
   ) throws -> Future<AudioPart> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: AudioPart.self, on: req.eventLoop) {
-      try await Current.db.update(AudioPart(args.input))
+      let audiopart = try AudioPart(args.input)
+      guard audiopart.isValid else { throw DbError.invalidEntity }
+      try await Current.db.update(audiopart)
+      return try await Current.db.find(audiopart.id)
     }
   }
 
@@ -53,7 +64,12 @@ extension Resolver {
   ) throws -> Future<[AudioPart]> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [AudioPart].self, on: req.eventLoop) {
-      try await Current.db.update(args.input.map(AudioPart.init))
+      let audioparts = try args.input.map(AudioPart.init)
+      guard audioparts.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      let created = try await Current.db.update(audioparts)
+      return try await Current.db.query(AudioPart.self)
+        .where(.id |=| created.map(\.id))
+        .all()
     }
   }
 

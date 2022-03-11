@@ -7,7 +7,7 @@ final class FriendQuoteResolverTests: AppTestCase {
 
   func testCreateFriendQuote() async throws {
     let entities = await Entities.create()
-    let friendQuote = FriendQuote.random
+    let friendQuote = FriendQuote.valid
     friendQuote.friendId = entities.friend.id
     let map = friendQuote.gqlMap()
 
@@ -44,7 +44,7 @@ final class FriendQuoteResolverTests: AppTestCase {
     let friendQuote = await Entities.create().friendQuote
 
     // do some updates here ---vvv
-    friendQuote.source = "new value"
+    friendQuote.source = "New value"
 
     GraphQLTest(
       """
@@ -54,7 +54,7 @@ final class FriendQuoteResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["source": "new value"]),
+      expectedData: .containsKVPs(["source": "New value"]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": friendQuote.gqlMap()])
   }

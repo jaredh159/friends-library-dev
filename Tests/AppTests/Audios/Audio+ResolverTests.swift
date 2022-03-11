@@ -8,7 +8,7 @@ final class AudioResolverTests: AppTestCase {
   func testCreateAudio() async throws {
     let entities = await Entities.create()
     _ = try await Current.db.delete(entities.audio.id)
-    let audio = Audio.random
+    let audio = Audio.valid
     audio.editionId = entities.edition.id
     let map = audio.gqlMap()
 

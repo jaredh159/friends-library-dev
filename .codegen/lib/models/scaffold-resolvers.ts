@@ -1,7 +1,10 @@
 import Model from './Model';
 
 export function generateResolverScaffold(model: Model): [filepath: string, code: string] {
-  const code = RESOLVER_PATTERN.replace(/Thing/g, model.name);
+  const code = RESOLVER_PATTERN.replace(/Thing/g, model.name).replace(
+    /thing/g,
+    model.camelCaseName,
+  );
   return [`${model.dir}/${model.name}+Resolver.swift`, code];
 }
 
@@ -29,7 +32,10 @@ extension Resolver {
   ) throws -> Future<Thing> {
     try req.requirePermission(to: .mutateThings)
     return future(of: Thing.self, on: req.eventLoop) {
-      try await Current.db.create(Thing(args.input))
+      let thing = Thing(args.input)
+      guard thing.isValid else { throw DbError.invalidEntity }
+      let created = try await Current.db.create(thing)
+      return try await Current.db.find(created.id)
     }
   }
 
@@ -39,7 +45,12 @@ extension Resolver {
   ) throws -> Future<[Thing]> {
     try req.requirePermission(to: .mutateThings)
     return future(of: [Thing].self, on: req.eventLoop) {
-      try await Current.db.create(args.input.map(Thing.init))
+      let things = args.input.map(Thing.init)
+      guard things.allSatisfy(\\.isValid) else { throw DbError.invalidEntity }
+      let created = try await Current.db.create(things)
+      return try await Current.db.query(Thing.self)
+        .where(.id |=| created.map(\\.id))
+        .all()
     }
   }
 
@@ -49,7 +60,10 @@ extension Resolver {
   ) throws -> Future<Thing> {
     try req.requirePermission(to: .mutateThings)
     return future(of: Thing.self, on: req.eventLoop) {
-      try await Current.db.update(Thing(args.input))
+      let thing = Thing(args.input)
+      guard thing.isValid else { throw DbError.invalidEntity }
+      try await Current.db.update(thing)
+      return try await Current.db.find(thing.id)
     }
   }
 
@@ -59,7 +73,12 @@ extension Resolver {
   ) throws -> Future<[Thing]> {
     try req.requirePermission(to: .mutateThings)
     return future(of: [Thing].self, on: req.eventLoop) {
-      try await Current.db.update(args.input.map(Thing.init))
+      let things = args.input.map(Thing.init)
+      guard things.allSatisfy(\\.isValid) else { throw DbError.invalidEntity }
+      let created = try await Current.db.update(things)
+      return try await Current.db.query(Thing.self)
+        .where(.id |=| created.map(\\.id))
+        .all()
     }
   }
 

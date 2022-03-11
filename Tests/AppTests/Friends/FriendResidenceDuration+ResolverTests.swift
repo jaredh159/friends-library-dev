@@ -7,7 +7,7 @@ final class FriendResidenceDurationResolverTests: AppTestCase {
 
   func testCreateFriendResidenceDuration() async throws {
     let friendResidence = await Entities.create().friendResidence
-    let friendResidenceDuration: FriendResidenceDuration = .random
+    let friendResidenceDuration: FriendResidenceDuration = .valid
     friendResidenceDuration.friendResidenceId = friendResidence.id
     let map = friendResidenceDuration.gqlMap()
 
@@ -45,7 +45,8 @@ final class FriendResidenceDurationResolverTests: AppTestCase {
     let friendResidenceDuration = await Entities.create().friendResidenceDuration
 
     // do some updates here ---vvv
-    friendResidenceDuration.start = 1699
+    friendResidenceDuration.start = 1620
+    friendResidenceDuration.end = 1630
 
     GraphQLTest(
       """
@@ -55,7 +56,7 @@ final class FriendResidenceDurationResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["start": 1699]),
+      expectedData: .containsKVPs(["start": 1620]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": friendResidenceDuration.gqlMap()])
   }

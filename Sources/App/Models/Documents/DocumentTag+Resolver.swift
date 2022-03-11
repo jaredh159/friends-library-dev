@@ -23,7 +23,10 @@ extension Resolver {
   ) throws -> Future<DocumentTag> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: DocumentTag.self, on: req.eventLoop) {
-      try await Current.db.create(DocumentTag(args.input))
+      let documentTag = DocumentTag(args.input)
+      guard documentTag.isValid else { throw DbError.invalidEntity }
+      let created = try await Current.db.create(documentTag)
+      return try await Current.db.find(created.id)
     }
   }
 
@@ -33,7 +36,12 @@ extension Resolver {
   ) throws -> Future<[DocumentTag]> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [DocumentTag].self, on: req.eventLoop) {
-      try await Current.db.create(args.input.map(DocumentTag.init))
+      let documentTags = args.input.map(DocumentTag.init)
+      guard documentTags.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      let created = try await Current.db.create(documentTags)
+      return try await Current.db.query(DocumentTag.self)
+        .where(.id |=| created.map(\.id))
+        .all()
     }
   }
 
@@ -43,7 +51,10 @@ extension Resolver {
   ) throws -> Future<DocumentTag> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: DocumentTag.self, on: req.eventLoop) {
-      try await Current.db.update(DocumentTag(args.input))
+      let documentTag = DocumentTag(args.input)
+      guard documentTag.isValid else { throw DbError.invalidEntity }
+      try await Current.db.update(documentTag)
+      return try await Current.db.find(documentTag.id)
     }
   }
 
@@ -53,7 +64,12 @@ extension Resolver {
   ) throws -> Future<[DocumentTag]> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [DocumentTag].self, on: req.eventLoop) {
-      try await Current.db.update(args.input.map(DocumentTag.init))
+      let documentTags = args.input.map(DocumentTag.init)
+      guard documentTags.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      let created = try await Current.db.update(documentTags)
+      return try await Current.db.query(DocumentTag.self)
+        .where(.id |=| created.map(\.id))
+        .all()
     }
   }
 

@@ -7,7 +7,7 @@ final class AudioPartResolverTests: AppTestCase {
 
   func testCreateAudioPart() async throws {
     let entities = await Entities.create()
-    let audioPart = AudioPart.random
+    let audioPart = AudioPart.valid
     audioPart.audioId = entities.audio.id
     let map = audioPart.gqlMap()
 

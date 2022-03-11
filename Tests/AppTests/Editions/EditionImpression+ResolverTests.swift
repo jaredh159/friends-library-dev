@@ -8,7 +8,7 @@ final class EditionImpressionResolverTests: AppTestCase {
   func testCreateEditionImpression() async throws {
     let entities = await Entities.create()
     try await Current.db.delete(entities.editionImpression.id)
-    let editionImpression = EditionImpression.random
+    let editionImpression = EditionImpression.valid
     editionImpression.editionId = entities.edition.id
     let map = editionImpression.gqlMap()
 
@@ -59,7 +59,7 @@ final class EditionImpressionResolverTests: AppTestCase {
     let editionImpression = await Entities.create().editionImpression
 
     // do some updates here ---vvv
-    editionImpression.adocLength = 333
+    editionImpression.adocLength = 33333
 
     GraphQLTest(
       """
@@ -69,7 +69,7 @@ final class EditionImpressionResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["adocLength": 333]),
+      expectedData: .containsKVPs(["adocLength": 33333]),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": editionImpression.gqlMap()])
   }

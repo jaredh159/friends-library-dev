@@ -7,7 +7,7 @@ final class DocumentResolverTests: AppTestCase {
 
   func testCreateDocument() async throws {
     let entities = await Entities.create()
-    let document: Document = .random
+    let document: Document = .valid
     document.altLanguageId = nil
     document.friendId = entities.friend.id
     let map = document.gqlMap()
@@ -81,7 +81,7 @@ final class DocumentResolverTests: AppTestCase {
     let document = await Entities.create().document
 
     // do some updates here ---vvv
-    document.title = "new value".random
+    document.title = "New value".random
 
     GraphQLTest(
       """

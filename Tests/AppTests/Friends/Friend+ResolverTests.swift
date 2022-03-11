@@ -6,7 +6,7 @@ import XCTVaporUtils
 final class FriendResolverTests: AppTestCase {
 
   func testCreateFriend() async throws {
-    let friend = Friend.random
+    let friend = Friend.valid
     let map = friend.gqlMap()
 
     GraphQLTest(
@@ -14,6 +14,9 @@ final class FriendResolverTests: AppTestCase {
       mutation CreateFriend($input: CreateFriendInput!) {
         friend: createFriend(input: $input) {
           id
+          documents {
+            id
+          }
         }
       }
       """,
@@ -133,7 +136,7 @@ final class FriendResolverTests: AppTestCase {
   }
 
   func testUpdateFriend() async throws {
-    let friend = try await Current.db.create(Friend.random)
+    let friend = try await Current.db.create(Friend.valid)
 
     // do some updates here ---vvv
     friend.name = "Bob"

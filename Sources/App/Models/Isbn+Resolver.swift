@@ -23,7 +23,10 @@ extension Resolver {
   ) throws -> Future<Isbn> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: Isbn.self, on: req.eventLoop) {
-      try await Current.db.create(Isbn(args.input))
+      let isbn = Isbn(args.input)
+      guard isbn.isValid else { throw DbError.invalidEntity }
+      let created = try await Current.db.create(isbn)
+      return try await Current.db.find(created.id)
     }
   }
 
@@ -33,7 +36,12 @@ extension Resolver {
   ) throws -> Future<[Isbn]> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [Isbn].self, on: req.eventLoop) {
-      try await Current.db.create(args.input.map(Isbn.init))
+      let isbns = args.input.map(Isbn.init)
+      guard isbns.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      let created = try await Current.db.create(isbns)
+      return try await Current.db.query(Isbn.self)
+        .where(.id |=| created.map(\.id))
+        .all()
     }
   }
 
@@ -43,7 +51,10 @@ extension Resolver {
   ) throws -> Future<Isbn> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: Isbn.self, on: req.eventLoop) {
-      try await Current.db.update(Isbn(args.input))
+      let isbn = Isbn(args.input)
+      guard isbn.isValid else { throw DbError.invalidEntity }
+      try await Current.db.update(isbn)
+      return try await Current.db.find(isbn.id)
     }
   }
 
@@ -53,7 +64,12 @@ extension Resolver {
   ) throws -> Future<[Isbn]> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [Isbn].self, on: req.eventLoop) {
-      try await Current.db.update(args.input.map(Isbn.init))
+      let isbns = args.input.map(Isbn.init)
+      guard isbns.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      let created = try await Current.db.update(isbns)
+      return try await Current.db.query(Isbn.self)
+        .where(.id |=| created.map(\.id))
+        .all()
     }
   }
 
