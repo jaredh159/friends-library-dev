@@ -43,6 +43,12 @@ const PrimitivesVisitor: Visitor<
     },
   },
 
+  money: {
+    enter({ node }) {
+      c.append(node.value);
+    },
+  },
+
   xref: {
     enter({ node, context: { target, lang } }) {
       const xrefTarget = node.expectStringMetaData(`target`);

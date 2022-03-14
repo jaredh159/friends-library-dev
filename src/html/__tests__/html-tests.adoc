@@ -913,3 +913,24 @@ ____
   </blockquote>
 </div>
 ++++
+
+// ********************************
+## Money
+// ********************************
+
+****
+== Preface
+
+Their beautiful chapel in Grosvenor street, costing £4000,
+has lately been sold to the Baptists for £2000; all are scattered.
+****
+
+++++
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <!-- preface chapter heading markup here -->
+  <p class="paragraph">
+    Their beautiful chapel in Grosvenor street, costing £4000,
+    has lately been sold to the Baptists for £2000; all are scattered.
+  </p>
+</div>
+++++
