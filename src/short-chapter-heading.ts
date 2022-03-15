@@ -61,6 +61,20 @@ const visitor: Visitor<{ string: string; buffer: string }> = {
     },
   },
 
+  entityInHeadingSegment: {
+    enter({ node, output }) {
+      if (node.parent.meta.level === 1) {
+        output.string += node.value;
+      }
+    },
+  },
+
+  entityInHeading: {
+    enter({ node, output }) {
+      output.string += node.value;
+    },
+  },
+
   text: {
     enter({ node, output }) {
       if (!node.isInFootnote()) {
@@ -72,6 +86,14 @@ const visitor: Visitor<{ string: string; buffer: string }> = {
   symbol: {
     enter({ node, output }) {
       output.string += symbolOutput(node);
+    },
+  },
+
+  inlinePassthrough: {
+    enter({ node, output }) {
+      if (node.value.match(/^<br ?\/?>$/)) {
+        output.string += ` `;
+      }
     },
   },
 };
