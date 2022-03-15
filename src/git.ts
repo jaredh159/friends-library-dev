@@ -156,7 +156,6 @@ async function getRepo(repoPath: Repo): Promise<NodeGit.Repository> {
 
 // ssh key must be a modern format like `ed25519`, not `rsa-1`
 const KEY_PATH = env.requireVar(`FELL_GITHUB_SSH_KEY_PATH`);
-const CRED = NodeGit.Cred.sshKeyNew(`git`, `${KEY_PATH}.pub`, `${KEY_PATH}`, ``);
 
 const remoteCallbacks = {
   callbacks: {
@@ -164,7 +163,7 @@ const remoteCallbacks = {
       return 0;
     },
     credentials() {
-      return CRED;
+      return NodeGit.Cred.sshKeyNew(`git`, `${KEY_PATH}.pub`, `${KEY_PATH}`, ``);
     },
   },
 };
