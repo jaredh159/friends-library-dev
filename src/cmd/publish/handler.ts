@@ -271,7 +271,8 @@ async function handlePaperbackAndCover(data: PublishData): Promise<void> {
 
   for (let idx = 0; idx < coverManifests.length; idx++) {
     const manifest = coverManifests[idx];
-    const filenameNoExt = getFileId(data.dpc, `paperback-cover`);
+    const vols = coverManifests.length > 1 ? [`v${idx + 1}`] : [];
+    const filenameNoExt = getFileId(data.dpc, `paperback-cover`, ...vols);
     const path = await artifacts.pdf(manifest!, filenameNoExt, data.artifactOptions);
     data.uploads.paperback.cover.push(path);
   }
