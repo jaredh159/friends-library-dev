@@ -44,7 +44,7 @@ public func configure(_ app: Application) throws {
       graphQLSchema: appSchema,
       withResolver: Resolver(),
       at: "graphql",
-      postBodyStreamStrategy: .collect(maxSize: "32kb")
+      postBodyStreamStrategy: .collect(maxSize: "64kb")
     )
 
   if Env.mode == .prod {
