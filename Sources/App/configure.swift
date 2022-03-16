@@ -40,7 +40,12 @@ public func configure(_ app: Application) throws {
 
   app
     .grouped(UserAuthenticator())
-    .register(graphQLSchema: appSchema, withResolver: Resolver())
+    .register(
+      graphQLSchema: appSchema,
+      withResolver: Resolver(),
+      at: "graphql",
+      postBodyStreamStrategy: .collect(maxSize: "32kb")
+    )
 
   if Env.mode == .prod {
     try configureScheduledJobs(app)
