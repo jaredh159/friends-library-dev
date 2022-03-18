@@ -204,6 +204,10 @@ const strings: { [k: string]: string } = {
   Preferences: `Preferencias`,
   'Continue reading': `Seguir leyendo`,
   'Continue listening': `Seguir escuchando`,
+  'No Results': `No hay resultados`,
+  'First %s Results': `Los Primeros %s Resultados`,
+  '1 Result': `1 Resultado`,
+  '%s Results': `%s Resultados`,
 
   // book publishing metadata
   'Original title': `Título original`,
