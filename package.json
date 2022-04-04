@@ -18,8 +18,6 @@
     "migrate:reset": "npm run migrate:down && npm run migrate:up",
     "migrate:nuke": "killall Postico; dropdb flp_dev && createdb flp_dev && npm run migrate:up",
     "schema:update": "apollo client:download-schema --endpoint=http://127.0.0.1:8080/graphql ./Sources/App/GraphQL/schema.graphql",
-    "lint": "test $(swift-format-5.5 lint --configuration ./.swift-format.json --recursive ./Sources ./Tests ./Package.swift 2>&1 | wc -l | sed -E 's/ //g') == '0'",
-    "format": "swift-format-5.5 --configuration ./.swift-format.json --recursive --in-place ./Sources ./Tests ./Package.swift",
     "test": "SWIFT_DETERMINISTIC_HASHING=1 swift test",
     "test:isolate": "SWIFT_DETERMINISTIC_HASHING=1 swift test --filter Isolate",
     "nuke": "npm run migrate:nuke; npm run test:db:nuke",
@@ -28,27 +26,18 @@
     "test:clear:isolate": "clear && printf '\\e[3J' && npm run test:isolate; echo",
     "test:watch": "watchexec --restart --watch Sources --watch Tests --exts swift npm run test:clear",
     "test:watch:isolate": "watchexec --restart --watch Sources --watch Tests --exts swift npm run test:clear:isolate",
-    "ci": "npm run lint && npm run test",
     "compile": "true # <-- keep manager automation script happy",
-    "generate": "fldev tsnode ./.codegen/generate-models.ts && swiftformat ./Sources/App/Models/Generated/",
-    "scaffold:resolver-test": "fldev tsnode ./.codegen/scaffold-resolver-test.ts",
-    "scaffold:resolver": "fldev tsnode ./.codegen/scaffold-resolver.ts"
+    "test:codegen": "fldev test",
+    "generate": "~/gertie/duet/codegen/node_modules/.bin/fldev tsnode ~/gertie/duet/codegen/generate-models.ts && swiftformat ./Sources/App/Models/Generated/",
+    "scaffold:resolver-test": "~/gertie/duet/codegen/node_modules/.bin/fldev tsnode ~/gertie/duet/codegen/scaffold-resolver-test.ts",
+    "scaffold:resolver": "~/gertie/duet/codegen/node_modules/.bin/fldev tsnode ~/gertie/duet/codegen/scaffold-resolver.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@friends-library/dev": "^4.5.2",
-    "@friends-library/env": "^1.4.0",
-    "apollo": "^2.33.4",
     "x-chalk": "^1.0.1",
     "x-exec": "^1.2.0"
-  },
-  "dependencies": {
-    "@types/glob": "^7.2.0",
-    "glob": "^7.2.0",
-    "snake-case": "^3.0.4",
-    "strip-indent": "^3.0.0",
-    "x-ts-utils": "^1.2.0"
   }
 }
