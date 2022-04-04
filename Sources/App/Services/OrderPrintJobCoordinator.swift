@@ -1,6 +1,6 @@
 import DuetSQL
-import Foundation
 import NonEmpty
+import XCore
 
 enum OrderPrintJobCoordinator {
   typealias JobCreator = (Order) async throws -> Lulu.Api.PrintJob

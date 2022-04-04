@@ -1,4 +1,5 @@
 import Vapor
+import XCore
 
 func logAndRedirect(
   file: DownloadableFile,

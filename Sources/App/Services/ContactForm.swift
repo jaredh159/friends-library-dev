@@ -1,6 +1,6 @@
-import Foundation
 import Graphiti
 import Vapor
+import XCore
 
 extension Resolver {
   func submitContactForm(

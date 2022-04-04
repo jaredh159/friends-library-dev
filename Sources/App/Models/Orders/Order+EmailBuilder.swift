@@ -1,4 +1,5 @@
 import DuetSQL
+import XCore
 
 extension EmailBuilder {
   static func orderShipped(_ order: Order, trackingUrl: String?) async throws -> SendGrid.Email {

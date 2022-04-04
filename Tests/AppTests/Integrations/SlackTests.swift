@@ -1,4 +1,4 @@
-import Foundation
+import XCore
 import XCTest
 
 @testable import App
