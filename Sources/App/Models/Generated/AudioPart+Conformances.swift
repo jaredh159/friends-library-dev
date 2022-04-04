@@ -1,15 +1,12 @@
 // auto-generated, do not edit
-import Foundation
+import DuetSQL
 import Tagged
 
 extension AudioPart: ApiModel {
   typealias Id = Tagged<AudioPart, UUID>
-  static var preloadedEntityType: PreloadedEntityType? {
-    .audioPart(Self.self)
-  }
 }
 
-extension AudioPart: DuetModel {
+extension AudioPart: Model {
   static let tableName = M21.tableName
   static var isSoftDeletable: Bool { false }
 }

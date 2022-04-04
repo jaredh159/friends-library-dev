@@ -1,3 +1,5 @@
+import Duet
+
 @testable import App
 
 struct Entities {

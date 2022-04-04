@@ -1,3 +1,4 @@
+import DuetSQL
 import Vapor
 
 // below auto-generated
@@ -24,7 +25,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: FriendResidence.self, on: req.eventLoop) {
       let friendResidence = FriendResidence(args.input)
-      guard friendResidence.isValid else { throw DbError.invalidEntity }
+      guard friendResidence.isValid else { throw ModelError.invalidEntity }
       let created = try await Current.db.create(friendResidence)
       return try await Current.db.find(created.id)
     }
@@ -37,7 +38,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [FriendResidence].self, on: req.eventLoop) {
       let friendResidences = args.input.map(FriendResidence.init)
-      guard friendResidences.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      guard friendResidences.allSatisfy(\.isValid) else { throw ModelError.invalidEntity }
       let created = try await Current.db.create(friendResidences)
       return try await Current.db.query(FriendResidence.self)
         .where(.id |=| created.map(\.id))
@@ -52,7 +53,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: FriendResidence.self, on: req.eventLoop) {
       let friendResidence = FriendResidence(args.input)
-      guard friendResidence.isValid else { throw DbError.invalidEntity }
+      guard friendResidence.isValid else { throw ModelError.invalidEntity }
       try await Current.db.update(friendResidence)
       return try await Current.db.find(friendResidence.id)
     }
@@ -65,7 +66,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [FriendResidence].self, on: req.eventLoop) {
       let friendResidences = args.input.map(FriendResidence.init)
-      guard friendResidences.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      guard friendResidences.allSatisfy(\.isValid) else { throw ModelError.invalidEntity }
       let created = try await Current.db.update(friendResidences)
       return try await Current.db.query(FriendResidence.self)
         .where(.id |=| created.map(\.id))

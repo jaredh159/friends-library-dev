@@ -1,15 +1,12 @@
 // auto-generated, do not edit
-import Foundation
+import DuetSQL
 import Tagged
 
 extension DocumentTag: ApiModel {
   typealias Id = Tagged<DocumentTag, UUID>
-  static var preloadedEntityType: PreloadedEntityType? {
-    .documentTag(Self.self)
-  }
 }
 
-extension DocumentTag: DuetModel {
+extension DocumentTag: Model {
   static let tableName = M15.tableName
   static var isSoftDeletable: Bool { false }
 }

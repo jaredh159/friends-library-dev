@@ -1,15 +1,12 @@
 // auto-generated, do not edit
-import Foundation
+import DuetSQL
 import Tagged
 
 extension Friend: ApiModel {
   typealias Id = Tagged<Friend, UUID>
-  static var preloadedEntityType: PreloadedEntityType? {
-    .friend(Self.self)
-  }
 }
 
-extension Friend: DuetModel {
+extension Friend: Model {
   static let tableName = M11.tableName
   static var isSoftDeletable: Bool { true }
 }

@@ -1,3 +1,4 @@
+import DuetSQL
 import Vapor
 
 // below auto-generated
@@ -24,7 +25,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: AudioPart.self, on: req.eventLoop) {
       let audiopart = try AudioPart(args.input)
-      guard audiopart.isValid else { throw DbError.invalidEntity }
+      guard audiopart.isValid else { throw ModelError.invalidEntity }
       let created = try await Current.db.create(audiopart)
       return try await Current.db.find(created.id)
     }
@@ -37,7 +38,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [AudioPart].self, on: req.eventLoop) {
       let audioparts = try args.input.map(AudioPart.init)
-      guard audioparts.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      guard audioparts.allSatisfy(\.isValid) else { throw ModelError.invalidEntity }
       let created = try await Current.db.create(audioparts)
       return try await Current.db.query(AudioPart.self)
         .where(.id |=| created.map(\.id))
@@ -52,7 +53,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: AudioPart.self, on: req.eventLoop) {
       let audiopart = try AudioPart(args.input)
-      guard audiopart.isValid else { throw DbError.invalidEntity }
+      guard audiopart.isValid else { throw ModelError.invalidEntity }
       try await Current.db.update(audiopart)
       return try await Current.db.find(audiopart.id)
     }
@@ -65,7 +66,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [AudioPart].self, on: req.eventLoop) {
       let audioparts = try args.input.map(AudioPart.init)
-      guard audioparts.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      guard audioparts.allSatisfy(\.isValid) else { throw ModelError.invalidEntity }
       let created = try await Current.db.update(audioparts)
       return try await Current.db.query(AudioPart.self)
         .where(.id |=| created.map(\.id))

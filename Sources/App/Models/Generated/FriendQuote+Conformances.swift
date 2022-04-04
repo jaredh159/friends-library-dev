@@ -1,15 +1,12 @@
 // auto-generated, do not edit
-import Foundation
+import DuetSQL
 import Tagged
 
 extension FriendQuote: ApiModel {
   typealias Id = Tagged<FriendQuote, UUID>
-  static var preloadedEntityType: PreloadedEntityType? {
-    .friendQuote(Self.self)
-  }
 }
 
-extension FriendQuote: DuetModel {
+extension FriendQuote: Model {
   static let tableName = M13.tableName
   static var isSoftDeletable: Bool { false }
 }

@@ -50,6 +50,10 @@ let package = Package(
       url: "https://github.com/JohnSundell/ShellOut.git",
       from: "2.0.0"
     ),
+    .package(
+      name: "Duet",
+      path: "/Users/jared/gertie/duet"
+    ),
   ],
   targets: [
     .target(
@@ -62,6 +66,8 @@ let package = Package(
         .product(name: "TaggedTime", package: "swift-tagged"),
         .product(name: "TaggedMoney", package: "swift-tagged"),
         .product(name: "NonEmpty", package: "swift-nonempty"),
+        .product(name: "Duet", package: "duet"),
+        .product(name: "DuetSQL", package: "duet"),
         "RomanNumeralKit",
         "GraphQLKit",
         "QueuesFluentDriver",
@@ -77,6 +83,8 @@ let package = Package(
       name: "AppTests",
       dependencies: [
         .target(name: "App"),
+        .product(name: "Duet", package: "duet"),
+        .product(name: "DuetSQL", package: "duet"),
         .product(name: "XCTVapor", package: "vapor"),
         .product(name: "XCTVaporUtils", package: "VaporUtils"),
       ]

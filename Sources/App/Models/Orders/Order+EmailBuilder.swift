@@ -1,4 +1,4 @@
-import Foundation
+import DuetSQL
 
 extension EmailBuilder {
   static func orderShipped(_ order: Order, trackingUrl: String?) async throws -> SendGrid.Email {

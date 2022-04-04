@@ -1,3 +1,4 @@
+import DuetSQL
 import Vapor
 
 // below auto-generated
@@ -24,7 +25,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: Audio.self, on: req.eventLoop) {
       let audio = Audio(args.input)
-      guard audio.isValid else { throw DbError.invalidEntity }
+      guard audio.isValid else { throw ModelError.invalidEntity }
       let created = try await Current.db.create(audio)
       return try await Current.db.find(created.id)
     }
@@ -37,7 +38,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [Audio].self, on: req.eventLoop) {
       let audios = args.input.map(Audio.init)
-      guard audios.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      guard audios.allSatisfy(\.isValid) else { throw ModelError.invalidEntity }
       let created = try await Current.db.create(audios)
       return try await Current.db.query(Audio.self)
         .where(.id |=| created.map(\.id))
@@ -52,7 +53,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: Audio.self, on: req.eventLoop) {
       let audio = Audio(args.input)
-      guard audio.isValid else { throw DbError.invalidEntity }
+      guard audio.isValid else { throw ModelError.invalidEntity }
       try await Current.db.update(audio)
       return try await Current.db.find(audio.id)
     }
@@ -65,7 +66,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [Audio].self, on: req.eventLoop) {
       let audios = args.input.map(Audio.init)
-      guard audios.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      guard audios.allSatisfy(\.isValid) else { throw ModelError.invalidEntity }
       let created = try await Current.db.update(audios)
       return try await Current.db.query(Audio.self)
         .where(.id |=| created.map(\.id))

@@ -1,3 +1,4 @@
+import DuetSQL
 import Vapor
 
 // below auto-generated
@@ -24,7 +25,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: Document.self, on: req.eventLoop) {
       let document = Document(args.input)
-      guard document.isValid else { throw DbError.invalidEntity }
+      guard document.isValid else { throw ModelError.invalidEntity }
       let created = try await Current.db.create(document)
       return try await Current.db.find(created.id)
     }
@@ -37,7 +38,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [Document].self, on: req.eventLoop) {
       let documents = args.input.map(Document.init)
-      guard documents.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      guard documents.allSatisfy(\.isValid) else { throw ModelError.invalidEntity }
       let created = try await Current.db.create(documents)
       return try await Current.db.query(Document.self)
         .where(.id |=| created.map(\.id))
@@ -52,7 +53,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: Document.self, on: req.eventLoop) {
       let document = Document(args.input)
-      guard document.isValid else { throw DbError.invalidEntity }
+      guard document.isValid else { throw ModelError.invalidEntity }
       try await Current.db.update(document)
       return try await Current.db.find(document.id)
     }
@@ -65,7 +66,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [Document].self, on: req.eventLoop) {
       let documents = args.input.map(Document.init)
-      guard documents.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      guard documents.allSatisfy(\.isValid) else { throw ModelError.invalidEntity }
       let created = try await Current.db.update(documents)
       return try await Current.db.query(Document.self)
         .where(.id |=| created.map(\.id))

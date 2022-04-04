@@ -1,3 +1,4 @@
+import DuetSQL
 import Vapor
 
 // below auto-generated
@@ -24,7 +25,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: EditionChapter.self, on: req.eventLoop) {
       let editionChapter = EditionChapter(args.input)
-      guard editionChapter.isValid else { throw DbError.invalidEntity }
+      guard editionChapter.isValid else { throw ModelError.invalidEntity }
       let created = try await Current.db.create(editionChapter)
       return try await Current.db.find(created.id)
     }
@@ -37,7 +38,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [EditionChapter].self, on: req.eventLoop) {
       let editionChapters = args.input.map(EditionChapter.init)
-      guard editionChapters.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      guard editionChapters.allSatisfy(\.isValid) else { throw ModelError.invalidEntity }
       let created = try await Current.db.create(editionChapters)
       return try await Current.db.query(EditionChapter.self)
         .where(.id |=| created.map(\.id))
@@ -52,7 +53,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: EditionChapter.self, on: req.eventLoop) {
       let editionChapter = EditionChapter(args.input)
-      guard editionChapter.isValid else { throw DbError.invalidEntity }
+      guard editionChapter.isValid else { throw ModelError.invalidEntity }
       try await Current.db.update(editionChapter)
       return try await Current.db.find(editionChapter.id)
     }
@@ -65,7 +66,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [EditionChapter].self, on: req.eventLoop) {
       let editionChapters = args.input.map(EditionChapter.init)
-      guard editionChapters.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      guard editionChapters.allSatisfy(\.isValid) else { throw ModelError.invalidEntity }
       let created = try await Current.db.update(editionChapters)
       return try await Current.db.query(EditionChapter.self)
         .where(.id |=| created.map(\.id))

@@ -1,10 +1,11 @@
+import DuetSQL
 import Foundation
 import Vapor
 
 struct Environment {
   var uuid: () -> UUID = UUID.init
   var date: () -> Date = Date.init
-  var db: DatabaseClient = ThrowingDatabaseClient()
+  var db: EntityClient = ThrowingDatabaseClient()
   var auth: Auth = .live
   var logger = Logger(label: "api.friendslibrary")
   var slackClient: Slack.Client = .init()
@@ -15,21 +16,6 @@ struct Environment {
 }
 
 var Current = Environment()
-
-extension Environment {
-  static let mock = Environment(
-    uuid: { .mock },
-    date: { Date(timeIntervalSince1970: 0) },
-    db: MockDatabase(),
-    auth: .mockWithAllScopes,
-    logger: .null,
-    slackClient: .mock,
-    luluClient: .mock,
-    sendGridClient: .mock,
-    stripeClient: .mock,
-    ipApiClient: .mock
-  )
-}
 
 extension UUID {
   static let mock = UUID("DEADBEEF-DEAD-BEEF-DEAD-DEADBEEFDEAD")!

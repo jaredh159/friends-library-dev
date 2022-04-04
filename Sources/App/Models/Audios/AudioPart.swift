@@ -1,3 +1,4 @@
+import Duet
 import NonEmpty
 import Tagged
 import TaggedTime

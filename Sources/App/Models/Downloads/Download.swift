@@ -1,4 +1,4 @@
-import Foundation
+import DuetSQL
 
 final class Download: Codable {
   var id: Id

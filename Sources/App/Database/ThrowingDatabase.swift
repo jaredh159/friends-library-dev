@@ -1,11 +1,12 @@
+import DuetSQL
 import Vapor
 
-struct ThrowingDatabaseClient: DatabaseClient {
+struct ThrowingDatabaseClient: EntityClient {
   func entities() async throws -> PreloadedEntities {
     throw Abort(.notImplemented, reason: "ThrowingDatabaseClient.entities")
   }
 
-  func select<M: DuetModel>(
+  func select<M: DuetSQL.Model>(
     _ Model: M.Type,
     where: [SQL.WhereConstraint<M>]?,
     orderBy: SQL.Order<M>?,
@@ -14,7 +15,7 @@ struct ThrowingDatabaseClient: DatabaseClient {
     throw Abort(.notImplemented, reason: "ThrowingDatabaseClient.select")
   }
 
-  func forceDelete<M: DuetModel>(
+  func forceDelete<M: DuetSQL.Model>(
     _ Model: M.Type,
     where: [SQL.WhereConstraint<M>],
     orderBy: SQL.Order<M>?,
@@ -23,7 +24,7 @@ struct ThrowingDatabaseClient: DatabaseClient {
     throw Abort(.notImplemented, reason: "ThrowingDatabaseClient.forceDelete")
   }
 
-  func delete<M: DuetModel>(
+  func delete<M: DuetSQL.Model>(
     _ Model: M.Type,
     where: [SQL.WhereConstraint<M>],
     orderBy: SQL.Order<M>?,
@@ -32,17 +33,17 @@ struct ThrowingDatabaseClient: DatabaseClient {
     throw Abort(.notImplemented, reason: "ThrowingDatabaseClient.delete")
   }
 
-  func query<Model: DuetModel>(_ Model: Model.Type) -> DuetQuery<Model> {
-    DuetQuery<Model>(db: self, constraints: [], limit: nil, order: nil)
+  func query<M: DuetSQL.Model>(_ Model: M.Type) -> DuetQuery<M> {
+    DuetQuery<M>(db: self, constraints: [], limit: nil, order: nil)
   }
 
   @discardableResult
-  func update<Model: DuetModel>(_ model: Model) async throws -> Model {
+  func update<M: DuetSQL.Model>(_ model: M) async throws -> M {
     throw Abort(.notImplemented, reason: "ThrowingDatabaseClient.update")
   }
 
   @discardableResult
-  func create<Model: DuetModel>(_ models: [Model]) async throws -> [Model] {
+  func create<M: DuetSQL.Model>(_ models: [M]) async throws -> [M] {
     throw Abort(.notImplemented, reason: "ThrowingDatabaseClient.create")
   }
 }

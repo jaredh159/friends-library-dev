@@ -1,3 +1,4 @@
+import DuetSQL
 import Fluent
 
 extension Download {
@@ -22,6 +23,7 @@ extension Download {
     static let country = FieldKey("country")
     static let latitude = FieldKey("latitude")
     static let longitude = FieldKey("longitude")
+
     enum EditionTypeEnum {
       static let name = "edition_type"
       static let caseUpdated = "updated"

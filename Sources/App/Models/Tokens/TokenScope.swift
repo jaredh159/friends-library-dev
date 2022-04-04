@@ -1,4 +1,4 @@
-import Foundation
+import DuetSQL
 
 enum Scope: String, Codable, CaseIterable, Equatable {
   case all

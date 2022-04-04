@@ -1,12 +1,12 @@
 // auto-generated, do not edit
-import Foundation
+import DuetSQL
 import Tagged
 
 extension Order: ApiModel {
   typealias Id = Tagged<Order, UUID>
 }
 
-extension Order: DuetModel {
+extension Order: Model {
   static let tableName = M2.tableName
   static var isSoftDeletable: Bool { false }
 }

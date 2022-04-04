@@ -1,3 +1,4 @@
+import DuetSQL
 import Vapor
 
 // below auto-generated
@@ -24,7 +25,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: Isbn.self, on: req.eventLoop) {
       let isbn = Isbn(args.input)
-      guard isbn.isValid else { throw DbError.invalidEntity }
+      guard isbn.isValid else { throw ModelError.invalidEntity }
       let created = try await Current.db.create(isbn)
       return try await Current.db.find(created.id)
     }
@@ -37,7 +38,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [Isbn].self, on: req.eventLoop) {
       let isbns = args.input.map(Isbn.init)
-      guard isbns.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      guard isbns.allSatisfy(\.isValid) else { throw ModelError.invalidEntity }
       let created = try await Current.db.create(isbns)
       return try await Current.db.query(Isbn.self)
         .where(.id |=| created.map(\.id))
@@ -52,7 +53,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: Isbn.self, on: req.eventLoop) {
       let isbn = Isbn(args.input)
-      guard isbn.isValid else { throw DbError.invalidEntity }
+      guard isbn.isValid else { throw ModelError.invalidEntity }
       try await Current.db.update(isbn)
       return try await Current.db.find(isbn.id)
     }
@@ -65,7 +66,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [Isbn].self, on: req.eventLoop) {
       let isbns = args.input.map(Isbn.init)
-      guard isbns.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      guard isbns.allSatisfy(\.isValid) else { throw ModelError.invalidEntity }
       let created = try await Current.db.update(isbns)
       return try await Current.db.query(Isbn.self)
         .where(.id |=| created.map(\.id))

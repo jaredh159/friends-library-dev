@@ -1,12 +1,12 @@
 // auto-generated, do not edit
-import Foundation
+import DuetSQL
 import Tagged
 
 extension Download: ApiModel {
   typealias Id = Tagged<Download, UUID>
 }
 
-extension Download: DuetModel {
+extension Download: Model {
   static let tableName = M1.tableName
   static var isSoftDeletable: Bool { false }
 }

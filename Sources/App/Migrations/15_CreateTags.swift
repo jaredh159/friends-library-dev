@@ -1,3 +1,4 @@
+import DuetSQL
 import Fluent
 import Foundation
 

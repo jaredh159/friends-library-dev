@@ -1,12 +1,12 @@
 // auto-generated, do not edit
-import Foundation
+import DuetSQL
 import Tagged
 
 extension TokenScope: ApiModel {
   typealias Id = Tagged<TokenScope, UUID>
 }
 
-extension TokenScope: DuetModel {
+extension TokenScope: Model {
   static let tableName = M5.tableName
   static var isSoftDeletable: Bool { false }
 }

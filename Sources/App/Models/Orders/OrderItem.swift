@@ -1,3 +1,4 @@
+import Duet
 import TaggedMoney
 
 final class OrderItem: Codable {

@@ -3,6 +3,7 @@ import Vapor
 import XCTest
 
 @testable import App
+@testable import DuetSQL
 
 class AppTestCase: XCTestCase {
   struct Sent {
@@ -21,7 +22,7 @@ class AppTestCase: XCTestCase {
     try! app.autoMigrate().wait()
     try! configure(app)
     Current.logger = .null
-    Current.db = MockDatabase()
+    Current.db = MockClient()
   }
 
   override static func tearDown() {

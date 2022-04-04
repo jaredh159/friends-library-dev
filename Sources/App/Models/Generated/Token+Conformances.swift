@@ -1,12 +1,12 @@
 // auto-generated, do not edit
-import Foundation
+import DuetSQL
 import Tagged
 
 extension Token: ApiModel {
   typealias Id = Tagged<Token, UUID>
 }
 
-extension Token: DuetModel {
+extension Token: Model {
   static let tableName = M4.tableName
   static var isSoftDeletable: Bool { false }
 }

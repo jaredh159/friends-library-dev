@@ -1,15 +1,12 @@
 // auto-generated, do not edit
-import Foundation
+import DuetSQL
 import Tagged
 
 extension Isbn: ApiModel {
   typealias Id = Tagged<Isbn, UUID>
-  static var preloadedEntityType: PreloadedEntityType? {
-    .isbn(Self.self)
-  }
 }
 
-extension Isbn: DuetModel {
+extension Isbn: Model {
   static let tableName = M19.tableName
   static var isSoftDeletable: Bool { false }
 }

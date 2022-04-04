@@ -1,4 +1,4 @@
-import Foundation
+import DuetSQL
 import XCTVapor
 import XCTVaporUtils
 
@@ -15,7 +15,7 @@ final class OrderInitializationTests: AppTestCase {
       "c53d0162-4d81-4ff5-8370-48df861a03d5", // token value
     ]
 
-    Current.uuid = { guard !uuids.isEmpty else { return UUID() }
+    UUID.new = { guard !uuids.isEmpty else { return UUID() }
       return UUID(uuidString: uuids.removeFirst())!
     }
 
@@ -43,6 +43,8 @@ final class OrderInitializationTests: AppTestCase {
         "createOrderToken": "c53d0162-4d81-4ff5-8370-48df861a03d5",
       ])
     ).run(Self.app, variables: ["input": .dictionary(["amount": .int(555)])])
+
+    UUID.new = UUID.init
   }
 
   func testCreateOrderInitializationFailure() async throws {

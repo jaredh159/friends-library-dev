@@ -1,4 +1,4 @@
-import Foundation
+import Duet
 
 final class Isbn: Codable {
   var id: Id

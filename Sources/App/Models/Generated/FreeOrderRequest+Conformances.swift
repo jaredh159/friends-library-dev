@@ -1,12 +1,12 @@
 // auto-generated, do not edit
-import Foundation
+import DuetSQL
 import Tagged
 
 extension FreeOrderRequest: ApiModel {
   typealias Id = Tagged<FreeOrderRequest, UUID>
 }
 
-extension FreeOrderRequest: DuetModel {
+extension FreeOrderRequest: Model {
   static let tableName = M6.tableName
   static var isSoftDeletable: Bool { false }
 }

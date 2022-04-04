@@ -33,7 +33,7 @@
 - [√] - generate Order.GraphQL.Schema.createInput
 - [√] - generate Order.GraphQL.Args.create
 - [√] - generate convenience init (createInput)
-- [√] - remove DuetInsertable, make it part of DuetModel
+- [√] - remove DuetInsertable, make it part of Duet.Model
 - [√] - remove force try!s in current live impl
 - [√] - separate out live/mock into sub-repos, or something else
 - [√] - change dep of live to be SQLDatabase

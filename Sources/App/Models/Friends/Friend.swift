@@ -1,4 +1,4 @@
-import Foundation
+import DuetSQL
 
 final class Friend: Codable {
   var id: Id

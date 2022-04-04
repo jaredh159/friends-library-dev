@@ -31,7 +31,7 @@ describe(`generateModelConformances()`, () => {
         }
       }
 
-      extension Thing: DuetModel {
+      extension Thing: Duet.Model {
         static let tableName = M8.tableName
         static var isSoftDeletable: Bool { false }
       }
@@ -89,7 +89,7 @@ describe(`generateModelConformances()`, () => {
 
       extension Thing: ApiModel {}
 
-      extension Thing: DuetModel {
+      extension Thing: Duet.Model {
         static let tableName = "things"
         static var isSoftDeletable: Bool { true }
       }

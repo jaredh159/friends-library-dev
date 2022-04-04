@@ -1,12 +1,12 @@
 // auto-generated, do not edit
-import Foundation
+import DuetSQL
 import Tagged
 
 extension ArtifactProductionVersion: ApiModel {
   typealias Id = Tagged<ArtifactProductionVersion, UUID>
 }
 
-extension ArtifactProductionVersion: DuetModel {
+extension ArtifactProductionVersion: Model {
   static let tableName = M8.tableName
   static var isSoftDeletable: Bool { false }
 }

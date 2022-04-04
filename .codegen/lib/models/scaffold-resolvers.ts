@@ -33,7 +33,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateThings)
     return future(of: Thing.self, on: req.eventLoop) {
       let thing = Thing(args.input)
-      guard thing.isValid else { throw DbError.invalidEntity }
+      guard thing.isValid else { throw ModelError.invalidEntity }
       let created = try await Current.db.create(thing)
       return try await Current.db.find(created.id)
     }
@@ -46,7 +46,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateThings)
     return future(of: [Thing].self, on: req.eventLoop) {
       let things = args.input.map(Thing.init)
-      guard things.allSatisfy(\\.isValid) else { throw DbError.invalidEntity }
+      guard things.allSatisfy(\\.isValid) else { throw ModelError.invalidEntity }
       let created = try await Current.db.create(things)
       return try await Current.db.query(Thing.self)
         .where(.id |=| created.map(\\.id))
@@ -61,7 +61,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateThings)
     return future(of: Thing.self, on: req.eventLoop) {
       let thing = Thing(args.input)
-      guard thing.isValid else { throw DbError.invalidEntity }
+      guard thing.isValid else { throw ModelError.invalidEntity }
       try await Current.db.update(thing)
       return try await Current.db.find(thing.id)
     }
@@ -74,7 +74,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateThings)
     return future(of: [Thing].self, on: req.eventLoop) {
       let things = args.input.map(Thing.init)
-      guard things.allSatisfy(\\.isValid) else { throw DbError.invalidEntity }
+      guard things.allSatisfy(\\.isValid) else { throw ModelError.invalidEntity }
       let created = try await Current.db.update(things)
       return try await Current.db.query(Thing.self)
         .where(.id |=| created.map(\\.id))

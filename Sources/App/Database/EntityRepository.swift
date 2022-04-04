@@ -1,3 +1,4 @@
+import DuetSQL
 import FluentSQL
 import Vapor
 
@@ -14,10 +15,6 @@ extension EntityRepository {
     }
     entities = nil
   }
-}
-
-protocol HasEntityRepository {
-  var entityRepo: EntityRepository { get }
 }
 
 class LiveEntityRepository: EntityRepository {
@@ -44,7 +41,7 @@ class LiveEntityRepository: EntityRepository {
     async let audioParts = findAll(AudioPart.self)
     async let isbns = findAll(Isbn.self)
 
-    let loaded = PreloadedEntities(
+    let store = PreloadedEntitiesStore(
       friends: try await friends,
       friendQuotes: try await friendQuotes,
       friendResidences: try await friendResidences,
@@ -60,11 +57,12 @@ class LiveEntityRepository: EntityRepository {
       isbns: try await isbns
     )
 
+    let loaded = PreloadedEntities(store: store)
     entities = loaded
     return loaded
   }
 
-  private func findAll<M: DuetModel>(_ Model: M.Type) async throws -> [M] {
+  private func findAll<M: ApiModel>(_ Model: M.Type) async throws -> [M] {
     let prepared = SQL.select(
       .all,
       from: M.self,
@@ -75,40 +73,6 @@ class LiveEntityRepository: EntityRepository {
   }
 
   init(db: SQLDatabase) {
-    self.db = db
-  }
-}
-
-class MockEntityRepository: EntityRepository {
-  let db: MockDatabase
-  var entities: PreloadedEntities?
-
-  func getEntities() async throws -> PreloadedEntities {
-    if let entities = entities {
-      return entities
-    }
-
-    let loaded = PreloadedEntities(
-      friends: db.friends,
-      friendQuotes: db.friendQuotes,
-      friendResidences: db.friendResidences,
-      friendResidenceDurations: db.friendResidenceDurations,
-      documents: db.documents,
-      documentTags: db.documentTags,
-      relatedDocuments: db.relatedDocuments,
-      editions: db.editions,
-      editionImpressions: db.editionImpressions,
-      editionChapters: db.editionChapters,
-      audios: db.audios,
-      audioParts: db.audioParts,
-      isbns: db.isbns
-    )
-
-    entities = loaded
-    return loaded
-  }
-
-  init(db: MockDatabase) {
     self.db = db
   }
 }

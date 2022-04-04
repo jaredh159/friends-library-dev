@@ -1,15 +1,12 @@
 // auto-generated, do not edit
-import Foundation
+import DuetSQL
 import Tagged
 
 extension Edition: ApiModel {
   typealias Id = Tagged<Edition, UUID>
-  static var preloadedEntityType: PreloadedEntityType? {
-    .edition(Self.self)
-  }
 }
 
-extension Edition: DuetModel {
+extension Edition: Model {
   static let tableName = M17.tableName
   static var isSoftDeletable: Bool { true }
 }

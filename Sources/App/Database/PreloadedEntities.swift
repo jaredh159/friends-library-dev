@@ -1,6 +1,28 @@
+import DuetSQL
 import Foundation
 
-actor PreloadedEntities: SQLQuerying, InMemoryDatabase {
+actor PreloadedEntities: SQLQuerying {
+  private var client: MemoryClient<PreloadedEntitiesStore>
+
+  init(store: PreloadedEntitiesStore) {
+    client = MemoryClient(store: store)
+  }
+
+  func select<M: Model>(
+    _ Model: M.Type,
+    where constraints: [SQL.WhereConstraint<M>]?,
+    orderBy order: SQL.Order<M>?,
+    limit: Int?
+  ) async throws -> [M] {
+    try await client.select(Model, where: constraints, orderBy: order, limit: limit)
+  }
+
+  func flush() {
+    client.store.flush()
+  }
+}
+
+final class PreloadedEntitiesStore: MemoryStore {
   var friends: [Friend.Id: Friend]
   var friendQuotes: [FriendQuote.Id: FriendQuote]
   var friendResidences: [FriendResidence.Id: FriendResidence]
@@ -213,43 +235,43 @@ actor PreloadedEntities: SQLQuerying, InMemoryDatabase {
     )
   }
 
-  func models<M: DuetModel>(of Model: M.Type) async throws -> [M.IdValue: M] {
-    switch Model.tableName {
+  public func keyPath<M: Model>(to: M.Type) -> Models<M> {
+    switch M.tableName {
       case Friend.tableName:
-        return friends as! [M.IdValue: M]
+        return \PreloadedEntitiesStore.friends as! Models<M>
       case FriendQuote.tableName:
-        return friendQuotes as! [M.IdValue: M]
+        return \PreloadedEntitiesStore.friendQuotes as! Models<M>
       case FriendResidence.tableName:
-        return friendResidences as! [M.IdValue: M]
+        return \PreloadedEntitiesStore.friendResidences as! Models<M>
       case FriendResidenceDuration.tableName:
-        return friendResidenceDurations as! [M.IdValue: M]
+        return \PreloadedEntitiesStore.friendResidenceDurations as! Models<M>
       case Document.tableName:
-        return documents as! [M.IdValue: M]
+        return \PreloadedEntitiesStore.documents as! Models<M>
       case DocumentTag.tableName:
-        return documentTags as! [M.IdValue: M]
+        return \PreloadedEntitiesStore.documentTags as! Models<M>
       case RelatedDocument.tableName:
-        return relatedDocuments as! [M.IdValue: M]
+        return \PreloadedEntitiesStore.relatedDocuments as! Models<M>
       case Edition.tableName:
-        return editions as! [M.IdValue: M]
+        return \PreloadedEntitiesStore.editions as! Models<M>
       case EditionImpression.tableName:
-        return editionImpressions as! [M.IdValue: M]
+        return \PreloadedEntitiesStore.editionImpressions as! Models<M>
       case EditionChapter.tableName:
-        return editionChapters as! [M.IdValue: M]
+        return \PreloadedEntitiesStore.editionChapters as! Models<M>
       case Audio.tableName:
-        return audios as! [M.IdValue: M]
+        return \PreloadedEntitiesStore.audios as! Models<M>
       case AudioPart.tableName:
-        return audioParts as! [M.IdValue: M]
+        return \PreloadedEntitiesStore.audioParts as! Models<M>
       case Isbn.tableName:
-        return isbns as! [M.IdValue: M]
+        return \PreloadedEntitiesStore.isbns as! Models<M>
       default:
-        throw PreloadedEntitiesError.unsupportedModelType(Model.tableName)
+        preconditionFailure()
     }
   }
 }
 
 // helpers
 
-private func toDict<M: DuetModel>(_ models: [M]) -> [M.IdValue: M] {
+private func toDict<M: Model>(_ models: [M]) -> [M.IdValue: M] {
   var dict = Dictionary<M.IdValue, M>.init(minimumCapacity: models.count)
   models.forEach { model in dict[model.id] = model }
   return dict
@@ -261,47 +283,36 @@ extension PreloadedEntities {
   func setLegacyAppEditions(data: Data, lang: Lang) {
     switch lang {
       case .en:
-        legacyRestAppEditionsDataEnglish = data
+        client.store.legacyRestAppEditionsDataEnglish = data
       case .es:
-        legacyRestAppEditionsDataSpanish = data
+        client.store.legacyRestAppEditionsDataSpanish = data
     }
   }
 
   func getLegacyAppEditions(lang: Lang) -> Data? {
     switch lang {
       case .en:
-        return legacyRestAppEditionsDataEnglish
+        return client.store.legacyRestAppEditionsDataEnglish
       case .es:
-        return legacyRestAppEditionsDataSpanish
+        return client.store.legacyRestAppEditionsDataSpanish
     }
   }
 
   func setLegacyAppAudios(data: Data, lang: Lang) {
     switch lang {
       case .en:
-        legacyRestAppAudiosDataEnglish = data
+        client.store.legacyRestAppAudiosDataEnglish = data
       case .es:
-        legacyRestAppAudiosDataSpanish = data
+        client.store.legacyRestAppAudiosDataSpanish = data
     }
   }
 
   func getLegacyAppAudios(lang: Lang) -> Data? {
     switch lang {
       case .en:
-        return legacyRestAppAudiosDataEnglish
+        return client.store.legacyRestAppAudiosDataEnglish
       case .es:
-        return legacyRestAppAudiosDataSpanish
-    }
-  }
-}
-
-enum PreloadedEntitiesError: Error, LocalizedError {
-  case unsupportedModelType(String)
-
-  var errorDescription: String? {
-    switch self {
-      case .unsupportedModelType(let tableName):
-        return "Model with table name `\(tableName)` not available in PreloadedEntities"
+        return client.store.legacyRestAppAudiosDataSpanish
     }
   }
 }

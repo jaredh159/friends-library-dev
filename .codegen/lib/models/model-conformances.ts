@@ -7,7 +7,7 @@ export function generateModelConformances(
   types: GlobalTypes,
 ): [filepath: string, code: string] {
   const { name, migrationNumber, props } = model;
-  let code = `// auto-generated, do not edit\nimport Foundation\n`;
+  let code = `// auto-generated, do not edit\nimport DuetSQL\n`;
 
   let needsIdAlias = false;
   if (props.some((p) => p.type == `Id`)) {
@@ -21,12 +21,6 @@ export function generateModelConformances(
   if (needsIdAlias) {
     code += `\n  typealias Id = Tagged<${name}, UUID>\n`;
   }
-  if (model.isPreloaded) {
-    code += `${
-      needsIdAlias ? `` : `\n`
-    }  static var preloadedEntityType: PreloadedEntityType? {`;
-    code += `\n    .${model.camelCaseName}(Self.self)\n  }\n`;
-  }
   code += `}\n\n`;
 
   const table = migrationNumber
@@ -34,7 +28,7 @@ export function generateModelConformances(
     : `"${pascalToSnake(name)}s"`;
 
   let isSoftDeletable = !!model.props.find((p) => p.name === `deletedAt`);
-  code += `extension ${name}: DuetModel {\n  static let tableName = ${table}\n`;
+  code += `extension ${name}: Model {\n  static let tableName = ${table}\n`;
   code += `  static var isSoftDeletable: Bool { ${isSoftDeletable} }\n`;
   code += `}\n`;
 

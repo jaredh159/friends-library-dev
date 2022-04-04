@@ -1,3 +1,4 @@
+import Duet
 import Foundation
 import XCTest
 
