@@ -3,6 +3,7 @@ import XCTVapor
 import XCTVaporUtils
 
 @testable import App
+@testable import XStripe
 
 final class OrderInitializationTests: AppTestCase {
 
@@ -19,9 +20,10 @@ final class OrderInitializationTests: AppTestCase {
       return UUID(uuidString: uuids.removeFirst())!
     }
 
-    Current.stripeClient.createPaymentIntent = { amount, orderId in
+    Current.stripeClient.createPaymentIntent = { amount, currency, metadata, _ in
       XCTAssertEqual(amount, 555)
-      XCTAssertEqual(orderId.rawValue.lowercased, "0d70e2a5-2cda-4326-b9cf-f28e70f580e8")
+      XCTAssertEqual(currency, .USD)
+      XCTAssertEqual(metadata, ["orderId": "0d70e2a5-2cda-4326-b9cf-f28e70f580e8"])
       return .init(id: "pi_id", clientSecret: "pi_secret")
     }
 
@@ -48,7 +50,7 @@ final class OrderInitializationTests: AppTestCase {
   }
 
   func testCreateOrderInitializationFailure() async throws {
-    Current.stripeClient.createPaymentIntent = { _, _ in throw "some error" }
+    Current.stripeClient.createPaymentIntent = { _, _, _, _ in throw "some error" }
 
     GraphQLTest(
       """

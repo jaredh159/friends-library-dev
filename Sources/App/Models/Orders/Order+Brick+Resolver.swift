@@ -34,13 +34,19 @@ extension Resolver {
     return future(of: GenericResponse.self, on: req.eventLoop) {
       if let paymentIntentId = args.input.orderPaymentId, !paymentIntentId.isEmpty {
         do {
-          let refund = try await Current.stripeClient.createRefund(paymentIntentId)
+          let refund = try await Current.stripeClient.createRefund(
+            paymentIntentId,
+            Env.STRIPE_SECRET_KEY
+          )
           await slackError("Created stripe refund `\(refund.id)` \(forOrder)")
         } catch {
           await slackError("Error creating refund \(forOrder): `\(error)`")
         }
         do {
-          let pi = try await Current.stripeClient.cancelPaymentIntent(paymentIntentId)
+          let pi = try await Current.stripeClient.cancelPaymentIntent(
+            paymentIntentId,
+            Env.STRIPE_SECRET_KEY
+          )
           await slackError("Canceled stripe payment intent `\(pi.id)` \(forOrder)")
         } catch {
           await slackError("Error cancelling payment intent (expected) \(forOrder): `\(error)`")

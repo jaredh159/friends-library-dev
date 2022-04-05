@@ -415,7 +415,7 @@ extension DownloadableFile.Format {
     }
   }
 
-  var slackChannel: Slack.Channel {
+  var slackChannel: FlpSlack.Message.Channel {
     switch self {
       case .audio(.mp3), .audio(.podcast):
         return .audioDownloads

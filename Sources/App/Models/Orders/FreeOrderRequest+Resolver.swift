@@ -2,6 +2,7 @@ import Fluent
 import Foundation
 import Graphiti
 import Vapor
+import XSendGrid
 
 extension Resolver {
   func createFreeOrderRequest(

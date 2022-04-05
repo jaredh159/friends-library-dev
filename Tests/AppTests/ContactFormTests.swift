@@ -38,7 +38,7 @@ final class ContactFormTests: AppTestCase {
     XCTAssertContains(email?.text, "Type: Website / technical question")
     XCTAssertEqual(email?.firstRecipient, .init(email: Env.JARED_CONTACT_FORM_EMAIL))
     XCTAssertEqual(sent.slacks.count, 1)
-    XCTAssertTrue(sent.slacks.first?.text.hasPrefix("*Contact form submission:*") == true)
+    XCTAssertTrue(sent.slacks.first?.message.text.hasPrefix("*Contact form submission:*") == true)
   }
 
   func testSubmitContactFormSpanish() async throws {
@@ -77,6 +77,6 @@ final class ContactFormTests: AppTestCase {
     XCTAssertContains(email?.text, "Message: hola")
     XCTAssertEqual(email?.firstRecipient, .init(email: Env.JASON_CONTACT_FORM_EMAIL))
     XCTAssertEqual(sent.slacks.count, 1)
-    XCTAssertTrue(sent.slacks.first?.text.hasPrefix("*Contact form submission:*") == true)
+    XCTAssertTrue(sent.slacks.first?.message.text.hasPrefix("*Contact form submission:*") == true)
   }
 }

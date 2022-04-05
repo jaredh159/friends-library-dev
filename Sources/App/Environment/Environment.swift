@@ -1,6 +1,8 @@
 import DuetSQL
 import Foundation
 import Vapor
+import XSendGrid
+import XStripe
 
 struct Environment {
   var uuid: () -> UUID = UUID.init
@@ -8,7 +10,7 @@ struct Environment {
   var db: EntityClient = ThrowingDatabaseClient()
   var auth: Auth = .live
   var logger = Logger(label: "api.friendslibrary")
-  var slackClient: Slack.Client = .init()
+  var slackClient: FlpSlack.Client = .init()
   var luluClient: Lulu.Api.Client = .live
   var sendGridClient: SendGrid.Client.SlackErrorLogging = .live
   var stripeClient = Stripe.Client()

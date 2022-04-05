@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/swift-server/async-http-client.git",
         "state": {
           "branch": null,
-          "revision": "70826d038d5bdc3142a386b735792d87ef7a5dfc",
-          "version": "1.8.1"
+          "revision": "cbf533073d9a5edfb16c266d14151f69137ba7c9",
+          "version": "1.8.2"
         }
       },
       {
@@ -222,8 +222,8 @@
         "repositoryURL": "https://github.com/apple/swift-nio-http2.git",
         "state": {
           "branch": null,
-          "revision": "39ed0e753596afadad920e302ae769b28f3a982b",
-          "version": "1.19.0"
+          "revision": "50c25c132b140e62b45e90b5a76f13ded02c8a46",
+          "version": "1.20.1"
         }
       },
       {
@@ -267,8 +267,8 @@
         "repositoryURL": "https://github.com/vapor/vapor.git",
         "state": {
           "branch": null,
-          "revision": "34bf1b303623de04801d2b9bef5b2ed48b3e9319",
-          "version": "4.54.0"
+          "revision": "5861bf9e2cff2c4cb0dcfb0c15ecfaa8bc5630e0",
+          "version": "4.55.3"
         }
       },
       {
@@ -296,6 +296,42 @@
           "branch": null,
           "revision": "b1c4df8f6c848c2e977726903bbe6578eed723ad",
           "version": "2.2.0"
+        }
+      },
+      {
+        "package": "XHttp",
+        "repositoryURL": "https://github.com/jaredh159/x-http.git",
+        "state": {
+          "branch": null,
+          "revision": "4b7ebc79ec24e12a9a58c739a214b3f062df9ec6",
+          "version": "1.0.0"
+        }
+      },
+      {
+        "package": "XSendGrid",
+        "repositoryURL": "https://github.com/jaredh159/x-sendgrid.git",
+        "state": {
+          "branch": null,
+          "revision": "2ca55ad56845ad2b1a555b6dceeb58ed299839c7",
+          "version": "1.0.1"
+        }
+      },
+      {
+        "package": "XSlack",
+        "repositoryURL": "https://github.com/jaredh159/x-slack.git",
+        "state": {
+          "branch": null,
+          "revision": "f1c973b108c9afca6067b5548e1281b0b24bcdfc",
+          "version": "1.0.2"
+        }
+      },
+      {
+        "package": "XStripe",
+        "repositoryURL": "https://github.com/jaredh159/x-stripe.git",
+        "state": {
+          "branch": null,
+          "revision": "9409b0690314d77245647139958c68e8a341ab5d",
+          "version": "1.0.1"
         }
       }
     ]

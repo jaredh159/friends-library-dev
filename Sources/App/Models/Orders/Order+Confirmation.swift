@@ -1,5 +1,6 @@
 import Graphiti
 import Vapor
+import XSlack
 
 extension Resolver {
   func sendOrderConfirmationEmail(

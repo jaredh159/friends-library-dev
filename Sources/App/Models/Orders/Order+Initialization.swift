@@ -19,7 +19,12 @@ extension Resolver {
     let orderId = Order.Id()
     return future(of: OrderInitialization.self, on: req.eventLoop) {
       do {
-        async let pi = Current.stripeClient.createPaymentIntent(amount, orderId)
+        async let pi = Current.stripeClient.createPaymentIntent(
+          amount.rawValue,
+          .USD,
+          ["orderId": orderId.lowercased],
+          Env.STRIPE_SECRET_KEY
+        )
         let tokenDesc = "single-use create order token for order \(orderId.lowercased)"
         async let token = Current.db.create(Token(description: tokenDesc, uses: 1))
         try await Current.db.create(TokenScope(tokenId: try await token.id, scope: .mutateOrders))

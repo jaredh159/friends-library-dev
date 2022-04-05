@@ -1,108 +1,110 @@
 import Foundation
+import XSlack
 
-enum Slack {}
+enum FlpSlack {
+  struct Message: Equatable {
+    enum Channel {
+      case errors
+      case info
+      case orders
+      case downloads
+      case audioDownloads
+      case debug
+      case other(String)
 
-extension Slack {
-  enum Emoji {
-    case fireEngine
-    case robotFace
-    case books
-    case orangeBook
-    case custom(String)
-  }
-
-  enum Channel {
-    case errors
-    case info
-    case orders
-    case downloads
-    case audioDownloads
-    case debug
-    case other(String)
-  }
-
-  struct Message {
-    enum Content {
-      indirect enum Block {
-        case header(text: String)
-        case image(url: URL, altText: String)
-        case section(text: String, accessory: Block?)
-        case divider
+      var string: String {
+        switch self {
+          case .errors:
+            return "#errors"
+          case .info:
+            return "#info"
+          case .orders:
+            return "#orders"
+          case .downloads:
+            return "#downloads"
+          case .audioDownloads:
+            return "#audio-downloads"
+          case .debug:
+            return "#debug"
+          case .other(let channel):
+            return channel
+        }
       }
 
-      case text(String)
-      case blocks([Block], String)
-    }
-
-    var content: Content
-    var channel: Channel
-    var emoji: Emoji
-    var username: String
-
-    var text: String {
-      switch content {
-        case .text(let text):
-          return text
-        case .blocks(_, let fallbackText):
-          return fallbackText
+      var token: String {
+        if Env.mode == .staging || Env.mode == .dev {
+          return Env.SLACK_API_TOKEN_WORKSPACE_BOT
+        }
+        switch self {
+          case .debug, .audioDownloads:
+            return Env.SLACK_API_TOKEN_WORKSPACE_BOT
+          case .errors, .info, .orders, .downloads, .other:
+            return Env.SLACK_API_TOKEN_WORKSPACE_MAIN
+        }
       }
     }
+
+    let channel: Channel
+    let message: Slack.Message
 
     init(
       text: String,
       channel: Channel,
-      emoji: Emoji = .robotFace,
+      emoji: Slack.Emoji = .robotFace,
       username: String = "FLP Bot"
     ) {
-      content = .text(text)
       self.channel = channel
-      self.emoji = emoji
-      self.username = username
+      message = .init(
+        text: text,
+        channel: channel.string,
+        username: username,
+        emoji: emoji
+      )
     }
 
     init(
-      blocks: [Content.Block],
+      blocks: [Slack.Message.Content.Block],
       fallbackText: String,
       channel: Channel,
-      emoji: Emoji = .robotFace,
+      emoji: Slack.Emoji = .robotFace,
       username: String = "FLP Bot"
     ) {
-      content = .blocks(blocks, fallbackText)
       self.channel = channel
-      self.emoji = emoji
-      self.username = username
+      message = .init(
+        blocks: blocks,
+        fallbackText: fallbackText,
+        channel: channel.string,
+        username: username,
+        emoji: emoji
+      )
     }
   }
 }
 
 // extensions
 
-extension Slack.Message {
-  static func link(to url: String, withText text: String) -> String {
-    "<\(url)|\(text)>"
-  }
-
-  static func error(_ text: String, emoji: Slack.Emoji = .fireEngine) -> Slack.Message {
+extension FlpSlack.Message {
+  static func error(_ text: String, emoji: Slack.Emoji = .fireEngine) -> FlpSlack.Message {
     .init(text: text, channel: .errors, emoji: emoji)
   }
 
-  static func info(_ text: String, emoji: Slack.Emoji = .robotFace) -> Slack.Message {
+  static func info(_ text: String, emoji: Slack.Emoji = .robotFace) -> FlpSlack.Message {
     .init(text: text, channel: .info, emoji: emoji)
   }
 
-  static func order(_ text: String, emoji: Slack.Emoji = .books) -> Slack.Message {
+  static func order(_ text: String, emoji: Slack.Emoji = .books) -> FlpSlack.Message {
     .init(text: text, channel: .orders, emoji: emoji)
   }
 
-  static func download(_ text: String, emoji: Slack.Emoji = .robotFace) -> Slack.Message {
+  static func download(_ text: String, emoji: Slack.Emoji = .robotFace) -> FlpSlack.Message {
     .init(text: text, channel: .downloads, emoji: emoji)
   }
 
-  static func audio(_ text: String, emoji: Slack.Emoji = .robotFace) -> Slack.Message {
+  static func audio(_ text: String, emoji: Slack.Emoji = .robotFace) -> FlpSlack.Message {
     .init(text: text, channel: .audioDownloads, emoji: emoji)
   }
 
-  static func debug(_ text: String, emoji: Slack.Emoji = .robotFace) -> Slack.Message {
+  static func debug(_ text: String, emoji: Slack.Emoji = .robotFace) -> FlpSlack.Message {
     .init(text: text, channel: .debug, emoji: emoji)
   }
 }
@@ -131,8 +133,4 @@ func slackOrder(_ msg: String) async {
   await Current.slackClient.send(.order(msg))
 }
 
-extension Slack.Emoji: Equatable {}
-extension Slack.Channel: Equatable {}
-extension Slack.Message: Equatable {}
-extension Slack.Message.Content: Equatable {}
-extension Slack.Message.Content.Block: Equatable {}
+extension FlpSlack.Message.Channel: Equatable {}

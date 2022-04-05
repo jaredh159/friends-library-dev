@@ -1,13 +1,14 @@
 import FluentSQL
 import Vapor
 import XCTest
+import XSendGrid
 
 @testable import App
 @testable import DuetSQL
 
 class AppTestCase: XCTestCase {
   struct Sent {
-    var slacks: [Slack.Message] = []
+    var slacks: [FlpSlack.Message] = []
     var emails: [SendGrid.Email] = []
   }
 

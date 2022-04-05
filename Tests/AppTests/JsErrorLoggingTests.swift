@@ -28,6 +28,6 @@ final class JsErrorLoggingTests: AppTestCase {
 
     XCTAssertEqual(sent.slacks.count, 1)
     XCTAssertEqual(sent.slacks.first?.channel, .errors)
-    XCTAssertContains(sent.slacks.first?.text, "operafox")
+    XCTAssertContains(sent.slacks.first?.message.text, "operafox")
   }
 }

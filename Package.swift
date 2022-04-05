@@ -9,7 +9,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/vapor/vapor.git",
-      from: "4.54.0"
+      from: "4.55.3"
     ),
     .package(
       url: "https://github.com/vapor/fluent.git",
@@ -54,6 +54,26 @@ let package = Package(
       name: "Duet",
       path: "/Users/jared/gertie/duet"
     ),
+    .package(
+      name: "XKit",
+      path: "/Users/jared/gertie/x-kit"
+    ),
+    .package(
+      url: "https://github.com/jaredh159/x-http.git",
+      from: "1.0.0"
+    ),
+    .package(
+      url: "https://github.com/jaredh159/x-sendgrid.git",
+      from: "1.0.1"
+    ),
+    .package(
+      url: "https://github.com/jaredh159/x-stripe.git",
+      from: "1.0.1"
+    ),
+    .package(
+      url: "https://github.com/jaredh159/x-slack.git",
+      from: "1.0.2"
+    ),
   ],
   targets: [
     .target(
@@ -68,6 +88,11 @@ let package = Package(
         .product(name: "NonEmpty", package: "swift-nonempty"),
         .product(name: "Duet", package: "duet"),
         .product(name: "DuetSQL", package: "duet"),
+        .product(name: "XVapor", package: "XKit"),
+        .product(name: "XHttp", package: "x-http"),
+        .product(name: "XSendGrid", package: "x-sendgrid"),
+        .product(name: "XStripe", package: "x-stripe"),
+        .product(name: "XSlack", package: "x-slack"),
         "RomanNumeralKit",
         "GraphQLKit",
         "QueuesFluentDriver",
@@ -85,6 +110,7 @@ let package = Package(
         .target(name: "App"),
         .product(name: "Duet", package: "duet"),
         .product(name: "DuetSQL", package: "duet"),
+        .product(name: "XSendGrid", package: "x-sendgrid"),
         .product(name: "XCTVapor", package: "vapor"),
         .product(name: "XCTVaporUtils", package: "VaporUtils"),
       ]

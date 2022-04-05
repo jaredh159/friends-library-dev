@@ -3,6 +3,7 @@ import XCTVapor
 import XCTVaporUtils
 
 @testable import App
+@testable import XStripe
 
 final class OrderResolverTests: AppTestCase {
 
@@ -180,15 +181,15 @@ final class OrderResolverTests: AppTestCase {
     try await Current.db.create(order)
 
     var refundedPaymentIntentId: String?
-    Current.stripeClient.createRefund = {
-      refundedPaymentIntentId = $0
+    Current.stripeClient.createRefund = { pi, _ in
+      refundedPaymentIntentId = pi
       return .init(id: "pi_refund_id")
     }
 
     var canceledPaymentId: String?
-    Current.stripeClient.cancelPaymentIntent = {
-      canceledPaymentId = $0
-      return .init(id: $0, clientSecret: "")
+    Current.stripeClient.cancelPaymentIntent = { pi, _ in
+      canceledPaymentId = pi
+      return .init(id: pi, clientSecret: "")
     }
 
     let input: Map = .dictionary([
