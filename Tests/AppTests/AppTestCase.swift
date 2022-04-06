@@ -1,6 +1,8 @@
 import FluentSQL
+import GraphQLKit
 import Vapor
 import XCTest
+import XGraphQLTest
 import XSendGrid
 
 @testable import App
@@ -14,6 +16,10 @@ class AppTestCase: XCTestCase {
 
   static var app: Application!
   var sent = Sent()
+
+  var app: Application {
+    Self.app
+  }
 
   override static func setUp() {
     Current = .mock
@@ -39,6 +45,48 @@ class AppTestCase: XCTestCase {
     Current.db = existingDb
     Current.slackClient.send = { [self] in sent.slacks.append($0) }
     Current.sendGridClient.send = { [self] in sent.emails.append($0) }
+  }
+
+  public func assertResponse(
+    to operation: String,
+    bearer: UUID? = nil,
+    addingHeaders headers: [HTTPHeaders.Name: String]? = nil,
+    withVariables variables: [String: Map]? = nil,
+    _ expectedData: ExpectedData,
+    file: StaticString = #file,
+    line: UInt = #line
+  ) {
+    assertGraphQLResponse(
+      to: operation,
+      auth: bearer == nil ? nil : .bearer(bearer!.lowercased),
+      addingHeaders: headers,
+      withVariables: variables,
+      on: app,
+      expectedData,
+      file: file,
+      line: line
+    )
+  }
+
+  public func assertResponse(
+    to operation: String,
+    bearer: UUID? = nil,
+    addingHeaders headers: [HTTPHeaders.Name: String]? = nil,
+    withVariables variables: [String: Map]? = nil,
+    isError expectedError: ExpectedError,
+    file: StaticString = #file,
+    line: UInt = #line
+  ) {
+    assertGraphQLResponse(
+      to: operation,
+      auth: bearer == nil ? nil : .bearer(bearer!.lowercased),
+      addingHeaders: headers,
+      withVariables: variables,
+      on: app,
+      isError: expectedError,
+      file: file,
+      line: line
+    )
   }
 }
 

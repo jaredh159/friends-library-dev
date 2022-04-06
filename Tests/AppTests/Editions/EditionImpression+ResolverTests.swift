@@ -1,5 +1,4 @@
-import XCTVapor
-import XCTVaporUtils
+import XCTest
 
 @testable import App
 
@@ -12,25 +11,26 @@ final class EditionImpressionResolverTests: AppTestCase {
     editionImpression.editionId = entities.edition.id
     let map = editionImpression.gqlMap()
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation CreateEditionImpression($input: CreateEditionImpressionInput!) {
         editionImpression: createEditionImpression(input: $input) {
           id
         }
       }
       """,
-      expectedData: .containsKVPs(["id": map["id"]]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": map])
+      bearer: Seeded.tokens.allScopes,
+      withVariables: ["input": map],
+      .containsKeyValuePairs(["id": map["id"]])
+    )
   }
 
   func testGetEditionImpression() async throws {
     let entities = await Entities.create()
     let editionImpression = entities.editionImpression
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       query GetEditionImpression {
         editionImpression: getEditionImpression(id: "\(editionImpression.id.uuidString)") {
           id
@@ -45,14 +45,14 @@ final class EditionImpressionResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs([
+      bearer: Seeded.tokens.allScopes,
+      .containsKeyValuePairs([
         "id": editionImpression.id.lowercased,
         "logPath": DownloadableFile(edition: entities.edition, format: .ebook(.epub))
           .logPath
           .replacingOccurrences(of: "/", with: "\\/"),
-      ]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app)
+      ])
+    )
   }
 
   func testUpdateEditionImpression() async throws {
@@ -61,33 +61,35 @@ final class EditionImpressionResolverTests: AppTestCase {
     // do some updates here ---vvv
     editionImpression.adocLength = 33333
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation UpdateEditionImpression($input: UpdateEditionImpressionInput!) {
         editionImpression: updateEditionImpression(input: $input) {
           adocLength
         }
       }
       """,
-      expectedData: .containsKVPs(["adocLength": 33333]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": editionImpression.gqlMap()])
+      bearer: Seeded.tokens.allScopes,
+      withVariables: ["input": editionImpression.gqlMap()],
+      .containsKeyValuePairs(["adocLength": 33333])
+    )
   }
 
   func testDeleteEditionImpression() async throws {
     let editionImpression = await Entities.create().editionImpression
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation DeleteEditionImpression {
         editionImpression: deleteEditionImpression(id: "\(editionImpression.id.uuidString)") {
           id
         }
       }
       """,
-      expectedData: .containsKVPs(["id": editionImpression.id.lowercased]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": editionImpression.gqlMap()])
+      bearer: Seeded.tokens.allScopes,
+      withVariables: ["input": editionImpression.gqlMap()],
+      .containsKeyValuePairs(["id": editionImpression.id.lowercased])
+    )
 
     let retrieved = try? await Current.db.find(editionImpression.id)
     XCTAssertNil(retrieved)

@@ -1,6 +1,5 @@
 import DuetSQL
-import XCTVapor
-import XCTVaporUtils
+import XCTest
 
 @testable import App
 @testable import XStripe
@@ -27,8 +26,8 @@ final class OrderInitializationTests: AppTestCase {
       return .init(id: "pi_id", clientSecret: "pi_secret")
     }
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation CreateOrderInitialization($input: CreateOrderInitializationInput!) {
         createOrderInitialization(input: $input) {
           orderPaymentId
@@ -38,13 +37,14 @@ final class OrderInitializationTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs([
+      withVariables: ["input": .dictionary(["amount": .int(555)])],
+      .containsKeyValuePairs([
         "orderPaymentId": "pi_id",
         "stripeClientSecret": "pi_secret",
         "orderId": "0d70e2a5-2cda-4326-b9cf-f28e70f580e8",
         "createOrderToken": "c53d0162-4d81-4ff5-8370-48df861a03d5",
       ])
-    ).run(Self.app, variables: ["input": .dictionary(["amount": .int(555)])])
+    )
 
     UUID.new = UUID.init
   }
@@ -52,8 +52,8 @@ final class OrderInitializationTests: AppTestCase {
   func testCreateOrderInitializationFailure() async throws {
     Current.stripeClient.createPaymentIntent = { _, _, _, _ in throw "some error" }
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation CreateOrderInitialization($input: CreateOrderInitializationInput!) {
         createOrderInitialization(input: $input) {
           orderPaymentId
@@ -63,8 +63,9 @@ final class OrderInitializationTests: AppTestCase {
         }
       }
       """,
-      expectedError: .status(.internalServerError)
-    ).run(Self.app, variables: ["input": .dictionary(["amount": .int(555)])])
+      withVariables: ["input": .dictionary(["amount": .int(555)])],
+      isError: .withStatus(.internalServerError)
+    )
 
     XCTAssertEqual(sent.slacks, [.error("Error creating OrderInitialization: some error")])
   }

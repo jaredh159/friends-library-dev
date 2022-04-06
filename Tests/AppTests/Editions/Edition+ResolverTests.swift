@@ -1,5 +1,4 @@
-import XCTVapor
-import XCTVaporUtils
+import XCTest
 
 @testable import App
 
@@ -15,24 +14,25 @@ final class EditionResolverTests: AppTestCase {
     edition.documentId = entities.document.id
     let map = edition.gqlMap()
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation CreateEdition($input: CreateEditionInput!) {
         edition: createEdition(input: $input) {
           id
         }
       }
       """,
-      expectedData: .containsKVPs(["id": map["id"]]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": map])
+      bearer: Seeded.tokens.allScopes,
+      withVariables: ["input": map],
+      .containsKeyValuePairs(["id": map["id"]])
+    )
   }
 
   func testGetEdition() async throws {
     let edition = await Entities.create().edition
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       query GetEdition {
         edition: getEdition(id: "\(edition.id.uuidString)") {
           id
@@ -46,9 +46,9 @@ final class EditionResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["id": edition.id.lowercased, "width": 45]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app)
+      bearer: Seeded.tokens.allScopes,
+      .containsKeyValuePairs(["id": edition.id.lowercased, "width": 45])
+    )
   }
 
   func testUpdateEdition() async throws {
@@ -57,33 +57,35 @@ final class EditionResolverTests: AppTestCase {
     // do some updates here ---vvv
     edition.editor = "Bob Smith"
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation UpdateEdition($input: UpdateEditionInput!) {
         edition: updateEdition(input: $input) {
           editor
         }
       }
       """,
-      expectedData: .containsKVPs(["editor": "Bob Smith"]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": edition.gqlMap()])
+      bearer: Seeded.tokens.allScopes,
+      withVariables: ["input": edition.gqlMap()],
+      .containsKeyValuePairs(["editor": "Bob Smith"])
+    )
   }
 
   func testDeleteEdition() async throws {
     let edition = await Entities.create().edition
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation DeleteEdition {
         edition: deleteEdition(id: "\(edition.id.uuidString)") {
           id
         }
       }
       """,
-      expectedData: .containsKVPs(["id": edition.id.lowercased]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": edition.gqlMap()])
+      bearer: Seeded.tokens.allScopes,
+      withVariables: ["input": edition.gqlMap()],
+      .containsKeyValuePairs(["id": edition.id.lowercased])
+    )
 
     let retrieved = try? await Current.db.find(edition.id)
     XCTAssertNil(retrieved)

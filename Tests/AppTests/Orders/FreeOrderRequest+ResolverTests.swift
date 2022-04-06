@@ -1,6 +1,5 @@
 import GraphQL
-import XCTVapor
-import XCTVaporUtils
+import XCTest
 
 @testable import App
 
@@ -9,8 +8,8 @@ final class FreeOrderRequestResolverTests: AppTestCase {
   func testQueryFreeOrder() async throws {
     let request = try await Current.db.create(FreeOrderRequest.mock)
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       query {
         request: getFreeOrderRequest(id: "\(request.id.uuidString)") {
           email
@@ -26,7 +25,7 @@ final class FreeOrderRequestResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs([
+      .containsKeyValuePairs([
         "email": request.email,
         "name": request.name,
         "requestedBooks": request.requestedBooks,
@@ -37,7 +36,7 @@ final class FreeOrderRequestResolverTests: AppTestCase {
         "addressCountry": request.addressCountry,
         "source": request.source,
       ])
-    ).run(Self.app)
+    )
   }
 
   func testQueryFreeOrderWithStreet2() async throws {
@@ -45,16 +44,16 @@ final class FreeOrderRequestResolverTests: AppTestCase {
     request.addressStreet2 = "hey ho howdy"
     try await Current.db.create(request)
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       query {
         request: getFreeOrderRequest(id: "\(request.id.uuidString)") {
           addressStreet2
         }
       }
       """,
-      expectedData: .containsKVPs(["addressStreet2": "hey ho howdy"])
-    ).run(Self.app)
+      .containsKeyValuePairs(["addressStreet2": "hey ho howdy"])
+    )
   }
 
   func testCreateFreeOrderRequest() throws {
@@ -71,8 +70,9 @@ final class FreeOrderRequestResolverTests: AppTestCase {
       "addressCountry": "US",
       "source": "https://zoecostarica.com",
     ])
-    GraphQLTest(
-      """
+
+    assertResponse(
+      to: /* gql */ """
       mutation CreateFreeOrderRequest($input: CreateFreeOrderRequestInput!) {
         request: createFreeOrderRequest(input: $input) {
           email
@@ -89,7 +89,8 @@ final class FreeOrderRequestResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs([
+      withVariables: ["input": request],
+      .containsKeyValuePairs([
         "email": "foo@bar.com",
         "requestedBooks": "La Senda Antigua",
         "aboutRequester": "not a freebie hunter",
@@ -102,6 +103,6 @@ final class FreeOrderRequestResolverTests: AppTestCase {
         "addressCountry": "US",
         "source": "https:\\/\\/zoecostarica.com",
       ])
-    ).run(Self.app, variables: ["input": request])
+    )
   }
 }

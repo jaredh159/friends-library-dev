@@ -25,11 +25,6 @@ let package = Package(
       from: "2.3.0"
     ),
     .package(
-      name: "VaporUtils",
-      url: "https://github.com/jaredh159/vapor-utils.git",
-      from: "3.0.0"
-    ),
-    .package(
       name: "QueuesFluentDriver",
       url: "https://github.com/m-barthelemy/vapor-queues-fluent-driver.git",
       from: "1.2.0"
@@ -55,7 +50,6 @@ let package = Package(
       path: "/Users/jared/gertie/duet"
     ),
     .package(
-      name: "XKit",
       path: "/Users/jared/gertie/x-kit"
     ),
     .package(
@@ -88,7 +82,7 @@ let package = Package(
         .product(name: "NonEmpty", package: "swift-nonempty"),
         .product(name: "Duet", package: "duet"),
         .product(name: "DuetSQL", package: "duet"),
-        .product(name: "XVapor", package: "XKit"),
+        .product(name: "XVapor", package: "x-kit"),
         .product(name: "XHttp", package: "x-http"),
         .product(name: "XSendGrid", package: "x-sendgrid"),
         .product(name: "XStripe", package: "x-stripe"),
@@ -96,7 +90,6 @@ let package = Package(
         "RomanNumeralKit",
         "GraphQLKit",
         "QueuesFluentDriver",
-        "VaporUtils",
         "ShellOut",
       ],
       swiftSettings: [
@@ -110,9 +103,9 @@ let package = Package(
         .target(name: "App"),
         .product(name: "Duet", package: "duet"),
         .product(name: "DuetSQL", package: "duet"),
+        .product(name: "XGraphQLTest", package: "x-kit"),
         .product(name: "XSendGrid", package: "x-sendgrid"),
         .product(name: "XCTVapor", package: "vapor"),
-        .product(name: "XCTVaporUtils", package: "VaporUtils"),
       ]
     ),
   ]

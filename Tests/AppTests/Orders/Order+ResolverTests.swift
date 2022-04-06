@@ -1,6 +1,5 @@
 import GraphQL
-import XCTVapor
-import XCTVaporUtils
+import XCTest
 
 @testable import App
 @testable import XStripe
@@ -16,59 +15,55 @@ final class OrderResolverTests: AppTestCase {
     let orderMap = order.gqlMap()
     let itemMap = item.gqlMap()
 
-    let query = """
-    mutation CreateOrderWithItems($order: CreateOrderInput!, $items: [CreateOrderItemInput!]!) {
-      order: createOrderWithItems(order: $order, items: $items) {
-        paymentId
-        printJobStatus
-        shippingLevel
-        email
-        addressName
-        addressStreet
-        addressCity
-        addressState
-        addressZip
-        addressCountry
-        lang
-        source
-        items {
-          quantity
-          unitPriceInCents
-          order {
-            itemOrderId: id
-          }
-          edition {
-            itemEditionId: id
+    assertResponse(
+      to: /* gql */ """
+      mutation CreateOrderWithItems($order: CreateOrderInput!, $items: [CreateOrderItemInput!]!) {
+        order: createOrderWithItems(order: $order, items: $items) {
+          paymentId
+          printJobStatus
+          shippingLevel
+          email
+          addressName
+          addressStreet
+          addressCity
+          addressState
+          addressZip
+          addressCountry
+          lang
+          source
+          items {
+            quantity
+            unitPriceInCents
+            order {
+              itemOrderId: id
+            }
+            edition {
+              itemEditionId: id
+            }
           }
         }
       }
-    }
-    """
-
-    let expectedData = GraphQLTest.ExpectedData.containsKVPs([
-      "paymentId": orderMap["paymentId"],
-      "itemOrderId": orderMap["id"],
-      "itemEditionId": entities.edition.id.lowercased,
-      "printJobStatus": orderMap["printJobStatus"],
-      "shippingLevel": orderMap["shippingLevel"],
-      "email": orderMap["email"],
-      "addressName": orderMap["addressName"],
-      "addressStreet": orderMap["addressStreet"],
-      "addressCity": orderMap["addressCity"],
-      "addressState": orderMap["addressState"],
-      "addressZip": orderMap["addressZip"],
-      "addressCountry": orderMap["addressCountry"],
-      "lang": orderMap["lang"],
-      "source": orderMap["source"],
-      "quantity": itemMap["quantity"],
-      "unitPriceInCents": itemMap["unitPrice"],
-    ])
-
-    GraphQLTest(
-      query,
-      expectedData: expectedData,
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["order": orderMap, "items": .array([itemMap])])
+      """,
+      withVariables: ["order": orderMap, "items": .array([itemMap])],
+      .containsKeyValuePairs([
+        "paymentId": orderMap["paymentId"],
+        "itemOrderId": orderMap["id"],
+        "itemEditionId": entities.edition.id.lowercased,
+        "printJobStatus": orderMap["printJobStatus"],
+        "shippingLevel": orderMap["shippingLevel"],
+        "email": orderMap["email"],
+        "addressName": orderMap["addressName"],
+        "addressStreet": orderMap["addressStreet"],
+        "addressCity": orderMap["addressCity"],
+        "addressState": orderMap["addressState"],
+        "addressZip": orderMap["addressZip"],
+        "addressCountry": orderMap["addressCountry"],
+        "lang": orderMap["lang"],
+        "source": orderMap["source"],
+        "quantity": itemMap["quantity"],
+        "unitPriceInCents": itemMap["unitPrice"],
+      ])
+    )
   }
 
   func testCreateOrderWithFreeRequestId() async throws {
@@ -80,8 +75,8 @@ final class OrderResolverTests: AppTestCase {
     item.orderId = order.id
     item.editionId = edition.id
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation CreateOrderWithItems($order: CreateOrderInput!, $items: [CreateOrderItemInput!]!) {
         order: createOrderWithItems(order: $order, items: $items) {
           freeOrderRequest {
@@ -90,9 +85,9 @@ final class OrderResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["id": req.id.lowercased]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["order": order.gqlMap(), "items": [item.gqlMap()]])
+      withVariables: ["order": order.gqlMap(), "items": [item.gqlMap()]],
+      .containsKeyValuePairs(["id": req.id.lowercased])
+    )
   }
 
   func testUpdateOrder() async throws {
@@ -102,8 +97,8 @@ final class OrderResolverTests: AppTestCase {
     order.printJobId = 12345
     order.printJobStatus = .accepted
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation UpdateOrder($input: UpdateOrderInput!) {
         order: updateOrder(input: $input) {
           printJobId
@@ -111,12 +106,12 @@ final class OrderResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs([
+      withVariables: ["input": order.gqlMap()],
+      .containsKeyValuePairs([
         "printJobId": 12345,
         "printJobStatus": "accepted",
-      ]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": order.gqlMap()])
+      ])
+    )
   }
 
   func testUpdateOrders() async throws {
@@ -127,17 +122,18 @@ final class OrderResolverTests: AppTestCase {
     order1.printJobId = 5555
     order2.printJobId = 3333
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation UpdateOrders($input: [UpdateOrderInput!]!) {
         order: updateOrders(input: $input) {
           printJobId
         }
       }
       """,
-      expectedData: .containsAll(["5555", "3333"]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": .array([order1.gqlMap(), order2.gqlMap()])])
+      bearer: Seeded.tokens.allScopes,
+      withVariables: ["input": .array([order1.gqlMap(), order2.gqlMap()])],
+      .containsAll(["5555", "3333"])
+    )
   }
 
   func testGetOrderDirectionId() async throws {
@@ -145,33 +141,33 @@ final class OrderResolverTests: AppTestCase {
     order.printJobId = 234432
     try await Current.db.create(order)
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       query {
         order: getOrder(id: "\(order.id.uuidString)") {
           printJobId
         }
       }
       """,
-      expectedData: .containsKVPs(["printJobId": 234432]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app)
+      .containsKeyValuePairs(["printJobId": 234432])
+    )
   }
 
   func testGetOrderDirectionIdFailsWithWrongTokenScope() async throws {
     Current.auth = .live
     let order = try await Current.db.create(Order.empty)
-    GraphQLTest(
-      """
+
+    assertResponse(
+      to: /* gql */ """
       query {
         order: getOrder(id: "\(order.id.uuidString)") {
           printJobId
         }
       }
       """,
-      expectedError: .status(.unauthorized),
-      headers: [.authorization: "Bearer \(Seeded.tokens.queryDownloads)"] // 👋 <-- bad scope
-    ).run(Self.app)
+      bearer: Seeded.tokens.queryDownloads, // 👋 <-- bad scope
+      isError: .withStatus(.unauthorized)
+    )
   }
 
   func testBrickOrder() async throws {
@@ -199,16 +195,17 @@ final class OrderResolverTests: AppTestCase {
       "stateHistory": .array(["foo", "bar"]),
     ])
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation BrickOrder($input: BrickOrderInput!) {
         brickOrder(input: $input) {
           success
         }
       }
       """,
-      expectedData: .containsKVPs(["success": true])
-    ).run(Self.app, variables: ["input": input])
+      withVariables: ["input": input],
+      .containsKeyValuePairs(["success": true])
+    )
 
     let retrieved = try await Current.db.find(order.id)
     XCTAssertEqual(retrieved.printJobStatus, .bricked)

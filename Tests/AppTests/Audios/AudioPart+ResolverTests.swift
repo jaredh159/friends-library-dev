@@ -1,5 +1,4 @@
-import XCTVapor
-import XCTVaporUtils
+import XCTest
 
 @testable import App
 
@@ -11,17 +10,18 @@ final class AudioPartResolverTests: AppTestCase {
     audioPart.audioId = entities.audio.id
     let map = audioPart.gqlMap()
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation CreateAudioPart($input: CreateAudioPartInput!) {
         part: createAudioPart(input: $input) {
           id
         }
       }
       """,
-      expectedData: .containsKVPs(["id": map["id"]]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": map])
+      bearer: Seeded.tokens.allScopes,
+      withVariables: ["input": map],
+      .containsKeyValuePairs(["id": map["id"]])
+    )
   }
 
   func testGetAudioPart() async throws {
@@ -29,8 +29,8 @@ final class AudioPartResolverTests: AppTestCase {
     let entities = await Entities.create()
     let audioPart = entities.audioPart
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       query GetAudioPart {
         audioPart: getAudioPart(id: "\(audioPart.id.uuidString)") {
           id
@@ -42,7 +42,8 @@ final class AudioPartResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs([
+      bearer: Seeded.tokens.allScopes,
+      .containsKeyValuePairs([
         "id": audioPart.id.lowercased,
         "logPath": DownloadableFile(
           edition: entities.edition,
@@ -50,9 +51,8 @@ final class AudioPartResolverTests: AppTestCase {
         )
         .logPath
         .replacingOccurrences(of: "/", with: "\\/"),
-      ]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app)
+      ])
+    )
   }
 
   func testUpdateAudioPart() async throws {
@@ -61,33 +61,35 @@ final class AudioPartResolverTests: AppTestCase {
     // do some updates here ---vvv
     audioPart.title = "new value"
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation UpdateAudioPart($input: UpdateAudioPartInput!) {
         audioPart: updateAudioPart(input: $input) {
           title
         }
       }
       """,
-      expectedData: .containsKVPs(["title": "new value"]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": audioPart.gqlMap()])
+      bearer: Seeded.tokens.allScopes,
+      withVariables: ["input": audioPart.gqlMap()],
+      .containsKeyValuePairs(["title": "new value"])
+    )
   }
 
   func testDeleteAudioPart() async throws {
     let audioPart = await Entities.create().audioPart
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation DeleteAudioPart {
         audioPart: deleteAudioPart(id: "\(audioPart.id.uuidString)") {
           id
         }
       }
       """,
-      expectedData: .containsKVPs(["id": audioPart.id.lowercased]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": audioPart.gqlMap()])
+      bearer: Seeded.tokens.allScopes,
+      withVariables: ["input": audioPart.gqlMap()],
+      .containsKeyValuePairs(["id": audioPart.id.lowercased])
+    )
 
     let retrieved = try? await Current.db.find(audioPart.id)
     XCTAssertNil(retrieved)

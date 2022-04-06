@@ -1,6 +1,4 @@
-import Fluent
-import XCTVapor
-import XCTVaporUtils
+import XCTest
 
 @testable import App
 
@@ -15,8 +13,8 @@ final class ArtifactProductionVersionResolverTests: AppTestCase {
     latest.version = .init(rawValue: UUID().uuidString)
     try await Current.db.create(latest)
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       query GetLatestArtifactProductionVersion {
         version: getLatestArtifactProductionVersion {
           id
@@ -24,26 +22,27 @@ final class ArtifactProductionVersionResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs([
+      .containsKeyValuePairs([
         "id": latest.id.lowercased,
         "sha": latest.version,
       ])
-    ).run(Self.app)
+    )
   }
 
   func testCreateArtifactProductionVersion() throws {
     let revision = UUID().uuidString
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation CreateArtifactProductionVersion($input: CreateArtifactProductionVersionInput!) {
         version: createArtifactProductionVersion(input: $input) {
           sha: version
         }
       }
       """,
-      expectedData: .containsKVPs(["sha": revision]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.mutateArtifactProductionVersions)"]
-    ).run(Self.app, variables: ["input": .dictionary(["version": .string(revision)])])
+      bearer: Seeded.tokens.mutateArtifactProductionVersions,
+      withVariables: ["input": .dictionary(["version": .string(revision)])],
+      .containsKeyValuePairs(["sha": revision])
+    )
   }
 }

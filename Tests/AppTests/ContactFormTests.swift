@@ -1,32 +1,32 @@
-import Foundation
 import GraphQL
 import XCTVapor
-import XCTVaporUtils
 
 @testable import App
 
 final class ContactFormTests: AppTestCase {
 
+  let SUBMIT_CONTACT_FORM_MUTATION = /* gql */ """
+  mutation SubmitContactForm($input: SubmitContactFormInput!) {
+    submitContactForm(input: $input) {
+      success
+    }
+  }
+  """
+
   func testSubmitContactFormEnglish() async throws {
     Current.date = { Date(timeIntervalSinceReferenceDate: 0) }
-    let input: Map = .dictionary([
-      "lang": "en",
-      "name": "Bob Villa",
-      "email": "bob@thisoldhouse.com",
-      "subject": "tech",
-      "message": "hey there",
 
-    ])
-    GraphQLTest(
-      """
-      mutation SubmitContactForm($input: SubmitContactFormInput!) {
-        submitContactForm(input: $input) {
-          success
-        }
-      }
-      """,
-      expectedData: .containsKVPs(["success": true])
-    ).run(Self.app, variables: ["input": input])
+    assertResponse(
+      to: SUBMIT_CONTACT_FORM_MUTATION,
+      withVariables: ["input": .dictionary([
+        "lang": "en",
+        "name": "Bob Villa",
+        "email": "bob@thisoldhouse.com",
+        "subject": "tech",
+        "message": "hey there",
+      ])],
+      .containsKeyValuePairs(["success": true])
+    )
 
     let email = sent.emails.first
     XCTAssertEqual(sent.emails.count, 1)
@@ -43,24 +43,18 @@ final class ContactFormTests: AppTestCase {
 
   func testSubmitContactFormSpanish() async throws {
     Current.date = { Date(timeIntervalSinceReferenceDate: 0) }
-    let input: Map = .dictionary([
-      "lang": "es",
-      "name": "Pablo Smith",
-      "email": "pablo@mexico.gov",
-      "subject": "other",
-      "message": "hola",
 
-    ])
-    GraphQLTest(
-      """
-      mutation SubmitContactForm($input: SubmitContactFormInput!) {
-        submitContactForm(input: $input) {
-          success
-        }
-      }
-      """,
-      expectedData: .containsKVPs(["success": true])
-    ).run(Self.app, variables: ["input": input])
+    assertResponse(
+      to: SUBMIT_CONTACT_FORM_MUTATION,
+      withVariables: ["input": .dictionary([
+        "lang": "es",
+        "name": "Pablo Smith",
+        "email": "pablo@mexico.gov",
+        "subject": "other",
+        "message": "hola",
+      ])],
+      .containsKeyValuePairs(["success": true])
+    )
 
     let email = sent.emails.first
     XCTAssertEqual(sent.emails.count, 1)

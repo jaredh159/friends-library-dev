@@ -1,7 +1,5 @@
-import Foundation
 import GraphQL
 import XCTest
-import XCTVaporUtils
 
 @testable import App
 
@@ -28,8 +26,8 @@ final class PrintJobsTests: AppTestCase {
       "address": ShippingAddress.mock.gqlMap(),
     ])
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       query GetPrintJobExploratoryMetadata($input: GetPrintJobExploratoryMetadataInput!) {
         getPrintJobExploratoryMetadata(input: $input) {
           shippingInCents
@@ -39,13 +37,14 @@ final class PrintJobsTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs([
+      withVariables: ["input": input],
+      .containsKeyValuePairs([
         "shippingInCents": 999,
         "taxesInCents": 333,
         "feesInCents": 150,
         "creditCardFeeOffsetInCents": 88,
       ])
-    ).run(Self.app, variables: ["input": input])
+    )
   }
 
   func testCreatePrintJob() async throws {

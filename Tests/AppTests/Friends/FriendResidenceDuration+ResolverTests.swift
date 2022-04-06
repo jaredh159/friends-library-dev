@@ -1,5 +1,4 @@
-import XCTVapor
-import XCTVaporUtils
+import XCTest
 
 @testable import App
 
@@ -11,24 +10,24 @@ final class FriendResidenceDurationResolverTests: AppTestCase {
     friendResidenceDuration.friendResidenceId = friendResidence.id
     let map = friendResidenceDuration.gqlMap()
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation CreateFriendResidenceDuration($input: CreateFriendResidenceDurationInput!) {
         friendResidenceDuration: createFriendResidenceDuration(input: $input) {
           id
         }
       }
       """,
-      expectedData: .containsKVPs(["id": map["id"]]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": map])
+      withVariables: ["input": map],
+      .containsKeyValuePairs(["id": map["id"]])
+    )
   }
 
   func testGetFriendResidenceDuration() async throws {
     let friendResidenceDuration = await Entities.create().friendResidenceDuration
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       query GetFriendResidenceDuration {
         friendResidenceDuration: getFriendResidenceDuration(id: "\(friendResidenceDuration.id
         .uuidString)") {
@@ -36,9 +35,8 @@ final class FriendResidenceDurationResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["id": friendResidenceDuration.id.lowercased]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app)
+      .containsKeyValuePairs(["id": friendResidenceDuration.id.lowercased])
+    )
   }
 
   func testUpdateFriendResidenceDuration() async throws {
@@ -48,24 +46,24 @@ final class FriendResidenceDurationResolverTests: AppTestCase {
     friendResidenceDuration.start = 1620
     friendResidenceDuration.end = 1630
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation UpdateFriendResidenceDuration($input: UpdateFriendResidenceDurationInput!) {
         friendResidenceDuration: updateFriendResidenceDuration(input: $input) {
           start
         }
       }
       """,
-      expectedData: .containsKVPs(["start": 1620]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": friendResidenceDuration.gqlMap()])
+      withVariables: ["input": friendResidenceDuration.gqlMap()],
+      .containsKeyValuePairs(["start": 1620])
+    )
   }
 
   func testDeleteFriendResidenceDuration() async throws {
     let friendResidenceDuration = await Entities.create().friendResidenceDuration
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation DeleteFriendResidenceDuration {
         friendResidenceDuration: deleteFriendResidenceDuration(id: "\(friendResidenceDuration.id
         .uuidString)") {
@@ -73,9 +71,9 @@ final class FriendResidenceDurationResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["id": friendResidenceDuration.id.lowercased]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": friendResidenceDuration.gqlMap()])
+      withVariables: ["input": friendResidenceDuration.gqlMap()],
+      .containsKeyValuePairs(["id": friendResidenceDuration.id.lowercased])
+    )
 
     let retrieved = try? await Current.db.find(
       FriendResidenceDuration.self,

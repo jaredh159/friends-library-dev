@@ -1,5 +1,4 @@
-import XCTVapor
-import XCTVaporUtils
+import XCTest
 
 @testable import App
 
@@ -11,33 +10,32 @@ final class FriendResidenceResolverTests: AppTestCase {
     friendResidence.friendId = friend.id
     let map = friendResidence.gqlMap()
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation CreateFriendResidence($input: CreateFriendResidenceInput!) {
         friendResidence: createFriendResidence(input: $input) {
           id
         }
       }
       """,
-      expectedData: .containsKVPs(["id": map["id"]]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": map])
+      withVariables: ["input": map],
+      .containsKeyValuePairs(["id": map["id"]])
+    )
   }
 
   func testGetFriendResidence() async throws {
     let friendResidence = await Entities.create().friendResidence
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       query GetFriendResidence {
         friendResidence: getFriendResidence(id: "\(friendResidence.id.uuidString)") {
           id
         }
       }
       """,
-      expectedData: .containsKVPs(["id": friendResidence.id.lowercased]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app)
+      .containsKeyValuePairs(["id": friendResidence.id.lowercased])
+    )
   }
 
   func testUpdateFriendResidence() async throws {
@@ -46,33 +44,33 @@ final class FriendResidenceResolverTests: AppTestCase {
     // do some updates here ---vvv
     friendResidence.city = "New value"
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation UpdateFriendResidence($input: UpdateFriendResidenceInput!) {
         friendResidence: updateFriendResidence(input: $input) {
           city
         }
       }
       """,
-      expectedData: .containsKVPs(["city": "New value"]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": friendResidence.gqlMap()])
+      withVariables: ["input": friendResidence.gqlMap()],
+      .containsKeyValuePairs(["city": "New value"])
+    )
   }
 
   func testDeleteFriendResidence() async throws {
     let friendResidence = await Entities.create().friendResidence
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation DeleteFriendResidence {
         friendResidence: deleteFriendResidence(id: "\(friendResidence.id.uuidString)") {
           id
         }
       }
       """,
-      expectedData: .containsKVPs(["id": friendResidence.id.lowercased]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": friendResidence.gqlMap()])
+      withVariables: ["input": friendResidence.gqlMap()],
+      .containsKeyValuePairs(["id": friendResidence.id.lowercased])
+    )
 
     let retrieved = try? await Current.db.find(friendResidence.id)
     XCTAssertNil(retrieved)
