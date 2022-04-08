@@ -410,7 +410,7 @@ export default class App extends React.Component<Record<string, never>, State> {
             <Select
               label="Friend"
               value={friendIndex}
-              options={friendData.map((f) => f.name)}
+              options={friendData.map((f) => f.alphabeticalName)}
               onChange={(e) => {
                 this.setState({
                   friendIndex: Number(e.target.value),

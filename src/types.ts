@@ -21,6 +21,7 @@ export interface DocumentData {
 
 export interface FriendData {
   name: string;
+  alphabeticalName: string;
   description: string;
   documents: DocumentData[];
 }

@@ -40,6 +40,7 @@ export interface GetFriends_friends_documents {
 export interface GetFriends_friends {
   __typename: 'Friend';
   name: string;
+  alphabeticalName: string;
   lang: Lang;
   description: string;
   isCompilations: boolean;

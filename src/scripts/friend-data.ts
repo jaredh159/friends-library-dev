@@ -4,7 +4,7 @@ import { resolve } from 'path';
 import exec from 'x-exec';
 import fetch from 'cross-fetch';
 import env from '@friends-library/env';
-import { getClient, gql } from '@friends-library/db';
+import { getClient, gql, writable } from '@friends-library/db';
 import { PrintSize } from '@friends-library/types';
 import { FriendData } from '../types';
 import { GetFriends } from '../graphql/GetFriends';
@@ -17,9 +17,13 @@ async function main(): Promise<void> {
   if (!process.env.CI) {
     var client = getClient({ env: `infer_node`, process, fetch });
     const { data } = await client.query<GetFriends>({ query: QUERY });
-    for (const friend of data.friends) {
+    const sortedFriends = writable(data.friends).sort((a, b) =>
+      a.alphabeticalName < b.alphabeticalName ? -1 : 1,
+    );
+    for (const friend of sortedFriends) {
       friends.push({
         name: friend.name,
+        alphabeticalName: friend.alphabeticalName,
         description: friend.description,
         documents: friend.documents.map((doc) => ({
           lang: friend.lang,
@@ -67,6 +71,7 @@ const QUERY = gql`
   query GetFriends {
     friends: getFriends {
       name
+      alphabeticalName
       lang
       description
       isCompilations
