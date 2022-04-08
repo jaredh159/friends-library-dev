@@ -39,5 +39,21 @@
     "@friends-library/dev": "^4.5.2",
     "x-chalk": "^1.0.1",
     "x-exec": "^1.2.0"
+  },
+  "duet": {
+    "modelDirs": {
+      "OrderItem": "/Orders",
+      "FreeOrderRequest": "/Orders",
+      "FriendQuote": "/Friends",
+      "FriendResidence": "/Friends",
+      "FriendResidenceDuration": "/Friends",
+      "EditionChapter": "/Editions",
+      "EditionImpression": "/Editions",
+      "DocumentTag": "/Documents",
+      "RelatedDocument": "/Documents",
+      "AudioPart": "/Audios",
+      "TokenScope": "/Tokens",
+      "Isbn": ""
+    }
   }
 }
