@@ -1,3 +1,12 @@
+* {
+  /* this seems to prevent an issue that cropped up
+     where the spines of some of our larger books
+     were partly see-through when puppeteer was
+     taking screenshots, affecting images used
+     by the apps, and some internal admin-site views */
+  backface-visibility: hidden;
+}
+
 body {
   background: #eaeaea;
 }
