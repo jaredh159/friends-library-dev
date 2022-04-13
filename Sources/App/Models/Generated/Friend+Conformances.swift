@@ -8,7 +8,35 @@ extension Friend: ApiModel {
 
 extension Friend: Model {
   static let tableName = M11.tableName
-  static var isSoftDeletable: Bool { true }
+
+  func postgresData(for column: ColumnName) -> Postgres.Data {
+    switch column {
+      case .id:
+        return .id(self)
+      case .lang:
+        return .enum(lang)
+      case .name:
+        return .string(name)
+      case .slug:
+        return .string(slug)
+      case .gender:
+        return .enum(gender)
+      case .description:
+        return .string(description)
+      case .born:
+        return .int(born)
+      case .died:
+        return .int(died)
+      case .published:
+        return .date(published)
+      case .createdAt:
+        return .date(createdAt)
+      case .updatedAt:
+        return .date(updatedAt)
+      case .deletedAt:
+        return .date(deletedAt)
+    }
+  }
 }
 
 extension Friend {
@@ -44,40 +72,7 @@ extension Friend {
       .published: .date(published),
       .createdAt: .currentTimestamp,
       .updatedAt: .currentTimestamp,
+      .deletedAt: .date(deletedAt),
     ]
   }
 }
-
-extension Friend: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint<Friend>) -> Bool {
-    switch constraint.column {
-      case .id:
-        return constraint.isSatisfiedBy(.id(self))
-      case .lang:
-        return constraint.isSatisfiedBy(.enum(lang))
-      case .name:
-        return constraint.isSatisfiedBy(.string(name))
-      case .slug:
-        return constraint.isSatisfiedBy(.string(slug))
-      case .gender:
-        return constraint.isSatisfiedBy(.enum(gender))
-      case .description:
-        return constraint.isSatisfiedBy(.string(description))
-      case .born:
-        return constraint.isSatisfiedBy(.int(born))
-      case .died:
-        return constraint.isSatisfiedBy(.int(died))
-      case .published:
-        return constraint.isSatisfiedBy(.date(published))
-      case .createdAt:
-        return constraint.isSatisfiedBy(.date(createdAt))
-      case .updatedAt:
-        return constraint.isSatisfiedBy(.date(updatedAt))
-      case .deletedAt:
-        return constraint.isSatisfiedBy(.date(deletedAt))
-    }
-  }
-}
-
-extension Friend: Auditable {}
-extension Friend: Touchable {}

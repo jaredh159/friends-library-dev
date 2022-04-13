@@ -8,7 +8,31 @@ extension Edition: ApiModel {
 
 extension Edition: Model {
   static let tableName = M17.tableName
-  static var isSoftDeletable: Bool { true }
+
+  func postgresData(for column: ColumnName) -> Postgres.Data {
+    switch column {
+      case .id:
+        return .id(self)
+      case .documentId:
+        return .uuid(documentId)
+      case .type:
+        return .enum(type)
+      case .editor:
+        return .string(editor)
+      case .isDraft:
+        return .bool(isDraft)
+      case .paperbackSplits:
+        return .intArray(paperbackSplits?.array)
+      case .paperbackOverrideSize:
+        return .enum(paperbackOverrideSize)
+      case .createdAt:
+        return .date(createdAt)
+      case .updatedAt:
+        return .date(updatedAt)
+      case .deletedAt:
+        return .date(deletedAt)
+    }
+  }
 }
 
 extension Edition {
@@ -40,36 +64,7 @@ extension Edition {
       .paperbackOverrideSize: .enum(paperbackOverrideSize),
       .createdAt: .currentTimestamp,
       .updatedAt: .currentTimestamp,
+      .deletedAt: .date(deletedAt),
     ]
   }
 }
-
-extension Edition: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint<Edition>) -> Bool {
-    switch constraint.column {
-      case .id:
-        return constraint.isSatisfiedBy(.id(self))
-      case .documentId:
-        return constraint.isSatisfiedBy(.uuid(documentId))
-      case .type:
-        return constraint.isSatisfiedBy(.enum(type))
-      case .editor:
-        return constraint.isSatisfiedBy(.string(editor))
-      case .isDraft:
-        return constraint.isSatisfiedBy(.bool(isDraft))
-      case .paperbackSplits:
-        return constraint.isSatisfiedBy(.intArray(paperbackSplits?.array))
-      case .paperbackOverrideSize:
-        return constraint.isSatisfiedBy(.enum(paperbackOverrideSize))
-      case .createdAt:
-        return constraint.isSatisfiedBy(.date(createdAt))
-      case .updatedAt:
-        return constraint.isSatisfiedBy(.date(updatedAt))
-      case .deletedAt:
-        return constraint.isSatisfiedBy(.date(deletedAt))
-    }
-  }
-}
-
-extension Edition: Auditable {}
-extension Edition: Touchable {}

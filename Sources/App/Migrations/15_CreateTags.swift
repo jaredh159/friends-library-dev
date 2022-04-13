@@ -58,7 +58,7 @@ extension DocumentTag {
 }
 
 extension DocumentTag.TagType: PostgresEnum {
-  var dataType: String {
+  var typeName: String {
     DocumentTag.M15.DocumentTagEnum.name
   }
 }

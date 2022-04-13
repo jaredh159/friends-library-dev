@@ -8,7 +8,19 @@ extension DocumentTag: ApiModel {
 
 extension DocumentTag: Model {
   static let tableName = M15.tableName
-  static var isSoftDeletable: Bool { false }
+
+  func postgresData(for column: ColumnName) -> Postgres.Data {
+    switch column {
+      case .id:
+        return .id(self)
+      case .documentId:
+        return .uuid(documentId)
+      case .type:
+        return .enum(type)
+      case .createdAt:
+        return .date(createdAt)
+    }
+  }
 }
 
 extension DocumentTag {
@@ -32,20 +44,3 @@ extension DocumentTag {
     ]
   }
 }
-
-extension DocumentTag: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint<DocumentTag>) -> Bool {
-    switch constraint.column {
-      case .id:
-        return constraint.isSatisfiedBy(.id(self))
-      case .documentId:
-        return constraint.isSatisfiedBy(.uuid(documentId))
-      case .type:
-        return constraint.isSatisfiedBy(.enum(type))
-      case .createdAt:
-        return constraint.isSatisfiedBy(.date(createdAt))
-    }
-  }
-}
-
-extension DocumentTag: Auditable {}

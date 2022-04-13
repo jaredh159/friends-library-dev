@@ -8,7 +8,41 @@ extension Document: ApiModel {
 
 extension Document: Model {
   static let tableName = M14.tableName
-  static var isSoftDeletable: Bool { true }
+
+  func postgresData(for column: ColumnName) -> Postgres.Data {
+    switch column {
+      case .id:
+        return .id(self)
+      case .friendId:
+        return .uuid(friendId)
+      case .altLanguageId:
+        return .uuid(altLanguageId)
+      case .title:
+        return .string(title)
+      case .slug:
+        return .string(slug)
+      case .filename:
+        return .string(filename)
+      case .published:
+        return .int(published)
+      case .originalTitle:
+        return .string(originalTitle)
+      case .incomplete:
+        return .bool(incomplete)
+      case .description:
+        return .string(description)
+      case .partialDescription:
+        return .string(partialDescription)
+      case .featuredDescription:
+        return .string(featuredDescription)
+      case .createdAt:
+        return .date(createdAt)
+      case .updatedAt:
+        return .date(updatedAt)
+      case .deletedAt:
+        return .date(deletedAt)
+    }
+  }
 }
 
 extension Document {
@@ -50,46 +84,7 @@ extension Document {
       .featuredDescription: .string(featuredDescription),
       .createdAt: .currentTimestamp,
       .updatedAt: .currentTimestamp,
+      .deletedAt: .date(deletedAt),
     ]
   }
 }
-
-extension Document: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint<Document>) -> Bool {
-    switch constraint.column {
-      case .id:
-        return constraint.isSatisfiedBy(.id(self))
-      case .friendId:
-        return constraint.isSatisfiedBy(.uuid(friendId))
-      case .altLanguageId:
-        return constraint.isSatisfiedBy(.uuid(altLanguageId))
-      case .title:
-        return constraint.isSatisfiedBy(.string(title))
-      case .slug:
-        return constraint.isSatisfiedBy(.string(slug))
-      case .filename:
-        return constraint.isSatisfiedBy(.string(filename))
-      case .published:
-        return constraint.isSatisfiedBy(.int(published))
-      case .originalTitle:
-        return constraint.isSatisfiedBy(.string(originalTitle))
-      case .incomplete:
-        return constraint.isSatisfiedBy(.bool(incomplete))
-      case .description:
-        return constraint.isSatisfiedBy(.string(description))
-      case .partialDescription:
-        return constraint.isSatisfiedBy(.string(partialDescription))
-      case .featuredDescription:
-        return constraint.isSatisfiedBy(.string(featuredDescription))
-      case .createdAt:
-        return constraint.isSatisfiedBy(.date(createdAt))
-      case .updatedAt:
-        return constraint.isSatisfiedBy(.date(updatedAt))
-      case .deletedAt:
-        return constraint.isSatisfiedBy(.date(deletedAt))
-    }
-  }
-}
-
-extension Document: Auditable {}
-extension Document: Touchable {}

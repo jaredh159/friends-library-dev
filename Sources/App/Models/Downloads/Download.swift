@@ -97,7 +97,7 @@ extension Download {
 }
 
 extension EditionType: PostgresEnum {
-  var dataType: String {
+  var typeName: String {
     Download.M1.EditionTypeEnum.name
   }
 }

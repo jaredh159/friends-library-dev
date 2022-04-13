@@ -8,7 +8,27 @@ extension EditionImpression: ApiModel {
 
 extension EditionImpression: Model {
   static let tableName = M18.tableName
-  static var isSoftDeletable: Bool { false }
+
+  func postgresData(for column: ColumnName) -> Postgres.Data {
+    switch column {
+      case .id:
+        return .id(self)
+      case .editionId:
+        return .uuid(editionId)
+      case .adocLength:
+        return .int(adocLength)
+      case .paperbackSizeVariant:
+        return .enum(paperbackSizeVariant)
+      case .paperbackVolumes:
+        return .intArray(paperbackVolumes.array)
+      case .publishedRevision:
+        return .string(publishedRevision.rawValue)
+      case .productionToolchainRevision:
+        return .string(productionToolchainRevision.rawValue)
+      case .createdAt:
+        return .date(createdAt)
+    }
+  }
 }
 
 extension EditionImpression {
@@ -40,28 +60,3 @@ extension EditionImpression {
     ]
   }
 }
-
-extension EditionImpression: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint<EditionImpression>) -> Bool {
-    switch constraint.column {
-      case .id:
-        return constraint.isSatisfiedBy(.id(self))
-      case .editionId:
-        return constraint.isSatisfiedBy(.uuid(editionId))
-      case .adocLength:
-        return constraint.isSatisfiedBy(.int(adocLength))
-      case .paperbackSizeVariant:
-        return constraint.isSatisfiedBy(.enum(paperbackSizeVariant))
-      case .paperbackVolumes:
-        return constraint.isSatisfiedBy(.intArray(paperbackVolumes.array))
-      case .publishedRevision:
-        return constraint.isSatisfiedBy(.string(publishedRevision.rawValue))
-      case .productionToolchainRevision:
-        return constraint.isSatisfiedBy(.string(productionToolchainRevision.rawValue))
-      case .createdAt:
-        return constraint.isSatisfiedBy(.date(createdAt))
-    }
-  }
-}
-
-extension EditionImpression: Auditable {}

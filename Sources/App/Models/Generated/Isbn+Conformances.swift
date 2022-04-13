@@ -8,7 +8,21 @@ extension Isbn: ApiModel {
 
 extension Isbn: Model {
   static let tableName = M19.tableName
-  static var isSoftDeletable: Bool { false }
+
+  func postgresData(for column: ColumnName) -> Postgres.Data {
+    switch column {
+      case .id:
+        return .id(self)
+      case .code:
+        return .string(code.rawValue)
+      case .editionId:
+        return .uuid(editionId)
+      case .createdAt:
+        return .date(createdAt)
+      case .updatedAt:
+        return .date(updatedAt)
+    }
+  }
 }
 
 extension Isbn {
@@ -34,23 +48,3 @@ extension Isbn {
     ]
   }
 }
-
-extension Isbn: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint<Isbn>) -> Bool {
-    switch constraint.column {
-      case .id:
-        return constraint.isSatisfiedBy(.id(self))
-      case .code:
-        return constraint.isSatisfiedBy(.string(code.rawValue))
-      case .editionId:
-        return constraint.isSatisfiedBy(.uuid(editionId))
-      case .createdAt:
-        return constraint.isSatisfiedBy(.date(createdAt))
-      case .updatedAt:
-        return constraint.isSatisfiedBy(.date(updatedAt))
-    }
-  }
-}
-
-extension Isbn: Auditable {}
-extension Isbn: Touchable {}

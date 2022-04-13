@@ -74,5 +74,5 @@ extension Friend {
 }
 
 extension Friend.Gender: PostgresEnum {
-  var dataType: String { Friend.M11.GenderEnum.name }
+  var typeName: String { Friend.M11.GenderEnum.name }
 }

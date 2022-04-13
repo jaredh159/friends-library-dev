@@ -8,7 +8,23 @@ extension RelatedDocument: ApiModel {
 
 extension RelatedDocument: Model {
   static let tableName = M23.tableName
-  static var isSoftDeletable: Bool { false }
+
+  func postgresData(for column: ColumnName) -> Postgres.Data {
+    switch column {
+      case .id:
+        return .id(self)
+      case .description:
+        return .string(description)
+      case .documentId:
+        return .uuid(documentId)
+      case .parentDocumentId:
+        return .uuid(parentDocumentId)
+      case .createdAt:
+        return .date(createdAt)
+      case .updatedAt:
+        return .date(updatedAt)
+    }
+  }
 }
 
 extension RelatedDocument {
@@ -36,25 +52,3 @@ extension RelatedDocument {
     ]
   }
 }
-
-extension RelatedDocument: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint<RelatedDocument>) -> Bool {
-    switch constraint.column {
-      case .id:
-        return constraint.isSatisfiedBy(.id(self))
-      case .description:
-        return constraint.isSatisfiedBy(.string(description))
-      case .documentId:
-        return constraint.isSatisfiedBy(.uuid(documentId))
-      case .parentDocumentId:
-        return constraint.isSatisfiedBy(.uuid(parentDocumentId))
-      case .createdAt:
-        return constraint.isSatisfiedBy(.date(createdAt))
-      case .updatedAt:
-        return constraint.isSatisfiedBy(.date(updatedAt))
-    }
-  }
-}
-
-extension RelatedDocument: Auditable {}
-extension RelatedDocument: Touchable {}

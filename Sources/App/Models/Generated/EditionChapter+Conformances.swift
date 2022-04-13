@@ -8,7 +8,31 @@ extension EditionChapter: ApiModel {
 
 extension EditionChapter: Model {
   static let tableName = M22.tableName
-  static var isSoftDeletable: Bool { false }
+
+  func postgresData(for column: ColumnName) -> Postgres.Data {
+    switch column {
+      case .id:
+        return .id(self)
+      case .editionId:
+        return .uuid(editionId)
+      case .order:
+        return .int(order)
+      case .shortHeading:
+        return .string(shortHeading)
+      case .isIntermediateTitle:
+        return .bool(isIntermediateTitle)
+      case .customId:
+        return .string(customId)
+      case .sequenceNumber:
+        return .int(sequenceNumber)
+      case .nonSequenceTitle:
+        return .string(nonSequenceTitle)
+      case .createdAt:
+        return .date(createdAt)
+      case .updatedAt:
+        return .date(updatedAt)
+    }
+  }
 }
 
 extension EditionChapter {
@@ -44,33 +68,3 @@ extension EditionChapter {
     ]
   }
 }
-
-extension EditionChapter: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint<EditionChapter>) -> Bool {
-    switch constraint.column {
-      case .id:
-        return constraint.isSatisfiedBy(.id(self))
-      case .editionId:
-        return constraint.isSatisfiedBy(.uuid(editionId))
-      case .order:
-        return constraint.isSatisfiedBy(.int(order))
-      case .shortHeading:
-        return constraint.isSatisfiedBy(.string(shortHeading))
-      case .isIntermediateTitle:
-        return constraint.isSatisfiedBy(.bool(isIntermediateTitle))
-      case .customId:
-        return constraint.isSatisfiedBy(.string(customId))
-      case .sequenceNumber:
-        return constraint.isSatisfiedBy(.int(sequenceNumber))
-      case .nonSequenceTitle:
-        return constraint.isSatisfiedBy(.string(nonSequenceTitle))
-      case .createdAt:
-        return constraint.isSatisfiedBy(.date(createdAt))
-      case .updatedAt:
-        return constraint.isSatisfiedBy(.date(updatedAt))
-    }
-  }
-}
-
-extension EditionChapter: Auditable {}
-extension EditionChapter: Touchable {}
