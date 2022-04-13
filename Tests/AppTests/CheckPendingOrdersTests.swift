@@ -1,3 +1,4 @@
+import DuetSQL
 import Foundation
 import Vapor
 import XCTest
@@ -34,12 +35,10 @@ final class CheckPendingOrdersTests: AppTestCase {
 
   func testSlackLogsErrorIfDbThrows() async throws {
     let existingDb = Current.db
-    Current.db = ThrowingDatabaseClient()
+    Current.db = ThrowingClient()
     await OrderPrintJobCoordinator.checkPendingOrders()
-    XCTAssertEqual(
-      sent.slacks,
-      [.error("Error querying orders & print jobs: Abort.501: ThrowingDatabaseClient.select")]
-    )
+    XCTAssertEqual(sent.slacks.count, 1)
+    XCTAssertEqual(sent.slacks[0].channel, .errors)
     Current.db = existingDb
   }
 

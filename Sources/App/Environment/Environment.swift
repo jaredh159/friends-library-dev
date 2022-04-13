@@ -7,7 +7,7 @@ import XStripe
 struct Environment {
   var uuid: () -> UUID = UUID.init
   var date: () -> Date = Date.init
-  var db: EntityClient = ThrowingDatabaseClient()
+  var db: DuetSQL.Client = ThrowingClient()
   var auth: Auth = .live
   var logger = Logger(label: "api.friendslibrary")
   var slackClient: FlpSlack.Client = .init()

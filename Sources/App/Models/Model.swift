@@ -70,7 +70,3 @@ extension OptionalChild {
     return model
   }
 }
-
-protocol EntityClient: DuetSQL.Client {
-  func entities() async throws -> PreloadedEntities
-}

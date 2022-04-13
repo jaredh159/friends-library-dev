@@ -2,41 +2,6 @@ import DuetSQL
 
 @testable import App
 
-class MockEntityRepository: EntityRepository {
-  let db: MockDatabase
-  var entities: PreloadedEntities?
-
-  func getEntities() async throws -> PreloadedEntities {
-    if let entities = entities {
-      return entities
-    }
-
-    let store = PreloadedEntitiesStore(
-      friends: db.friends,
-      friendQuotes: db.friendQuotes,
-      friendResidences: db.friendResidences,
-      friendResidenceDurations: db.friendResidenceDurations,
-      documents: db.documents,
-      documentTags: db.documentTags,
-      relatedDocuments: db.relatedDocuments,
-      editions: db.editions,
-      editionImpressions: db.editionImpressions,
-      editionChapters: db.editionChapters,
-      audios: db.audios,
-      audioParts: db.audioParts,
-      isbns: db.isbns
-    )
-
-    let loaded = PreloadedEntities(store: store)
-    entities = loaded
-    return loaded
-  }
-
-  init(db: MockDatabase) {
-    self.db = db
-  }
-}
-
 final class MockDatabase: MemoryStore {
   func keyPath<M: Model>(to Model: M.Type) -> Models<M> {
     switch Model.tableName {
@@ -107,77 +72,112 @@ final class MockDatabase: MemoryStore {
   var documentTags: [DocumentTag.Id: DocumentTag] = [:]
 }
 
-class MockClient: EntityClient {
-  let db = MockDatabase()
-  let client: MemoryClient<MockDatabase>
-  lazy var entityRepo: EntityRepository = MockEntityRepository(db: self.db)
+class MockClient: Client {
+  private let db = MockDatabase()
+  private let client: MemoryClient<MockDatabase>
+  private var _entityClient: Client?
 
   init() {
     client = MemoryClient(store: db)
   }
 
-  func entities() async throws -> PreloadedEntities {
-    try await entityRepo.getEntities()
+  private var entityClient: DuetSQL.Client {
+    get async throws {
+      if let client = _entityClient {
+        return client
+      } else {
+        let client = MemoryClient(store: preloadedEntities(from: db))
+        _entityClient = client
+        return client
+      }
+    }
+  }
+
+  private func flushEntities() async {
+    _entityClient = nil
+    await LegacyRest.cachedData.flush()
   }
 
   func query<M: Model>(_ Model: M.Type) -> DuetQuery<M> {
-    .init(db: self, constraints: [], limit: nil, order: nil)
+    .init(db: self)
   }
 
   func select<M: Model>(
     _ Model: M.Type,
-    where constraints: [SQL.WhereConstraint<M>]?,
-    orderBy order: SQL.Order<M>?,
-    limit: Int?
+    where constraint: SQL.WhereConstraint<M> = .always,
+    orderBy order: SQL.Order<M>? = nil,
+    limit: Int? = nil
   ) async throws -> [M] {
     if M.isPreloaded {
-      return try await entityRepo.getEntities()
-        .select(Model.self, where: constraints, orderBy: order, limit: limit)
+      return try await entityClient.select(
+        Model.self,
+        where: constraint,
+        orderBy: order,
+        limit: limit
+      )
     }
-    return try await client.select(Model.self, where: constraints, orderBy: order, limit: limit)
+    return try await client.select(Model.self, where: constraint, orderBy: order, limit: limit)
   }
 
   func create<M: Model>(_ models: [M]) async throws -> [M] {
     let inserted = try await client.create(models)
-    if M.isPreloaded { await entityRepo.flush() }
+    if M.isPreloaded { await flushEntities() }
     return inserted
   }
 
   func delete<M>(
     _ Model: M.Type,
-    where constraints: [SQL.WhereConstraint<M>],
-    orderBy order: SQL.Order<M>?,
-    limit: Int?
+    where constraint: SQL.WhereConstraint<M> = .always,
+    orderBy order: SQL.Order<M>? = nil,
+    limit: Int? = nil
   ) async throws -> [M] where M: Model {
     let deleted = try await client.delete(
       Model.self,
-      where: constraints,
+      where: constraint,
       orderBy: order,
       limit: limit
     )
-    if M.isPreloaded { await entityRepo.flush() }
+    if M.isPreloaded { await flushEntities() }
     return deleted
   }
 
   func forceDelete<M: Model>(
     _ Model: M.Type,
-    where constraints: [SQL.WhereConstraint<M>],
-    orderBy order: SQL.Order<M>?,
-    limit: Int?
+    where constraint: SQL.WhereConstraint<M> = .always,
+    orderBy order: SQL.Order<M>? = nil,
+    limit: Int? = nil
   ) async throws -> [M] {
     let deleted = try await client.forceDelete(
       Model.self,
-      where: constraints,
+      where: constraint,
       orderBy: order,
       limit: limit
     )
-    if M.isPreloaded { await entityRepo.flush() }
+    if M.isPreloaded { await flushEntities() }
     return deleted
   }
 
   func update<M: Model>(_ model: M) async throws -> M {
     let updated = try await client.update(model)
-    if M.isPreloaded { await entityRepo.flush() }
+    if M.isPreloaded { await flushEntities() }
     return updated
   }
+}
+
+func preloadedEntities(from db: MockDatabase) -> PreloadedEntitiesStore {
+  PreloadedEntitiesStore(
+    friends: db.friends,
+    friendQuotes: db.friendQuotes,
+    friendResidences: db.friendResidences,
+    friendResidenceDurations: db.friendResidenceDurations,
+    documents: db.documents,
+    documentTags: db.documentTags,
+    relatedDocuments: db.relatedDocuments,
+    editions: db.editions,
+    editionImpressions: db.editionImpressions,
+    editionChapters: db.editionChapters,
+    audios: db.audios,
+    audioParts: db.audioParts,
+    isbns: db.isbns
+  )
 }

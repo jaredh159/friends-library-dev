@@ -1,26 +1,6 @@
 import DuetSQL
+import FluentSQL
 import Foundation
-
-actor PreloadedEntities: SQLQuerying {
-  private var client: MemoryClient<PreloadedEntitiesStore>
-
-  init(store: PreloadedEntitiesStore) {
-    client = MemoryClient(store: store)
-  }
-
-  func select<M: Model>(
-    _ Model: M.Type,
-    where constraints: [SQL.WhereConstraint<M>]?,
-    orderBy order: SQL.Order<M>?,
-    limit: Int?
-  ) async throws -> [M] {
-    try await client.select(Model, where: constraints, orderBy: order, limit: limit)
-  }
-
-  func flush() {
-    client.store.flush()
-  }
-}
 
 final class PreloadedEntitiesStore: MemoryStore {
   var friends: [Friend.Id: Friend]
@@ -36,10 +16,6 @@ final class PreloadedEntitiesStore: MemoryStore {
   var audios: [Audio.Id: Audio]
   var audioParts: [AudioPart.Id: AudioPart]
   var isbns: [Isbn.Id: Isbn]
-  var legacyRestAppEditionsDataEnglish: Data?
-  var legacyRestAppEditionsDataSpanish: Data?
-  var legacyRestAppAudiosDataEnglish: Data?
-  var legacyRestAppAudiosDataSpanish: Data?
   // ⚠️ when adding new properties, make sure you flush them in self.flush()
 
   init(
@@ -197,10 +173,6 @@ final class PreloadedEntitiesStore: MemoryStore {
     audios = [:]
     audioParts = [:]
     isbns = [:]
-    legacyRestAppEditionsDataEnglish = nil
-    legacyRestAppEditionsDataSpanish = nil
-    legacyRestAppAudiosDataEnglish = nil
-    legacyRestAppAudiosDataSpanish = nil
   }
 
   convenience init(
@@ -235,7 +207,7 @@ final class PreloadedEntitiesStore: MemoryStore {
     )
   }
 
-  public func keyPath<M: Model>(to: M.Type) -> Models<M> {
+  public func keyPath<M: DuetSQL.Model>(to: M.Type) -> Models<M> {
     switch M.tableName {
       case Friend.tableName:
         return \PreloadedEntitiesStore.friends as! Models<M>
@@ -269,53 +241,7 @@ final class PreloadedEntitiesStore: MemoryStore {
   }
 }
 
-// helpers
-
-private func toDict<M: Model>(_ models: [M]) -> [M.IdValue: M] {
-  var dict = Dictionary<M.IdValue, M>.init(minimumCapacity: models.count)
-  models.forEach { model in dict[model.id] = model }
-  return dict
-}
-
 // extensions
-
-extension PreloadedEntities {
-  func setLegacyAppEditions(data: Data, lang: Lang) {
-    switch lang {
-      case .en:
-        client.store.legacyRestAppEditionsDataEnglish = data
-      case .es:
-        client.store.legacyRestAppEditionsDataSpanish = data
-    }
-  }
-
-  func getLegacyAppEditions(lang: Lang) -> Data? {
-    switch lang {
-      case .en:
-        return client.store.legacyRestAppEditionsDataEnglish
-      case .es:
-        return client.store.legacyRestAppEditionsDataSpanish
-    }
-  }
-
-  func setLegacyAppAudios(data: Data, lang: Lang) {
-    switch lang {
-      case .en:
-        client.store.legacyRestAppAudiosDataEnglish = data
-      case .es:
-        client.store.legacyRestAppAudiosDataSpanish = data
-    }
-  }
-
-  func getLegacyAppAudios(lang: Lang) -> Data? {
-    switch lang {
-      case .en:
-        return client.store.legacyRestAppAudiosDataEnglish
-      case .es:
-        return client.store.legacyRestAppAudiosDataSpanish
-    }
-  }
-}
 
 extension Children {
   mutating func push(_ child: C) {
@@ -326,4 +252,51 @@ extension Children {
         self = .loaded(children + [child])
     }
   }
+}
+
+// helpers
+
+private func toDict<M: DuetSQL.Model>(_ models: [M]) -> [M.IdValue: M] {
+  var dict = Dictionary<M.IdValue, M>.init(minimumCapacity: models.count)
+  models.forEach { model in dict[model.id] = model }
+  return dict
+}
+
+func queryPreloadedEntities(on db: SQLDatabase) async throws -> PreloadedEntitiesStore {
+  Current.logger.info("Querying all entities and caching...")
+  async let friends = findAll(Friend.self, on: db)
+  async let friendQuotes = findAll(FriendQuote.self, on: db)
+  async let friendResidences = findAll(FriendResidence.self, on: db)
+  async let friendResidenceDurations = findAll(FriendResidenceDuration.self, on: db)
+  async let documents = findAll(Document.self, on: db)
+  async let documentTags = findAll(DocumentTag.self, on: db)
+  async let relatedDocuments = findAll(RelatedDocument.self, on: db)
+  async let editions = findAll(Edition.self, on: db)
+  async let editionImpressions = findAll(EditionImpression.self, on: db)
+  async let editionChapters = findAll(EditionChapter.self, on: db)
+  async let audios = findAll(Audio.self, on: db)
+  async let audioParts = findAll(AudioPart.self, on: db)
+  async let isbns = findAll(Isbn.self, on: db)
+
+  return PreloadedEntitiesStore(
+    friends: try await friends,
+    friendQuotes: try await friendQuotes,
+    friendResidences: try await friendResidences,
+    friendResidenceDurations: try await friendResidenceDurations,
+    documents: try await documents,
+    documentTags: try await documentTags,
+    relatedDocuments: try await relatedDocuments,
+    editions: try await editions,
+    editionImpressions: try await editionImpressions,
+    editionChapters: try await editionChapters,
+    audios: try await audios,
+    audioParts: try await audioParts,
+    isbns: try await isbns
+  )
+}
+
+private func findAll<M: ApiModel>(_ Model: M.Type, on db: SQLDatabase) async throws -> [M] {
+  let prepared = SQL.select(.all, from: M.self, where: .notSoftDeleted)
+  let rows = try await SQL.execute(prepared, on: db)
+  return try rows.compactMap { try $0.decode(Model.self) }
 }
