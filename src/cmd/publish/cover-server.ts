@@ -40,6 +40,7 @@ export async function screenshot(
     product: `firefox`,
     headless: true, // false to see what it's doing
     dumpio: false, // true to see verbose console stuff in terminal
+    slowMo: undefined, // set to number like `500` to slow it down
   });
   const page = await browser.newPage();
 
