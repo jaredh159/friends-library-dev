@@ -89,7 +89,7 @@ extension Isbn {
     self.init(
       id: .init(rawValue: input.id ?? UUID()),
       code: .init(rawValue: input.code),
-      editionId: input.editionId != nil ? .init(rawValue: input.editionId!) : nil
+      editionId: input.editionId.map { .init(rawValue: $0) }
     )
   }
 
@@ -97,13 +97,13 @@ extension Isbn {
     self.init(
       id: .init(rawValue: input.id),
       code: .init(rawValue: input.code),
-      editionId: input.editionId != nil ? .init(rawValue: input.editionId!) : nil
+      editionId: input.editionId.map { .init(rawValue: $0) }
     )
   }
 
   func update(_ input: AppSchema.UpdateIsbnInput) {
     code = .init(rawValue: input.code)
-    editionId = input.editionId != nil ? .init(rawValue: input.editionId!) : nil
+    editionId = input.editionId.map { .init(rawValue: $0) }
     updatedAt = Current.date()
   }
 }

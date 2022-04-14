@@ -102,6 +102,7 @@ let package = Package(
       dependencies: [
         .target(name: "App"),
         .product(name: "Duet", package: "duet"),
+        .product(name: "DuetMock", package: "duet"),
         .product(name: "DuetSQL", package: "duet"),
         .product(name: "XGraphQLTest", package: "x-kit"),
         .product(name: "XSendGrid", package: "x-sendgrid"),

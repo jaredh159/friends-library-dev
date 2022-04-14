@@ -146,7 +146,7 @@ extension Document {
     self.init(
       id: .init(rawValue: input.id ?? UUID()),
       friendId: .init(rawValue: input.friendId),
-      altLanguageId: input.altLanguageId != nil ? .init(rawValue: input.altLanguageId!) : nil,
+      altLanguageId: input.altLanguageId.map { .init(rawValue: $0) },
       title: input.title,
       slug: input.slug,
       filename: input.filename,
@@ -163,7 +163,7 @@ extension Document {
     self.init(
       id: .init(rawValue: input.id),
       friendId: .init(rawValue: input.friendId),
-      altLanguageId: input.altLanguageId != nil ? .init(rawValue: input.altLanguageId!) : nil,
+      altLanguageId: input.altLanguageId.map { .init(rawValue: $0) },
       title: input.title,
       slug: input.slug,
       filename: input.filename,
@@ -178,7 +178,7 @@ extension Document {
 
   func update(_ input: AppSchema.UpdateDocumentInput) {
     friendId = .init(rawValue: input.friendId)
-    altLanguageId = input.altLanguageId != nil ? .init(rawValue: input.altLanguageId!) : nil
+    altLanguageId = input.altLanguageId.map { .init(rawValue: $0) }
     title = input.title
     slug = input.slug
     filename = input.filename

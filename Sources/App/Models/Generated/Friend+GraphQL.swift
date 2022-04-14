@@ -133,7 +133,7 @@ extension Friend {
       description: input.description,
       born: input.born,
       died: input.died,
-      published: input.published != nil ? try Date(fromIsoString: input.published!) : nil
+      published: try input.published.flatMap { try Date(fromIsoString: $0) }
     )
   }
 
@@ -147,7 +147,7 @@ extension Friend {
       description: input.description,
       born: input.born,
       died: input.died,
-      published: input.published != nil ? try Date(fromIsoString: input.published!) : nil
+      published: try input.published.flatMap { try Date(fromIsoString: $0) }
     )
   }
 
@@ -159,7 +159,7 @@ extension Friend {
     description = input.description
     born = input.born
     died = input.died
-    published = input.published != nil ? try Date(fromIsoString: input.published!) : nil
+    published = try input.published.flatMap { try Date(fromIsoString: $0) }
     updatedAt = Current.date()
   }
 }

@@ -28,9 +28,9 @@
     "test:watch:isolate": "watchexec --restart --watch Sources --watch Tests --exts swift npm run test:clear:isolate",
     "compile": "true # <-- keep manager automation script happy",
     "test:codegen": "fldev test",
-    "generate": "~/gertie/duet/codegen/node_modules/.bin/fldev tsnode ~/gertie/duet/codegen/generate-models.ts && swiftformat ./Sources/App/Models/Generated/",
-    "scaffold:resolver-test": "~/gertie/duet/codegen/node_modules/.bin/fldev tsnode ~/gertie/duet/codegen/scaffold-resolver-test.ts",
-    "scaffold:resolver": "~/gertie/duet/codegen/node_modules/.bin/fldev tsnode ~/gertie/duet/codegen/scaffold-resolver.ts"
+    "generate": "~/gertie/duet/node_modules/.bin/fldev tsnode ~/gertie/duet/codegen/generate-models.ts && swiftformat ./Sources/App/Models/Generated/",
+    "scaffold:resolver-test": "~/gertie/duet/node_modules/.bin/fldev tsnode ~/gertie/duet/codegen/scaffold-resolver-test.ts",
+    "scaffold:resolver": "~/gertie/duet/node_modules/.bin/fldev tsnode ~/gertie/duet/codegen/scaffold-resolver.ts"
   },
   "keywords": [],
   "author": "",
