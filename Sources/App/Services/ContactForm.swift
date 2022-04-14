@@ -20,6 +20,7 @@ extension Resolver {
         """
         *Contact form submission:*
         _Name:_ \(args.input.name)
+        _Email:_ \(args.input.email)
         _Message:_ \(args.input.message)
         """
       )
