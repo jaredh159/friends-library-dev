@@ -1,4 +1,4 @@
-import DuetSQL
+import DuetMock
 import XCTest
 
 @testable import App
@@ -9,15 +9,11 @@ final class OrderInitializationTests: AppTestCase {
   func testCreateOrderInitializationSuccess() async throws {
     try await Current.db.deleteAll(Token.self)
 
-    var uuids = [
+    mockUUIDs([
       "0d70e2a5-2cda-4326-b9cf-f28e70f580e8", // order id
       "552444a7-b8c6-4e65-8787-1a91cd96e9ac", // token id (not asserted)
       "c53d0162-4d81-4ff5-8370-48df861a03d5", // token value
-    ]
-
-    UUID.new = { guard !uuids.isEmpty else { return UUID() }
-      return UUID(uuidString: uuids.removeFirst())!
-    }
+    ])
 
     Current.stripeClient.createPaymentIntent = { amount, currency, metadata, _ in
       XCTAssertEqual(amount, 555)
