@@ -17,7 +17,7 @@ extension AppSchema {
 
   struct CreateTokenInput: Codable {
     let id: UUID?
-    let value: UUID
+    let value: UUID?
     let description: String
     let uses: Int?
   }
@@ -29,8 +29,8 @@ extension AppSchema {
     let uses: Int?
   }
 
-  static var CreateTokenInputType: AppInput<AppSchema.CreateTokenInput> {
-    Input(AppSchema.CreateTokenInput.self) {
+  static var CreateTokenInputType: AppInput<CreateTokenInput> {
+    Input(CreateTokenInput.self) {
       InputField("id", at: \.id)
       InputField("value", at: \.value)
       InputField("description", at: \.description)
@@ -38,8 +38,8 @@ extension AppSchema {
     }
   }
 
-  static var UpdateTokenInputType: AppInput<AppSchema.UpdateTokenInput> {
-    Input(AppSchema.UpdateTokenInput.self) {
+  static var UpdateTokenInputType: AppInput<UpdateTokenInput> {
+    Input(UpdateTokenInput.self) {
       InputField("id", at: \.id)
       InputField("value", at: \.value)
       InputField("description", at: \.description)
@@ -90,12 +90,13 @@ extension AppSchema {
 
 extension Token {
   convenience init(_ input: AppSchema.CreateTokenInput) {
-    self.init(
-      id: .init(rawValue: input.id ?? UUID()),
-      value: .init(rawValue: input.value),
-      description: input.description,
-      uses: input.uses
-    )
+    self.init(description: input.description, uses: input.uses)
+    if let id = input.id {
+      self.id = .init(rawValue: id)
+    }
+    if let value = input.value {
+      self.value = .init(rawValue: value)
+    }
   }
 
   convenience init(_ input: AppSchema.UpdateTokenInput) {

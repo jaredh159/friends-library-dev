@@ -84,7 +84,6 @@ extension Document {
       .featuredDescription: .string(featuredDescription),
       .createdAt: .currentTimestamp,
       .updatedAt: .currentTimestamp,
-      .deletedAt: .date(deletedAt),
     ]
   }
 }

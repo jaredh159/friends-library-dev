@@ -39,6 +39,7 @@ extension AppSchema {
     let born: Int?
     let died: Int?
     let published: String?
+    let deletedAt: String?
   }
 
   struct UpdateFriendInput: Codable {
@@ -51,10 +52,11 @@ extension AppSchema {
     let born: Int?
     let died: Int?
     let published: String?
+    let deletedAt: String?
   }
 
-  static var CreateFriendInputType: AppInput<AppSchema.CreateFriendInput> {
-    Input(AppSchema.CreateFriendInput.self) {
+  static var CreateFriendInputType: AppInput<CreateFriendInput> {
+    Input(CreateFriendInput.self) {
       InputField("id", at: \.id)
       InputField("lang", at: \.lang)
       InputField("name", at: \.name)
@@ -64,11 +66,12 @@ extension AppSchema {
       InputField("born", at: \.born)
       InputField("died", at: \.died)
       InputField("published", at: \.published)
+      InputField("deletedAt", at: \.deletedAt)
     }
   }
 
-  static var UpdateFriendInputType: AppInput<AppSchema.UpdateFriendInput> {
-    Input(AppSchema.UpdateFriendInput.self) {
+  static var UpdateFriendInputType: AppInput<UpdateFriendInput> {
+    Input(UpdateFriendInput.self) {
       InputField("id", at: \.id)
       InputField("lang", at: \.lang)
       InputField("name", at: \.name)
@@ -78,6 +81,7 @@ extension AppSchema {
       InputField("born", at: \.born)
       InputField("died", at: \.died)
       InputField("published", at: \.published)
+      InputField("deletedAt", at: \.deletedAt)
     }
   }
 
@@ -125,7 +129,6 @@ extension AppSchema {
 extension Friend {
   convenience init(_ input: AppSchema.CreateFriendInput) throws {
     self.init(
-      id: .init(rawValue: input.id ?? UUID()),
       lang: input.lang,
       name: input.name,
       slug: input.slug,
@@ -135,6 +138,9 @@ extension Friend {
       died: input.died,
       published: try input.published.flatMap { try Date(fromIsoString: $0) }
     )
+    if let id = input.id {
+      self.id = .init(rawValue: id)
+    }
   }
 
   convenience init(_ input: AppSchema.UpdateFriendInput) throws {
@@ -160,6 +166,7 @@ extension Friend {
     born = input.born
     died = input.died
     published = try input.published.flatMap { try Date(fromIsoString: $0) }
+    deletedAt = try input.deletedAt.flatMap { try Date(fromIsoString: $0) }
     updatedAt = Current.date()
   }
 }

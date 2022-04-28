@@ -46,8 +46,8 @@ extension AppSchema {
     let nonSequenceTitle: String?
   }
 
-  static var CreateEditionChapterInputType: AppInput<AppSchema.CreateEditionChapterInput> {
-    Input(AppSchema.CreateEditionChapterInput.self) {
+  static var CreateEditionChapterInputType: AppInput<CreateEditionChapterInput> {
+    Input(CreateEditionChapterInput.self) {
       InputField("id", at: \.id)
       InputField("editionId", at: \.editionId)
       InputField("order", at: \.order)
@@ -59,8 +59,8 @@ extension AppSchema {
     }
   }
 
-  static var UpdateEditionChapterInputType: AppInput<AppSchema.UpdateEditionChapterInput> {
-    Input(AppSchema.UpdateEditionChapterInput.self) {
+  static var UpdateEditionChapterInputType: AppInput<UpdateEditionChapterInput> {
+    Input(UpdateEditionChapterInput.self) {
       InputField("id", at: \.id)
       InputField("editionId", at: \.editionId)
       InputField("order", at: \.order)
@@ -122,7 +122,6 @@ extension AppSchema {
 extension EditionChapter {
   convenience init(_ input: AppSchema.CreateEditionChapterInput) {
     self.init(
-      id: .init(rawValue: input.id ?? UUID()),
       editionId: .init(rawValue: input.editionId),
       order: input.order,
       shortHeading: input.shortHeading,
@@ -131,6 +130,9 @@ extension EditionChapter {
       sequenceNumber: input.sequenceNumber,
       nonSequenceTitle: input.nonSequenceTitle
     )
+    if let id = input.id {
+      self.id = .init(rawValue: id)
+    }
   }
 
   convenience init(_ input: AppSchema.UpdateEditionChapterInput) {

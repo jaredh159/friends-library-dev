@@ -83,8 +83,8 @@ extension AppSchema {
     let freeOrderRequestId: UUID?
   }
 
-  static var CreateOrderInputType: AppInput<AppSchema.CreateOrderInput> {
-    Input(AppSchema.CreateOrderInput.self) {
+  static var CreateOrderInputType: AppInput<CreateOrderInput> {
+    Input(CreateOrderInput.self) {
       InputField("id", at: \.id)
       InputField("lang", at: \.lang)
       InputField("source", at: \.source)
@@ -109,8 +109,8 @@ extension AppSchema {
     }
   }
 
-  static var UpdateOrderInputType: AppInput<AppSchema.UpdateOrderInput> {
-    Input(AppSchema.UpdateOrderInput.self) {
+  static var UpdateOrderInputType: AppInput<UpdateOrderInput> {
+    Input(UpdateOrderInput.self) {
       InputField("id", at: \.id)
       InputField("lang", at: \.lang)
       InputField("source", at: \.source)
@@ -179,7 +179,6 @@ extension AppSchema {
 extension Order {
   convenience init(_ input: AppSchema.CreateOrderInput) {
     self.init(
-      id: .init(rawValue: input.id ?? UUID()),
       printJobId: input.printJobId.map { .init(rawValue: $0) },
       lang: input.lang,
       source: input.source,
@@ -201,6 +200,9 @@ extension Order {
       addressCountry: input.addressCountry,
       freeOrderRequestId: input.freeOrderRequestId.map { .init(rawValue: $0) }
     )
+    if let id = input.id {
+      self.id = .init(rawValue: id)
+    }
   }
 
   convenience init(_ input: AppSchema.UpdateOrderInput) {

@@ -33,9 +33,10 @@ extension AppSchema {
     let documentId: UUID
     let type: EditionType
     let editor: String?
-    let isDraft: Bool
+    let isDraft: Bool?
     let paperbackSplits: [Int]?
     let paperbackOverrideSize: PrintSizeVariant?
+    let deletedAt: String?
   }
 
   struct UpdateEditionInput: Codable {
@@ -46,10 +47,11 @@ extension AppSchema {
     let isDraft: Bool
     let paperbackSplits: [Int]?
     let paperbackOverrideSize: PrintSizeVariant?
+    let deletedAt: String?
   }
 
-  static var CreateEditionInputType: AppInput<AppSchema.CreateEditionInput> {
-    Input(AppSchema.CreateEditionInput.self) {
+  static var CreateEditionInputType: AppInput<CreateEditionInput> {
+    Input(CreateEditionInput.self) {
       InputField("id", at: \.id)
       InputField("documentId", at: \.documentId)
       InputField("type", at: \.type)
@@ -57,11 +59,12 @@ extension AppSchema {
       InputField("isDraft", at: \.isDraft)
       InputField("paperbackSplits", at: \.paperbackSplits)
       InputField("paperbackOverrideSize", at: \.paperbackOverrideSize)
+      InputField("deletedAt", at: \.deletedAt)
     }
   }
 
-  static var UpdateEditionInputType: AppInput<AppSchema.UpdateEditionInput> {
-    Input(AppSchema.UpdateEditionInput.self) {
+  static var UpdateEditionInputType: AppInput<UpdateEditionInput> {
+    Input(UpdateEditionInput.self) {
       InputField("id", at: \.id)
       InputField("documentId", at: \.documentId)
       InputField("type", at: \.type)
@@ -69,6 +72,7 @@ extension AppSchema {
       InputField("isDraft", at: \.isDraft)
       InputField("paperbackSplits", at: \.paperbackSplits)
       InputField("paperbackOverrideSize", at: \.paperbackOverrideSize)
+      InputField("deletedAt", at: \.deletedAt)
     }
   }
 
@@ -114,19 +118,23 @@ extension AppSchema {
 }
 
 extension Edition {
-  convenience init(_ input: AppSchema.CreateEditionInput) throws {
+  convenience init(_ input: AppSchema.CreateEditionInput) {
     self.init(
-      id: .init(rawValue: input.id ?? UUID()),
       documentId: .init(rawValue: input.documentId),
       type: input.type,
       editor: input.editor,
-      isDraft: input.isDraft,
       paperbackSplits: try? NonEmpty<[Int]>.fromArray(input.paperbackSplits ?? []),
       paperbackOverrideSize: input.paperbackOverrideSize
     )
+    if let id = input.id {
+      self.id = .init(rawValue: id)
+    }
+    if let isDraft = input.isDraft {
+      self.isDraft = isDraft
+    }
   }
 
-  convenience init(_ input: AppSchema.UpdateEditionInput) throws {
+  convenience init(_ input: AppSchema.UpdateEditionInput) {
     self.init(
       id: .init(rawValue: input.id),
       documentId: .init(rawValue: input.documentId),
@@ -145,6 +153,7 @@ extension Edition {
     isDraft = input.isDraft
     paperbackSplits = try? NonEmpty<[Int]>.fromArray(input.paperbackSplits ?? [])
     paperbackOverrideSize = input.paperbackOverrideSize
+    deletedAt = try input.deletedAt.flatMap { try Date(fromIsoString: $0) }
     updatedAt = Current.date()
   }
 }

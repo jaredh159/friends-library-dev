@@ -74,8 +74,8 @@ extension AppSchema {
     let longitude: String?
   }
 
-  static var CreateDownloadInputType: AppInput<AppSchema.CreateDownloadInput> {
-    Input(AppSchema.CreateDownloadInput.self) {
+  static var CreateDownloadInputType: AppInput<CreateDownloadInput> {
+    Input(CreateDownloadInput.self) {
       InputField("id", at: \.id)
       InputField("editionId", at: \.editionId)
       InputField("format", at: \.format)
@@ -98,8 +98,8 @@ extension AppSchema {
     }
   }
 
-  static var UpdateDownloadInputType: AppInput<AppSchema.UpdateDownloadInput> {
-    Input(AppSchema.UpdateDownloadInput.self) {
+  static var UpdateDownloadInputType: AppInput<UpdateDownloadInput> {
+    Input(UpdateDownloadInput.self) {
       InputField("id", at: \.id)
       InputField("editionId", at: \.editionId)
       InputField("format", at: \.format)
@@ -166,7 +166,6 @@ extension AppSchema {
 extension Download {
   convenience init(_ input: AppSchema.CreateDownloadInput) {
     self.init(
-      id: .init(rawValue: input.id ?? UUID()),
       editionId: .init(rawValue: input.editionId),
       format: input.format,
       source: input.source,
@@ -186,6 +185,9 @@ extension Download {
       latitude: input.latitude,
       longitude: input.longitude
     )
+    if let id = input.id {
+      self.id = .init(rawValue: id)
+    }
   }
 
   convenience init(_ input: AppSchema.UpdateDownloadInput) {

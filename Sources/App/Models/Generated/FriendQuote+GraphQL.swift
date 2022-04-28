@@ -36,8 +36,8 @@ extension AppSchema {
     let context: String?
   }
 
-  static var CreateFriendQuoteInputType: AppInput<AppSchema.CreateFriendQuoteInput> {
-    Input(AppSchema.CreateFriendQuoteInput.self) {
+  static var CreateFriendQuoteInputType: AppInput<CreateFriendQuoteInput> {
+    Input(CreateFriendQuoteInput.self) {
       InputField("id", at: \.id)
       InputField("friendId", at: \.friendId)
       InputField("source", at: \.source)
@@ -47,8 +47,8 @@ extension AppSchema {
     }
   }
 
-  static var UpdateFriendQuoteInputType: AppInput<AppSchema.UpdateFriendQuoteInput> {
-    Input(AppSchema.UpdateFriendQuoteInput.self) {
+  static var UpdateFriendQuoteInputType: AppInput<UpdateFriendQuoteInput> {
+    Input(UpdateFriendQuoteInput.self) {
       InputField("id", at: \.id)
       InputField("friendId", at: \.friendId)
       InputField("source", at: \.source)
@@ -102,13 +102,15 @@ extension AppSchema {
 extension FriendQuote {
   convenience init(_ input: AppSchema.CreateFriendQuoteInput) {
     self.init(
-      id: .init(rawValue: input.id ?? UUID()),
       friendId: .init(rawValue: input.friendId),
       source: input.source,
       text: input.text,
       order: input.order,
       context: input.context
     )
+    if let id = input.id {
+      self.id = .init(rawValue: id)
+    }
   }
 
   convenience init(_ input: AppSchema.UpdateFriendQuoteInput) {

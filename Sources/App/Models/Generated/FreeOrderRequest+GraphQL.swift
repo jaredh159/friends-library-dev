@@ -54,8 +54,8 @@ extension AppSchema {
     let source: String
   }
 
-  static var CreateFreeOrderRequestInputType: AppInput<AppSchema.CreateFreeOrderRequestInput> {
-    Input(AppSchema.CreateFreeOrderRequestInput.self) {
+  static var CreateFreeOrderRequestInputType: AppInput<CreateFreeOrderRequestInput> {
+    Input(CreateFreeOrderRequestInput.self) {
       InputField("id", at: \.id)
       InputField("name", at: \.name)
       InputField("email", at: \.email)
@@ -71,8 +71,8 @@ extension AppSchema {
     }
   }
 
-  static var UpdateFreeOrderRequestInputType: AppInput<AppSchema.UpdateFreeOrderRequestInput> {
-    Input(AppSchema.UpdateFreeOrderRequestInput.self) {
+  static var UpdateFreeOrderRequestInputType: AppInput<UpdateFreeOrderRequestInput> {
+    Input(UpdateFreeOrderRequestInput.self) {
       InputField("id", at: \.id)
       InputField("name", at: \.name)
       InputField("email", at: \.email)
@@ -144,7 +144,6 @@ extension AppSchema {
 extension FreeOrderRequest {
   convenience init(_ input: AppSchema.CreateFreeOrderRequestInput) {
     self.init(
-      id: .init(rawValue: input.id ?? UUID()),
       name: input.name,
       email: .init(rawValue: input.email),
       requestedBooks: input.requestedBooks,
@@ -157,6 +156,9 @@ extension FreeOrderRequest {
       addressCountry: input.addressCountry,
       source: input.source
     )
+    if let id = input.id {
+      self.id = .init(rawValue: id)
+    }
   }
 
   convenience init(_ input: AppSchema.UpdateFreeOrderRequestInput) {

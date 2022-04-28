@@ -31,8 +31,8 @@ extension AppSchema {
     let parentDocumentId: UUID
   }
 
-  static var CreateRelatedDocumentInputType: AppInput<AppSchema.CreateRelatedDocumentInput> {
-    Input(AppSchema.CreateRelatedDocumentInput.self) {
+  static var CreateRelatedDocumentInputType: AppInput<CreateRelatedDocumentInput> {
+    Input(CreateRelatedDocumentInput.self) {
       InputField("id", at: \.id)
       InputField("description", at: \.description)
       InputField("documentId", at: \.documentId)
@@ -40,8 +40,8 @@ extension AppSchema {
     }
   }
 
-  static var UpdateRelatedDocumentInputType: AppInput<AppSchema.UpdateRelatedDocumentInput> {
-    Input(AppSchema.UpdateRelatedDocumentInput.self) {
+  static var UpdateRelatedDocumentInputType: AppInput<UpdateRelatedDocumentInput> {
+    Input(UpdateRelatedDocumentInput.self) {
       InputField("id", at: \.id)
       InputField("description", at: \.description)
       InputField("documentId", at: \.documentId)
@@ -105,11 +105,13 @@ extension AppSchema {
 extension RelatedDocument {
   convenience init(_ input: AppSchema.CreateRelatedDocumentInput) {
     self.init(
-      id: .init(rawValue: input.id ?? UUID()),
       description: input.description,
       documentId: .init(rawValue: input.documentId),
       parentDocumentId: .init(rawValue: input.parentDocumentId)
     )
+    if let id = input.id {
+      self.id = .init(rawValue: id)
+    }
   }
 
   convenience init(_ input: AppSchema.UpdateRelatedDocumentInput) {

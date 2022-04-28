@@ -91,4 +91,11 @@ class LiveDatabase: DuetSQL.Client {
     _entityClient = nil
     await LegacyRest.cachedData.flush()
   }
+
+  func queryJoined<J: SQLJoined>(
+    _ Joined: J.Type,
+    withBindings: [Postgres.Data]?
+  ) async throws -> [J] {
+    fatalError("queryJoined not implemented")
+  }
 }

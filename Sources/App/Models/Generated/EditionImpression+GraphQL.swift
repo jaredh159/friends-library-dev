@@ -42,8 +42,8 @@ extension AppSchema {
     let productionToolchainRevision: String
   }
 
-  static var CreateEditionImpressionInputType: AppInput<AppSchema.CreateEditionImpressionInput> {
-    Input(AppSchema.CreateEditionImpressionInput.self) {
+  static var CreateEditionImpressionInputType: AppInput<CreateEditionImpressionInput> {
+    Input(CreateEditionImpressionInput.self) {
       InputField("id", at: \.id)
       InputField("editionId", at: \.editionId)
       InputField("adocLength", at: \.adocLength)
@@ -54,8 +54,8 @@ extension AppSchema {
     }
   }
 
-  static var UpdateEditionImpressionInputType: AppInput<AppSchema.UpdateEditionImpressionInput> {
-    Input(AppSchema.UpdateEditionImpressionInput.self) {
+  static var UpdateEditionImpressionInputType: AppInput<UpdateEditionImpressionInput> {
+    Input(UpdateEditionImpressionInput.self) {
       InputField("id", at: \.id)
       InputField("editionId", at: \.editionId)
       InputField("adocLength", at: \.adocLength)
@@ -122,7 +122,6 @@ extension AppSchema {
 extension EditionImpression {
   convenience init(_ input: AppSchema.CreateEditionImpressionInput) throws {
     self.init(
-      id: .init(rawValue: input.id ?? UUID()),
       editionId: .init(rawValue: input.editionId),
       adocLength: input.adocLength,
       paperbackSizeVariant: input.paperbackSizeVariant,
@@ -130,6 +129,9 @@ extension EditionImpression {
       publishedRevision: .init(rawValue: input.publishedRevision),
       productionToolchainRevision: .init(rawValue: input.productionToolchainRevision)
     )
+    if let id = input.id {
+      self.id = .init(rawValue: id)
+    }
   }
 
   convenience init(_ input: AppSchema.UpdateEditionImpressionInput) throws {

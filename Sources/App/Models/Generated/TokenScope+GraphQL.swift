@@ -26,16 +26,16 @@ extension AppSchema {
     let tokenId: UUID
   }
 
-  static var CreateTokenScopeInputType: AppInput<AppSchema.CreateTokenScopeInput> {
-    Input(AppSchema.CreateTokenScopeInput.self) {
+  static var CreateTokenScopeInputType: AppInput<CreateTokenScopeInput> {
+    Input(CreateTokenScopeInput.self) {
       InputField("id", at: \.id)
       InputField("scope", at: \.scope)
       InputField("tokenId", at: \.tokenId)
     }
   }
 
-  static var UpdateTokenScopeInputType: AppInput<AppSchema.UpdateTokenScopeInput> {
-    Input(AppSchema.UpdateTokenScopeInput.self) {
+  static var UpdateTokenScopeInputType: AppInput<UpdateTokenScopeInput> {
+    Input(UpdateTokenScopeInput.self) {
       InputField("id", at: \.id)
       InputField("scope", at: \.scope)
       InputField("tokenId", at: \.tokenId)
@@ -85,11 +85,10 @@ extension AppSchema {
 
 extension TokenScope {
   convenience init(_ input: AppSchema.CreateTokenScopeInput) {
-    self.init(
-      id: .init(rawValue: input.id ?? UUID()),
-      tokenId: .init(rawValue: input.tokenId),
-      scope: input.scope
-    )
+    self.init(tokenId: .init(rawValue: input.tokenId), scope: input.scope)
+    if let id = input.id {
+      self.id = .init(rawValue: id)
+    }
   }
 
   convenience init(_ input: AppSchema.UpdateTokenScopeInput) {

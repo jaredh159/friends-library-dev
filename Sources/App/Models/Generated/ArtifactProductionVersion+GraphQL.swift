@@ -23,20 +23,18 @@ extension AppSchema {
   }
 
   static var CreateArtifactProductionVersionInputType: AppInput<
-    AppSchema
-      .CreateArtifactProductionVersionInput
+    CreateArtifactProductionVersionInput
   > {
-    Input(AppSchema.CreateArtifactProductionVersionInput.self) {
+    Input(CreateArtifactProductionVersionInput.self) {
       InputField("id", at: \.id)
       InputField("version", at: \.version)
     }
   }
 
   static var UpdateArtifactProductionVersionInputType: AppInput<
-    AppSchema
-      .UpdateArtifactProductionVersionInput
+    UpdateArtifactProductionVersionInput
   > {
-    Input(AppSchema.UpdateArtifactProductionVersionInput.self) {
+    Input(UpdateArtifactProductionVersionInput.self) {
       InputField("id", at: \.id)
       InputField("version", at: \.version)
     }
@@ -100,17 +98,14 @@ extension AppSchema {
 
 extension ArtifactProductionVersion {
   convenience init(_ input: AppSchema.CreateArtifactProductionVersionInput) {
-    self.init(
-      id: .init(rawValue: input.id ?? UUID()),
-      version: .init(rawValue: input.version)
-    )
+    self.init(version: .init(rawValue: input.version))
+    if let id = input.id {
+      self.id = .init(rawValue: id)
+    }
   }
 
   convenience init(_ input: AppSchema.UpdateArtifactProductionVersionInput) {
-    self.init(
-      id: .init(rawValue: input.id),
-      version: .init(rawValue: input.version)
-    )
+    self.init(id: .init(rawValue: input.id), version: .init(rawValue: input.version))
   }
 
   func update(_ input: AppSchema.UpdateArtifactProductionVersionInput) {

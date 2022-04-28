@@ -162,6 +162,13 @@ class MockClient: Client {
     if M.isPreloaded { await flushEntities() }
     return updated
   }
+
+  func queryJoined<J: SQLJoined>(
+    _ Joined: J.Type,
+    withBindings: [Postgres.Data]?
+  ) async throws -> [J] {
+    fatalError("queryJoined (MockDatabase) not implemented")
+  }
 }
 
 func preloadedEntities(from db: MockDatabase) -> PreloadedEntitiesStore {

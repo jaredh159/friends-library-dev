@@ -64,7 +64,6 @@ extension Edition {
       .paperbackOverrideSize: .enum(paperbackOverrideSize),
       .createdAt: .currentTimestamp,
       .updatedAt: .currentTimestamp,
-      .deletedAt: .date(deletedAt),
     ]
   }
 }

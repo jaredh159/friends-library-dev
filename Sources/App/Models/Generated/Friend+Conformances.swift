@@ -72,7 +72,6 @@ extension Friend {
       .published: .date(published),
       .createdAt: .currentTimestamp,
       .updatedAt: .currentTimestamp,
-      .deletedAt: .date(deletedAt),
     ]
   }
 }
