@@ -29,6 +29,15 @@
         }
       },
       {
+        "package": "Duet",
+        "repositoryURL": "https://github.com/gertrude-app/duet.git",
+        "state": {
+          "branch": null,
+          "revision": "80d202a20ea038838a55c872e1db5edeeb89f83f",
+          "version": "1.0.1"
+        }
+      },
+      {
         "package": "fluent",
         "repositoryURL": "https://github.com/vapor/fluent.git",
         "state": {
@@ -305,6 +314,15 @@
           "branch": null,
           "revision": "4b7ebc79ec24e12a9a58c739a214b3f062df9ec6",
           "version": "1.0.0"
+        }
+      },
+      {
+        "package": "XKit",
+        "repositoryURL": "https://github.com/jaredh159/x-kit.git",
+        "state": {
+          "branch": null,
+          "revision": "7deedcba5da944d4e274dc16105c6624f98493b4",
+          "version": "1.0.2"
         }
       },
       {

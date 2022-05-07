@@ -34,13 +34,15 @@ class LiveDatabase: DuetSQL.Client {
     _ Model: M.Type,
     where constraint: SQL.WhereConstraint<M> = .always,
     orderBy: SQL.Order<M>? = nil,
-    limit: Int? = nil
+    limit: Int? = nil,
+    offset: Int? = nil
   ) async throws -> [M] {
     let models = try await dbClient.forceDelete(
       Model,
       where: constraint,
       orderBy: orderBy,
-      limit: limit
+      limit: limit,
+      offset: offset
     )
     if M.isPreloaded { await flushEntities() }
     return models
@@ -51,9 +53,16 @@ class LiveDatabase: DuetSQL.Client {
     _ Model: M.Type,
     where constraint: SQL.WhereConstraint<M> = .always,
     orderBy order: SQL.Order<M>? = nil,
-    limit: Int? = nil
+    limit: Int? = nil,
+    offset: Int? = nil
   ) async throws -> [M] {
-    let models = try await dbClient.delete(Model, where: constraint, orderBy: order, limit: limit)
+    let models = try await dbClient.delete(
+      Model,
+      where: constraint,
+      orderBy: order,
+      limit: limit,
+      offset: offset
+    )
     if M.isPreloaded { await flushEntities() }
     return models
   }
@@ -62,17 +71,28 @@ class LiveDatabase: DuetSQL.Client {
     _ Model: M.Type,
     where constraint: SQL.WhereConstraint<M> = .always,
     orderBy: SQL.Order<M>? = nil,
-    limit: Int? = nil
+    limit: Int? = nil,
+    offset: Int? = nil,
+    withSoftDeleted: Bool = false
   ) async throws -> [M] {
     if M.isPreloaded {
       return try await entityClient.select(
         M.self,
         where: constraint + .notSoftDeleted,
         orderBy: orderBy,
-        limit: limit
+        limit: limit,
+        offset: offset,
+        withSoftDeleted: withSoftDeleted
       )
     }
-    return try await dbClient.select(Model, where: constraint, orderBy: orderBy, limit: limit)
+    return try await dbClient.select(
+      Model,
+      where: constraint,
+      orderBy: orderBy,
+      limit: limit,
+      offset: offset,
+      withSoftDeleted: withSoftDeleted
+    )
   }
 
   private var entityClient: DuetSQL.Client {
@@ -97,5 +117,9 @@ class LiveDatabase: DuetSQL.Client {
     withBindings: [Postgres.Data]?
   ) async throws -> [J] {
     fatalError("queryJoined not implemented")
+  }
+
+  func count<M: DuetSQL.Model>(_: M.Type, where: SQL.WhereConstraint<M>) async throws -> Int {
+    fatalError("LiveDatabase.count not implemented")
   }
 }

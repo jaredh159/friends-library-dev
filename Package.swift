@@ -46,11 +46,12 @@ let package = Package(
       from: "2.0.0"
     ),
     .package(
-      name: "Duet",
-      path: "/Users/jared/gertie/duet"
+      url: "https://github.com/gertrude-app/duet.git",
+      from: "1.0.0"
     ),
     .package(
-      path: "/Users/jared/gertie/x-kit"
+      url: "https://github.com/jaredh159/x-kit.git",
+      from: "1.0.2"
     ),
     .package(
       url: "https://github.com/jaredh159/x-http.git",

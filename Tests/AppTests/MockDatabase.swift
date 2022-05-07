@@ -106,14 +106,18 @@ class MockClient: Client {
     _ Model: M.Type,
     where constraint: SQL.WhereConstraint<M> = .always,
     orderBy order: SQL.Order<M>? = nil,
-    limit: Int? = nil
+    limit: Int? = nil,
+    offset: Int? = nil,
+    withSoftDeleted: Bool = false
   ) async throws -> [M] {
     if M.isPreloaded {
       return try await entityClient.select(
         Model.self,
         where: constraint,
         orderBy: order,
-        limit: limit
+        limit: limit,
+        offset: offset,
+        withSoftDeleted: withSoftDeleted
       )
     }
     return try await client.select(Model.self, where: constraint, orderBy: order, limit: limit)
@@ -129,13 +133,15 @@ class MockClient: Client {
     _ Model: M.Type,
     where constraint: SQL.WhereConstraint<M> = .always,
     orderBy order: SQL.Order<M>? = nil,
-    limit: Int? = nil
+    limit: Int? = nil,
+    offset: Int? = nil
   ) async throws -> [M] where M: Model {
     let deleted = try await client.delete(
       Model.self,
       where: constraint,
       orderBy: order,
-      limit: limit
+      limit: limit,
+      offset: offset
     )
     if M.isPreloaded { await flushEntities() }
     return deleted
@@ -145,13 +151,15 @@ class MockClient: Client {
     _ Model: M.Type,
     where constraint: SQL.WhereConstraint<M> = .always,
     orderBy order: SQL.Order<M>? = nil,
-    limit: Int? = nil
+    limit: Int? = nil,
+    offset: Int? = nil
   ) async throws -> [M] {
     let deleted = try await client.forceDelete(
       Model.self,
       where: constraint,
       orderBy: order,
-      limit: limit
+      limit: limit,
+      offset: offset
     )
     if M.isPreloaded { await flushEntities() }
     return deleted
@@ -168,6 +176,10 @@ class MockClient: Client {
     withBindings: [Postgres.Data]?
   ) async throws -> [J] {
     fatalError("queryJoined (MockDatabase) not implemented")
+  }
+
+  func count<M: Model>(_: M.Type, where: SQL.WhereConstraint<M>) async throws -> Int {
+    fatalError("count (MockDatabase) not implemented")
   }
 }
 
