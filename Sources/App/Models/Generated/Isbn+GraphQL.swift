@@ -27,16 +27,16 @@ extension AppSchema {
     let editionId: UUID?
   }
 
-  static var CreateIsbnInputType: AppInput<AppSchema.CreateIsbnInput> {
-    Input(AppSchema.CreateIsbnInput.self) {
+  static var CreateIsbnInputType: AppInput<CreateIsbnInput> {
+    Input(CreateIsbnInput.self) {
       InputField("id", at: \.id)
       InputField("code", at: \.code)
       InputField("editionId", at: \.editionId)
     }
   }
 
-  static var UpdateIsbnInputType: AppInput<AppSchema.UpdateIsbnInput> {
-    Input(AppSchema.UpdateIsbnInput.self) {
+  static var UpdateIsbnInputType: AppInput<UpdateIsbnInput> {
+    Input(UpdateIsbnInput.self) {
       InputField("id", at: \.id)
       InputField("code", at: \.code)
       InputField("editionId", at: \.editionId)
@@ -87,23 +87,25 @@ extension AppSchema {
 extension Isbn {
   convenience init(_ input: AppSchema.CreateIsbnInput) {
     self.init(
-      id: .init(rawValue: input.id ?? UUID()),
       code: .init(rawValue: input.code),
-      editionId: input.editionId != nil ? .init(rawValue: input.editionId!) : nil
+      editionId: input.editionId.map { .init(rawValue: $0) }
     )
+    if let id = input.id {
+      self.id = .init(rawValue: id)
+    }
   }
 
   convenience init(_ input: AppSchema.UpdateIsbnInput) {
     self.init(
       id: .init(rawValue: input.id),
       code: .init(rawValue: input.code),
-      editionId: input.editionId != nil ? .init(rawValue: input.editionId!) : nil
+      editionId: input.editionId.map { .init(rawValue: $0) }
     )
   }
 
   func update(_ input: AppSchema.UpdateIsbnInput) {
     code = .init(rawValue: input.code)
-    editionId = input.editionId != nil ? .init(rawValue: input.editionId!) : nil
+    editionId = input.editionId.map { .init(rawValue: $0) }
     updatedAt = Current.date()
   }
 }

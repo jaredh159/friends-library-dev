@@ -1,9 +1,10 @@
+import DuetSQL
 import Fluent
 import Graphiti
 import Vapor
 
-extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: DuetModel {
-  convenience init<Parent: DuetModel>(
+extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: ApiModel {
+  convenience init<Parent: ApiModel>(
     _ name: FieldKey,
     with keyPath: ToParent<Parent>
   ) where FieldType == TypeRef<Parent> {
@@ -22,7 +23,7 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
   }
 }
 
-private func loadParent<Child: DuetModel, P: DuetModel>(
+private func loadParent<Child: ApiModel, P: ApiModel>(
   at keyPath: WritableKeyPath<Child, Parent<P>>,
   for child: Child
 ) async throws -> P {

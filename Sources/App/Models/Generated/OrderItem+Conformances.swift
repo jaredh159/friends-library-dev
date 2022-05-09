@@ -1,14 +1,30 @@
 // auto-generated, do not edit
-import Foundation
+import DuetSQL
 import Tagged
 
 extension OrderItem: ApiModel {
   typealias Id = Tagged<OrderItem, UUID>
 }
 
-extension OrderItem: DuetModel {
+extension OrderItem: Model {
   static let tableName = M3.tableName
-  static var isSoftDeletable: Bool { false }
+
+  func postgresData(for column: ColumnName) -> Postgres.Data {
+    switch column {
+      case .id:
+        return .id(self)
+      case .orderId:
+        return .uuid(orderId)
+      case .editionId:
+        return .uuid(editionId)
+      case .quantity:
+        return .int(quantity)
+      case .unitPrice:
+        return .int(unitPrice.rawValue)
+      case .createdAt:
+        return .date(createdAt)
+    }
+  }
 }
 
 extension OrderItem {
@@ -36,24 +52,3 @@ extension OrderItem {
     ]
   }
 }
-
-extension OrderItem: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint<OrderItem>) -> Bool {
-    switch constraint.column {
-      case .id:
-        return constraint.isSatisfiedBy(.id(self))
-      case .orderId:
-        return constraint.isSatisfiedBy(.uuid(orderId))
-      case .editionId:
-        return constraint.isSatisfiedBy(.uuid(editionId))
-      case .quantity:
-        return constraint.isSatisfiedBy(.int(quantity))
-      case .unitPrice:
-        return constraint.isSatisfiedBy(.int(unitPrice.rawValue))
-      case .createdAt:
-        return constraint.isSatisfiedBy(.date(createdAt))
-    }
-  }
-}
-
-extension OrderItem: Auditable {}

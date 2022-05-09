@@ -1,14 +1,28 @@
 // auto-generated, do not edit
-import Foundation
+import DuetSQL
 import Tagged
 
 extension Token: ApiModel {
   typealias Id = Tagged<Token, UUID>
 }
 
-extension Token: DuetModel {
+extension Token: Model {
   static let tableName = M4.tableName
-  static var isSoftDeletable: Bool { false }
+
+  func postgresData(for column: ColumnName) -> Postgres.Data {
+    switch column {
+      case .id:
+        return .id(self)
+      case .value:
+        return .uuid(value)
+      case .description:
+        return .string(description)
+      case .uses:
+        return .int(uses)
+      case .createdAt:
+        return .date(createdAt)
+    }
+  }
 }
 
 extension Token {
@@ -34,22 +48,3 @@ extension Token {
     ]
   }
 }
-
-extension Token: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint<Token>) -> Bool {
-    switch constraint.column {
-      case .id:
-        return constraint.isSatisfiedBy(.id(self))
-      case .value:
-        return constraint.isSatisfiedBy(.uuid(value))
-      case .description:
-        return constraint.isSatisfiedBy(.string(description))
-      case .uses:
-        return constraint.isSatisfiedBy(.int(uses))
-      case .createdAt:
-        return constraint.isSatisfiedBy(.date(createdAt))
-    }
-  }
-}
-
-extension Token: Auditable {}

@@ -4,11 +4,11 @@ extension LegacyRest {
 
   static func appEditions(lang: Lang) async throws -> Response {
     let data: Data
-    if let cachedData = try await Current.db.entities().getLegacyAppEditions(lang: lang) {
+    if let cachedData = await cachedData.getLegacyAppEditions(lang: lang) {
       data = cachedData
     } else {
       data = try await queryData(lang: lang)
-      try await Current.db.entities().setLegacyAppEditions(data: data, lang: lang)
+      await cachedData.setLegacyAppEditions(data: data, lang: lang)
     }
     let response = Response()
     response.status = .ok

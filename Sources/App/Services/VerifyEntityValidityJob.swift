@@ -1,3 +1,4 @@
+import DuetSQL
 import Queues
 import Vapor
 
@@ -28,7 +29,7 @@ public struct VerifyEntityValidityJob: AsyncScheduledJob {
 
 // helpers
 
-func checkModelsValidity<M: DuetModel>(_ Model: M.Type, _ name: String) async throws {
+func checkModelsValidity<M: ApiModel>(_ Model: M.Type, _ name: String) async throws {
   let models = try await Current.db.query(Model).all()
   for model in models {
     if !model.isValid {

@@ -1,5 +1,4 @@
-import XCTVapor
-import XCTVaporUtils
+import XCTest
 
 @testable import App
 
@@ -11,33 +10,32 @@ final class FriendQuoteResolverTests: AppTestCase {
     friendQuote.friendId = entities.friend.id
     let map = friendQuote.gqlMap()
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation CreateFriendQuote($input: CreateFriendQuoteInput!) {
         friendQuote: createFriendQuote(input: $input) {
           id
         }
       }
       """,
-      expectedData: .containsKVPs(["id": map["id"]]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": map])
+      withVariables: ["input": map],
+      .containsKeyValuePairs(["id": map["id"]])
+    )
   }
 
   func testGetFriendQuote() async throws {
     let friendQuote = await Entities.create().friendQuote
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       query GetFriendQuote {
         friendQuote: getFriendQuote(id: "\(friendQuote.id.uuidString)") {
           id
         }
       }
       """,
-      expectedData: .containsKVPs(["id": friendQuote.id.lowercased]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app)
+      .containsKeyValuePairs(["id": friendQuote.id.lowercased])
+    )
   }
 
   func testUpdateFriendQuote() async throws {
@@ -46,33 +44,33 @@ final class FriendQuoteResolverTests: AppTestCase {
     // do some updates here ---vvv
     friendQuote.source = "New value"
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation UpdateFriendQuote($input: UpdateFriendQuoteInput!) {
         friendQuote: updateFriendQuote(input: $input) {
           source
         }
       }
       """,
-      expectedData: .containsKVPs(["source": "New value"]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": friendQuote.gqlMap()])
+      withVariables: ["input": friendQuote.gqlMap()],
+      .containsKeyValuePairs(["source": "New value"])
+    )
   }
 
   func testDeleteFriendQuote() async throws {
     let friendQuote = await Entities.create().friendQuote
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation DeleteFriendQuote {
         friendQuote: deleteFriendQuote(id: "\(friendQuote.id.uuidString)") {
           id
         }
       }
       """,
-      expectedData: .containsKVPs(["id": friendQuote.id.lowercased]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": friendQuote.gqlMap()])
+      withVariables: ["input": friendQuote.gqlMap()],
+      .containsKeyValuePairs(["id": friendQuote.id.lowercased])
+    )
 
     let retrieved = try? await Current.db.find(friendQuote.id)
     XCTAssertNil(retrieved)

@@ -1,3 +1,4 @@
+import DuetSQL
 import Vapor
 
 // below auto-generated
@@ -24,7 +25,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: DocumentTag.self, on: req.eventLoop) {
       let documentTag = DocumentTag(args.input)
-      guard documentTag.isValid else { throw DbError.invalidEntity }
+      guard documentTag.isValid else { throw ModelError.invalidEntity }
       let created = try await Current.db.create(documentTag)
       return try await Current.db.find(created.id)
     }
@@ -37,7 +38,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [DocumentTag].self, on: req.eventLoop) {
       let documentTags = args.input.map(DocumentTag.init)
-      guard documentTags.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      guard documentTags.allSatisfy(\.isValid) else { throw ModelError.invalidEntity }
       let created = try await Current.db.create(documentTags)
       return try await Current.db.query(DocumentTag.self)
         .where(.id |=| created.map(\.id))
@@ -52,7 +53,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: DocumentTag.self, on: req.eventLoop) {
       let documentTag = DocumentTag(args.input)
-      guard documentTag.isValid else { throw DbError.invalidEntity }
+      guard documentTag.isValid else { throw ModelError.invalidEntity }
       try await Current.db.update(documentTag)
       return try await Current.db.find(documentTag.id)
     }
@@ -65,7 +66,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [DocumentTag].self, on: req.eventLoop) {
       let documentTags = args.input.map(DocumentTag.init)
-      guard documentTags.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      guard documentTags.allSatisfy(\.isValid) else { throw ModelError.invalidEntity }
       let created = try await Current.db.update(documentTags)
       return try await Current.db.query(DocumentTag.self)
         .where(.id |=| created.map(\.id))

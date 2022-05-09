@@ -1,4 +1,4 @@
-import Foundation
+import Duet
 
 final class DocumentTag: Codable {
   var id: Id

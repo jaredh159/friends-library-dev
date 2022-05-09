@@ -31,8 +31,8 @@ extension AppSchema {
     let region: String
   }
 
-  static var CreateFriendResidenceInputType: AppInput<AppSchema.CreateFriendResidenceInput> {
-    Input(AppSchema.CreateFriendResidenceInput.self) {
+  static var CreateFriendResidenceInputType: AppInput<CreateFriendResidenceInput> {
+    Input(CreateFriendResidenceInput.self) {
       InputField("id", at: \.id)
       InputField("friendId", at: \.friendId)
       InputField("city", at: \.city)
@@ -40,8 +40,8 @@ extension AppSchema {
     }
   }
 
-  static var UpdateFriendResidenceInputType: AppInput<AppSchema.UpdateFriendResidenceInput> {
-    Input(AppSchema.UpdateFriendResidenceInput.self) {
+  static var UpdateFriendResidenceInputType: AppInput<UpdateFriendResidenceInput> {
+    Input(UpdateFriendResidenceInput.self) {
       InputField("id", at: \.id)
       InputField("friendId", at: \.friendId)
       InputField("city", at: \.city)
@@ -105,11 +105,13 @@ extension AppSchema {
 extension FriendResidence {
   convenience init(_ input: AppSchema.CreateFriendResidenceInput) {
     self.init(
-      id: .init(rawValue: input.id ?? UUID()),
       friendId: .init(rawValue: input.friendId),
       city: input.city,
       region: input.region
     )
+    if let id = input.id {
+      self.id = .init(rawValue: id)
+    }
   }
 
   convenience init(_ input: AppSchema.UpdateFriendResidenceInput) {

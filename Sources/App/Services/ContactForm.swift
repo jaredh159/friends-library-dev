@@ -1,6 +1,7 @@
-import Foundation
 import Graphiti
 import Vapor
+import XCore
+import XSendGrid
 
 extension Resolver {
   func submitContactForm(

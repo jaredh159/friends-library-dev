@@ -1,17 +1,42 @@
 // auto-generated, do not edit
-import Foundation
+import DuetSQL
 import Tagged
 
 extension AudioPart: ApiModel {
   typealias Id = Tagged<AudioPart, UUID>
-  static var preloadedEntityType: PreloadedEntityType? {
-    .audioPart(Self.self)
-  }
 }
 
-extension AudioPart: DuetModel {
+extension AudioPart: Model {
   static let tableName = M21.tableName
-  static var isSoftDeletable: Bool { false }
+
+  func postgresData(for column: ColumnName) -> Postgres.Data {
+    switch column {
+      case .id:
+        return .id(self)
+      case .audioId:
+        return .uuid(audioId)
+      case .title:
+        return .string(title)
+      case .duration:
+        return .double(duration.rawValue)
+      case .chapters:
+        return .intArray(chapters.array)
+      case .order:
+        return .int(order)
+      case .mp3SizeHq:
+        return .int(mp3SizeHq.rawValue)
+      case .mp3SizeLq:
+        return .int(mp3SizeLq.rawValue)
+      case .externalIdHq:
+        return .int64(externalIdHq.rawValue)
+      case .externalIdLq:
+        return .int64(externalIdLq.rawValue)
+      case .createdAt:
+        return .date(createdAt)
+      case .updatedAt:
+        return .date(updatedAt)
+    }
+  }
 }
 
 extension AudioPart {
@@ -51,37 +76,3 @@ extension AudioPart {
     ]
   }
 }
-
-extension AudioPart: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint<AudioPart>) -> Bool {
-    switch constraint.column {
-      case .id:
-        return constraint.isSatisfiedBy(.id(self))
-      case .audioId:
-        return constraint.isSatisfiedBy(.uuid(audioId))
-      case .title:
-        return constraint.isSatisfiedBy(.string(title))
-      case .duration:
-        return constraint.isSatisfiedBy(.double(duration.rawValue))
-      case .chapters:
-        return constraint.isSatisfiedBy(.intArray(chapters.array))
-      case .order:
-        return constraint.isSatisfiedBy(.int(order))
-      case .mp3SizeHq:
-        return constraint.isSatisfiedBy(.int(mp3SizeHq.rawValue))
-      case .mp3SizeLq:
-        return constraint.isSatisfiedBy(.int(mp3SizeLq.rawValue))
-      case .externalIdHq:
-        return constraint.isSatisfiedBy(.int64(externalIdHq.rawValue))
-      case .externalIdLq:
-        return constraint.isSatisfiedBy(.int64(externalIdLq.rawValue))
-      case .createdAt:
-        return constraint.isSatisfiedBy(.date(createdAt))
-      case .updatedAt:
-        return constraint.isSatisfiedBy(.date(updatedAt))
-    }
-  }
-}
-
-extension AudioPart: Auditable {}
-extension AudioPart: Touchable {}

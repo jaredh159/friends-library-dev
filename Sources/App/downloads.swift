@@ -1,4 +1,6 @@
 import Vapor
+import XCore
+import XSlack
 
 func logAndRedirect(
   file: DownloadableFile,
@@ -177,7 +179,7 @@ private func slackDownload(
 
   blocks.append(.divider)
 
-  let slack = Slack.Message(
+  let slack = FlpSlack.Message(
     blocks: blocks,
     fallbackText: "New download: \(file.logPath)",
     channel: file.format.slackChannel

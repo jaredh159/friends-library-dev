@@ -9,7 +9,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/vapor/vapor.git",
-      from: "4.54.0"
+      from: "4.55.3"
     ),
     .package(
       url: "https://github.com/vapor/fluent.git",
@@ -23,11 +23,6 @@ let package = Package(
       name: "GraphQLKit",
       url: "https://github.com/alexsteinerde/graphql-kit.git",
       from: "2.3.0"
-    ),
-    .package(
-      name: "VaporUtils",
-      url: "https://github.com/jaredh159/vapor-utils.git",
-      from: "3.0.0"
     ),
     .package(
       name: "QueuesFluentDriver",
@@ -50,6 +45,30 @@ let package = Package(
       url: "https://github.com/JohnSundell/ShellOut.git",
       from: "2.0.0"
     ),
+    .package(
+      url: "https://github.com/gertrude-app/duet.git",
+      from: "1.0.0"
+    ),
+    .package(
+      url: "https://github.com/jaredh159/x-kit.git",
+      from: "1.0.2"
+    ),
+    .package(
+      url: "https://github.com/jaredh159/x-http.git",
+      from: "1.0.0"
+    ),
+    .package(
+      url: "https://github.com/jaredh159/x-sendgrid.git",
+      from: "1.0.1"
+    ),
+    .package(
+      url: "https://github.com/jaredh159/x-stripe.git",
+      from: "1.0.1"
+    ),
+    .package(
+      url: "https://github.com/jaredh159/x-slack.git",
+      from: "1.0.2"
+    ),
   ],
   targets: [
     .target(
@@ -62,10 +81,16 @@ let package = Package(
         .product(name: "TaggedTime", package: "swift-tagged"),
         .product(name: "TaggedMoney", package: "swift-tagged"),
         .product(name: "NonEmpty", package: "swift-nonempty"),
+        .product(name: "Duet", package: "duet"),
+        .product(name: "DuetSQL", package: "duet"),
+        .product(name: "XVapor", package: "x-kit"),
+        .product(name: "XHttp", package: "x-http"),
+        .product(name: "XSendGrid", package: "x-sendgrid"),
+        .product(name: "XStripe", package: "x-stripe"),
+        .product(name: "XSlack", package: "x-slack"),
         "RomanNumeralKit",
         "GraphQLKit",
         "QueuesFluentDriver",
-        "VaporUtils",
         "ShellOut",
       ],
       swiftSettings: [
@@ -77,8 +102,12 @@ let package = Package(
       name: "AppTests",
       dependencies: [
         .target(name: "App"),
+        .product(name: "Duet", package: "duet"),
+        .product(name: "DuetMock", package: "duet"),
+        .product(name: "DuetSQL", package: "duet"),
+        .product(name: "XGraphQLTest", package: "x-kit"),
+        .product(name: "XSendGrid", package: "x-sendgrid"),
         .product(name: "XCTVapor", package: "vapor"),
-        .product(name: "XCTVaporUtils", package: "VaporUtils"),
       ]
     ),
   ]

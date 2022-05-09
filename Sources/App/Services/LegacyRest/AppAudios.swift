@@ -4,11 +4,11 @@ extension LegacyRest {
 
   static func appAudios(lang: Lang) async throws -> Response {
     let data: Data
-    if let cachedData = try await Current.db.entities().getLegacyAppAudios(lang: lang) {
+    if let cachedData = await cachedData.getLegacyAppAudios(lang: lang) {
       data = cachedData
     } else {
       data = try await queryData(lang: lang)
-      try await Current.db.entities().setLegacyAppAudios(data: data, lang: lang)
+      await cachedData.setLegacyAppAudios(data: data, lang: lang)
     }
     let response = Response()
     response.status = .ok

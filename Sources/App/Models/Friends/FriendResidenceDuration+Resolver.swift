@@ -1,3 +1,4 @@
+import DuetSQL
 import Vapor
 
 // below auto-generated
@@ -30,7 +31,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: FriendResidenceDuration.self, on: req.eventLoop) {
       let friendResidenceDuration = FriendResidenceDuration(args.input)
-      guard friendResidenceDuration.isValid else { throw DbError.invalidEntity }
+      guard friendResidenceDuration.isValid else { throw ModelError.invalidEntity }
       let created = try await Current.db.create(friendResidenceDuration)
       return try await Current.db.find(created.id)
     }
@@ -43,7 +44,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [FriendResidenceDuration].self, on: req.eventLoop) {
       let friendResidenceDurations = args.input.map(FriendResidenceDuration.init)
-      guard friendResidenceDurations.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      guard friendResidenceDurations.allSatisfy(\.isValid) else { throw ModelError.invalidEntity }
       let created = try await Current.db.create(friendResidenceDurations)
       return try await Current.db.query(FriendResidenceDuration.self)
         .where(.id |=| created.map(\.id))
@@ -58,7 +59,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: FriendResidenceDuration.self, on: req.eventLoop) {
       let friendResidenceDuration = FriendResidenceDuration(args.input)
-      guard friendResidenceDuration.isValid else { throw DbError.invalidEntity }
+      guard friendResidenceDuration.isValid else { throw ModelError.invalidEntity }
       try await Current.db.update(friendResidenceDuration)
       return try await Current.db.find(friendResidenceDuration.id)
     }
@@ -71,7 +72,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [FriendResidenceDuration].self, on: req.eventLoop) {
       let friendResidenceDurations = args.input.map(FriendResidenceDuration.init)
-      guard friendResidenceDurations.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      guard friendResidenceDurations.allSatisfy(\.isValid) else { throw ModelError.invalidEntity }
       let created = try await Current.db.update(friendResidenceDurations)
       return try await Current.db.query(FriendResidenceDuration.self)
         .where(.id |=| created.map(\.id))

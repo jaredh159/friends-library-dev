@@ -1,3 +1,4 @@
+import DuetSQL
 import Graphiti
 import Vapor
 
@@ -27,8 +28,8 @@ extension Resolver {
         await slackError("Failed to query ISBN to assign to new edition: \(error)")
         throw error
       }
-      let edition = try Edition(args.input)
-      guard edition.isValid else { throw DbError.invalidEntity }
+      let edition = Edition(args.input)
+      guard edition.isValid else { throw ModelError.invalidEntity }
       let created = try await Current.db.create(edition)
       isbn.editionId = created.id
       try await Current.db.update(isbn)
@@ -68,8 +69,8 @@ extension Resolver {
   ) throws -> Future<[Edition]> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [Edition].self, on: req.eventLoop) {
-      let editions = try args.input.map(Edition.init)
-      guard editions.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      let editions = args.input.map(Edition.init)
+      guard editions.allSatisfy(\.isValid) else { throw ModelError.invalidEntity }
       let created = try await Current.db.create(editions)
       return try await Current.db.query(Edition.self)
         .where(.id |=| created.map(\.id))
@@ -83,8 +84,8 @@ extension Resolver {
   ) throws -> Future<Edition> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: Edition.self, on: req.eventLoop) {
-      let edition = try Edition(args.input)
-      guard edition.isValid else { throw DbError.invalidEntity }
+      let edition = Edition(args.input)
+      guard edition.isValid else { throw ModelError.invalidEntity }
       try await Current.db.update(edition)
       return try await Current.db.find(edition.id)
     }
@@ -96,8 +97,8 @@ extension Resolver {
   ) throws -> Future<[Edition]> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [Edition].self, on: req.eventLoop) {
-      let editions = try args.input.map(Edition.init)
-      guard editions.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      let editions = args.input.map(Edition.init)
+      guard editions.allSatisfy(\.isValid) else { throw ModelError.invalidEntity }
       let created = try await Current.db.update(editions)
       return try await Current.db.query(Edition.self)
         .where(.id |=| created.map(\.id))

@@ -1,4 +1,5 @@
 import Foundation
+import XHttp
 
 extension Lulu.Api.Client {
   actor ReusableToken {

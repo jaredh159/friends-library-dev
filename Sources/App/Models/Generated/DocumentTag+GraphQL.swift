@@ -26,16 +26,16 @@ extension AppSchema {
     let type: DocumentTag.TagType
   }
 
-  static var CreateDocumentTagInputType: AppInput<AppSchema.CreateDocumentTagInput> {
-    Input(AppSchema.CreateDocumentTagInput.self) {
+  static var CreateDocumentTagInputType: AppInput<CreateDocumentTagInput> {
+    Input(CreateDocumentTagInput.self) {
       InputField("id", at: \.id)
       InputField("documentId", at: \.documentId)
       InputField("type", at: \.type)
     }
   }
 
-  static var UpdateDocumentTagInputType: AppInput<AppSchema.UpdateDocumentTagInput> {
-    Input(AppSchema.UpdateDocumentTagInput.self) {
+  static var UpdateDocumentTagInputType: AppInput<UpdateDocumentTagInput> {
+    Input(UpdateDocumentTagInput.self) {
       InputField("id", at: \.id)
       InputField("documentId", at: \.documentId)
       InputField("type", at: \.type)
@@ -85,11 +85,10 @@ extension AppSchema {
 
 extension DocumentTag {
   convenience init(_ input: AppSchema.CreateDocumentTagInput) {
-    self.init(
-      id: .init(rawValue: input.id ?? UUID()),
-      documentId: .init(rawValue: input.documentId),
-      type: input.type
-    )
+    self.init(documentId: .init(rawValue: input.documentId), type: input.type)
+    if let id = input.id {
+      self.id = .init(rawValue: id)
+    }
   }
 
   convenience init(_ input: AppSchema.UpdateDocumentTagInput) {

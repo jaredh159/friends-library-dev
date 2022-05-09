@@ -1,5 +1,4 @@
 import XCTVapor
-import XCTVaporUtils
 
 @testable import App
 
@@ -12,25 +11,26 @@ final class AudioResolverTests: AppTestCase {
     audio.editionId = entities.edition.id
     let map = audio.gqlMap()
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation CreateAudio($input: CreateAudioInput!) {
         audio: createAudio(input: $input) {
           id
         }
       }
       """,
-      expectedData: .containsKVPs(["id": map["id"]]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": map])
+      bearer: Seeded.tokens.allScopes,
+      withVariables: ["input": map],
+      .containsKeyValuePairs(["id": map["id"]])
+    )
   }
 
   func testGetAudio() async throws {
     let entities = await Entities.create()
     let audio = entities.audio
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       query GetAudio {
         audio: getAudio(id: "\(audio.id.uuidString)") {
           id
@@ -44,7 +44,8 @@ final class AudioResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs([
+      bearer: Seeded.tokens.allScopes,
+      .containsKeyValuePairs([
         "id": audio.id.lowercased,
         "logPath": DownloadableFile(
           edition: entities.edition,
@@ -52,9 +53,8 @@ final class AudioResolverTests: AppTestCase {
         )
         .logPath
         .replacingOccurrences(of: "/", with: "\\/"),
-      ]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app)
+      ])
+    )
   }
 
   func testUpdateAudio() async throws {
@@ -63,33 +63,35 @@ final class AudioResolverTests: AppTestCase {
     // do some updates here ---vvv
     audio.reader = "new value"
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation UpdateAudio($input: UpdateAudioInput!) {
         audio: updateAudio(input: $input) {
           reader
         }
       }
       """,
-      expectedData: .containsKVPs(["reader": "new value"]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": audio.gqlMap()])
+      bearer: Seeded.tokens.allScopes,
+      withVariables: ["input": audio.gqlMap()],
+      .containsKeyValuePairs(["reader": "new value"])
+    )
   }
 
   func testDeleteAudio() async throws {
     let audio = await Entities.create().audio
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation DeleteAudio {
         audio: deleteAudio(id: "\(audio.id.uuidString)") {
           id
         }
       }
       """,
-      expectedData: .containsKVPs(["id": audio.id.lowercased]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": audio.gqlMap()])
+      bearer: Seeded.tokens.allScopes,
+      withVariables: ["input": audio.gqlMap()],
+      .containsKeyValuePairs(["id": audio.id.lowercased])
+    )
 
     let retrieved = try? await Current.db.find(audio.id)
     XCTAssertNil(retrieved)

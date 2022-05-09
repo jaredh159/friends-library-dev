@@ -1,14 +1,64 @@
 // auto-generated, do not edit
-import Foundation
+import DuetSQL
 import Tagged
 
 extension Order: ApiModel {
   typealias Id = Tagged<Order, UUID>
 }
 
-extension Order: DuetModel {
+extension Order: Model {
   static let tableName = M2.tableName
-  static var isSoftDeletable: Bool { false }
+
+  func postgresData(for column: ColumnName) -> Postgres.Data {
+    switch column {
+      case .id:
+        return .id(self)
+      case .lang:
+        return .enum(lang)
+      case .source:
+        return .enum(source)
+      case .paymentId:
+        return .string(paymentId.rawValue)
+      case .printJobId:
+        return .int(printJobId?.rawValue)
+      case .printJobStatus:
+        return .enum(printJobStatus)
+      case .amount:
+        return .int(amount.rawValue)
+      case .taxes:
+        return .int(taxes.rawValue)
+      case .fees:
+        return .int(fees.rawValue)
+      case .ccFeeOffset:
+        return .int(ccFeeOffset.rawValue)
+      case .shipping:
+        return .int(shipping.rawValue)
+      case .shippingLevel:
+        return .enum(shippingLevel)
+      case .email:
+        return .string(email.rawValue)
+      case .addressName:
+        return .string(addressName)
+      case .addressStreet:
+        return .string(addressStreet)
+      case .addressStreet2:
+        return .string(addressStreet2)
+      case .addressCity:
+        return .string(addressCity)
+      case .addressState:
+        return .string(addressState)
+      case .addressZip:
+        return .string(addressZip)
+      case .addressCountry:
+        return .string(addressCountry)
+      case .freeOrderRequestId:
+        return .uuid(freeOrderRequestId)
+      case .createdAt:
+        return .date(createdAt)
+      case .updatedAt:
+        return .date(updatedAt)
+    }
+  }
 }
 
 extension Order {
@@ -70,59 +120,3 @@ extension Order {
     ]
   }
 }
-
-extension Order: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint<Order>) -> Bool {
-    switch constraint.column {
-      case .id:
-        return constraint.isSatisfiedBy(.id(self))
-      case .lang:
-        return constraint.isSatisfiedBy(.enum(lang))
-      case .source:
-        return constraint.isSatisfiedBy(.enum(source))
-      case .paymentId:
-        return constraint.isSatisfiedBy(.string(paymentId.rawValue))
-      case .printJobId:
-        return constraint.isSatisfiedBy(.int(printJobId?.rawValue))
-      case .printJobStatus:
-        return constraint.isSatisfiedBy(.enum(printJobStatus))
-      case .amount:
-        return constraint.isSatisfiedBy(.int(amount.rawValue))
-      case .taxes:
-        return constraint.isSatisfiedBy(.int(taxes.rawValue))
-      case .fees:
-        return constraint.isSatisfiedBy(.int(fees.rawValue))
-      case .ccFeeOffset:
-        return constraint.isSatisfiedBy(.int(ccFeeOffset.rawValue))
-      case .shipping:
-        return constraint.isSatisfiedBy(.int(shipping.rawValue))
-      case .shippingLevel:
-        return constraint.isSatisfiedBy(.enum(shippingLevel))
-      case .email:
-        return constraint.isSatisfiedBy(.string(email.rawValue))
-      case .addressName:
-        return constraint.isSatisfiedBy(.string(addressName))
-      case .addressStreet:
-        return constraint.isSatisfiedBy(.string(addressStreet))
-      case .addressStreet2:
-        return constraint.isSatisfiedBy(.string(addressStreet2))
-      case .addressCity:
-        return constraint.isSatisfiedBy(.string(addressCity))
-      case .addressState:
-        return constraint.isSatisfiedBy(.string(addressState))
-      case .addressZip:
-        return constraint.isSatisfiedBy(.string(addressZip))
-      case .addressCountry:
-        return constraint.isSatisfiedBy(.string(addressCountry))
-      case .freeOrderRequestId:
-        return constraint.isSatisfiedBy(.uuid(freeOrderRequestId))
-      case .createdAt:
-        return constraint.isSatisfiedBy(.date(createdAt))
-      case .updatedAt:
-        return constraint.isSatisfiedBy(.date(updatedAt))
-    }
-  }
-}
-
-extension Order: Auditable {}
-extension Order: Touchable {}

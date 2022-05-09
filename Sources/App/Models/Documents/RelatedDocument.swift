@@ -1,4 +1,4 @@
-import Foundation
+import Duet
 
 final class RelatedDocument: Codable {
   var id: Id

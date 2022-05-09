@@ -1,3 +1,4 @@
+import DuetSQL
 import Fluent
 
 extension Edition {
@@ -20,7 +21,7 @@ extension Edition {
 }
 
 extension PrintSizeVariant: PostgresEnum {
-  var dataType: String {
+  var typeName: String {
     Edition.M17.PrintSizeVariantEnum.name
   }
 }

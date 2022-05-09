@@ -1,4 +1,4 @@
-import Foundation
+import DuetSQL
 
 enum Scope: String, Codable, CaseIterable, Equatable {
   case all
@@ -34,5 +34,5 @@ final class TokenScope: Codable {
 // extensions
 
 extension Scope: PostgresEnum {
-  var dataType: String { TokenScope.M5.dbEnumName }
+  var typeName: String { TokenScope.M5.dbEnumName }
 }

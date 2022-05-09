@@ -1,4 +1,4 @@
-import Foundation
+import Duet
 import NonEmpty
 
 final class Edition: Codable {

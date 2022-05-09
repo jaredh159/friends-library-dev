@@ -49,6 +49,7 @@ extension AppSchema {
     let description: String
     let partialDescription: String
     let featuredDescription: String?
+    let deletedAt: String?
   }
 
   struct UpdateDocumentInput: Codable {
@@ -64,10 +65,11 @@ extension AppSchema {
     let description: String
     let partialDescription: String
     let featuredDescription: String?
+    let deletedAt: String?
   }
 
-  static var CreateDocumentInputType: AppInput<AppSchema.CreateDocumentInput> {
-    Input(AppSchema.CreateDocumentInput.self) {
+  static var CreateDocumentInputType: AppInput<CreateDocumentInput> {
+    Input(CreateDocumentInput.self) {
       InputField("id", at: \.id)
       InputField("friendId", at: \.friendId)
       InputField("altLanguageId", at: \.altLanguageId)
@@ -80,11 +82,12 @@ extension AppSchema {
       InputField("description", at: \.description)
       InputField("partialDescription", at: \.partialDescription)
       InputField("featuredDescription", at: \.featuredDescription)
+      InputField("deletedAt", at: \.deletedAt)
     }
   }
 
-  static var UpdateDocumentInputType: AppInput<AppSchema.UpdateDocumentInput> {
-    Input(AppSchema.UpdateDocumentInput.self) {
+  static var UpdateDocumentInputType: AppInput<UpdateDocumentInput> {
+    Input(UpdateDocumentInput.self) {
       InputField("id", at: \.id)
       InputField("friendId", at: \.friendId)
       InputField("altLanguageId", at: \.altLanguageId)
@@ -97,6 +100,7 @@ extension AppSchema {
       InputField("description", at: \.description)
       InputField("partialDescription", at: \.partialDescription)
       InputField("featuredDescription", at: \.featuredDescription)
+      InputField("deletedAt", at: \.deletedAt)
     }
   }
 
@@ -144,9 +148,8 @@ extension AppSchema {
 extension Document {
   convenience init(_ input: AppSchema.CreateDocumentInput) {
     self.init(
-      id: .init(rawValue: input.id ?? UUID()),
       friendId: .init(rawValue: input.friendId),
-      altLanguageId: input.altLanguageId != nil ? .init(rawValue: input.altLanguageId!) : nil,
+      altLanguageId: input.altLanguageId.map { .init(rawValue: $0) },
       title: input.title,
       slug: input.slug,
       filename: input.filename,
@@ -157,13 +160,16 @@ extension Document {
       partialDescription: input.partialDescription,
       featuredDescription: input.featuredDescription
     )
+    if let id = input.id {
+      self.id = .init(rawValue: id)
+    }
   }
 
   convenience init(_ input: AppSchema.UpdateDocumentInput) {
     self.init(
       id: .init(rawValue: input.id),
       friendId: .init(rawValue: input.friendId),
-      altLanguageId: input.altLanguageId != nil ? .init(rawValue: input.altLanguageId!) : nil,
+      altLanguageId: input.altLanguageId.map { .init(rawValue: $0) },
       title: input.title,
       slug: input.slug,
       filename: input.filename,
@@ -176,9 +182,9 @@ extension Document {
     )
   }
 
-  func update(_ input: AppSchema.UpdateDocumentInput) {
+  func update(_ input: AppSchema.UpdateDocumentInput) throws {
     friendId = .init(rawValue: input.friendId)
-    altLanguageId = input.altLanguageId != nil ? .init(rawValue: input.altLanguageId!) : nil
+    altLanguageId = input.altLanguageId.map { .init(rawValue: $0) }
     title = input.title
     slug = input.slug
     filename = input.filename
@@ -188,6 +194,7 @@ extension Document {
     description = input.description
     partialDescription = input.partialDescription
     featuredDescription = input.featuredDescription
+    deletedAt = try input.deletedAt.flatMap { try Date(fromIsoString: $0) }
     updatedAt = Current.date()
   }
 }

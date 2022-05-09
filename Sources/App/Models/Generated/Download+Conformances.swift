@@ -1,14 +1,58 @@
 // auto-generated, do not edit
-import Foundation
+import DuetSQL
 import Tagged
 
 extension Download: ApiModel {
   typealias Id = Tagged<Download, UUID>
 }
 
-extension Download: DuetModel {
+extension Download: Model {
   static let tableName = M1.tableName
-  static var isSoftDeletable: Bool { false }
+
+  func postgresData(for column: ColumnName) -> Postgres.Data {
+    switch column {
+      case .id:
+        return .id(self)
+      case .editionId:
+        return .uuid(editionId)
+      case .format:
+        return .enum(format)
+      case .source:
+        return .enum(source)
+      case .audioQuality:
+        return .enum(audioQuality)
+      case .audioPartNumber:
+        return .int(audioPartNumber)
+      case .isMobile:
+        return .bool(isMobile)
+      case .userAgent:
+        return .string(userAgent)
+      case .os:
+        return .string(os)
+      case .browser:
+        return .string(browser)
+      case .platform:
+        return .string(platform)
+      case .referrer:
+        return .string(referrer)
+      case .ip:
+        return .string(ip)
+      case .city:
+        return .string(city)
+      case .region:
+        return .string(region)
+      case .postalCode:
+        return .string(postalCode)
+      case .country:
+        return .string(country)
+      case .latitude:
+        return .string(latitude)
+      case .longitude:
+        return .string(longitude)
+      case .createdAt:
+        return .date(createdAt)
+    }
+  }
 }
 
 extension Download {
@@ -64,52 +108,3 @@ extension Download {
     ]
   }
 }
-
-extension Download: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint<Download>) -> Bool {
-    switch constraint.column {
-      case .id:
-        return constraint.isSatisfiedBy(.id(self))
-      case .editionId:
-        return constraint.isSatisfiedBy(.uuid(editionId))
-      case .format:
-        return constraint.isSatisfiedBy(.enum(format))
-      case .source:
-        return constraint.isSatisfiedBy(.enum(source))
-      case .audioQuality:
-        return constraint.isSatisfiedBy(.enum(audioQuality))
-      case .audioPartNumber:
-        return constraint.isSatisfiedBy(.int(audioPartNumber))
-      case .isMobile:
-        return constraint.isSatisfiedBy(.bool(isMobile))
-      case .userAgent:
-        return constraint.isSatisfiedBy(.string(userAgent))
-      case .os:
-        return constraint.isSatisfiedBy(.string(os))
-      case .browser:
-        return constraint.isSatisfiedBy(.string(browser))
-      case .platform:
-        return constraint.isSatisfiedBy(.string(platform))
-      case .referrer:
-        return constraint.isSatisfiedBy(.string(referrer))
-      case .ip:
-        return constraint.isSatisfiedBy(.string(ip))
-      case .city:
-        return constraint.isSatisfiedBy(.string(city))
-      case .region:
-        return constraint.isSatisfiedBy(.string(region))
-      case .postalCode:
-        return constraint.isSatisfiedBy(.string(postalCode))
-      case .country:
-        return constraint.isSatisfiedBy(.string(country))
-      case .latitude:
-        return constraint.isSatisfiedBy(.string(latitude))
-      case .longitude:
-        return constraint.isSatisfiedBy(.string(longitude))
-      case .createdAt:
-        return constraint.isSatisfiedBy(.date(createdAt))
-    }
-  }
-}
-
-extension Download: Auditable {}

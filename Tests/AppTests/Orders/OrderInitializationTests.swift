@@ -1,32 +1,25 @@
-import Foundation
-import XCTVapor
-import XCTVaporUtils
+import DuetMock
+import XCTest
 
 @testable import App
+@testable import XStripe
 
 final class OrderInitializationTests: AppTestCase {
 
   func testCreateOrderInitializationSuccess() async throws {
     try await Current.db.deleteAll(Token.self)
 
-    var uuids = [
-      "0d70e2a5-2cda-4326-b9cf-f28e70f580e8", // order id
-      "552444a7-b8c6-4e65-8787-1a91cd96e9ac", // token id (not asserted)
-      "c53d0162-4d81-4ff5-8370-48df861a03d5", // token value
-    ]
+    let (orderId, _, tokenValue, _) = mockUUIDs()
 
-    Current.uuid = { guard !uuids.isEmpty else { return UUID() }
-      return UUID(uuidString: uuids.removeFirst())!
-    }
-
-    Current.stripeClient.createPaymentIntent = { amount, orderId in
+    Current.stripeClient.createPaymentIntent = { amount, currency, metadata, _ in
       XCTAssertEqual(amount, 555)
-      XCTAssertEqual(orderId.rawValue.lowercased, "0d70e2a5-2cda-4326-b9cf-f28e70f580e8")
+      XCTAssertEqual(currency, .USD)
+      XCTAssertEqual(metadata, ["orderId": orderId])
       return .init(id: "pi_id", clientSecret: "pi_secret")
     }
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation CreateOrderInitialization($input: CreateOrderInitializationInput!) {
         createOrderInitialization(input: $input) {
           orderPaymentId
@@ -36,20 +29,21 @@ final class OrderInitializationTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs([
+      withVariables: ["input": .dictionary(["amount": .int(555)])],
+      .containsKeyValuePairs([
         "orderPaymentId": "pi_id",
         "stripeClientSecret": "pi_secret",
-        "orderId": "0d70e2a5-2cda-4326-b9cf-f28e70f580e8",
-        "createOrderToken": "c53d0162-4d81-4ff5-8370-48df861a03d5",
+        "orderId": orderId,
+        "createOrderToken": tokenValue,
       ])
-    ).run(Self.app, variables: ["input": .dictionary(["amount": .int(555)])])
+    )
   }
 
   func testCreateOrderInitializationFailure() async throws {
-    Current.stripeClient.createPaymentIntent = { _, _ in throw "some error" }
+    Current.stripeClient.createPaymentIntent = { _, _, _, _ in throw "some error" }
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation CreateOrderInitialization($input: CreateOrderInitializationInput!) {
         createOrderInitialization(input: $input) {
           orderPaymentId
@@ -59,8 +53,9 @@ final class OrderInitializationTests: AppTestCase {
         }
       }
       """,
-      expectedError: .status(.internalServerError)
-    ).run(Self.app, variables: ["input": .dictionary(["amount": .int(555)])])
+      withVariables: ["input": .dictionary(["amount": .int(555)])],
+      isError: .withStatus(.internalServerError)
+    )
 
     XCTAssertEqual(sent.slacks, [.error("Error creating OrderInitialization: some error")])
   }

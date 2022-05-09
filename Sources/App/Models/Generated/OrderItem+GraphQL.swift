@@ -33,8 +33,8 @@ extension AppSchema {
     let unitPrice: Int
   }
 
-  static var CreateOrderItemInputType: AppInput<AppSchema.CreateOrderItemInput> {
-    Input(AppSchema.CreateOrderItemInput.self) {
+  static var CreateOrderItemInputType: AppInput<CreateOrderItemInput> {
+    Input(CreateOrderItemInput.self) {
       InputField("id", at: \.id)
       InputField("orderId", at: \.orderId)
       InputField("editionId", at: \.editionId)
@@ -43,8 +43,8 @@ extension AppSchema {
     }
   }
 
-  static var UpdateOrderItemInputType: AppInput<AppSchema.UpdateOrderItemInput> {
-    Input(AppSchema.UpdateOrderItemInput.self) {
+  static var UpdateOrderItemInputType: AppInput<UpdateOrderItemInput> {
+    Input(UpdateOrderItemInput.self) {
       InputField("id", at: \.id)
       InputField("orderId", at: \.orderId)
       InputField("editionId", at: \.editionId)
@@ -97,12 +97,14 @@ extension AppSchema {
 extension OrderItem {
   convenience init(_ input: AppSchema.CreateOrderItemInput) {
     self.init(
-      id: .init(rawValue: input.id ?? UUID()),
       orderId: .init(rawValue: input.orderId),
       editionId: .init(rawValue: input.editionId),
       quantity: input.quantity,
       unitPrice: .init(rawValue: input.unitPrice)
     )
+    if let id = input.id {
+      self.id = .init(rawValue: id)
+    }
   }
 
   convenience init(_ input: AppSchema.UpdateOrderItemInput) {

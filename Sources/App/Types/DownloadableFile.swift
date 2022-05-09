@@ -1,6 +1,6 @@
-import Foundation
 import Graphiti
 import Vapor
+import XCore
 
 struct DownloadableFile: Encodable {
   enum Format: Equatable, Encodable {
@@ -415,7 +415,7 @@ extension DownloadableFile.Format {
     }
   }
 
-  var slackChannel: Slack.Channel {
+  var slackChannel: FlpSlack.Message.Channel {
     switch self {
       case .audio(.mp3), .audio(.podcast):
         return .audioDownloads

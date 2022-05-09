@@ -1,17 +1,42 @@
 // auto-generated, do not edit
-import Foundation
+import DuetSQL
 import Tagged
 
 extension Audio: ApiModel {
   typealias Id = Tagged<Audio, UUID>
-  static var preloadedEntityType: PreloadedEntityType? {
-    .audio(Self.self)
-  }
 }
 
-extension Audio: DuetModel {
+extension Audio: Model {
   static let tableName = M20.tableName
-  static var isSoftDeletable: Bool { false }
+
+  func postgresData(for column: ColumnName) -> Postgres.Data {
+    switch column {
+      case .id:
+        return .id(self)
+      case .editionId:
+        return .uuid(editionId)
+      case .reader:
+        return .string(reader)
+      case .isIncomplete:
+        return .bool(isIncomplete)
+      case .mp3ZipSizeHq:
+        return .int(mp3ZipSizeHq.rawValue)
+      case .mp3ZipSizeLq:
+        return .int(mp3ZipSizeLq.rawValue)
+      case .m4bSizeHq:
+        return .int(m4bSizeHq.rawValue)
+      case .m4bSizeLq:
+        return .int(m4bSizeLq.rawValue)
+      case .externalPlaylistIdHq:
+        return .int64(externalPlaylistIdHq?.rawValue)
+      case .externalPlaylistIdLq:
+        return .int64(externalPlaylistIdLq?.rawValue)
+      case .createdAt:
+        return .date(createdAt)
+      case .updatedAt:
+        return .date(updatedAt)
+    }
+  }
 }
 
 extension Audio {
@@ -51,37 +76,3 @@ extension Audio {
     ]
   }
 }
-
-extension Audio: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint<Audio>) -> Bool {
-    switch constraint.column {
-      case .id:
-        return constraint.isSatisfiedBy(.id(self))
-      case .editionId:
-        return constraint.isSatisfiedBy(.uuid(editionId))
-      case .reader:
-        return constraint.isSatisfiedBy(.string(reader))
-      case .isIncomplete:
-        return constraint.isSatisfiedBy(.bool(isIncomplete))
-      case .mp3ZipSizeHq:
-        return constraint.isSatisfiedBy(.int(mp3ZipSizeHq.rawValue))
-      case .mp3ZipSizeLq:
-        return constraint.isSatisfiedBy(.int(mp3ZipSizeLq.rawValue))
-      case .m4bSizeHq:
-        return constraint.isSatisfiedBy(.int(m4bSizeHq.rawValue))
-      case .m4bSizeLq:
-        return constraint.isSatisfiedBy(.int(m4bSizeLq.rawValue))
-      case .externalPlaylistIdHq:
-        return constraint.isSatisfiedBy(.int64(externalPlaylistIdHq?.rawValue))
-      case .externalPlaylistIdLq:
-        return constraint.isSatisfiedBy(.int64(externalPlaylistIdLq?.rawValue))
-      case .createdAt:
-        return constraint.isSatisfiedBy(.date(createdAt))
-      case .updatedAt:
-        return constraint.isSatisfiedBy(.date(updatedAt))
-    }
-  }
-}
-
-extension Audio: Auditable {}
-extension Audio: Touchable {}

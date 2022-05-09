@@ -1,17 +1,30 @@
 // auto-generated, do not edit
-import Foundation
+import DuetSQL
 import Tagged
 
 extension FriendResidence: ApiModel {
   typealias Id = Tagged<FriendResidence, UUID>
-  static var preloadedEntityType: PreloadedEntityType? {
-    .friendResidence(Self.self)
-  }
 }
 
-extension FriendResidence: DuetModel {
+extension FriendResidence: Model {
   static let tableName = M12.tableName
-  static var isSoftDeletable: Bool { false }
+
+  func postgresData(for column: ColumnName) -> Postgres.Data {
+    switch column {
+      case .id:
+        return .id(self)
+      case .friendId:
+        return .uuid(friendId)
+      case .city:
+        return .string(city)
+      case .region:
+        return .string(region)
+      case .createdAt:
+        return .date(createdAt)
+      case .updatedAt:
+        return .date(updatedAt)
+    }
+  }
 }
 
 extension FriendResidence {
@@ -39,25 +52,3 @@ extension FriendResidence {
     ]
   }
 }
-
-extension FriendResidence: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint<FriendResidence>) -> Bool {
-    switch constraint.column {
-      case .id:
-        return constraint.isSatisfiedBy(.id(self))
-      case .friendId:
-        return constraint.isSatisfiedBy(.uuid(friendId))
-      case .city:
-        return constraint.isSatisfiedBy(.string(city))
-      case .region:
-        return constraint.isSatisfiedBy(.string(region))
-      case .createdAt:
-        return constraint.isSatisfiedBy(.date(createdAt))
-      case .updatedAt:
-        return constraint.isSatisfiedBy(.date(updatedAt))
-    }
-  }
-}
-
-extension FriendResidence: Auditable {}
-extension FriendResidence: Touchable {}

@@ -1,5 +1,4 @@
-import XCTVapor
-import XCTVaporUtils
+import XCTest
 
 @testable import App
 
@@ -9,8 +8,8 @@ final class FriendResolverTests: AppTestCase {
     let friend = Friend.valid
     let map = friend.gqlMap()
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation CreateFriend($input: CreateFriendInput!) {
         friend: createFriend(input: $input) {
           id
@@ -20,15 +19,16 @@ final class FriendResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs(["id": map["id"]]),
-      headers: [.authorization: "Bearer (Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": map])
+      bearer: Seeded.tokens.allScopes,
+      withVariables: ["input": map],
+      .containsKeyValuePairs(["id": map["id"]])
+    )
   }
 
   func testGetFriend() async throws {
     let entities = await Entities.create()
 
-    let query = """
+    let query = /* gql */ """
     query GetFriend {
       friend: getFriend(id: "\(entities.friend.id.uuidString)") {
         id
@@ -103,36 +103,33 @@ final class FriendResolverTests: AppTestCase {
     }
     """
 
-    let expectedData = GraphQLTest.ExpectedData.containsKVPs([
-      "id": entities.friend.id.lowercased,
-      "quoteId": entities.friendQuote.id.lowercased,
-      "tagId": entities.documentTag.id.lowercased,
-      "documentTagDocumentId": entities.document.id.lowercased,
-      "quoteFriendId": entities.friend.id.lowercased,
-      "friendResidenceFriendId": entities.friend.id.lowercased,
-      "documentFriendId": entities.friend.id.lowercased,
-      "city": entities.friendResidence.city,
-      "residenceDurationResidenceId": entities.friendResidence.id.lowercased,
-      "editionId": entities.edition.id.lowercased,
-      "chapterEditionId": entities.edition.id.lowercased,
-      "audioEditionId": entities.edition.id.lowercased,
-      "isbnEditionId": entities.edition.id.lowercased,
-      "editionImpressionEditionId": entities.edition.id.lowercased,
-      "editionImpressionId": entities.editionImpression.id.lowercased,
-      "documentId": entities.document.id.lowercased,
-      "editionDocumentId": entities.document.id.lowercased,
-      "reader": entities.audio.reader,
-      "audioPartAudioId": entities.audio.id.lowercased,
-      "audioPartTitle": entities.audioPart.title,
-      "isbnCode": entities.isbn.code.rawValue,
-      "trimmedUtf8ShortTitle": entities.document.title,
-    ])
-
-    GraphQLTest(
-      query,
-      expectedData: expectedData,
-      headers: [.authorization: "Bearer (Seeded.tokens.allScopes)"]
-    ).run(Self.app)
+    assertResponse(
+      to: query,
+      .containsKeyValuePairs([
+        "id": entities.friend.id.lowercased,
+        "quoteId": entities.friendQuote.id.lowercased,
+        "tagId": entities.documentTag.id.lowercased,
+        "documentTagDocumentId": entities.document.id.lowercased,
+        "quoteFriendId": entities.friend.id.lowercased,
+        "friendResidenceFriendId": entities.friend.id.lowercased,
+        "documentFriendId": entities.friend.id.lowercased,
+        "city": entities.friendResidence.city,
+        "residenceDurationResidenceId": entities.friendResidence.id.lowercased,
+        "editionId": entities.edition.id.lowercased,
+        "chapterEditionId": entities.edition.id.lowercased,
+        "audioEditionId": entities.edition.id.lowercased,
+        "isbnEditionId": entities.edition.id.lowercased,
+        "editionImpressionEditionId": entities.edition.id.lowercased,
+        "editionImpressionId": entities.editionImpression.id.lowercased,
+        "documentId": entities.document.id.lowercased,
+        "editionDocumentId": entities.document.id.lowercased,
+        "reader": entities.audio.reader,
+        "audioPartAudioId": entities.audio.id.lowercased,
+        "audioPartTitle": entities.audioPart.title,
+        "isbnCode": entities.isbn.code.rawValue,
+        "trimmedUtf8ShortTitle": entities.document.title,
+      ])
+    )
   }
 
   func testUpdateFriend() async throws {
@@ -141,33 +138,33 @@ final class FriendResolverTests: AppTestCase {
     // do some updates here ---vvv
     friend.name = "Bob"
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation UpdateFriend($input: UpdateFriendInput!) {
         friend: updateFriend(input: $input) {
           name
         }
       }
       """,
-      expectedData: .containsKVPs(["name": "Bob"]),
-      headers: [.authorization: "Bearer (Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": friend.gqlMap()])
+      withVariables: ["input": friend.gqlMap()],
+      .containsKeyValuePairs(["name": "Bob"])
+    )
   }
 
   func testDeleteFriend() async throws {
     let friend = try await Current.db.create(Friend.random)
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation DeleteFriend {
         friend: deleteFriend(id: "\(friend.id.uuidString)") {
           id
         }
       }
       """,
-      expectedData: .containsKVPs(["id": friend.id.lowercased]),
-      headers: [.authorization: "Bearer (Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": friend.gqlMap()])
+      withVariables: ["input": friend.gqlMap()],
+      .containsKeyValuePairs(["id": friend.id.lowercased])
+    )
 
     let retrieved = try? await Current.db.find(friend.id)
     XCTAssertNil(retrieved)

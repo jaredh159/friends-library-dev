@@ -1,5 +1,6 @@
 import Foundation
 import NonEmpty
+import XHttp
 
 extension Lulu.Api {
 

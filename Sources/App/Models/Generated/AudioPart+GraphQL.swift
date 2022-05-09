@@ -51,8 +51,8 @@ extension AppSchema {
     let externalIdLq: Int64
   }
 
-  static var CreateAudioPartInputType: AppInput<AppSchema.CreateAudioPartInput> {
-    Input(AppSchema.CreateAudioPartInput.self) {
+  static var CreateAudioPartInputType: AppInput<CreateAudioPartInput> {
+    Input(CreateAudioPartInput.self) {
       InputField("id", at: \.id)
       InputField("audioId", at: \.audioId)
       InputField("title", at: \.title)
@@ -66,8 +66,8 @@ extension AppSchema {
     }
   }
 
-  static var UpdateAudioPartInputType: AppInput<AppSchema.UpdateAudioPartInput> {
-    Input(AppSchema.UpdateAudioPartInput.self) {
+  static var UpdateAudioPartInputType: AppInput<UpdateAudioPartInput> {
+    Input(UpdateAudioPartInput.self) {
       InputField("id", at: \.id)
       InputField("audioId", at: \.audioId)
       InputField("title", at: \.title)
@@ -125,7 +125,6 @@ extension AppSchema {
 extension AudioPart {
   convenience init(_ input: AppSchema.CreateAudioPartInput) throws {
     self.init(
-      id: .init(rawValue: input.id ?? UUID()),
       audioId: .init(rawValue: input.audioId),
       title: input.title,
       duration: .init(rawValue: input.duration),
@@ -136,6 +135,9 @@ extension AudioPart {
       externalIdHq: .init(rawValue: input.externalIdHq),
       externalIdLq: .init(rawValue: input.externalIdLq)
     )
+    if let id = input.id {
+      self.id = .init(rawValue: id)
+    }
   }
 
   convenience init(_ input: AppSchema.UpdateAudioPartInput) throws {

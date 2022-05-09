@@ -1,4 +1,4 @@
-import Foundation
+import XSendGrid
 
 enum EmailBuilder {
   static func fromAddress(lang: Lang) -> SendGrid.EmailAddress {

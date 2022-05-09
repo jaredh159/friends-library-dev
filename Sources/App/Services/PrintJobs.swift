@@ -1,4 +1,4 @@
-import Foundation
+import DuetSQL
 import NonEmpty
 import TaggedMoney
 

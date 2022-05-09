@@ -1,3 +1,4 @@
+import DuetSQL
 import Vapor
 
 // below auto-generated
@@ -24,7 +25,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: RelatedDocument.self, on: req.eventLoop) {
       let relatedDocument = RelatedDocument(args.input)
-      guard relatedDocument.isValid else { throw DbError.invalidEntity }
+      guard relatedDocument.isValid else { throw ModelError.invalidEntity }
       let created = try await Current.db.create(relatedDocument)
       return try await Current.db.find(created.id)
     }
@@ -37,7 +38,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [RelatedDocument].self, on: req.eventLoop) {
       let relatedDocuments = args.input.map(RelatedDocument.init)
-      guard relatedDocuments.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      guard relatedDocuments.allSatisfy(\.isValid) else { throw ModelError.invalidEntity }
       let created = try await Current.db.create(relatedDocuments)
       return try await Current.db.query(RelatedDocument.self)
         .where(.id |=| created.map(\.id))
@@ -52,7 +53,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: RelatedDocument.self, on: req.eventLoop) {
       let relatedDocument = RelatedDocument(args.input)
-      guard relatedDocument.isValid else { throw DbError.invalidEntity }
+      guard relatedDocument.isValid else { throw ModelError.invalidEntity }
       try await Current.db.update(relatedDocument)
       return try await Current.db.find(relatedDocument.id)
     }
@@ -65,7 +66,7 @@ extension Resolver {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [RelatedDocument].self, on: req.eventLoop) {
       let relatedDocuments = args.input.map(RelatedDocument.init)
-      guard relatedDocuments.allSatisfy(\.isValid) else { throw DbError.invalidEntity }
+      guard relatedDocuments.allSatisfy(\.isValid) else { throw ModelError.invalidEntity }
       let created = try await Current.db.update(relatedDocuments)
       return try await Current.db.query(RelatedDocument.self)
         .where(.id |=| created.map(\.id))

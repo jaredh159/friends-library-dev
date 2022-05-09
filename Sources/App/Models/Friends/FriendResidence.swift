@@ -1,4 +1,4 @@
-import Foundation
+import Duet
 
 final class FriendResidence: Codable {
   var id: Id

@@ -1,3 +1,4 @@
+import DuetSQL
 import Tagged
 import TaggedMoney
 
@@ -166,19 +167,19 @@ extension Order {
 }
 
 extension Lang: PostgresEnum {
-  var dataType: String { Order.M2.LangEnum.name }
+  var typeName: String { Order.M2.LangEnum.name }
 }
 
 extension Order.OrderSource: PostgresEnum {
-  var dataType: String { Order.M2.SourceEnum.name }
+  var typeName: String { Order.M2.SourceEnum.name }
 }
 
 extension Order.ShippingLevel: PostgresEnum {
-  var dataType: String { Order.M2.ShippingLevelEnum.name }
+  var typeName: String { Order.M2.ShippingLevelEnum.name }
 }
 
 extension Order.PrintJobStatus: PostgresEnum {
-  var dataType: String { Order.M2.PrintJobStatusEnum.name }
+  var typeName: String { Order.M2.PrintJobStatusEnum.name }
 }
 
 extension Order {

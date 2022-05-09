@@ -1,105 +1,125 @@
+import DuetSQL
 import FluentSQL
 
-struct LiveDatabase: SQLQuerying, SQLMutating, DatabaseClient {
-  let db: SQLDatabase
-  let entityRepo: EntityRepository
+class LiveDatabase: DuetSQL.Client {
+  private let db: SQLDatabase
+  private let dbClient: DuetSQL.Client
+  private var _entityClient: DuetSQL.Client?
 
   init(db: SQLDatabase) {
     self.db = db
-    entityRepo = LiveEntityRepository(db: db)
+    dbClient = LiveClient(db: db)
   }
 
-  func entities() async throws -> PreloadedEntities {
-    try await entityRepo.getEntities()
-  }
-
-  func query<M: DuetModel>(_ Model: M.Type) -> DuetQuery<M> {
-    DuetQuery<M>(db: self, constraints: [], limit: nil, order: nil)
+  func query<M: DuetSQL.Model>(_ Model: M.Type) -> DuetQuery<M> {
+    .init(db: self)
   }
 
   @discardableResult
-  func create<M: DuetModel>(_ models: [M]) async throws -> [M] {
-    guard !models.isEmpty else { return models }
-    let prepared = try SQL.insert(into: M.self, values: models.map(\.insertValues))
-    try await SQL.execute(prepared, on: db)
-    if M.isPreloaded { await entityRepo.flush() }
+  func create<M: DuetSQL.Model>(_ models: [M]) async throws -> [M] {
+    let models = try await dbClient.create(models)
+    if M.isPreloaded { await flushEntities() }
     return models
   }
 
   @discardableResult
-  func update<M: DuetModel>(_ model: M) async throws -> M {
-    let prepared = try SQL.update(
-      M.self,
-      set: model.insertValues,
-      where: [M.column("id") == .id(model)],
-      returning: .all
-    )
-    let models = try await SQL.execute(prepared, on: db)
-      .compactMap { try $0.decode(M.self) }
-      .firstOrThrowNotFound()
-    if M.isPreloaded { await entityRepo.flush() }
+  func update<M: DuetSQL.Model>(_ model: M) async throws -> M {
+    let models = try await dbClient.update(model)
+    if M.isPreloaded { await flushEntities() }
     return models
   }
 
   @discardableResult
-  func forceDelete<M: DuetModel>(
+  func forceDelete<M: DuetSQL.Model>(
     _ Model: M.Type,
-    where constraints: [SQL.WhereConstraint<M>] = [],
+    where constraint: SQL.WhereConstraint<M> = .always,
     orderBy: SQL.Order<M>? = nil,
-    limit: Int? = nil
+    limit: Int? = nil,
+    offset: Int? = nil
   ) async throws -> [M] {
-    let models = try await query(M.self)
-      .where(constraints)
-      .orderBy(orderBy)
-      .limit(limit)
-      .all()
-    guard !models.isEmpty else { return models }
-    let prepared = SQL.delete(from: M.self, where: constraints)
-    try await SQL.execute(prepared, on: db)
-    if M.isPreloaded { await entityRepo.flush() }
-    return models
-  }
-
-  @discardableResult
-  func delete<M: DuetModel>(
-    _ Model: M.Type,
-    where constraints: [SQL.WhereConstraint<M>],
-    orderBy order: SQL.Order<M>? = nil,
-    limit: Int? = nil
-  ) async throws -> [M] {
-    let models = try await select(Model.self, where: constraints)
-    let prepared: SQL.PreparedStatement
-    if Model.isSoftDeletable {
-      prepared = SQL.softDelete(M.self, where: constraints)
-    } else {
-      prepared = SQL.delete(from: M.self, where: constraints, orderBy: order, limit: limit)
-    }
-    try await SQL.execute(prepared, on: db)
-    if M.isPreloaded { await entityRepo.flush() }
-    return models
-  }
-
-  func select<M: DuetModel>(
-    _ Model: M.Type,
-    where constraints: [SQL.WhereConstraint<M>]? = nil,
-    orderBy: SQL.Order<M>? = nil,
-    limit: Int? = nil
-  ) async throws -> [M] {
-    let selectConstraints = !Model.isSoftDeletable
-      ? constraints
-      : (constraints ?? []) + [.isNull(try Model.column("deleted_at"))]
-    if M.isPreloaded {
-      return try await entityRepo.getEntities()
-        .select(M.self, where: selectConstraints, orderBy: orderBy, limit: limit)
-    }
-    let prepared = SQL.select(
-      .all,
-      from: M.self,
-      where: selectConstraints ?? [],
+    let models = try await dbClient.forceDelete(
+      Model,
+      where: constraint,
       orderBy: orderBy,
-      limit: limit
+      limit: limit,
+      offset: offset
     )
-    let rows = try await SQL.execute(prepared, on: db)
-    return try rows.compactMap { try $0.decode(Model.self) }
+    if M.isPreloaded { await flushEntities() }
+    return models
+  }
+
+  @discardableResult
+  func delete<M: DuetSQL.Model>(
+    _ Model: M.Type,
+    where constraint: SQL.WhereConstraint<M> = .always,
+    orderBy order: SQL.Order<M>? = nil,
+    limit: Int? = nil,
+    offset: Int? = nil
+  ) async throws -> [M] {
+    let models = try await dbClient.delete(
+      Model,
+      where: constraint,
+      orderBy: order,
+      limit: limit,
+      offset: offset
+    )
+    if M.isPreloaded { await flushEntities() }
+    return models
+  }
+
+  func select<M: DuetSQL.Model>(
+    _ Model: M.Type,
+    where constraint: SQL.WhereConstraint<M> = .always,
+    orderBy: SQL.Order<M>? = nil,
+    limit: Int? = nil,
+    offset: Int? = nil,
+    withSoftDeleted: Bool = false
+  ) async throws -> [M] {
+    if M.isPreloaded {
+      return try await entityClient.select(
+        M.self,
+        where: constraint + .notSoftDeleted,
+        orderBy: orderBy,
+        limit: limit,
+        offset: offset,
+        withSoftDeleted: withSoftDeleted
+      )
+    }
+    return try await dbClient.select(
+      Model,
+      where: constraint,
+      orderBy: orderBy,
+      limit: limit,
+      offset: offset,
+      withSoftDeleted: withSoftDeleted
+    )
+  }
+
+  private var entityClient: DuetSQL.Client {
+    get async throws {
+      if let client = _entityClient {
+        return client
+      } else {
+        let client = MemoryClient(store: try await queryPreloadedEntities(on: db))
+        _entityClient = client
+        return client
+      }
+    }
+  }
+
+  private func flushEntities() async {
+    _entityClient = nil
+    await LegacyRest.cachedData.flush()
+  }
+
+  func queryJoined<J: SQLJoined>(
+    _ Joined: J.Type,
+    withBindings: [Postgres.Data]?
+  ) async throws -> [J] {
+    fatalError("queryJoined not implemented")
+  }
+
+  func count<M: DuetSQL.Model>(_: M.Type, where: SQL.WhereConstraint<M>) async throws -> Int {
+    fatalError("LiveDatabase.count not implemented")
   }
 }

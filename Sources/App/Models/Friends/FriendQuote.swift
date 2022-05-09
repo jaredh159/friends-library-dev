@@ -1,4 +1,4 @@
-import Foundation
+import Duet
 
 final class FriendQuote: Codable {
   var id: Id

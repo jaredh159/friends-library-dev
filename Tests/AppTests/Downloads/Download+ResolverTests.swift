@@ -1,6 +1,4 @@
-import GraphQL
-import XCTVapor
-import XCTVaporUtils
+import XCTest
 
 @testable import App
 
@@ -14,8 +12,8 @@ final class DownloadResolverTests: AppTestCase {
     insert.editionId = entities.edition.id
     let map = insert.gqlMap()
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation CreateDownload($input: CreateDownloadInput!) {
         download: createDownload(input: $input) {
           edition {
@@ -45,7 +43,9 @@ final class DownloadResolverTests: AppTestCase {
         }
       }
       """,
-      expectedData: .containsKVPs([
+      bearer: Seeded.tokens.allScopes,
+      withVariables: ["input": insert.gqlMap()],
+      .containsKeyValuePairs([
         "documentId": entities.document.id.lowercased,
         "editionType": entities.edition.type.rawValue,
         "format": map["format"],
@@ -53,8 +53,7 @@ final class DownloadResolverTests: AppTestCase {
         "isMobile": map["isMobile"],
         "audioQuality": map["audioQuality"],
         "audioPartNumber": map["audioPartNumber"],
-      ]),
-      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
-    ).run(Self.app, variables: ["input": insert.gqlMap()])
+      ])
+    )
   }
 }

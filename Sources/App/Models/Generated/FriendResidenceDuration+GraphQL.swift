@@ -29,11 +29,8 @@ extension AppSchema {
     let end: Int
   }
 
-  static var CreateFriendResidenceDurationInputType: AppInput<
-    AppSchema
-      .CreateFriendResidenceDurationInput
-  > {
-    Input(AppSchema.CreateFriendResidenceDurationInput.self) {
+  static var CreateFriendResidenceDurationInputType: AppInput<CreateFriendResidenceDurationInput> {
+    Input(CreateFriendResidenceDurationInput.self) {
       InputField("id", at: \.id)
       InputField("friendResidenceId", at: \.friendResidenceId)
       InputField("start", at: \.start)
@@ -41,11 +38,8 @@ extension AppSchema {
     }
   }
 
-  static var UpdateFriendResidenceDurationInputType: AppInput<
-    AppSchema
-      .UpdateFriendResidenceDurationInput
-  > {
-    Input(AppSchema.UpdateFriendResidenceDurationInput.self) {
+  static var UpdateFriendResidenceDurationInputType: AppInput<UpdateFriendResidenceDurationInput> {
+    Input(UpdateFriendResidenceDurationInput.self) {
       InputField("id", at: \.id)
       InputField("friendResidenceId", at: \.friendResidenceId)
       InputField("start", at: \.start)
@@ -109,11 +103,13 @@ extension AppSchema {
 extension FriendResidenceDuration {
   convenience init(_ input: AppSchema.CreateFriendResidenceDurationInput) {
     self.init(
-      id: .init(rawValue: input.id ?? UUID()),
       friendResidenceId: .init(rawValue: input.friendResidenceId),
       start: input.start,
       end: input.end
     )
+    if let id = input.id {
+      self.id = .init(rawValue: id)
+    }
   }
 
   convenience init(_ input: AppSchema.UpdateFriendResidenceDurationInput) {

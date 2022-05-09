@@ -1,7 +1,5 @@
-import Foundation
 import GraphQL
 import XCTVapor
-import XCTVaporUtils
 
 @testable import App
 
@@ -15,19 +13,20 @@ final class JsErrorLoggingTests: AppTestCase {
       "lineNumber": 33,
     ])
 
-    GraphQLTest(
-      """
+    assertResponse(
+      to: /* gql */ """
       mutation logJsError($input: LogJsErrorDataInput!) {
         logJsError(input: $input) {
           success
         }
       }
       """,
-      expectedData: .containsKVPs(["success": true])
-    ).run(Self.app, variables: ["input": input])
+      withVariables: ["input": input],
+      .containsKeyValuePairs(["success": true])
+    )
 
     XCTAssertEqual(sent.slacks.count, 1)
     XCTAssertEqual(sent.slacks.first?.channel, .errors)
-    XCTAssertContains(sent.slacks.first?.text, "operafox")
+    XCTAssertContains(sent.slacks.first?.message.text, "operafox")
   }
 }

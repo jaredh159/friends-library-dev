@@ -1,3 +1,4 @@
+import DuetSQL
 import Fluent
 
 extension Download {
@@ -22,6 +23,7 @@ extension Download {
     static let country = FieldKey("country")
     static let latitude = FieldKey("latitude")
     static let longitude = FieldKey("longitude")
+
     enum EditionTypeEnum {
       static let name = "edition_type"
       static let caseUpdated = "updated"
@@ -58,13 +60,13 @@ extension Download {
 }
 
 extension Download.AudioQuality: PostgresEnum {
-  var dataType: String { Download.M1.AudioQualityEnum.name }
+  var typeName: String { Download.M1.AudioQualityEnum.name }
 }
 
 extension Download.Format: PostgresEnum {
-  var dataType: String { Download.M1.FormatEnum.name }
+  var typeName: String { Download.M1.FormatEnum.name }
 }
 
 extension Download.DownloadSource: PostgresEnum {
-  var dataType: String { Download.M1.SourceEnum.name }
+  var typeName: String { Download.M1.SourceEnum.name }
 }

@@ -1,14 +1,24 @@
 // auto-generated, do not edit
-import Foundation
+import DuetSQL
 import Tagged
 
 extension ArtifactProductionVersion: ApiModel {
   typealias Id = Tagged<ArtifactProductionVersion, UUID>
 }
 
-extension ArtifactProductionVersion: DuetModel {
+extension ArtifactProductionVersion: Model {
   static let tableName = M8.tableName
-  static var isSoftDeletable: Bool { false }
+
+  func postgresData(for column: ColumnName) -> Postgres.Data {
+    switch column {
+      case .id:
+        return .id(self)
+      case .version:
+        return .string(version.rawValue)
+      case .createdAt:
+        return .date(createdAt)
+    }
+  }
 }
 
 extension ArtifactProductionVersion {
@@ -30,18 +40,3 @@ extension ArtifactProductionVersion {
     ]
   }
 }
-
-extension ArtifactProductionVersion: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint<ArtifactProductionVersion>) -> Bool {
-    switch constraint.column {
-      case .id:
-        return constraint.isSatisfiedBy(.id(self))
-      case .version:
-        return constraint.isSatisfiedBy(.string(version.rawValue))
-      case .createdAt:
-        return constraint.isSatisfiedBy(.date(createdAt))
-    }
-  }
-}
-
-extension ArtifactProductionVersion: Auditable {}

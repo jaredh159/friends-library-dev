@@ -83,8 +83,8 @@ extension AppSchema {
     let freeOrderRequestId: UUID?
   }
 
-  static var CreateOrderInputType: AppInput<AppSchema.CreateOrderInput> {
-    Input(AppSchema.CreateOrderInput.self) {
+  static var CreateOrderInputType: AppInput<CreateOrderInput> {
+    Input(CreateOrderInput.self) {
       InputField("id", at: \.id)
       InputField("lang", at: \.lang)
       InputField("source", at: \.source)
@@ -109,8 +109,8 @@ extension AppSchema {
     }
   }
 
-  static var UpdateOrderInputType: AppInput<AppSchema.UpdateOrderInput> {
-    Input(AppSchema.UpdateOrderInput.self) {
+  static var UpdateOrderInputType: AppInput<UpdateOrderInput> {
+    Input(UpdateOrderInput.self) {
       InputField("id", at: \.id)
       InputField("lang", at: \.lang)
       InputField("source", at: \.source)
@@ -179,8 +179,7 @@ extension AppSchema {
 extension Order {
   convenience init(_ input: AppSchema.CreateOrderInput) {
     self.init(
-      id: .init(rawValue: input.id ?? UUID()),
-      printJobId: input.printJobId != nil ? .init(rawValue: input.printJobId!) : nil,
+      printJobId: input.printJobId.map { .init(rawValue: $0) },
       lang: input.lang,
       source: input.source,
       paymentId: .init(rawValue: input.paymentId),
@@ -199,15 +198,17 @@ extension Order {
       addressState: input.addressState,
       addressZip: input.addressZip,
       addressCountry: input.addressCountry,
-      freeOrderRequestId: input
-        .freeOrderRequestId != nil ? .init(rawValue: input.freeOrderRequestId!) : nil
+      freeOrderRequestId: input.freeOrderRequestId.map { .init(rawValue: $0) }
     )
+    if let id = input.id {
+      self.id = .init(rawValue: id)
+    }
   }
 
   convenience init(_ input: AppSchema.UpdateOrderInput) {
     self.init(
       id: .init(rawValue: input.id),
-      printJobId: input.printJobId != nil ? .init(rawValue: input.printJobId!) : nil,
+      printJobId: input.printJobId.map { .init(rawValue: $0) },
       lang: input.lang,
       source: input.source,
       paymentId: .init(rawValue: input.paymentId),
@@ -226,8 +227,7 @@ extension Order {
       addressState: input.addressState,
       addressZip: input.addressZip,
       addressCountry: input.addressCountry,
-      freeOrderRequestId: input
-        .freeOrderRequestId != nil ? .init(rawValue: input.freeOrderRequestId!) : nil
+      freeOrderRequestId: input.freeOrderRequestId.map { .init(rawValue: $0) }
     )
   }
 
@@ -235,7 +235,7 @@ extension Order {
     lang = input.lang
     source = input.source
     paymentId = .init(rawValue: input.paymentId)
-    printJobId = input.printJobId != nil ? .init(rawValue: input.printJobId!) : nil
+    printJobId = input.printJobId.map { .init(rawValue: $0) }
     printJobStatus = input.printJobStatus
     amount = .init(rawValue: input.amount)
     taxes = .init(rawValue: input.taxes)
@@ -251,8 +251,7 @@ extension Order {
     addressState = input.addressState
     addressZip = input.addressZip
     addressCountry = input.addressCountry
-    freeOrderRequestId = input
-      .freeOrderRequestId != nil ? .init(rawValue: input.freeOrderRequestId!) : nil
+    freeOrderRequestId = input.freeOrderRequestId.map { .init(rawValue: $0) }
     updatedAt = Current.date()
   }
 }

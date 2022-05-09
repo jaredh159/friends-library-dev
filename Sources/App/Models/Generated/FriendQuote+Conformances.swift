@@ -1,17 +1,34 @@
 // auto-generated, do not edit
-import Foundation
+import DuetSQL
 import Tagged
 
 extension FriendQuote: ApiModel {
   typealias Id = Tagged<FriendQuote, UUID>
-  static var preloadedEntityType: PreloadedEntityType? {
-    .friendQuote(Self.self)
-  }
 }
 
-extension FriendQuote: DuetModel {
+extension FriendQuote: Model {
   static let tableName = M13.tableName
-  static var isSoftDeletable: Bool { false }
+
+  func postgresData(for column: ColumnName) -> Postgres.Data {
+    switch column {
+      case .id:
+        return .id(self)
+      case .friendId:
+        return .uuid(friendId)
+      case .source:
+        return .string(source)
+      case .text:
+        return .string(text)
+      case .order:
+        return .int(order)
+      case .context:
+        return .string(context)
+      case .createdAt:
+        return .date(createdAt)
+      case .updatedAt:
+        return .date(updatedAt)
+    }
+  }
 }
 
 extension FriendQuote {
@@ -43,29 +60,3 @@ extension FriendQuote {
     ]
   }
 }
-
-extension FriendQuote: SQLInspectable {
-  func satisfies(constraint: SQL.WhereConstraint<FriendQuote>) -> Bool {
-    switch constraint.column {
-      case .id:
-        return constraint.isSatisfiedBy(.id(self))
-      case .friendId:
-        return constraint.isSatisfiedBy(.uuid(friendId))
-      case .source:
-        return constraint.isSatisfiedBy(.string(source))
-      case .text:
-        return constraint.isSatisfiedBy(.string(text))
-      case .order:
-        return constraint.isSatisfiedBy(.int(order))
-      case .context:
-        return constraint.isSatisfiedBy(.string(context))
-      case .createdAt:
-        return constraint.isSatisfiedBy(.date(createdAt))
-      case .updatedAt:
-        return constraint.isSatisfiedBy(.date(updatedAt))
-    }
-  }
-}
-
-extension FriendQuote: Auditable {}
-extension FriendQuote: Touchable {}

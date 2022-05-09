@@ -1,3 +1,4 @@
+import Duet
 import Fluent
 import Graphiti
 import Vapor

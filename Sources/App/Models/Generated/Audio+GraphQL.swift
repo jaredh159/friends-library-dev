@@ -32,7 +32,7 @@ extension AppSchema {
     let id: UUID?
     let editionId: UUID
     let reader: String
-    let isIncomplete: Bool
+    let isIncomplete: Bool?
     let mp3ZipSizeHq: Int
     let mp3ZipSizeLq: Int
     let m4bSizeHq: Int
@@ -54,8 +54,8 @@ extension AppSchema {
     let externalPlaylistIdLq: Int64?
   }
 
-  static var CreateAudioInputType: AppInput<AppSchema.CreateAudioInput> {
-    Input(AppSchema.CreateAudioInput.self) {
+  static var CreateAudioInputType: AppInput<CreateAudioInput> {
+    Input(CreateAudioInput.self) {
       InputField("id", at: \.id)
       InputField("editionId", at: \.editionId)
       InputField("reader", at: \.reader)
@@ -69,8 +69,8 @@ extension AppSchema {
     }
   }
 
-  static var UpdateAudioInputType: AppInput<AppSchema.UpdateAudioInput> {
-    Input(AppSchema.UpdateAudioInput.self) {
+  static var UpdateAudioInputType: AppInput<UpdateAudioInput> {
+    Input(UpdateAudioInput.self) {
       InputField("id", at: \.id)
       InputField("editionId", at: \.editionId)
       InputField("reader", at: \.reader)
@@ -128,19 +128,21 @@ extension AppSchema {
 extension Audio {
   convenience init(_ input: AppSchema.CreateAudioInput) {
     self.init(
-      id: .init(rawValue: input.id ?? UUID()),
       editionId: .init(rawValue: input.editionId),
       reader: input.reader,
       mp3ZipSizeHq: .init(rawValue: input.mp3ZipSizeHq),
       mp3ZipSizeLq: .init(rawValue: input.mp3ZipSizeLq),
       m4bSizeHq: .init(rawValue: input.m4bSizeHq),
       m4bSizeLq: .init(rawValue: input.m4bSizeLq),
-      externalPlaylistIdHq: input
-        .externalPlaylistIdHq != nil ? .init(rawValue: input.externalPlaylistIdHq!) : nil,
-      externalPlaylistIdLq: input
-        .externalPlaylistIdLq != nil ? .init(rawValue: input.externalPlaylistIdLq!) : nil,
-      isIncomplete: input.isIncomplete
+      externalPlaylistIdHq: input.externalPlaylistIdHq.map { .init(rawValue: $0) },
+      externalPlaylistIdLq: input.externalPlaylistIdLq.map { .init(rawValue: $0) }
     )
+    if let id = input.id {
+      self.id = .init(rawValue: id)
+    }
+    if let isIncomplete = input.isIncomplete {
+      self.isIncomplete = isIncomplete
+    }
   }
 
   convenience init(_ input: AppSchema.UpdateAudioInput) {
@@ -152,10 +154,8 @@ extension Audio {
       mp3ZipSizeLq: .init(rawValue: input.mp3ZipSizeLq),
       m4bSizeHq: .init(rawValue: input.m4bSizeHq),
       m4bSizeLq: .init(rawValue: input.m4bSizeLq),
-      externalPlaylistIdHq: input
-        .externalPlaylistIdHq != nil ? .init(rawValue: input.externalPlaylistIdHq!) : nil,
-      externalPlaylistIdLq: input
-        .externalPlaylistIdLq != nil ? .init(rawValue: input.externalPlaylistIdLq!) : nil,
+      externalPlaylistIdHq: input.externalPlaylistIdHq.map { .init(rawValue: $0) },
+      externalPlaylistIdLq: input.externalPlaylistIdLq.map { .init(rawValue: $0) },
       isIncomplete: input.isIncomplete
     )
   }
@@ -168,10 +168,8 @@ extension Audio {
     mp3ZipSizeLq = .init(rawValue: input.mp3ZipSizeLq)
     m4bSizeHq = .init(rawValue: input.m4bSizeHq)
     m4bSizeLq = .init(rawValue: input.m4bSizeLq)
-    externalPlaylistIdHq = input
-      .externalPlaylistIdHq != nil ? .init(rawValue: input.externalPlaylistIdHq!) : nil
-    externalPlaylistIdLq = input
-      .externalPlaylistIdLq != nil ? .init(rawValue: input.externalPlaylistIdLq!) : nil
+    externalPlaylistIdHq = input.externalPlaylistIdHq.map { .init(rawValue: $0) }
+    externalPlaylistIdLq = input.externalPlaylistIdLq.map { .init(rawValue: $0) }
     updatedAt = Current.date()
   }
 }
