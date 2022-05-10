@@ -131,6 +131,7 @@ export default css`
   /* technically not necessary :) */
   .no-indent {
     text-indent: 0;
+    text-align: justify;
   }
 
   /* blockquotes */
