@@ -149,10 +149,11 @@ const runner = new RegexLintRunner([
   },
   {
     test: `subtil`,
-    search: /\b(S|s)ubtil(ty|ly)?\b/g,
+    search: /\b(S|s)ubtil(ty|e?ly|e)?\b/g,
     replace: (_, s, end) => {
       if (!end) return `${s}ubtle`;
       if (end === `ty`) return `${s}ubtlety`;
+      if (end === `e`) return `${s}ubtle`;
       return `${s}ubtly`;
     },
   },
