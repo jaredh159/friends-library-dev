@@ -187,7 +187,9 @@ private func slackDownload(
 
   await Current.slackClient.send(slack)
 
-  if let location = location, location.slashedSummary.isEmpty {
+  if let location = location,
+     location.slashedSummary.isEmpty,
+     location.ip?.starts(with: "192.168") != true {
     await slackInfo("Unusual missing location data:\n```\(String(describing: location))\n```")
   }
 }
