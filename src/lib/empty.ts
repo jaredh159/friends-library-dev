@@ -75,8 +75,8 @@ export function audio(editionId: UUID): EditableAudio {
     m4bSizeLq: 0,
     mp3ZipSizeHq: 0,
     mp3ZipSizeLq: 0,
-    externalPlaylistIdHq: 0,
-    externalPlaylistIdLq: 0,
+    externalPlaylistIdHq: null,
+    externalPlaylistIdLq: null,
     parts: [],
     edition: {
       __typename: `Edition`,
