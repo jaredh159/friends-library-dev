@@ -68,6 +68,13 @@ createdb staging_test
 psql -d staging_test
 > GRANT ALL PRIVILEGES ON DATABASE staging_test TO jared;
 
+# prevent "unattended upgrades" from upgrading postgres,
+# because the api maintains a cache of previously prepared statements
+# and an auto-upgrade restarts postgres, resulting in a cascade
+# of `prepared statement plan X does not exist` errors
+sudo vim /etc/apt/apt.conf.d/50unattended-upgrades
+# add `"postgresql-";` (no backticks) INSIDE the "Package-Blacklist" block
+
 # generate an ssh key to access github
 su jared
 ssh-keygen -t rsa -C "jared@netrivet.com"
