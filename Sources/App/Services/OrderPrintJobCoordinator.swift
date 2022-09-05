@@ -64,7 +64,9 @@ enum OrderPrintJobCoordinator {
       let status = printJob.status.name.rawValue
       switch printJob.status.name {
         case .created:
-          break
+          if order.createdAt < Date(subtractingDays: 1) {
+            await slackError("Print job \(printJob |> slackLink) stuck in `created` state!")
+          }
         case .unpaid:
           await slackError("Print job \(printJob |> slackLink) found in state `\(status)`!")
         case .rejected,
