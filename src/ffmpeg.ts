@@ -73,7 +73,7 @@ export function createMp3(
 }
 
 export function getDuration(wavFilepath: string): [string, number] {
-  const [err] = ffmpeg([`-i ${basename(wavFilepath)}`], dirname(wavFilepath));
+  const [err] = ffmpeg([`-i ${basename(wavFilepath)}`], dirname(wavFilepath), false);
   if (!err) throw new Error(`Unexpected ouput for reading duration string.`);
   const lines = err.stdErr.split(`\n`);
   for (const line of lines) {
@@ -88,9 +88,13 @@ export function getDuration(wavFilepath: string): [string, number] {
   throw new Error(`Duration not found for path: ${wavFilepath}`);
 }
 
-function ffmpeg(ffmpegArgs: string[], hostDir: string): ReturnType<typeof exec> {
+function ffmpeg(
+  ffmpegArgs: string[],
+  hostDir: string,
+  throwErr = true,
+): ReturnType<typeof exec> {
   const [err, output] = exec(`ffmpeg ${ffmpegArgs.join(` `)}`, hostDir);
-  if (err) {
+  if (err && throwErr) {
     throw new Error(`ffmpeg error: ${err}, out: ${output}`);
   }
   return [err, output];
