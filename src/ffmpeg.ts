@@ -89,7 +89,11 @@ export function getDuration(wavFilepath: string): [string, number] {
 }
 
 function ffmpeg(ffmpegArgs: string[], hostDir: string): ReturnType<typeof exec> {
-  return exec(`ffmpeg ${ffmpegArgs.join(` `)}`, hostDir);
+  const [err, output] = exec(`ffmpeg ${ffmpegArgs.join(` `)}`, hostDir);
+  if (err) {
+    throw new Error(`ffmpeg error: ${err}, out: ${output}`);
+  }
+  return [err, output];
 }
 
 function getTagArgs(audio: Audio, partIndex: number): string {
