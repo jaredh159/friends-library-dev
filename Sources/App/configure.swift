@@ -21,7 +21,8 @@ public func configure(_ app: Application) throws {
         ?? PostgresConfiguration.ianaPortNumber,
       username: Env.DATABASE_USERNAME,
       password: Env.DATABASE_PASSWORD,
-      database: Env.get("\(dbPrefix)DATABASE_NAME")!
+      database: Env.get("\(dbPrefix)DATABASE_NAME")!,
+      connectionPoolTimeout: .seconds(90)
     ),
     as: .psql
   )

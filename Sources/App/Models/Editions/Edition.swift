@@ -18,6 +18,7 @@ final class Edition: Codable {
   var isbn = OptionalChild<Isbn>.notLoaded
   var audio = OptionalChild<Audio>.notLoaded
   var chapters = Children<EditionChapter>.notLoaded
+  var downloads = Children<Download>.notLoaded
 
   var lang: Lang {
     document.require().lang
