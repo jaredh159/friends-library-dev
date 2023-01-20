@@ -330,8 +330,8 @@
         "repositoryURL": "https://github.com/jaredh159/x-sendgrid.git",
         "state": {
           "branch": null,
-          "revision": "2ca55ad56845ad2b1a555b6dceeb58ed299839c7",
-          "version": "1.0.1"
+          "revision": "4f8af89f85f9fdecbea2e2f5b9dfac245148c7d9",
+          "version": "1.0.3"
         }
       },
       {

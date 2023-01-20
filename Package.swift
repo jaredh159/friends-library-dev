@@ -59,7 +59,7 @@ let package = Package(
     ),
     .package(
       url: "https://github.com/jaredh159/x-sendgrid.git",
-      from: "1.0.1"
+      from: "1.0.3"
     ),
     .package(
       url: "https://github.com/jaredh159/x-stripe.git",
