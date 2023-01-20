@@ -20,17 +20,18 @@ const sourceNodes: GatsbyNode['sourceNodes'] = async ({
 }: SourceNodesArgs) => {
   const dpcCache = getDpcCache();
   const dpcs = await getDpcs();
-  const counts = await api.queryPublishedCounts();
+  const publishedCounts = await api.queryPublishedCounts();
   const allFriends = await api.queryFriends();
+  const documentDownloadCounts = await api.queryDocumentDownloadCounts();
   const friends = allFriends.filter((f) => f.lang === LANG && f.hasNonDraftDocument);
 
   createNode({
-    ...counts,
+    ...publishedCounts,
     id: createNodeId(`published-counts`),
     children: [],
     internal: {
       type: `PublishedCounts`,
-      contentDigest: createContentDigest(counts),
+      contentDigest: createContentDigest(publishedCounts),
     },
   });
 
@@ -80,6 +81,7 @@ const sourceNodes: GatsbyNode['sourceNodes'] = async ({
         isComplete: !document.incomplete,
         hasNonDraftEdition: document.hasNonDraftEdition,
         hasAudio: document.editions.some((ed) => !!ed.audio),
+        numDownloads: documentDownloadCounts[document.id] || 0,
         tags: document.tags.map((t) => t.type),
         region: documentRegion(friend),
         date: documentDate(document, friend),

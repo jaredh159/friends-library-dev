@@ -1,18 +1,19 @@
 import React, { useEffect } from 'react';
 import { graphql } from 'gatsby';
 import { t } from '@friends-library/locale';
-import { EditionType, CoverProps, PrintSize, Lang } from '@friends-library/types';
+import { Helmet } from 'react-helmet';
+import type { EditionType, CoverProps, PrintSize, Lang } from '@friends-library/types';
+import type { CoverData } from '../lib/covers';
+import type { NumPublishedBooks } from '../types';
 import { Layout, Seo } from '../components/data';
 import ExploreBooksBlock from '../components/data/ExploreBooksBlock';
 import { LANG } from '../env';
 import { bookPageMetaDesc } from '../lib/seo';
-import { coverPropsFromQueryData, CoverData } from '../lib/covers';
+import { coverPropsFromQueryData } from '../lib/covers';
 import BookTeaserCards from '../components/blocks/BookTeaserCards';
 import { makeScroller } from '../components/lib/scroll';
 import DocBlock from '../components/pages/document/DocBlock';
 import ListenBlock from '../components/pages/document/ListenBlock';
-import { Helmet } from 'react-helmet';
-import { NumPublishedBooks } from '../types';
 
 interface Props {
   data: NumPublishedBooks & {
@@ -34,6 +35,7 @@ interface Props {
       ogImageUrl: string;
       isCompilation: boolean;
       isComplete: boolean;
+      numDownloads: number;
       editions: {
         id: string;
         type: EditionType;
@@ -137,6 +139,7 @@ const DocumentPage: React.FC<Props> = ({
         hasAudio={hasAudio}
         editionId={mainEdition.id}
         numChapters={mainEdition.numChapters}
+        numDownloads={document.numDownloads}
         altLanguageUrl={document.altLanguageUrl}
         isComplete={document.isComplete}
         {...coverProps}
@@ -210,6 +213,7 @@ export const query = graphql`
       utf8ShortTitle
       ogImageUrl
       originalTitle
+      numDownloads
       editions {
         id
         type
