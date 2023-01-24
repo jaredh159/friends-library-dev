@@ -1,6 +1,6 @@
+import { spawnSync } from 'child_process';
 import { c, log } from 'x-chalk';
 import exec from 'x-exec';
-import { spawnSync } from 'child_process';
 import env from '@friends-library/env';
 
 const ENV: 'production' | 'staging' = process.argv.includes(`--production`)
@@ -66,7 +66,7 @@ inDeployDir(`echo \\"#!/usr/bin/bash\\" > ./serve.sh`);
 inDeployDir(`echo \\"${SERVE_CMD}\\" >> ./serve.sh`);
 
 log(c`{green pm2:} {gray starting pm2 app} {magenta ${PM2_NEXT_NAME}}`);
-inDeployDir(`pm2 start ./serve.sh --name ${PM2_NEXT_NAME}`);
+inDeployDir(`pm2 start ./serve.sh --name ${PM2_NEXT_NAME} --time`);
 
 log(c`{green nginx:} {gray changing port in nginx config to} {magenta ${NEXT_PORT}}`);
 inDeployDir(`sudo sed -E -i 's/:${PORT_START}./:${NEXT_PORT}/' ${NGINX_CONFIG}`);
