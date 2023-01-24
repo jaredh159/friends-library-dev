@@ -39,8 +39,10 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.ArtifactProductionVersionType
   AppSchema.CreateArtifactProductionVersionInputType
 
+  // download types
   AppSchema.DownloadType
   AppSchema.CreateDownloadInputType
+  AppSchema.DocumentDownloadCountType
 
   // token types
   AppSchema.TokenType
@@ -124,6 +126,7 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
 
   Query {
     AppSchema.getModelsCounts
+    AppSchema.getDocumentDownloadCounts
     AppSchema.getFriend
     AppSchema.getFriends
     AppSchema.getFriendQuote
