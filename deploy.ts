@@ -24,7 +24,7 @@ const PREV_PORT = getCurrentPort();
 const NEXT_PORT = `${PREV_PORT}`.endsWith(`0`) ? PREV_PORT + 1 : PREV_PORT - 1;
 const PM2_PREV_NAME = `${ENV}_${PREV_PORT}`;
 const PM2_NEXT_NAME = `${ENV}_${NEXT_PORT}`;
-const SERVE_CMD = `${VAPOR_RUN} serve --port ${NEXT_PORT} --env ${ENV}`;
+const SERVE_CMD = `LOG_LEVEL=info ${VAPOR_RUN} serve --port ${NEXT_PORT} --env ${ENV}`;
 
 exec.exit(`ssh ${HOST} "mkdir -p ${DEPLOY_DIR}"`);
 
