@@ -30,21 +30,12 @@ final class EditionResolverTests: AppTestCase {
 
   func testGetEdition() async throws {
     let edition = await Entities.create().edition
-    let download = try await Current.db.create(Download(
-      editionId: edition.id,
-      format: .epub,
-      source: .website,
-      isMobile: false
-    ))
 
     assertResponse(
       to: /* gql */ """
       query GetEdition {
         edition: getEdition(id: "\(edition.id.uuidString)") {
           id
-          downloads {
-            downloadId: id
-          }
           images {
             square {
               w45 {
@@ -56,11 +47,7 @@ final class EditionResolverTests: AppTestCase {
       }
       """,
       bearer: Seeded.tokens.allScopes,
-      .containsKeyValuePairs([
-        "id": edition.id.lowercased,
-        "downloadId": download.id.lowercased,
-        "width": 45,
-      ])
+      .containsKeyValuePairs(["id": edition.id.lowercased, "width": 45])
     )
   }
 

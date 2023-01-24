@@ -4,6 +4,32 @@ import XCTest
 
 final class DownloadResolverTests: AppTestCase {
 
+  func testGetDocumentDownloadCounts() async throws {
+    try await Current.db.query(Download.self).delete()
+    let entities = await Entities.create()
+    let download1: Download = .random
+    download1.editionId = entities.edition.id
+    let download2: Download = .random
+    download2.editionId = entities.edition.id
+    try await Current.db.create([download1, download2])
+
+    assertResponse(
+      to: /* gql */ """
+      query GetDocumentDownloadCounts {
+        counts: getDocumentDownloadCounts {
+          documentId
+          downloadCount
+        }
+      }
+      """,
+      bearer: Seeded.tokens.allScopes,
+      .containsKeyValuePairs([
+        "documentId": entities.document.id.lowercased,
+        "downloadCount": 2,
+      ])
+    )
+  }
+
   func testCreateDownload() async throws {
     let entities = await Entities.create()
     let insert: Download = .random

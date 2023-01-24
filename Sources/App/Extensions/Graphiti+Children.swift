@@ -45,9 +45,6 @@ private func loadChildren<Parent: ApiModel, Child: ApiModel>(
     case \Edition.chapters:
       foreignKey = try Child.column(EditionChapter[.editionId])
 
-    case \Edition.downloads:
-      foreignKey = try Child.column(Download[.editionId])
-
     case \Document.editions:
       foreignKey = try Child.column(Edition[.documentId])
 
