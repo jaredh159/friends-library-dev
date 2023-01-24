@@ -25,7 +25,6 @@ extension AppSchema {
       Field("isbn", with: \.isbn)
       Field("audio", with: \.audio)
       Field("chapters", with: \.chapters)
-      Field("downloads", with: \.downloads)
     }
   }
 
