@@ -1,17 +1,20 @@
 import React from 'react';
 import cx from 'classnames';
-import { CoverProps } from '@friends-library/types';
 import { ThreeD } from '@friends-library/cover-component';
 import { t, translate } from '@friends-library/locale';
+import type { CoverProps } from '@friends-library/types';
+import Dual from '../../../components/Dual';
 import Button from '../../Button';
 import ClockIcon from '../../icons/Clock';
-import TagsIcon from '../../icons/Tags';
 import AudioIcon from '../../icons/Audio';
+import TagsIcon from '../../icons/Tags';
+import DownloadIcon from '../../icons/Download';
 import './BookByFriend.css';
 
 type Props = Omit<CoverProps, 'pages'> & {
   htmlShortTitle: string;
   tags: string[];
+  numDownloads: number;
   hasAudio: boolean;
   isAlone: boolean;
   pages: number[];
@@ -21,7 +24,7 @@ type Props = Omit<CoverProps, 'pages'> & {
 };
 
 const BookByFriend: React.FC<Props> = (props) => {
-  const { className, isAlone, hasAudio, description, pages } = props;
+  const { className, isAlone, hasAudio, description, pages, numDownloads } = props;
   return (
     <div
       className={cx(
@@ -80,6 +83,16 @@ const BookByFriend: React.FC<Props> = (props) => {
           {hasAudio && (
             <MetaItem Icon={AudioIcon} className="sm:w-1/3">{t`Audio Book`}</MetaItem>
           )}
+          {numDownloads > 10 && (
+            <Dual.Frag>
+              <MetaItem Icon={DownloadIcon} className="sm:w-1/3">
+                {numDownloads} Downloads
+              </MetaItem>
+              <MetaItem Icon={DownloadIcon} className="sm:w-1/3">
+                {numDownloads} Descargas
+              </MetaItem>
+            </Dual.Frag>
+          )}
         </ul>
         <div className="flex flex-col items-center">
           <Button className="mt-6 md:mt-10" to={props.bookUrl}>
@@ -95,7 +108,9 @@ const MetaItem: React.FC<{
   Icon: React.FC<{ className?: string }>;
   className?: string;
 }> = ({ Icon, children, className }) => (
-  <li className={cx(`capitalize text-sans pb-4 sm:pb-3 flex`, className)}>
+  <li
+    className={cx(`capitalize text-sans pb-4 sm:pb-3 flex whitespace-no-wrap`, className)}
+  >
     <Icon className="mr-2" />
     {children}
   </li>

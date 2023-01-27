@@ -3,7 +3,8 @@ import { c, log } from 'x-chalk';
 import { gql, getClient, ClientType, ClientConfig, writable } from '@friends-library/db';
 import { Document, Edition, Friend, PublishedCounts } from './types';
 import { Friends } from '../graphql/Friends';
-import { QUERY, sortFriends } from './query';
+import { GetDocumentDownloadCounts } from '../graphql/GetDocumentDownloadCounts';
+import { DOCUMENT_DOWNLOAD_COUNTS_QUERY, QUERY, sortFriends } from './query';
 
 type DocumentEntities = {
   document: Document;
@@ -96,6 +97,17 @@ export async function queryPublishedCounts(): Promise<PublishedCounts> {
   ).length;
 
   return publishedCounts;
+}
+
+export async function queryDocumentDownloadCounts(): Promise<Record<UUID, number>> {
+  const { data } = await client().query<GetDocumentDownloadCounts>({
+    query: gql(DOCUMENT_DOWNLOAD_COUNTS_QUERY),
+  });
+  const counts: Record<UUID, number> = {};
+  for (const { documentId, downloadCount } of data.counts) {
+    counts[documentId] = downloadCount;
+  }
+  return counts;
 }
 
 function client(): ClientType {

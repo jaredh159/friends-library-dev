@@ -2,7 +2,9 @@ import React from 'react';
 import cx from 'classnames';
 import { graphql } from 'gatsby';
 import { t, translateOptional as trans } from '@friends-library/locale';
-import { coverPropsFromQueryData, CoverData } from '../lib/covers';
+import type { CoverData } from '../lib/covers';
+import type { FluidBgImageObject } from '../types';
+import { coverPropsFromQueryData } from '../lib/covers';
 import { Layout, Seo } from '../components/data';
 import { LANG } from '../env';
 import { friendPageMetaDesc } from '../lib/seo';
@@ -13,7 +15,6 @@ import FeaturedQuoteBlock from '../components/pages/friend/FeaturedQuoteBlock';
 import FriendBlock from '../components/pages/friend/FriendBlock';
 import MapBlock from '../components/pages/friend/MapBlock';
 import TestimonialsBlock from '../components/pages/friend/TestimonialsBlock';
-import { FluidBgImageObject } from '../types';
 
 interface Props {
   data: {
@@ -40,6 +41,7 @@ interface Props {
         hasAudio: boolean;
         partialDescription?: string;
         description: string;
+        numDownloads: number;
       })[];
       quotes?: { source: string; text: string }[];
       relatedDocuments: { description: string; document: { id: string } }[];
@@ -101,6 +103,7 @@ const FriendPage: React.FC<Props> = ({ data: { friend, relatedDocuments, booksBg
                 tags={doc.tags}
                 hasAudio={doc.hasAudio}
                 bookUrl={doc.url}
+                numDownloads={doc.numDownloads}
                 pages={doc.editions[0].pages}
                 description={doc.partialDescription || ``}
               />
@@ -199,6 +202,7 @@ export const query = graphql`
         partialDescription
         description
         htmlShortTitle
+        numDownloads
       }
       residences {
         city

@@ -1,18 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'gatsby-link';
-import { CoverProps, PrintSize, EditionType } from '@friends-library/types';
 import { bookDims } from '@friends-library/lulu';
 import { t } from '@friends-library/locale';
-import DownloadWizard from './DownloadWizard';
-import AddToCartWizard from './AddToCartWizard';
+import type { CoverProps, PrintSize, EditionType } from '@friends-library/types';
 import Dual from '../../Dual';
 import { LANG } from '../../env';
-import DocActions from './DocActions';
 import CartItem from '../../checkout/models/CartItem';
 import CartStore from '../../checkout/services/CartStore';
 import SpanishFreeBooksNote from '../../SpanishFreeBooksNote';
-import RotatableCover from './RotatableCover';
 import { makeScroller } from '../../lib/scroll';
+import RotatableCover from './RotatableCover';
+import AddToCartWizard from './AddToCartWizard';
+import DocActions from './DocActions';
+import DownloadWizard from './DownloadWizard';
 import './DocBlock.css';
 
 type Props = Omit<CoverProps, 'pages'> & {
@@ -27,6 +27,7 @@ type Props = Omit<CoverProps, 'pages'> & {
   hasAudio: boolean;
   description: string;
   numChapters: number;
+  numDownloads: number;
   altLanguageUrl?: string | null;
   pages: number[];
   isComplete: boolean;
@@ -259,6 +260,7 @@ function LinksAndMeta(
     author,
     edition,
     numChapters,
+    numDownloads,
     pages,
     altLanguageUrl,
     className,
@@ -283,6 +285,14 @@ function LinksAndMeta(
           <li>{dimensions(size, pages)}</li>
           <li>{numChapters > 1 ? t`${numChapters} chapters` : t`1 chapter`}</li>
           <li>{pages.map((p) => t`${p} pages`).join(`, `)}</li>
+          {numDownloads > 10 && (
+            <li>
+              <Dual.Frag>
+                <>{numDownloads.toLocaleString()} downloads</>
+                <>{numDownloads.toLocaleString().replace(/,/g, `.`)} descargas</>
+              </Dual.Frag>
+            </li>
+          )}
           <li>
             <Dual.Frag>
               <>Language: English</>

@@ -261,3 +261,12 @@ export const QUERY = gql`
     }
   }
 `;
+
+export const DOCUMENT_DOWNLOAD_COUNTS_QUERY = gql`
+  query GetDocumentDownloadCounts {
+    counts: getDocumentDownloadCounts {
+      documentId
+      downloadCount
+    }
+  }
+`;
