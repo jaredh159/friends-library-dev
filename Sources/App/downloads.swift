@@ -1,3 +1,4 @@
+import DuetSQL
 import Vapor
 import XCore
 import XSlack
@@ -23,7 +24,7 @@ func logAndRedirect(
       break
   }
 
-  guard let device = UserAgentDeviceData(userAgent: userAgent) else {
+  guard let device = Current.userAgentParser.parse(userAgent) else {
     await slackError("Failed to parse user agent `\(userAgent)` into device data")
     return response
   }
@@ -36,6 +37,22 @@ func logAndRedirect(
   guard let downloadFormat = file.format.downloadFormat else {
     await slackError("Unexpected download format: \(file.format)")
     return response
+  }
+
+  // prevent duplicate podcast downloads
+  if downloadFormat == .podcast, let ipAddress = ipAddress {
+    let dupe = try? await Current.db.query(Download.self)
+      .where(.ip == .string(ipAddress))
+      .where(.format == .enum(Download.Format.podcast))
+      .where(.editionId == file.edition.id)
+      .first()
+
+    if dupe != nil {
+      await slackDebug(
+        "Duplicate podcast download, edition: `\(file.edition.id.lowercased)`, ip: `\(ipAddress)`"
+      )
+      return response
+    }
   }
 
   let download = Download(
@@ -54,7 +71,7 @@ func logAndRedirect(
   )
 
   var location: IpApi.Response?
-  if let ip = ipAddress, shouldQueryLocation(file.format) {
+  if let ip = ipAddress, ip != "127.0.0.1" {
     do {
       location = try await Current.ipApiClient.getIpData(ip)
       download.city = location?.city
@@ -229,25 +246,13 @@ private extension UserAgentDeviceData {
   }
 }
 
-private func shouldQueryLocation(_ format: DownloadableFile.Format) -> Bool {
-  guard Env.mode == .prod || Env.mode == .test else {
-    return false
-  }
-
-  guard case .audio(.podcast) = format else {
-    return true
-  }
-
-  // sample only 5% of podcast request, to stay in api rate limits without paid acct
-  return Int.random(in: 0 ... 100) < 5
-}
-
 func isPodcast(userAgent: String) -> Bool {
   userAgent
     .lowercased()
     .match("(podcast|stitcher|tunein|audible|spotify|pocketcasts|overcast|castro|castbox)")
 }
 
+// TODO: i think ipapi gives this as country_code
 private let countryCodes: [String: String] = [
   "Andorra": "ad",
   "United Arab Emirates": "ae",

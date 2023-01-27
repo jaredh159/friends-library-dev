@@ -15,6 +15,7 @@ struct Environment {
   var sendGridClient: SendGrid.Client.SlackErrorLogging = .live
   var stripeClient = Stripe.Client()
   var ipApiClient = IpApi.Client()
+  var userAgentParser: UserAgentParser = .live
 }
 
 var Current = Environment()

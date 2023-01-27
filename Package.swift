@@ -46,8 +46,8 @@ let package = Package(
       from: "2.0.0"
     ),
     .package(
-      url: "https://github.com/gertrude-app/duet.git",
-      from: "1.0.0"
+      dev: "../../../gertie/duet",
+      prod: "gertrude-app/duet@1.0.1"
     ),
     .package(
       url: "https://github.com/jaredh159/x-kit.git",
@@ -112,3 +112,23 @@ let package = Package(
     ),
   ]
 )
+
+// helpers
+
+import Foundation
+
+extension PackageDescription.Package.Dependency {
+  static func package(_ commitish: String, _ name: String? = nil) -> Package.Dependency {
+    let parts = commitish.split(separator: "@")
+    return .package(
+      name: name,
+      url: "https://github.com/\(parts[0]).git",
+      .exact(.init(stringLiteral: "\(parts[1])"))
+    )
+  }
+
+  static func package(dev: String, prod: String) -> Package.Dependency {
+    if FileManager.default.fileExists(atPath: dev) { return .package(path: dev) }
+    return .package(prod)
+  }
+}

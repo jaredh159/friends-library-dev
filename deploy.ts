@@ -1,6 +1,6 @@
+import { spawnSync } from 'child_process';
 import { c, log } from 'x-chalk';
 import exec from 'x-exec';
-import { spawnSync } from 'child_process';
 import env from '@friends-library/env';
 
 const ENV: 'production' | 'staging' = process.argv.includes(`--production`)
@@ -24,7 +24,7 @@ const PREV_PORT = getCurrentPort();
 const NEXT_PORT = `${PREV_PORT}`.endsWith(`0`) ? PREV_PORT + 1 : PREV_PORT - 1;
 const PM2_PREV_NAME = `${ENV}_${PREV_PORT}`;
 const PM2_NEXT_NAME = `${ENV}_${NEXT_PORT}`;
-const SERVE_CMD = `${VAPOR_RUN} serve --port ${NEXT_PORT} --env ${ENV}`;
+const SERVE_CMD = `LOG_LEVEL=info ${VAPOR_RUN} serve --port ${NEXT_PORT} --env ${ENV}`;
 
 exec.exit(`ssh ${HOST} "mkdir -p ${DEPLOY_DIR}"`);
 
@@ -66,7 +66,7 @@ inDeployDir(`echo \\"#!/usr/bin/bash\\" > ./serve.sh`);
 inDeployDir(`echo \\"${SERVE_CMD}\\" >> ./serve.sh`);
 
 log(c`{green pm2:} {gray starting pm2 app} {magenta ${PM2_NEXT_NAME}}`);
-inDeployDir(`pm2 start ./serve.sh --name ${PM2_NEXT_NAME}`);
+inDeployDir(`pm2 start ./serve.sh --name ${PM2_NEXT_NAME} --time`);
 
 log(c`{green nginx:} {gray changing port in nginx config to} {magenta ${NEXT_PORT}}`);
 inDeployDir(`sudo sed -E -i 's/:${PORT_START}./:${NEXT_PORT}/' ${NGINX_CONFIG}`);

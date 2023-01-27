@@ -85,3 +85,4 @@ env:
   SELF_URL: /not-real
   WEBSITE_URL_EN: /not-real
   WEBSITE_URL_ES: /not-real
+  MAPBOX_API_KEY: not-real

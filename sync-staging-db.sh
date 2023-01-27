@@ -6,7 +6,6 @@ pg_dump \
   --dbname staging \
   --inserts \
   --data-only \
-  --table downloads \
   --table orders \
   --table order_items \
   --table free_order_requests \
@@ -17,7 +16,6 @@ pg_dump \
 pg_dump \
   --dbname flp \
   --inserts \
-  --exclude-table-data downloads \
   --exclude-table-data orders \
   --exclude-table-data order_items \
   --exclude-table-data free_order_requests \
