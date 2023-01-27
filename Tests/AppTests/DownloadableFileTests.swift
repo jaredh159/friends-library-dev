@@ -26,6 +26,28 @@ final class DownloadableFileTests: AppTestCase {
     }
   }
 
+  func podcastDownload(_ editionId: Edition.Id = .init(), ip: String) -> Download {
+    let download = Download.random
+    download.editionId = editionId
+    download.format = .podcast
+    download.ip = ip
+    return download
+  }
+
+  func testFindDuplicatePodcastDownloads() async throws {
+    let d1 = podcastDownload(ip: "1.2.3.4")
+    let d2 = podcastDownload(d1.editionId, ip: "1.2.3.4") // <-- DUPE, same ed.id and ip
+    let d3 = podcastDownload(ip: "1.2.3.4") // <-- not dupe, new ed.id
+    let d4 = podcastDownload(d1.editionId, ip: "1.2.3.5") // <-- not dupe, new ip
+    let d5 = podcastDownload(d1.editionId, ip: "1.2.3.4") // <-- another DUPE
+
+    d2.createdAt = Date(timeIntervalSince1970: 500)
+    d5.createdAt = Date(timeIntervalSince1970: 100) // <-- older than other dupes
+
+    let dupes = findDuplicatePodcastDownloads([d1, d2, d3, d4, d5])
+    XCTAssertEqual(dupes, [d2, d1])
+  }
+
   func testPodcastAgentsIdentifiedAsPodcast() async throws {
     let userAgents = [
       "lol podcasts",
