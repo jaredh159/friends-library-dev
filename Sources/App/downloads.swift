@@ -71,7 +71,7 @@ func logAndRedirect(
   )
 
   var location: IpApi.Response?
-  if let ip = ipAddress, shouldQueryLocation(file.format) {
+  if let ip = ipAddress, ip != "127.0.0.1" {
     do {
       location = try await Current.ipApiClient.getIpData(ip)
       download.city = location?.city
@@ -246,25 +246,13 @@ private extension UserAgentDeviceData {
   }
 }
 
-private func shouldQueryLocation(_ format: DownloadableFile.Format) -> Bool {
-  guard Env.mode == .prod || Env.mode == .test else {
-    return false
-  }
-
-  guard case .audio(.podcast) = format else {
-    return true
-  }
-
-  // sample only 5% of podcast request, to stay in api rate limits without paid acct
-  return Int.random(in: 0 ... 100) < 5
-}
-
 func isPodcast(userAgent: String) -> Bool {
   userAgent
     .lowercased()
     .match("(podcast|stitcher|tunein|audible|spotify|pocketcasts|overcast|castro|castbox)")
 }
 
+// TODO: i think ipapi gives this as country_code
 private let countryCodes: [String: String] = [
   "Andorra": "ad",
   "United Arab Emirates": "ae",

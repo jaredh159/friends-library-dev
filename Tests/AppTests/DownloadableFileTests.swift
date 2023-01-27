@@ -26,11 +26,16 @@ final class DownloadableFileTests: AppTestCase {
     }
   }
 
-  func podcastDownload(_ editionId: Edition.Id = .init(), ip: String) -> Download {
+  func podcastDownload(
+    _ editionId: Edition.Id = .init(),
+    ip: String,
+    city: String? = nil
+  ) -> Download {
     let download = Download.random
     download.editionId = editionId
     download.format = .podcast
     download.ip = ip
+    download.city = city
     return download
   }
 
@@ -46,6 +51,25 @@ final class DownloadableFileTests: AppTestCase {
 
     let dupes = findDuplicatePodcastDownloads([d1, d2, d3, d4, d5])
     XCTAssertEqual(dupes, [d2, d1])
+  }
+
+  func testBackfillLocationData() {
+    let d1 = podcastDownload(ip: "1.2.3.4", city: "San Francisco")
+    let d2 = podcastDownload(ip: "1.2.3.4", city: nil)
+    let d3 = podcastDownload(ip: "1.2.3.4", city: "Atlanta")
+    let d4 = podcastDownload(ip: "5.5.5.5", city: nil) // <-- still missing
+
+    // we have two patterns for 1.2.3.4, d3 is newer, it should be used
+    d1.createdAt = Date(timeIntervalSince1970: 100)
+    d3.createdAt = Date(timeIntervalSince1970: 500)
+
+    let (updates, missing) = backfillLocationData([d1, d2, d3, d4])
+
+    XCTAssertEqual(missing, 1)
+    XCTAssertEqual(updates.count, 1)
+    XCTAssertEqual(updates[0].pattern, d3)
+    XCTAssertEqual(updates[0].targets.count, 1)
+    XCTAssertEqual(updates[0].targets[0].id, d2.id)
   }
 
   func testPodcastAgentsIdentifiedAsPodcast() async throws {
@@ -188,7 +212,7 @@ final class DownloadableFileTests: AppTestCase {
 
     let file = DownloadableFile(edition: edition, format: .audio(.podcast(.high)))
 
-    let res = try await logAndRedirect(file: file, userAgent: "", ipAddress: "1.2.3.4")
+    _ = try await logAndRedirect(file: file, userAgent: "", ipAddress: "1.2.3.4")
 
     let afterDupe = try await Current.db.query(Download.self)
       .where(.editionId == edition.id)

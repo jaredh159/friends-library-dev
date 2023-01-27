@@ -47,7 +47,7 @@ let package = Package(
     ),
     .package(
       dev: "../../../gertie/duet",
-      prod: "gertrude-app/duet@c68c4bf"
+      prod: "gertrude-app/duet@1.0.1"
     ),
     .package(
       url: "https://github.com/jaredh159/x-kit.git",
@@ -123,7 +123,7 @@ extension PackageDescription.Package.Dependency {
     return .package(
       name: name,
       url: "https://github.com/\(parts[0]).git",
-      from: .init(stringLiteral: "\(parts[1])")
+      .exact(.init(stringLiteral: "\(parts[1])"))
     )
   }
 
