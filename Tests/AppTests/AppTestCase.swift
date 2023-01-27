@@ -42,7 +42,11 @@ class AppTestCase: XCTestCase {
     Current = .mock
     Current.uuid = { UUID() }
     Current.date = { Date() }
-    Current.db = existingDb
+    if ProcessInfo.processInfo.environment["TEST_WITH_POSTGRES"] != nil {
+      Current.db = LiveDatabase(db: app.db as! SQLDatabase)
+    } else {
+      Current.db = existingDb
+    }
     Current.slackClient.send = { [self] in sent.slacks.append($0) }
     Current.sendGridClient.send = { [self] in sent.emails.append($0) }
   }

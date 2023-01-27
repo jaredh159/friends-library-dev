@@ -13,6 +13,7 @@ extension Environment {
     luluClient: .mock,
     sendGridClient: .mock,
     stripeClient: .mock,
-    ipApiClient: .mock
+    ipApiClient: .mock,
+    userAgentParser: .mock
   )
 }

@@ -1,3 +1,4 @@
+import DuetSQL
 import Vapor
 import XCore
 import XSlack
@@ -23,7 +24,7 @@ func logAndRedirect(
       break
   }
 
-  guard let device = UserAgentDeviceData(userAgent: userAgent) else {
+  guard let device = Current.userAgentParser.parse(userAgent) else {
     await slackError("Failed to parse user agent `\(userAgent)` into device data")
     return response
   }
@@ -36,6 +37,22 @@ func logAndRedirect(
   guard let downloadFormat = file.format.downloadFormat else {
     await slackError("Unexpected download format: \(file.format)")
     return response
+  }
+
+  // prevent duplicate podcast downloads
+  if downloadFormat == .podcast, let ipAddress = ipAddress {
+    let dupe = try? await Current.db.query(Download.self)
+      .where(.ip == .string(ipAddress))
+      .where(.format == .enum(Download.Format.podcast))
+      .where(.editionId == file.edition.id)
+      .first()
+
+    if dupe != nil {
+      await slackDebug(
+        "Duplicate podcast download, edition: `\(file.edition.id.lowercased)`, ip: `\(ipAddress)`"
+      )
+      return response
+    }
   }
 
   let download = Download(

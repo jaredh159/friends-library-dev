@@ -29,15 +29,6 @@
         }
       },
       {
-        "package": "Duet",
-        "repositoryURL": "https://github.com/gertrude-app/duet.git",
-        "state": {
-          "branch": null,
-          "revision": "80d202a20ea038838a55c872e1db5edeeb89f83f",
-          "version": "1.0.1"
-        }
-      },
-      {
         "package": "fluent",
         "repositoryURL": "https://github.com/vapor/fluent.git",
         "state": {
