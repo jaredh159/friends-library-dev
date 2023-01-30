@@ -1,4 +1,4 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.7
 import PackageDescription
 
 let package = Package(
@@ -9,7 +9,7 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/vapor/vapor.git",
-      from: "4.55.3"
+      from: "4.67.4"
     ),
     .package(
       url: "https://github.com/vapor/fluent.git",
@@ -20,12 +20,10 @@ let package = Package(
       from: "2.2.2"
     ),
     .package(
-      name: "GraphQLKit",
       url: "https://github.com/alexsteinerde/graphql-kit.git",
       from: "2.3.0"
     ),
     .package(
-      name: "QueuesFluentDriver",
       url: "https://github.com/m-barthelemy/vapor-queues-fluent-driver.git",
       from: "1.2.0"
     ),
@@ -88,9 +86,9 @@ let package = Package(
         .product(name: "XSendGrid", package: "x-sendgrid"),
         .product(name: "XStripe", package: "x-stripe"),
         .product(name: "XSlack", package: "x-slack"),
+        .product(name: "QueuesFluentDriver", package: "vapor-queues-fluent-driver"),
+        .product(name: "GraphQLKit", package: "graphql-kit"),
         "RomanNumeralKit",
-        "GraphQLKit",
-        "QueuesFluentDriver",
         "ShellOut",
       ],
       swiftSettings: [
@@ -118,12 +116,11 @@ let package = Package(
 import Foundation
 
 extension PackageDescription.Package.Dependency {
-  static func package(_ commitish: String, _ name: String? = nil) -> Package.Dependency {
+  static func package(_ commitish: String) -> Package.Dependency {
     let parts = commitish.split(separator: "@")
     return .package(
-      name: name,
       url: "https://github.com/\(parts[0]).git",
-      .exact(.init(stringLiteral: "\(parts[1])"))
+      exact: .init(stringLiteral: "\(parts[1])")
     )
   }
 
