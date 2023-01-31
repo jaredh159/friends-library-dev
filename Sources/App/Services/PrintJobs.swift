@@ -103,7 +103,16 @@ enum PrintJobs {
         }
       }
 
-      results.sort { a, b in a.0.totalCostInclTax < b.0.totalCostInclTax }
+      try results.sort { a, b in
+        guard let aTotal = Double(a.0.totalCostInclTax) else {
+          throw Error.invalidMoneyStringFromApi(a.0.totalCostInclTax)
+        }
+        guard let bTotal = Double(b.0.totalCostInclTax) else {
+          throw Error.invalidMoneyStringFromApi(b.0.totalCostInclTax)
+        }
+        return aTotal < bTotal
+      }
+
       guard let (cheapest, level) = results.first else {
         throw Error.noExploratoryMetadataRetrieved
       }
