@@ -165,6 +165,29 @@ final class PrintJobsTests: AppTestCase {
     XCTAssertEqual(meta.fees, 150)
   }
 
+  func testGetExploratoryMetadataSortsCorrectly() async throws {
+    let responses = Responses([
+      .init(shipping: "10.94", tax: "4.33", total: "76.42", fee: "3.00"), // mail
+      .init(shipping: "16.94", tax: "4.69", total: "82.78", fee: "3.00"), // groundBus
+      .init(shipping: "31.19", tax: "5.54", total: "97.88", fee: "3.00"), // expedited
+      .init(shipping: "16.94", tax: "4.69", total: "82.78", fee: "3.00"), // groundHd
+      .init(shipping: "25.44", tax: "5.20", total: "91.79", fee: "3.00"), // priorityMail
+      // the below got chosen by the api wrongly, i think because of string sorting
+      .init(shipping: "46.44", tax: "6.46", total: "114.05", fee: "3.00"), // express
+    ])
+
+    Current.luluClient.createPrintJobCostCalculation = { _, _, _ in
+      await responses.next()
+    }
+
+    let meta = try await PrintJobs.getExploratoryMetadata(
+      for: [.init(volumes: .init(259), printSize: .m, quantity: 1)],
+      shippedTo: .mock
+    )
+
+    XCTAssertEqual(meta.shipping, 1094)
+  }
+
   func testCreditCardFeeOffset() throws {
     let cases = [
       (455, 44),
