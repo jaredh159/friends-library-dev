@@ -137,9 +137,17 @@ const strings: { [k: string]: string } = {
   'Best for reading on a computer, phone, or tablet.': `La mejor opción para leer en computadora, teléfono o tablet.`,
   'Best for printing out your own copy.': `La mejor opción para imprimir tu propia copia`,
   'Choose eBook Type': `Selecciona el Tipo de Libro Electrónico`,
-  'Best for most apps and platforms, including iOS.': `El mejor formato para la mayoría de aplicaciones y plataformas, incluyendo iOS.`,
-  'Best on Amazon devices, Kindle app, and Android.': `El mejor formato para los dispositivos Amazon, aplicaciones de Kindle y Android.`,
   'Best for text-to-speech apps like “Voice Dream.”': `La mejor opción para aplicaciones que convierten el texto a voz como “Voice Dream.”`,
+
+  // old, remove next major
+  'Best for most apps and platforms, including iOS.': `El mejor formato para la mayoría de aplicaciones y plataformas, incluyendo iOS.`,
+  // replaced by below
+  'Best for most apps and platforms, including Android, iOS, and newer Kindle devices.': `El mejor para la mayoría de aplicaciones y plataformas, incluyendo Android, iOS y los dispositivos más nuevos de Kindle.`,
+
+  // old, remove next major
+  'Best on Amazon devices, Kindle app, and Android.': `El mejor formato para los dispositivos Amazon, aplicaciones de Kindle y Android.`,
+  // replaced by below
+  'Best for older Android and Kindle devices.': `El mejor para dispositivos Android y Kindle antiguos.`,
 
   // Cart / Checkout
   'Your Order': `Tu Pedido`,
