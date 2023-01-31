@@ -50,15 +50,18 @@ html:lang(en) .en\:hidden {
   border-bottom: 1px dotted currentColor;
 }
 
-.diamonds li {
-  position: relative;
-}
-
 .diamonds li:before {
   content: '\25c6';
-  position: absolute;
-  left: -1.35em;
+  padding-right: 0.6em;
+  margin-left: -1.35em;
   color: rgb(108, 49, 66);
+}
+
+/* hack to target safari only */
+_::-webkit-full-page-media,
+_:future,
+:root .diamonds li:before {
+  font-size: 11px;
 }
 
 :lang(es) .diamonds li:before {
