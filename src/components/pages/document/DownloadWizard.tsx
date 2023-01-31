@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { EditionType } from '@friends-library/types';
+import type { EditionType } from '@friends-library/types';
 import ChoiceWizard from './ChoiceWizard';
 import ChooseEdition from './ChooseEdition';
 import ChooseFormat from './ChooseFormat';
@@ -10,19 +10,12 @@ type DownloadType = 'web_pdf' | 'epub' | 'mobi' | 'speech';
 
 interface Props {
   editions: EditionType[];
-  eBookTypeRecommendation: 'epub' | 'mobi';
   onSelect: (edition: EditionType, type: DownloadType) => any;
   top?: number;
   left?: number;
 }
 
-const DownloadWizard: React.FC<Props> = ({
-  editions,
-  eBookTypeRecommendation,
-  onSelect,
-  top,
-  left,
-}) => {
+const DownloadWizard: React.FC<Props> = ({ editions, onSelect, top, left }) => {
   const initialEdition = editions.length === 1 ? editions[0] : undefined;
   const [edition, setEdition] = useState<EditionType | undefined>(initialEdition);
   const [format, setFormat] = useState<'ebook' | 'web_pdf' | 'speech' | undefined>();
@@ -50,10 +43,7 @@ const DownloadWizard: React.FC<Props> = ({
       )}
       {edition && !format && <ChooseFormat onChoose={setFormat} />}
       {edition && format && format !== `web_pdf` && format !== `speech` && !eBookType && (
-        <ChooseEbookType
-          recommendation={eBookTypeRecommendation}
-          onChoose={setEBookType}
-        />
+        <ChooseEbookType onChoose={setEBookType} />
       )}
       {selectionComplete && <Downloading />}
     </ChoiceWizard>
