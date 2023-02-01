@@ -1,4 +1,4 @@
-import { Lang, EditionType, PrintSize } from '.';
+import type { Lang, EditionType, PrintSize } from '.';
 
 export interface DocPrecursor {
   lang: Lang;
@@ -70,4 +70,4 @@ export const ARTIFACT_TYPES = [
   `app-ebook`,
 ] as const;
 
-export type ArtifactType = typeof ARTIFACT_TYPES[number];
+export type ArtifactType = (typeof ARTIFACT_TYPES)[number];

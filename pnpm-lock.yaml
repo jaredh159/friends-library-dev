@@ -32,6 +32,12 @@ importers:
       typescript: 5.0.0-beta
       vitest: 0.28.3
 
+  libs-ts/types:
+    specifiers:
+      '@types/node': 18.11.18
+    devDependencies:
+      '@types/node': 18.11.18
+
 packages:
 
   /@babel/runtime/7.20.13:

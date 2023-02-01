@@ -3,19 +3,19 @@ export * from './doc';
 export type Environment = `production` | `staging` | `development`;
 
 export const LANGS = [`en`, `es`] as const;
-export type Lang = typeof LANGS[number];
+export type Lang = (typeof LANGS)[number];
 
 export const EDITION_TYPES = [`original`, `modernized`, `updated`] as const;
-export type EditionType = typeof EDITION_TYPES[number];
+export type EditionType = (typeof EDITION_TYPES)[number];
 
 export const PRINT_SIZES = [`s`, `m`, `xl`] as const;
-export type PrintSize = typeof PRINT_SIZES[number];
+export type PrintSize = (typeof PRINT_SIZES)[number];
 
 export const PRINT_SIZE_VARIANTS = [`s`, `m`, `xl`, `xl--condensed`] as const;
-export type PrintSizeVariant = typeof PRINT_SIZE_VARIANTS[number];
+export type PrintSizeVariant = (typeof PRINT_SIZE_VARIANTS)[number];
 
 export const AUDIO_QUALITIES = [`HQ`, `LQ`] as const;
-export type AudioQuality = typeof AUDIO_QUALITIES[number];
+export type AudioQuality = (typeof AUDIO_QUALITIES)[number];
 
 export interface FileManifest {
   [key: string]: string | Buffer;
