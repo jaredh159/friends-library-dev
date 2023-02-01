@@ -1,20 +1,7 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "esModuleInterop": true,
-    "strict": true,
-    "noImplicitOverride": true,
-    "noUncheckedIndexedAccess": false,
-    "noPropertyAccessFromIndexSignature": true,
-    "moduleResolution": "node",
     "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "declaration": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "target": "ES2019",
-    "module": "CommonJS",
-    "incremental": true,
-    "lib": ["ESNext"]
-  },
-  "exclude": ["**/__tests__/*", "./dist"]
+    "noUncheckedIndexedAccess": false
+  }
 }
