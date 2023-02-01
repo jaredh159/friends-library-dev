@@ -1,25 +1,10 @@
 {
-  "name": "@friends-library/hilkiah",
-  "version": "1.3.2",
-  "description": "finds scripture references embedded in text",
-  "main": "./dist/index.js",
-  "browser": "./src/index.ts",
-  "repository": "github:friends-library-dev/hilkiah",
-  "author": "Jared Henderson <jared@netrivet.com>",
-  "license": "MIT",
-  "sideEffects": false,
-  "scripts": {
-    "test": "fldev test",
-    "test:watch": "fldev test:watch",
-    "lint": "fldev lint",
-    "lint:fix": "fldev lint:fix",
-    "ts:check": "fldev ts:check",
-    "format": "fldev format",
-    "compile": "fldev ts:compile",
-    "prepublishOnly": "npm run compile",
-    "npub:precheck": "fldev ci"
-  },
-  "devDependencies": {
-    "@friends-library/dev": "~4.5.0"
-  }
+  "name": "@friends-library/monorepo",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "MIT"
 }
