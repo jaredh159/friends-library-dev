@@ -1,4 +1,4 @@
-import { describe, test, expect, it } from '@jest/globals';
+import { describe, test, expect, it } from 'vitest';
 import { makeSplitLines, splitLines } from '../split';
 
 const splitShort = makeSplitLines(32, 10);

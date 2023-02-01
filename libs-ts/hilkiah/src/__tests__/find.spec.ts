@@ -4,9 +4,9 @@ import { find } from '..';
 describe(`find()`, () => {
   it(`can find just a chapter reference`, () => {
     const found = find(`In Jer. Xxxi`);
-    expect(found[0].book).toBe(`Jeremiah`);
-    expect(found[0].verses[0].chapter).toBe(31);
-    expect(found[0].verses[0].verse).toBeUndefined();
+    expect(found[0]?.book).toBe(`Jeremiah`);
+    expect(found[0]?.verses[0]?.chapter).toBe(31);
+    expect(found[0]?.verses[0]?.verse).toBeUndefined();
     expect(found).toHaveLength(1);
   });
 
@@ -22,9 +22,9 @@ describe(`find()`, () => {
 
   test.each(chapterOnlyCases)(`finds %s %s from %s`, (book, chapter, input) => {
     const found = find(input);
-    expect(found[0].book).toBe(book);
-    expect(found[0].verses[0].chapter).toBe(chapter);
-    expect(found[0].verses[0].verse).toBeUndefined();
+    expect(found[0]?.book).toBe(book);
+    expect(found[0]?.verses[0]?.chapter).toBe(chapter);
+    expect(found[0]?.verses[0]?.verse).toBeUndefined();
     expect(found).toHaveLength(1);
   });
 
@@ -51,42 +51,42 @@ describe(`find()`, () => {
 
   it(`does not find Song of Solomon ref inside of Thessalonians ref`, () => {
     const found = find(`Blah blahh, 1 Thess. 5:2.`);
-    expect(found[0].book).toBe(`1 Thessalonians`);
+    expect(found[0]?.book).toBe(`1 Thessalonians`);
     expect(found).toHaveLength(1);
   });
 
   it(`does not find Esther ref inside of Ecclesiastes ref`, () => {
     const found = find(`man's heart, Eccles. 3:11, which`);
 
-    expect(found[0].book).toBe(`Ecclesiastes`);
+    expect(found[0]?.book).toBe(`Ecclesiastes`);
     expect(found).toHaveLength(1);
   });
 
   it(`does not find Esther ref inside of Ecclesiastes ref`, () => {
     const found = find(`Ecclesiastes 5:1`);
 
-    expect(found[0].book).toBe(`Ecclesiastes`);
+    expect(found[0]?.book).toBe(`Ecclesiastes`);
     expect(found).toHaveLength(1);
   });
 
   it(`does not find Song of Solomon ref inside of Micah ref`, () => {
     const found = find(`Blah blahh, Micah 6:8.`);
 
-    expect(found[0].book).toBe(`Micah`);
+    expect(found[0]?.book).toBe(`Micah`);
     expect(found).toHaveLength(1);
   });
 
   it(`does not find Esther ref inside of James ref`, () => {
     const found = find(`brings forth death, James 1:15.`);
 
-    expect(found[0].book).toBe(`James`);
+    expect(found[0]?.book).toBe(`James`);
     expect(found).toHaveLength(1);
   });
 
   it(`does not find Esther ref inside of James ref`, () => {
     const found = find(`save their souls? (James, i. 21.) Is not that`);
 
-    expect(found[0].book).toBe(`James`);
+    expect(found[0]?.book).toBe(`James`);
     expect(found).toHaveLength(1);
   });
 
@@ -105,36 +105,36 @@ describe(`find()`, () => {
   it(`does not find Amos reference inside James ref.`, () => {
     const found = find(`the soul.” Jam. 1:21. This`);
 
-    expect(found[0].book).toBe(`James`);
+    expect(found[0]?.book).toBe(`James`);
     expect(found).toHaveLength(1);
   });
 
   it(`does not find Dueteronomy reference inside Jude ref.`, () => {
     const found = find(`foo bar Jude 1:3 hash`);
 
-    expect(found[0].book).toBe(`Jude`);
+    expect(found[0]?.book).toBe(`Jude`);
     expect(found).toHaveLength(1);
   });
 
   it(`does not find Lev. reference inside 1 Chron. ref.`, () => {
     const found = find(`foo bar 2 Chronicles 36:15-16 hash`);
 
-    expect(found[0].book).toBe(`2 Chronicles`);
+    expect(found[0]?.book).toBe(`2 Chronicles`);
     expect(found).toHaveLength(1);
   });
 
   it(`does not find Esther reference inside 1/2 Thes. ref.`, () => {
     const found = find(`foo 1 Thes. 2:11 bar 2 Thes. 1:1`);
 
-    expect(found[0].book).toBe(`1 Thessalonians`);
-    expect(found[1].book).toBe(`2 Thessalonians`);
+    expect(found[0]?.book).toBe(`1 Thessalonians`);
+    expect(found[1]?.book).toBe(`2 Thessalonians`);
     expect(found).toHaveLength(2);
   });
 
   it(`does not find Esther reference inside Ephes. ref.`, () => {
     const found = find(`foo Ephes. 1:1`);
 
-    expect(found[0].book).toBe(`Ephesians`);
+    expect(found[0]?.book).toBe(`Ephesians`);
     expect(found).toHaveLength(1);
   });
 
@@ -146,7 +146,7 @@ describe(`find()`, () => {
   it(`does not find Genesis & Esther reference inside Judges ref.`, () => {
     const found = find(`foo Judges 14:14`);
 
-    expect(found[0].book).toBe(`Judges`);
+    expect(found[0]?.book).toBe(`Judges`);
     expect(found).toHaveLength(1);
   });
 
@@ -159,15 +159,15 @@ describe(`find()`, () => {
   it(`does not find Esther ref in Ecclesiastes`, () => {
     const found = find(`Solomon in Ecclesiastes 5:1-3 are`);
 
-    expect(found[0].book).toBe(`Ecclesiastes`);
+    expect(found[0]?.book).toBe(`Ecclesiastes`);
     expect(found).toHaveLength(1);
   });
 
   it(`handles Acts ref without returning undefined`, () => {
     const found = find(`acts iv. 2-3`);
     expect(found).toHaveLength(1);
-    expect(found[0].book).toBe(`Acts`);
-    expect(found[0].verses).toMatchObject([
+    expect(found[0]?.book).toBe(`Acts`);
+    expect(found[0]?.verses).toMatchObject([
       {
         chapter: 4,
         verse: 2,
@@ -251,11 +251,11 @@ describe(`find()`, () => {
 
   test.each(individualVerses)(`finds {%s %s:%s} from "%s"`, (book, ch, vs, input) => {
     const [ref] = find(input);
-    expect(ref.book).toBe(book);
-    expect(ref.verses.length).toBe(1);
-    expect(ref.contiguous).toBe(true);
-    expect(ref.verses[0].chapter).toBe(ch);
-    expect(ref.verses[0].verse).toBe(vs);
+    expect(ref?.book).toBe(book);
+    expect(ref?.verses.length).toBe(1);
+    expect(ref?.contiguous).toBe(true);
+    expect(ref?.verses[0]?.chapter).toBe(ch);
+    expect(ref?.verses[0]?.verse).toBe(vs);
   });
 
   const multiRefs: [string, [string, string, number, number][]][] = [
@@ -308,10 +308,10 @@ describe(`find()`, () => {
     const refs = find(input);
 
     for (let i = 0; i < expected.length; i++) {
-      expect(refs[i].match).toBe(expected[i][0]);
-      expect(refs[i].book).toBe(expected[i][1]);
-      expect(refs[i].verses[0].chapter).toBe(expected[i][2]);
-      expect(refs[i].verses[0].verse).toBe(expected[i][3]);
+      expect(refs[i]?.match).toBe(expected[i]![0]);
+      expect(refs[i]?.book).toBe(expected[i]![1]);
+      expect(refs[i]?.verses[0]?.chapter).toBe(expected[i]![2]);
+      expect(refs[i]?.verses[0]?.verse).toBe(expected[i]![3]);
     }
   });
 
@@ -569,12 +569,12 @@ describe(`find()`, () => {
     const [ref] = find(input);
     const {
       position: { start, end },
-    } = ref;
+    } = ref!;
 
     const result = `${input.substr(0, start)}--${input.substr(end)}`;
 
     expect(result).toBe(rpl);
-    expect(ref.match).toBe(match);
+    expect(ref?.match).toBe(match);
   });
 
   it(`does not include trailing period when not in parens`, () => {
@@ -582,6 +582,6 @@ describe(`find()`, () => {
 
     const [ref] = find(input);
 
-    expect(ref.match).toBe(`1 John 1. 7`);
+    expect(ref?.match).toBe(`1 John 1. 7`);
   });
 });

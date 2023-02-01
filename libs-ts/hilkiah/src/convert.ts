@@ -15,7 +15,7 @@ export function romanToArabic(input: string): number {
 
   letters.forEach((letter, i) => {
     const letterValue = ROMAN_NUMERAL_MAP[letter] || 0;
-    const prevValue = ROMAN_NUMERAL_MAP[letters[i - 1]] || null;
+    const prevValue = ROMAN_NUMERAL_MAP[letters[i - 1] ?? ``] || null;
     if (prevValue !== null && prevValue < letterValue) {
       arabic -= 2 * prevValue;
     }

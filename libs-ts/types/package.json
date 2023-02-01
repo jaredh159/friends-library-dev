@@ -3,6 +3,7 @@
   "version": "7.0.0",
   "description": "types and typescript-related util fns for friends library",
   "license": "MIT",
+  "main": "src/index.ts",
   "scripts": {
     "typecheck": "tsc --noEmit",
     "test": "true",

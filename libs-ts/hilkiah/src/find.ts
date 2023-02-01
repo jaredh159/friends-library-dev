@@ -90,7 +90,7 @@ function extractRef(book: string, chapter: number, match: RegExpExecArray): Ref 
     ref.match = match[0];
 
     // weed out stuff like `is, 1`
-    const firstChar = ref.match[0];
+    const firstChar = ref.match[0] ?? ``;
     if (!firstChar.match(/^\d$/) && firstChar.toLowerCase() === firstChar) {
       return null;
     }
@@ -134,7 +134,7 @@ export function find(str: string): Ref[] {
     const exp = new RegExp(pattern, `gi`);
     let match: RegExpExecArray | null = null;
     while ((match = exp.exec(str))) {
-      const chapter = toNumber(match[1]) as number;
+      const chapter = toNumber(match[1] ?? `0`) as number;
       if (chapter === 0) {
         continue;
       }

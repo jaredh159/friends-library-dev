@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { describe, test, expect } from 'vitest';
 import stripIndent from 'strip-indent';
 import { quotify } from '../quotify';
 

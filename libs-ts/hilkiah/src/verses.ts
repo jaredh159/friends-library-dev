@@ -23,7 +23,7 @@ function singleOrRange(
     return ref;
   }
 
-  const [versesSubString, verseStart, verseEnd] = match;
+  const [versesSubString, verseStart = ``, verseEnd] = match;
   ref.verses.push({
     chapter,
     verse: toNumber(verseStart),

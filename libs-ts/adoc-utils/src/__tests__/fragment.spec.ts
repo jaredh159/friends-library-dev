@@ -1,4 +1,4 @@
-import { describe, test, expect } from '@jest/globals';
+import { describe, test, expect } from 'vitest';
 import { HTML_DEC_ENTITIES as h } from '@friends-library/types';
 import { backtickQuotesToEntities, ADOC_SYNTAX as a } from '../fragment';
 
