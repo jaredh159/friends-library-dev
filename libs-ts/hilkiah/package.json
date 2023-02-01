@@ -4,17 +4,12 @@
   "description": "finds scripture references embedded in text",
   "author": "Jared Henderson <jared@netrivet.com>",
   "license": "MIT",
-  "sideEffects": false,
   "scripts": {
     "typecheck": "tsc --noEmit",
     "test": "pnpm vitest run",
     "lint": "pnpm eslint .",
     "lint:fix": "pnpm eslint . --fix",
-    "---------": "#####",
-    "test:watch": "fldev test:watch",
-    "format": "fldev format",
-    "compile": "fldev ts:compile",
-    "prepublishOnly": "npm run compile",
-    "npub:precheck": "fldev ci"
+    "format": "pnpm prettier --write .",
+    "format:check": "pnpm prettier --check ."
   }
 }
