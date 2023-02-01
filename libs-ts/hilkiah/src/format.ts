@@ -1,5 +1,5 @@
+import type { Ref } from './find';
 import data from './books.json';
-import { Ref } from './find';
 
 const books = data as {
   name: string;

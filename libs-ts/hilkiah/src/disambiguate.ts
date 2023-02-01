@@ -1,4 +1,4 @@
-import { Ref } from './find';
+import type { Ref } from './find';
 
 function incorrectJohannine({ book, position: { start } }: Ref, input: string): boolean {
   if (book !== `John`) {

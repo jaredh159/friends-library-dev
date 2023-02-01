@@ -1,4 +1,4 @@
-import { Ref } from './find';
+import type { Ref } from './find';
 import { toNumber } from './convert';
 
 // @TODO duplication...
