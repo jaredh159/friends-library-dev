@@ -1,4 +1,4 @@
-import { describe, it, expect, test } from '@jest/globals';
+import { describe, it, expect, test } from 'vitest';
 import { find } from '..';
 
 describe(`find()`, () => {

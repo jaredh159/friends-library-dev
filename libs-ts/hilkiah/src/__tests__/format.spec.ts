@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeEach } from '@jest/globals';
+import { describe, it, expect, beforeEach } from 'vitest';
+import type { Ref } from '../find';
 import { format } from '../format';
-import { Ref } from '../find';
 
 describe(`format`, () => {
   let ref: Ref;

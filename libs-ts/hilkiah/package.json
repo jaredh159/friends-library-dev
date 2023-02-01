@@ -9,8 +9,8 @@
   "sideEffects": false,
   "scripts": {
     "typecheck": "tsc --noEmit",
+    "test": "pnpm vitest run",
     "---------": "#####",
-    "test": "fldev test",
     "test:watch": "fldev test:watch",
     "lint": "fldev lint",
     "lint:fix": "fldev lint:fix",

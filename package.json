@@ -11,6 +11,7 @@
     "typescript": "5.0.0-beta"
   },
   "devDependencies": {
-    "nx": "15.6.3"
+    "nx": "15.6.3",
+    "vitest": "0.28.3"
   }
 }
