@@ -1,0 +1,43 @@
+{
+  "name": "@friends-library/adoc-lint",
+  "version": "1.15.2",
+  "author": "Jared Henderson <jared@netrivet.com>",
+  "repository": "github:friends-library-dev/adoc-lint",
+  "description": "linting of asciidoc for FLP",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "browser": {
+    "./dist/index.js": "./src/index.ts",
+    "./dist/character-name.js": "./dist/character-name.browser.js",
+    "./src/character-name.ts": "./src/character-name.browser.ts"
+  },
+  "scripts": {
+    "scaffold:lint": "yarn ts-node ./scripts/scaffold-lint.ts",
+    "test": "fldev test",
+    "test:watch": "fldev test:watch",
+    "lint": "fldev lint --rule 'no-irregular-whitespace: off'",
+    "lint:fix": "npm run lint -- --fix",
+    "ts:check": "fldev ts:check",
+    "format": "fldev format",
+    "compile": "fldev ts:compile",
+    "prepublishOnly": "npm run compile",
+    "npub:precheck": "fldev ci"
+  },
+  "dependencies": {
+    "@friends-library/adoc-utils": "^2.0.1",
+    "@friends-library/hilkiah": "^1.3.3",
+    "@friends-library/types": "^7.0.0",
+    "escape-string-regexp": "^2.0.0",
+    "roman-numerals": "^0.3.2",
+    "strip-indent": "^3.0.0",
+    "unicharadata": "^9.0.0-alpha.6",
+    "uuid": "^3.3.3"
+  },
+  "devDependencies": {
+    "@friends-library/dev": "~4.5.2",
+    "@types/escape-string-regexp": "^2.0.1",
+    "@types/glob": "^7.1.3",
+    "@types/lodash": "^4.14.161",
+    "@types/roman-numerals": "^0.3.0"
+  }
+}

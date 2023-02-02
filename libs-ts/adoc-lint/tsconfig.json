@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": false,
+    "noImplicitOverride": true,
+    "declaration": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "module": "CommonJS",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "target": "ES2019"
+  },
+  "exclude": ["./scripts", "./dist"]
+}
