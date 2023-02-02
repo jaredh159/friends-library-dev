@@ -1,0 +1,25 @@
+{
+  "name": "@friends-library/cloud",
+  "version": "1.9.1",
+  "description": "cloud storage api for FLP",
+  "main": "./dist/index.js",
+  "author": "Jared Henderson <jared@netrivet.com>",
+  "repository": "github:friends-library-dev/cloud",
+  "license": "MIT",
+  "scripts": {
+    "test": "true",
+    "lint": "fldev lint",
+    "lint:fix": "fldev lint:fix",
+    "ts:check": "fldev ts:check",
+    "format": "fldev format",
+    "compile": "fldev ts:compile",
+    "prepublishOnly": "npm run compile",
+    "npub:precheck": "fldev ci"
+  },
+  "dependencies": {
+    "@friends-library/dev": "~4.4.1",
+    "@friends-library/env": "^1.4.0",
+    "aws-sdk": "^2.559.0",
+    "x-ts-utils": "^1.2.0"
+  }
+}
