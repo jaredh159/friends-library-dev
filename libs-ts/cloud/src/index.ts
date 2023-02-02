@@ -1,8 +1,8 @@
+import * as fs from 'fs';
+import { extname } from 'path';
 import { isDefined } from 'x-ts-utils';
 import * as AWS from 'aws-sdk';
 import env from '@friends-library/env';
-import * as fs from 'fs';
-import { extname } from 'path';
 
 type LocalFilePath = string;
 type CloudFilePath = string;
