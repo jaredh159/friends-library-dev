@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import unspacedPeriod from '../unspaced-period';
 
 const opts = { lang: `en` as const };

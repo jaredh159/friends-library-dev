@@ -1,4 +1,4 @@
-import { LineRule, LintOptions, LintResult } from '../types';
+import type { LineRule, LintOptions, LintResult } from '../types';
 
 const rule: LineRule = (
   line: string,
@@ -18,14 +18,14 @@ const rule: LineRule = (
 
   let compositeLine = line;
   if (lines[lineNumber] && lines[lineNumber] !== ``) {
-    compositeLine += ` ${lines[lineNumber].split(` `).shift() || ``}`;
+    compositeLine += ` ${lines[lineNumber]?.split(` `).shift() || ``}`;
   }
 
   const lints: LintResult[] = [];
   const regex = /\byou\b ([a-z]+s)\b/g;
 
   let match: RegExpExecArray | null = null;
-  while ((match = regex.exec(compositeLine))) {
+  while ((match = regex.exec(compositeLine)) && match[1]) {
     if (!WHITELIST[match[1].toLowerCase()]) {
       let column = (match.index || 0) + 4 + match[1].length;
       if (column > line.length) {

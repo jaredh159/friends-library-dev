@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import stripIndent from 'strip-indent';
 import gitConflictMarkers from '../git-conflict-markers';
 
@@ -28,7 +29,7 @@ describe(`gitConflictMarkers()`, () => {
       rule: `git-conflict-markers`,
       message: `Git conflict markers must be removed.`,
     });
-    expect(results[1].line).toBe(3);
+    expect(results[1]?.line).toBe(3);
     expect(results[2].line).toBe(5);
   });
 });

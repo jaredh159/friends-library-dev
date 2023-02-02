@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import stripIndent from 'strip-indent';
 import lint from '../lint';
 
@@ -19,7 +20,7 @@ describe(`lint()`, () => {
   it(`allows whitelisting rules`, () => {
     const results = lint(`Don't •\n`, { include: [`smart-quotes`], lang: `en` });
     expect(results).toHaveLength(1);
-    expect(results[0].rule).toBe(`smart-quotes`);
+    expect(results[0]?.rule).toBe(`smart-quotes`);
   });
 
   it(`allows black-listing rules`, () => {
@@ -28,13 +29,13 @@ describe(`lint()`, () => {
       lang: `en`,
     });
     expect(results).toHaveLength(1);
-    expect(results[0].rule).toBe(`invalid-characters`);
+    expect(results[0]?.rule).toBe(`invalid-characters`);
   });
 
   test(`maybe rule is run if maybe option true`, () => {
     const results = lint(`== One\n\nThen we. went to\n`, { maybe: true, lang: `en` });
     expect(results).toHaveLength(1);
-    expect(results[0].rule).toBe(`unexpected-period`);
+    expect(results[0]?.rule).toBe(`unexpected-period`);
   });
 
   test(`maybe rule is run if specifically included`, () => {
@@ -43,7 +44,7 @@ describe(`lint()`, () => {
       lang: `en`,
     });
     expect(results).toHaveLength(1);
-    expect(results[0].rule).toBe(`unexpected-period`);
+    expect(results[0]?.rule).toBe(`unexpected-period`);
   });
 
   it(`aggregates multiple rule test results (block and line)`, () => {
@@ -63,9 +64,9 @@ describe(`lint()`, () => {
     `).trim();
     const results = lint(`${adoc}\n`);
     expect(results).toHaveLength(3);
-    expect(results[0].rule).toBe(`list-year`);
-    expect(results[1].rule).toBe(`smart-quotes`);
-    expect(results[2].rule).toBe(`open-block`);
+    expect(results[0]?.rule).toBe(`list-year`);
+    expect(results[1]?.rule).toBe(`smart-quotes`);
+    expect(results[2]?.rule).toBe(`open-block`);
   });
 
   it(`new lines do not cause duplicate results`, () => {

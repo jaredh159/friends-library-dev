@@ -1,4 +1,4 @@
-import { LineRule, LintOptions, LintResult } from '../types';
+import type { LineRule, LintOptions, LintResult } from '../types';
 
 const rule: LineRule = (
   line: string,
@@ -19,7 +19,7 @@ const rule: LineRule = (
   words.forEach(([lower, corrected]) => {
     const find = new RegExp(`\\b${lower}\\b`, `g`);
     const match = line.match(find);
-    if (match) {
+    if (match && lower && corrected) {
       results.push({
         line: lineNumber,
         column: line.indexOf(lower) + 1,

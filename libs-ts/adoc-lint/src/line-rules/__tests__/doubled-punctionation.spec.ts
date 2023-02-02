@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import doubledPunctuation from '../doubled-punctuation';
 
 const opts = { lang: `en` as const };
@@ -27,8 +28,8 @@ describe(`doubledPunctuation()`, () => {
   test.each(violations)(`%s should be a violation`, (line, reco, fixable) => {
     const results = doubledPunctuation(line, [], 1, opts);
     expect(results).toHaveLength(1);
-    expect(results[0].recommendation).toBe(reco);
-    expect(results[0].fixable).toBe(fixable);
+    expect(results[0]?.recommendation).toBe(reco);
+    expect(results[0]?.fixable).toBe(fixable);
   });
 
   const allowed = [

@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import titleLength from '../title-length';
 
 const opts = { lang: `en` as const };
@@ -8,7 +9,7 @@ describe(`titleLength()`, () => {
   it(`creates a lint for violation of \`title-length\` rule`, () => {
     const adoc = `== ${FIFTY_CHARS} and Some More Stuff After`;
     const lines = adoc.split(`\n`);
-    const results = titleLength(lines[0], lines, 1, opts);
+    const results = titleLength(lines[0]!, lines, 1, opts);
     expect(results).toHaveLength(1);
     expect(results[0]).toEqual({
       line: 1,

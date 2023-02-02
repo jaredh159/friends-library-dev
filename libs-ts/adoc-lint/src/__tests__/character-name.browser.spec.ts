@@ -1,4 +1,4 @@
-// @ts-check
+import { describe, test, expect } from 'vitest';
 import characterName from '../character-name.browser';
 
 describe(`characterName()`, () => {
@@ -19,6 +19,6 @@ describe(`characterName()`, () => {
   });
 
   test(`knows soft-hyphen`, () => {
-    expect(characterName(`be­stowed`[2])).toBe(`SOFT HYPHEN`);
+    expect(characterName(`be­stowed`[2]!)).toBe(`SOFT HYPHEN`);
   });
 });

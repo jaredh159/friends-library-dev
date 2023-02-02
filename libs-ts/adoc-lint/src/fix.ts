@@ -1,6 +1,6 @@
+import type { LintOptions, LintResult } from './types';
 import lint from './lint';
 import singlePassFix from './fix-single-pass';
-import { LintOptions, LintResult } from './types';
 
 export default function fix(
   adoc: string,

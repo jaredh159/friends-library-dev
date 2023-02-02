@@ -1,5 +1,5 @@
+import type { LineRule, LintResult } from '../types';
 import { isAsciidocBracketLine } from '../utils';
-import { LineRule, LintResult } from '../types';
 
 const rule: LineRule = (
   line: string,

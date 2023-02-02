@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import stripIndent from 'strip-indent';
 import chapterHeading from '../chapter-heading';
 
@@ -32,8 +33,8 @@ describe(`chapterHeading()`, () => {
 
     const results = chapterHeading(adoc, opts);
     expect(results).toHaveLength(1);
-    expect(results[0].line).toBe(5);
-    expect(results[0].message).toBe(`Duplicate chapter heading \`== \` -- see line 1`);
+    expect(results[0]?.line).toBe(5);
+    expect(results[0]?.message).toBe(`Duplicate chapter heading \`== \` -- see line 1`);
   });
 
   it(`does not lint file if only problem is invalid heading format`, () => {

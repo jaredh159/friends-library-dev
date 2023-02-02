@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import invalidCharacters from '../invalid-characters';
 
 const opts = { lang: `en` as const };

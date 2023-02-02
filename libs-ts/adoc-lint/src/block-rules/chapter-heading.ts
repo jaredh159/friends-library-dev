@@ -1,4 +1,4 @@
-import { BlockRule, LintResult } from '../types';
+import type { BlockRule, LintResult } from '../types';
 
 const rule: BlockRule = (block: string): LintResult[] => {
   const lines = block.split(`\n`);

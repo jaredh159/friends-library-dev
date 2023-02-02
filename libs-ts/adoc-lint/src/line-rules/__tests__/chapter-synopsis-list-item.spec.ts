@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import stripIndent from 'strip-indent';
 import chapterSynopsisListItem from '../chapter-synopsis-list-item';
 
@@ -14,7 +15,7 @@ describe(`chapterSynopsisListItem()`, () => {
       Foobar.
     `).trim();
     const lines = adoc.split(`\n`);
-    const results = chapterSynopsisListItem(lines[2], lines, 3, opts);
+    const results = chapterSynopsisListItem(lines[2]!, lines, 3, opts);
     expect(results).toHaveLength(1);
     expect(results[0]).toEqual({
       line: 4,
@@ -48,7 +49,7 @@ describe(`chapterSynopsisListItem()`, () => {
       results = results.concat([...lineResults]);
     });
     expect(results).toHaveLength(2);
-    expect(results[0].recommendation).toBe(`* Foo bar (BAD!)`);
-    expect(results[1].recommendation).toBe(`* Also BAD!`);
+    expect(results[0]?.recommendation).toBe(`* Foo bar (BAD!)`);
+    expect(results[1]?.recommendation).toBe(`* Also BAD!`);
   });
 });

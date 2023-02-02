@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import unexpectedPeriod from '../unexpected-period';
 
 const opts = { lang: `en` as const };

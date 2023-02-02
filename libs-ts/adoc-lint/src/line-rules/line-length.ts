@@ -1,7 +1,7 @@
 import * as hilkiah from '@friends-library/hilkiah';
 
 import { makeSplitLines } from '@friends-library/adoc-utils';
-import { LineRule, LintResult } from '../types';
+import type { LineRule, LintResult } from '../types';
 import { isTableLine } from '../utils';
 
 const split = makeSplitLines(90, 45);

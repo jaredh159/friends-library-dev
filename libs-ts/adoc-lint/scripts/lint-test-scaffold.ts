@@ -23,7 +23,7 @@ describe(`myRule()`, () => {
   xtest.each(violations)(`\`%s\` should become "%s"`, (line, reco) => {
     const results = myRule(line, [], 1, opts);
     expect(results).toHaveLength(1);
-    expect(results[0].recommendation).toBe(reco);
+    expect(results[0]?.recommendation).toBe(reco);
   });
 
   const allowed: [string][] = [

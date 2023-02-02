@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import consistentNameSpelling from '../consistent-name-spelling';
 
 const opts = { lang: `en` as const };
@@ -20,19 +21,19 @@ describe(`consistentNameSpelling()`, () => {
   it(`finds catharine payton across two lines`, () => {
     const adoc = `Went to meeting with Catharine\nPayton who`;
     const lines = adoc.split(`\n`);
-    const results = consistentNameSpelling(lines[0], lines, 1, opts);
+    const results = consistentNameSpelling(lines[0]!, lines, 1, opts);
     expect(results).toHaveLength(1);
-    expect(results[0].fixable).toBe(false);
+    expect(results[0]?.fixable).toBe(false);
   });
 
   it(`correctly supplies recommendation for CP without doubling nextline word`, () => {
     const adoc = `Went to meeting with Catharine Payton\nwho`;
     const lines = adoc.split(`\n`);
-    const results = consistentNameSpelling(lines[0], lines, 1, opts);
+    const results = consistentNameSpelling(lines[0]!, lines, 1, opts);
     expect(results).toHaveLength(1);
-    expect(results[0].fixable).toBe(true);
+    expect(results[0]?.fixable).toBe(true);
     // no `who` from next line caused by `lint.includeNextLineFirstWord`
-    expect(results[0].recommendation).toBe(`Went to meeting with Catherine Payton`);
+    expect(results[0]?.recommendation).toBe(`Went to meeting with Catherine Payton`);
   });
 
   const violations: [string, string][] = [
@@ -54,8 +55,8 @@ describe(`consistentNameSpelling()`, () => {
   test.each(violations)(`\`%s\` should become "%s"`, (line, reco) => {
     const results = consistentNameSpelling(line, [], 1, opts);
     expect(results).toHaveLength(1);
-    expect(results[0].recommendation).toBe(reco);
-    expect(results[0].fixable).toBe(true);
+    expect(results[0]?.recommendation).toBe(reco);
+    expect(results[0]?.fixable).toBe(true);
   });
 
   const allowed: [string][] = [

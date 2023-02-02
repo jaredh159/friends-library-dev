@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import stripIndent from 'strip-indent';
 import leadingWhitespace from '../leading-whitespace';
 
@@ -26,7 +27,7 @@ describe(`leadingWhitespace()`, () => {
   it(`only produces one lint for a chunk of leading whitespace`, () => {
     const results = leadingWhitespace(`   Foo.`, [], 1, opts);
     expect(results).toHaveLength(1);
-    expect(results[0].column).toBe(0);
+    expect(results[0]?.column).toBe(0);
   });
 
   it(`allows leading whitespace in footnote poetry`, () => {
@@ -38,7 +39,7 @@ describe(`leadingWhitespace()`, () => {
       and now the poem is done.]
     `).trim();
     const lines = adoc.split(`\n`);
-    const results = leadingWhitespace(lines[3], lines, 4, opts);
+    const results = leadingWhitespace(lines[3]!, lines, 4, opts);
     expect(results).toHaveLength(0);
   });
 
@@ -60,7 +61,7 @@ describe(`leadingWhitespace()`, () => {
 
     const lines = adoc.split(`\n`);
     lines.forEach((line, index) => {
-      const results = leadingWhitespace(lines[index], lines, index + 1, opts);
+      const results = leadingWhitespace(lines[index]!, lines, index + 1, opts);
       expect(results).toHaveLength(0);
     });
   });

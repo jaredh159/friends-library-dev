@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import bookTitleSpacing from '../book-title-spacing';
 
 const opts = { lang: `en` as const };
@@ -32,11 +33,11 @@ describe(`bookTitleSpacing()`, () => {
   test.each(violations)(`\`%s\` is a violation of 'book-title-spacing'`, (line, reco) => {
     const results = bookTitleSpacing(line, [], 1, opts);
     expect(results).toHaveLength(1);
-    expect(results[0].fixable).toBe(!!reco);
+    expect(results[0]?.fixable).toBe(!!reco);
     if (reco) {
-      expect(results[0].recommendation).toBe(reco);
+      expect(results[0]?.recommendation).toBe(reco);
     } else {
-      expect(results[0].recommendation).toBeUndefined();
+      expect(results[0]?.recommendation).toBeUndefined();
     }
   });
 

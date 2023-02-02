@@ -1,7 +1,7 @@
-import gitConflictMarkers from './git-conflict-markers';
+import type { LineRule, LintOptions, LintResult } from '../types';
 import characterName from '../character-name';
-import { LineRule, LintOptions, LintResult } from '../types';
 import { isTableLine } from '../utils';
+import gitConflictMarkers from './git-conflict-markers';
 
 const rule: LineRule = (
   line: string,

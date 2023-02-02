@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import midWordUppercase from '../mid-word-uppercase';
 
 const opts = { lang: `en` as const };

@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import personMismatch from '../person-mismatch';
 
 const opts = { lang: `en`, editionType: `modernized`, maybe: true } as const;
@@ -6,7 +7,7 @@ describe(`personMismatch()`, () => {
   it(`creates a lint for violation of \`person-mismatch\` rule`, () => {
     const adoc = `If you sees yourself wrong,`;
     const lines = adoc.split(`\n`);
-    const results = personMismatch(lines[0], lines, 1, opts);
+    const results = personMismatch(lines[0]!, lines, 1, opts);
     expect(results).toHaveLength(1);
     expect(results[0]).toEqual({
       line: 1,

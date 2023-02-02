@@ -1,4 +1,4 @@
-import { BlockRule, LintResult } from '../types';
+import type { BlockRule, LintResult } from '../types';
 
 const rule: BlockRule = (block: string): LintResult[] => {
   const lines = block.split(`\n`);
@@ -12,7 +12,7 @@ const rule: BlockRule = (block: string): LintResult[] => {
     }
 
     const match = line.match(/^(={2,4}) /);
-    if (!match) {
+    if (!match || !match[1]) {
       return;
     }
 

@@ -1,5 +1,5 @@
+import type { LineRule, LintResult } from '../types';
 import { isFootnotePoetryLine, isTableLine } from '../utils';
-import { LineRule, LintResult } from '../types';
 
 const rule: LineRule = (
   line: string,

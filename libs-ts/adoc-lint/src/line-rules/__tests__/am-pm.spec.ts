@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import amPm from '../am-pm';
 
 const opts = { lang: `en` as const };
@@ -29,7 +30,7 @@ describe(`amPm()`, () => {
   test.each(violations)(`\`%s\` should become "%s"`, (line, reco) => {
     const results = amPm(line, [], 1, opts);
     expect(results).toHaveLength(1);
-    expect(results[0].recommendation).toBe(reco);
+    expect(results[0]?.recommendation).toBe(reco);
   });
 
   const allowed: [string][] = [

@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import unwrappedPostscript from '../unwrapped-postscript';
 
 const opts = { lang: `en` as const };
@@ -6,7 +7,7 @@ describe(`unwrappedPostscript()`, () => {
   it(`creates a lint for violation of \`unwrapped-postscript\` rule`, () => {
     const adoc = `[.postscript]\nFoo bar.`;
     const lines = adoc.split(`\n`);
-    const results = unwrappedPostscript(lines[0], lines, 1, opts);
+    const results = unwrappedPostscript(lines[0]!, lines, 1, opts);
     expect(results).toHaveLength(1);
     expect(results[0]).toEqual({
       line: 1,

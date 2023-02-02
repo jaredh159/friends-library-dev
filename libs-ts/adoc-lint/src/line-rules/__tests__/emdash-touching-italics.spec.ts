@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import emdashTouchingItalic from '../emdash-touching-italics';
 
 const opts = { lang: `en` as const };
@@ -40,7 +41,7 @@ describe(`emdashTouchingItalic()`, () => {
         results = results.concat(emdashTouchingItalic(line, lines, i + 1, opts));
       });
       expect(results).toHaveLength(numViolations);
-      expect(results[0].recommendation).toBe(firstReco);
+      expect(results[0]?.recommendation).toBe(firstReco);
     },
   );
 

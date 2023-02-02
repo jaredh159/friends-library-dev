@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import stripIndent from 'strip-indent';
 import multipleBlankLines from '../multiple-blank-lines';
 
@@ -12,7 +13,7 @@ describe(`multipleBlankLines()`, () => {
       Foobar.
     `).trim();
     const lines = adoc.split(`\n`);
-    const results = multipleBlankLines(lines[2], lines, 3, opts);
+    const results = multipleBlankLines(lines[2]!, lines, 3, opts);
     expect(results).toHaveLength(1);
     expect(results[0]).toEqual({
       line: 2,
@@ -39,7 +40,7 @@ describe(`multipleBlankLines()`, () => {
       const results = multipleBlankLines(line, lines, index + 1, opts);
       if (index === 4) {
         expect(results).toHaveLength(1);
-        expect(results[0].recommendation).toBe(`--> remove line/s: (2,3,4)`);
+        expect(results[0]?.recommendation).toBe(`--> remove line/s: (2,3,4)`);
       } else {
         expect(results).toHaveLength(0);
       }

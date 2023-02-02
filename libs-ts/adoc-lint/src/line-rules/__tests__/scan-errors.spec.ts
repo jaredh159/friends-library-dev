@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import scanErrors from '../scan-errors';
 
 const opts = { lang: `en` as const };
@@ -74,7 +75,7 @@ describe(`scanErrors()`, () => {
   test.each(violations)(`\`%s\` should be a lint violation`, (line, reco) => {
     const results = scanErrors(line, [], 1, opts);
     expect(results).toHaveLength(1);
-    expect(results[0].recommendation).toBe(reco);
+    expect(results[0]?.recommendation).toBe(reco);
   });
 
   const allowed = [

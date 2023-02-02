@@ -1,4 +1,4 @@
-import { LintResult } from './types';
+import type { LintResult } from './types';
 
 export default function fix(adoc: string, lints: LintResult[]): [string, number] {
   let numUnfixedFixables = 0;
@@ -77,7 +77,7 @@ export default function fix(adoc: string, lints: LintResult[]): [string, number]
       if (modifiedLines.has(lint.line + 1)) {
         numUnfixedFixables++;
       } else {
-        const [first, second] = recommendation.split(`\n`);
+        const [first = ``, second = ``] = recommendation.split(`\n`);
         lines[lint.line - 1] = first;
         lines[lint.line] = second;
         modifiedLines.add(lint.line);

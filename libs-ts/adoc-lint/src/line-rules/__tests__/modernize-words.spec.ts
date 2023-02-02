@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import modernizeWords from '../modernize-words';
 
 const opts = {
@@ -29,7 +30,7 @@ describe(`modernizeWords()`, () => {
   test.each(violations)(`\`%s\` should become "%s"`, (line, reco) => {
     const results = modernizeWords(line, [], 1, opts);
     expect(results).toHaveLength(1);
-    expect(results[0].recommendation).toBe(reco);
+    expect(results[0]?.recommendation).toBe(reco);
   });
 
   const allowed: [string][] = [
@@ -55,8 +56,8 @@ describe(`modernizeWords()`, () => {
       maybe: true,
     });
     expect(results).toHaveLength(1);
-    expect(results[0].fixable).toBe(false);
-    expect(results[0].message).toBe(
+    expect(results[0]?.fixable).toBe(false);
+    expect(results[0]?.message).toBe(
       `"Zionward" is often (but not always!) better "towards Zion" in modernized editions`,
     );
   });

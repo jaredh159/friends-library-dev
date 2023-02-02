@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import italicsTouchingFootnote from '../italics-touching-footnote';
 
 const opts = { lang: `en` as const };
@@ -24,7 +25,7 @@ describe(`italicsTouchingFootnote()`, () => {
   test.each(violations)(`\`%s\` should become "%s"`, (line, reco) => {
     const results = italicsTouchingFootnote(line, [], 1, opts);
     expect(results).toHaveLength(1);
-    expect(results[0].recommendation).toBe(reco);
+    expect(results[0]?.recommendation).toBe(reco);
   });
 
   const allowed: [string][] = [[`Foo __bar.__^`]];

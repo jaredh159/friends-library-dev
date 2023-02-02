@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import stripIndent from 'strip-indent';
 import trailingHyphen from '../trailing-hyphen';
 
@@ -7,7 +8,7 @@ describe(`trailingHyphen()`, () => {
   it(`lints a line with a trailing hyphen`, () => {
     const adoc = `More self-\nabasedness is good.`;
     const lines = adoc.split(`\n`);
-    const results = trailingHyphen(lines[0], lines, 1, opts);
+    const results = trailingHyphen(lines[0]!, lines, 1, opts);
     expect(results).toHaveLength(1);
     expect(results[0]).toEqual({
       line: 1,
@@ -23,25 +24,25 @@ describe(`trailingHyphen()`, () => {
   it(`moves hyphenated to next line if shorter`, () => {
     const adoc = `Foo bar is so baz-\nzy sir!`;
     const lines = adoc.split(`\n`);
-    const results = trailingHyphen(lines[0], lines, 1, opts);
+    const results = trailingHyphen(lines[0]!, lines, 1, opts);
     expect(results).toHaveLength(1);
-    expect(results[0].recommendation).toBe(`Foo bar is so\nbaz-zy sir!`);
+    expect(results[0]?.recommendation).toBe(`Foo bar is so\nbaz-zy sir!`);
   });
 
   it(`wont make recommendation if next line is a comment`, () => {
     const adoc = `Foo bar-\n// lint-disable foo`;
     const lines = adoc.split(`\n`);
-    const results = trailingHyphen(lines[0], lines, 1, opts);
+    const results = trailingHyphen(lines[0]!, lines, 1, opts);
     expect(results).toHaveLength(1);
-    expect(results[0].recommendation).toBeUndefined();
+    expect(results[0]?.recommendation).toBeUndefined();
   });
 
   it(`wont make recommendation if next line starts with hyphen`, () => {
     const adoc = `Foo bar-\n-and baz`;
     const lines = adoc.split(`\n`);
-    const results = trailingHyphen(lines[0], lines, 1, opts);
+    const results = trailingHyphen(lines[0]!, lines, 1, opts);
     expect(results).toHaveLength(1);
-    expect(results[0].recommendation).toBeUndefined();
+    expect(results[0]?.recommendation).toBeUndefined();
   });
 
   it(`does not flag special footnote poetry stanza breaks`, () => {
@@ -54,7 +55,7 @@ describe(`trailingHyphen()`, () => {
       and now the poem is done.]
     `).trim();
     const lines = adoc.split(`\n`);
-    const results = trailingHyphen(lines[3], lines, 4, opts);
+    const results = trailingHyphen(lines[3]!, lines, 4, opts);
     expect(results).toHaveLength(0);
   });
 });

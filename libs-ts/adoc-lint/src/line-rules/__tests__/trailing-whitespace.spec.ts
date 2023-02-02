@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import trailingWhitespace from '../trailing-whitespace';
 
 const opts = { lang: `en` as const };

@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import invalidHeading from '../invalid-heading';
 
 const opts = { lang: `en` as const };

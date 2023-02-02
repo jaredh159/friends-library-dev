@@ -1,7 +1,8 @@
-import singlePassFix from '../fix-single-pass';
+import { describe, test, it, expect } from 'vitest';
 import stripIndent from 'strip-indent';
+import type { LintResult } from '../types';
+import singlePassFix from '../fix-single-pass';
 import lint from '../lint';
-import { LintResult } from '../types';
 
 describe(`singlePassFix()`, () => {
   it(`can fix a single line`, () => {
@@ -253,7 +254,7 @@ describe(`singlePassFix()`, () => {
       stripIndent(`
         [.embedded-content-document.letter]
         --
-        
+
         Foo
         --
 
@@ -265,9 +266,9 @@ describe(`singlePassFix()`, () => {
       stripIndent(`
         [.embedded-content-document.letter]
         --
-        
+
         Foo
-        
+
         --
         Bar
       `).trim() + `\n`,
@@ -278,7 +279,7 @@ describe(`singlePassFix()`, () => {
     stripIndent(`
     [.embedded-content-document.letter]
     --
-    
+
     Foo
 
     --
@@ -310,7 +311,7 @@ describe(`singlePassFix()`, () => {
       stripIndent(`
         [.postscript]
         ====
-        
+
         Foo
         ====
 
@@ -322,9 +323,9 @@ describe(`singlePassFix()`, () => {
       stripIndent(`
         [.postscript]
         ====
-        
+
         Foo
-        
+
         ====
         Bar
       `).trim() + `\n`,
@@ -335,7 +336,7 @@ describe(`singlePassFix()`, () => {
     stripIndent(`
     [.postscript]
     ====
-    
+
     Foo
 
     ====

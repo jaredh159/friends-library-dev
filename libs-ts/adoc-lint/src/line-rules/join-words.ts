@@ -1,8 +1,8 @@
 import escape from 'escape-string-regexp';
-import { LineRule, LintOptions, LintResult } from '../types';
+import type { LineRule, LintOptions, LintResult } from '../types';
 
 // @see https://books.google.com/ngrams for data backing up choices
-const sets = [
+const sets: [string, string, string][] = [
   [`short`, `comings`, ``],
   [`meeting`, `house`, ``],
   [`down`, `stairs`, ``],

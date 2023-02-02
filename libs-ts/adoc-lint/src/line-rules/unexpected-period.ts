@@ -1,5 +1,5 @@
 import { toArabic } from 'roman-numerals';
-import { LineRule, LintResult } from '../types';
+import type { LineRule, LintResult } from '../types';
 
 const rule: LineRule = (
   line: string,
@@ -65,7 +65,7 @@ function isIe(match: RegExpExecArray, line: string): boolean {
 }
 
 function isPmOrAm(match: RegExpExecArray, line: string): boolean {
-  const firstLetter = match[0][0].toLowerCase();
+  const firstLetter = match[0]?.[0]?.toLowerCase() || ``;
   if ([`a`, `p`].includes(firstLetter)) {
     return !!match[0].match(/(p|a)\. ?m/i);
   }

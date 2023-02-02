@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import midWordNonLetter from '../mid-word-non-letter';
 
 const opts = { lang: `en` as const };

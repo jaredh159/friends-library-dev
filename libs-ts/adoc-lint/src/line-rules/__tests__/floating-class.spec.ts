@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import floatingClass from '../floating-class';
 
 const opts = { lang: `en` as const };
@@ -6,7 +7,7 @@ describe(`floatingClass()`, () => {
   it(`creates a lint violation result for floating class line`, () => {
     const adoc = `[.foobar]\n\nFoo.\n`;
     const lines = adoc.split(`\n`);
-    const results = floatingClass(lines[0], lines, 1, opts);
+    const results = floatingClass(lines[0]!, lines, 1, opts);
     expect(results).toHaveLength(1);
     expect(results[0]).toEqual({
       line: 1,

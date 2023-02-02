@@ -1,5 +1,5 @@
 import { quotifyLine } from '@friends-library/adoc-utils';
-import { LineRule, LintResult } from '../types';
+import type { LineRule, LintResult } from '../types';
 
 const rule: LineRule = (
   line: string,

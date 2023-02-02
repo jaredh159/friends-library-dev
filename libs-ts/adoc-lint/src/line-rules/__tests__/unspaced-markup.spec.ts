@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import unspacedMarkup from '../unspaced-markup';
 
 const opts = { lang: `en` as const };
@@ -6,7 +7,7 @@ describe(`unspacedMarkup()`, () => {
   it(`creates a lint for violation of \`unspaced-markup\` rule`, () => {
     const adoc = `[.asterism]\n'''\nFoobar`;
     const lines = adoc.split(`\n`);
-    const results = unspacedMarkup(lines[1], lines, 2, opts);
+    const results = unspacedMarkup(lines[1]!, lines, 2, opts);
     expect(results).toHaveLength(1);
     expect(results[0]).toEqual({
       line: 2,
@@ -26,9 +27,11 @@ describe(`unspacedMarkup()`, () => {
 
   test.each(violations)(`adoc should be a violation`, (adoc, idx) => {
     const lines = adoc.split(`\n`);
-    const results = unspacedMarkup(lines[idx], lines, idx + 1, opts);
+    const results = unspacedMarkup(lines[idx]!, lines, idx + 1, opts);
     expect(results).toHaveLength(1);
-    expect(results[0].recommendation).toBe(`--> add an empty line after line ${idx + 1}`);
+    expect(results[0]?.recommendation).toBe(
+      `--> add an empty line after line ${idx + 1}`,
+    );
   });
 
   const allowed: [string, number][] = [
@@ -38,7 +41,7 @@ describe(`unspacedMarkup()`, () => {
 
   test.each(allowed)(`adoc is not a lint violation`, (adoc, idx) => {
     const lines = adoc.split(`\n`);
-    const results = unspacedMarkup(lines[idx], lines, idx + 1, opts);
+    const results = unspacedMarkup(lines[idx]!, lines, idx + 1, opts);
     expect(results).toHaveLength(0);
   });
 });

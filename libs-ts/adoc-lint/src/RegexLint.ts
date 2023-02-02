@@ -1,4 +1,4 @@
-import { Lang, EditionType } from '@friends-library/types';
+import type { Lang, EditionType } from '@friends-library/types';
 
 interface ReplacerFn {
   (substr: string, ...args: any[]): string;

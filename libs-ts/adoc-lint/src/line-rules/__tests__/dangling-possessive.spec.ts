@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import danglingPossessive from '../dangling-possessive';
 
 const opts = { lang: `en` as const };
@@ -6,7 +7,7 @@ describe(`danglingPossessive()`, () => {
   it(`creates a lint for violation of \`dangling-possessive\` rule`, () => {
     const adoc = `end of Christ\`'\ns coming`;
     const lines = adoc.split(`\n`);
-    const results = danglingPossessive(lines[0], lines, 1, opts);
+    const results = danglingPossessive(lines[0]!, lines, 1, opts);
     expect(results).toHaveLength(1);
     expect(results[0]).toEqual({
       line: 1,
@@ -30,7 +31,7 @@ describe(`danglingPossessive()`, () => {
       results = results.concat(danglingPossessive(line, lines, i + 1, opts));
     });
     expect(results).toHaveLength(1);
-    expect(results[0].recommendation).toBe(fixed);
+    expect(results[0]?.recommendation).toBe(fixed);
   });
 
   const allowed: [string][] = [[`'\`A single quote\`'\nsomething after`]];

@@ -1,5 +1,6 @@
-import glob from 'glob';
 import path from 'path';
+import { describe, test, expect } from 'vitest';
+import glob from 'glob';
 import * as lineRules from '../line-rules';
 import * as blockRules from '../block-rules';
 

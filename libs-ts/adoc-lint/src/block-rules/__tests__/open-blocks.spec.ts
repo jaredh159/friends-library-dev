@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import stripIndent from 'strip-indent';
 import openBlocks from '../open-blocks';
 
@@ -133,8 +134,8 @@ describe(`openBlocks() - unlabeled-open-block-delimiter`, () => {
 
     const results = openBlocks(adoc, opts);
     expect(results).toHaveLength(1);
-    expect(results[0].line).toBe(13);
-    expect(results[0].message).toMatch(/must be started/);
+    expect(results[0]?.line).toBe(13);
+    expect(results[0]?.message).toMatch(/must be started/);
   });
 });
 
@@ -186,7 +187,7 @@ describe(`openBlocks() - unterminated-open-block`, () => {
 
     const results = openBlocks(adoc, opts);
     expect(results).toHaveLength(1);
-    expect(results[0].line).toBe(10);
+    expect(results[0]?.line).toBe(10);
   });
 
   it(`can find multiple violations`, () => {
@@ -206,8 +207,8 @@ describe(`openBlocks() - unterminated-open-block`, () => {
 
     const results = openBlocks(adoc, opts);
     expect(results).toHaveLength(2);
-    expect(results[0].line).toBe(2);
-    expect(results[1].line).toBe(8);
+    expect(results[0]?.line).toBe(2);
+    expect(results[1]?.line).toBe(8);
   });
 
   test(`terminated block OK`, () => {

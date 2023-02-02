@@ -1,4 +1,4 @@
-import { LineRule, LintOptions, LintResult } from '../types';
+import type { LineRule, LintOptions, LintResult } from '../types';
 import RegexLintRunner from '../RegexLintRunner';
 import { isAsciidocBracketLine } from '../utils';
 

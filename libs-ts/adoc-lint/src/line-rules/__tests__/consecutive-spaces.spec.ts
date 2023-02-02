@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import stripIndent from 'strip-indent';
 import consecutiveSpaces from '../consecutive-spaces';
 
@@ -31,8 +32,8 @@ describe(`consecutiveSpaces()`, () => {
   it(`flags multiple different violations in same line`, () => {
     const results = consecutiveSpaces(`Foo  bar  baz`, [], 1, opts);
     expect(results).toHaveLength(2);
-    expect(results[0].recommendation).toBe(`Foo bar baz`);
-    expect(results[1].recommendation).toBe(`Foo bar baz`);
+    expect(results[0]?.recommendation).toBe(`Foo bar baz`);
+    expect(results[1]?.recommendation).toBe(`Foo bar baz`);
   });
 
   it(`allows consecutive spaces in footnote poetry`, () => {

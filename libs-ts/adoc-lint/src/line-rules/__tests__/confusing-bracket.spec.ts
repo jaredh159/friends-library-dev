@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import confusingBracket from '../confusing-bracket';
 
 const opts = { lang: `en` as const };
@@ -24,7 +25,7 @@ describe(`confusingBracket()`, () => {
   test.each(violations)(`%s should be %s`, (line, reco) => {
     const results = confusingBracket(line, [], 1, opts);
     expect(results).toHaveLength(1);
-    expect(results[0].recommendation).toBe(reco);
+    expect(results[0]?.recommendation).toBe(reco);
   });
 
   const allowed = [

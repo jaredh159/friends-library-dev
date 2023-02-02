@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import joinWords from '../join-words';
 
 const opts = { lang: `en` as const };
@@ -6,7 +7,7 @@ describe(`joinWords()`, () => {
   it(`creates a lint for violation of \`join-words\` rule`, () => {
     const adoc = `I searched up and down and every\nwhere for her.`;
     const lines = adoc.split(`\n`);
-    const results = joinWords(lines[0], lines, 1, opts);
+    const results = joinWords(lines[0]!, lines, 1, opts);
     expect(results).toHaveLength(1);
     expect(results[0]).toEqual({
       line: 1,
@@ -55,7 +56,7 @@ describe(`joinWords()`, () => {
       results = results.concat(joinWords(line, lines, i + 1, opts));
     });
     expect(results).toHaveLength(1);
-    expect(results[0].recommendation).toBe(fixed);
+    expect(results[0]?.recommendation).toBe(fixed);
   });
 
   // prettier-ignore

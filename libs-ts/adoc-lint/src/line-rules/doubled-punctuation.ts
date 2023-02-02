@@ -1,5 +1,5 @@
 import { toArabic } from 'roman-numerals';
-import { LineRule, LintResult } from '../types';
+import type { LineRule, LintResult } from '../types';
 
 const rule: LineRule = (
   line: string,
@@ -51,7 +51,7 @@ function specialCase(double: string, line: string, column: number): boolean {
     return false;
   }
 
-  if (line[column - 1] && line[column - 1].match(/\d/)) {
+  if (line[column - 1] && line[column - 1]?.match(/\d/)) {
     return true;
   }
 
@@ -87,13 +87,13 @@ function specialCase(double: string, line: string, column: number): boolean {
   if (
     column >= 1 &&
     line[column] === `.` &&
-    line[column - 1].match(/[A-Z]/) &&
+    line[column - 1]?.match(/[A-Z]/) &&
     (column === 1 || line[column - 2] === ` `)
   ) {
     return true;
   }
 
-  if (three === `\`'s` && four[0] && line[column - 4].match(/[A-Z]/)) {
+  if (three === `\`'s` && four[0] && line[column - 4]?.match(/[A-Z]/)) {
     return true;
   }
 

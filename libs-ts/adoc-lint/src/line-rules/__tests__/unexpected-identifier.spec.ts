@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import unxpectedIdentifier from '../unexpected-identifier';
 
 const opts = { lang: `en` as const };

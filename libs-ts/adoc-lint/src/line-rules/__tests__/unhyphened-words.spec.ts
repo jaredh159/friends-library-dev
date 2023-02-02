@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import unhyphenedWords from '../unhyphened-words';
 
 const opts = { lang: `en` as const };
@@ -62,7 +63,7 @@ describe(`unhyphenedWords()`, () => {
   test.each(violations)(`\`%s\` should become "%s"`, (line, reco) => {
     const results = unhyphenedWords(line, [], 1, opts);
     expect(results).toHaveLength(1);
-    expect(results[0].recommendation).toBe(reco);
+    expect(results[0]?.recommendation).toBe(reco);
   });
 
   const allowed = [[`To-dayfoo`], [`toto-daybar`]];

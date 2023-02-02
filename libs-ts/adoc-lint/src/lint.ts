@@ -1,4 +1,4 @@
-import { LineRule, BlockRule, LintOptions, LintResult } from './types';
+import type { LineRule, BlockRule, LintOptions, LintResult } from './types';
 import * as lineLints from './line-rules';
 import * as blockLints from './block-rules';
 

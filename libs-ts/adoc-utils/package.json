@@ -4,6 +4,7 @@
   "author": "Jared Henderson <jared@netrivet.com>",
   "description": "asciidoc utils",
   "license": "MIT",
+  "main": "src/index.ts",
   "scripts": {
     "typecheck": "pnpm tsc --noEmit",
     "test": "pnpm vitest run",

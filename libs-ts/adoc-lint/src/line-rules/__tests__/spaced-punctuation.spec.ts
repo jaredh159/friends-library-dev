@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import spacedPunctuation from '../spaced-punctuation';
 
 const opts = { lang: `en` as const };
@@ -31,7 +32,7 @@ describe(`spacedPunctuation()`, () => {
   test.each(violations)(`\`%s\` should become "%s"`, (line, reco) => {
     const results = spacedPunctuation(line, [], 1, opts);
     expect(results).toHaveLength(1);
-    expect(results[0].recommendation).toBe(reco);
+    expect(results[0]?.recommendation).toBe(reco);
   });
 
   const allowed: [string][] = [[`[quote.scripture, , Ps. 101:1]`]];

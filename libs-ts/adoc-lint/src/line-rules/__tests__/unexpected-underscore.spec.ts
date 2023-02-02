@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import unexpectedUnderscore from '../unexpected-underscore';
 
 const opts = { lang: `en` as const };

@@ -1,4 +1,4 @@
-import { LineRule, LintResult } from '../types';
+import type { LineRule, LintResult } from '../types';
 
 const rule: LineRule = (
   line: string,
@@ -14,7 +14,7 @@ const rule: LineRule = (
     return [];
   }
 
-  const recommendation = getRecommendation(line, lines[lineNumber]);
+  const recommendation = getRecommendation(line, lines[lineNumber] ?? null);
 
   return [
     {

@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import postscriptHeader from '../postscript-header';
 
 const opts = { lang: `en` as const };

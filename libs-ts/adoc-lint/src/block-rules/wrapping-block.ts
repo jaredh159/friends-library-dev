@@ -1,4 +1,4 @@
-import { BlockRule, LintResult } from '../types';
+import type { BlockRule, LintResult } from '../types';
 
 interface Delimiter {
   line: number;
@@ -12,7 +12,7 @@ const rule: BlockRule = (block: string): LintResult[] => {
     if (line !== `====`) {
       return delims;
     }
-    const isStart = lines[index - 1].indexOf(`[.`) === 0;
+    const isStart = lines[index - 1]?.indexOf(`[.`) === 0;
     delims.push({
       line: index + 1,
       type: isStart ? `start` : `end`,

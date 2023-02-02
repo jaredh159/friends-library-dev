@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import bookTitleUnclosed from '../book-title-unclosed';
 
 const opts = { lang: `en` as const };
@@ -6,7 +7,7 @@ describe(`bookTitleUnclosed()`, () => {
   it(`creates a lint for violation of \`book-title-unclosed\` rule`, () => {
     const adoc = `[.book-title]#Foo. Bar baz\n\nNew para.`;
     const lines = adoc.split(`\n`);
-    const results = bookTitleUnclosed(lines[0], lines, 1, opts);
+    const results = bookTitleUnclosed(lines[0]!, lines, 1, opts);
     expect(results).toHaveLength(1);
     expect(results[0]).toEqual({
       line: 1,

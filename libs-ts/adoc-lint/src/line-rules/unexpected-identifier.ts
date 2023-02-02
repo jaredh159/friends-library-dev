@@ -1,4 +1,4 @@
-import { LineRule, LintResult } from '../types';
+import type { LineRule, LintResult } from '../types';
 import { isAsciidocBracketLine } from '../utils';
 
 const rule: LineRule = (
@@ -54,7 +54,7 @@ const rule: LineRule = (
   if (identifiers.split(`.`).length > 2) {
     const expr = /\.([^.#]+)/g;
     let match: RegExpExecArray | null = null;
-    while ((match = expr.exec(identifiers))) {
+    while ((match = expr.exec(identifiers)) && match[1]) {
       if (!CLASSES.includes(match[1])) {
         return [violation(lineNumber, match[1], [])];
       }

@@ -1,6 +1,6 @@
 import fs from 'fs';
-import camelCase from 'lodash/camelcase';
-import kebabCase from 'lodash/kebabcase';
+import camelCase from 'lodash.camelcase';
+import kebabCase from 'lodash.kebabcase';
 
 const usage = `yarn asciidoc:scaffold:lint my-new-rule-slug [--multiline]`;
 
@@ -21,7 +21,7 @@ try {
   const slug = process.argv[2];
   const camel = camelCase(slug);
 
-  if (slug !== kebabCase(slug)) {
+  if (!slug || slug !== kebabCase(slug)) {
     throw new Error(`Lint slug must be kebab-case: \`my-lint-rule\``);
   }
 
@@ -37,8 +37,8 @@ try {
   test = replaceStrings(test, slug, camel);
   fs.writeFileSync(`${src}/line-rules/${slug}.ts`, rule);
   fs.writeFileSync(`${src}/line-rules/__tests__/${slug}.spec.ts`, test);
-} catch (e) {
-  console.log(`Error:`, e.message);
+} catch (e: any) {
+  console.log(`Error:`, e.message); // eslint-disable-line no-console
   process.exit(1);
 }
 

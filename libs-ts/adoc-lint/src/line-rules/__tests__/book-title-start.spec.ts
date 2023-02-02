@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import bookTitleStart from '../book-title-start';
 
 const opts = { lang: `en` as const };

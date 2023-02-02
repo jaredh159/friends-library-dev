@@ -1,5 +1,6 @@
-import RegexLint, { RegexLintData, RegexLintOptions } from './RegexLint';
-import { LintOptions, LintResult } from './types';
+import type { RegexLintData, RegexLintOptions } from './RegexLint';
+import type { LintOptions, LintResult } from './types';
+import RegexLint from './RegexLint';
 
 export default class RegexLintRunner {
   protected lints: RegexLint[];
@@ -56,7 +57,7 @@ export default class RegexLintRunner {
     }
 
     if (lint.includeNextLineFirstWord && lines[lineNumber]) {
-      line += ` ${lines[lineNumber].split(` `).filter(Boolean).shift() || ``}`;
+      line += ` ${lines[lineNumber]?.split(` `).filter(Boolean).shift() || ``}`;
       line = line.trim();
     }
 

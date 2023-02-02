@@ -1,4 +1,4 @@
-import { LineRule } from '../src/types';
+import type { LineRule, LintResult } from '../src/types';
 
 const rule: LineRule = (
   line: string,

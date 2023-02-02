@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import listYear from '../list-year';
 
 const opts = { lang: `en` as const };

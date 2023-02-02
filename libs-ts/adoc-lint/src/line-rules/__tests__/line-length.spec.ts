@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import lineLength from '../line-length';
 
 const opts = { lang: `en` as const };
@@ -25,7 +26,7 @@ describe(`lineLength()`, () => {
   it(`gives good recommendations for lines with scripture references`, () => {
     const ref = `(2 Cor. 3:15-16)`;
     const [result] = lineLength(`${longLine} ${ref}`, [], 1, opts);
-    expect(result.recommendation).toBe(`${longLineParts.join(`\n`)} ${ref}`);
+    expect(result?.recommendation).toBe(`${longLineParts.join(`\n`)} ${ref}`);
   });
 
   const allowedLongLines = [

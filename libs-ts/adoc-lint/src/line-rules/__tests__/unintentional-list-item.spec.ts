@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import unintentionalListItem from '../unintentional-list-item';
 
 const opts = { lang: `en` as const };
@@ -26,7 +27,7 @@ describe(`unintentionalListItem()`, () => {
   test.each(violations)(`%s should be %s`, (line, reco) => {
     const results = unintentionalListItem(line, [], 1, opts);
     expect(results).toHaveLength(1);
-    expect(results[0].recommendation).toBe(reco);
+    expect(results[0]?.recommendation).toBe(reco);
   });
 
   const allowed = [[`Mr. Foo came`], [`1772 was a good year`]];
