@@ -1,4 +1,4 @@
-import { OrderItem } from '../types';
+import type { OrderItem } from '../types';
 
 export function subtotal(items: OrderItem[]): number {
   return items.reduce((acc, item) => acc + item.unitPrice * item.quantity, 0);

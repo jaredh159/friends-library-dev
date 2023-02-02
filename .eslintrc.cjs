@@ -10,9 +10,7 @@ module.exports = {
     `import`,
   ],
   extends: [`eslint:recommended`, `plugin:@typescript-eslint/recommended`, `prettier`],
-  ignorePatterns: [
-    // `**/dist/*`,
-  ],
+  ignorePatterns: [`**/dist/*`],
   rules: {
     'no-var': `off`,
     'no-console': `error`,
@@ -205,6 +203,12 @@ module.exports = {
     'jsx-a11y/scope': `error`,
   },
   overrides: [
+    {
+      files: [`apps/admin/**`],
+      rules: {
+        '@typescript-eslint/no-non-null-assertion': `off`,
+      },
+    },
     {
       files: [`**/*.stories.tsx`, `**/cypress/**/*.cy.ts`],
       rules: {

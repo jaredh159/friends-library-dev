@@ -1,15 +1,15 @@
-import client, { gql } from '../../../client';
-import {
+import type {
   CreateAudioPart,
   CreateAudioPartVariables,
 } from '../../../graphql/CreateAudioPart';
-import { DeleteAudioPart } from '../../../graphql/DeleteAudioPart';
-import { UpdateAudioPartInput } from '../../../graphql/globalTypes';
-import {
+import type { DeleteAudioPart } from '../../../graphql/DeleteAudioPart';
+import type { UpdateAudioPartInput } from '../../../graphql/globalTypes';
+import type {
   UpdateAudioPart,
   UpdateAudioPartVariables,
 } from '../../../graphql/UpdateAudioPart';
-import { EditableAudioPart, ErrorMsg } from '../../../types';
+import type { EditableAudioPart, ErrorMsg } from '../../../types';
+import client, { gql } from '../../../client';
 import { mutate, prepIds } from './helpers';
 
 export async function create(part: EditableAudioPart): Promise<ErrorMsg | null> {

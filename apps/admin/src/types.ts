@@ -1,11 +1,11 @@
-import React from 'react';
-import { PrintSize, Lang } from '@friends-library/types';
-import { EditFriend as EditFriendQuery } from './graphql/EditFriend';
-import {
+import type React from 'react';
+import type { PrintSize, Lang } from '@friends-library/types';
+import type { EditFriend as EditFriendQuery } from './graphql/EditFriend';
+import type {
   EditDocument as EditDocumentQuery,
   EditDocument_document_editions_audio,
 } from './graphql/EditDocument';
-import { EditToken } from './graphql/EditToken';
+import type { EditToken } from './graphql/EditToken';
 
 export type Action<State> =
   | { type: `replace`; state: State }

@@ -1,10 +1,3 @@
 {
-  "include": ["src", "types"],
-  "compilerOptions": {
-    "isolatedModules": true,
-    "baseUrl": "./",
-    "noEmit": true,
-    "jsx": "preserve",
-    "exactOptionalPropertyTypes": true
-  }
+  "extends": "../../tsconfig.json"
 }

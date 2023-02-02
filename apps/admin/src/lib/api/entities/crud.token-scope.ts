@@ -1,15 +1,15 @@
-import client, { gql } from '../../../client';
-import {
+import type {
   CreateTokenScope,
   CreateTokenScopeVariables,
 } from '../../../graphql/CreateTokenScope';
-import { DeleteTokenScope } from '../../../graphql/DeleteTokenScope';
-import { UpdateTokenScopeInput } from '../../../graphql/globalTypes';
-import {
+import type { DeleteTokenScope } from '../../../graphql/DeleteTokenScope';
+import type { UpdateTokenScopeInput } from '../../../graphql/globalTypes';
+import type {
   UpdateTokenScope,
   UpdateTokenScopeVariables,
 } from '../../../graphql/UpdateTokenScope';
-import { EditableTokenScope, ErrorMsg } from '../../../types';
+import type { EditableTokenScope, ErrorMsg } from '../../../types';
+import client, { gql } from '../../../client';
 import { mutate, prepIds } from './helpers';
 
 export async function create(part: EditableTokenScope): Promise<ErrorMsg | null> {

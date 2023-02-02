@@ -1,16 +1,16 @@
 import { gql } from '@apollo/client';
-import client from '../../../client';
-import {
+import type {
   CreateFriendQuote,
   CreateFriendQuoteVariables,
 } from '../../../graphql/CreateFriendQuote';
-import { DeleteFriendQuote } from '../../../graphql/DeleteFriendQuote';
-import { UpdateFriendQuoteInput } from '../../../graphql/globalTypes';
-import {
+import type { DeleteFriendQuote } from '../../../graphql/DeleteFriendQuote';
+import type { UpdateFriendQuoteInput } from '../../../graphql/globalTypes';
+import type {
   UpdateFriendQuote,
   UpdateFriendQuoteVariables,
 } from '../../../graphql/UpdateFriendQuote';
-import { EditableFriendQuote, ErrorMsg } from '../../../types';
+import type { EditableFriendQuote, ErrorMsg } from '../../../types';
+import client from '../../../client';
 import { mutate, prepIds } from './helpers';
 
 export async function create(quote: EditableFriendQuote): Promise<ErrorMsg | null> {

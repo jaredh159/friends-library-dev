@@ -1,7 +1,8 @@
 import React from 'react';
-import { Story, StoryGroup, StoryMeta } from '@htc-class/storylite';
+import { Story, StoryGroup } from '@htc-class/storylite';
+import type { StoryMeta } from '@htc-class/storylite';
+import type { EditableEntity, EntityOperation } from '../types';
 import Progress from '../components/Progress';
-import { EditableEntity, EntityOperation } from '../types';
 
 const ProgressStories: React.FC = () => (
   <StoryGroup>

@@ -1,10 +1,10 @@
 import React from 'react';
 import { gql } from '@apollo/client';
+import type { SelectableDocuments } from '../../graphql/SelectableDocuments';
 import { SELECTABLE_DOCUMENTS_FIELDS } from '../../client';
-import { SelectableDocuments } from '../../graphql/SelectableDocuments';
-import { EditFriend } from './EditFriend';
 import { useQueryResult } from '../../lib/query';
 import * as empty from '../../lib/empty';
+import { EditFriend } from './EditFriend';
 
 const CreateFriend: React.FC = () => {
   const query = useQueryResult<SelectableDocuments>(QUERY_SELECTABLE_DOCUMENTS);

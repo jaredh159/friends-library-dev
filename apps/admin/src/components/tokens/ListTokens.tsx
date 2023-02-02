@@ -1,12 +1,12 @@
 import React from 'react';
 import cx from 'classnames';
+import { Link, useNavigate } from 'react-router-dom';
+import { PlusCircleIcon } from '@heroicons/react/solid';
+import type { GetTokens } from '../../graphql/GetTokens';
 import { gql, writable } from '../../client';
 import { useQueryResult } from '../../lib/query';
-import { GetTokens } from '../../graphql/GetTokens';
 import { Scope as TokenScope } from '../../graphql/globalTypes';
-import { Link, useNavigate } from 'react-router-dom';
 import PillButton from '../PillButton';
-import { PlusCircleIcon } from '@heroicons/react/solid';
 
 interface Props {
   tokens: GetTokens['tokens'];

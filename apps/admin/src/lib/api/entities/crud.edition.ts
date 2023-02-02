@@ -1,10 +1,16 @@
 import { gql } from '@apollo/client';
+import type {
+  CreateEdition,
+  CreateEditionVariables,
+} from '../../../graphql/CreateEdition';
+import type { DeleteEdition } from '../../../graphql/DeleteEdition';
+import type { UpdateEditionInput } from '../../../graphql/globalTypes';
+import type {
+  UpdateEdition,
+  UpdateEditionVariables,
+} from '../../../graphql/UpdateEdition';
+import type { EditableEdition, ErrorMsg } from '../../../types';
 import client from '../../../client';
-import { CreateEdition, CreateEditionVariables } from '../../../graphql/CreateEdition';
-import { DeleteEdition } from '../../../graphql/DeleteEdition';
-import { UpdateEditionInput } from '../../../graphql/globalTypes';
-import { UpdateEdition, UpdateEditionVariables } from '../../../graphql/UpdateEdition';
-import { EditableEdition, ErrorMsg } from '../../../types';
 import { mutate, nullEmptyString, prepIds } from './helpers';
 
 export async function create(edition: EditableEdition): Promise<ErrorMsg | null> {

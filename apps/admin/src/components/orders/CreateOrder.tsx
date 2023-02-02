@@ -9,9 +9,9 @@ import {
   CheckCircleIcon,
   CloudUploadIcon,
 } from '@heroicons/react/solid';
-import * as orders from '../../lib/api/orders';
+import { Link } from 'react-router-dom';
 import type { OrderAddress, OrderItem } from '../../types';
-import SelectBook from './SelectBook';
+import * as orders from '../../lib/api/orders';
 import EmptyWell from '../EmptyWell';
 import PillButton from '../PillButton';
 import TextInput from '../TextInput';
@@ -20,7 +20,7 @@ import COUNTRIES from '../../lib/countries';
 import * as price from '../../lib/price';
 import Button from '../Button';
 import InfoMessage from '../InfoMessage';
-import { Link } from 'react-router-dom';
+import SelectBook from './SelectBook';
 
 const CreateOrder: React.FC = () => {
   const [selectingBook, setSelectingBook] = useState(false);
@@ -335,7 +335,10 @@ function emptyAddress(): OrderAddress {
   };
 }
 
-const Constrained: React.FC<{ to: string }> = ({ to, children }) => (
+const Constrained: React.FC<{ to: string; children: React.ReactNode }> = ({
+  to,
+  children,
+}) => (
   <div className="flex justify-center">
     <div className={to}>{children}</div>
   </div>

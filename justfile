@@ -1,30 +1,50 @@
 _default:
   @just --choose
 
-test:
-	@pnpm exec nx run-many --parallel=10 --target=test
+# app dev
 
-typecheck:
-	@pnpm exec nx run-many --parallel=10 --target=typecheck
+admin:
+  @pnpm --filter admin start
+
+# code quality
 
 check:
-  @just lint typecheck format-check test
+  @just nx-run-many lint,format-check,typecheck,test,build,compile
+
+test:
+  @just nx-run-many test
+
+compile:
+  @pnpm nx-run-many compile
+
+#  @just run compile in @friends-library/theme
+
+build:
+	@just nx-run-many build
+
+typecheck:
+	@just nx-run-many typecheck
 
 lint:
-	@pnpm exec nx run-many --parallel=10 --target=lint
+	@just nx-run-many lint
 
 lint-fix:
-	@pnpm exec nx run-many --parallel=10 --target=lint:fix
+	@just nx-run-many lint:fix
 
 format:
-  @pnpm exec nx run-many --parallel=10 --target=format
+  @just nx-run-many format
 
 format-check:
-  @pnpm exec nx run-many --parallel=10 --target=format:check
+  @just nx-run-many format:check
 
 nx-reset:
 	@pnpm exec nx reset
 
 clean: nx-reset
-  @echo "more steps soon..."
+  @rm -rf apps/admin/node_modules/.vite
 
+# helpers
+
+[private]
+nx-run-many targets:
+  @pnpm exec nx run-many --parallel=10 --targets={{targets}}

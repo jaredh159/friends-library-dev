@@ -5,6 +5,7 @@ interface Props {
   onClick?: () => void;
   Icon?: React.FC<{ className?: string }>;
   className?: string;
+  children: React.ReactNode;
 }
 
 const PillButton: React.FC<Props> = ({ onClick, Icon, children, className }) => {

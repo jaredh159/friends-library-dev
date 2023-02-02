@@ -1,28 +1,26 @@
 import { v4 as uuid } from 'uuid';
-import client, { gql } from '../../client';
-import result from '../result';
-import {
+import type {
   GetFreeOrderRequest,
   GetFreeOrderRequest_request_address as FreeOrderRequestAddress,
   GetFreeOrderRequestVariables,
 } from '../../graphql/GetFreeOrderRequest';
-import {
+import type {
   GetPrintJobExploratoryMetadata,
   GetPrintJobExploratoryMetadataVariables,
 } from '../../graphql/GetPrintJobExploratoryMetadata';
-import {
+import type {
   CreateOrderWithItems,
   CreateOrderWithItemsVariables,
 } from '../../graphql/CreateOrderWithItems';
-import { OrderAddress, OrderItem } from '../../types';
-import {
+import type { OrderAddress, OrderItem } from '../../types';
+import type {
   CreateOrderInput,
   CreateOrderItemInput,
-  Lang,
-  OrderSource,
-  PrintJobStatus,
   PrintSize,
 } from '../../graphql/globalTypes';
+import result from '../result';
+import client, { gql } from '../../client';
+import { Lang, OrderSource, PrintJobStatus } from '../../graphql/globalTypes';
 import * as price from '../../lib/price';
 
 /* CreateOrder */

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import Button from './Button';
 import { CloudUploadIcon, TrashIcon } from '@heroicons/react/solid';
-import { EditableEntity, WorkItem } from '../types';
+import type { EditableEntity, WorkItem } from '../types';
 import { save } from '../lib/api/entities';
-import Progress from './Progress';
 import { isClientGeneratedId } from '../lib/api/entities/helpers';
+import Progress from './Progress';
+import Button from './Button';
 
 interface Props {
   getEntities<T extends EditableEntity>(): [T, T?];

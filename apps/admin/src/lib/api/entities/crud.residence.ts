@@ -1,16 +1,16 @@
 import { gql } from '@apollo/client';
-import client from '../../../client';
-import {
+import type {
   CreateFriendResidence,
   CreateFriendResidenceVariables,
 } from '../../../graphql/CreateFriendResidence';
-import { DeleteFriendResidence } from '../../../graphql/DeleteFriendResidence';
-import { UpdateFriendResidenceInput } from '../../../graphql/globalTypes';
-import {
+import type { DeleteFriendResidence } from '../../../graphql/DeleteFriendResidence';
+import type { UpdateFriendResidenceInput } from '../../../graphql/globalTypes';
+import type {
   UpdateFriendResidence,
   UpdateFriendResidenceVariables,
 } from '../../../graphql/UpdateFriendResidence';
-import { EditableFriendResidence, ErrorMsg } from '../../../types';
+import type { EditableFriendResidence, ErrorMsg } from '../../../types';
+import client from '../../../client';
 import { mutate, prepIds } from './helpers';
 
 export async function create(

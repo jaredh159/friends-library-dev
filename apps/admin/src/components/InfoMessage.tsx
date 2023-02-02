@@ -4,6 +4,7 @@ import cx from 'classnames';
 interface Props {
   type: 'error' | 'success';
   className?: string;
+  children: React.ReactNode;
 }
 
 const InfoMessage: React.FC<Props> = ({ type, className, children }) => (

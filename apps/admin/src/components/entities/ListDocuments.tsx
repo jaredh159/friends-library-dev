@@ -1,11 +1,11 @@
 import { gql } from '@apollo/client';
 import cx from 'classnames';
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import type { GetDocuments } from '../../graphql/GetDocuments';
 import { useQueryResult } from '../../lib/query';
-import { GetDocuments } from '../../graphql/GetDocuments';
 import { Lang } from '../../graphql/globalTypes';
 import TextInput from '../TextInput';
-import { Link } from 'react-router-dom';
 
 interface Props {
   documents: GetDocuments['documents'];

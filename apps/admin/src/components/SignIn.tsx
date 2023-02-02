@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { gql } from '@apollo/client';
 import cx from 'classnames';
-import InfoMessage from './InfoMessage';
+import type {
+  GetTokenByValue,
+  GetTokenByValueVariables,
+} from '../graphql/GetTokenByValue';
 import client from '../client';
-import { GetTokenByValue, GetTokenByValueVariables } from '../graphql/GetTokenByValue';
+import InfoMessage from './InfoMessage';
 
 interface Props {
   setToken(token: string): unknown;

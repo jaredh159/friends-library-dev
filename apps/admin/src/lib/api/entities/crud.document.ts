@@ -1,10 +1,16 @@
 import { gql } from '@apollo/client';
+import type {
+  CreateDocument,
+  CreateDocumentVariables,
+} from '../../../graphql/CreateDocument';
+import type { DeleteDocument } from '../../../graphql/DeleteDocument';
+import type { UpdateDocumentInput } from '../../../graphql/globalTypes';
+import type {
+  UpdateDocument,
+  UpdateDocumentVariables,
+} from '../../../graphql/UpdateDocument';
+import type { EditableDocument, ErrorMsg } from '../../../types';
 import client from '../../../client';
-import { CreateDocument, CreateDocumentVariables } from '../../../graphql/CreateDocument';
-import { DeleteDocument } from '../../../graphql/DeleteDocument';
-import { UpdateDocumentInput } from '../../../graphql/globalTypes';
-import { UpdateDocument, UpdateDocumentVariables } from '../../../graphql/UpdateDocument';
-import { EditableDocument, ErrorMsg } from '../../../types';
 import { mutate, nullEmptyString, prepIds } from './helpers';
 
 export async function create(document: EditableDocument): Promise<ErrorMsg | null> {

@@ -1,4 +1,4 @@
-import { EditableEntity, ErrorMsg } from '../../../types';
+import type { EditableEntity, ErrorMsg } from '../../../types';
 
 export async function mutate<T>(
   type: 'create' | 'update' | 'delete',

@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
-import { EditionType, Gender, Lang, Scope as TokenScope } from '../graphql/globalTypes';
-import {
+import type { Scope as TokenScope } from '../graphql/globalTypes';
+import type {
   EditableFriendQuote,
   EditableDocument,
   EditableEdition,
@@ -14,6 +14,7 @@ import {
   EditableToken,
   EditableTokenScope,
 } from '../types';
+import { EditionType, Gender, Lang } from '../graphql/globalTypes';
 
 export function friend(): EditableFriend {
   return {

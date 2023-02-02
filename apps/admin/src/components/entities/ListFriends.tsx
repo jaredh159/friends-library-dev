@@ -1,13 +1,13 @@
 import { gql } from '@apollo/client';
 import cx from 'classnames';
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { PlusCircleIcon } from '@heroicons/react/solid';
+import type { GetFriends } from '../../graphql/GetFriends';
 import { useQueryResult } from '../../lib/query';
-import { GetFriends } from '../../graphql/GetFriends';
 import { Lang } from '../../graphql/globalTypes';
 import TextInput from '../TextInput';
-import { Link, useNavigate } from 'react-router-dom';
 import PillButton from '../PillButton';
-import { PlusCircleIcon } from '@heroicons/react/solid';
 
 interface Props {
   friends: GetFriends['friends'];

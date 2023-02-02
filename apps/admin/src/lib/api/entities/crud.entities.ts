@@ -1,3 +1,4 @@
+import type { EditableEntity, ErrorMsg } from '../../../types';
 import * as friend from './crud.friend';
 import * as document from './crud.document';
 import * as residence from './crud.residence';
@@ -10,11 +11,9 @@ import * as audioPart from './crud.audio-part';
 import * as relatedDocument from './crud.related-document';
 import * as token from './crud.token';
 import * as tokenScope from './crud.token-scope';
-import { EditableEntity, ErrorMsg } from '../../../types';
 import { removeClientGeneratedIdPrefix } from './helpers';
 
 export async function createEntity(entity: EditableEntity): Promise<ErrorMsg | null> {
-  console.log(`CREATE:`, entity);
   switch (entity.__typename) {
     case `Friend`:
       return friend.create(entity);
@@ -44,7 +43,6 @@ export async function createEntity(entity: EditableEntity): Promise<ErrorMsg | n
 }
 
 export async function deleteEntity(entity: EditableEntity): Promise<ErrorMsg | null> {
-  console.log(`DELETE:`, entity);
   entity.id = removeClientGeneratedIdPrefix(entity.id);
   let err: ErrorMsg | null = null;
   let treat404AsSuccess = true;
@@ -99,7 +97,6 @@ export async function deleteEntity(entity: EditableEntity): Promise<ErrorMsg | n
 }
 
 export async function updateEntity(entity: EditableEntity): Promise<ErrorMsg | null> {
-  console.log(`UPDATE:`, entity);
   switch (entity.__typename) {
     case `Friend`:
       return friend.update(entity);

@@ -1,6 +1,6 @@
 import isEqual from 'lodash.isequal';
 import omit from 'lodash.omit';
-import {
+import type {
   EditableDocument,
   EditableEntity,
   EditableFriend,

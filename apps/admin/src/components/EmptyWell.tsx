@@ -4,6 +4,7 @@ import cx from 'classnames';
 interface Props {
   className?: string;
   small?: boolean;
+  children: React.ReactNode;
 }
 
 const EmptyWell: React.FC<Props> = ({ className, children, small }) => {

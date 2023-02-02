@@ -8,6 +8,7 @@ interface CommonProps {
   disabled?: boolean;
   secondary?: boolean;
   small?: boolean;
+  children: React.ReactNode;
 }
 
 type Props =

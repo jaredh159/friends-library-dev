@@ -1,12 +1,12 @@
 import React from 'react';
 import cx from 'classnames';
-import { WorkItem } from '../types';
 import {
   CheckCircleIcon,
   PaperAirplaneIcon,
   ExclamationIcon,
   BackspaceIcon,
 } from '@heroicons/react/solid';
+import type { WorkItem } from '../types';
 
 interface Props {
   items: WorkItem[];

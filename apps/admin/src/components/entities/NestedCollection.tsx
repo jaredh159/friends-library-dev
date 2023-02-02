@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import cx from 'classnames';
 import { ChevronRightIcon, PlusCircleIcon } from '@heroicons/react/solid';
-import PillButton from '../PillButton';
 import { Link } from 'react-router-dom';
+import PillButton from '../PillButton';
 
 interface Props<State extends { id: UUID }> {
   label: string;

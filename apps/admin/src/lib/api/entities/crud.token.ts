@@ -1,9 +1,9 @@
+import type { CreateToken, CreateTokenVariables } from '../../../graphql/CreateToken';
+import type { DeleteToken } from '../../../graphql/DeleteToken';
+import type { UpdateTokenInput } from '../../../graphql/globalTypes';
+import type { UpdateToken, UpdateTokenVariables } from '../../../graphql/UpdateToken';
+import type { EditableToken, ErrorMsg } from '../../../types';
 import client, { gql } from '../../../client';
-import { CreateToken, CreateTokenVariables } from '../../../graphql/CreateToken';
-import { DeleteToken } from '../../../graphql/DeleteToken';
-import { UpdateTokenInput } from '../../../graphql/globalTypes';
-import { UpdateToken, UpdateTokenVariables } from '../../../graphql/UpdateToken';
-import { EditableToken, ErrorMsg } from '../../../types';
 import { mutate, prepIds } from './helpers';
 
 export async function create(part: EditableToken): Promise<ErrorMsg | null> {

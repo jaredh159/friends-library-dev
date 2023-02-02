@@ -20,7 +20,7 @@ const Home: React.FC = () => {
 
 export default Home;
 
-const Link: React.FC<{ to: string }> = ({ to, children }) => (
+const Link: React.FC<{ to: string; children: React.ReactNode }> = ({ to, children }) => (
   <li>
     <RouterLink to={to} className="border-b border-dotted border-flprimary/50">
       {children}

@@ -1,9 +1,9 @@
 import React from 'react';
 import cx from 'classnames';
 import { useParams } from 'react-router-dom';
+import type { ViewOrder as ViewOrderQuery } from '../../graphql/ViewOrder';
 import { gql } from '../../client';
 import { OrderSource } from '../../graphql/globalTypes';
-import { ViewOrder as ViewOrderQuery } from '../../graphql/ViewOrder';
 import { money } from '../../lib/money';
 import { useQueryResult } from '../../lib/query';
 
@@ -218,7 +218,10 @@ const QUERY_ORDER = gql`
   }
 `;
 
-const ListItem: React.FC<{ label: string }> = ({ label, children }) => {
+const ListItem: React.FC<{ label: string; children: React.ReactNode }> = ({
+  label,
+  children,
+}) => {
   return (
     <li className="flex space-x-2">
       <span className="label">{label}</span>

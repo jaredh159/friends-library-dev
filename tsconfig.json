@@ -3,6 +3,8 @@
     "module": "ESNext",
     "target": "ESNext",
     "lib": ["dom", "dom.iterable", "esnext"],
+    "jsx": "react-jsx",
+    "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,

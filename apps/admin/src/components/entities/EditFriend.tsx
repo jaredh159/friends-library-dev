@@ -2,32 +2,32 @@ import React, { useReducer } from 'react';
 import isEqual from 'lodash.isequal';
 import { useParams } from 'react-router-dom';
 import { gql } from '@apollo/client';
-import { useQueryResult } from '../../lib/query';
-import {
+import type {
   EditFriend as EditFriendQuery,
   EditFriendVariables,
 } from '../../graphql/EditFriend';
-import TextInput from '../TextInput';
-import LabeledSelect from '../LabeledSelect';
-import { Gender, Lang } from '../../graphql/globalTypes';
-import reducer, { isValidYear } from '../../lib/reducer';
-import NestedCollection from './NestedCollection';
-import { EditDocument } from './EditDocument';
-import {
-  EDIT_DOCUMENT_FIELDS,
-  SELECTABLE_DOCUMENTS_FIELDS,
-  writable,
-} from '../../client';
-import {
+import type {
   EditableFriend,
   Reducer,
   ReducerReplace,
   SelectableDocuments,
 } from '../../types';
+import { useQueryResult } from '../../lib/query';
+import TextInput from '../TextInput';
+import LabeledSelect from '../LabeledSelect';
+import { Gender, Lang } from '../../graphql/globalTypes';
+import reducer, { isValidYear } from '../../lib/reducer';
+import {
+  EDIT_DOCUMENT_FIELDS,
+  SELECTABLE_DOCUMENTS_FIELDS,
+  writable,
+} from '../../client';
 import * as empty from '../../lib/empty';
-import * as sort from './sort';
 import SaveChangesBar from '../SaveChangesBar';
 import LabeledToggle from '../LabeledToggle';
+import * as sort from './sort';
+import { EditDocument } from './EditDocument';
+import NestedCollection from './NestedCollection';
 
 interface Props {
   friend: EditableFriend;

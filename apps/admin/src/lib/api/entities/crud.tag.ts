@@ -1,16 +1,16 @@
 import { gql } from '@apollo/client';
-import client from '../../../client';
-import {
+import type {
   CreateDocumentTag,
   CreateDocumentTagVariables,
 } from '../../../graphql/CreateDocumentTag';
-import { DeleteDocumentTag } from '../../../graphql/DeleteDocumentTag';
-import { UpdateDocumentTagInput } from '../../../graphql/globalTypes';
-import {
+import type { DeleteDocumentTag } from '../../../graphql/DeleteDocumentTag';
+import type { UpdateDocumentTagInput } from '../../../graphql/globalTypes';
+import type {
   UpdateDocumentTag,
   UpdateDocumentTagVariables,
 } from '../../../graphql/UpdateDocumentTag';
-import { EditableDocumentTag, ErrorMsg } from '../../../types';
+import type { EditableDocumentTag, ErrorMsg } from '../../../types';
+import client from '../../../client';
 import { mutate, prepIds } from './helpers';
 
 export async function create(tag: EditableDocumentTag): Promise<ErrorMsg | null> {

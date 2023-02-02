@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import type { ListOrders as ListOrdersQuery } from '../../graphql/ListOrders';
 import { gql } from '../../client';
 import { OrderSource, PrintJobStatus } from '../../graphql/globalTypes';
-import { ListOrders as ListOrdersQuery } from '../../graphql/ListOrders';
 import { money } from '../../lib/money';
 import { useQueryResult } from '../../lib/query';
 

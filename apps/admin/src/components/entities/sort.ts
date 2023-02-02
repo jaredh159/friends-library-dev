@@ -1,4 +1,4 @@
-import { EditableDocument, EditableEdition, EditableFriend } from '../../types';
+import type { EditableDocument, EditableEdition, EditableFriend } from '../../types';
 
 export function friend(friend: EditableFriend): EditableFriend {
   friend.documents.forEach(document);

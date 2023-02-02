@@ -6,12 +6,12 @@
   "author": "Jared Henderson <jared@netrivet.com>",
   "license": "MIT",
   "scripts": {
-    "typecheck": "pnpm tsc --noEmit",
+    "typecheck": "tsc --noEmit",
     "test": "true",
-    "lint": "pnpm eslint .",
-    "lint:fix": "pnpm eslint . --fix",
-    "format": "pnpm prettier --write .",
-    "format:check": "pnpm prettier --check ."
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "dotenv": "16.0.3"

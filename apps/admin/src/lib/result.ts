@@ -1,4 +1,4 @@
-import { ApolloError } from '@apollo/client';
+import type { ApolloError } from '@apollo/client';
 
 function apolloError(apolloError: ApolloError | undefined): Result<never, string> {
   return error(`${apolloError ?? `missing data`}`);

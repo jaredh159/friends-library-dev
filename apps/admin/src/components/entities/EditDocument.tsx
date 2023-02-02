@@ -1,34 +1,34 @@
 import React, { useReducer, useState } from 'react';
 import isEqual from 'lodash.isequal';
 import { gql } from '@apollo/client';
-import {
-  EDIT_DOCUMENT_FIELDS,
-  SELECTABLE_DOCUMENTS_FIELDS,
-  writable,
-} from '../../client';
-import {
+import { useParams } from 'react-router-dom';
+import type {
+  EditDocument as EditDocumentQuery,
+  EditDocumentVariables as Vars,
+} from '../../graphql/EditDocument';
+import type {
   ReducerReplace,
   Reducer,
   EditableDocument,
   SelectableDocuments,
 } from '../../types';
-import TextInput from '../TextInput';
-import { useParams } from 'react-router-dom';
-import { useQueryResult } from '../../lib/query';
 import {
-  EditDocument as EditDocumentQuery,
-  EditDocumentVariables as Vars,
-} from '../../graphql/EditDocument';
+  EDIT_DOCUMENT_FIELDS,
+  SELECTABLE_DOCUMENTS_FIELDS,
+  writable,
+} from '../../client';
+import TextInput from '../TextInput';
+import { useQueryResult } from '../../lib/query';
 import reducer from '../../lib/reducer';
 import { Lang, TagType } from '../../graphql/globalTypes';
-import NestedCollection from './NestedCollection';
 import LabeledToggle from '../LabeledToggle';
-import EditEdition from './EditEdition';
 import * as empty from '../../lib/empty';
-import * as sort from './sort';
 import LabledCheckbox from '../LabledCheckbox';
 import LabeledSelect from '../LabeledSelect';
 import SaveChangesBar from '../SaveChangesBar';
+import NestedCollection from './NestedCollection';
+import EditEdition from './EditEdition';
+import * as sort from './sort';
 
 interface Props {
   document: EditableDocument;

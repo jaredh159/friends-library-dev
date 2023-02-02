@@ -1,16 +1,16 @@
 import { gql } from '@apollo/client';
-import client from '../../../client';
-import {
+import type {
   CreateRelatedDocument,
   CreateRelatedDocumentVariables,
 } from '../../../graphql/CreateRelatedDocument';
-import { DeleteRelatedDocument } from '../../../graphql/DeleteRelatedDocument';
-import { UpdateRelatedDocumentInput } from '../../../graphql/globalTypes';
-import {
+import type { DeleteRelatedDocument } from '../../../graphql/DeleteRelatedDocument';
+import type { UpdateRelatedDocumentInput } from '../../../graphql/globalTypes';
+import type {
   UpdateRelatedDocument,
   UpdateRelatedDocumentVariables,
 } from '../../../graphql/UpdateRelatedDocument';
-import { EditableRelatedDocument, ErrorMsg } from '../../../types';
+import type { EditableRelatedDocument, ErrorMsg } from '../../../types';
+import client from '../../../client';
 import { mutate, prepIds } from './helpers';
 
 export async function create(

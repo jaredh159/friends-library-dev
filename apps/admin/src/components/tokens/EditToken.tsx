@@ -1,13 +1,13 @@
 import React, { useReducer, useState } from 'react';
 import isEqual from 'lodash.isequal';
 import { useParams } from 'react-router-dom';
+import type { EditToken as EditTokenQuery } from '../../graphql/EditToken';
+import type { EditableToken, Reducer, ReducerReplace } from '../../types';
 import { useQueryResult } from '../../lib/query';
 import { gql, writable } from '../../client';
-import { EditToken as EditTokenQuery } from '../../graphql/EditToken';
 import TextInput from '../TextInput';
 import { Scope as TokenScope } from '../../graphql/globalTypes';
 import LabledCheckbox from '../LabledCheckbox';
-import { EditableToken, Reducer, ReducerReplace } from '../../types';
 import reducer from '../../lib/reducer';
 import SaveChangesBar from '../SaveChangesBar';
 import * as empty from '../../lib/empty';

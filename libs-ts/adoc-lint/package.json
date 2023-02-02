@@ -5,14 +5,14 @@
   "description": "linting of asciidoc for FLP",
   "main": "./src/index.ts",
   "scripts": {
-    "scaffold:lint": "yarn ts-node ./scripts/scaffold-lint.ts",
-    "typecheck": "pnpm tsc --noEmit",
-    "test": "pnpm vitest run",
-    "lint": "pnpm eslint . --rule 'no-irregular-whitespace: off'",
+    "scaffold:lint": "echo was: `yarn ts-node ./scripts/scaffold-lint.ts`",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "lint": "eslint . --rule 'no-irregular-whitespace: off'",
     "lint:old": "fldev lint --rule 'no-irregular-whitespace: off'",
-    "lint:fix": "pnpm eslint . --fix --rule 'no-irregular-whitespace: off'",
-    "format": "pnpm prettier --write .",
-    "format:check": "pnpm prettier --check ."
+    "lint:fix": "eslint . --fix --rule 'no-irregular-whitespace: off'",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@friends-library/adoc-utils": "workspace:*",

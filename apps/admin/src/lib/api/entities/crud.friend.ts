@@ -1,10 +1,10 @@
 import { gql } from '@apollo/client';
+import type { CreateFriend, CreateFriendVariables } from '../../../graphql/CreateFriend';
+import type { DeleteFriend, DeleteFriendVariables } from '../../../graphql/DeleteFriend';
+import type { UpdateFriendInput } from '../../../graphql/globalTypes';
+import type { UpdateFriend, UpdateFriendVariables } from '../../../graphql/UpdateFriend';
+import type { EditableFriend, ErrorMsg } from '../../../types';
 import client from '../../../client';
-import { CreateFriend, CreateFriendVariables } from '../../../graphql/CreateFriend';
-import { DeleteFriend, DeleteFriendVariables } from '../../../graphql/DeleteFriend';
-import { UpdateFriendInput } from '../../../graphql/globalTypes';
-import { UpdateFriend, UpdateFriendVariables } from '../../../graphql/UpdateFriend';
-import { EditableFriend, ErrorMsg } from '../../../types';
 import { mutate, prepIds, swiftDate } from './helpers';
 
 export async function create(friend: EditableFriend): Promise<ErrorMsg | null> {

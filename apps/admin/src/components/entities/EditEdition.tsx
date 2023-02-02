@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import cx from 'classnames';
 import { PlusCircleIcon } from '@heroicons/react/solid';
-import { ReducerReplace, EditableEdition } from '../../types';
+import type { ReducerReplace, EditableEdition } from '../../types';
 import { EditionType, Lang, PrintSize } from '../../graphql/globalTypes';
 import LabeledSelect from '../LabeledSelect';
 import LabeledToggle from '../LabeledToggle';
 import TextInput from '../TextInput';
-import * as nonEmptyIntArray from './non-empty-int-array';
 import * as empty from '../../lib/empty';
-import { EditAudio } from './EditAudio';
 import PillButton from '../PillButton';
+import * as nonEmptyIntArray from './non-empty-int-array';
+import { EditAudio } from './EditAudio';
 
 interface Props {
   edition: EditableEdition;

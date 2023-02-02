@@ -1,10 +1,10 @@
 import { gql } from '@apollo/client';
+import type { CreateAudio, CreateAudioVariables } from '../../../graphql/CreateAudio';
+import type { DeleteAudio } from '../../../graphql/DeleteAudio';
+import type { UpdateAudioInput } from '../../../graphql/globalTypes';
+import type { UpdateAudio, UpdateAudioVariables } from '../../../graphql/UpdateAudio';
+import type { EditableAudio, ErrorMsg } from '../../../types';
 import client from '../../../client';
-import { CreateAudio, CreateAudioVariables } from '../../../graphql/CreateAudio';
-import { DeleteAudio } from '../../../graphql/DeleteAudio';
-import { UpdateAudioInput } from '../../../graphql/globalTypes';
-import { UpdateAudio, UpdateAudioVariables } from '../../../graphql/UpdateAudio';
-import { EditableAudio, ErrorMsg } from '../../../types';
 import { mutate, prepIds } from './helpers';
 
 export async function create(audio: EditableAudio): Promise<ErrorMsg | null> {

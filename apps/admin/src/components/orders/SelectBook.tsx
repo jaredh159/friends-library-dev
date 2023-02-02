@@ -3,9 +3,9 @@ import { gql } from '@apollo/client';
 import cx from 'classnames';
 import { v4 as uuid } from 'uuid';
 import { XCircleIcon } from '@heroicons/react/solid';
-import { PrintSize } from '@friends-library/types';
-import { OrderItem } from '../../types';
-import { GetOrderEditions } from '../../graphql/GetOrderEditions';
+import type { PrintSize } from '@friends-library/types';
+import type { OrderItem } from '../../types';
+import type { GetOrderEditions } from '../../graphql/GetOrderEditions';
 import { useQueryResult } from '../../lib/query';
 import { Lang } from '../../graphql/globalTypes';
 

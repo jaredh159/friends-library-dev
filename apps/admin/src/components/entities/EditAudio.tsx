@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { ExclamationIcon, CheckCircleIcon } from '@heroicons/react/solid';
-import { EditableAudio, EditableAudioPart, ReducerReplace } from '../../types';
+import type { EditableAudio, EditableAudioPart, ReducerReplace } from '../../types';
 import LabeledSelect from '../LabeledSelect';
 import LabeledToggle from '../LabeledToggle';
 import TextInput from '../TextInput';
+import * as empty from '../../lib/empty';
 import NestedCollection from './NestedCollection';
 import * as nonEmptyIntArray from './non-empty-int-array';
-import * as empty from '../../lib/empty';
 
 interface AudioProps {
   audio: EditableAudio;
