@@ -20,7 +20,7 @@
     "roman-numerals": "^0.3.2"
   },
   "devDependencies": {
-    "@types/lodash.memoize": "^4.1.6",
+    "@types/lodash.memoize": "4.1.7",
     "@types/roman-numerals": "^0.3.0",
     "strip-indent": "^3.0.0"
   }
