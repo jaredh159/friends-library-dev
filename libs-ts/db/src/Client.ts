@@ -1,11 +1,6 @@
-import {
-  ApolloClient,
-  InMemoryCache,
-  NormalizedCacheObject,
-  createHttpLink,
-  from,
-} from '@apollo/client';
+import { ApolloClient, InMemoryCache, createHttpLink, from } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import type { NormalizedCacheObject } from '@apollo/client';
 import { inferNode, inferWeb } from './infer';
 
 type Env =

@@ -1,4 +1,5 @@
-import { ClientConfig, ClientType, getClient } from './Client';
+import type { ClientConfig, ClientType } from './Client';
+import { getClient } from './Client';
 
 export function inferWeb(href: string, token?: string, path?: string): ClientType {
   let env: ClientConfig['env'];
