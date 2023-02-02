@@ -126,11 +126,14 @@ importers:
   libs-ts/hilkiah:
     specifiers: {}
 
-  libs-ts/types:
+  libs-ts/theme:
     specifiers:
-      '@types/node': 18.11.18
+      '@friends-library/types': workspace:*
     devDependencies:
-      '@types/node': 18.11.18
+      '@friends-library/types': link:../types
+
+  libs-ts/types:
+    specifiers: {}
 
 packages:
 
