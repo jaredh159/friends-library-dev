@@ -1,0 +1,29 @@
+{
+  "name": "@friends-library/env",
+  "version": "1.4.0",
+  "description": "flp env helpers",
+  "main": "./dist/index.js",
+  "browser": false,
+  "author": "Jared Henderson <jared@netrivet.com>",
+  "license": "MIT",
+  "repository": "github:friends-library-dev/env",
+  "sideEffects": [
+    "./dist/load.js"
+  ],
+  "scripts": {
+    "test": "true",
+    "lint": "fldev lint",
+    "lint:fix": "fldev lint:fix",
+    "ts:check": "fldev ts:check",
+    "format": "fldev format",
+    "compile": "fldev ts:compile",
+    "prepublishOnly": "npm run compile"
+  },
+  "dependencies": {
+    "dotenv": "^6.2.0"
+  },
+  "devDependencies": {
+    "@friends-library/dev": "~4.3.1",
+    "@types/dotenv": "^6.1.1"
+  }
+}
