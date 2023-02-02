@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.subtle-text {
+  @apply text-sm font-light select-none;
+}
+
+.label {
+  @apply block text-flprimary-600 subtle-text antialiased;
+}
+
+.serif {
+  font-family: Baskerville, Georgia, 'Times New Roman', Times, serif;
+}
+
+.NestedCollection .NestedCollection.open,
+.NestedCollection .NestedCollection.open .NestedCollection .NestedCollection.open {
+  @apply bg-white/75;
+}
+
+.NestedCollection .NestedCollection,
+.NestedCollection .NestedCollection .NestedCollection .NestedCollection {
+  @apply bg-transparent;
+}
+
+.NestedCollection .NestedCollection .NestedCollection,
+.NestedCollection
+  .NestedCollection
+  .NestedCollection
+  .NestedCollection
+  .NestedCollection {
+  @apply bg-gray-100/75;
+}
+
+.NestedCollection__Item .NestedCollection.closed {
+  margin-bottom: -15px;
+}
