@@ -1,0 +1,34 @@
+.BooksBg .Cover {
+  margin: 12px 0;
+}
+
+.BooksBg::after {
+  content: '';
+  display: block;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.975) 55%);
+}
+
+.BooksBg.right::after {
+  right: -1100px;
+}
+
+.BooksBg .Cover:nth-child(2),
+.BooksBg .Cover:nth-child(4),
+.BooksBg .Cover:nth-child(6),
+.BooksBg .Cover:nth-child(9),
+.BooksBg .Cover:nth-child(11),
+.BooksBg .Cover:nth-child(13),
+.BooksBg .Cover:nth-child(16),
+.BooksBg .Cover:nth-child(18),
+.BooksBg .Cover:nth-child(20),
+.BooksBg .Cover:nth-child(23),
+.BooksBg .Cover:nth-child(25),
+.BooksBg .Cover:nth-child(27) {
+  transform: translateY(-210px);
+}

@@ -1,0 +1,32 @@
+body {
+  margin: 0;
+  background: #333;
+}
+
+.serif {
+  font-family: Baskerville, serif;
+}
+
+.sans {
+  font-family: Cabin, sans-serif;
+}
+
+.youtube-poster {
+  width: 1920px;
+  height: 1080px;
+  position: relative;
+  overflow: hidden;
+}
+
+.youtube-poster .Album {
+  width: 5.5in;
+  height: 5.5in;
+}
+
+.youtube-poster .Album .Cover {
+  transform: translateY(-1.74in);
+}
+
+.youtube-poster .Album .Logo {
+  display: none;
+}
