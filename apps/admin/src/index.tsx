@@ -1,12 +1,12 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { ApolloProvider } from '@apollo/client';
 import { queryParam } from '@htc-class/storylite';
 import AllStories from './_stories';
 import App from './components/App';
 import client from './client';
 
-ReactDOM.render(
+ReactDOM.createRoot(document.getElementById(`root`)!).render(
   queryParam(`storylite`) ? (
     <AllStories />
   ) : (
@@ -14,5 +14,4 @@ ReactDOM.render(
       <App />
     </ApolloProvider>
   ),
-  document.getElementById(`root`),
 );

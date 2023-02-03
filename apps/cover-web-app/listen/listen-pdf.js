@@ -27,5 +27,5 @@ http
     res.end();
   })
   .listen(9988, () => {
-    console.log(`PDF-Listener started on port 9988`);
+    process.stdout.write(`PDF-Listener started on port 9988\n`);
   });

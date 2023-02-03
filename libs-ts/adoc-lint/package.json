@@ -9,7 +9,6 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "lint": "eslint . --rule 'no-irregular-whitespace: off'",
-    "lint:old": "fldev lint --rule 'no-irregular-whitespace: off'",
     "lint:fix": "eslint . --fix --rule 'no-irregular-whitespace: off'",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

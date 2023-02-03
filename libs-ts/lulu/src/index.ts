@@ -1,7 +1,7 @@
 import type { PrintSize } from '@friends-library/types';
-import { PrintSizeDetails } from './types';
+import type { PrintSizeDetails } from './types';
 
-export { PrintSizeDetails };
+export type { PrintSizeDetails };
 
 const defaultMargins = {
   top: 0.85,

@@ -1,7 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
 import KeyEvent from 'react-keyboard-event-handler';
-import { CoverProps } from '@friends-library/types';
 import FormControl from '@material-ui/core/FormControl';
 import {
   Front,
@@ -12,7 +11,8 @@ import {
   css as coverCss,
 } from '@friends-library/cover-component';
 import debounce from 'lodash/debounce';
-import { FriendData, DocumentData, EditionData } from '../types';
+import type { CoverProps } from '@friends-library/types';
+import type { FriendData, DocumentData, EditionData } from '../types';
 import { friendData, editions, documents, scalerAndScope } from './utils';
 import Select from './Select';
 import Toolbar from './Toolbar';

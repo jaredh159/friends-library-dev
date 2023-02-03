@@ -5,9 +5,11 @@
   "main": "src/index.ts",
   "author": "Jared Henderson <jared@netrivet.com>",
   "license": "MIT",
+  "sideEffects": [
+    "./load.ts"
+  ],
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "test": "true",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",

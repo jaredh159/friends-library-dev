@@ -1,5 +1,4 @@
 import React from 'react';
-import { CoverProps } from '@friends-library/types';
 import MaterialUiToolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import IconButton from '@material-ui/core/IconButton';
@@ -11,8 +10,9 @@ import ThreeDIcon from '@material-ui/icons/Looks3';
 import TwoDIcon from '@material-ui/icons/LooksTwo';
 import EbookIcon from '@material-ui/icons/PhoneIphone';
 import ReplayIcon from '@material-ui/icons/Replay';
+import type { CoverProps } from '@friends-library/types';
+import type { Mode, Scale, BookSize } from './App';
 import { makePdf } from './utils';
-import { Mode, Scale, BookSize } from './App';
 import './Toolbar.css';
 
 interface Props {
@@ -151,7 +151,7 @@ function bookSizeDisplay(bookSize: BookSize): string {
   return bookSize;
 }
 
-const TextButton: React.FC = ({ children }) => (
+const TextButton: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <span style={{ fontWeight: `bold`, width: 22, fontFamily: `monospace` }}>
     {children}
   </span>

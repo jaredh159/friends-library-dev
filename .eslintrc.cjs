@@ -10,7 +10,7 @@ module.exports = {
     `import`,
   ],
   extends: [`eslint:recommended`, `plugin:@typescript-eslint/recommended`, `prettier`],
-  ignorePatterns: [`**/dist/*`],
+  ignorePatterns: [`**/dist/*`, `**/friends.js`],
   rules: {
     'no-var': `off`,
     'no-console': `error`,
@@ -204,7 +204,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: [`apps/admin/**`],
+      files: [`apps/admin/**`, `apps/cover-web-app/**`],
       rules: {
         '@typescript-eslint/no-non-null-assertion': `off`,
       },

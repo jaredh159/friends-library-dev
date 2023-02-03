@@ -1,7 +1,7 @@
-import { CoverProps } from '@friends-library/types';
 import { docDims, pdfWidth, pdfHeight } from '@friends-library/cover-component';
-import { FriendData, DocumentData, EditionData } from '../types';
-import { Mode, Scale } from './App';
+import type { CoverProps } from '@friends-library/types';
+import type { FriendData, DocumentData, EditionData } from '../types';
+import type { Mode, Scale } from './App';
 
 const friendData = (window as any).Friends as FriendData[];
 export { friendData };

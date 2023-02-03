@@ -1,13 +1,3 @@
 {
-  "compilerOptions": {
-    "skipLibCheck": true,
-    "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
-    "strict": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "jsx": "react"
-  }
+  "extends": "../../tsconfig.json"
 }

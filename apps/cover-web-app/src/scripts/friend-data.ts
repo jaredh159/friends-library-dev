@@ -5,9 +5,9 @@ import exec from 'x-exec';
 import fetch from 'cross-fetch';
 import env from '@friends-library/env';
 import { getClient, gql, writable } from '@friends-library/db';
-import { PrintSize } from '@friends-library/types';
-import { FriendData } from '../types';
-import { GetFriends } from '../graphql/GetFriends';
+import type { PrintSize } from '@friends-library/types';
+import type { FriendData } from '../types';
+import type { GetFriends } from '../graphql/GetFriends';
 
 const ROOT = env.requireVar(`DOCS_REPOS_ROOT`);
 
