@@ -2,23 +2,16 @@
   "name": "@friends-library/locale",
   "version": "2.5.0",
   "description": "localization, translation, etc.",
-  "main": "./dist/index.js",
-  "browser": "./src/index.ts",
-  "author": "Jared Henderson <jared@netrivet.com>",
-  "repository": "github:friends-library-dev/locale",
+  "main": "./src/index.ts",
   "license": "MIT",
   "scripts": {
-    "test": "true",
-    "lint": "fldev lint",
-    "lint:fix": "fldev lint:fix",
-    "ts:check": "fldev ts:check",
-    "format": "fldev format",
-    "compile": "fldev ts:compile",
-    "prepublishOnly": "npm run compile",
-    "npub:precheck": "fldev ci"
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
-    "@friends-library/dev": "~4.5.2",
-    "@friends-library/types": "^7.0.0"
+    "@friends-library/types": "workspace:*"
   }
 }

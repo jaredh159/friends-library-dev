@@ -1,4 +1,4 @@
-import { Lang } from '@friends-library/types';
+import type { Lang } from '@friends-library/types';
 import dict from './strings';
 
 let locale: Lang | null = null;
@@ -63,6 +63,7 @@ function localeFromEnv(): Lang {
       return document.documentElement.lang === `es` ? `es` : `en`;
     }
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.error(`Error determining locale from env`, err);
   }
 
