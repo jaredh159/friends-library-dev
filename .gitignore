@@ -1,7 +1,0 @@
-node_modules/
-dist/
-.cache/
-src/friends.js
-.netlify/
-.DS_Store
-listen/cover.json
