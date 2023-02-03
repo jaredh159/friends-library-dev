@@ -4,7 +4,7 @@
   "description": "finds scripture references embedded in text",
   "author": "Jared Henderson <jared@netrivet.com>",
   "license": "MIT",
-  "main": "src/index.ts",
+  "main": "./src/index.ts",
   "scripts": {
     "typecheck": "tsc --noEmit",
     "test": "vitest run",

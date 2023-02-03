@@ -1,5 +1,5 @@
 import React from 'react';
-import { CoverProps } from '@friends-library/types';
+import type { CoverProps } from '@friends-library/types';
 import Diamonds from './Diamonds';
 import { overridable, formatBlurb, getHtmlFragments } from './helpers';
 import Brackets from './Brackets';

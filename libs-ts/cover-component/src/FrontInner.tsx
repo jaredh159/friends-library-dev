@@ -1,5 +1,5 @@
 import React from 'react';
-import { CoverProps } from '@friends-library/types';
+import type { CoverProps } from '@friends-library/types';
 import { overridable, getHtmlFragments, prepareAuthor } from './helpers';
 import { dynamifyCss } from './css/helpers';
 import LogoIcon from './LogoIcon';

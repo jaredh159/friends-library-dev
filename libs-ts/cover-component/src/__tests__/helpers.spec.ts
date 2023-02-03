@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import { prepareTitle, prepareAuthor } from '../helpers';
 
 describe(`prepareAuthor()`, () => {

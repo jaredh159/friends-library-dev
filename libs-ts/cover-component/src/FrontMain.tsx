@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
+import type { CoverProps } from '@friends-library/types';
 import { getHtmlFragments, overridable, initials, prepareTitle } from './helpers';
-import { CoverProps } from '@friends-library/types';
 
 type Props = Pick<
   CoverProps,

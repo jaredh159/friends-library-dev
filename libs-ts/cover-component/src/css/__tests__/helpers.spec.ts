@@ -1,5 +1,6 @@
+import { describe, test, expect } from 'vitest';
+import type { PrintSize } from '@friends-library/types';
 import { scopeCss, scaleCssInches, spineAuthorDisplay } from '../helpers';
-import { PrintSize } from '@friends-library/types';
 
 describe(`scopeCss()`, () => {
   // prettier-ignore

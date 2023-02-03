@@ -17,8 +17,6 @@ test:
 compile:
   @pnpm nx-run-many compile
 
-#  @just run compile in @friends-library/theme
-
 build:
 	@just nx-run-many build
 

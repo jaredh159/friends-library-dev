@@ -1,6 +1,6 @@
 ## Todo
 
-- [ ] convert admin from snowpack to vite
+- [ ] look into cover-component prepack/postpack web/node optimizations...
 - [ ] examine, update, and unify dependencies
 - [ ] evans > astro/next
 - [ ] update tailwind
@@ -9,3 +9,7 @@
 - [ ] bring x-ts-utils into monorepo? (fix esm/export issue)
 - [ ] experiment with ts: `exactOptionalPropertyTypes: true`
 - [ ] experiment with ts: `esModuleInterop: false`
+
+## Done
+
+- [√] convert admin from snowpack to vite

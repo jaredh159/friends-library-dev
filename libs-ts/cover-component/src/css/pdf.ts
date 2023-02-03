@@ -1,6 +1,6 @@
 import css from 'x-syntax';
+import type { CoverProps } from '@friends-library/types';
 import { dynamifyCss, docDims, PRINT_BLEED, pdfSpineWidth } from './helpers';
-import { CoverProps } from '@friends-library/types';
 
 export default function pdf(
   { size, pages }: Pick<CoverProps, 'size' | 'pages'>,

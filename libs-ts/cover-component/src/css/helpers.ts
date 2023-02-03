@@ -1,6 +1,6 @@
 import cx from 'classnames';
-import { CoverProps, PrintSize } from '@friends-library/types';
 import { sizes as bookSizes, PAGES_PER_INCH } from '@friends-library/lulu';
+import type { CoverProps, PrintSize } from '@friends-library/types';
 
 export interface DocDims {
   width: number;

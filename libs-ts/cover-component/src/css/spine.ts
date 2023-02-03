@@ -1,5 +1,5 @@
 import css from 'x-syntax';
-import { CoverCssModule } from './types';
+import type { CoverCssModule } from './types';
 import { dynamifyCss } from './helpers';
 
 const spine: CoverCssModule = (scaler, scope) => {

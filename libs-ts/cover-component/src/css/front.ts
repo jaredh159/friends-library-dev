@@ -1,5 +1,5 @@
 import css from 'x-syntax';
-import { CoverCssModule } from './types';
+import type { CoverCssModule } from './types';
 import { dynamifyCss } from './helpers';
 import frontMain from './front-main';
 

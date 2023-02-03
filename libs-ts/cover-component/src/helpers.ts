@@ -1,7 +1,7 @@
 import React from 'react';
 import { toRoman } from 'roman-numerals';
-import { Lang } from '@friends-library/types';
 import { quotify } from '@friends-library/adoc-utils';
+import type { Lang } from '@friends-library/types';
 
 export function overridable(
   key: string,
@@ -101,6 +101,7 @@ export function getHtmlFragments(html: string): Record<string, string> {
     if (classMatch && classMatch[1]) {
       fragments[classMatch[1]] = lines.join(``);
     } else {
+      // eslint-disable-next-line no-console
       console.error(`Bad custom HTML -- frag wrapping elements must have class`);
     }
   }

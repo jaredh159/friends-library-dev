@@ -1,8 +1,8 @@
 import React from 'react';
+import type { CoverProps } from '@friends-library/types';
 import { overridable, prepareTitle, getHtmlFragments } from './helpers';
 import LogoIcon from './LogoIcon';
 import Diamonds from './Diamonds';
-import { CoverProps } from '@friends-library/types';
 import { pdfSpineWidth, spineAuthorDisplay } from './css/helpers';
 
 type Props = Pick<

@@ -1,5 +1,5 @@
 import css from 'x-syntax';
-import { CoverCssModule } from './types';
+import type { CoverCssModule } from './types';
 import { dynamifyCss, PRINT_BLEED, withSizes } from './helpers';
 
 const guides: CoverCssModule = (scaler, scope) => {

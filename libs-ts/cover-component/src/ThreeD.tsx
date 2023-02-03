@@ -1,5 +1,5 @@
 import React from 'react';
-import { CoverProps } from '@friends-library/types';
+import type { CoverProps } from '@friends-library/types';
 import { wrapClasses, docDims, threeDSpineWidth } from './css/helpers';
 import Back from './Back';
 import FrontInner from './FrontInner';
