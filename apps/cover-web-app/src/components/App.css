@@ -1,0 +1,98 @@
+* {
+  /* this seems to prevent an issue that cropped up
+     where the spines of some of our larger books
+     were partly see-through when puppeteer was
+     taking screenshots, affecting images used
+     by the apps, and some internal admin-site views */
+  backface-visibility: hidden;
+}
+
+body {
+  background: #eaeaea;
+}
+
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.cover-wrap {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cover {
+  margin: 0 auto;
+}
+
+.cover * {
+  user-select: none;
+}
+
+.cover-mask {
+  display: none;
+  outline: #eaeaea solid 5px;
+}
+
+.mask-bleed .cover-mask {
+  display: block;
+}
+
+.mask-bleed .guide--trim-bleed {
+  opacity: 0;
+}
+
+.capturing-screenshot form,
+.capturing-screenshot .Toolbar {
+  display: none !important;
+}
+
+.capturing-screenshot .cover-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: scale(2.77778); /* 1600px x 2400px */
+  transform-origin: top left;
+}
+
+.capturing-audio .audio-logo {
+  position: absolute;
+  top: 661px;
+  right: 60px;
+  width: 100px;
+  z-index: 1;
+  opacity: 0.8;
+}
+
+.capturing-audio .audio-logo--es {
+  width: 130px;
+}
+
+.capturing-audio .author {
+  opacity: 0;
+}
+
+.capturing-3d {
+  background: #efefef;
+}
+
+.capturing-3d .Cover {
+  /* help center cover, account for perspective shift */
+  margin-left: 65px;
+}
+
+.capturing-3d .spine__title {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.capturing-3d .cover-wrap {
+  transform: none;
+  transform-origin: initial;
+  width: 100vw;
+}
