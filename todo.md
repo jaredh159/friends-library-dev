@@ -1,5 +1,6 @@
 ## Todo
 
+- [ ] after `evans` imported, finish doing `apps/poster` (relies on evans)
 - [ ] cli cover:watch task for cover-web-app (search `echo node`)
 - [ ] convert cover-web-app from parcel to vite
 - [ ] look into cover-component prepack/postpack web/node optimizations...

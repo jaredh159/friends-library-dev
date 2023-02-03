@@ -1,6 +1,7 @@
 import mapValues from 'lodash.mapvalues';
-import { PrintSize } from '@friends-library/types';
-import { getPrintSizeDetails, PrintSizeDetails } from '@friends-library/lulu';
+import { getPrintSizeDetails } from '@friends-library/lulu';
+import type { PrintSize } from '@friends-library/types';
+import type { PrintSizeDetails } from '@friends-library/lulu';
 import * as css from './css';
 import { replaceVars } from './helpers';
 
