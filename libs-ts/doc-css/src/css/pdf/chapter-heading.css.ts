@@ -1,0 +1,16 @@
+import css from 'x-syntax';
+
+export default css`
+  h2 {
+    margin-bottom: 24pt;
+  }
+
+  h2.chapter-heading__sequence {
+    margin-bottom: 0.65rem;
+  }
+
+  .chapter-heading__title {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+  }
+`;
