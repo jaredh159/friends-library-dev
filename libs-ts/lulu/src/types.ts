@@ -1,4 +1,4 @@
-import { PrintSize } from '@friends-library/types';
+import type { PrintSize } from '@friends-library/types';
 
 export interface PrintSizeDetails {
   abbrev: PrintSize;

@@ -1,6 +1,6 @@
-import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test } from 'vitest';
+import type { PrintSize } from '@friends-library/types';
 import { price, podPackageId } from '../';
-import { PrintSize } from '@friends-library/types';
 
 describe(`podPackageId()`, () => {
   const cases: [PrintSize, number, string][] = [

@@ -193,6 +193,12 @@ importers:
   libs-ts/hilkiah:
     specifiers: {}
 
+  libs-ts/lulu:
+    specifiers:
+      '@friends-library/types': workspace:*
+    devDependencies:
+      '@friends-library/types': link:../types
+
   libs-ts/theme:
     specifiers:
       '@friends-library/types': workspace:*
