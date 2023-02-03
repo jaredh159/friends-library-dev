@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "declaration": true,
+    "skipLibCheck": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "target": "ES2019",
+    "module": "CommonJS",
+    "jsx": "react",
+    "incremental": true,
+    "lib": ["ESNext", "DOM"]
+  },
+  "exclude": ["**/__tests__/*", "./dist"]
+}
