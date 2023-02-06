@@ -1,10 +1,5 @@
-import {
-  AsciidocFile,
-  Lexer as LexerInterface,
-  Token,
-  TokenType,
-  TOKEN as t,
-} from './types';
+import type { AsciidocFile, Lexer as LexerInterface, Token, TokenType } from './types';
+import { TOKEN as t } from './types';
 
 interface Line {
   content: string;

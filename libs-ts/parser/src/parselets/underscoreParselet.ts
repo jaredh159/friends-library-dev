@@ -1,5 +1,6 @@
+import type { Parselet } from '../types';
 import Node from '../nodes/AstNode';
-import { Parselet, TOKEN as t, NODE as n } from '../types';
+import { TOKEN as t, NODE as n } from '../types';
 
 const underscore: Parselet = (parser, parent) => {
   if (parser.current.literal === `_` || parser.current.literal === `__`) {

@@ -1,7 +1,8 @@
-import Context from '../Context';
+import { describe, test, it, expect } from 'vitest';
+import type Context from '../Context';
 import ContextParser from '../parsers/ContextParser';
-import { getParser, simplifyToken } from './helpers';
 import { TOKEN as t } from '../types';
+import { getParser, simplifyToken } from './helpers';
 
 describe(`ContextParser.parse()`, () => {
   test(`non context tokens returns undefined`, () => {

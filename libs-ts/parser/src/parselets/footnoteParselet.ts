@@ -1,6 +1,7 @@
+import type { Parselet, TokenSpec } from '../types';
 import Node from '../nodes/AstNode';
 import FootnotePoetryParser from '../parsers/FootnotePoetryParser';
-import { Parselet, TOKEN as t, NODE as n, TokenSpec } from '../types';
+import { TOKEN as t, NODE as n } from '../types';
 
 const footnoteParselet: Parselet = (parser, parent) => {
   const footnote = new Node(n.FOOTNOTE, parent, { startToken: parser.current });

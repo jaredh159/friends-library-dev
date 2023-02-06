@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import stripIndent from 'strip-indent';
 import { NODE as n } from '../types';
 import DescriptionListParser from '../parsers/DescriptionListParser';

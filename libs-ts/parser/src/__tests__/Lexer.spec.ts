@@ -1,5 +1,6 @@
-import { test, describe, it, expect } from '@jest/globals';
-import { TOKEN as t, Token } from '../types';
+import { describe, test, it, expect } from 'vitest';
+import type { Token } from '../types';
+import { TOKEN as t } from '../types';
 import Lexer from '../Lexer';
 import { simplifyToken } from './helpers';
 

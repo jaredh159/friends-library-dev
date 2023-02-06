@@ -1,9 +1,5 @@
-import {
-  AstNode,
-  NodeType,
-  DocumentNode as DocumentNodeInterface,
-  NODE as n,
-} from '../types';
+import type { AstNode, NodeType, DocumentNode as DocumentNodeInterface } from '../types';
+import { NODE as n } from '../types';
 import AbstractAstNode from './AbstractAstNode';
 import Node from './AstNode';
 

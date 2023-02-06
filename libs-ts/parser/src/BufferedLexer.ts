@@ -1,4 +1,5 @@
-import { Lexer, Token, TOKEN as t } from './types';
+import type { Lexer, Token } from './types';
+import { TOKEN as t } from './types';
 
 export default class BufferedLexer implements Lexer {
   private _tokens: Token[];

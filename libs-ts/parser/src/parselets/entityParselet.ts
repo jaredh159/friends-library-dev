@@ -1,6 +1,7 @@
+import type Parser from '../Parser';
+import type { Parselet, EntityType, AstNode } from '../types';
 import Node from '../nodes/AstNode';
-import Parser from '../Parser';
-import { Parselet, NODE as n, ENTITY as e, EntityType, AstNode } from '../types';
+import { NODE as n, ENTITY as e } from '../types';
 
 const entity: Parselet = (parser, parent) => {
   const current = parser.current;

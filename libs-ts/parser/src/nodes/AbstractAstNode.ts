@@ -1,12 +1,12 @@
-import {
+import type {
   AstNode,
   AstNode as AstNodeInterface,
   DocumentNode,
   Token,
   NodeType,
   Context,
-  NODE as n,
 } from '../types';
+import { NODE as n } from '../types';
 
 export default abstract class AbstractAstNode implements AstNodeInterface {
   public children: AstNode[] = [];
@@ -224,6 +224,7 @@ export default abstract class AbstractAstNode implements AstNodeInterface {
   }
 
   public print(withTokens?: true): void {
+    // eslint-disable-next-line no-console
     console.log(JSON.stringify(this.toJSON(withTokens), null, 2));
   }
 }

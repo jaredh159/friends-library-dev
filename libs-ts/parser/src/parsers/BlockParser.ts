@@ -1,7 +1,8 @@
-import { AstNode, TOKEN as t, TokenSpec, NODE as n, Context } from '../types';
-import Parser from '../Parser';
-import PoetryParser from './PoetryParser';
+import type { AstNode, TokenSpec, Context } from '../types';
+import type Parser from '../Parser';
+import { TOKEN as t, NODE as n } from '../types';
 import Node from '../nodes/AstNode';
+import PoetryParser from './PoetryParser';
 import DescriptionListParser from './DescriptionListParser';
 
 export default class BlockParser {

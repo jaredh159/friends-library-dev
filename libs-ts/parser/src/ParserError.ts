@@ -1,4 +1,4 @@
-import { Token } from './types';
+import type { Token } from './types';
 
 export default class ParserError extends Error {
   constructor(

@@ -1,5 +1,6 @@
+import type { Parselet } from '../types';
 import Node from '../nodes/AstNode';
-import { Parselet, TOKEN as t, NODE as n } from '../types';
+import { TOKEN as t, NODE as n } from '../types';
 
 const inlinePassThrough: Parselet = (parser, parent) => {
   let node = new Node(n.INLINE_PASSTHROUGH, parent, { startToken: parser.current });

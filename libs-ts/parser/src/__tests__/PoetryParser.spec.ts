@@ -1,7 +1,9 @@
+import { describe, it, expect } from 'vitest';
 import stripIndent from 'strip-indent';
+import type { AstNode } from '../types';
 import Context from '../Context';
 import PoetryParser from '../parsers/PoetryParser';
-import { AstNode, NODE as n } from '../types';
+import { NODE as n } from '../types';
 import { getParser, getBlock, assertAllNodesHaveTokens } from './helpers';
 
 describe(`PoetryParser.parse()`, () => {

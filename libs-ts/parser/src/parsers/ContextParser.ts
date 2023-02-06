@@ -1,5 +1,6 @@
-import { TOKEN as t, Token, TokenType } from '../types';
-import Parser from '../Parser';
+import type { Token, TokenType } from '../types';
+import type Parser from '../Parser';
+import { TOKEN as t } from '../types';
 import Context from '../Context';
 
 export default class ContextParser {

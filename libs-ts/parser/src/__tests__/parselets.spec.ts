@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import { TOKEN as t, NODE as n } from '../types';
 import { T, getPara, getParser, assertAllNodesHaveTokens } from './helpers';
 

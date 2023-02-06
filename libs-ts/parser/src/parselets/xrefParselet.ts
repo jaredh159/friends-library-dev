@@ -1,5 +1,6 @@
+import type { Parselet, TokenSpec } from '../types';
 import Node from '../nodes/AstNode';
-import { Parselet, NODE as n, TOKEN as t, TokenSpec } from '../types';
+import { NODE as n, TOKEN as t } from '../types';
 
 const entity: Parselet = (parser, parent) => {
   const current = parser.current;

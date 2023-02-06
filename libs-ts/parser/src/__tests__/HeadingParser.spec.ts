@@ -1,6 +1,8 @@
+import { describe, test, it, expect } from 'vitest';
 import stripIndent from 'strip-indent';
+import type { AstNode } from '../types';
 import HeadingParser from '../parsers/HeadingParser';
-import { AstNode, NODE as n } from '../types';
+import { NODE as n } from '../types';
 import { T, getParser, getBlock, assertAllNodesHaveTokens } from './helpers';
 
 describe(`HeadingParse.parse()`, () => {

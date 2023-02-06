@@ -1,4 +1,6 @@
-import { Parselet, Token, TOKEN as t } from '../types';
+import type { Parselet, Token } from '../types';
+import type { Parser } from '..';
+import { TOKEN as t } from '../types';
 import textParselet from './textParselet';
 import underscoreParselet from './underscoreParselet';
 import strongParselet from './strongParselet';
@@ -8,7 +10,6 @@ import inlinePassthroughParselet from './inlinePassthroughParselet';
 import footnoteParselet from './footnoteParselet';
 import entityParselet from './entityParselet';
 import xrefParselet from './xrefParselet';
-import { Parser } from '..';
 
 export default function getParselet(token: Token, parser: Parser): Parselet | null {
   switch (token.type) {

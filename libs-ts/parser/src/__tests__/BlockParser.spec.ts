@@ -1,7 +1,9 @@
-import { AstNode, NODE as n } from '../types';
+import { describe, test, it, expect } from 'vitest';
+import stripIndent from 'strip-indent';
+import type { AstNode } from '../types';
+import { NODE as n } from '../types';
 import BlockParser from '../parsers/BlockParser';
 import { assertAllNodesHaveTokens, getChapter, getParser, T } from './helpers';
-import stripIndent from 'strip-indent';
 
 describe(`BlockParser.parse()`, () => {
   it(`can parse a simple paragraph`, () => {
@@ -81,10 +83,10 @@ describe(`BlockParser.parse()`, () => {
     const block = getParsedBlock(`
       [quote]
       ____
-      
+
       [.numbered-group]
       ====
-      
+
       [.numbered]
       Foo
 
@@ -115,10 +117,10 @@ describe(`BlockParser.parse()`, () => {
     const block = getParsedBlock(`
       [quote]
       ____
-      
+
       [.numbered-group]
       ====
-      
+
       [.numbered]
       Foo
 

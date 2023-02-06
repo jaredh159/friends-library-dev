@@ -1,6 +1,7 @@
-import { AstNode, NODE as n, TOKEN as t } from '../types';
+import type { AstNode } from '../types';
+import type Parser from '../Parser';
+import { NODE as n, TOKEN as t } from '../types';
 import Node from '../nodes/AstNode';
-import Parser from '../Parser';
 
 export default class PoetryParser {
   public constructor(private p: Parser) {}

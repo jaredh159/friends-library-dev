@@ -1,4 +1,4 @@
-import { Token, Context as ContextInterface } from './types';
+import type { Token, Context as ContextInterface } from './types';
 
 export default class Context implements ContextInterface {
   public classList: string[] = [];
@@ -45,6 +45,7 @@ export default class Context implements ContextInterface {
   }
 
   public print(withTokens?: true): void {
+    // eslint-disable-next-line no-console
     console.log(JSON.stringify(this.toJSON(withTokens), null, 2));
   }
 }

@@ -1,5 +1,6 @@
-import { AstNode, TOKEN as t, NODE as n } from '../types';
-import Parser from '../Parser';
+import type { AstNode } from '../types';
+import type Parser from '../Parser';
+import { TOKEN as t, NODE as n } from '../types';
 import Node from '../nodes/AstNode';
 
 export default class DescriptionListParser {

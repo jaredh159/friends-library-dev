@@ -1,7 +1,8 @@
-import { AstNode, NODE as n, TOKEN as t } from '../types';
-import Parser from '../Parser';
-import BlockParser from './BlockParser';
+import type { AstNode } from '../types';
+import type Parser from '../Parser';
+import { NODE as n, TOKEN as t } from '../types';
 import Node from '../nodes/AstNode';
+import BlockParser from './BlockParser';
 
 export default class SectionParser {
   public constructor(private p: Parser, public level: number) {}

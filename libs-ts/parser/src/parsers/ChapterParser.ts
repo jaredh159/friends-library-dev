@@ -1,8 +1,9 @@
-import { AstNode, TOKEN as t, NODE as n } from '../types';
-import Parser from '../Parser';
-import SectionParser from './SectionParser';
-import DocumentNode from '../nodes/DocumentNode';
+import type { AstNode } from '../types';
+import type Parser from '../Parser';
+import type DocumentNode from '../nodes/DocumentNode';
+import { TOKEN as t, NODE as n } from '../types';
 import Node from '../nodes/AstNode';
+import SectionParser from './SectionParser';
 
 export default class ChapterParser {
   public constructor(private p: Parser) {}

@@ -1,6 +1,7 @@
-import { Parselet, TOKEN as t, NODE as n, Token, AstNode } from '../types';
+import type { Parselet, Token, AstNode } from '../types';
+import type Parser from '../Parser';
+import { TOKEN as t, NODE as n } from '../types';
 import Node from '../nodes/AstNode';
-import Parser from '../Parser';
 import DiscoursePartIdentifierParser from '../parsers/DiscoursePartIdentifierParser';
 import PostscriptIdentifierParser from '../parsers/PostscriptIdentifierParser';
 

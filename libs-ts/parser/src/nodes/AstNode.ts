@@ -1,4 +1,4 @@
-import { AstNode as AstNodeInterface, NodeType, Token, Context } from '../types';
+import type { AstNode as AstNodeInterface, NodeType, Token, Context } from '../types';
 import AbstractAstNode from './AbstractAstNode';
 
 interface Config {

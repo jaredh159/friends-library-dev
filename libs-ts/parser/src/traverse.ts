@@ -1,4 +1,4 @@
-import { AstNode, Visitable, Camelcase, Visitor, NodeType } from './types';
+import type { AstNode, Visitable, Camelcase, Visitor, NodeType } from './types';
 
 export default function traverse<Output = unknown, Context = unknown>(
   node: AstNode,

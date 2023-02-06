@@ -1,10 +1,6 @@
 import stripIndent from 'strip-indent';
-import {
-  Token,
-  AstNode,
-  DocumentNode as DocumentNodeInterface,
-  NODE as n,
-} from '../types';
+import type { Token, AstNode, DocumentNode as DocumentNodeInterface } from '../types';
+import { NODE as n } from '../types';
 import Lexer from '../Lexer';
 import Node from '../nodes/AstNode';
 import DocumentNode from '../nodes/DocumentNode';

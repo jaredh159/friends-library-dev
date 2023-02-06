@@ -1,7 +1,6 @@
-import {
+import type {
   Token,
   TokenType,
-  TOKEN as t,
   AstNode,
   NodeType,
   TokenSpec,
@@ -11,6 +10,7 @@ import {
   Context,
   AsciidocFile,
 } from './types';
+import { TOKEN as t } from './types';
 import DocumentNode from './nodes/DocumentNode';
 import getParselet from './parselets';
 import ChapterParser from './parsers/ChapterParser';
@@ -278,6 +278,7 @@ export default class Parser {
     if (this.currentIs(spec)) {
       return this.consume();
     }
+    return undefined;
   }
 
   public lookAhead(distance: number): Token {
@@ -348,6 +349,7 @@ export default class Parser {
     return () => {
       numIterations++;
       if (numIterations >= maxIterations) {
+        // eslint-disable-next-line no-console
         console.trace();
         this.throwError(`Infinite loop detected in ${identifier}`);
       }
@@ -384,6 +386,7 @@ export default class Parser {
     for (let i = 0; i < distance; i++) {
       logged.push(this.logToken(this.lookAhead(i), `${i}`, msg));
     }
+    // eslint-disable-next-line no-console
     console.log(logged.join(`\n`));
   }
 

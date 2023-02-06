@@ -1,6 +1,7 @@
-import { AstNode, NODE as n, TOKEN as t, TokenSpec } from '../types';
+import type { AstNode, TokenSpec } from '../types';
+import type Parser from '../Parser';
+import { NODE as n, TOKEN as t } from '../types';
 import Node from '../nodes/AstNode';
-import Parser from '../Parser';
 
 export default class FootnotePoetryParser {
   public constructor(private p: Parser) {}

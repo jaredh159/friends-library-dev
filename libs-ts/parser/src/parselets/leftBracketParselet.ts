@@ -1,8 +1,9 @@
-import { Parselet, TOKEN as t, NODE as n } from '../types';
-import Parser from '../Parser';
-import textParselet from './textParselet';
+import type { Parselet } from '../types';
+import type Parser from '../Parser';
+import { TOKEN as t, NODE as n } from '../types';
 import Node from '../nodes/AstNode';
 import Context from '../Context';
+import textParselet from './textParselet';
 
 const leftBracket: Parselet = (parser, parent) => {
   if (isInlineStart(parser)) {

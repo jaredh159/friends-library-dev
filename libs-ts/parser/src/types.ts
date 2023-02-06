@@ -1,4 +1,4 @@
-import Parser from './Parser';
+import type Parser from './Parser';
 
 export const TOKEN = {
   TEXT: `TEXT`,

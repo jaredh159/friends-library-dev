@@ -1,6 +1,7 @@
+import type Parser from '../Parser';
+import type { Parselet, AstNode, Token } from '../types';
 import Node from '../nodes/AstNode';
-import Parser from '../Parser';
-import { Parselet, NODE as n, TOKEN as t, AstNode, Token } from '../types';
+import { NODE as n, TOKEN as t } from '../types';
 
 const symbol: Parselet = (parser, parent) => {
   const current = parser.current;

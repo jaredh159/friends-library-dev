@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import { NODE as n, TOKEN as t } from '../types';
 import { assertAllNodesHaveTokens, getParser, parseAdocFile, T } from './helpers';
 
@@ -13,7 +14,7 @@ describe(`Parser.parse()`, () => {
   it(`can parse a hello-world chapter`, () => {
     const document = parseAdocFile(`
       == Preface
-      
+
       Hello world
     `);
     expect(document.toJSON()).toMatchObject({
@@ -42,9 +43,9 @@ describe(`Parser.parse()`, () => {
     // an `embeddable section` is a section smaller than a chapter identified by a #id
     const document = parseAdocFile(`
       == Preface
-      
+
       Hello world
-      
+
       // vvvvvvvv---- context with id on h3 makes the section "embeddable"
       [#embed-me]
       === Appendix A
@@ -65,7 +66,7 @@ describe(`Parser.parse()`, () => {
   it(`maintains a map of cross-reference chapter locations`, () => {
     const document = parseAdocFile(`
       == Preface
-      
+
       Hello <<note-A,world>>
 
       == Intro
@@ -140,7 +141,7 @@ describe(`Parser.parse()`, () => {
       Howdy.
 
       == Prologue
-      
+
       [.embedded-content-document.letter]
       --
 
@@ -162,7 +163,7 @@ describe(`Parser.parse()`, () => {
   it(`can parse a paragraph beginning with a right brace`, () => {
     const document = parseAdocFile(`
       == Preface
-      
+
       [.offset]
       +++[+++The narration continues...]
     `);
@@ -192,7 +193,7 @@ describe(`Parser.parse()`, () => {
   it(`can parse a chapter with heading starting with a symbol`, () => {
     const document = parseAdocFile(`
       == '\`Tis a Chapter Title
-      
+
       Hello world
     `);
     expect(document.toJSON()).toMatchObject({
@@ -236,7 +237,7 @@ describe(`Parser.parse()`, () => {
   it(`can parse a comment line`, () => {
     const document = parseAdocFile(`
       == Preface
-      
+
       // here is a comment
       Hello world
     `);
@@ -265,7 +266,7 @@ describe(`Parser.parse()`, () => {
   it(`attaches start and end tokens to nodes`, () => {
     const document = parseAdocFile(`
       == Preface
-      
+
       Hello world
     `);
     expect(document.startToken).toMatchObject({
@@ -344,7 +345,7 @@ describe(`Parser.parse()`, () => {
     const document = parseAdocFile(`
       [#ch1]
       == Preface
-      
+
       Hello world
     `);
     expect(document.toJSON()).toMatchObject({
@@ -374,7 +375,7 @@ describe(`Parser.parse()`, () => {
     const document = parseAdocFile(`
       [#ch1]
       == Preface
-      
+
       Hello world
 
       Goodbye world
@@ -414,7 +415,7 @@ describe(`Parser.parse()`, () => {
   it(`can parse a sub-section`, () => {
     const document = parseAdocFile(`
       == Preface
-      
+
       === Subsection
 
       Hello world
@@ -460,7 +461,7 @@ describe(`Parser.parse()`, () => {
   it(`can parse a sections decreasing by one`, () => {
     const document = parseAdocFile(`
       == Preface
-      
+
       === Level 3
 
       ==== Level 4
@@ -979,7 +980,7 @@ describe(`Parser.parse()`, () => {
       [.syllogism]
       * Herp
       * Derp
-      
+
       --
     `);
 
@@ -1044,7 +1045,7 @@ describe(`Parser.parse()`, () => {
   test(`footnote nodes are added to document`, () => {
     const document = parseAdocFile(`
       == Chapter 1.footnote:[Howdy]
-      
+
       Hello world.^
       footnote:[Hello]
     `);
@@ -1055,7 +1056,7 @@ describe(`Parser.parse()`, () => {
   test(`stuff after postscript is not lost`, () => {
     const document = parseAdocFile(`
       == Preface
-      
+
       [.embedded-content-document.letter]
       --
 
@@ -1070,7 +1071,7 @@ describe(`Parser.parse()`, () => {
       The Postscript.
 
       ====
-      
+
       [.signed-section-signature]
       G+++.+++ F.
 

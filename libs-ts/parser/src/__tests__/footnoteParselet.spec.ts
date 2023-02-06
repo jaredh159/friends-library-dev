@@ -1,4 +1,4 @@
-import { describe, it, test } from '@jest/globals';
+import { describe, test, it, expect } from 'vitest';
 import stripIndent from 'strip-indent';
 import { TOKEN as t, NODE as n } from '../types';
 import { getPara, getParser, assertAllNodesHaveTokens, T } from './helpers';

@@ -1,4 +1,5 @@
-import { AstNode, TOKEN as t, NODE as n } from '../types';
+import type { AstNode } from '../types';
+import { TOKEN as t, NODE as n } from '../types';
 import Node from '../nodes/AstNode';
 import DiscoursePartIdentifierParser from './DiscoursePartIdentifierParser';
 
