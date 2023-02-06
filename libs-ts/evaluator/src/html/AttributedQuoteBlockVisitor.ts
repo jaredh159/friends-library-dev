@@ -1,4 +1,4 @@
-import { Visitable, AstNode, VisitData } from '@friends-library/parser';
+import type { Visitable, AstNode, VisitData } from '@friends-library/parser';
 import { utils as u, classAttr, chapterMarkup as c } from '../utils';
 
 export default class AttributedQuoteBlockVisitor implements Visitable {

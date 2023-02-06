@@ -1,5 +1,6 @@
-import { DocPrecursor } from '@friends-library/types';
-import { Parser, traverse, AstNode } from '@friends-library/parser';
+import { Parser, traverse } from '@friends-library/parser';
+import type { DocPrecursor } from '@friends-library/types';
+import type { AstNode } from '@friends-library/parser';
 import visitor from './speech-visitor';
 
 export function toSpeechText(dpc: DocPrecursor): string {

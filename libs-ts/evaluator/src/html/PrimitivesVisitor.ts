@@ -1,5 +1,5 @@
-import { Visitor } from '@friends-library/parser';
-import { Lang } from '@friends-library/types';
+import type { Visitor } from '@friends-library/parser';
+import type { Lang } from '@friends-library/types';
 import { utils as u, wrap, chapterMarkup as c } from '../utils';
 
 const PrimitivesVisitor: Visitor<

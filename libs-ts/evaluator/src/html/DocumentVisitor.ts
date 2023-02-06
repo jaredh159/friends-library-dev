@@ -1,5 +1,5 @@
-import { Visitor } from '@friends-library/parser';
-import { Lang } from '@friends-library/types';
+import type { Visitor } from '@friends-library/parser';
+import type { Lang } from '@friends-library/types';
 import { utils as u, chapterMarkup as c, wrap } from '../utils';
 import AttributedQuoteBlockVisitor from './AttributedQuoteBlockVisitor';
 import HeadingVisitor from './HeadingVisitor';

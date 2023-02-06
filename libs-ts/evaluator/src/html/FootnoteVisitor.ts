@@ -1,4 +1,4 @@
-import { Visitor, AstNode } from '@friends-library/parser';
+import type { Visitor, AstNode } from '@friends-library/parser';
 import { wrap, chapterMarkup as c } from '../utils';
 
 const FootnoteVisitor: Visitor<Array<string[]>, { target: 'pdf' | 'ebook' }> = {

@@ -1,5 +1,5 @@
-import { DocPrecursor } from '@friends-library/types';
 import { Parser, traverse } from '@friends-library/parser';
+import type { DocPrecursor } from '@friends-library/types';
 import documentVisitor from './DocumentVisitor';
 import PdfSrcResult from './result/PdfSrcResult';
 import EbookSrcResult from './result/EbookSrcResult';

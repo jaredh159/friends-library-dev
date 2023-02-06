@@ -1,4 +1,5 @@
-import { Visitable, AstNode, VisitData, NODE as n } from '@friends-library/parser';
+import { NODE as n } from '@friends-library/parser';
+import type { Visitable, AstNode, VisitData } from '@friends-library/parser';
 import { utils as u, chapterMarkup as c } from '../utils';
 
 export default class ParagraphVisitor implements Visitable {

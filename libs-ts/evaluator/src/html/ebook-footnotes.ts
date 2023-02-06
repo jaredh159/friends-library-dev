@@ -1,11 +1,6 @@
-import { Lang } from '@friends-library/types';
-import {
-  AstNode,
-  traverse,
-  DocumentNode,
-  Node,
-  NODE as n,
-} from '@friends-library/parser';
+import { traverse, Node, NODE as n } from '@friends-library/parser';
+import type { Lang } from '@friends-library/types';
+import type { AstNode, DocumentNode } from '@friends-library/parser';
 import visitor from './EbookFootnoteContentVisitor';
 import { footnoteCallMarkup, footnoteMarker } from './FootnoteVisitor';
 

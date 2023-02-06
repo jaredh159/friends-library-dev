@@ -1,5 +1,6 @@
-import { AstNode, NODE as n, traverse, Visitor } from '@friends-library/parser';
+import { NODE as n, traverse } from '@friends-library/parser';
 import { HTML_DEC_ENTITIES as e } from '@friends-library/types';
+import type { AstNode, Visitor } from '@friends-library/parser';
 import { joinTokens, symbolOutput, trimTrailingPunctuation } from './utils';
 
 export default function evalShortChapterHeading(chapter: AstNode): string {

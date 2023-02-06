@@ -1,4 +1,4 @@
-import { test, expect, describe } from '@jest/globals';
+import { describe, test, expect } from 'vitest';
 import { Parser } from '@friends-library/parser';
 import stripIndent from 'strip-indent';
 import shortChapterHeading from '../short-chapter-heading';
@@ -54,10 +54,10 @@ describe(`shortChapterHeading()`, () => {
     const adoc = stripIndent(`
       [.intermediate-title, short="Book III"]
       == History of the+++<br />+++People Called Quakers
-      
+
       [.division]
       === Book III.
-      
+
       [.blurb]
       ==== From the Restoration of King Charles II to his Declaration of Indulgence.
     `);

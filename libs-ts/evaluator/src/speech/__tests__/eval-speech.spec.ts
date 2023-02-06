@@ -1,6 +1,8 @@
 import fs from 'fs';
+import { describe, test, it, expect } from 'vitest';
 import stripIndent from 'strip-indent';
-import { DocPrecursor, genericDpc } from '@friends-library/types';
+import { genericDpc } from '@friends-library/types';
+import type { DocPrecursor } from '@friends-library/types';
 import { toSpeechText, toSpeechHtml } from '../eval-speech';
 
 describe(`toSpeechHtml()`, () => {
@@ -56,14 +58,14 @@ describe(`toSpeechText()`, () => {
       CHAPTER 1
 
       Hello world.
-      
+
 
       * * *
 
       Published by FRIENDS LIBRARY PUBLISHING.
 
       Find more free books from early Quakers at www.friendslibrary.com.
-      
+
       Public domain in the USA.
 
       Contact the publishers at info@friendslibrary.com.
@@ -89,14 +91,14 @@ describe(`toSpeechText()`, () => {
       CAPITULO 1
 
       Hola world.
-      
+
 
       * * *
 
       Publicado por LA BIBLIOTECA DE LOS AMIGOS.
 
       Encuentre más libros gratis de los primeros Cuáqueros en www.bibliotecadelosamigos.org.
-      
+
       Dominio público en los Estados Unidos de América.
 
       Puede contactarnos en info@bibliotecadelosamigos.org.

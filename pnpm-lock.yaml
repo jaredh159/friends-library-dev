@@ -291,6 +291,23 @@ importers:
     dependencies:
       dotenv: 16.0.3
 
+  libs-ts/evaluator:
+    specifiers:
+      '@friends-library/locale': workspace:*
+      '@friends-library/parser': workspace:*
+      '@friends-library/types': workspace:*
+      '@types/prettier': 2.7.2
+      prettier: 2.8.3
+      strip-indent: ^3.0.0
+    dependencies:
+      '@friends-library/locale': link:../locale
+      '@friends-library/parser': link:../parser
+      '@friends-library/types': link:../types
+    devDependencies:
+      '@types/prettier': 2.7.2
+      prettier: 2.8.3
+      strip-indent: 3.0.0
+
   libs-ts/hilkiah:
     specifiers: {}
 
@@ -1283,6 +1300,10 @@ packages:
 
   /@types/node/18.11.18:
     resolution: {integrity: sha512-DHQpWGjyQKSHj3ebjFI/wRKcqQcdR+MoFBygntYOZytCqNfkd2ZC4ARDJ2DQqhjH5p85Nnd3jhUJIXrszFX/JA==}
+    dev: true
+
+  /@types/prettier/2.7.2:
+    resolution: {integrity: sha512-KufADq8uQqo1pYKVIYzfKbJfBAc0sOeXqGbFaSpv8MRmC/zXgowNZmFcbngndGk922QDmOASEXUZCaY48gs4cg==}
     dev: true
 
   /@types/prop-types/15.7.5:

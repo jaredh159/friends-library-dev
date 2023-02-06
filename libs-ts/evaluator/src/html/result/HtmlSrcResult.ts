@@ -1,7 +1,7 @@
-import { Lang } from '@friends-library/types';
-import { DocumentNode } from '@friends-library/parser';
-import ChapterResult from './ChapterResult';
+import type { Lang } from '@friends-library/types';
+import type { DocumentNode } from '@friends-library/parser';
 import evalEpigraphs from '../eval-epigraphs';
+import ChapterResult from './ChapterResult';
 
 export default abstract class HtmlSrcResult {
   private _chapters: ChapterResult[] | null = null;

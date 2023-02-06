@@ -1,5 +1,6 @@
-import { DocumentNode, traverse, Visitor } from '@friends-library/parser';
-import { Lang } from '@friends-library/types';
+import { traverse } from '@friends-library/parser';
+import type { DocumentNode, Visitor } from '@friends-library/parser';
+import type { Lang } from '@friends-library/types';
 import { joinTokens, chapterMarkup as c } from '../utils';
 import PrimitivesVisitor from './PrimitivesVisitor';
 

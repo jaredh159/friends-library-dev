@@ -2,29 +2,24 @@
   "name": "@friends-library/evaluator",
   "version": "1.4.7",
   "description": "evaluate asciidoc AST producing various output formats",
-  "main": "./dist/index.js",
-  "browser": false,
-  "author": "Jared Henderson <jared@netrivet.com>",
-  "repository": "github:friends-library-dev/evaluator",
-  "license": "MIT",
+  "main": "./src/index.ts",
   "scripts": {
-    "test": "fldev test",
-    "test:watch": "fldev test:watch",
-    "lint": "fldev lint --rule '@typescript-eslint/explicit-module-boundary-types: off'",
-    "lint:fix": "fldev lint:fix",
-    "ts:check": "fldev ts:check",
-    "format": "fldev format",
-    "compile": "fldev ts:compile",
-    "prepublishOnly": "npm run compile",
-    "npub:precheck": "fldev ci"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "old:lint": "fldev lint --rule '@typescript-eslint/explicit-module-boundary-types: off'",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
-    "@friends-library/locale": "^2.1.0",
-    "@friends-library/parser": "^1.5.1",
-    "@friends-library/types": "^7.0.0"
+    "@friends-library/locale": "workspace:*",
+    "@friends-library/parser": "workspace:*",
+    "@friends-library/types": "workspace:*"
   },
   "devDependencies": {
-    "@friends-library/dev": "~4.5.1",
+    "@types/prettier": "2.7.2",
+    "prettier": "2.8.3",
     "strip-indent": "^3.0.0"
   }
 }

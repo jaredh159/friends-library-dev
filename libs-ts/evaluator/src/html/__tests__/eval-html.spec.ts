@@ -1,6 +1,7 @@
-import ChapterResult from '../result/ChapterResult';
-import { getTestCases } from './adoc-test-case';
+import { describe, test, expect } from 'vitest';
+import type ChapterResult from '../result/ChapterResult';
 import * as evaluate from '../eval-html';
+import { getTestCases } from './adoc-test-case';
 
 const SUPPLY_OMITTED_CHAPTER_HEADINGS = true;
 const DONT_SUPPLY_OMITTED_CHAPTER_HEADINGS = false;

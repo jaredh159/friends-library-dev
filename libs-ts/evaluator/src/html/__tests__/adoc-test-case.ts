@@ -1,7 +1,8 @@
 import fs from 'fs';
 import prettier from 'prettier';
 import stripIndent from 'strip-indent';
-import { DocPrecursor, genericDpc } from '@friends-library/types';
+import { genericDpc } from '@friends-library/types';
+import type { DocPrecursor } from '@friends-library/types';
 
 type TestCase = [title: string, expectedContent: string, actualContent: string];
 

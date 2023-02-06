@@ -1,4 +1,5 @@
-import { AstNode, TOKEN as t, Token, Visitable } from '@friends-library/parser';
+import { TOKEN as t } from '@friends-library/parser';
+import type { AstNode, Token, Visitable } from '@friends-library/parser';
 
 let _chapterLines: string[] = [];
 

@@ -1,6 +1,6 @@
-import { describe, test } from '@jest/globals';
-import ChapterResult from '../result/ChapterResult';
-import PdfSrcResult from '../result/PdfSrcResult';
+import { describe, test, expect } from 'vitest';
+import type ChapterResult from '../result/ChapterResult';
+import type PdfSrcResult from '../result/PdfSrcResult';
 import * as evaluate from '../eval-html';
 
 describe(`eval.toPdfSrcHtml()`, () => {

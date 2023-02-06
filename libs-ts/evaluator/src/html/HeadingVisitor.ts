@@ -1,4 +1,4 @@
-import { Visitable, AstNode, Visitor } from '@friends-library/parser';
+import type { Visitable, AstNode, Visitor } from '@friends-library/parser';
 import evalShortChapterHeading from '../short-chapter-heading';
 import { utils as u, chapterMarkup as c } from '../utils';
 

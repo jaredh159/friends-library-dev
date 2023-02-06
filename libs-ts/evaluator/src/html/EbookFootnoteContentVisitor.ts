@@ -1,8 +1,8 @@
-import { Visitor } from '@friends-library/parser';
+import type { Lang } from '@friends-library/types';
+import type { Visitor } from '@friends-library/parser';
 import { utils as u, chapterMarkup as c } from '../utils';
 import PrimitivesVisitor from './PrimitivesVisitor';
 import { ebookFootnoteData } from './FootnoteVisitor';
-import { Lang } from '@friends-library/types';
 
 const EbookFootnoteContentVisitor: Visitor<
   Array<string[]>,

@@ -1,6 +1,7 @@
-import { DocPrecursor } from '@friends-library/types';
-import { Visitor, AstNode, NodeType, traverse } from '@friends-library/parser';
+import { traverse } from '@friends-library/parser';
 import { t, setLocale } from '@friends-library/locale';
+import type { DocPrecursor } from '@friends-library/types';
+import type { Visitor, AstNode, NodeType } from '@friends-library/parser';
 import { symbolOutput } from '../utils';
 import { nodeToSpeechTextLines } from './eval-speech';
 

@@ -1,5 +1,5 @@
-import HtmlSrcResult from './HtmlSrcResult';
 import evalEbookFootnotesContent, { helperNoteSourceMarkup } from '../ebook-footnotes';
+import HtmlSrcResult from './HtmlSrcResult';
 
 export default class EbookSrcResult extends HtmlSrcResult {
   public get notesContentHtml(): string {
