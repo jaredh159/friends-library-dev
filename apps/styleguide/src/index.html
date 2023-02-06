@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Friends Library Style Guide</title>
+    <link rel="stylesheet" href="./paperback-interior.css" />
+    <style>
+      html,
+      body {
+        margin: 0;
+      }
+      html {
+        font-size: 19px;
+        box-sizing: border-box;
+      }
+      *,
+      *:before,
+      *:after {
+        box-sizing: inherit;
+      }
+      .rendered-adoc .chapter,
+      .rendered-adoc .epigraphs {
+        margin-top: 0 !important;
+      }
+      #generated .chapter-heading {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="./index.tsx" /></script>
+  </body>
+</html>
