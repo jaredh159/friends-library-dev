@@ -210,6 +210,12 @@ module.exports = {
       },
     },
     {
+      files: [`apps/styleguide/**`],
+      rules: {
+        'jsx-a11y/accessible-emoji': `off`,
+      },
+    },
+    {
       files: [`**/*.stories.tsx`, `**/cypress/**/*.cy.ts`],
       rules: {
         '@typescript-eslint/explicit-module-boundary-types': `off`,

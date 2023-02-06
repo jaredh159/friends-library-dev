@@ -40,7 +40,10 @@ const visitor: Visitor<Output, Context> = {
       output.push(`${t`Contact the publishers at`} ${t`info@friendslibrary.com`}.\n`);
       output.push(`ISBN: ${dpc.meta.isbn}\n`);
       output.push(`${t`Text revision ${dpc.revision.sha}`} - `);
-      append(output, new Date(dpc.revision.timestamp * 1000).toLocaleDateString());
+      append(
+        output,
+        new Date(dpc.revision.timestamp * 1000).toLocaleDateString(dpc.lang),
+      );
     },
   },
 

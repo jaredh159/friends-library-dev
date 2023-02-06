@@ -105,7 +105,7 @@ describe(`toSpeechText()`, () => {
 
       ISBN: 978-1-64476-029-1
 
-      Revisión de texto 327ceb2 - 1/22/2021
+      Revisión de texto 327ceb2 - 22/1/2021
     `);
     expect(speech).toBe(expected.trim());
   });

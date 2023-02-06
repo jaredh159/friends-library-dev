@@ -1,8 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { adoc as getAdoc } from '../frags';
 import LineNumber from './LineNumber';
 import LineText from './LineText';
-import { adoc as getAdoc } from '../frags';
 
 const StyleDiv = styled.div`
   background: #333;

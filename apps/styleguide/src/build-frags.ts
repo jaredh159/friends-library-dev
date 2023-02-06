@@ -1,14 +1,14 @@
-import fs from 'fs';
+import * as fs from 'fs';
 import path from 'path';
 import { sync as glob } from 'glob';
 import chokidar from 'chokidar';
-import throttle from 'lodash/throttle';
+import throttle from 'lodash.throttle';
 import { genericDpc } from '@friends-library/types';
 import { paperbackInterior } from '@friends-library/doc-css';
 import { evaluate, ParserError } from '@friends-library/evaluator';
 
 const notify = throttle(
-  () => console.log(`🚁 \x1b[35mstyleguide fragments regenerated\x1b[0m`),
+  () => process.stdout.write(`🚁 \x1b[35mstyleguide fragments regenerated\x1b[0m\n`),
   5000,
 );
 
@@ -39,6 +39,7 @@ function regen(): void {
       var result = evaluate.toPdfSrcHtml(dpc);
     } catch (err) {
       if (err instanceof ParserError) {
+        // eslint-disable-next-line no-console
         console.log(err.codeFrame);
         process.exit(1);
       } else {
