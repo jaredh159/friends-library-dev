@@ -1,7 +1,0 @@
-dist/
-.cache/
-src/built-frags.json
-src/paperback-interior.css
-node_modules
-jest.config.js
-.DS_Store
