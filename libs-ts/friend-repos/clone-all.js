@@ -3,6 +3,7 @@ const cloneAll = require(`./dist/clone`).default;
 
 const path = process.argv[2];
 if (!path) {
+  // eslint-disable-next-line no-console
   console.error(`missing path param -- \`clone-all <path> [--delete-existing]\``);
   process.exit(1);
 }

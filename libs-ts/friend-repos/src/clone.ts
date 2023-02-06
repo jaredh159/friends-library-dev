@@ -1,10 +1,10 @@
 import { promises as fs } from 'fs';
-import exec from 'x-exec';
-import { log, c } from 'x-chalk';
-import data from './data';
-import pLimit from 'p-limit';
 import { exec as nodeExec } from 'child_process';
 import { promisify } from 'util';
+import exec from 'x-exec';
+import { log, c } from 'x-chalk';
+import pLimit from 'p-limit';
+import data from './data';
 
 export default async function cloneAll(
   rootPath: string,

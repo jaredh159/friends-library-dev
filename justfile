@@ -15,7 +15,7 @@ test:
   @just nx-run-many test
 
 compile:
-  @pnpm nx-run-many compile
+  @just nx-run-many compile
 
 build:
 	@just nx-run-many build

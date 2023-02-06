@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { Lang } from '@friends-library/types';
+import type { Lang } from '@friends-library/types';
 
 interface Repo {
   lang: Lang;

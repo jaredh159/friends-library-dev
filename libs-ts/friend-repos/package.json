@@ -3,22 +3,16 @@
   "description": "minimalistic node utils for handling friend repos",
   "version": "1.1.1",
   "main": "./dist/index.js",
-  "browser": false,
-  "license": "MIT",
-  "repository": "github:friends-library-dev/friend-repos",
-  "sideEffects": false,
   "bin": {
     "friend-repos-clone-all": "./clone-all.js"
   },
   "scripts": {
-    "test": "true",
-    "test:watch": "fldev test:watch",
-    "lint": "fldev lint",
-    "lint:fix": "fldev lint:fix",
-    "ts:check": "fldev ts:check",
-    "format": "fldev format",
-    "compile": "fldev ts:compile",
-    "prepublishOnly": "npm run compile"
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "compile": "tsc --build",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "node-fetch": "^2.6.1",
@@ -27,8 +21,7 @@
     "x-exec": "^1.2.0"
   },
   "devDependencies": {
-    "@friends-library/dev": "~4.3.1",
-    "@friends-library/types": "^5.0.3",
+    "@friends-library/types": "workspace:*",
     "@types/node-fetch": "^2.5.7"
   }
 }
