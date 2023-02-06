@@ -39,9 +39,8 @@
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.1"
   },
   "devDependencies": {
-    "@friends-library/dev": "~4.5.1",
-    "@friends-library/theme": "^1.2.0",
-    "@friends-library/types": "^7.0.0",
+    "@friends-library/theme": "workspace:*",
+    "@friends-library/types": "workspace:*",
     "@types/classnames": "^2.2.11"
   },
   "alias": {
