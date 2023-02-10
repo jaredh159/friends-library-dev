@@ -6,7 +6,6 @@
   "scripts": {
     "graphql:codegen": "flp-gql-codegen",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",

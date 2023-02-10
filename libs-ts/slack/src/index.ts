@@ -1,4 +1,4 @@
-import { Environment } from '@friends-library/types';
+import type { Environment } from '@friends-library/types';
 import { send, sendJson } from './send';
 
 interface LogFn {
@@ -70,13 +70,16 @@ async function sendAndLog({
   try {
     if (data) {
       await sendJson(msg, data, channel, emoji);
+      // eslint-disable-next-line no-console
       console[logMethod](`#${channel}: ${msg}`, data);
       return;
     }
 
     send(msg, channel, emoji);
+    // eslint-disable-next-line no-console
     console[logMethod](`#${channel}: ${msg}`);
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error(`Error sending slack`, { error, msg, channel, emoji, data });
   }
 }
