@@ -1,11 +1,11 @@
-import { CommandBuilder } from 'yargs';
 import path from 'path';
 import { red, green } from 'x-chalk';
-import { Argv as BaseArgv } from '../type';
+import type { CommandBuilder } from 'yargs';
+import type { Argv as BaseArgv } from '../type';
 import { getRepos } from '../repos';
-import { excludable, forceable } from './helpers';
 import * as git from '../git';
 import { openPullRequest } from '../github';
+import { excludable, forceable } from './helpers';
 
 type Argv = BaseArgv & {
   branch: string;

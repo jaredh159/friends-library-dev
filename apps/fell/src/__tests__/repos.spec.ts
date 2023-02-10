@@ -1,17 +1,20 @@
+import { describe, beforeEach, it, expect, vi } from 'vitest';
 import glob from 'glob';
 import { getRepos, getBranchMap, getStatusGroups } from '../repos';
 import * as git from '../git';
 
-jest.mock(`glob`);
-jest.mock(`../git`);
+vi.mock(`glob`);
+vi.mock(`../git`);
+
+type Mock = ReturnType<typeof vi.fn>;
 
 describe(`getBranchMap()`, () => {
   beforeEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   it(`returns correct map when all on master`, async () => {
-    (<jest.Mock>git.getCurrentBranch).mockResolvedValue(`master`);
+    (git.getCurrentBranch as Mock).mockResolvedValue(`master`);
     const map = await getBranchMap([`repo1`, `repo2`]);
     expect(map.size).toBe(1);
     expect(map.get(`master`)).toEqual([`repo1`, `repo2`]);
@@ -20,8 +23,8 @@ describe(`getBranchMap()`, () => {
 
 describe(`getRepos()`, () => {
   beforeEach(() => {
-    jest.resetAllMocks();
-    (<jest.Mock>glob.sync).mockReturnValueOnce([`en/repo-1`, `en/repo-2`, `es/repo-3`]);
+    vi.resetAllMocks();
+    (glob.sync as Mock).mockReturnValueOnce([`en/repo-1`, `en/repo-2`, `es/repo-3`]);
   });
 
   it(`returns all dirs when no exclude`, async () => {
@@ -50,9 +53,9 @@ describe(`getRepos()`, () => {
   });
 
   it(`returns only repos on branch specified`, async () => {
-    (<jest.Mock>git.getCurrentBranch).mockResolvedValueOnce(`master`);
-    (<jest.Mock>git.getCurrentBranch).mockResolvedValueOnce(`master`);
-    (<jest.Mock>git.getCurrentBranch).mockResolvedValueOnce(`feature-x`);
+    (git.getCurrentBranch as Mock).mockResolvedValueOnce(`master`);
+    (git.getCurrentBranch as Mock).mockResolvedValueOnce(`master`);
+    (git.getCurrentBranch as Mock).mockResolvedValueOnce(`feature-x`);
     const repos = await getRepos([], `master`);
     expect(repos).toEqual([`en/repo-1`, `en/repo-2`]);
   });
@@ -60,9 +63,9 @@ describe(`getRepos()`, () => {
 
 describe(`getStatusGroups()`, () => {
   it(`separates repos into clean and dirty`, async () => {
-    (<jest.Mock>git.isStatusClean).mockResolvedValueOnce(true);
-    (<jest.Mock>git.isStatusClean).mockResolvedValueOnce(false);
-    (<jest.Mock>git.isStatusClean).mockResolvedValueOnce(true);
+    (git.isStatusClean as Mock).mockResolvedValueOnce(true);
+    (git.isStatusClean as Mock).mockResolvedValueOnce(false);
+    (git.isStatusClean as Mock).mockResolvedValueOnce(true);
     const { clean, dirty } = await getStatusGroups([`1`, `2`, `3`]);
     expect(clean).toEqual([`1`, `3`]);
     expect(dirty).toEqual([`2`]);

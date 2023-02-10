@@ -1,7 +1,7 @@
 import { red } from 'x-chalk';
 import env from '@friends-library/env';
 import NodeGit from 'nodegit';
-import { Repo } from './type';
+import type { Repo } from './type';
 
 export async function getCurrentBranch(repoPath: Repo): Promise<string> {
   const repo = await getRepo(repoPath);

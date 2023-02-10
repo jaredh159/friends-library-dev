@@ -1,12 +1,12 @@
-import { sync as glob } from 'glob';
+import glob from 'glob';
 import { isNotFalse } from 'x-ts-utils';
 import env from '@friends-library/env';
-import { Repo } from './type';
+import type { Repo } from './type';
 import * as git from './git';
 
 export async function getRepos(exclude: string[], branch?: string): Promise<string[]> {
   const { DOCS_REPOS_ROOT: ROOT } = env.require(`DOCS_REPOS_ROOT`);
-  const repos = glob(`${ROOT}/{en,es}/*`);
+  const repos = glob.sync(`${ROOT}/{en,es}/*`);
   const notExcluded = repos.filter((repo) => {
     return exclude.reduce((bool, str) => {
       return bool === false ? false : repo.indexOf(str) === -1;

@@ -1,6 +1,6 @@
-import { CommandBuilder } from 'yargs';
 import env from '@friends-library/env';
 import * as friendRepos from '@friends-library/friend-repos';
+import type { CommandBuilder } from 'yargs';
 
 interface Argv {
   deleteExisting: boolean;

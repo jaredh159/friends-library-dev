@@ -1,9 +1,9 @@
 import { red } from 'x-chalk';
-import { CommandBuilder } from 'yargs';
-import { Argv as BaseArgv } from '../type';
+import type { CommandBuilder } from 'yargs';
+import type { Argv as BaseArgv } from '../type';
 import { getRepos } from '../repos';
-import { excludable, scopeable } from './helpers';
 import * as git from '../git';
+import { excludable, scopeable } from './helpers';
 
 type Argv = BaseArgv & {
   branch: string;

@@ -1,7 +1,7 @@
 import { log } from 'x-chalk';
-import { Options } from 'yargs';
 import chalk from 'chalk';
-import { Argv } from '../type';
+import type { Options } from 'yargs';
+import type { Argv } from '../type';
 import { getRepos, getBranchMap } from '../repos';
 import { excludable, relPath } from './helpers';
 

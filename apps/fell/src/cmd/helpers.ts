@@ -1,4 +1,4 @@
-import { Options } from 'yargs';
+import type { Options } from 'yargs';
 
 export function relPath(path: string): string {
   return path.replace(`${process.cwd()}/`, ``);

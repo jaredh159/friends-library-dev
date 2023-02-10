@@ -340,7 +340,7 @@ export default class Parser {
   }
 
   public makeWhileGuard(identifier: string, max?: number): () => boolean {
-    let maxIterations = this.isJestTest() ? 20000 : 50000;
+    let maxIterations = this.isVitestTest() ? 20000 : 50000;
     if (typeof max === `number`) {
       maxIterations = max;
     }
@@ -357,8 +357,8 @@ export default class Parser {
     };
   }
 
-  private isJestTest(): boolean {
-    return typeof process?.env?.JEST_WORKER_ID !== `undefined`;
+  private isVitestTest(): boolean {
+    return typeof process?.env?.VITEST !== `undefined`;
   }
 
   public throwError(msg: string): never {

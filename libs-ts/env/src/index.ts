@@ -11,7 +11,7 @@ function getEnv<T extends string>(required: boolean, ...keys: T[]): { [k in T]: 
     if (
       required &&
       typeof val !== `string` &&
-      typeof process.env.JEST_WORKER_ID === `undefined`
+      typeof process.env.VITEST === `undefined`
     ) {
       throw new Error(`Env var \`${key}\` is required.`);
     }

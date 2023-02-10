@@ -1,9 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import { green } from 'x-chalk';
-import { Options } from 'yargs';
 import { sync as glob } from 'glob';
-import { Argv } from '../type';
+import type { Options } from 'yargs';
+import type { Argv } from '../type';
 import { getRepos } from '../repos';
 import { excludable } from './helpers';
 

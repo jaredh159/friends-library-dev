@@ -1,9 +1,9 @@
-import { Options } from 'yargs';
 import { green } from 'x-chalk';
-import { Argv } from '../type';
+import type { Options } from 'yargs';
+import type { Argv } from '../type';
 import { getRepos, getStatusGroups } from '../repos';
-import { excludable, scopeable } from './helpers';
 import * as git from '../git';
+import { excludable, scopeable } from './helpers';
 
 export async function handler({ exclude, scope }: Argv): Promise<void> {
   const repos = await getRepos(exclude, scope);
