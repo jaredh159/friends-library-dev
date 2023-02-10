@@ -4,9 +4,8 @@ import Zip from 'node-zip';
 import epubCheck from 'epub-check';
 import fs from 'fs-extra';
 import { red } from 'x-chalk';
-import { FileManifest } from '@friends-library/types';
+import type { EbookOptions, FileManifest } from './types';
 import { dirs } from './dirs';
-import { EbookOptions } from './types';
 import format from './format';
 
 export async function writeEbookManifest(

@@ -1,5 +1,4 @@
-import { FileManifest } from '@friends-library/types';
-import { EbookOptions } from './types';
+import type { EbookOptions, FileManifest } from './types';
 import { writeEbookManifest } from './ebook';
 
 export default async function epub(

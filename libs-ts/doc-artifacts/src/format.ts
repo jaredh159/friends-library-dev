@@ -2,7 +2,14 @@ import prettier from 'prettier';
 import env from '@friends-library/env';
 import { red } from 'x-chalk';
 
-export default function format(path: string, code: string | Buffer): string | Buffer {
+export default function format(
+  path: string,
+  code: string | Buffer | undefined,
+): string | Buffer {
+  if (code === undefined) {
+    throw new Error(`Unexpected missing source code at \`${path}\``);
+  }
+
   if (typeof code !== `string`) {
     return code;
   }
@@ -23,7 +30,7 @@ export default function format(path: string, code: string | Buffer): string | Bu
     return formatted;
   } catch (err) {
     if (env.truthy(`DEBUG_ARTIFACT_SRC`)) {
-      console.log(String(err));
+      process.stdout.write(`${err}\n`);
       red(`Error formatting cource code at ${path}, using un-formatted source instead`);
       return code;
     } else {

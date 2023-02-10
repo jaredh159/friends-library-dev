@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs-extra';
 import env from '@friends-library/env';
-import { Options } from './types';
+import type { Options } from './types';
 
 export function dirs(opts: Options): { ARTIFACT_DIR: string; SRC_DIR: string } {
   const namespace = opts.namespace || `ns_auto_gen_${Date.now()}`;

@@ -1,10 +1,9 @@
-import fs from 'fs-extra';
 import { spawn } from 'child_process';
-import { FileManifest } from '@friends-library/types';
+import fs from 'fs-extra';
 import env from '@friends-library/env';
-import { EbookOptions } from './types';
-import { writeEbookManifest } from './ebook';
 import { red } from 'x-chalk';
+import type { EbookOptions, FileManifest } from './types';
+import { writeEbookManifest } from './ebook';
 
 export default async function mobi(
   manifest: FileManifest,
@@ -40,7 +39,7 @@ function kindlegen(precursorPath: string, filenameNoExt: string): Promise<void> 
     });
 
     stream.on(`close`, (code) => {
-      if ([0, 1, 2].includes(code) === false || errors.length) {
+      if ([0, 1, 2].includes(code ?? -1) === false || errors.length) {
         const errorsString = errors.length ? `\n${errors.join(`\n`)}` : ``;
         reject(new Error(`kindlegen returned code ${code}${errorsString}`));
         return;

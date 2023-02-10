@@ -1,7 +1,6 @@
 import fs from 'fs-extra';
-import { FileManifest } from '@friends-library/types';
+import type { FileManifest, Options } from './types';
 import { dirs } from './dirs';
-import { Options } from './types';
 import format from './format';
 
 export default async function appEbook(

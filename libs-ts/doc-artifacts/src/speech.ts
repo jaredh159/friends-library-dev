@@ -1,7 +1,6 @@
 import fs from 'fs-extra';
-import { FileManifest } from '@friends-library/types';
+import type { Options, FileManifest } from './types';
 import { dirs } from './dirs';
-import { Options } from './types';
 
 export default async function speech(
   manifest: FileManifest,

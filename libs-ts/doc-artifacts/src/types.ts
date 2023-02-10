@@ -1,3 +1,7 @@
+export interface FileManifest {
+  [key: string]: string | Buffer;
+}
+
 export interface Options {
   namespace?: string;
   srcPath?: string;
