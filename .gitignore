@@ -1,6 +1,0 @@
-dist/
-.cache/
-node_modules
-jest.config.js
-.DS_Store
-src/preview.css
