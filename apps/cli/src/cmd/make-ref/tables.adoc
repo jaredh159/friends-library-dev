@@ -1,0 +1,2745 @@
+== Tables
+
+=== Table 1. An Index of the Number of Prosecutions
+
+// --lint-ignore - asciidoc-source: https://gist.github.com/jaredh159/147c9e8db25621a5fbfefc130ecbc512/raw/2de6de765e3e9f0ac339e99605b0cc5afc1701b7/gough-1.adoc
+++++
+<table class="tableblock frame-all grid-all stretch table-tail-align-center table-header-tail-x-small">
+  <colgroup>
+    <col style="width: 25%;"/>
+    <col style="width: 12.5%;"/>
+    <col style="width: 12.5%;"/>
+    <col style="width: 12.5%;"/>
+    <col style="width: 12.5%;"/>
+    <col style="width: 12.5%;"/>
+    <col style="width: 12.5%;"/>
+  </colgroup>
+  <thead>
+    <tr>
+      <th class="tableblock halign-left valign-top"><em>Counties</em></th>
+      <th class="tableblock halign-left valign-top"><em>In the</em> Excheq.</th>
+      <th class="tableblock halign-left valign-top"><em>In</em> Ecc. Courts</th>
+      <th class="tableblock halign-left valign-top"><em>Other</em> Courts.</th>
+      <th class="tableblock halign-left valign-top"><em>In all.</em></th>
+      <th class="tableblock halign-left valign-top"><em>Impri-soned.</em></th>
+      <th class="tableblock halign-left valign-top"><em>Died Prisoners</em></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Bedfordshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">7</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">14</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">2</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Berkshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">13</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">20</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">3</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Buckingh.</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">11</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">3</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">2</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">16</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">8</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Cambridgsh.</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">12</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">5</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">18</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">9</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Cheshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">11</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">12</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">2</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Cornwall</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">12</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">9</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">22</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Cumberland</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">37</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">10</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">11</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">58</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">27</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">3</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Derbyshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">5</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">9</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">3</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Devonshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">15</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">18</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">33</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">8</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Dorsetshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">2</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">4</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">4</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">10</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">2</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Durham</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">9</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">2</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">17</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">10</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Essex</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">42</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">9</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">57</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">9</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Glocestersh.</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">20</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">3</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">2</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">25</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">3</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Hampshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">19</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">2</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">22</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Hertfordsh.</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">4</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">8</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">18</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">3</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Herefordsh.</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">4</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">2</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Huntington.</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">4</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">2</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Kent</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">16</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">11</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">27</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">4</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Lancashire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">2</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">2</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">16</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">20</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">11</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Leicestersh.</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">11</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">17</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Lincolnshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">16</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">5</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">4</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">25</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">4</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">London</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">23</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">19</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">42</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Middlesex</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">74</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">86</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">9</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Norfolk</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">20</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">7</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">2</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">29</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">8</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Northampt.</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">8</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">13</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">4</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">25</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">10</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Nottingham.</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">5</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">12</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">3</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Oxfordshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">17</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">4</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">22</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">4</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Rutlandshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">2</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">3</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">2</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Somersetsh.</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">76</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">22</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">9</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">107</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">30</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Staffordsh.</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">&#8212;</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">9</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">10</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">4</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Suffolk</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">24</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">7</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">32</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">5</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Surry</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">34</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">21</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">21</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">76</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">13</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Sussex</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">36</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">3</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">4</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">43</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">11</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Warwicksh.</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">8</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">18</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">3</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">29</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Westmorl.</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">5</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">2</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">2</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">9</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">4</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Wiltshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">12</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">18</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">4</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Worcestersh.</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">4</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">10</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">8</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">22</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">5</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Yorkshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">55</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">61</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">20</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">136</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">46</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">2</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Wales</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">12</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">10</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">5</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">27</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">9</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong><em>Totals:</em></strong></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>659</strong></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>367</strong></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>154</strong></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>1180</strong></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>302</strong></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>9</strong></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+++++
+
+=== 2. Table 2
+
+++++
+<table class="tableblock frame-all grid-all stretch table-header-tail-x-small table-last-col-secondary">
+  <colgroup>
+    <col style="width: 41.6666%;"/>
+    <col style="width: 4.1666%;"/>
+    <col style="width: 4.1666%;"/>
+    <col style="width: 4.1666%;"/>
+    <col style="width: 4.1666%;"/>
+    <col style="width: 4.1666%;"/>
+    <col style="width: 4.1666%;"/>
+    <col style="width: 33.3338%;"/>
+  </colgroup>
+  <thead>
+    <tr>
+      <th class="tableblock halign-left valign-top">From 1704 to 1722</th>
+      <th class="tableblock halign-left valign-top" colspan="3">Sums demanded</th>
+      <th class="tableblock halign-left valign-top" colspan="3">Value taken</th>
+      <th class="tableblock halign-left valign-top"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="tableblock halign-left valign-top"></td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><em>£.</em></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><em>.s</em></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><em>.d</em></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><em>£.</em></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><em>.s</em></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><em>.d</em></p>
+      </td>
+      <td class="tableblock halign-left valign-top"></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">James Haviland</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">8</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">61</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top"></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Thomas Strong</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">10</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">15</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">11</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top"></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Richard Cafe</p>
+      </td>
+      <td class="tableblock halign-left valign-top"></td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">13</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">37</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">11</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">By Sequestration</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Thomas Drape</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">4</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">10</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">50</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top"></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Robert Holiday</p>
+      </td>
+      <td class="tableblock halign-left valign-top"></td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">11</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">60</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">By Sequestration</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Richard Allen</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">15</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">80</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">By Do.</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Henry Wake</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">4</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">30</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">By Do.</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Joseph J. Williams</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">2</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">30</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">By Do.</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">John Taylor</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">5</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">8</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">44</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">18</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top"></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Alexander Moore</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">15</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">11</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">87</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">16</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">11</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Imprisoned</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Jeremiah Ellis</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">44</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top"></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">George Bewley</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">3</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">10</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">93</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">10</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top"></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Samuel Tulley &amp; Thomas Warner</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">3</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">2</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">8</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">75</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">16</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top"></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">William Pearson</p>
+      </td>
+      <td class="tableblock halign-left valign-top"></td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">13</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">19</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">16</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top"></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Jonathan Peasley</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">7</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">237</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">5</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">And twice imprisoned</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Daniel Williams</p>
+      </td>
+      <td class="tableblock halign-left valign-top"></td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">20</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">In Goods &amp; Estate worth 80l. and 15 Months Imprisonment</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Abram Butterfield</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">8</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">90</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top"></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Roger Jenkins</p>
+      </td>
+      <td class="tableblock halign-left valign-top"></td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">14</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">84</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">10</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">By Sequestration</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Thomas Jenkins</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">5</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">67</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">10</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">By Do</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Thomas Ellwood</p>
+      </td>
+      <td class="tableblock halign-left valign-top"></td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">12</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">24</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">7</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top"></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top" colspan="8">
+        <p class="tableblock">The above Sums are exclusive of their own Expense in those Suits, and suffering many Imprisonments in the Course
+          of the Proceedings, and these are only a Few among the many we could produce.</p>
+        <p class="tableblock">N. B. These Accounts appear to be drawn up about the Year 1728.</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+++++
+
+=== 3. Table 3
+
+++++
+<table class="tableblock frame-all grid-all stretch table-tail-align-right">
+  <colgroup>
+    <col style="width: 83.3333%;"/>
+    <col style="width: 8.3333%;"/>
+    <col style="width: 8.3334%;"/>
+  </colgroup>
+  <thead>
+    <tr>
+      <th class="tableblock halign-left valign-top"></th>
+      <th class="tableblock halign-left valign-top"><em>s.</em></th>
+      <th class="tableblock halign-left valign-top"><em>d.</em></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">For Easter-Offerings upon every person,</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">3</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">A Cock,</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">2</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">A Hen,</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">A Goose,</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">4</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">A Duck,</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">4</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">A Sow,</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">8</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">A Cow,</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Turnips for every acre sowed in the field,</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">4</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+++++
+
+=== 4. Table 4
+
+++++
+<table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+    <col style="width: 61.5384%;"/>
+    <col style="width: 15.3846%;"/>
+    <col style="width: 7.6923%;"/>
+    <col style="width: 7.6923%;"/>
+    <col style="width: 7.6924%;"/>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td class="tableblock halign-left valign-top" colspan="2"></td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><em>£.</em></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><em>s.</em></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><em>d.</em></p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top" colspan="2">
+        <p class="tableblock">7 Quarters and 4 bushels of Wheat,</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">11</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top" colspan="2">
+        <p class="tableblock">16 Quarters of Malt London measure,</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">12</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">16</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><em>For a demand of 8s.</em></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>Taken</strong></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>23</strong></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>16</strong></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>0</strong></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+++++
+
+=== 5. Table 5
+
+++++
+<table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+    <col style="width: 61.5384%;"/>
+    <col style="width: 15.3846%;"/>
+    <col style="width: 7.6923%;"/>
+    <col style="width: 7.6923%;"/>
+    <col style="width: 7.6924%;"/>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td class="tableblock halign-left valign-top" colspan="2"></td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><em>£.</em></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><em>s.</em></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><em>d.</em></p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top" colspan="2">
+        <p class="tableblock">14 Cows, 6 heifers and 3 yearlings, valued at</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">11</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top" colspan="2">
+        <p class="tableblock">A wheat mow, a bean mow, and about 20 bushels of beans,</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">19</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top" colspan="2">
+        <p class="tableblock">2 Beds, 2 Bedsteads and Bedding,</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top" colspan="2">
+        <p class="tableblock">2 Sides of bacon, 10 hundred of cheese,</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">13</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">5</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top" colspan="2">
+        <p class="tableblock">All the rest of the goods in and about the house,</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">40</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top" colspan="2">
+        <p class="tableblock">Three ricks of hay,</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">12</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top" colspan="2">
+        <p class="tableblock"><em>7£. per Annum</em> free land during his life,</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">70</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">0</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><em>For about 7£. value</em></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>Taken</strong></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>237</strong></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>5</strong></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>0</strong></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+++++
+
+=== 6. Table 6
+
+++++
+<table class="tableblock frame-all grid-all stretch">
+  <colgroup>
+    <col style="width: 61.5384%;"/>
+    <col style="width: 15.3846%;"/>
+    <col style="width: 7.6923%;"/>
+    <col style="width: 7.6923%;"/>
+    <col style="width: 7.6924%;"/>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td class="tableblock halign-left valign-top" colspan="2"></td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><em>£.</em></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><em>s.</em></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><em>d.</em></p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top" colspan="2">
+        <p class="tableblock">On Richard Ward, for tithes,</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">4</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">19</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">9¼</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top" colspan="2">
+        <p class="tableblock">for one third costs,</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">12</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">7</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">9</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"></td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>In all</strong></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>17</strong></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>7</strong></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>6¼</strong></p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top" colspan="2">
+        <p class="tableblock">On Benjamin Burn, for tithes,</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">2</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">17</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top" colspan="2">
+        <p class="tableblock">for one third costs,</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">12</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">7</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">9</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"></td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>In all</strong></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>15</strong></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>5</strong></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>3</strong></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+++++
+
+=== 7. Table 7
+
+++++
+<table class="tableblock frame-all grid-all stretch table-valign-middle table-vertical-lines table-align-center">
+  <colgroup>
+    <col style="width: 7.6923%;"/>
+    <col style="width: 15.3846%;"/>
+    <col style="width: 15.3846%;"/>
+    <col style="width: 15.3846%;"/>
+    <col style="width: 15.3846%;"/>
+    <col style="width: 15.3846%;"/>
+    <col style="width: 15.3847%;"/>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">The</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><em>Eleventh</em>
+          <br />
+          <em>Twelfth</em>
+          <br />
+          <em>First</em>
+          <br />
+          <em>Second</em>
+          <br />
+          <em>Third</em>
+          <br />
+          <em>Fourth</em>
+          <br />
+          <em>Fifth</em>
+          <br />
+          <em>Sixth</em>
+          <br />
+          <em>Seventh</em>
+          <br />
+          <em>Eighth</em>
+          <br />
+          <em>Ninth</em>
+          <br />
+          <em>Tenth</em>
+          <br />
+        </p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Month called</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><em>January</em>
+          <br />
+          <em>February</em>
+          <br />
+          <em>March</em>
+          <br />
+          <em>April</em>
+          <br />
+          <em>May</em>
+          <br />
+          <em>June</em>
+          <br />
+          <em>July</em>
+          <br />
+          <em>August</em>
+          <br />
+          <em>September</em>
+          <br />
+          <em>October</em>
+          <br />
+          <em>November</em>
+          <br />
+          <em>December</em>
+          <br />
+        </p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">shall be reckoned, and styled the</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><em>First</em>
+          <br />
+          <em>Second</em>
+          <br />
+          <em>Third</em>
+          <br />
+          <em>Fourth</em>
+          <br />
+          <em>Fifth</em>
+          <br />
+          <em>Sixth</em>
+          <br />
+          <em>Seventh</em>
+          <br />
+          <em>Eighth</em>
+          <br />
+          <em>Ninth</em>
+          <br />
+          <em>Tenth</em>
+          <br />
+          <em>Eleventh</em>
+          <br />
+          <em>Twelfth</em>
+          <br />
+        </p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Month of the next, and every succeeding Year.</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+++++
+
+=== 8. Table 8
+
+++++
+<table class="tableblock frame-all grid-all stretch table-tail-align-right">
+  <colgroup>
+    <col style="width: 70%;"/>
+    <col style="width: 30%;"/>
+  </colgroup>
+  <tbody>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Bedfordshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">30</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Leicestershire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">37</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Berkshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">37</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Loncolnshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">12</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Bristol</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">103</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">London and Middlesex</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">66</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Buckinghamshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">19</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Norfolk</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">52</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Cambridgeshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">8</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Northampton</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">59</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Cheshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">9</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Nottinghamshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Cornwall</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">32</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Oxon</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">7</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Cumberland</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">22</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Shropshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">18</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Derbyshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Somersetshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">36</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Devonshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">104</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Southampton</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">15</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Dorsetshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">13</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Staffordshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">1</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Durham</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">39</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Suffolk</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">79</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Ely</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">11</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Surrey</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">29</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Essex</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">10</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Sussex</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">17</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Gloucestershire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">66</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Warwickshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">31</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Hertfordshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">18</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Westmoreland</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">5</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Herefordshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">18</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Wiltshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">34</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Huntingdonshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">10</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Worcestershire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">15</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Kent</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">16</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Yorkshire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">279</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Lancashire</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">73</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">Wales</p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">30</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>Total of Prisoners</strong></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>1460</strong></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+++++
+
+=== Table 9 (Rutty 2)
+
+++++
+<table class="tableblock frame-all grid-all spread prisoner-table">
+  <colgroup>
+    <col style="width: 12.5%" />
+    <col style="width: 12.5%" />
+    <col style="width: 12.5%" />
+    <col style="width: 12.5%" />
+    <col style="width: 50%" />
+  </colgroup>
+  <thead>
+    <tr>
+      <th class="tableblock halign-left valign-top" colspan="4">
+        <span class="force-center">K. George II.</span>
+      </th>
+      <th class="tableblock halign-left valign-top">
+        <span class="force-center">Prisoners</span>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">Years</p></td>
+      <td class="tableblock halign-left valign-top" colspan="3">
+        <p class="tableblock"><span class="force-center">Sums.</span></p>
+      </td>
+      <td class="tableblock halign-left valign-top" rowspan="4"></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"></td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><em>£.</em></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><em>.s</em></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><em>.d</em></p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1727</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1939</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1728</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1777</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">2</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1729</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1921</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+      <td class="tableblock halign-left valign-top" rowspan="5">
+        <p class="tableblock">
+          <span class="prisoner-desc"
+            >Three friends of Charlemont meeting, on account of tithes.</span
+          >
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1730</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1368</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1731</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1589</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">19</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">9½</p></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1732</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1591</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1733</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1585</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1734</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1534</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+      <td class="tableblock halign-left valign-top" rowspan="9">
+        <p class="tableblock">
+          <span class="prisoner-desc"
+            >James Simpson, and Joshua Deale, in Cavan gaol, through the severity of Hugh
+            Reilly, a popish tithe-taker under Witnel Sneyd, vicar-general of Kilmore and
+            Ardagh, and continued prisoners above a year.</span
+          >
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1735</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1458</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1736</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1485</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">18</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1737</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1599</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">17</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1738</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1486</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1739</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1511</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">8 <span class="faux-footnote">*</span></p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1740</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1884</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">0</p></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1741</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1738</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">15</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1742</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1532</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1743</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1460</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6 <span class="faux-footnote">†</span></p>
+      </td>
+      <td class="tableblock halign-left valign-top" rowspan="9">
+        <p class="tableblock">
+          <span class="prisoner-desc"
+            >Joshua Thompson of Carlow Monthly meeting, on account of tithes, who
+            continued a prisoner for some time.</span
+          >
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1744</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1505</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">11½</p></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1745</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1687</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">14</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1746</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1687</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">14</p></td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">6¾ <span class="faux-footnote">‡</span></p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1747</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1450</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">3½ <span class="faux-footnote">§</span></p>
+      </td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1748</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1605</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1½</p></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1749</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1564</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1750</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1760</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">7</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">8</p></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1751</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1743</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">19</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">0½</p></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>Total</strong></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>40469</strong></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>17</strong></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>6¼</strong></p>
+      </td>
+      <td class="tableblock halign-left valign-top"></td>
+    </tr>
+  </tbody>
+</table>
+++++
+
+=== Table 10. Rutty 1
+
+++++
+<table class="tableblock frame-all grid-all spread">
+  <colgroup>
+    <col style="width: 36.3636%" />
+    <col style="width: 18.1818%" />
+    <col style="width: 9.0909%" />
+    <col style="width: 9.0909%" />
+    <col style="width: 9.0909%" />
+    <col style="width: 18.1819%" />
+  </colgroup>
+  <thead>
+    <tr>
+      <th class="tableblock halign-left valign-top"><em>Under the Reign of</em></th>
+      <th class="tableblock halign-left valign-top">No. of Years they reigned.</th>
+      <th class="tableblock halign-left valign-top" colspan="3">Value Taken.</th>
+      <th class="tableblock halign-left valign-top">Prisoners.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="tableblock halign-left valign-top"></td>
+      <td class="tableblock halign-left valign-top"></td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><em>£.</em></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><em>.s</em></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><em>.d</em></p>
+      </td>
+      <td class="tableblock halign-left valign-top"></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">The Protectors, (so called)</p>
+      </td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">5</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">86</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">6</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">101</p></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">K. Charles II.</p>
+      </td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">36</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">3824</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">8½</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">780</p></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">K. James II.</p>
+      </td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">4</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">1583</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">14</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">3</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">K. William &amp; Q. Mary</p>
+      </td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">13724</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">9</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">3½</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">33</p></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">Q. Ann</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">16199</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">15</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">3½</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock">K. George I.</p>
+      </td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">22513</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">14</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+      <td class="tableblock halign-left valign-top"><p class="tableblock">27</p></td>
+    </tr>
+    <tr>
+      <td class="tableblock halign-left valign-top"></td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>In all</strong></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>57933</strong></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>3</strong></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>10½</strong></p>
+      </td>
+      <td class="tableblock halign-left valign-top">
+        <p class="tableblock"><strong>966</strong></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+++++
