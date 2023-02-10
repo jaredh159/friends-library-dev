@@ -376,6 +376,23 @@ importers:
       '@types/lodash.mapvalues': 4.6.7
       '@types/node': 14.18.36
 
+  libs-ts/dpc-fs:
+    specifiers:
+      '@friends-library/db': workspace:*
+      '@friends-library/env': workspace:*
+      '@friends-library/types': workspace:*
+      '@types/glob': ^7.1.3
+      cross-fetch: ^3.1.5
+      glob: ^7.1.4
+    dependencies:
+      '@friends-library/db': link:../db
+      '@friends-library/env': link:../env
+      '@friends-library/types': link:../types
+      cross-fetch: 3.1.5
+      glob: 7.2.3
+    devDependencies:
+      '@types/glob': 7.2.0
+
   libs-ts/env:
     specifiers:
       dotenv: 16.0.3
@@ -1430,7 +1447,7 @@ packages:
   /@octokit/types/2.16.2:
     resolution: {integrity: sha512-O75k56TYvJ8WpAakWwYRN8Bgu60KrmX0z1KqFp1kNiFNkgW+JW+9EBKZ+S33PU6SLvbihqd+3drvPxKK68Ee8Q==}
     dependencies:
-      '@types/node': 18.11.18
+      '@types/node': 14.18.36
     dev: false
 
   /@octokit/types/6.41.0:
@@ -1500,7 +1517,7 @@ packages:
     dependencies:
       '@types/http-cache-semantics': 4.0.1
       '@types/keyv': 3.1.4
-      '@types/node': 18.11.18
+      '@types/node': 14.18.36
       '@types/responselike': 1.0.0
     dev: false
 
@@ -1531,7 +1548,7 @@ packages:
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 18.11.18
+      '@types/node': 14.18.36
     dev: true
 
   /@types/glob/8.0.1:
@@ -1560,7 +1577,7 @@ packages:
   /@types/keyv/3.1.4:
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
     dependencies:
-      '@types/node': 18.11.18
+      '@types/node': 14.18.36
     dev: false
 
   /@types/lodash.camelcase/4.3.7:
@@ -1634,10 +1651,10 @@ packages:
 
   /@types/node/14.18.36:
     resolution: {integrity: sha512-FXKWbsJ6a1hIrRxv+FoukuHnGTgEzKYGi7kilfMae96AL9UNkPFNWJEEYWzdRI9ooIkbr4AKldyuSTLql06vLQ==}
-    dev: true
 
   /@types/node/18.11.18:
     resolution: {integrity: sha512-DHQpWGjyQKSHj3ebjFI/wRKcqQcdR+MoFBygntYOZytCqNfkd2ZC4ARDJ2DQqhjH5p85Nnd3jhUJIXrszFX/JA==}
+    dev: true
 
   /@types/nodegit/0.26.15:
     resolution: {integrity: sha512-gENag14KBX63P83D8ZQt6FtElWJ624Y3hY8aPtMR4A0fM3+iJAsWRlZ9v8ONahZTxTHFmKWrH1c1IZTeGJu3fA==}
@@ -1697,7 +1714,7 @@ packages:
   /@types/responselike/1.0.0:
     resolution: {integrity: sha512-85Y2BjiufFzaMIlvJDvTTB8Fxl2xfLo4HgmHzVBz08w4wDePCTjYw66PdrolO0kzli3yam/YCgRufyo1DdQVTA==}
     dependencies:
-      '@types/node': 18.11.18
+      '@types/node': 14.18.36
     dev: false
 
   /@types/roman-numerals/0.3.0:

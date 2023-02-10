@@ -1,6 +1,6 @@
 import path from 'path';
 import { execSync } from 'child_process';
-import { FsDocPrecursor } from '../types';
+import type { FsDocPrecursor } from '../types';
 
 export default function revision(dpc: FsDocPrecursor): void {
   const cmd = `git log --max-count=1 --pretty="%h|%ct" -- .`;

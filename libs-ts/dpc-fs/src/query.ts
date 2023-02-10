@@ -1,9 +1,10 @@
 import '@friends-library/env/load';
 import env from '@friends-library/env';
-import { getClient, gql, ClientConfig, ClientType } from '@friends-library/db';
-import { FsDocPrecursor } from './types';
+import { getClient, gql } from '@friends-library/db';
 import fetch from 'cross-fetch';
-import { Editions } from './graphql/Editions';
+import type { ClientConfig, ClientType } from '@friends-library/db';
+import type { FsDocPrecursor } from './types';
+import type { Editions } from './graphql/Editions';
 
 export async function getByPattern(
   pattern?: string,

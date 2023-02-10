@@ -1,3 +1,3 @@
-import { DocPrecursor } from '@friends-library/types';
+import type { DocPrecursor } from '@friends-library/types';
 
 export type FsDocPrecursor = DocPrecursor & { fullPath: string };

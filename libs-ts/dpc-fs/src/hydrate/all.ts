@@ -1,8 +1,9 @@
-import { FsDocPrecursor } from '../types';
+import type { FsDocPrecursor } from '../types';
+import type { HydrateAsciidocConfig } from './asciidoc';
 import revision from './revision';
 import config from './config';
 import customCode from './custom-code';
-import asciidoc, { HydrateAsciidocConfig } from './asciidoc';
+import asciidoc from './asciidoc';
 
 export default function all(
   dpcs: FsDocPrecursor[],
