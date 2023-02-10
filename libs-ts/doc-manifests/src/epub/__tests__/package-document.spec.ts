@@ -1,6 +1,7 @@
-import { describe, it, expect } from '@jest/globals';
-import { DocPrecursor, genericDpc, Lang } from '@friends-library/types';
+import { describe, it, expect } from 'vitest';
+import { genericDpc } from '@friends-library/types';
 import { evaluate } from '@friends-library/evaluator';
+import type { DocPrecursor, Lang } from '@friends-library/types';
 import { packageDocument } from '../package-document';
 
 describe(`packageDocument()`, () => {

@@ -1,5 +1,6 @@
-import { DocPrecursor, FileManifest, Lang } from '@friends-library/types';
-import { ChapterResult, EbookSrcResult } from '@friends-library/evaluator';
+import type { FileManifest } from '@friends-library/doc-artifacts';
+import type { DocPrecursor, Lang } from '@friends-library/types';
+import type { ChapterResult, EbookSrcResult } from '@friends-library/evaluator';
 import { frontmatter as commonFrontmatter } from '../frontmatter';
 
 export default function frontmatter(

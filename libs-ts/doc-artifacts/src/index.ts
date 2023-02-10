@@ -8,6 +8,7 @@ import appEbook from './app-ebook';
 
 export { pdf, epub, mobi, speech, appEbook };
 export { deleteNamespaceDir, dirs } from './dirs';
+export type { FileManifest };
 
 export async function create(
   type: ArtifactType,

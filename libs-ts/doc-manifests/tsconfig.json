@@ -1,16 +1,3 @@
 {
-  "compilerOptions": {
-    "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
-    "rootDir": "./src",
-    "outDir": "./dist",
-    "declaration": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "downlevelIteration": true,
-    "target": "ES2019",
-    "module": "CommonJS",
-    "incremental": true
-  }
+  "extends": "../../tsconfig.json"
 }

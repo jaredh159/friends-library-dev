@@ -1,9 +1,9 @@
 import moment from 'moment';
-import { DocPrecursor } from '@friends-library/types';
-import { EbookSrcResult } from '@friends-library/evaluator';
 import { t, setLocale } from '@friends-library/locale';
+import type { DocPrecursor } from '@friends-library/types';
+import type { EbookSrcResult } from '@friends-library/evaluator';
+import type { EbookConfig } from '../types';
 import ebookFrontmatter from './frontmatter';
-import { EbookConfig } from '../types';
 
 export function packageDocument(
   dpc: DocPrecursor,

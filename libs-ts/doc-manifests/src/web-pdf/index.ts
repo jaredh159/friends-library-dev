@@ -1,6 +1,7 @@
 import { webPdf as css } from '@friends-library/doc-css';
-import { DocPrecursor, FileManifest } from '@friends-library/types';
 import { evaluate as eval } from '@friends-library/evaluator';
+import type { FileManifest } from '@friends-library/doc-artifacts';
+import type { DocPrecursor } from '@friends-library/types';
 import wrapHtmlBody from '../utils';
 import { lineSvgMarkup } from '../pdf-shared';
 import { getCustomCss } from '../custom-css';

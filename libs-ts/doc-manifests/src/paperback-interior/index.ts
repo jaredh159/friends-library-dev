@@ -1,13 +1,15 @@
 import { paperbackInterior as paperbackInteriorCss } from '@friends-library/doc-css';
-import { DocPrecursor, FileManifest, PrintSize } from '@friends-library/types';
 import { getPrintSizeDetails } from '@friends-library/lulu';
-import { evaluate as eval, PdfSrcResult } from '@friends-library/evaluator';
+import { evaluate as eval } from '@friends-library/evaluator';
+import type { FileManifest } from '@friends-library/doc-artifacts';
+import type { DocPrecursor, PrintSize } from '@friends-library/types';
+import type { PdfSrcResult } from '@friends-library/evaluator';
+import type { PaperbackInteriorConfig } from '../types';
 import wrapHtmlBody from '../utils';
-import frontmatter from './frontmatter';
 import { lineSvgMarkup, runningHead } from '../pdf-shared';
 import { getCustomCss } from '../custom-css';
 import { rangeFromVolIdx } from '../faux-volumes';
-import { PaperbackInteriorConfig } from '../types';
+import frontmatter from './frontmatter';
 
 export default async function paperbackInteriorManifests(
   dpc: DocPrecursor,

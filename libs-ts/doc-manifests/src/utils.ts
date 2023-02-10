@@ -1,4 +1,4 @@
-import { Lang } from '@friends-library/types';
+import type { Lang } from '@friends-library/types';
 
 export default function wrapHtmlBody(
   bodyHtml: string,

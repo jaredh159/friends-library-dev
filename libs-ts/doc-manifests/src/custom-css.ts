@@ -1,4 +1,4 @@
-import { DocPrecursor, ArtifactType } from '@friends-library/types';
+import type { DocPrecursor, ArtifactType } from '@friends-library/types';
 
 export function getCustomCss(
   customCss: DocPrecursor['customCode']['css'],

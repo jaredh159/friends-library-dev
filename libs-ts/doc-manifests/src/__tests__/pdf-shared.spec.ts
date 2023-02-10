@@ -1,5 +1,5 @@
-import { DocPrecursor } from '@friends-library/types';
-import { describe, expect, it } from '@jest/globals';
+import { describe, it, expect } from 'vitest';
+import type { DocPrecursor } from '@friends-library/types';
 import { runningHead } from '../pdf-shared';
 
 describe(`runningHead()`, () => {

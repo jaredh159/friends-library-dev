@@ -1,12 +1,14 @@
-import { DocPrecursor, FileManifest, Lang } from '@friends-library/types';
 import { mobi as mobiCss, epub as epubCss } from '@friends-library/doc-css';
-import { evaluate as eval, EbookSrcResult } from '@friends-library/evaluator';
-import { packageDocument } from './package-document';
+import { evaluate as eval } from '@friends-library/evaluator';
+import type { FileManifest } from '@friends-library/doc-artifacts';
+import type { DocPrecursor, Lang } from '@friends-library/types';
+import type { EbookSrcResult } from '@friends-library/evaluator';
+import type { EbookConfig } from '../types';
 import wrapHtmlBody from '../utils';
+import { getCustomCss } from '../custom-css';
+import { packageDocument } from './package-document';
 import { nav } from './nav';
 import ebookFrontmatter from './frontmatter';
-import { getCustomCss } from '../custom-css';
-import { EbookConfig } from '../types';
 
 export default async function ebook(
   dpc: DocPrecursor,

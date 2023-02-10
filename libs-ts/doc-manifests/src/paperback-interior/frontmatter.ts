@@ -1,11 +1,11 @@
 import { toRoman } from 'roman-numerals';
+import type { DocPrecursor } from '@friends-library/types';
+import type { PdfSrcResult, ChapterResult } from '@friends-library/evaluator';
 import {
   originalTitle as commonOriginalTitle,
   copyright as commonCopyright,
   halfTitle as commonHalfTitle,
 } from '../frontmatter';
-import { DocPrecursor } from '@friends-library/types';
-import { PdfSrcResult, ChapterResult } from '@friends-library/evaluator';
 import { rangeFromVolIdx } from '../faux-volumes';
 
 export default function frontmatter(
@@ -27,7 +27,7 @@ function toc(src: PdfSrcResult, dpc: DocPrecursor, volIdx?: number): string {
   if (src.numChapters <= 3) {
     return ``;
   }
-  const toEntry = useMultiColLayout(src.chapters) ? multiColTocEntry : tocEntry;
+  const toEntry = shouldUseMultiColLayout(src.chapters) ? multiColTocEntry : tocEntry;
   return `
     <div class="toc own-page">
       <h1>${dpc.lang === `en` ? `Contents` : `Índice`}</h1>
@@ -39,7 +39,7 @@ function toc(src: PdfSrcResult, dpc: DocPrecursor, volIdx?: number): string {
   `;
 }
 
-export function useMultiColLayout(chapters: ChapterResult[]): boolean {
+export function shouldUseMultiColLayout(chapters: ChapterResult[]): boolean {
   // keep only chapters with headings like `"Chapter IV. The Lambs War"`
   // which, when they predominate, make the multi-col layout desirable
   const numberedAndNamedChapters = chapters.filter(

@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { isDefined } from 'x-ts-utils';
-import { FileManifest, CoverProps, DocPrecursor } from '@friends-library/types';
 import { PrintPdf, css } from '@friends-library/cover-component';
+import type { FileManifest } from '@friends-library/doc-artifacts';
+import type { CoverProps, DocPrecursor } from '@friends-library/types';
+import type { PaperbackCoverConfig } from '../types';
 import wrapHtmlBody from '../utils';
 import { addVolumeSuffix } from '../faux-volumes';
-import { PaperbackCoverConfig } from '../types';
 
 export default async function paperbackCover(
   dpc: DocPrecursor,

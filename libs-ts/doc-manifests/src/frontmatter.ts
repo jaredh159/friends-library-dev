@@ -1,9 +1,11 @@
 import moment from 'moment';
-import { pickBy } from 'lodash';
-import { HTML_DEC_ENTITIES, DocPrecursor, FileManifest } from '@friends-library/types';
+import pickBy from 'lodash.pickby';
+import { HTML_DEC_ENTITIES } from '@friends-library/types';
 import { htmlTitle } from '@friends-library/adoc-utils';
-import { HtmlSrcResult } from '@friends-library/evaluator';
 import { t, setLocale } from '@friends-library/locale';
+import type { FileManifest } from '@friends-library/doc-artifacts';
+import type { HtmlSrcResult } from '@friends-library/evaluator';
+import type { DocPrecursor } from '@friends-library/types';
 import { capitalizeTitle, ucfirst } from './utils';
 import { addVolumeSuffix } from './faux-volumes';
 

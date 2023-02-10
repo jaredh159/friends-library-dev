@@ -1,5 +1,5 @@
-import { DocPrecursor } from '@friends-library/types';
 import { utf8ShortTitle } from '@friends-library/adoc-utils';
+import type { DocPrecursor } from '@friends-library/types';
 
 export function runningHead(
   dpc: Pick<DocPrecursor, 'meta' | 'config'>,
