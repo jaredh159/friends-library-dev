@@ -1,8 +1,9 @@
 ## Todo
 
+- [ ] break apart ci to speed up
+- [ ] remove `nodegit` dep (with `librbk5` dep install in ci.yml)
 - [ ] after `evans` imported, finish doing `apps/poster` (relies on evans)
 - [ ] cli cover:watch task for cover-web-app (search `echo node`)
-- [ ] convert cover-web-app from parcel to vite
 - [ ] look into cover-component prepack/postpack web/node optimizations...
 - [ ] examine, update, and unify dependencies
 - [ ] evans > astro/next
@@ -15,5 +16,6 @@
 
 ## Done
 
+- [√] convert cover-web-app from parcel to vite
 - [√] convert admin from snowpack to vite
 - [√] convert cover-web-app from parcel to vite
