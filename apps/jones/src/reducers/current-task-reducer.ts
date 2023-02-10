@@ -1,5 +1,5 @@
 import { createReducer } from 'redux-starter-kit';
-import { Action } from '../type';
+import type { Action } from '../type';
 
 export default createReducer(null, {
   CREATE_TASK: (state: string | null, action: Action) => {

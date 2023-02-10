@@ -2,15 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 import styled from '@emotion/styled';
-import { Dispatch, State as AppState } from '../type';
+import type { Dispatch, State as AppState } from '../type';
+import type { Document, DocumentEdition, DocumentFile } from '../select';
 import * as actions from '../actions';
-import {
-  Document,
-  DocumentEdition,
-  DocumentFile,
-  documentTree,
-  requireCurrentTask,
-} from '../select';
+import { documentTree, requireCurrentTask } from '../select';
 
 const WrapUl = styled.ul`
   margin: 0;

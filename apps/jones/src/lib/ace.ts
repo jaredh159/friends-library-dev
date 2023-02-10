@@ -1,5 +1,5 @@
-import { SearchResult } from '../type';
 import defer from 'lodash/defer';
+import type { SearchResult } from '../type';
 
 interface AceMarker {
   id: number;

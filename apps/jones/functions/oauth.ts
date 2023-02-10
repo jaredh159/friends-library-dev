@@ -1,5 +1,5 @@
-import { Handler } from '@netlify/functions';
-import fetch from 'node-fetch';
+import fetch from 'isomorphic-fetch';
+import type { Handler } from '@netlify/functions';
 
 const handler: Handler = async (event) => {
   const { queryStringParameters: query } = event;

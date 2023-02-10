@@ -1,3 +1,4 @@
+import { describe, test, beforeEach, expect } from 'vitest';
 import { undoable, emptyUndoable } from '../undoable';
 
 function incrementReducer(state = 0, { type }: { type: string }): number {
@@ -16,6 +17,7 @@ describe(`undoable()`, () => {
   let reducer: any;
 
   beforeEach(() => {
+    // @ts-ignore
     reducer = undoable(incrementReducer, `TEST`);
     state = {
       past: [],
@@ -106,6 +108,7 @@ describe(`undoable()`, () => {
   });
 
   test(`limit limits undo/redo stack`, () => {
+    // @ts-ignore
     reducer = undoable(incrementReducer, `TEST`, [], 2);
     let newState = reducer(state, action(`INCREMENT`));
     newState = reducer(newState, action(`INCREMENT`));

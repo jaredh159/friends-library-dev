@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import KeyEvent from 'react-keyboard-event-handler';
 import { Global, css } from '@emotion/core';
+import type { State, Dispatch } from './type';
 import * as screens from './screens';
 import * as actions from './actions';
 import Login from './components/Login';
@@ -10,7 +11,6 @@ import Tasks from './components/Tasks';
 import EditTask from './components/EditTask';
 import Work from './components/Work';
 import Preview from './components/Preview';
-import { State, Dispatch } from './type';
 
 const isDev = process.env.NODE_ENV === `development`;
 

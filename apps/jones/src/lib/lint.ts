@@ -1,5 +1,5 @@
-import { LintOptions } from '@friends-library/adoc-lint';
-import { EditionType } from '@friends-library/types';
+import type { LintOptions } from '@friends-library/adoc-lint';
+import type { EditionType } from '@friends-library/types';
 import { LANG } from './github-api';
 
 export function lintOptions(path: string): LintOptions {

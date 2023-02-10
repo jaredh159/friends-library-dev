@@ -1,6 +1,7 @@
-import { Props } from './Editor';
+import type { Props } from './Editor';
 import { italicize } from '../lib/format';
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function addKeyCommands(editor: any, editorProps: Props): void {
   const {
     githubUser,

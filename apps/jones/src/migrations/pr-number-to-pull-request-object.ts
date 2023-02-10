@@ -1,4 +1,4 @@
-import { SavedState } from '../type';
+import type { SavedState } from '../type';
 
 export default function migrate(state: Partial<SavedState>): Partial<SavedState> {
   const { tasks, version } = state;

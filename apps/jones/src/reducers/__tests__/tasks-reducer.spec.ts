@@ -1,4 +1,5 @@
-import { Action } from '../../type';
+import { describe, beforeEach, test, it, expect } from 'vitest';
+import type { Action } from '../../type';
 import taskReducer from '../tasks-reducer';
 
 function result(start: [number, number], end: [number, number], path = `path.adoc`): any {

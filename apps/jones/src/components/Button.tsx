@@ -9,6 +9,7 @@ interface Props {
   onClick?: (event: any) => any;
   target?: '_blank' | '_self';
   className?: string;
+  children: React.ReactNode;
 }
 
 const Component: React.FC<Props> = (props) => (

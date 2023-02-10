@@ -1,4 +1,4 @@
-import { SavedState } from '../type';
+import type { SavedState } from '../type';
 import prNumberToPullRequestObject from './pr-number-to-pull-request-object';
 
 export default function migrate(state: Partial<SavedState>): Partial<SavedState> {

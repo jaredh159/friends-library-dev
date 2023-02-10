@@ -8,5 +8,7 @@ const Wrap = styled.div`
   height: 100%;
 `;
 
-const Component: React.FC = ({ children }) => <Wrap>{children}</Wrap>;
+const Component: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <Wrap>{children}</Wrap>
+);
 export default Component;

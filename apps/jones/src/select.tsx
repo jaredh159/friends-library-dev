@@ -1,11 +1,11 @@
-import { State, Task, File } from './type';
-import { EditionType } from '@friends-library/types';
+import type { EditionType } from '@friends-library/types';
+import type { State, Task, File } from './type';
 
 export function currentTask(state: State): Task | null {
   if (!state.currentTask) {
     return null;
   }
-  return state.tasks.present[state.currentTask];
+  return state.tasks.present[state.currentTask] ?? null;
 }
 
 export function requireCurrentTask(state: State): Task {
@@ -74,12 +74,12 @@ export interface Document {
 export function documentTree(task: Task): Document[] {
   let documents: Document[] = [];
   documents = Object.values(task.files).reduce((docs: Document[], file: File) => {
-    const [docSlug, edType, filename] = file.path.split(`/`);
+    const [docSlug = ``, edType, filename = ``] = file.path.split(`/`);
     let document = docs.find((d) => d.slug === docSlug);
     if (!document) {
       document = {
         slug: docSlug,
-        title: task.documentTitles[docSlug],
+        title: task.documentTitles[docSlug] ?? ``,
         editions: [] as DocumentEdition[],
       };
       docs.push(document);

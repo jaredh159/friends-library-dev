@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
-import { Task as TaskType, State } from '../type';
+import type { Task as TaskType, State } from '../type';
 import Task from './Task';
 
 const List = styled.ul`

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import styled from '@emotion/styled';
 import { connect } from 'react-redux';
-import { SearchResult as SearchResultType, Dispatch } from '../../type';
+import type { SearchResult as SearchResultType, Dispatch } from '../../type';
+import * as actions from '../../actions';
 import SearchResultActions from './SearchResultActions';
 import SearchResultPreview from './SearchResultPreview';
-import * as actions from '../../actions';
 
 const SearchResult = styled.div`
   position: relative;

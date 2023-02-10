@@ -1,7 +1,7 @@
 import smalltalk from 'smalltalk';
 import { lintFix as fixLints } from '@friends-library/adoc-lint';
+import type { Task, ReduxThunk, Dispatch, State } from '../type';
 import * as gh from '../lib/github-api';
-import { Task, ReduxThunk, Dispatch, State } from '../type';
 import { lintOptions } from '../lib/lint';
 import { LANG } from '../lib/github-api';
 
@@ -88,7 +88,11 @@ export function submitTask(task: Task): ReduxThunk {
 function lintFix(task: Task, dispatch: Dispatch, getState: () => State): Task {
   Object.keys(task.files).forEach((path) => {
     const file = task.files[path];
-    if (typeof file.editedContent !== `string` || file.editedContent === file.content) {
+    if (
+      !file ||
+      typeof file.editedContent !== `string` ||
+      file.editedContent === file.content
+    ) {
       return;
     }
 
@@ -108,6 +112,7 @@ function lintFix(task: Task, dispatch: Dispatch, getState: () => State): Task {
     });
   });
 
+  // @ts-ignore
   return getState().tasks.present[task.id];
 }
 
@@ -191,6 +196,7 @@ export function fetchFriendRepos(): ReduxThunk {
       const friendRepos = await gh.getFriendRepos();
       dispatch({ type: `RECEIVE_FRIEND_REPOS`, payload: friendRepos });
     } catch (e) {
+      console.error(e);
       dispatch({ type: `NETWORK_ERROR` });
       return;
     }

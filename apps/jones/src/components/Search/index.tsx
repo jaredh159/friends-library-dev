@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from '@emotion/styled';
 import { connect } from 'react-redux';
 import KeyEvent from 'react-keyboard-event-handler';
-import {
+import type {
   Dispatch,
   File,
   SearchResult as SearchResultType,
@@ -133,6 +133,7 @@ class Search extends React.Component<Props, State> {
 
   protected dismissResult(index: number): void {
     const { results } = this.state;
+    // @ts-ignore
     results[index].dismissed = true;
     this.setState({ results });
   }

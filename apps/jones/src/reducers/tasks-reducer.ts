@@ -1,5 +1,5 @@
 import { createReducer } from 'redux-starter-kit';
-import { Task, SearchResult, File, Tasks, Action } from '../type';
+import type { Task, SearchResult, File, Tasks, Action } from '../type';
 
 function fastForward(task: Task, commit: string): void {
   task.parentCommit = commit;
@@ -17,10 +17,10 @@ function replaceInResult(
 ): void {
   const { path, start, end } = result;
   const file = files[path];
-  const content = file.editedContent || file.content;
+  const content = file?.editedContent || file?.content || ``;
   const lines = content.split(`\n`);
   const index = start.line - 1;
-  const line = lines[index];
+  const line = lines[index] ?? ``;
   const prevLength = line.length;
   const key = `${path}:${index}`;
 
@@ -36,9 +36,11 @@ function replaceInResult(
     line.substring(end.column - offset),
   ].join(``);
 
-  const diff = prevLength - lines[index].length;
+  const diff = prevLength - (lines[index]?.length ?? 0);
   adjust.set(key, offset + diff);
-  file.editedContent = lines.join(`\n`);
+  if (file) {
+    file.editedContent = lines.join(`\n`);
+  }
 }
 
 export default createReducer(
@@ -167,6 +169,10 @@ export default createReducer(
       }
 
       const file = files[editingFile];
+      if (!file) {
+        return;
+      }
+
       if (adoc === file.content) {
         file.editedContent = null;
       } else {
@@ -197,6 +203,7 @@ export default createReducer(
       const task = state[payload.id];
       if (task) {
         Object.keys(payload.data).forEach((key) => {
+          // @ts-ignore
           task[key] = payload.data[key];
         });
         task.updated = new Date().toJSON();

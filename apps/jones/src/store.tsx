@@ -1,7 +1,7 @@
 import { configureStore } from 'redux-starter-kit';
 import { combineReducers } from 'redux';
 import localForage from 'localforage';
-import { State, SavedState, Action } from './type';
+import type { State, SavedState, Action } from './type';
 import { defaultState as prefsDefaultState } from './reducers/prefs-reducer';
 import { defaultState as defaultSearchState } from './reducers/search-reducer';
 import { emptyUndoable } from './reducers/undoable';

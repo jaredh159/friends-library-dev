@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 import { Global, css } from '@emotion/core';
 import { ParserError } from '@friends-library/evaluator';
-import { State as AppState } from '../../type';
+import type { State as AppState } from '../../type';
 import chapterHtml from '../../lib/chapter-html';
 import Centered from '../Centered';
 import throbber from '../../assets/throbber.gif';

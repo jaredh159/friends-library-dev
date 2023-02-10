@@ -1,6 +1,5 @@
-// @ts-check
-const fs = require(`fs`);
-const { paperbackInterior: css } = require(`@friends-library/doc-css`);
+import * as fs from 'fs';
+import { paperbackInterior as css } from '@friends-library/doc-css';
 
 fs.writeFileSync(
   `${__dirname}/preview.css`,

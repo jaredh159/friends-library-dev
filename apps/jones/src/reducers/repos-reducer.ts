@@ -1,5 +1,5 @@
 import { createReducer } from 'redux-starter-kit';
-import { Repo } from '../type';
+import type { Repo } from '../type';
 
 interface GitHubRepo {
   id: number;
@@ -12,15 +12,17 @@ export default createReducer([], {
     state: Repo[],
     { payload: repos }: { payload: GitHubRepo[] },
   ) => {
-    return repos.map((repo) => ({
-      id: repo.id,
-      slug: repo.name,
-      friendName:
-        repo.name === `compilations` || repo.name === `compilaciones`
-          ? repo.name.replace(/^c/, `C`)
-          : repo.description
-              .replace(/^.. (.+) source documents$/, `$1`)
-              .replace(/ \((d\.|\d)[^)]*\d\)/, ``),
-    }));
+    return repos
+      .filter((repo) => repo.name !== `dev`)
+      .map((repo) => ({
+        id: repo.id,
+        slug: repo.name,
+        friendName:
+          repo.name === `compilations` || repo.name === `compilaciones`
+            ? repo.name.replace(/^c/, `C`)
+            : repo.description
+                .replace(/^.. (.+) source documents$/, `$1`)
+                .replace(/ \((d\.|\d)[^)]*\d\)/, ``),
+      }));
   },
 });

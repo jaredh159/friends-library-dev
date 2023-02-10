@@ -1,5 +1,5 @@
 import escape from 'escape-string-regexp';
-import { File, SearchResult, SearchResultContext } from '../type';
+import type { File, SearchResult, SearchResultContext } from '../type';
 
 export function searchFiles(
   searchTerm: string,
@@ -25,7 +25,7 @@ export function searchFiles(
     lines.forEach((line, index) => {
       let match: RegExpExecArray | null = null;
       while ((match = exp.exec(line))) {
-        const [documentSlug, editionType, filename] = file.path.split(`/`);
+        const [documentSlug = ``, editionType = ``, filename = ``] = file.path.split(`/`);
         const result = {
           path: file.path,
           documentSlug,
@@ -68,10 +68,11 @@ function getContext(
   const { start, end } = result;
 
   const beforeLineIndex = start.line - 2;
-  if (beforeLineIndex > -1 && lines[beforeLineIndex].trim()) {
+  const beforeLine = lines[beforeLineIndex] ?? ``;
+  if (beforeLine.trim() !== ``) {
     context.push({
       lineNumber: beforeLineIndex + 1,
-      content: lines[beforeLineIndex],
+      content: beforeLine,
     });
   }
 
@@ -79,15 +80,16 @@ function getContext(
   for (let i = 1; i <= resultLines; i++) {
     context.push({
       lineNumber: start.line + (i - 1),
-      content: lines[start.line + (i - 2)],
+      content: lines[start.line + (i - 2)] ?? ``,
     });
   }
 
   const afterLineIndex = end.line;
-  if (lines[afterLineIndex] && lines[afterLineIndex].trim()) {
+  const afterLine = lines[afterLineIndex] ?? ``;
+  if (afterLine.trim() !== ``) {
     context.push({
       lineNumber: afterLineIndex + 1,
-      content: lines[afterLineIndex],
+      content: afterLine,
     });
   }
 

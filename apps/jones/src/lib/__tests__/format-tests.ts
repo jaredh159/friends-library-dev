@@ -1,4 +1,6 @@
-import { italicize, Range } from '../format';
+import { describe, test, expect } from 'vitest';
+import type { Range } from '../format';
+import { italicize } from '../format';
 
 const cases: [string, string, string, Range, string][] = [
   [
