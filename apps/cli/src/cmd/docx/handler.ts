@@ -1,10 +1,11 @@
+import { spawnSync } from 'child_process';
 import fs from 'fs-extra';
 import uuid from 'uuid/v4';
-import { spawnSync } from 'child_process';
 import { sync as glob } from 'glob';
 import { deleteNamespaceDir, dirs } from '@friends-library/doc-artifacts';
 import { red, green } from 'x-chalk';
-import { query as dpcQuery, FsDocPrecursor } from '@friends-library/dpc-fs';
+import { query as dpcQuery } from '@friends-library/dpc-fs';
+import type { FsDocPrecursor } from '@friends-library/dpc-fs';
 import { ensureDockerImage } from '../../docker';
 
 export default async function handler({ pattern }: { pattern: string }): Promise<void> {
@@ -37,7 +38,7 @@ function makeDocx(dpc: FsDocPrecursor, dir: string): string {
 
   const docPath = `${dir}/${dpc.documentSlug}--${dpc.editionType}.docx`;
   fs.moveSync(`${tmpDir}/doc.docx`, docPath);
-  fs.rmdirSync(tmpDir, { recursive: true });
+  fs.rmSync(tmpDir, { recursive: true });
   return docPath;
 }
 

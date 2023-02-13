@@ -1,6 +1,6 @@
-import { EditionType, Lang } from '@friends-library/types';
-import { sync as glob } from 'glob';
 import fs from 'fs';
+import { sync as glob } from 'glob';
+import type { EditionType, Lang } from '@friends-library/types';
 
 export function filesFromPath(path: string): { path: string; adoc: string }[] {
   let files;

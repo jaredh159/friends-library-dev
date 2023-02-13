@@ -1,10 +1,10 @@
 import fs from 'fs';
-import { CommandBuilder } from 'yargs';
 import { execSync } from 'child_process';
 import { green, magenta } from 'x-chalk';
 import env from '@friends-library/env';
 import { paperbackCoverFromProps } from '@friends-library/doc-manifests';
 import * as artifacts from '@friends-library/doc-artifacts';
+import type { CommandBuilder } from 'yargs';
 
 export const command = `cover:watch`;
 

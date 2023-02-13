@@ -1,4 +1,5 @@
-import { lint, LintOptions } from '@friends-library/adoc-lint';
+import { lint } from '@friends-library/adoc-lint';
+import type { LintOptions } from '@friends-library/adoc-lint';
 import DirLints from './DirLints';
 import { filesFromPath, langFromPath, editionTypeFromPath } from './path';
 

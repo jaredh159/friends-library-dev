@@ -1,7 +1,9 @@
 import { basename } from 'path';
-import makeSend from 'gmail-send';
 import moment from 'moment';
 import env from '@friends-library/env';
+
+// @ts-ignore
+import makeSend from 'gmail-send';
 
 export default function send(paths: string[], email?: string): void {
   const { CLI_MAKE_CMD_GMAIL_USER, CLI_MAKE_CMD_GMAIL_PASS } = env.require(
@@ -16,6 +18,7 @@ export default function send(paths: string[], email?: string): void {
 
   const time = moment().format(`M/D/YY h:mm:ssa`);
 
+  // @ts-ignore
   sendEmail(
     {
       subject: `[fl cli make] test docs @ ${time}`,
@@ -25,6 +28,7 @@ export default function send(paths: string[], email?: string): void {
       to: email || CLI_MAKE_CMD_GMAIL_USER,
       files: paths,
     },
+    // @ts-ignore
     (err) => {
       if (err) console.warn(err);
     },

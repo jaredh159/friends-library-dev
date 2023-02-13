@@ -1,9 +1,9 @@
-import { Arguments } from 'yargs';
+import { red, green, cyan } from 'x-chalk';
+import type { Arguments } from 'yargs';
 import { langFromPath } from '../../lint/path';
 import lintFixPath from '../../lint/lint-fix-path';
 import lintPath from '../../lint/lint-path';
 import { printLints } from '../../lint/display';
-import { red, green, cyan } from 'x-chalk';
 
 interface LintCommandOptions {
   path: string;

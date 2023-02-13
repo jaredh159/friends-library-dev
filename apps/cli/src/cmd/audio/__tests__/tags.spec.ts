@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import { getPartTags } from '../tags';
 import * as fixtures from './audio-fixtures';
 

@@ -1,10 +1,10 @@
-import fs from 'fs-extra';
 import { dirname, basename } from 'path';
+import fs from 'fs-extra';
 import { red } from 'x-chalk';
 import exec from 'x-exec';
-import { AudioQuality } from '@friends-library/types';
+import type { AudioQuality } from '@friends-library/types';
+import type { Audio } from './cmd/audio/types';
 import { getPartTags } from './cmd/audio/tags';
-import { Audio } from './cmd/audio/types';
 
 export function makeVideo(
   workDir: string,

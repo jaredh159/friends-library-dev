@@ -1,10 +1,15 @@
 import fs from 'fs';
 import path from 'path';
-import omit from 'lodash.omit';
-import fetch, { Response } from 'node-fetch';
 import querystring from 'querystring';
+import omit from 'lodash.omit';
+import fetch from 'node-fetch';
 import FormData from 'form-data';
-import { SoundCloudTrackAttrs, SoundCloudTrack, SoundCloudPlaylistAttrs } from './types';
+import type { Response } from 'node-fetch';
+import type {
+  SoundCloudTrackAttrs,
+  SoundCloudTrack,
+  SoundCloudPlaylistAttrs,
+} from './types';
 
 interface Config {
   username: string;

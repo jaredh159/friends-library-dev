@@ -1,4 +1,4 @@
-import { describe, it, expect, test } from '@jest/globals';
+import { describe, test, it, expect } from 'vitest';
 import { processAsciidoc } from '../process';
 
 describe(`processAsciidoc()`, () => {

@@ -2,8 +2,8 @@ import path from 'path';
 import fs from 'fs-extra';
 import env from '@friends-library/env';
 import * as cloud from '@friends-library/cloud';
+import type { AudioFsData, Audio } from './types';
 import { logError } from '../../sub-log';
-import { AudioFsData, Audio } from './types';
 import { md5String } from './utils';
 
 export default async function getSrcFsData(audio: Audio): Promise<AudioFsData> {

@@ -1,4 +1,4 @@
-import { CommandBuilder } from 'yargs';
+import type { CommandBuilder } from 'yargs';
 
 export const command = `chapterize <file> <dest> [chStart]`;
 

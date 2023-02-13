@@ -1,6 +1,6 @@
-import { AudioQuality } from '@friends-library/types';
 import os from 'os';
 import fs from 'fs';
+import type { AudioQuality } from '@friends-library/types';
 
 type Data = {
   playlistIdHq: Int64 | null;

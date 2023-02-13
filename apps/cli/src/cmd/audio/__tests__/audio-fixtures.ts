@@ -1,5 +1,5 @@
+import type { Audio } from '../types';
 import { EditionType, Lang, TagType } from '../../../graphql/globalTypes';
-import { Audio } from '../types';
 
 // see below for query used to generate these
 

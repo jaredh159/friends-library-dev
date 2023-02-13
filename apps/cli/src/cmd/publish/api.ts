@@ -1,35 +1,38 @@
-import client, { gql } from '../../api-client';
-import { PublishEdition, PublishEditionVariables } from '../../graphql/PublishEdition';
-import { GetLatestArtifactProductionVersion } from '../../graphql/GetLatestArtifactProductionVersion';
-import {
+import type {
+  PublishEdition,
+  PublishEditionVariables,
+} from '../../graphql/PublishEdition';
+import type { GetLatestArtifactProductionVersion } from '../../graphql/GetLatestArtifactProductionVersion';
+import type {
   CreateEditionChapterInput,
   UpdateEditionImpressionInput,
 } from '../../graphql/globalTypes';
-import { CloudFiles, Edition } from './types';
-import {
+import type {
   UpdateEditionImpression,
   UpdateEditionImpressionVariables,
 } from '../../graphql/UpdateEditionImpression';
-import {
+import type {
   CreateEditionImpression,
   CreateEditionImpressionVariables,
 } from '../../graphql/CreateEditionImpression';
-import {
+import type {
   DeleteEditionImpression,
   DeleteEditionImpressionVariables,
 } from '../../graphql/DeleteEditionImpression';
-import {
+import type {
   GetEditionImpressionCloudFiles,
   GetEditionImpressionCloudFilesVariables,
 } from '../../graphql/GetEditionImpressionCloudFiles';
-import {
+import type {
   DeleteEditionEditionChapters,
   DeleteEditionEditionChaptersVariables,
 } from '../../graphql/DeleteEditionEditionChapters';
-import {
+import type {
   CreateEditionChapters,
   CreateEditionChaptersVariables,
 } from '../../graphql/CreateEditionChapters';
+import type { CloudFiles, Edition } from './types';
+import client, { gql } from '../../api-client';
 
 // edition impression crud
 

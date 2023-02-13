@@ -1,12 +1,13 @@
 import { execSync } from 'child_process';
-import { CommandBuilder, Arguments } from 'yargs';
 import fs from 'fs-extra';
 import env from '@friends-library/env';
 import { deleteNamespaceDir } from '@friends-library/doc-artifacts';
-import { MakeOptions, makeDpc } from '../make/handler';
+import type { CommandBuilder, Arguments } from 'yargs';
+import type { MakeOptions } from '../make/handler';
+import type { DocPrecursor } from '@friends-library/types';
+import { makeDpc } from '../make/handler';
 import { builder as makeBuilder } from '../make';
 import send from '../make/send';
-import { DocPrecursor } from '@friends-library/types';
 
 export const command = `make:ref [basename]`;
 

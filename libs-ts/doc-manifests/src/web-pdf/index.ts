@@ -1,5 +1,5 @@
 import { webPdf as css } from '@friends-library/doc-css';
-import { evaluate as eval } from '@friends-library/evaluator';
+import { evaluate } from '@friends-library/evaluator';
 import type { FileManifest } from '@friends-library/doc-artifacts';
 import type { DocPrecursor } from '@friends-library/types';
 import wrapHtmlBody from '../utils';
@@ -9,7 +9,7 @@ import { getCustomCss } from '../custom-css';
 export default async function webPdfManifests(
   dpc: DocPrecursor,
 ): Promise<FileManifest[]> {
-  const result = eval.toPdfSrcHtml(dpc);
+  const result = evaluate.toPdfSrcHtml(dpc);
   return [
     {
       'doc.html': wrapHtml(result.mergedChapterHtml(), dpc),

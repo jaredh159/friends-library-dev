@@ -1,7 +1,7 @@
 import chalk from 'chalk';
-import { LintResult } from '@friends-library/adoc-lint';
 import { c, log, red, green, grey, yellow } from 'x-chalk';
-import DirLints from './DirLints';
+import type { LintResult } from '@friends-library/adoc-lint';
+import type DirLints from './DirLints';
 
 export function printLints(lints: DirLints, limit: false | number = false): void {
   let printed = 0;

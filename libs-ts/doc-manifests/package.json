@@ -2,7 +2,7 @@
   "name": "@friends-library/doc-manifests",
   "version": "3.0.0",
   "description": "create manifests for consumable artifacts from doc-precursors",
-  "main": "./dist/index.js",
+  "main": "./src/index.ts",
   "repository": "github:friends-library-dev/doc-manifests",
   "author": "Jared Henderson <jared@netrivet.com>",
   "license": "MIT",

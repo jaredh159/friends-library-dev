@@ -1,6 +1,6 @@
 import path from 'path';
 import { execSync } from 'child_process';
-import { FsDocPrecursor } from '@friends-library/dpc-fs';
+import type { FsDocPrecursor } from '@friends-library/dpc-fs';
 
 export function currentSha(repoRoot: string): string {
   const cmd = `git log --max-count=1 --pretty="%H" -- .`;

@@ -1,14 +1,9 @@
 {
-  "compilerOptions": {
-    "rootDir": "./src",
-    "outDir": "./dist",
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "module": "CommonJS",
-    "target": "ES2019",
-    "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true
+  "extends": "../../tsconfig.json",
+  "ts-node": {
+    "transpileOnly": true,
+    "compilerOptions": {
+      "module": "commonjs"
+    }
   }
 }

@@ -1,5 +1,5 @@
 import { mobi as mobiCss, epub as epubCss } from '@friends-library/doc-css';
-import { evaluate as eval } from '@friends-library/evaluator';
+import { evaluate } from '@friends-library/evaluator';
 import type { FileManifest } from '@friends-library/doc-artifacts';
 import type { DocPrecursor, Lang } from '@friends-library/types';
 import type { EbookSrcResult } from '@friends-library/evaluator';
@@ -14,7 +14,7 @@ export default async function ebook(
   dpc: DocPrecursor,
   conf: EbookConfig,
 ): Promise<FileManifest[]> {
-  const src = eval.toEbookSrcHtml(dpc);
+  const src = evaluate.toEbookSrcHtml(dpc);
   const customCss = getCustomCss(dpc.customCode.css, conf.subType);
   const config = { customCss };
   return [

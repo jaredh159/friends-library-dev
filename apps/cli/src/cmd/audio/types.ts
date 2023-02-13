@@ -1,4 +1,4 @@
-import { GetAudios } from '../../graphql/GetAudios';
+import type { GetAudios } from '../../graphql/GetAudios';
 
 export type Audio = GetAudios['audios'][0];
 

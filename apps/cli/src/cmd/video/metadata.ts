@@ -1,6 +1,6 @@
 import { utf8ShortTitle } from '@friends-library/adoc-utils';
-import { Lang } from '@friends-library/types';
-import { Audio } from '../audio/types';
+import type { Lang } from '@friends-library/types';
+import type { Audio } from '../audio/types';
 
 export function metadata(
   audio: Audio,

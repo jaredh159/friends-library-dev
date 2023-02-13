@@ -1,7 +1,7 @@
-import { FsDocPrecursor } from '@friends-library/dpc-fs';
-import { UpdateEditionImpressionInput } from '../../graphql/globalTypes';
-import { PublishEdition } from '../../graphql/PublishEdition';
-import { UpdateEditionImpression } from '../../graphql/UpdateEditionImpression';
+import type { FsDocPrecursor } from '@friends-library/dpc-fs';
+import type { UpdateEditionImpressionInput } from '../../graphql/globalTypes';
+import type { PublishEdition } from '../../graphql/PublishEdition';
+import type { UpdateEditionImpression } from '../../graphql/UpdateEditionImpression';
 
 export type Edition = PublishEdition['edition'];
 export type CloudFiles = UpdateEditionImpression['impression']['files'];

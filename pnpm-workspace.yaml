@@ -2,5 +2,6 @@ packages:
   - 'apps/admin'
   - 'apps/cover-web-app'
   - 'apps/fell'
+  - 'apps/cli'
   - 'apps/styleguide'
   - 'libs-ts/*'

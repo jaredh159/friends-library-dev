@@ -1,6 +1,5 @@
-import fs from 'fs-extra';
 import { execSync } from 'child_process';
-import { Arguments } from 'yargs';
+import fs from 'fs-extra';
 import { sync as glob } from 'glob';
 import { log, red } from 'x-chalk';
 import * as manifest from '@friends-library/doc-manifests';
@@ -8,12 +7,9 @@ import * as artifacts from '@friends-library/doc-artifacts';
 import { appEbook as appEbookCss } from '@friends-library/doc-css';
 import { hydrate, query as dpcQuery } from '@friends-library/dpc-fs';
 import { ParserError } from '@friends-library/parser';
-import {
-  ArtifactType,
-  DocPrecursor,
-  FileManifest,
-  PrintSize,
-} from '@friends-library/types';
+import type { FileManifest } from '@friends-library/doc-artifacts';
+import type { Arguments } from 'yargs';
+import type { ArtifactType, DocPrecursor, PrintSize } from '@friends-library/types';
 import lintFixPath from '../../lint/lint-fix-path';
 import lintPath from '../../lint/lint-path';
 import { printLints } from '../../lint/display';

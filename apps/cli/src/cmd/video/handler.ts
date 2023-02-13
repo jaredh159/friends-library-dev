@@ -1,16 +1,16 @@
 import fs from 'fs-extra';
 import exec from 'x-exec';
 import { c, log } from 'x-chalk';
-import { Lang } from '@friends-library/types';
 import * as cloud from '@friends-library/cloud';
+import type { Lang } from '@friends-library/types';
+import type { AudioFsData, Audio } from '../audio/types';
 import * as ffmpeg from '../../ffmpeg';
-import * as posterApp from './poster-server';
 import getAudioFsData from '../audio/audio-fs-data';
 import { logAction, logDebug } from '../../sub-log';
-import { AudioFsData, Audio } from '../audio/types';
+import { getAudios } from '../audio/query';
 import { slideshowConcatFileLines } from './slideshow';
 import { metadata } from './metadata';
-import { getAudios } from '../audio/query';
+import * as posterApp from './poster-server';
 
 interface Argv {
   lang: Lang | 'both';

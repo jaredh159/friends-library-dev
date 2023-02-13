@@ -1,15 +1,15 @@
-import fs from 'fs-extra';
 import os from 'os';
+import fs from 'fs-extra';
 import exec from 'x-exec';
 import { red, c } from 'x-chalk';
-import { AudioQuality } from '@friends-library/types';
 import * as cloud from '@friends-library/cloud';
-import { AudioFsData } from './types';
 import { utf8ShortTitle } from '@friends-library/adoc-utils';
+import type { AudioQuality } from '@friends-library/types';
+import type { Audio } from './types';
+import type { AudioFsData } from './types';
 import * as ffmpeg from '../../ffmpeg';
-import { suffixThe } from './tags';
 import { logAction } from '../../sub-log';
-import { Audio } from './types';
+import { suffixThe } from './tags';
 
 export async function create(
   audio: Audio,
@@ -25,7 +25,7 @@ export async function create(
   const workDir = `${m4bDir}/${relWorkDir}`;
   const isMultipart = audio.parts.length > 1;
 
-  fs.rmdirSync(m4bDir, { recursive: true });
+  fs.rmSync(m4bDir, { recursive: true });
   fs.ensureDirSync(workDir);
   exec.exit(`cp ${src.derivedPath}/cover.png "${workDir}"`);
   fs.writeFileSync(`${workDir}/description.txt`, document.description);

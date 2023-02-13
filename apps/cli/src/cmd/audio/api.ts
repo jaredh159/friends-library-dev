@@ -1,9 +1,12 @@
-import { Audio } from './types';
-import { GetAudios } from '../../graphql/GetAudios';
-import { UpdateAudioInput, UpdateAudioPartInput } from '../../graphql/globalTypes';
-import { UpdateAudio, UpdateAudioVariables } from '../../graphql/UpdateAudio';
+import type { GetAudios } from '../../graphql/GetAudios';
+import type { UpdateAudioInput, UpdateAudioPartInput } from '../../graphql/globalTypes';
+import type { UpdateAudio, UpdateAudioVariables } from '../../graphql/UpdateAudio';
+import type {
+  UpdateAudioPart,
+  UpdateAudioPartVariables,
+} from '../../graphql/UpdateAudioPart';
+import type { Audio } from './types';
 import { logError } from '../../sub-log';
-import { UpdateAudioPart, UpdateAudioPartVariables } from '../../graphql/UpdateAudioPart';
 import client, { gql, writable } from '../../api-client';
 
 export async function getAudios(): Promise<Audio[]> {

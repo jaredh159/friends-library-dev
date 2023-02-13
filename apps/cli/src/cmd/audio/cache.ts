@@ -3,9 +3,9 @@ import { c } from 'x-chalk';
 import md5File from 'md5-file';
 import * as t from 'io-ts';
 import { isRight } from 'fp-ts/Either';
-import { AudioQuality } from '@friends-library/types';
+import type { AudioQuality } from '@friends-library/types';
+import type { AudioFsData } from './types';
 import { logAction } from '../../sub-log';
-import { AudioFsData } from './types';
 
 export function get(fsData: AudioFsData): AudioCachedData {
   const emptyData: AudioCachedData = {};

@@ -1,3 +1,4 @@
+import { describe, test, beforeEach, expect } from 'vitest';
 import DirLints from '../DirLints';
 
 describe(`DirLints`, () => {

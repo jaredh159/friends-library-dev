@@ -1,5 +1,5 @@
-import { PrintSize } from '@friends-library/types';
-import { describe, test } from '@jest/globals';
+import { describe, test, expect } from 'vitest';
+import type { PrintSize } from '@friends-library/types';
 import { choosePrintSize } from '../paperback';
 
 type Params = Parameters<typeof choosePrintSize>;

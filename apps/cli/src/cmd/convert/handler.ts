@@ -1,13 +1,13 @@
+import { spawnSync } from 'child_process';
 import fs from 'fs-extra';
 import uuid from 'uuid/v4';
-import { flow } from 'lodash';
-import { spawnSync } from 'child_process';
+import flow from 'lodash.flow';
 import { red, green, cyan } from 'x-chalk';
 import { splitLines, refMutate, refUnmutate } from '@friends-library/adoc-utils';
 import * as hilkiah from '@friends-library/hilkiah';
+import { ensureDockerImage } from '../../docker';
 import { combineLines } from './combine';
 import { processAsciidoc } from './process';
-import { ensureDockerImage } from '../../docker';
 
 interface ConvertOptions {
   file: string;
@@ -85,7 +85,7 @@ function generateRawAsciiDoc(src: string, target: string): void {
   }
 
   fs.copyFileSync(`${tmpDir}/document.adoc`, target);
-  fs.rmdirSync(tmpDir, { recursive: true });
+  fs.rmSync(tmpDir, { recursive: true });
 
   green(`Raw asciidoc file generated at: ${target}`);
 }

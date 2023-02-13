@@ -1,6 +1,6 @@
 import fs from 'fs';
-import { filesFromPath } from '../../lint/path';
 import { green } from 'x-chalk';
+import { filesFromPath } from '../../lint/path';
 
 interface Argv {
   path: string;

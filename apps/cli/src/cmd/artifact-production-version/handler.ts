@@ -1,10 +1,10 @@
 import { c, log } from 'x-chalk';
 import { gql } from '@friends-library/db';
-import client from '../../api-client';
-import {
+import type {
   CreateArtifactProductionVersion,
   CreateArtifactProductionVersionVariables,
 } from '../../graphql/CreateArtifactProductionVersion';
+import client from '../../api-client';
 
 interface Argv {
   sha: string;

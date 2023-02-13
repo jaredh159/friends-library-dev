@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest';
 import fs from 'fs-extra';
 import stripIndent from 'strip-indent';
 import lintFixPath from '../lint-fix-path';
@@ -41,6 +42,6 @@ describe(`lintFixPath()`, () => {
       rule: `git-conflict-markers`,
     });
 
-    fs.removeSync(dir);
+    fs.rmSync(dir, { recursive: true });
   });
 });

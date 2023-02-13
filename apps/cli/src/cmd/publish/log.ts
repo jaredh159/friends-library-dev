@@ -1,6 +1,6 @@
 import prettyMilliseconds from 'pretty-ms';
 import { log, c } from 'x-chalk';
-import { DocPrecursor } from '@friends-library/types';
+import type { DocPrecursor } from '@friends-library/types';
 
 let updateStart: number;
 

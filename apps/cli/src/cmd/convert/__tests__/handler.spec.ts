@@ -1,9 +1,10 @@
 import fs from 'fs';
 import { spawnSync } from 'child_process';
 import path from 'path';
+import { describe, vi, it, expect } from 'vitest';
 import convertHandler from '../handler';
 
-jest.mock(`x-chalk`);
+vi.mock(`x-chalk`);
 
 describe(`convertHandler()`, () => {
   it(`converts a docbook file to asciidoc`, () => {

@@ -210,6 +210,14 @@ module.exports = {
       },
     },
     {
+      files: [`apps/cli/**`],
+      rules: {
+        '@typescript-eslint/no-non-null-assertion': `off`,
+        'require-atomic-updates': `off`,
+        'no-console': `off`,
+      },
+    },
+    {
       files: [`apps/styleguide/**`],
       rules: {
         'jsx-a11y/accessible-emoji': `off`,

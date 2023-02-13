@@ -1,5 +1,5 @@
-import puppeteer from 'puppeteer';
 import { exec, execSync } from 'child_process';
+import puppeteer from 'puppeteer';
 import xExec from 'x-exec';
 import env from '@friends-library/env';
 import { green } from 'x-chalk';

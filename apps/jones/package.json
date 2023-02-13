@@ -8,7 +8,7 @@
     "build": "vite build",
     "prestart": "pnpm run write:css",
     "prebuild": "pnpm run write:css",
-    "write:css": "ts-node --compilerOptions '{\"module\":\"commonjs\"}' ./src/write-css.ts",
+    "write:css": "ts-node ./src/write-css.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "lint": "eslint .",

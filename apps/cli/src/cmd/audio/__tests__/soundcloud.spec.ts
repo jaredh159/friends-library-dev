@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { trackAttrs } from '../soundcloud';
 import * as fixtures from './audio-fixtures';
 

@@ -1,7 +1,7 @@
+import path from 'path';
 import env from '@friends-library/env';
 import { red } from 'x-chalk';
 import fs from 'fs-extra';
-import path from 'path';
 
 const { DOCS_REPOS_ROOT } = env.require(`DOCS_REPOS_ROOT`);
 

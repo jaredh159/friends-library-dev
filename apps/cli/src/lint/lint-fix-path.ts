@@ -1,7 +1,8 @@
 import fs from 'fs';
-import { lintFix, LintOptions } from '@friends-library/adoc-lint';
+import { lintFix } from '@friends-library/adoc-lint';
+import type { LintOptions } from '@friends-library/adoc-lint';
+import type DirLints from './DirLints';
 import lintPath from './lint-path';
-import DirLints from './DirLints';
 import { langFromPath, editionTypeFromPath } from './path';
 
 export default function lintFixPath(

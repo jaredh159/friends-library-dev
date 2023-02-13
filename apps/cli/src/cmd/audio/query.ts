@@ -1,6 +1,6 @@
-import { Lang } from '@friends-library/types';
+import type { Lang } from '@friends-library/types';
+import type { Audio } from './types';
 import * as api from './api';
-import { Audio } from './types';
 
 export async function getAudios(
   lang: Lang | 'both',

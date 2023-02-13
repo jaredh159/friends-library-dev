@@ -1,29 +1,32 @@
 import fs from 'fs';
+import { describe, beforeEach, vi, it, expect } from 'vitest';
 import glob from 'glob';
 import lintPath from '../lint-path';
 
-jest.mock(`fs`);
+vi.mock(`fs`);
+
+type Mock = ReturnType<typeof vi.fn>;
 
 describe(`lintPath()`, () => {
   beforeEach(() => {
-    glob.sync = jest.fn();
+    glob.sync = vi.fn();
   });
 
   it(`throws if you pass a non-existent full path`, () => {
-    (<jest.Mock>fs.existsSync).mockReturnValue(false);
+    (fs.existsSync as Mock).mockReturnValue(false);
     expect(() => lintPath(`/path/to/foo.adoc`)).toThrowError(/does not exist/);
   });
 
   it(`throws if the path contains no asciidoc files`, () => {
-    (<jest.Mock>fs.existsSync).mockReturnValue(true);
-    (<jest.Mock>glob.sync).mockReturnValue([]); // <-- no files
+    (fs.existsSync as Mock).mockReturnValue(true);
+    (glob.sync as Mock).mockReturnValue([]); // <-- no files
     expect(() => lintPath(`/en/george-fox/`)).toThrowError(/No files/);
   });
 
   it(`lints the globbed paths and returns map of lint data`, () => {
-    (<jest.Mock>fs.existsSync).mockReturnValue(true);
-    (<jest.Mock>glob.sync).mockReturnValue([`/foo.adoc`]);
-    (<jest.Mock>fs.readFileSync).mockReturnValue({
+    (fs.existsSync as Mock).mockReturnValue(true);
+    (glob.sync as Mock).mockReturnValue([`/foo.adoc`]);
+    (fs.readFileSync as Mock).mockReturnValue({
       toString: () => `== C1\n\n® bad char\n`,
     });
 

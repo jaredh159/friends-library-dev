@@ -1,18 +1,18 @@
 import { dirname } from 'path';
 import omit from 'lodash.omit';
 import env from '@friends-library/env';
-import { AudioQuality, Lang } from '@friends-library/types';
 import { translate, setLocale } from '@friends-library/locale';
 import { utf8ShortTitle } from '@friends-library/adoc-utils';
-import { logDebug } from '../../sub-log';
-import Client from './SoundCloudClient';
-import { getPartTitle } from './tags';
-import {
+import type { AudioQuality, Lang } from '@friends-library/types';
+import type {
   SoundCloudTrackAttrs,
   Audio,
   SoundCloudPlaylistAttrs,
   SoundCloudTrack,
 } from './types';
+import { logDebug } from '../../sub-log';
+import Client from './SoundCloudClient';
+import { getPartTitle } from './tags';
 
 export function getTrack(trackId: number): Promise<null | SoundCloudTrack> {
   return getClient().getTrack(trackId);

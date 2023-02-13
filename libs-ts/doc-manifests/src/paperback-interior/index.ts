@@ -1,6 +1,6 @@
 import { paperbackInterior as paperbackInteriorCss } from '@friends-library/doc-css';
 import { getPrintSizeDetails } from '@friends-library/lulu';
-import { evaluate as eval } from '@friends-library/evaluator';
+import { evaluate } from '@friends-library/evaluator';
 import type { FileManifest } from '@friends-library/doc-artifacts';
 import type { DocPrecursor, PrintSize } from '@friends-library/types';
 import type { PdfSrcResult } from '@friends-library/evaluator';
@@ -15,7 +15,7 @@ export default async function paperbackInteriorManifests(
   dpc: DocPrecursor,
   conf: PaperbackInteriorConfig,
 ): Promise<FileManifest[]> {
-  const src = eval.toPdfSrcHtml(dpc);
+  const src = evaluate.toPdfSrcHtml(dpc);
 
   const css = paperbackInteriorCss({
     runningHeadTitle: runningHead(dpc, src.numChapters),

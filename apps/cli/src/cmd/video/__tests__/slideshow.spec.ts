@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import { slideshowConcatFileLines as lines } from '../slideshow';
 
 describe(`slideshowConcatFileLines()`, () => {

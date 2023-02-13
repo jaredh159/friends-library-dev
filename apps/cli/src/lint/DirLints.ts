@@ -1,4 +1,4 @@
-import { LintResult } from '@friends-library/adoc-lint';
+import type { LintResult } from '@friends-library/adoc-lint';
 
 interface FileLintData {
   lints: LintResult[];

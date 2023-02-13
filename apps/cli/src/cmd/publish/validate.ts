@@ -1,7 +1,7 @@
 import { execSync } from 'child_process';
 import fetch from 'node-fetch';
 import env from '@friends-library/env';
-import { FsDocPrecursor } from '@friends-library/dpc-fs';
+import type { FsDocPrecursor } from '@friends-library/dpc-fs';
 import lintPath from '../../lint/lint-path';
 import * as git from './git';
 

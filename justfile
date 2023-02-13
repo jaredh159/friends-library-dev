@@ -47,8 +47,13 @@ prettier:
 prettier-check:
   @pnpm prettier --check {{invocation_directory()}}
 
+fl a="" b="" c="" d="" e="" f="":
+  cd apps/cli && ../../node_modules/.bin/ts-node ./src/app.ts "$@"
+
 # helpers
 
 [private]
 nx-run-many targets:
   @pnpm exec nx run-many --parallel=10 --targets={{targets}}
+
+set positional-arguments

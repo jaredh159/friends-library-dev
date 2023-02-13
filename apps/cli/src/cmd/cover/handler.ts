@@ -2,9 +2,9 @@ import { execSync } from 'child_process';
 import { paperbackCover } from '@friends-library/doc-manifests';
 import { pdf, deleteNamespaceDir } from '@friends-library/doc-artifacts';
 import { hydrate, query as dpcQuery } from '@friends-library/dpc-fs';
+import type { PrintSize } from '@friends-library/types';
+import type { GetCoverData, GetCoverDataVariables } from '../../graphql/GetCoverData';
 import client, { gql } from '../../api-client';
-import { GetCoverData, GetCoverDataVariables } from '../../graphql/GetCoverData';
-import { PrintSize } from '@friends-library/types';
 
 interface CoverOptions {
   pattern: string;

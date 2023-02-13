@@ -4,11 +4,12 @@ import { sizes } from '@friends-library/lulu';
 import { log, c } from 'x-chalk';
 import * as artifacts from '@friends-library/doc-artifacts';
 import { evaluate } from '@friends-library/evaluator';
-import { PrintSizeVariant, PrintSize, PRINT_SIZE_VARIANTS } from '@friends-library/types';
+import { PRINT_SIZE_VARIANTS } from '@friends-library/types';
 import { paperbackInterior as paperbackManifest } from '@friends-library/doc-manifests';
-import { FsDocPrecursor } from '@friends-library/dpc-fs';
+import type { PrintSizeVariant, PrintSize } from '@friends-library/types';
+import type { FsDocPrecursor } from '@friends-library/dpc-fs';
+import type { CreateEditionChapterInput } from '../../graphql/globalTypes';
 import { logDebug } from '../../sub-log';
-import { CreateEditionChapterInput } from '../../graphql/globalTypes';
 
 type SinglePages = { [K in PrintSizeVariant]: number };
 type SingleFiles = { [K in PrintSizeVariant]: string };

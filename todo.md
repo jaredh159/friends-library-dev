@@ -1,5 +1,6 @@
 ## Todo
 
+- [ ] remove fs-extra package from cli (elsewhere?)
 - [ ] _REWRITE_ jones, tried for 4+ hours to integrate w/ monorepo
 - [ ] break apart ci to speed up
 - [ ] remove `nodegit` dep (with `librbk5` dep install in ci.yml)
