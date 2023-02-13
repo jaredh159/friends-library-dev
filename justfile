@@ -6,6 +6,9 @@ _default:
 admin:
   @pnpm --filter admin start
 
+jones:
+  @pnpm --filter jones start
+
 # code quality
 
 check:
