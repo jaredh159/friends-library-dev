@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.json",
   "ts-node": {
     "transpileOnly": true,
+    "swc": true,
     "compilerOptions": {
       "module": "commonjs"
     }
