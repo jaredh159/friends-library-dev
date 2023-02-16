@@ -50,8 +50,8 @@ prettier:
 prettier-check:
   @pnpm prettier --check {{invocation_directory()}}
 
-fl a="" b="" c="" d="" e="" f="":
-  cd apps/cli && ../../node_modules/.bin/ts-node ./src/app.ts "$@"
+fl *args:
+  cd apps/cli && ../../node_modules/.bin/ts-node ./src/app.ts {{args}}
 
 # helpers
 
