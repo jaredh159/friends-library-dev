@@ -8,12 +8,13 @@
   "license": "MIT",
   "scripts": {
     "graphql:codegen": "flp-gql-codegen",
-    "start": "pnpm parcel --port 8888 ./src/index.html",
+    "start": "cp ../../.env . && API_DEV=true pnpm netlify dev",
+    "dev": "pnpm parcel --port 1234 ./src/index.html",
     "compile": "true",
     "build": "pnpm parcel build ./src/index.html --no-source-maps",
     "prestart": "npm run write:css",
     "prebuild": "npm run write:css",
-    "write:css": "node ./src/write-css.js",
+    "write:css": "echo node ./src/write-css.js",
     "test": "fldev test",
     "lint": "fldev lint",
     "lint:fix": "fldev lint:fix",
@@ -64,6 +65,7 @@
     "@types/react-dom": "^16.8.2",
     "@types/react-redux": "^7.0.9",
     "@types/uuid": "^3.4.4",
+    "netlify-cli": "12.14.0",
     "node-fetch": "^3.2.0",
     "parcel": "^2.8.3"
   },

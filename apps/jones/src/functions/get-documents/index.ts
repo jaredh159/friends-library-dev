@@ -1,7 +1,7 @@
-import { Handler } from '@netlify/functions';
 import { gql } from '@friends-library/db';
+import type { Handler } from '@netlify/functions';
+import type { GetDocuments } from '../../graphql/GetDocuments';
 import { client } from './client';
-import { GetDocuments } from '../../graphql/GetDocuments';
 
 const handler: Handler = async () => {
   const { data, errors } = await client().query<GetDocuments>({ query: QUERY_DOCUMENT });

@@ -1,7 +1,7 @@
 import smalltalk from 'smalltalk';
 import { lintFix as fixLints } from '@friends-library/adoc-lint';
+import type { Task, ReduxThunk, Dispatch, State } from '../type';
 import * as gh from '../lib/github-api';
-import { Task, ReduxThunk, Dispatch, State } from '../type';
 import { lintOptions } from '../lib/lint';
 import { LANG } from '../lib/github-api';
 
@@ -221,6 +221,7 @@ async function tryGithub(
   try {
     result = await fn();
   } catch (e) {
+    console.error(e);
     dispatch({ type: `NETWORK_ERROR` });
     alertGithubError(errorType);
     return false;

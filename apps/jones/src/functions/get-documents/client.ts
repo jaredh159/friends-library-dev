@@ -1,5 +1,6 @@
 import fetch from 'cross-fetch';
-import { getClient, ClientType } from '@friends-library/db';
+import { getClient } from '@friends-library/db';
+import type { ClientType } from '@friends-library/db';
 
 export function client(): ClientType {
   const env = getEnv();
