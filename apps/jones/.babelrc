@@ -1,0 +1,25 @@
+// NOTE: I jumped through a lot of hoops getting parcel to work with @emotion
+// following this repo: https://github.com/lee-reinhardt/parcel-ts-emotion
+// if I ever rip @emotion out of this, I can probably get rid of a bunch of deps
+// here is a diff of the changes: https://gist.github.com/jaredh159/a48ea5b553b7300e97ac7f28fa87bb2d
+{
+  "presets": ["@babel/preset-typescript"],
+  "plugins": [
+    "transform-inline-environment-variables",
+    [
+      "babel-plugin-jsx-pragmatic",
+      { "export": "jsx", "module": "@emotion/core", "import": "___EmotionJSX" }
+    ],
+    [
+      "@babel/plugin-transform-react-jsx",
+      { "pragma": "___EmotionJSX", "pragmaFrag": "React.Fragment" }
+    ],
+    [
+      "emotion",
+      {
+        "autoLabel": true,
+        "labelFormat": "[filename]-[local]"
+      }
+    ]
+  ]
+}

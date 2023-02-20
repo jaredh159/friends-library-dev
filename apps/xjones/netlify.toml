@@ -1,8 +1,0 @@
-[build]
-  command = "npm run build"
-  publish = "dist/"
-  functions = "functions"
-
-[build.environment]
-  NODE_VERSION = "v18.13.0"
-  NODE_OPTIONS = "--unhandled-rejections=strict"

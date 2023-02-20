@@ -1,3 +1,22 @@
 {
-  "extends": "../../tsconfig.json"
+  "compilerOptions": {
+    "target": "ES2019",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "lib": ["ES2017", "dom"],
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "noImplicitAny": false,
+    "noUncheckedIndexedAccess": false,
+    "noImplicitOverride": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "jsx": "preserve",
+    "typeRoots": ["node_modules/@types", "./src/types"],
+    "rootDir": "./src"
+  }
 }

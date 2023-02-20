@@ -3,7 +3,6 @@ import get from 'lodash.get';
 import produce from 'immer';
 import type { Action } from '../types';
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export default function reducer<State extends object>(
   baseState: State,
   action: Action<State>,
