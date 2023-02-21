@@ -23,5 +23,12 @@
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": false,
     "noUncheckedIndexedAccess": true
+  },
+  "ts-node": {
+    "transpileOnly": true,
+    "swc": true,
+    "compilerOptions": {
+      "module": "commonjs"
+    }
   }
 }

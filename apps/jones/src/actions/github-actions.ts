@@ -221,7 +221,6 @@ async function tryGithub(
   try {
     result = await fn();
   } catch (e) {
-    console.error(e);
     dispatch({ type: `NETWORK_ERROR` });
     alertGithubError(errorType);
     return false;

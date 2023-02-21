@@ -1,5 +1,5 @@
-import { State, Task, File } from './type';
-import { EditionType } from '@friends-library/types';
+import type { EditionType } from '@friends-library/types';
+import type { State, Task, File } from './type';
 
 export function currentTask(state: State): Task | null {
   if (!state.currentTask) {
