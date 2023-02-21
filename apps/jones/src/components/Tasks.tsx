@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import uuid from 'uuid/v4';
-import { Task, Dispatch, State } from '../type';
+import type { Task, Dispatch, State } from '../type';
 import * as actions from '../actions';
 import * as screens from '../screens';
 import Button from './Button';

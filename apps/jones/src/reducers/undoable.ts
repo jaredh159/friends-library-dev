@@ -1,4 +1,4 @@
-import { Undoable, Action } from '../type';
+import type { Undoable, Action } from '../type';
 
 export function undoable<T>(
   reducer: (state: T, action: Action) => T,
@@ -6,6 +6,7 @@ export function undoable<T>(
   resetters: string[] = [],
   limit = 50,
 ): (state: Undoable<T>, action: Action) => Undoable<Record<string, any>> {
+  // @ts-ignore
   return (state = emptyUndoable(), action) => {
     if (action.type === `RESET_UNDO_${undoKey}` || resetters.includes(action.type)) {
       return {

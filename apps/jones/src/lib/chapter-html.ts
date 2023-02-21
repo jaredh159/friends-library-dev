@@ -1,6 +1,6 @@
 import { evaluate } from '@friends-library/evaluator';
 import { genericDpc } from '@friends-library/types';
-import { State } from '../type';
+import type { State } from '../type';
 
 export default function chapterHtml(state: State, taskId: string, path: string): string {
   const task = state.tasks.present[taskId];

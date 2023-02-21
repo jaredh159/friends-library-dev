@@ -1,5 +1,5 @@
 import { createAction } from 'redux-starter-kit';
-import { Dispatch, State, ReduxThunk } from '../type';
+import type { Dispatch, State, ReduxThunk } from '../type';
 import { currentTask } from '../select';
 
 export {

@@ -1,5 +1,5 @@
-import { ActionCreator } from 'redux';
-import { EditionType } from '@friends-library/types';
+import type { ActionCreator } from 'redux';
+import type { EditionType } from '@friends-library/types';
 
 export type Dispatch = ActionCreator<any>;
 

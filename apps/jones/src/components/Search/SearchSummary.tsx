@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SearchResult } from '../../type';
+import type { SearchResult } from '../../type';
 
 interface Props {
   results: SearchResult[];

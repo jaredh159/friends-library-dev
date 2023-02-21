@@ -2,12 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 import styled from '@emotion/styled';
-import { Dispatch, State as AppState } from '../type';
-import * as actions from '../actions';
-import {
+import type { Dispatch, State as AppState } from '../type';
+import type {
   Document,
   DocumentEdition,
-  DocumentFile,
+  DocumentFile} from '../select';
+import * as actions from '../actions';
+import {
   documentTree,
   requireCurrentTask,
 } from '../select';

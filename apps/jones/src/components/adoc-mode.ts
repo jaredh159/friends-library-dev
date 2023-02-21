@@ -225,7 +225,7 @@ ace.define(
     (function () {
       // @ts-ignore
       this.$id = `ace/mode/adoc`;
-    }.call(Mode.prototype));
+    }).call(Mode.prototype);
 
     exports.Mode = Mode; // eslint-disable-line no-param-reassign
   },

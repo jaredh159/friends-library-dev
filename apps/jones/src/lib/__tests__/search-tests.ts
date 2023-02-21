@@ -1,7 +1,9 @@
+import { describe, beforeEach, it, expect } from 'vitest';
+import type { File } from '../../type';
 import { searchFiles } from '../search';
 
 describe(`searchFiles()`, () => {
-  let files;
+  let files: Array<Omit<File, 'sha'>>;
 
   beforeEach(() => {
     const adoc = `
@@ -14,8 +16,8 @@ Jim Jam.
 
     files = [
       {
-        filename: `01.adoc`,
         path: `journal/updated/01.adoc`,
+        content: adoc,
         editedContent: adoc,
       },
     ];
@@ -42,18 +44,18 @@ Jim Jam.
   it(`sorts results by edition type`, () => {
     files = [
       {
-        filename: `01.adoc`,
         path: `journal/original/01.adoc`,
+        content: `foobar lol`,
         editedContent: `foobar lol`,
       },
       {
-        filename: `01.adoc`,
         path: `journal/updated/01.adoc`,
+        content: `foobar lol`,
         editedContent: `foobar lol`,
       },
       {
-        filename: `01.adoc`,
         path: `journal/modernized/01.adoc`,
+        content: `foobar lol`,
         editedContent: `foobar lol`,
       },
     ];

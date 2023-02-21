@@ -1,3 +1,4 @@
+import { describe, beforeEach, it, expect } from 'vitest';
 import migrate from '../pr-number-to-pull-request-object';
 
 describe(`migrate()`, () => {

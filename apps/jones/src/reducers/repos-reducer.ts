@@ -1,5 +1,5 @@
 import { createReducer } from 'redux-starter-kit';
-import { Repo } from '../type';
+import type { Repo } from '../type';
 
 interface GitHubRepo {
   id: number;

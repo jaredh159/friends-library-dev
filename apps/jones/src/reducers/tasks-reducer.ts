@@ -1,5 +1,5 @@
 import { createReducer } from 'redux-starter-kit';
-import { Task, SearchResult, File, Tasks, Action } from '../type';
+import type { Task, SearchResult, File, Tasks, Action } from '../type';
 
 function fastForward(task: Task, commit: string): void {
   task.parentCommit = commit;
@@ -197,6 +197,7 @@ export default createReducer(
       const task = state[payload.id];
       if (task) {
         Object.keys(payload.data).forEach((key) => {
+          // @ts-ignore
           task[key] = payload.data[key];
         });
         task.updated = new Date().toJSON();

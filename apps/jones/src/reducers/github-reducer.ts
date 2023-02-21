@@ -1,5 +1,5 @@
 import { createReducer } from 'redux-starter-kit';
-import { GitHub, Action } from '../type';
+import type { GitHub, Action } from '../type';
 
 export default createReducer(
   {},

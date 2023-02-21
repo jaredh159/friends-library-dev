@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
+import type { Dispatch, State as AppState } from '../type';
 import * as actions from '../actions';
 import * as gh from '../lib/github-api';
 import fox from '../assets/george-fox.png';
 import throbber from '../assets/throbber.gif';
 import NavContent from './NavContent';
-import { Dispatch, State as AppState } from '../type';
 
 const TopNav = styled.div<{ throbbing: boolean }>`
   height: 50px;

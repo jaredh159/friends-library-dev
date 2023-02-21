@@ -4,10 +4,10 @@ import styled from '@emotion/styled';
 import moment from 'moment';
 import uuid from 'uuid/v4';
 import smalltalk from 'smalltalk';
+import type { Task as TaskType, Dispatch, Repo, State as AppState } from '../type';
 import * as actions from '../actions';
-import { Task as TaskType, Dispatch, Repo, State as AppState } from '../type';
-import Button from './Button';
 import { ORG } from '../lib/github-api';
+import Button from './Button';
 
 const Wrap = styled.li<{ locked: boolean }>`
   background: #999;

@@ -1,9 +1,9 @@
 import escape from 'escape-string-regexp';
-import { File, SearchResult, SearchResultContext } from '../type';
+import type { File, SearchResult, SearchResultContext } from '../type';
 
 export function searchFiles(
   searchTerm: string,
-  files: File[],
+  files: Array<Omit<File, 'sha'>>,
   words = true,
   caseSensitive = false,
   regexp = false,

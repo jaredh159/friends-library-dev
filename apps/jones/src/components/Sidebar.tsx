@@ -2,10 +2,10 @@ import * as React from 'react';
 import styled from '@emotion/styled';
 import { connect } from 'react-redux';
 import Resizable from 're-resizable';
-import { Dispatch, State } from '../type';
-import FriendFiles from './FriendFiles';
+import type { Dispatch, State } from '../type';
 import { requireCurrentTask } from '../select';
 import * as actions from '../actions';
+import FriendFiles from './FriendFiles';
 
 const Div = styled(Resizable)`
   background: #333;

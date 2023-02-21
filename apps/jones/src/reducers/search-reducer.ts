@@ -1,5 +1,5 @@
 import { createReducer } from 'redux-starter-kit';
-import { Search } from '../type';
+import type { Search } from '../type';
 
 export const defaultState = {
   searching: false,
@@ -11,6 +11,7 @@ export const defaultState = {
 export default createReducer(defaultState, {
   UPDATE_SEARCH: (state: Search, { payload }: any) => {
     Object.keys(payload).forEach((key) => {
+      // @ts-ignore
       state[key] = payload[key];
     });
   },

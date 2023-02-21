@@ -335,9 +335,9 @@ importers:
       '@types/js-yaml': ^3.12.0
       '@types/lodash': ^4.14.168
       '@types/node': ^11.11.3
-      '@types/react': 16.9.11
-      '@types/react-dom': ^16.8.2
-      '@types/react-redux': ^7.0.9
+      '@types/react': ^18.0.0
+      '@types/react-dom': ^18.0.0
+      '@types/react-redux': ^6.0.0
       '@types/uuid': ^3.4.4
       brace: ^0.11.1
       buffer: ^5.5.0
@@ -352,9 +352,9 @@ importers:
       node-fetch: ^3.2.0
       parcel: ^2.8.3
       re-resizable: ^4.11.0
-      react: ^17.0.0
+      react: ^18.0.0
       react-ace: ^6.3.2
-      react-dom: ^17.0.0
+      react-dom: ^18.0.0
       react-keyboard-event-handler: ^1.4.1
       react-redux: ^6.0.0
       react-sizeme: ^2.5.2
@@ -363,8 +363,8 @@ importers:
       smalltalk: ^3.2.2
       uuid: ^3.3.3
     dependencies:
-      '@emotion/core': 10.3.1_react@17.0.2
-      '@emotion/styled': 10.3.0_gfrer23gq2rp2t523t6qbxrx6m
+      '@emotion/core': 10.3.1_react@18.2.0
+      '@emotion/styled': 10.3.0_53jusob2jhmevmsrhkvbpx2hvm
       '@friends-library/adoc-lint': link:../../libs-ts/adoc-lint
       '@friends-library/db': link:../../libs-ts/db
       '@friends-library/doc-css': link:../../libs-ts/doc-css
@@ -382,12 +382,12 @@ importers:
       lodash: 4.17.21
       moment: 2.29.4
       re-resizable: 4.11.0
-      react: 17.0.2
-      react-ace: 6.6.0_sfoxds7t5ydpegc3knd667wn6m
-      react-dom: 17.0.2_react@17.0.2
-      react-keyboard-event-handler: 1.5.4_react@17.0.2
-      react-redux: 6.0.1_react@17.0.2+redux@4.2.1
-      react-sizeme: 2.6.12_sfoxds7t5ydpegc3knd667wn6m
+      react: 18.2.0
+      react-ace: 6.6.0_biqbaboplfbrettd7655fr4n2y
+      react-dom: 18.2.0_react@18.2.0
+      react-keyboard-event-handler: 1.5.4_react@18.2.0
+      react-redux: 6.0.1_react@18.2.0+redux@4.2.1
+      react-sizeme: 2.6.12_biqbaboplfbrettd7655fr4n2y
       redux: 4.2.1
       redux-starter-kit: 0.3.3
       smalltalk: 3.4.2
@@ -401,9 +401,9 @@ importers:
       '@types/js-yaml': 3.12.7
       '@types/lodash': 4.14.191
       '@types/node': 11.15.54
-      '@types/react': 16.9.11
-      '@types/react-dom': 16.9.18
-      '@types/react-redux': 7.1.25
+      '@types/react': 18.0.27
+      '@types/react-dom': 18.0.10
+      '@types/react-redux': 6.0.21
       '@types/uuid': 3.4.10
       netlify-cli: 12.14.0_@types+node@11.15.54
       node-fetch: 3.3.0
@@ -1290,7 +1290,7 @@ packages:
       '@emotion/weak-memoize': 0.2.5
     dev: false
 
-  /@emotion/core/10.3.1_react@17.0.2:
+  /@emotion/core/10.3.1_react@18.2.0:
     resolution: {integrity: sha512-447aUEjPIm0MnE6QYIaFz9VQOHSXf4Iu6EWOIqq11EAPqinkSZmfymPTmlOE3QjLv846lH4JVZBUOtwGbuQoww==}
     peerDependencies:
       react: '>=16.3.0'
@@ -1301,7 +1301,7 @@ packages:
       '@emotion/serialize': 0.11.16
       '@emotion/sheet': 0.9.4
       '@emotion/utils': 0.11.3
-      react: 17.0.2
+      react: 18.2.0
     dev: false
 
   /@emotion/css/10.0.27:
@@ -1340,30 +1340,30 @@ packages:
     resolution: {integrity: sha512-zM9PFmgVSqBw4zL101Q0HrBVTGmpAxFZH/pYx/cjJT5advXguvcgjHFTCaIO3enL/xr89vK2bh0Mfyj9aa0ANA==}
     dev: false
 
-  /@emotion/styled-base/10.3.0_gfrer23gq2rp2t523t6qbxrx6m:
+  /@emotion/styled-base/10.3.0_53jusob2jhmevmsrhkvbpx2hvm:
     resolution: {integrity: sha512-PBRqsVKR7QRNkmfH78hTSSwHWcwDpecH9W6heujWAcyp2wdz/64PP73s7fWS1dIPm8/Exc8JAzYS8dEWXjv60w==}
     peerDependencies:
       '@emotion/core': ^10.0.28
       react: '>=16.3.0'
     dependencies:
       '@babel/runtime': 7.20.13
-      '@emotion/core': 10.3.1_react@17.0.2
+      '@emotion/core': 10.3.1_react@18.2.0
       '@emotion/is-prop-valid': 0.8.8
       '@emotion/serialize': 0.11.16
       '@emotion/utils': 0.11.3
-      react: 17.0.2
+      react: 18.2.0
     dev: false
 
-  /@emotion/styled/10.3.0_gfrer23gq2rp2t523t6qbxrx6m:
+  /@emotion/styled/10.3.0_53jusob2jhmevmsrhkvbpx2hvm:
     resolution: {integrity: sha512-GgcUpXBBEU5ido+/p/mCT2/Xx+Oqmp9JzQRuC+a4lYM4i4LBBn/dWvc0rQ19N9ObA8/T4NWMrPNe79kMBDJqoQ==}
     peerDependencies:
       '@emotion/core': ^10.0.27
       react: '>=16.3.0'
     dependencies:
-      '@emotion/core': 10.3.1_react@17.0.2
-      '@emotion/styled-base': 10.3.0_gfrer23gq2rp2t523t6qbxrx6m
+      '@emotion/core': 10.3.1_react@18.2.0
+      '@emotion/styled-base': 10.3.0_53jusob2jhmevmsrhkvbpx2hvm
       babel-plugin-emotion: 10.2.2
-      react: 17.0.2
+      react: 18.2.0
     dev: false
 
   /@emotion/stylis/0.8.5:
@@ -4368,13 +4368,6 @@ packages:
     resolution: {integrity: sha512-qjDJRrmvBMiTx+jyLxvLfJU7UznFuokDv4f3WRuriHKERccVpFU+8XMQUAbDzoiJCsmexxRExQeMwwCdamSKDA==}
     dev: true
 
-  /@types/hoist-non-react-statics/3.3.1:
-    resolution: {integrity: sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA==}
-    dependencies:
-      '@types/react': 16.9.11
-      hoist-non-react-statics: 3.3.2
-    dev: true
-
   /@types/http-cache-semantics/4.0.1:
     resolution: {integrity: sha512-SZs7ekbP8CN0txVG2xVRH6EgKmEm31BOxA07vkFaETzZz1xh+cbt8BcI0slpymvwhx5dlFnQG2rTlPVQn+iRPQ==}
 
@@ -4560,24 +4553,16 @@ packages:
       '@types/node': 14.18.36
     dev: true
 
-  /@types/react-dom/16.9.18:
-    resolution: {integrity: sha512-lmNARUX3+rNF/nmoAFqasG0jAA7q6MeGZK/fdeLwY3kAA4NPgHHrG5bNQe2B5xmD4B+x6Z6h0rEJQ7MEEgQxsw==}
-    dependencies:
-      '@types/react': 16.9.11
-    dev: true
-
   /@types/react-dom/18.0.10:
     resolution: {integrity: sha512-E42GW/JA4Qv15wQdqJq8DL4JhNpB3prJgjgapN3qJT9K2zO5IIAQh4VXvCEDupoqAwnz0cY4RlXeC/ajX5SFHg==}
     dependencies:
       '@types/react': 18.0.27
     dev: true
 
-  /@types/react-redux/7.1.25:
-    resolution: {integrity: sha512-bAGh4e+w5D8dajd6InASVIyCo4pZLJ66oLb80F9OBLO1gKESbZcRCJpTT6uLXX+HAB57zw1WTdwJdAsewuTweg==}
+  /@types/react-redux/6.0.21:
+    resolution: {integrity: sha512-B23h4GtBEB+j0+MmBG+mT+c7CzLsYVgM3+iJqzeREPAn7O2JvbGF/EEDKNBu9XQ+LiHBHJHb65zEXNa+mg2+HQ==}
     dependencies:
-      '@types/hoist-non-react-statics': 3.3.1
-      '@types/react': 16.9.11
-      hoist-non-react-statics: 3.3.2
+      '@types/react': 18.0.27
       redux: 4.2.1
     dev: true
 
@@ -4601,13 +4586,6 @@ packages:
     dependencies:
       '@types/react': 18.0.27
     dev: false
-
-  /@types/react/16.9.11:
-    resolution: {integrity: sha512-UBT4GZ3PokTXSWmdgC/GeCGEJXE5ofWyibCcecRLUVN2ZBpXQGVgQGtG2foS7CrTKFKlQVVswLvf7Js6XA/CVQ==}
-    dependencies:
-      '@types/prop-types': 15.7.5
-      csstype: 2.6.21
-    dev: true
 
   /@types/react/17.0.53:
     resolution: {integrity: sha512-1yIpQR2zdYu1Z/dc1OxC+MA6GR240u3gcnP4l6mvj/PJiVaqHsQPmWttsvHsfnhfPbU2FuGmo0wSITPygjBmsw==}
@@ -9949,6 +9927,7 @@ packages:
     resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
     dependencies:
       react-is: 16.13.1
+    dev: false
 
   /hosted-git-info/2.8.9:
     resolution: {integrity: sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw==}
@@ -14455,22 +14434,6 @@ packages:
       react-dom: 18.2.0_react@18.2.0
     dev: false
 
-  /react-ace/6.6.0_sfoxds7t5ydpegc3knd667wn6m:
-    resolution: {integrity: sha512-Jehhp8bxa8kqiXk07Jzy+uD5qZMBwo43O+raniGHjdX7Qk93xFkKaAz8LxtUVZPJGlRnV5ODMNj0qHwDSN+PBw==}
-    peerDependencies:
-      react: ^0.13.0 || ^0.14.0 || ^15.0.1 || ^16.0.0
-      react-dom: ^0.13.0 || ^0.14.0 || ^15.0.1 || ^16.0.0
-    dependencies:
-      '@babel/polyfill': 7.12.1
-      brace: 0.11.1
-      diff-match-patch: 1.0.5
-      lodash.get: 4.4.2
-      lodash.isequal: 4.5.0
-      prop-types: 15.8.1
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
-    dev: false
-
   /react-contenteditable/3.3.6_react@18.2.0:
     resolution: {integrity: sha512-61+Anbmzggel1sP7nwvxq3d2woD3duR5R89RoLGqKan1A+nruFIcmLjw2F+qqk70AyABls0BDKzE1vqS1UIF1g==}
     peerDependencies:
@@ -14479,17 +14442,6 @@ packages:
       fast-deep-equal: 3.1.3
       prop-types: 15.8.1
       react: 18.2.0
-    dev: false
-
-  /react-dom/17.0.2_react@17.0.2:
-    resolution: {integrity: sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA==}
-    peerDependencies:
-      react: 17.0.2
-    dependencies:
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
-      react: 17.0.2
-      scheduler: 0.20.2
     dev: false
 
   /react-dom/18.2.0_react@18.2.0:
@@ -14511,15 +14463,6 @@ packages:
   /react-is/17.0.2:
     resolution: {integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==}
 
-  /react-keyboard-event-handler/1.5.4_react@17.0.2:
-    resolution: {integrity: sha512-MSOxU/sQ5q9XWNHhXAJxzh4xVLZjKORGNC2Pzvx3qUo24TQeztGB0tq8oSArwX6vfKSIVijiw8wBmkN5pJOB4w==}
-    peerDependencies:
-      prop-types: 15.x || 16.x
-      react: 15.x || 16.x
-    dependencies:
-      react: 17.0.2
-    dev: false
-
   /react-keyboard-event-handler/1.5.4_react@18.2.0:
     resolution: {integrity: sha512-MSOxU/sQ5q9XWNHhXAJxzh4xVLZjKORGNC2Pzvx3qUo24TQeztGB0tq8oSArwX6vfKSIVijiw8wBmkN5pJOB4w==}
     peerDependencies:
@@ -14529,7 +14472,7 @@ packages:
       react: 18.2.0
     dev: false
 
-  /react-redux/6.0.1_react@17.0.2+redux@4.2.1:
+  /react-redux/6.0.1_react@18.2.0+redux@4.2.1:
     resolution: {integrity: sha512-T52I52Kxhbqy/6TEfBv85rQSDz6+Y28V/pf52vDWs1YRXG19mcFOGfHnY2HsNFHyhP+ST34Aih98fvt6tqwVcQ==}
     peerDependencies:
       react: ^16.4.0-0
@@ -14540,7 +14483,7 @@ packages:
       invariant: 2.2.4
       loose-envify: 1.4.0
       prop-types: 15.8.1
-      react: 17.0.2
+      react: 18.2.0
       react-is: 16.13.1
       redux: 4.2.1
     dev: false
@@ -14578,7 +14521,7 @@ packages:
       react: 18.2.0
     dev: false
 
-  /react-sizeme/2.6.12_sfoxds7t5ydpegc3knd667wn6m:
+  /react-sizeme/2.6.12_biqbaboplfbrettd7655fr4n2y:
     resolution: {integrity: sha512-tL4sCgfmvapYRZ1FO2VmBmjPVzzqgHA7kI8lSJ6JS6L78jXFNRdOZFpXyK6P1NBZvKPPCZxReNgzZNUajAerZw==}
     peerDependencies:
       react: ^0.14.0 || ^15.0.0-0 || ^16.0.0
@@ -14586,8 +14529,8 @@ packages:
     dependencies:
       element-resize-detector: 1.2.4
       invariant: 2.2.4
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
       shallowequal: 1.1.0
       throttle-debounce: 2.3.0
     dev: false
@@ -15083,13 +15026,6 @@ packages:
     dependencies:
       xmlchars: 2.2.0
     dev: true
-
-  /scheduler/0.20.2:
-    resolution: {integrity: sha512-2eWfGgAqqWFGqtdMmcL5zCMK1U8KlXv8SQFGglL3CEtd0aDVDWgeF/YoCmvln55m5zSk3J/20hTaSBeSObsQDQ==}
-    dependencies:
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
-    dev: false
 
   /scheduler/0.23.0:
     resolution: {integrity: sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==}

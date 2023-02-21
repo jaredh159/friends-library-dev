@@ -1,7 +1,7 @@
 import { Octokit } from '@octokit/rest';
 import { Base64 } from 'js-base64';
-import { Lang } from '@friends-library/types';
-import { Task, File } from '../type';
+import type { Lang } from '@friends-library/types';
+import type { Task, File } from '../type';
 
 const isDev = process.env.NODE_ENV === `development`;
 

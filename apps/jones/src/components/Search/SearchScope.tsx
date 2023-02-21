@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
+import type { EditionType } from '@friends-library/types';
+import type { State } from '../../type';
 import { searchedFiles, currentTaskFriendName, requireCurrentTask } from '../../select';
-import { State } from '../../type';
-import { EditionType } from '@friends-library/types';
 
 const SearchScope = styled.div`
   color: #666;
