@@ -77,6 +77,7 @@ env:
   LULU_API_ENDPOINT: /not-real
   LULU_CLIENT_KEY: not-real
   LULU_CLIENT_SECRET: not-real
+  LULU_PHONE_NUMBER: not-real
   STRIPE_PUBLISHABLE_KEY: not-real
   STRIPE_SECRET_KEY: not-real
   JARED_CONTACT_FORM_EMAIL: you@example.com

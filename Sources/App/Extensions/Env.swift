@@ -14,6 +14,7 @@ extension Env {
   static let LULU_API_ENDPOINT = get("LULU_API_ENDPOINT")!
   static let LULU_CLIENT_KEY = get("LULU_CLIENT_KEY")!
   static let LULU_CLIENT_SECRET = get("LULU_CLIENT_SECRET")!
+  static let LULU_PHONE_NUMBER = get("LULU_PHONE_NUMBER")!
   static let STRIPE_PUBLISHABLE_KEY = get("STRIPE_PUBLISHABLE_KEY")!
   static let STRIPE_SECRET_KEY = get("STRIPE_SECRET_KEY")!
   static let JARED_CONTACT_FORM_EMAIL = get("JARED_CONTACT_FORM_EMAIL")!

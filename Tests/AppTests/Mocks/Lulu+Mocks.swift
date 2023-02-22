@@ -8,7 +8,8 @@ extension Lulu.Api.ShippingAddress {
     countryCode: "US",
     city: "Wadsworth",
     stateCode: "OH",
-    postcode: "44281"
+    postcode: "44281",
+    phoneNumber: "5555555555"
   )
 
   static let random: Self = .init(
@@ -18,7 +19,8 @@ extension Lulu.Api.ShippingAddress {
     countryCode: "@countryCode".random,
     city: "@city".random,
     stateCode: "@state".random,
-    postcode: "@postcode".random
+    postcode: "@postcode".random,
+    phoneNumber: "5555555555"
   )
 
   static let empty: Self = .init(
@@ -28,7 +30,8 @@ extension Lulu.Api.ShippingAddress {
     countryCode: "",
     city: "",
     stateCode: "",
-    postcode: ""
+    postcode: "",
+    phoneNumber: "5555555555"
   )
 }
 
