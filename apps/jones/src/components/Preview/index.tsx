@@ -1,5 +1,5 @@
 import React from 'react';
-import debounce from 'lodash/debounce';
+import debounce from 'lodash.debounce';
 import { connect } from 'react-redux';
 import styled from '@emotion/styled';
 import { Global, css } from '@emotion/core';

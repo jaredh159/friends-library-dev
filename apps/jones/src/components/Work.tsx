@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import get from 'lodash/get';
+import get from 'lodash.get';
 import styled from '@emotion/styled';
 import KeyEvent from 'react-keyboard-event-handler';
 import type { Task, Dispatch, State as AppState } from '../type';

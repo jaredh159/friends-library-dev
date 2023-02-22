@@ -1,4 +1,4 @@
-import defer from 'lodash/defer';
+import defer from 'lodash.defer';
 import type { SearchResult } from '../type';
 
 interface AceMarker {

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import AceEditor from 'react-ace';
 import { withSize } from 'react-sizeme';
-import debounce from 'lodash/debounce';
+import debounce from 'lodash.debounce';
 import { lint } from '@friends-library/adoc-lint';
 import { Parser, ParserError } from '@friends-library/parser';
 import type { LintResult, LintOptions } from '@friends-library/adoc-lint';

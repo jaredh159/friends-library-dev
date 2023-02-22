@@ -333,7 +333,9 @@ importers:
       '@types/escape-string-regexp': ^1.0.0
       '@types/js-base64': ^2.3.1
       '@types/js-yaml': ^3.12.0
-      '@types/lodash': ^4.14.168
+      '@types/lodash.debounce': 4.0.7
+      '@types/lodash.defer': 4.1.7
+      '@types/lodash.get': ^4.4.6
       '@types/node': ^11.11.3
       '@types/react': ^18.0.0
       '@types/react-dom': ^18.0.0
@@ -346,10 +348,11 @@ importers:
       escape-string-regexp: ^1.0.5
       js-base64: ^2.5.0
       localforage: ^1.7.3
-      lodash: ^4.17.14
+      lodash.debounce: 4.0.8
+      lodash.defer: 4.1.0
+      lodash.get: ^4.4.2
       moment: ^2.24.0
       netlify-cli: 12.14.0
-      node-fetch: ^3.2.0
       parcel: ^2.8.3
       re-resizable: ^4.11.0
       react: ^18.0.0
@@ -379,7 +382,9 @@ importers:
       escape-string-regexp: 1.0.5
       js-base64: 2.6.4
       localforage: 1.10.0
-      lodash: 4.17.21
+      lodash.debounce: 4.0.8
+      lodash.defer: 4.1.0
+      lodash.get: 4.4.2
       moment: 2.29.4
       re-resizable: 4.11.0
       react: 18.2.0
@@ -399,14 +404,15 @@ importers:
       '@types/escape-string-regexp': 1.0.0
       '@types/js-base64': 2.3.2
       '@types/js-yaml': 3.12.7
-      '@types/lodash': 4.14.191
+      '@types/lodash.debounce': 4.0.7
+      '@types/lodash.defer': 4.1.7
+      '@types/lodash.get': 4.4.7
       '@types/node': 11.15.54
       '@types/react': 18.0.27
       '@types/react-dom': 18.0.10
       '@types/react-redux': 6.0.21
       '@types/uuid': 3.4.10
       netlify-cli: 12.14.0_@types+node@11.15.54
-      node-fetch: 3.3.0
       parcel: 2.8.3
 
   apps/styleguide:
@@ -4429,6 +4435,18 @@ packages:
 
   /@types/lodash.camelcase/4.3.7:
     resolution: {integrity: sha512-Nfi6jpo9vuEOSIJP+mpbTezKyEt75DQlbwjiDvs/JctWkbnHDoyQo5lWqdvgNiJmVUjcmkfvlrvSEgJYvurOKg==}
+    dependencies:
+      '@types/lodash': 4.14.191
+    dev: true
+
+  /@types/lodash.debounce/4.0.7:
+    resolution: {integrity: sha512-X1T4wMZ+gT000M2/91SYj0d/7JfeNZ9PeeOldSNoE/lunLeQXKvkmIumI29IaKMotU/ln/McOIvgzZcQ/3TrSA==}
+    dependencies:
+      '@types/lodash': 4.14.191
+    dev: true
+
+  /@types/lodash.defer/4.1.7:
+    resolution: {integrity: sha512-PfggyHhNfmwRdWHwAPXy+wJbNrEeQmdvYodYQ8q5xQea6oDsG69TrTqkYv9KtxTJUlILLcN4mICU+smloz21FQ==}
     dependencies:
       '@types/lodash': 4.14.191
     dev: true
@@ -11931,9 +11949,17 @@ packages:
     resolution: {integrity: sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA==}
     dev: false
 
+  /lodash.debounce/4.0.8:
+    resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
+    dev: false
+
   /lodash.defaults/4.2.0:
     resolution: {integrity: sha512-qjxPLHd3r5DnsdGacqOMU6pb/avJzdh9tFX2ymgoZE27BmjXrNy/y4LoaiTeAb+O3gL8AfpJGtqfX/ae2leYYQ==}
     dev: true
+
+  /lodash.defer/4.1.0:
+    resolution: {integrity: sha512-Cn8ZyNc6qu5pZyoF8ydQ6p2Jyr0rTK9AlghrsxeU/u1nrG38lJBOBSM+mj+OeEfm97G+aBDxXs3MxX6bULG56Q==}
+    dev: false
 
   /lodash.difference/4.5.0:
     resolution: {integrity: sha512-dS2j+W26TQ7taQBGN8Lbbq04ssV3emRw4NY58WErlTO29pIqS0HmoT5aJ9+TUQ1N3G+JOZSji4eugsWwGp9yPA==}

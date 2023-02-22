@@ -1,4 +1,4 @@
-import defer from 'lodash/defer';
+import defer from 'lodash.defer';
 import type { ReduxThunk, Dispatch, State, SearchResult } from '../type';
 import { currentTask } from '../select';
 import { goToSearchResult, clearSearchResultHighlights } from '../lib/ace';
