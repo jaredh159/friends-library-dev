@@ -1,5 +1,6 @@
 packages:
   - 'apps/admin'
+  - 'apps/native'
   - 'apps/cover-web-app'
   - 'apps/fell'
   - 'apps/cli'

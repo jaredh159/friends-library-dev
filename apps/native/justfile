@@ -1,0 +1,41 @@
+_default:
+  @just --choose
+
+install-ios: set-env
+  @pnpm react-native run-ios
+
+install-ios-release: set-env
+  @pnpm react-native run-ios --configuration Release
+
+install-android: set-env
+  @pnpm react-native run-android
+
+install-android-release: set-env
+  @pnpm react-native run-android --mode release
+
+install: install-ios install-android
+
+start: set-env
+  @pnpm react-native start
+
+start-reset-cache: set-env
+  @pnpm react-native start --reset-cache
+
+xcode: set-env
+  @open ios/FriendsLibrary.xcworkspace
+
+pod-install: set-env
+  @cd ios && bundle exec pod install
+
+# env
+
+set-env:
+  @pnpm ts-node ./env/set-env.ts
+
+edit-env:
+  @$EDITOR ./.env
+
+# util
+
+clean:
+  @cd android && ./gradlew clean

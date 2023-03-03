@@ -1,7 +1,9 @@
 ## Todo
 
+- [ ] native: restore storybook (use old repo files)
+- [ ] native: app shouldn't allow non-null assertions
+- [ ] native: i'm not sure if splash screen is working for android
 - [ ] remove fs-extra package from cli (elsewhere?)
-- [ ] _REWRITE_ jones, tried for 4+ hours to integrate w/ monorepo
 - [ ] break apart ci to speed up
 - [ ] remove `nodegit` dep (with `librbk5` dep install in ci.yml)
 - [ ] after `evans` imported, finish doing `apps/poster` (relies on evans)
