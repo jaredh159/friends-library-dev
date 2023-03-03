@@ -20,6 +20,16 @@ See also:
 
 https://github.com/facebook/hermes/issues/114
 
+## testing on Android physical device
+
+- hook up device via usb, accept "trust" prompt if necessary
+- if you run `adb devices` you should see it available
+- close any emulators running
+- run `just install-android`
+- if you get an error about "signature not matching", uninstall any prior versions from
+  the device and try again
+- see https://reactnative.dev/docs/running-on-device
+
 ## LEGACY STUFF:
 
 ### everything below HERE is from before RN 0.71/monorepo refactor:

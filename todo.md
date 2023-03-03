@@ -1,5 +1,7 @@
 ## Todo
 
+- [ ] native: add just scripts to launch ios emulators of various sizes
+- [ ] native: transfer android build scripts from old repo package.json
 - [ ] native: restore storybook (use old repo files)
 - [ ] native: app shouldn't allow non-null assertions
 - [ ] native: i'm not sure if splash screen is working for android
