@@ -996,8 +996,7 @@ const TruthDefended: React.FC = () => (
         expressly says, “Let no man deceive you with vain words, for because of these
         things the wrath of God comes upon the children of disobedience.”
         <Footnote number={158} />
-        And in another place, he says, ���Those who live according to the flesh shall
-        die.”
+        And in another place, he says, “Those who live according to the flesh shall die.”
         <Footnote number={159} />
         It is therefore for lack of people’s embracing the means provided by God, and
         bringing their deeds to the Light of Christ in their hearts, and heeding the
