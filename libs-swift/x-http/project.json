@@ -1,0 +1,12 @@
+{
+  "root": "libs-swift/x-http",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "command": "cd libs-swift/x-http && swift build"
+    },
+    "test": {
+      "command": "cd libs-swift/x-http && SWIFT_DETERMINISTIC_HASHING=1 swift test"
+    }
+  }
+}

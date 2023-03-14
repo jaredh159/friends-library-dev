@@ -2,6 +2,7 @@
 *.swp
 node_modules/
 .env
+**/.build/
 **/tsconfig.tsbuildinfo
 **/dist/
 apps/cover-web-app/src/friends.js

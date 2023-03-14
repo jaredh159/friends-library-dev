@@ -48,10 +48,7 @@ let package = Package(
       url: "https://github.com/jaredh159/x-kit.git",
       from: "1.0.2"
     ),
-    .package(
-      url: "https://github.com/jaredh159/x-http.git",
-      from: "1.0.0"
-    ),
+    .package(path: "../../libs-swift/x-http"),
     .package(
       url: "https://github.com/jaredh159/x-sendgrid.git",
       from: "1.0.3"
