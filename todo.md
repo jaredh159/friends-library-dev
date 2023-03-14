@@ -1,5 +1,7 @@
 ## Todo
 
+- [ ] api: update duet to gertie version, w/out codegen
+- [ ] api: deal with todos in `converge-todo.md`
 - [ ] native: add just scripts to launch ios emulators of various sizes
 - [ ] native: transfer android build scripts from old repo package.json
 - [ ] native: restore storybook (use old repo files)

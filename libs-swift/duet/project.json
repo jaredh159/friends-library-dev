@@ -1,0 +1,12 @@
+{
+  "root": "libs-swift/duet",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "command": "cd libs-swift/duet && swift build"
+    },
+    "test": {
+      "command": "cd libs-swift/duet && SWIFT_DETERMINISTIC_HASHING=1 swift test"
+    }
+  }
+}

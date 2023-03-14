@@ -323,15 +323,6 @@
         "revision" : "2b8885974e8d9f522e787805000553f4f7cce8a0",
         "version" : "2.7.0"
       }
-    },
-    {
-      "identity" : "x-kit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/jaredh159/x-kit",
-      "state" : {
-        "revision" : "7deedcba5da944d4e274dc16105c6624f98493b4",
-        "version" : "1.0.2"
-      }
     }
   ],
   "version" : 2

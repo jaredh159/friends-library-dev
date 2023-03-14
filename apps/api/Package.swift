@@ -3,9 +3,7 @@ import PackageDescription
 
 let package = Package(
   name: "graphql-api",
-  platforms: [
-    .macOS(.v12),
-  ],
+  platforms: [.macOS(.v12)],
   dependencies: [
     .github("vapor/vapor@4.67.4"),
     .github("vapor/fluent@4.4.0"),
@@ -16,10 +14,7 @@ let package = Package(
     .github("pointfreeco/swift-nonempty@0.3.0"),
     .github("kylehughes/RomanNumeralKit@1.0.0"),
     .github("JohnSundell/ShellOut@2.0.0"),
-    .package(
-      dev: "../../../gertie/duet",
-      prod: "gertrude-app/duet@1.0.1"
-    ),
+    .package(path: "../../libs-swift/duet"),
     .package(path: "../../libs-swift/x-http"),
     .package(path: "../../libs-swift/x-sendgrid"),
     .package(path: "../../libs-swift/x-stripe"),
@@ -77,10 +72,5 @@ extension PackageDescription.Package.Dependency {
       url: "https://github.com/\(parts[0]).git",
       from: .init(stringLiteral: "\(parts[1])")
     )
-  }
-
-  static func package(dev: String, prod: String) -> Package.Dependency {
-    if FileManager.default.fileExists(atPath: dev) { return .package(path: dev) }
-    return .github(prod)
   }
 }
