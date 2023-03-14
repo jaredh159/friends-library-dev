@@ -1,0 +1,14 @@
+{
+  "root": "apps/api",
+  "projectType": "app",
+  "implicitDependencies": [],
+  "targets": {
+    "build": {
+      "outputs": ["{projectRoot}/.build/debug/Run"],
+      "command": "cd apps/api && swift build"
+    },
+    "test": {
+      "command": "cd apps/api && SWIFT_DETERMINISTIC_HASHING=1 swift test"
+    }
+  }
+}

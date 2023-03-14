@@ -56,10 +56,51 @@ prettier-check:
 fl *args:
   cd apps/cli && ../../node_modules/.bin/ts-node ./src/app.ts {{args}}
 
+# api
+
+watch-api:
+  @just watch-swift apps/api 'just run-api'
+
+run-api: build-api
+	@just exec-api serve
+
+run-api-ip: build-api
+	@just exec-api serve --hostname 192.168.10.227
+
+build-api:
+	@cd apps/api && swift build
+
+migrate-up: build-api
+	@just exec-api migrate --yes
+
+migrate-down: build-api
+	@just exec-api migrate --revert --yes
+
+test-api:
+  @cd apps/api && SWIFT_DETERMINISTIC_HASHING=1 swift test
+
 # helpers
 
 [private]
 nx-run-many targets:
   @pnpm exec nx run-many --parallel=10 --targets={{targets}}
+
+[private]
+exec-api cmd *args:
+  @cd apps/api && ./.build/debug/Run {{cmd}} {{args}}
+
+[private]
+watch-swift dir cmd ignore1="•" ignore2="•" ignore3="•":
+  @watchexec --project-origin . --clear --restart --watch {{dir}} --exts swift \
+  --ignore '**/.build/*/**' --ignore '{{ignore1}}' --ignore '{{ignore2}}' --ignore '{{ignore3}}' \
+  {{cmd}}
+
+swift-watch-build dir:
+  @just watch-swift {{dir}} '"cd {{dir}} && swift build"'
+
+swift-watch-test dir isolate="":
+  @just watch-swift {{dir}} '"cd {{dir}} && \
+  SWIFT_DETERMINISTIC_HASHING=1 swift test \
+  {{ if isolate != "" { "--filter " + isolate } else { "" } }} "'
 
 set positional-arguments

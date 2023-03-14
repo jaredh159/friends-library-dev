@@ -90,7 +90,7 @@ final class DownloadableFileTests: AppTestCase {
         .where(.userAgent == .string(userAgent))
         .first()
       XCTAssertEqual(download.source, .podcast)
-      XCTAssertEqual(res.status, RedirectType.permanent.status)
+      XCTAssertEqual(res.status, Redirect.permanent.status)
     }
   }
 

@@ -27,10 +27,7 @@ let package = Package(
       url: "https://github.com/m-barthelemy/vapor-queues-fluent-driver.git",
       from: "1.2.0"
     ),
-    .package(
-      url: "https://github.com/pointfreeco/swift-tagged",
-      from: "0.6.0"
-    ),
+    .package("jaredh159/swift-tagged@0.8.2"),
     .package(
       url: "https://github.com/pointfreeco/swift-nonempty.git",
       from: "0.3.0"

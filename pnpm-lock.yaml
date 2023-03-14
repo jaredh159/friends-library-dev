@@ -109,6 +109,14 @@ importers:
       tailwindcss: 3.2.4_postcss@8.4.21
       vite: 4.1.1
 
+  apps/api:
+    specifiers:
+      x-chalk: ^1.0.1
+      x-exec: ^1.2.0
+    devDependencies:
+      x-chalk: 1.0.1
+      x-exec: 1.2.0
+
   apps/cli:
     specifiers:
       '@friends-library/adoc-lint': workspace:*

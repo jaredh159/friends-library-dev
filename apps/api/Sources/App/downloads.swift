@@ -10,18 +10,18 @@ func logAndRedirect(
   referrer: String? = nil
 ) async throws -> Response {
   let response = Response()
-  response.status = RedirectType.temporary.status
+  response.status = Redirect.temporary.status
   response.headers.replaceOrAdd(name: .location, value: file.sourceUrl.absoluteString)
 
   let isAppUserAgent = userAgent.contains("FriendsLibrary")
   var source: Download.DownloadSource = isAppUserAgent ? .app : .website
 
   switch (userAgent |> isPodcast, file.format) {
-    case (true, _), (_, .audio(.podcast)):
-      source = .podcast
-      response.status = RedirectType.permanent.status
-    default:
-      break
+  case (true, _), (_, .audio(.podcast)):
+    source = .podcast
+    response.status = Redirect.permanent.status
+  default:
+    break
   }
 
   guard let device = Current.userAgentParser.parse(userAgent) else {
