@@ -1,0 +1,17 @@
+@screen sm {
+  #FriendsPageHero,
+  #FriendsPageHero::before,
+  #FriendsPageHero::after {
+    background-size: 1500px;
+    background-position: center 93%;
+  }
+}
+
+@screen xl {
+  #FriendsPageHero,
+  #FriendsPageHero::before,
+  #FriendsPageHero::after {
+    background-size: cover;
+    background-position: center 88%;
+  }
+}
