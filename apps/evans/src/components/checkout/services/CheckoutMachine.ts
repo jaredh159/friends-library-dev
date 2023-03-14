@@ -1,5 +1,5 @@
 import { ReallySmallEvents as EventEmitter } from 'really-small-events';
-import CheckoutService from './CheckoutService';
+import type CheckoutService from './CheckoutService';
 
 const states = {
   cart: {
@@ -173,4 +173,5 @@ export default class CheckoutMachine extends EventEmitter {
 }
 
 const log: any =
+  // eslint-disable-next-line no-console
   process?.env?.NODE_ENV === `production` ? (): void => {} : console.log.bind(console);

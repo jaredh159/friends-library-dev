@@ -1,9 +1,9 @@
 import React from 'react';
-import Link from 'gatsby-link';
 import cx from 'classnames';
+import type { NewsFeedType } from '../../../../types';
+import Link from '../../../Link';
 import NewsFeedIcon from './NewsFeedIcon';
 import { COLOR_MAP } from './news-feed';
-import { NewsFeedType } from '../../../../types';
 
 interface Props {
   type: NewsFeedType;
@@ -65,12 +65,12 @@ const NewsFeedItem: React.FC<Props> = ({
 
 export default NewsFeedItem;
 
-const FlexLink: React.FC<{ className?: string; to: string; type: NewsFeedType }> = ({
-  children,
-  className,
-  type,
-  to,
-}) => {
+const FlexLink: React.FC<{
+  children: React.ReactNode;
+  className?: string;
+  to: string;
+  type: NewsFeedType;
+}> = ({ children, className, type, to }) => {
   if (type === `spanish_translation` || to.startsWith(`http`)) {
     return (
       <a href={to} className={className}>

@@ -1,6 +1,5 @@
 import React from 'react';
 import cx from 'classnames';
-import Link from 'gatsby-link';
 import { Front } from '@friends-library/cover-component';
 import { t } from '@friends-library/locale';
 import type { CoverProps } from '@friends-library/types';
@@ -9,6 +8,7 @@ import Button from './Button';
 import Album from './Album';
 import AudioDuration from './AudioDuration';
 import './BookTeaserCard.css';
+import Link from './Link';
 
 export type Props = Omit<CoverProps, 'size' | 'pages' | 'blurb'> & {
   audioDuration?: string;
@@ -98,7 +98,7 @@ const BookTeaserCard: React.FC<Props> = (props) => {
 
 export default BookTeaserCard;
 
-const Badge: React.FC = ({ children }) => (
+const Badge: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <div
     className={`absolute antialiased top-0 left-0 bg-fl${
       LANG === `en` ? `gold` : `maroon`

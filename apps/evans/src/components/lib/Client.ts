@@ -1,6 +1,6 @@
 import gql from 'x-syntax';
-import { LogJsErrorDataInput } from '../../graphql/globalTypes';
-import { JsError, JsErrorVariables } from '../../graphql/JsError';
+import type { LogJsErrorDataInput } from '../../graphql/globalTypes';
+import type { JsError, JsErrorVariables } from '../../graphql/JsError';
 
 export default class Client {
   private endpoint: string;

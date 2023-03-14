@@ -1,16 +1,16 @@
 import React from 'react';
-import Link from 'gatsby-link';
-import BackgroundImage from 'gatsby-background-image-preact';
 import cx from 'classnames';
-import { Lang } from '@friends-library/types';
 import { t } from '@friends-library/locale';
+import type { Lang } from '@friends-library/types';
+import type { FluidBgImageObject } from '../types';
 import { LANG } from './env';
 import FriendsLogo from './LogoFriends';
 import AmigosLogo from './LogoAmigos';
 import { bgLayer } from './lib/color';
 import GetAppLink from './GetAppLink';
-import { FluidBgImageObject } from '../types';
 import './Footer.css';
+import BackgroundImage from './BackgroundImage';
+import Link from './Link';
 
 const Footer: React.FC<{ bgImg: FluidBgImageObject }> = ({ bgImg }) => {
   const Logo = LANG === `en` ? FriendsLogo : AmigosLogo;
@@ -18,7 +18,7 @@ const Footer: React.FC<{ bgImg: FluidBgImageObject }> = ({ bgImg }) => {
     <BackgroundImage
       fluid={[bgLayer(`flprimary`, 0.8), bgImg, bgLayer(`flprimary`)]}
       id="Footer"
-      Tag="footer"
+      as="footer"
       rootMargin="300px"
       fadeIn={false}
       className="Footer text-gray-300 font-hairline mt-auto"

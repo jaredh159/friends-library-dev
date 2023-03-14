@@ -107,6 +107,7 @@ const BookByFriend: React.FC<Props> = (props) => {
 const MetaItem: React.FC<{
   Icon: React.FC<{ className?: string }>;
   className?: string;
+  children: React.ReactNode;
 }> = ({ Icon, children, className }) => (
   <li
     className={cx(`capitalize text-sans pb-4 sm:pb-3 flex whitespace-no-wrap`, className)}

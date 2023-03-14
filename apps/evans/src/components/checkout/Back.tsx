@@ -4,6 +4,7 @@ import cx from 'classnames';
 interface Props {
   className?: string;
   onClick: () => any;
+  children: React.ReactNode;
 }
 
 const Back: React.FC<Props> = ({ children, className, onClick }) => {

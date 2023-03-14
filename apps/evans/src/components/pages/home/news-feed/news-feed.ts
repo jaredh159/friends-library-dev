@@ -1,4 +1,4 @@
-import { NewsFeedType } from '../../../../types';
+import type { NewsFeedType } from '../../../../types';
 import { LANG } from '../../../env';
 
 export const COLOR_MAP: { [k in NewsFeedType]: string } = {

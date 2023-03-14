@@ -1,5 +1,5 @@
 import path from 'path';
-import { GatsbyNode, CreatePagesArgs } from 'gatsby';
+import type { GatsbyNode, CreatePagesArgs } from 'gatsby';
 
 const StaticPageTemplate = path.resolve(`./src/templates/StaticPage.tsx`);
 

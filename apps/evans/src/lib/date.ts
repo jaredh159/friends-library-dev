@@ -1,5 +1,5 @@
-import { Lang } from '@friends-library/types';
-import { Document, Friend } from '../build/types';
+import type { Lang } from '@friends-library/types';
+import type { Document, Friend } from '../build/types';
 
 export function documentDate(
   document: Pick<Document, 'published' | 'directoryPath'>,

@@ -1,14 +1,15 @@
+import { describe, it, beforeEach, expect, vi } from 'vitest';
+import type CheckoutApi from '../CheckoutApi';
 import CheckoutService from '../CheckoutService';
-import CheckoutApi from '../CheckoutApi';
 import { cartPlusData } from '../../models/__tests__/fixtures';
 import { ShippingLevel } from '../../../../graphql/globalTypes';
 
-jest.useFakeTimers();
+vi.useFakeTimers();
 
 describe(`CheckoutService()`, () => {
   let service: CheckoutService;
-  const apiGetExploratoryMetadata = jest.fn();
-  const apiCreateOrder = jest.fn();
+  const apiGetExploratoryMetadata = vi.fn();
+  const apiCreateOrder = vi.fn();
 
   beforeEach(() => {
     service = new CheckoutService(cartPlusData(), {

@@ -1,5 +1,6 @@
-import CartItem, { CartItemData } from '../CartItem';
-import { Address } from '../../../../types';
+import type { CartItemData } from '../CartItem';
+import type { Address } from '../../../../types';
+import CartItem from '../CartItem';
 import Cart from '../Cart';
 
 export const cartItemData1: () => CartItemData = () => ({

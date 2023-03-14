@@ -6,6 +6,7 @@ import './PillDropdownDropdown.css';
 interface Props {
   className?: string;
   accordion?: boolean;
+  children: React.ReactNode;
 }
 
 const PillDropdownDropdown: React.FC<Props> = ({ className, accordion, children }) => {

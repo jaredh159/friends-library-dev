@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import BackgroundImage from 'gatsby-background-image-preact';
-import { Book } from './types';
+import type { Book } from './types';
+import type { FluidBgImageObject } from '../../../types';
 import PillDropdown from '../../PillDropdown';
 import PillDropdownItem from '../../PillDropdownItem';
 import PillDropdownDropdown from '../../PillDropdownDropdown';
-import BookSlider from './BookSlider';
-import TimePicker from './TimePicker';
 import { useWindowWidth } from '../../hooks/window-width';
 import { SCREEN_MD } from '../../lib/constants';
 import { bgLayer } from '../../lib/color';
+import BackgroundImage from '../../BackgroundImage';
 import BgWordBlock from './BgWordBlock';
-import { FluidBgImageObject } from '../../../types';
+import TimePicker from './TimePicker';
+import BookSlider from './BookSlider';
 import './TimelineBlock.css';
 
 interface Props {

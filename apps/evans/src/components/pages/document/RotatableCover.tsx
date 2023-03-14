@@ -1,8 +1,8 @@
 import React from 'react';
 import cx from 'classnames';
 import { ThreeD } from '@friends-library/cover-component';
+import type { CoverProps } from '@friends-library/types';
 import Rotate from '../../icons/Rotate';
-import { CoverProps } from '@friends-library/types';
 
 type Perspective = 'back' | 'front' | 'spine' | 'angle-front' | 'angle-back';
 

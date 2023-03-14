@@ -1,12 +1,12 @@
 import React from 'react';
-import Link from 'gatsby-link';
-import Image from 'gatsby-image';
 import { t } from '@friends-library/locale';
+import type { FluidImageObject } from '../../../types';
 import Dual from '../../Dual';
 import { LANG } from '../../env';
 import Heading from '../../Heading';
-import { FluidImageObject } from '../../../types';
 import './FormatsBlock.css';
+import Link from '../../Link';
+import Image from '../../Image';
 
 interface Props {
   img: FluidImageObject;

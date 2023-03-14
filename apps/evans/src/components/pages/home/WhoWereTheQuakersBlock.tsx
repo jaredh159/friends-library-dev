@@ -1,11 +1,11 @@
 import React from 'react';
-import BackgroundImage from 'gatsby-background-image-preact';
 import { t } from '@friends-library/locale';
+import type { FluidBgImageObject } from '../../../types';
 import Dual from '../../Dual';
 import Button from '../../Button';
 import Heading from '../../Heading';
 import { bgLayer } from '../../lib/color';
-import { FluidBgImageObject } from '../../../types';
+import BackgroundImage from '../../BackgroundImage';
 import './WhoWereTheQuakersBlock.css';
 
 interface Props {
@@ -15,7 +15,7 @@ interface Props {
 const WhoWereTheQuakersBlock: React.FC<Props> = ({ bgImg }) => (
   <BackgroundImage
     fluid={[bgLayer(`flprimary`, 0.9), bgImg]}
-    Tag="section"
+    as="section"
     id="WhoWereTheQuakersBlock"
     className="bg-flmaroon text-white flex flex-col items-center py-12 sm:py-16 px-12  md:px-16 lg:px-20 lg:py-24"
   >

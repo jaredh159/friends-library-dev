@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { AddressWithEmail } from '../../types';
-import { Props as AddressProps } from '../ShippingAddress';
+import type { AddressWithEmail } from '../../types';
+import type { Props as AddressProps } from '../ShippingAddress';
 
 export function useEscapeable(
   selector: string,

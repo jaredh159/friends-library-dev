@@ -1,8 +1,8 @@
 import React from 'react';
-import Dual from './Dual';
+import type { LogJsErrorDataInput } from '../graphql/globalTypes';
 import { NODE_ENV } from '../env';
+import Dual from './Dual';
 import { sendJsError } from './lib/Client';
-import { LogJsErrorDataInput } from '../graphql/globalTypes';
 
 interface State {
   hasError: boolean;
@@ -10,6 +10,7 @@ interface State {
 
 interface Props {
   location: string;
+  children: React.ReactNode;
 }
 
 export default class ErrorBoundary extends React.Component<Props, State> {
@@ -19,8 +20,9 @@ export default class ErrorBoundary extends React.Component<Props, State> {
     return { hasError: true };
   }
 
-  public componentDidCatch(error: any, errorInfo: any): void {
+  public componentDidCatch(error: unknown, errorInfo: unknown): void {
     if (NODE_ENV === `development`) {
+      // eslint-disable-next-line no-console
       console.error(error);
       return;
     }

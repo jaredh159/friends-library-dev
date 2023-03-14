@@ -1,11 +1,11 @@
 import React from 'react';
 import cx from 'classnames';
-import BackgroundImage from 'gatsby-background-image-preact';
 import { t } from '@friends-library/locale';
+import type { FluidBgImageObject } from '../../types';
 import Dual from '../Dual';
 import { bgLayer } from '../lib/color';
-import { FluidBgImageObject } from '../../types';
 import './AudiobooksHero.css';
+import BackgroundImage from '../BackgroundImage';
 
 interface Props {
   numBooks: number;

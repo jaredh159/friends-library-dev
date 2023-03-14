@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import cx from 'classnames';
 import { Swipeable } from 'react-swipeable';
-import { CoverProps } from '@friends-library/types';
 import { t } from '@friends-library/locale';
+import type { CoverProps } from '@friends-library/types';
 import Heading from '../../Heading';
 import FeaturedBook from './FeaturedBook';
 import './FeaturedBooksBlock.css';
@@ -31,6 +31,7 @@ const FeaturedBooksBlock: React.FC<Props> = ({ books }) => {
   });
 
   return (
+    // @ts-ignore
     <Swipeable
       nodeName="section"
       className="FeaturedBooksBlock py-10 sm:py-12 md:py-20"

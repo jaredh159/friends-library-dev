@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import cx from 'classnames';
 import { t } from '@friends-library/locale';
+import type { AudioQuality } from '@friends-library/types';
 import { LANG } from '../../env';
-import { AudioQuality } from '@friends-library/types';
 import EmbeddedAudio from '../../EmbeddedAudio';
 import WaveBottomBlock from '../../blocks/WaveBottomBlock';
 import DownloadAudiobook from './DownloadAudiobook';

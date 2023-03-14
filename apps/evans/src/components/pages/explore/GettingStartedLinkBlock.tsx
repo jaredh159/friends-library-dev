@@ -1,10 +1,10 @@
 import React from 'react';
-import Link from 'gatsby-link';
-import BackgroundImage from 'gatsby-background-image-preact';
 import { t } from '@friends-library/locale';
+import type { FluidBgImageObject } from '../../../types';
 import Dual from '../../Dual';
 import { bgLayer } from '../../lib/color';
-import { FluidBgImageObject } from '../../../types';
+import BackgroundImage from '../../BackgroundImage';
+import Link from '../../Link';
 
 interface Props {
   bgImg: FluidBgImageObject;

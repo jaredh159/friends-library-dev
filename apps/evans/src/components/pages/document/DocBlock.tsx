@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import Link from 'gatsby-link';
 import { bookDims } from '@friends-library/lulu';
 import { t } from '@friends-library/locale';
 import type { CoverProps, PrintSize, EditionType } from '@friends-library/types';
@@ -9,6 +8,7 @@ import CartItem from '../../checkout/models/CartItem';
 import CartStore from '../../checkout/services/CartStore';
 import SpanishFreeBooksNote from '../../SpanishFreeBooksNote';
 import { makeScroller } from '../../lib/scroll';
+import Link from '../../Link';
 import RotatableCover from './RotatableCover';
 import AddToCartWizard from './AddToCartWizard';
 import DocActions from './DocActions';

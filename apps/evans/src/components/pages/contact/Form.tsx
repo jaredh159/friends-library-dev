@@ -154,7 +154,10 @@ const ContactForm: React.FC<Props> = ({ className, onSubmit }) => {
 
 export default ContactForm;
 
-const Label: React.FC<{ htmlFor: string }> = ({ htmlFor, children }) => (
+const Label: React.FC<{ children: React.ReactNode; htmlFor: string }> = ({
+  htmlFor,
+  children,
+}) => (
   <label
     htmlFor={htmlFor}
     className="sans-wide text-flgray-500 text-xl antialiased mb-2 md:mb-4 inline-block"

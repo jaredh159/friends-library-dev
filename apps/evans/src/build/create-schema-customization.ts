@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { GatsbyNode, CreateSchemaCustomizationArgs } from 'gatsby';
+import type { GatsbyNode, CreateSchemaCustomizationArgs } from 'gatsby';
 
 const createSchemaCustomization: GatsbyNode['createSchemaCustomization'] = async ({
   actions: { createTypes },

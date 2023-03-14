@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Book, Region } from './types';
+import type { Book, Region } from './types';
 import BgWordBlock from './BgWordBlock';
 import MapSlider from './MapSlider';
 import BookSlider from './BookSlider';

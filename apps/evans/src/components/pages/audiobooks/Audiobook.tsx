@@ -1,13 +1,13 @@
 import React from 'react';
 import cx from 'classnames';
-import Link from 'gatsby-link';
-import { CoverProps } from '@friends-library/types';
 import { t } from '@friends-library/locale';
+import type { CoverProps } from '@friends-library/types';
 import Album from '../../Album';
 import AudioDuration from '../../AudioDuration';
 import Button from '../../Button';
 import Stack from '../../layout/Stack';
 import './Audiobook.css';
+import Link from '../../Link';
 
 type Props = Omit<CoverProps, 'size' | 'pages' | 'blurb'> & {
   bgColor: 'blue' | 'maroon' | 'gold' | 'green';

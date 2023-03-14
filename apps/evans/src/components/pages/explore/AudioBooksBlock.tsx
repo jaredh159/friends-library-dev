@@ -1,13 +1,13 @@
 import React from 'react';
-import Link from 'gatsby-link';
 import cx from 'classnames';
 import { t } from '@friends-library/locale';
-import { Book } from './types';
+import type { FluidBgImageObject } from '../../../types';
+import type { Book } from './types';
 import AudiobooksHero from '../../blocks/AudiobooksHero';
 import Button from '../../Button';
 import Album from '../../Album';
-import { FluidBgImageObject } from '../../../types';
 import './AudioBooksBlock.css';
+import Link from '../../Link';
 
 interface Props {
   books: Omit<Book, 'authorUrl'>[];

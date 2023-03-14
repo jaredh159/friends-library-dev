@@ -1,13 +1,13 @@
 import React from 'react';
-import Link from 'gatsby-link';
-import { Lang } from '@friends-library/types';
 import { t } from '@friends-library/locale';
+import type { Lang } from '@friends-library/types';
 import FriendsLogo from './LogoFriends';
 import AmigosLogo from './LogoAmigos';
 import GetAppLink from './GetAppLink';
 import { LANG } from './env';
 import { useCartTotalQuantity } from './checkout/hooks';
 import './SlideoverMenu.css';
+import Link from './Link';
 
 const SlideoverMenu: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [cartQty, , store] = useCartTotalQuantity();

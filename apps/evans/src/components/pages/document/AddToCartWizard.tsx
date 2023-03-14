@@ -1,5 +1,5 @@
 import React from 'react';
-import { EditionType } from '@friends-library/types';
+import type { EditionType } from '@friends-library/types';
 import ChoiceWizard from './ChoiceWizard';
 import ChooseEdition from './ChooseEdition';
 

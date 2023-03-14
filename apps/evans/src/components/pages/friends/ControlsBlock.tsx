@@ -59,7 +59,10 @@ const ControlsBlock: React.FC<Props> = ({
 
 export default ControlsBlock;
 
-const Label: React.FC<{ className?: string }> = ({ children, className }) => (
+const Label: React.FC<{ children: React.ReactNode; className?: string }> = ({
+  children,
+  className,
+}) => (
   <div
     className={cx(
       className,

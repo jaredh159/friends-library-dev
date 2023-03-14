@@ -1,9 +1,9 @@
 import React from 'react';
-import Link from 'gatsby-link';
 import { Diamonds } from '@friends-library/cover-component';
+import type { EditionType } from '@friends-library/types';
+import Link from '../../Link';
 import ChoiceStep from './ChoiceStep';
 import ChoiceItem from './ChoiceItem';
-import { EditionType } from '@friends-library/types';
 
 interface Props {
   editions: EditionType[];

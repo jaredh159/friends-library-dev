@@ -1,14 +1,15 @@
 import React from 'react';
 import cx from 'classnames';
-import BackgroundImage from 'gatsby-background-image-preact';
+import type { FluidBgImageObject } from '../../types';
 import { bgLayer } from '../lib/color';
-import { FluidBgImageObject } from '../../types';
 import './MultiBookBgBlock.css';
+import BackgroundImage from '../BackgroundImage';
 
 interface Props {
   className?: string;
   bright?: boolean;
   bgImg: FluidBgImageObject;
+  children?: React.ReactNode;
 }
 
 const MultiBookBgBlock: React.FC<Props> = ({ children, className, bgImg, bright }) => {
@@ -17,7 +18,7 @@ const MultiBookBgBlock: React.FC<Props> = ({ children, className, bgImg, bright 
   const percent = bright ? 65 : 75;
   return (
     <BackgroundImage
-      Tag="section"
+      as="section"
       id="MultiBookBgBlock"
       fluid={[
         `radial-gradient(rgba(0, 0, 0, ${opStart}), rgba(0, 0, 0, ${opEnd}) ${percent}%)`,

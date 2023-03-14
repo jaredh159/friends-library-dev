@@ -6,6 +6,7 @@ interface Props {
   color: 'blue' | 'maroon' | 'green' | 'gold';
   className?: string;
   id?: string;
+  children: React.ReactNode;
 }
 
 const WaveBottomBlock: React.FC<Props> = ({ id, color, children, className }) => {

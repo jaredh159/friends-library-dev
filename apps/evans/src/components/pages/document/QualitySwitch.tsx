@@ -1,8 +1,8 @@
 import React from 'react';
 import Switch from 'react-switch';
 import cx from 'classnames';
+import type { AudioQuality } from '@friends-library/types';
 import Dual from '../../Dual';
-import { AudioQuality } from '@friends-library/types';
 
 interface Props {
   quality: AudioQuality;
@@ -12,6 +12,7 @@ interface Props {
 
 const QualitySwitch: React.FC<Props> = ({ className, quality, onChange }) => (
   <Dual.Frag>
+    {/* @ts-ignore */}
     <Switch
       className={className}
       checked={quality === `HQ`}
@@ -24,6 +25,7 @@ const QualitySwitch: React.FC<Props> = ({ className, quality, onChange }) => (
       checkedIcon={<Label className="pl-6 w-16">HI-FI</Label>}
       aria-label="Audio download quality"
     />
+    {/* @ts-ignore */}
     <Switch
       className={className}
       checked={quality === `HQ`}
@@ -41,7 +43,10 @@ const QualitySwitch: React.FC<Props> = ({ className, quality, onChange }) => (
 
 export default QualitySwitch;
 
-const Label: React.FC<{ className: string }> = ({ className, children }) => (
+const Label: React.FC<{ children: React.ReactNode; className: string }> = ({
+  className,
+  children,
+}) => (
   <span
     className={cx(
       className,

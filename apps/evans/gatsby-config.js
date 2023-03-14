@@ -1,4 +1,4 @@
-require(`@friends-library/env/load`);
+// require(`@friends-library/env/load`);
 
 const LANG = process.env.GATSBY_LANG === `es` ? `es` : `en`;
 
@@ -13,6 +13,7 @@ module.exports = {
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
+    `gatsby-plugin-pnpm`,
     `gatsby-plugin-remove-trailing-slashes`,
     {
       resolve: `gatsby-plugin-manifest`,

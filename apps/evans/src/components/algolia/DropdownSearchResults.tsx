@@ -2,10 +2,10 @@ import React from 'react';
 import cx from 'classnames';
 import { connectStateResults, Index, Configure } from 'react-instantsearch-dom';
 import { t } from '@friends-library/locale';
+import { LANG } from '../env';
 import Pagination from './Pagination';
 import IndexResults from './IndexResults';
 import { FriendHit, BookHit, PageHit } from './SearchHits';
-import { LANG } from '../env';
 import './DropdownSearchResults.css';
 
 interface Props {

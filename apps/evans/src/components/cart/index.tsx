@@ -1,12 +1,13 @@
 import React from 'react';
 import { t } from '@friends-library/locale';
-import Item from './Item';
+import type { CartItemData } from '../checkout/models/CartItem';
 import Button from '../Button';
 import Back from '../checkout/Back';
 import Progress from '../checkout/Progress';
 import Header from '../checkout/Header';
-import CartItem, { CartItemData } from '../checkout/models/CartItem';
+import CartItem from '../checkout/models/CartItem';
 import NoProfit from '../checkout/NoProfit';
+import Item from './Item';
 
 interface Props {
   checkout: () => void;
@@ -68,11 +69,11 @@ const CartComponent: React.FC<Props> = ({
 
 export default CartComponent;
 
-export const SubLine: React.FC<{ label: string; className?: string }> = ({
-  label,
-  children,
-  className,
-}) => (
+export const SubLine: React.FC<{
+  children: React.ReactNode;
+  label: string;
+  className?: string;
+}> = ({ label, children, className }) => (
   <div className={`${className || ``} text-gray-700 text-sm flex`}>
     <span className="flex-grow">{label}</span>
     {children}

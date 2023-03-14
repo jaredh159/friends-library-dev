@@ -1,18 +1,19 @@
 import React from 'react';
 import gql from 'x-syntax';
 import { graphql } from 'gatsby';
-import ContactFormBlock from '../components/pages/contact/FormBlock';
 import { t } from '@friends-library/locale';
-import { PAGE_META_DESCS } from '../lib/seo';
-import { Layout, Seo } from '../components/data';
-import { LANG } from '../env';
-import { FluidBgImageObject } from '../types';
-import Client from '../components/lib/Client';
-import {
+import type { FluidBgImageObject } from '../types';
+import type {
   SubmitContactForm,
   SubmitContactFormVariables,
 } from '../graphql/SubmitContactForm';
-import { Lang, Subject as ContactFormSubject } from '../graphql/globalTypes';
+import type { Subject as ContactFormSubject } from '../graphql/globalTypes';
+import ContactFormBlock from '../components/pages/contact/FormBlock';
+import { PAGE_META_DESCS } from '../lib/seo';
+import { Layout, Seo } from '../components/data';
+import { LANG } from '../env';
+import Client from '../components/lib/Client';
+import { Lang } from '../graphql/globalTypes';
 
 interface Props {
   data: {

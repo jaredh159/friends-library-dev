@@ -1,3 +1,4 @@
+import { describe, test, it, expect, beforeEach } from 'vitest';
 import { documentDate } from '../date';
 
 describe(`documentDate()`, () => {

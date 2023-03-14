@@ -1,11 +1,11 @@
 import React from 'react';
 import cx from 'classnames';
-import Link from 'gatsby-link';
 import { ThreeD as Front } from '@friends-library/cover-component';
 import { t } from '@friends-library/locale';
+import type { FeaturedBookProps } from './FeaturedBooksBlock';
 import { LANG } from '../../env';
 import Button from '../../Button';
-import { FeaturedBookProps } from './FeaturedBooksBlock';
+import Link from '../../Link';
 
 const Book: React.FC<FeaturedBookProps & { isCurrent: boolean }> = (props) => {
   const {

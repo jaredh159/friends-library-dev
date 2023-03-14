@@ -4,6 +4,7 @@ import PopUnder from '../../PopUnder';
 interface Props {
   top?: number;
   left?: number;
+  children: React.ReactNode;
 }
 
 const ChoiceWizard: React.FC<Props> = ({ top, left, children }) => (

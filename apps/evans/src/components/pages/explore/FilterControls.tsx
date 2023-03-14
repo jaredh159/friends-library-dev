@@ -27,7 +27,10 @@ const FilterControls: React.FC<Props> = ({
 
 export default FilterControls;
 
-const Label: React.FC<{ className?: string }> = ({ children, className }) => (
+const Label: React.FC<{ children: React.ReactNode; className?: string }> = ({
+  children,
+  className,
+}) => (
   <div
     className={cx(
       className,

@@ -12,8 +12,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@friends-library/dev": "^4.5.2",
-    "@friends-library/env": "^1.4.0",
+    "@friends-library/env": "workspace:*",
     "apollo": "^2.33.4",
     "x-chalk": "^1.0.1",
     "x-exec": "^1.2.0"

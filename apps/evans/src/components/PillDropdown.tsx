@@ -5,6 +5,7 @@ interface Props {
   pillText: string;
   className?: string;
   autoHide?: boolean;
+  children: React.ReactNode;
 }
 
 const PillDropdown: React.FC<Props> = ({

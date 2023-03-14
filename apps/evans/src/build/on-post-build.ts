@@ -1,9 +1,9 @@
 import fs from 'fs-extra';
-import { GatsbyNode } from 'gatsby';
 import env from '@friends-library/env';
+import type { GatsbyNode } from 'gatsby';
 import { podcast } from '../lib/xml';
-import { sendSearchDataToAlgolia } from './algolia';
 import { LANG } from '../env';
+import { sendSearchDataToAlgolia } from './algolia';
 import * as api from './api';
 
 const onPostBuild: GatsbyNode['onPostBuild'] = async () => {

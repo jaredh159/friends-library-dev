@@ -1,8 +1,8 @@
 import React from 'react';
 import cx from 'classnames';
+import type { Region } from './types';
 import map from '../../images/full_map.png';
 import LocationMarker from '../../icons/LocationMarker';
-import { Region } from './types';
 import './SelectableMap.css';
 
 interface Props {

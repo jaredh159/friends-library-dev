@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { DocPrecursor } from '@friends-library/types';
+import type { DocPrecursor } from '@friends-library/types';
 import { NODE_ENV } from '../env';
 
 export interface EditionCache {

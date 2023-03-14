@@ -1,3 +1,4 @@
+import { describe, test, it, expect } from 'vitest';
 import { partTitle, partDesc, subtitle } from '../xml';
 import { Lang } from '../../graphql/globalTypes';
 

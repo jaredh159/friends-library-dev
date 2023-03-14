@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { graphql } from 'gatsby';
 import { t } from '@friends-library/locale';
+import type { FluidBgImageObject } from '../types';
 import { LANG } from '../components/env';
 import { PAGE_META_DESCS } from '../lib/seo';
 import { Seo, Layout } from '../components/data';
@@ -9,7 +10,6 @@ import FriendCard from '../components/pages/friends/FriendCard';
 import FriendsPageHero from '../components/pages/friends/FriendsPageHero';
 import FriendsPageControlsBlock from '../components/pages/friends/ControlsBlock';
 import FriendsPageCompilationsBlock from '../components/pages/friends/CompilationsBlock';
-import { FluidBgImageObject } from '../types';
 
 const FriendsPage: React.FC<Props> = ({
   data: { allFriend, recent, street, village },

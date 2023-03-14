@@ -52,7 +52,7 @@ const Input: React.FC<Props> = ({
 
 export default Input;
 
-export const InvalidOverlay: React.FC = ({ children }) => (
+export const InvalidOverlay: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <span className="absolute text-red-600 top-0 right-0 text-xs p-1 font-normal leading-tight">
     {children}
   </span>

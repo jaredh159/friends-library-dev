@@ -1,24 +1,24 @@
 import gql from 'x-syntax';
-import { BrickOrder, BrickOrderVariables } from '../../../graphql/BrickOrder';
-import {
+import type { BrickOrder, BrickOrderVariables } from '../../../graphql/BrickOrder';
+import type {
   CreateOrderInit,
   CreateOrderInitVariables,
 } from '../../../graphql/CreateOrderInit';
-import {
+import type {
   CreateOrderWithItems,
   CreateOrderWithItemsVariables,
 } from '../../../graphql/CreateOrderWithItems';
-import {
+import type {
   ExploratoryMetadata,
   ExploratoryMetadataVariables,
 } from '../../../graphql/ExploratoryMetadata';
-import {
+import type {
   PrintJobExploratoryItemInput,
   ShippingAddressInput,
 } from '../../../graphql/globalTypes';
-import { CreateOrderInput } from '../../../graphql/globalTypes';
-import { CreateOrderItemInput } from '../../../graphql/globalTypes';
-import {
+import type { CreateOrderInput } from '../../../graphql/globalTypes';
+import type { CreateOrderItemInput } from '../../../graphql/globalTypes';
+import type {
   SendOrderConfirmationEmail,
   SendOrderConfirmationEmailVariables,
 } from '../../../graphql/SendOrderConfirmationEmail';

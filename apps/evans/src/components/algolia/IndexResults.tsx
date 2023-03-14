@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import { connectStateResults, Hits } from 'react-instantsearch-dom';
-import { HitProps } from './SearchHits';
+import type { HitProps } from './SearchHits';
 
 interface Props {
   title: string;

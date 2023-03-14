@@ -2,6 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 import { graphql } from 'gatsby';
 import { t } from '@friends-library/locale';
+import type { NumPublishedBooks } from '../types';
 import { LANG } from '../components/env';
 import { PAGE_META_DESCS } from '../lib/seo';
 import { Layout, Seo } from '../components/data';
@@ -12,7 +13,6 @@ import Dual from '../components/Dual';
 import EmbeddedAudio from '../components/EmbeddedAudio';
 import Heading from '../components/Heading';
 import { makeScroller } from '../components/lib/scroll';
-import { NumPublishedBooks } from '../types';
 
 interface Props {
   data: NumPublishedBooks;
@@ -143,6 +143,7 @@ interface PathIntroProps {
   color: 'blue' | 'maroon' | 'gold' | 'green';
   onClick: () => void;
   noBooks?: boolean;
+  children: React.ReactNode;
 }
 
 const PathIntro: React.FC<PathIntroProps> = ({

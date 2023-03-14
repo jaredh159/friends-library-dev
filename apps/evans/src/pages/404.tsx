@@ -1,12 +1,12 @@
 import React from 'react';
 import { graphql } from 'gatsby';
+import type { FluidBgImageObject, NumPublishedBooks } from '../types';
 import Layout from '../components/data/Layout';
 import ExploreBooksBlock from '../components/data/ExploreBooksBlock';
 import { APP_ALT_URL, LANG } from '../env';
 import NotFoundHeroBlock from '../components/blocks/NotFoundHeroBlock';
 import HomeGettingStartedBlock from '../components/pages/home/GettingStartedBlock';
 import ExploreAltSiteBlock from '../components/pages/explore/AltSiteBlock';
-import { FluidBgImageObject, NumPublishedBooks } from '../types';
 
 type Props = {
   data: NumPublishedBooks & {

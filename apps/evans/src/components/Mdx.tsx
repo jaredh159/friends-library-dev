@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 
-const components: { [key: string]: React.FC } = {
+const components: { [key: string]: React.FC<{ children: React.ReactNode }> } = {
   h2: ({ children }) => (
     <h2
       className={cx(

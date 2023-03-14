@@ -1,9 +1,9 @@
 import React from 'react';
 import cx from 'classnames';
 import { Front } from '@friends-library/cover-component';
+import type { CoverProps } from '@friends-library/types';
 import LogoFriends from './LogoFriends';
 import LogoAmigos from './LogoAmigos';
-import { CoverProps } from '@friends-library/types';
 import { LANG } from './env';
 import './Album.css';
 

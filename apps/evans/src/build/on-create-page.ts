@@ -1,4 +1,4 @@
-import { GatsbyNode, CreatePageArgs } from 'gatsby';
+import type { GatsbyNode, CreatePageArgs } from 'gatsby';
 import { LANG } from '../env';
 
 const onCreatePage: GatsbyNode['onCreatePage'] = async ({

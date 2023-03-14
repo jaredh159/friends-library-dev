@@ -7,6 +7,7 @@ interface Props {
   className?: string;
   style?: Record<string, string | number>;
   alignRight?: boolean;
+  children: React.ReactNode;
 }
 
 const PopUnder: React.FC<Props> = ({

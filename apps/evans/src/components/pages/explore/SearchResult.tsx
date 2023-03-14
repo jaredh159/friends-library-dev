@@ -1,7 +1,7 @@
 import React from 'react';
-import Link from 'gatsby-link';
 import { Front } from '@friends-library/cover-component';
-import { Book } from './types';
+import type { Book } from './types';
+import Link from '../../Link';
 
 const SearchResult: React.FC<Book> = (props) => (
   <Link to={props.documentUrl}>

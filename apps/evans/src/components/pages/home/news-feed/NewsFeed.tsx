@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import cx from 'classnames';
+import type NewsFeedItem from './NewsFeedItem';
 import Dual from '../../../Dual';
-import NewsFeedItem from './NewsFeedItem';
 import NewsFeedYear from './NewsFeedYear';
 
 type ItemProps = Omit<React.ComponentProps<typeof NewsFeedItem>, 'alt'>;

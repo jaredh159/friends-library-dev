@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { StripeProvider, Elements } from 'react-stripe-elements';
-import CheckoutMachine from './services/CheckoutMachine';
+import type { CartItemData } from './models/CartItem';
+import type { Props as EmptyCartProps } from './EmptyCart';
+import type CheckoutMachine from './services/CheckoutMachine';
 import { LANG } from '../env';
 import Cart from '../cart';
 import Delivery from './Delivery';
 import Payment from './Payment';
 import Confirmation from './Confirmation';
 import UnrecoverableError from './UnrecoverableError';
-import CartItem, { CartItemData } from './models/CartItem';
-import EmptyCart, { Props as EmptyCartProps } from './EmptyCart';
+import CartItem from './models/CartItem';
+import EmptyCart from './EmptyCart';
 
 type Props = { machine: CheckoutMachine } & EmptyCartProps;
 

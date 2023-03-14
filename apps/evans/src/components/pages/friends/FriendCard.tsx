@@ -3,11 +3,11 @@ import cx from 'classnames';
 import { t } from '@friends-library/locale';
 import Button from '../../Button';
 import Stack from '../../layout/Stack';
-import CircleSilhouette from './CircleSilhouette';
 import Flag from '../../icons/Flag';
 import Calendar from '../../icons/Calendar';
 import ThinLogo from '../../icons/ThinLogo';
 import Dual from '../../Dual';
+import CircleSilhouette from './CircleSilhouette';
 import './FriendCard.css';
 
 interface Props {
@@ -118,11 +118,11 @@ const FriendCard: React.FC<Props> = ({
 
 export default FriendCard;
 
-const Item: React.FC<{ Icon: typeof Calendar; className?: string }> = ({
-  Icon,
-  children,
-  className,
-}) => (
+const Item: React.FC<{
+  children: React.ReactNode;
+  Icon: typeof Calendar;
+  className?: string;
+}> = ({ Icon, children, className }) => (
   <li className={cx(className, `flex items-center`)}>
     <Icon className="mr-4" height={22} /> {children}
   </li>

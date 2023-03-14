@@ -1,9 +1,9 @@
 import path from 'path';
-import { GatsbyNode, CreatePagesArgs } from 'gatsby';
-import * as api from './api';
+import type { GatsbyNode, CreatePagesArgs } from 'gatsby';
+import type { Document } from './types';
 import { documentUrl, friendUrl } from '../lib/url';
 import { LANG } from '../env';
-import { Document } from './types';
+import * as api from './api';
 
 const FriendPage = path.resolve(`./src/templates/FriendPage.tsx`);
 const DocumentPage = path.resolve(`./src/templates/DocumentPage.tsx`);

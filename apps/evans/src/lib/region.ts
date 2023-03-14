@@ -1,4 +1,4 @@
-import { Friend } from '../build/types';
+import type { Friend } from '../build/types';
 
 export function documentRegion(friend: Friend): string {
   if (friend.isCompilations) {

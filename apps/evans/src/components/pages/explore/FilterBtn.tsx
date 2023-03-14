@@ -5,6 +5,7 @@ interface Props {
   className?: string;
   dismissable?: boolean;
   onClick: () => any;
+  children: React.ReactNode;
 }
 
 const FilterBtn: React.FC<Props> = ({ children, dismissable, className, onClick }) => (

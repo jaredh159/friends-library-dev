@@ -1,6 +1,6 @@
 import React from 'react';
 import { t } from '@friends-library/locale';
-import { Props as BookTeaserCardProps } from '../../BookTeaserCard';
+import type { Props as BookTeaserCardProps } from '../../BookTeaserCard';
 import BookTeaserCards from '../../blocks/BookTeaserCards';
 
 interface Props {

@@ -1,13 +1,14 @@
-import CheckoutApi from './CheckoutApi';
-import Cart from '../models/Cart';
-import { LANG } from '../../env';
-import {
+import type Cart from '../models/Cart';
+import type {
   CreateOrderInput,
   CreateOrderItemInput,
   Lang,
+  PrintSize} from '../../../graphql/globalTypes';
+import type CheckoutApi from './CheckoutApi';
+import { LANG } from '../../env';
+import {
   OrderSource,
   PrintJobStatus,
-  PrintSize,
   ShippingLevel,
 } from '../../../graphql/globalTypes';
 

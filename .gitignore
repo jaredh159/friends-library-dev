@@ -9,5 +9,9 @@ apps/cover-web-app/src/friends.js
 apps/styleguide/src/built-frags.json
 apps/styleguide/src/paperback-interior.css
 apps/jones/src/preview.css
+apps/evans/.cache/
+apps/evans/public/
+apps/evans/src/css/cover.css
+apps/evans/src/build/.dpc-cache.json
 **/.parcel-cache
 **/.netlify/

@@ -1,6 +1,9 @@
 import React from 'react';
 import { graphql } from 'gatsby';
 import { t } from '@friends-library/locale';
+import type { CoverData } from '../lib/covers';
+import type { FluidBgImageObject, NumPublishedBooks } from '../types';
+import type { Region } from '../components/pages/explore/types';
 import { Layout, Seo } from '../components/data';
 import BooksBgBlock, { WhiteOverlay } from '../components/data/BooksBgBlock';
 import ExploreNavBlock from '../components/pages/explore/NavBlock';
@@ -13,11 +16,9 @@ import ExploreAudioBooksBlock from '../components/pages/explore/AudioBooksBlock'
 import ExploreUpdatedEditionsBlock from '../components/pages/explore/UpdatedEditionsBlock';
 import ExploreGettingStartedLinkBlock from '../components/pages/explore/GettingStartedLinkBlock';
 import { PAGE_META_DESCS } from '../lib/seo';
-import { coverPropsFromQueryData, CoverData } from '../lib/covers';
+import { coverPropsFromQueryData } from '../lib/covers';
 import { APP_ALT_URL, LANG } from '../env';
 import Dual from '../components/Dual';
-import { FluidBgImageObject, NumPublishedBooks } from '../types';
-import { Region } from '../components/pages/explore/types';
 
 const ExplorePage: React.FC<Props> = ({
   data: {

@@ -1,6 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
-import Testimonial, { Props as TestimonialProps } from './Testimonial';
+import type { Props as TestimonialProps } from './Testimonial';
+import Testimonial from './Testimonial';
 
 interface Props {
   testimonials: Omit<TestimonialProps, 'color'>[];

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Front as FrontCover } from '@friends-library/cover-component';
-import { EditionType } from '@friends-library/types';
-import ItemQuantity from './ItemQuantity';
+import type { EditionType } from '@friends-library/types';
 import { LANG } from '../env';
+import ItemQuantity from './ItemQuantity';
 import './Item.css';
 
 interface Props {

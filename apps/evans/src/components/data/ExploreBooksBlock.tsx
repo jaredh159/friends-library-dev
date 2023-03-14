@@ -1,9 +1,9 @@
 import React from 'react';
 import { t } from '@friends-library/locale';
-import BooksBgBlock from './BooksBgBlock';
 import Button from '../Button';
 import Dual from '../Dual';
 import Heading from '../Heading';
+import BooksBgBlock from './BooksBgBlock';
 
 const ExploreBooksBlock: React.FC<{ numTotalBooks: number }> = ({ numTotalBooks }) => (
   <BooksBgBlock>

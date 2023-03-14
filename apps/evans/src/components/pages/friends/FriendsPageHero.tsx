@@ -1,11 +1,11 @@
 import React from 'react';
-import BackgroundImage from 'gatsby-background-image-preact';
 import { t } from '@friends-library/locale';
+import type { FluidBgImageObject } from '../../../types';
 import Dual from '../../Dual';
 import { makeScroller } from '../../lib/scroll';
 import { bgLayer } from '../../lib/color';
-import { FluidBgImageObject } from '../../../types';
 import './FriendsPageHero.css';
+import BackgroundImage from '../../BackgroundImage';
 
 interface Props {
   numFriends: number;

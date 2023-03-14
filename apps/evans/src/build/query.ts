@@ -1,7 +1,6 @@
-/// <reference path="../components/globals.d.ts" />
 import gql from 'x-syntax';
-import { EditionType } from '@friends-library/types';
-import { Friend } from './types';
+import type { EditionType } from '@friends-library/types';
+import type { Friend } from './types';
 
 export function sortFriends(friends: Friend[]): Friend[] {
   friends.sort((a, b) => (a.id < b.id ? -1 : 1));

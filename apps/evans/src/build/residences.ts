@@ -1,4 +1,4 @@
-import { FriendResidence } from './types';
+import type { FriendResidence } from './types';
 
 type Map = 'UK' | 'US' | 'Europe';
 

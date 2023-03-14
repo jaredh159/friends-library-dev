@@ -5,6 +5,7 @@ import PlayTriangle from './icons/PlayTriangle';
 interface Props {
   textColor?: string;
   className?: string;
+  children: React.ReactNode;
 }
 
 const AudioDuration: React.FC<Props> = ({

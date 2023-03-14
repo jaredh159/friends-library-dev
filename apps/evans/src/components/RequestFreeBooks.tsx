@@ -1,17 +1,18 @@
 import React, { useContext, useState, useEffect } from 'react';
 import gql from 'x-syntax';
 import cx from 'classnames';
-import ShippingAddress, { Props as ShippingAddressProps } from './ShippingAddress';
+import type { Props as ShippingAddressProps } from './ShippingAddress';
+import type {
+  CreateFreeOrderRequest,
+  CreateFreeOrderRequestVariables,
+} from '../graphql/CreateFreeOrderRequest';
+import ShippingAddress from './ShippingAddress';
 import MessageThrobber from './checkout/MessageThrobber';
 import Button from './Button';
 import { CloseButton } from './checkout/Modal';
 import { useAddress } from './lib/hooks';
 import { AppDispatch } from './lib/app-state';
 import Client from './lib/Client';
-import {
-  CreateFreeOrderRequest,
-  CreateFreeOrderRequestVariables,
-} from '../graphql/CreateFreeOrderRequest';
 
 type AddressProps = Omit<ShippingAddressProps, 'autoFocusFirst'>;
 
@@ -192,17 +193,20 @@ const RequestFreeBooksContainer: React.FC<{ currentPageBook: string }> = ({
 
 export default RequestFreeBooksContainer;
 
-const Heading: React.FC<{ className?: string; size?: 'text-xl' | 'text-2xl' }> = ({
-  className,
-  children,
-  size = `text-xl`,
-}) => (
+const Heading: React.FC<{
+  children: React.ReactNode;
+  className?: string;
+  size?: 'text-xl' | 'text-2xl';
+}> = ({ className, children, size = `text-xl` }) => (
   <h1 className={cx(className, size, `uppercase text-flgold mb-3 mt-1 text-center`)}>
     {children}
   </h1>
 );
 
-const Wrap: React.FC<{ onClose: () => unknown }> = ({ children, onClose }) => (
+const Wrap: React.FC<{ children: React.ReactNode; onClose: () => unknown }> = ({
+  children,
+  onClose,
+}) => (
   <div className="py-6 px-8 sm:p-10 lg:p-12 flex flex-col items-center relative">
     <CloseButton onClick={onClose} />
     {children}

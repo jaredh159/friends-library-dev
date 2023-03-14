@@ -3,6 +3,7 @@ import { t } from '@friends-library/locale';
 
 interface Props {
   onClose: () => void;
+  children: React.ReactNode;
 }
 
 const Modal: React.FC<Props> = ({ children, onClose }) => (

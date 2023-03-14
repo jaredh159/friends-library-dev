@@ -1,6 +1,6 @@
 import React from 'react';
 import { ThreeD } from '@friends-library/cover-component';
-import { PrintSize, EditionType, CoverProps } from '@friends-library/types';
+import type { PrintSize, EditionType, CoverProps } from '@friends-library/types';
 import { LANG } from '../env';
 
 export interface CoverData {

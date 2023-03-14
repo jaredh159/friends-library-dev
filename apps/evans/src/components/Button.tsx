@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
-import Link from 'gatsby-link';
 import './Button.css';
+import Link from './Link';
 
 interface Props {
   className?: string;
@@ -13,6 +13,7 @@ interface Props {
   textColor?: string;
   style?: Record<string, string | number>;
   bg?: 'gold' | 'blue' | 'green' | 'maroon' | 'primary' | null;
+  children?: React.ReactNode;
 }
 
 const Button: React.FC<Props> = ({

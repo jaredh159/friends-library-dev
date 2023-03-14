@@ -1,4 +1,4 @@
-import { GatsbyNode, CreateDevServerArgs } from 'gatsby';
+import type { GatsbyNode, CreateDevServerArgs } from 'gatsby';
 import { podcast } from '../lib/xml';
 import * as api from './api';
 

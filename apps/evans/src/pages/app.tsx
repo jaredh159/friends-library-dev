@@ -1,15 +1,15 @@
 import React from 'react';
-import Link from 'gatsby-link';
 import { graphql } from 'gatsby';
-import Image from 'gatsby-image';
-import BooksBgBlock, { WhiteOverlay } from '../components/data/BooksBgBlock';
 import { t } from '@friends-library/locale';
+import type { FluidImageObject } from '../types';
+import BooksBgBlock, { WhiteOverlay } from '../components/data/BooksBgBlock';
 import { PAGE_META_DESCS } from '../lib/seo';
 import { Layout, Seo } from '../components/data';
+import Image from '../components/Image';
 import Dual from '../components/Dual';
 import * as AppBadges from '../components/AppBadges';
 import { LANG } from '../env';
-import { FluidImageObject } from '../types';
+import Link from '../components/Link';
 
 interface Screenshot {
   image: { fluid: FluidImageObject };

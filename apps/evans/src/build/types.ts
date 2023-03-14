@@ -1,4 +1,4 @@
-import { Friends } from '../graphql/Friends';
+import type { Friends } from '../graphql/Friends';
 
 export type Friend = Friends['friends'][0];
 export type FriendResidence = Friend['residences'][0];

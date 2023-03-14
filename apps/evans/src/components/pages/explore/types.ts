@@ -1,4 +1,4 @@
-import { CoverProps } from '@friends-library/types';
+import type { CoverProps } from '@friends-library/types';
 
 export type Region =
   | 'Eastern US'

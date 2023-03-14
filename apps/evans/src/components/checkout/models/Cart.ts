@@ -1,6 +1,7 @@
 import { ReallySmallEvents as EventEmitter } from 'really-small-events';
-import CartItem, { CartItemData } from './CartItem';
-import { Address } from '../../../types';
+import type { CartItemData } from './CartItem';
+import type { Address } from '../../../types';
+import CartItem from './CartItem';
 import { isAddress, isItem } from './integrity';
 
 interface CartData {

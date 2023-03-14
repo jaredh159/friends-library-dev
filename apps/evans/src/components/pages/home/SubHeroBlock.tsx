@@ -1,11 +1,11 @@
 import React from 'react';
-import Link from 'gatsby-link';
-import Image from 'gatsby-image';
 import { t } from '@friends-library/locale';
+import type { FluidImageObject } from '../../../types';
+import Image from '../../Image';
 import Dual from '../../Dual';
 import Heading from '../../Heading';
-import { FluidImageObject } from '../../../types';
 import './SubHeroBlock.css';
+import Link from '../../Link';
 
 interface Props {
   numTotalBooks: number;

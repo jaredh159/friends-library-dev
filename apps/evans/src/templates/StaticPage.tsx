@@ -2,10 +2,10 @@ import React from 'react';
 import { MDXProvider } from '@mdx-js/react';
 import { graphql } from 'gatsby';
 import { MDXRenderer } from 'gatsby-plugin-mdx';
+import type { NumPublishedBooks } from '../types';
 import BooksBgBlock, { WhiteOverlay } from '../components/data/BooksBgBlock';
 import components from '../components/Mdx';
 import { Layout, Seo } from '../components/data';
-import { NumPublishedBooks } from '../types';
 
 interface Props {
   data: NumPublishedBooks & {
@@ -47,6 +47,7 @@ const StaticPage: React.FC<Props> = ({ data }) => {
       </BooksBgBlock>
       <div className="MDX p-10 md:px-16 lg:px-24 body-text max-w-6xl mx-auto mt-4">
         <MDXProvider components={components}>
+          {/* @ts-ignore */}
           <MDXRenderer>{replaceCounts(body)}</MDXRenderer>
         </MDXProvider>
       </div>

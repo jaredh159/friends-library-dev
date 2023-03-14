@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import cx from 'classnames';
-import Link from 'gatsby-link';
 import { Swipeable } from 'react-swipeable';
 import { Front } from '@friends-library/cover-component';
-import { Book } from './types';
+import type { Book } from './types';
 import { useWindowWidth } from '../../hooks/window-width';
 import { SCREEN_MD, SCREEN_LG, SCREEN_XL } from '../../lib/constants';
 import Button from '../../Button';
 import './BookSlider.css';
+import Link from '../../Link';
 
 interface Props {
   books: Book[];
@@ -30,6 +30,7 @@ const BookSlider: React.FC<Props> = ({ books, className }) => {
   }, [books]);
 
   return (
+    // @ts-ignore
     <Swipeable
       onSwipedRight={() =>
         notMobile && canGoLeft && setCurrentHorizPage(currentHorizPage - 1)

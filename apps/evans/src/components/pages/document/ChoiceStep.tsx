@@ -2,6 +2,7 @@ import React from 'react';
 
 interface Props {
   title: string;
+  children: React.ReactNode;
 }
 
 const ChoiceStep: React.FC<Props> = ({ title, children }) => (

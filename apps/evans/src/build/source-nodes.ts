@@ -1,13 +1,15 @@
 import '@friends-library/env/load';
-import { GatsbyNode, SourceNodesArgs } from 'gatsby';
 import filesize from 'filesize';
-import { query, hydrate, FsDocPrecursor } from '@friends-library/dpc-fs';
-import { getDpcCache, persistDpcCache, EditionCache } from './dpc-cache';
-import residences from './residences';
+import { query, hydrate } from '@friends-library/dpc-fs';
+import type { FsDocPrecursor } from '@friends-library/dpc-fs';
+import type { GatsbyNode, SourceNodesArgs } from 'gatsby';
+import type { EditionCache } from './dpc-cache';
 import * as url from '../lib/url';
 import { documentDate, periodFromDate, published } from '../lib/date';
 import { documentRegion } from '../lib/region';
 import { APP_ALT_URL, LANG } from '../env';
+import { getDpcCache, persistDpcCache } from './dpc-cache';
+import residences from './residences';
 import { getNewsFeedItems } from './news-feed';
 import * as api from './api';
 

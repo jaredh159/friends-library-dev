@@ -1,11 +1,11 @@
 import React from 'react';
 import cx from 'classnames';
-import { AudioQuality } from '@friends-library/types';
-import Link from 'gatsby-link';
 import { t } from '@friends-library/locale';
+import type { AudioQuality } from '@friends-library/types';
 import Dual from '../../Dual';
-import QualitySwitch from './QualitySwitch';
 import Stack from '../../layout/Stack';
+import Link from '../../Link';
+import QualitySwitch from './QualitySwitch';
 
 interface Props {
   className?: string;

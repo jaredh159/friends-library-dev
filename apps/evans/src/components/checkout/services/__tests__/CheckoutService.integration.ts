@@ -1,5 +1,6 @@
+import { describe, test, beforeEach, expect } from 'vitest';
+import type Cart from '../../models/Cart';
 import { cartPlusData } from '../../models/__tests__/fixtures';
-import Cart from '../../models/Cart';
 import CheckoutService from '../CheckoutService';
 import CheckoutApi from '../CheckoutApi';
 import { ShippingLevel } from '../../../../graphql/globalTypes';
@@ -11,7 +12,7 @@ describe(`CheckoutService()`, () => {
   let api: CheckoutApi;
   let cart: Cart;
 
-  console.log(`Running integration tests against: ${origin}`);
+  process.stdout.write(`Running integration tests against: ${origin}\n`);
 
   beforeEach(() => {
     cart = getCart();

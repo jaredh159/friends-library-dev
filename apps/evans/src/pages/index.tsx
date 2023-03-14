@@ -1,5 +1,11 @@
 import React from 'react';
 import { graphql } from 'gatsby';
+import type {
+  NumPublishedBooks,
+  FluidBgImageObject,
+  FluidImageObject,
+  NewsFeedType,
+} from '../types';
 import Layout from '../components/data/Layout';
 import ExploreBooksBlock from '../components/data/ExploreBooksBlock';
 import { LANG } from '../env';
@@ -11,12 +17,6 @@ import NewsFeedBlock from '../components/pages/home/news-feed/NewsFeedBlock';
 import HomeWhoWereTheQuakersBlock from '../components/pages/home/WhoWereTheQuakersBlock';
 import HomeFeaturedBooksBlock from '../components/pages/home/FeaturedBooksBlock';
 import HomeFormatsBlock from '../components/pages/home/FormatsBlock';
-import {
-  NumPublishedBooks,
-  FluidBgImageObject,
-  FluidImageObject,
-  NewsFeedType,
-} from '../types';
 
 const HomePage: React.FC<Props> = ({ data }) => {
   const {

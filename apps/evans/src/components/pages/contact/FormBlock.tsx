@@ -1,12 +1,12 @@
 import React from 'react';
-import BackgroundImage from 'gatsby-background-image-preact';
 import { t } from '@friends-library/locale';
+import type { FluidBgImageObject } from '../../../types';
+import type { Subject as ContactFormSubject } from '../../../graphql/globalTypes';
 import Dual from '../../Dual';
-import Form from './Form';
 import Stack from '../../layout/Stack';
 import { bgLayer } from '../../lib/color';
-import { FluidBgImageObject } from '../../../types';
-import { Subject as ContactFormSubject } from '../../../graphql/globalTypes';
+import BackgroundImage from '../../BackgroundImage';
+import Form from './Form';
 
 interface Props {
   onSubmit: (

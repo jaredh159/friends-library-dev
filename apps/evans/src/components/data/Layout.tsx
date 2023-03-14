@@ -4,7 +4,7 @@ import { useStaticQuery, graphql } from 'gatsby';
 import cx from 'classnames';
 import { Helmet } from 'react-helmet';
 import { t } from '@friends-library/locale';
-import Checkout from './Checkout';
+import type { FluidBgImageObject, NumPublishedBooks } from '../../types';
 import Slideover from '../Slideover';
 import { LANG } from '../env';
 import ErrorBoundary from '../ErrorBoundary';
@@ -19,11 +19,11 @@ import PopUnder from '../PopUnder';
 import { appReducer, appInitialState, AppDispatch } from '../lib/app-state';
 import RequestFreeBooks from '../RequestFreeBooks';
 import { APP_URL } from '../../env';
-import { FluidBgImageObject, NumPublishedBooks } from '../../types';
+import Checkout from './Checkout';
 
 const store = CartStore.getSingleton();
 
-const Layout: React.FC = ({ children }) => {
+const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { pathname } = useLocation();
   const [appState, dispatch] = useReducer(appReducer, appInitialState);
   const [numCartItems] = useNumCartItems();

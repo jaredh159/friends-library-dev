@@ -1,10 +1,10 @@
 import React from 'react';
 import cx from 'classnames';
-import Link from 'gatsby-link';
 import { t } from '@friends-library/locale';
 import Dual from '../Dual';
-import Header from './Header';
 import Button from '../Button';
+import Link from '../Link';
+import Header from './Header';
 
 export interface Props {
   recommendedBooks: {

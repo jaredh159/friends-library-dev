@@ -4,8 +4,8 @@ import FocusLock from 'react-focus-lock';
 import { InstantSearch } from 'react-instantsearch-dom';
 import { getClient } from '../lib/algolia';
 import Search from '../algolia/TopNavSearchInput';
-import DropdownSearchResults from './DropdownSearchResults';
 import { LANG } from '../env';
+import DropdownSearchResults from './DropdownSearchResults';
 import './TopNavSearch.css';
 
 const searchClient = getClient();

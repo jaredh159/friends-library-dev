@@ -1,9 +1,10 @@
 import fetch from 'cross-fetch';
 import { c, log } from 'x-chalk';
-import { gql, getClient, ClientType, ClientConfig, writable } from '@friends-library/db';
-import { Document, Edition, Friend, PublishedCounts } from './types';
-import { Friends } from '../graphql/Friends';
-import { GetDocumentDownloadCounts } from '../graphql/GetDocumentDownloadCounts';
+import { gql, getClient, writable } from '@friends-library/db';
+import type { ClientType, ClientConfig } from '@friends-library/db';
+import type { Friends } from '../graphql/Friends';
+import type { GetDocumentDownloadCounts } from '../graphql/GetDocumentDownloadCounts';
+import type { Document, Edition, Friend, PublishedCounts } from './types';
 import { DOCUMENT_DOWNLOAD_COUNTS_QUERY, QUERY, sortFriends } from './query';
 
 type DocumentEntities = {
@@ -48,7 +49,7 @@ export async function queryEditions(): Promise<EditionEntities[]> {
   return entities;
 }
 
-let publishedCounts: PublishedCounts = {
+const publishedCounts: PublishedCounts = {
   friends: { en: -1, es: -1 },
   books: { en: -1, es: -1 },
   updatedEditions: { en: -1, es: -1 },
@@ -137,7 +138,7 @@ export function clientConfig(): ClientConfig {
 
   const token = process.env[key];
   if (!token) {
-    console.error(`Missing required api token process.env.${key}`);
+    process.stdout.write(`Missing required api token process.env.${key}\n`);
     process.exit(1);
   }
 

@@ -4,6 +4,7 @@ import cx from 'classnames';
 const PillDropdownItem: React.FC<{
   selected?: boolean;
   className?: string;
+  children: React.ReactNode;
   onClick?: (e: React.MouseEvent) => any;
 }> = ({ children, className, selected, onClick }) => (
   <div

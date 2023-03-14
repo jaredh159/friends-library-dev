@@ -1,4 +1,4 @@
-import { Document, Friend } from '../build/types';
+import type { Document, Friend } from '../build/types';
 
 export function friendUrl(friend: Pick<Friend, 'gender' | 'slug' | 'lang'>): string {
   if (friend.slug === `compilations`) {

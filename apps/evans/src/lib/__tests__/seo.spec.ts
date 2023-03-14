@@ -1,4 +1,5 @@
-import { Lang } from '@friends-library/types';
+import { describe, test, expect } from 'vitest';
+import type { Lang } from '@friends-library/types';
 import { friendPageMetaDesc, bookPageMetaDesc } from '../seo';
 
 describe(`bookPageMetaDesc()`, () => {

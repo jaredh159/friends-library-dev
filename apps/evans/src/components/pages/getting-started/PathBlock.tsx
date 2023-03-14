@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
-import Link from 'gatsby-link';
 import cx from 'classnames';
-import { CoverProps } from '@friends-library/types';
 import { Front } from '@friends-library/cover-component';
 import { t } from '@friends-library/locale';
+import type { CoverProps } from '@friends-library/types';
 import WaveBottomBlock from '../../blocks/WaveBottomBlock';
 import Button from '../../Button';
 import DownloadIcon from '../../icons/Download';
 import AudioIcon from '../../icons/Audio';
 import './PathBlock.css';
+import Link from '../../Link';
 
 interface Props {
   slug: 'history' | 'doctrinal' | 'spiritual-life' | 'journal';
   color: 'blue' | 'gold' | 'maroon' | 'green';
   title: string;
+  children: React.ReactNode;
   books: (CoverProps & {
     hasAudio: boolean;
     documentUrl: string;

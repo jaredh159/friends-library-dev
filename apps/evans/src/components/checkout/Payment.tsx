@@ -5,14 +5,14 @@ import {
   CardNumberElement,
   CardExpiryElement,
   CardCvcElement,
-  ReactStripeElements,
 } from 'react-stripe-elements';
 import { t } from '@friends-library/locale';
+import type { ReactStripeElements } from 'react-stripe-elements';
+import Button from '../Button';
 import Back from './Back';
 import Header from './Header';
 import Progress from './Progress';
 import NoProfit from './NoProfit';
-import Button from '../Button';
 import Fees from './Fees';
 import { InvalidOverlay } from './Input';
 import { CardRow, FeedbackCard } from './Cards';
@@ -180,6 +180,7 @@ class Payment extends React.Component<Props, State> {
   }
 }
 
+// @ts-ignore
 export default injectStripe(Payment);
 
 const style = {

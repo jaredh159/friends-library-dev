@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Link from 'gatsby-link';
 import cx from 'classnames';
 import { LANG } from './env';
 import FriendsLogo from './LogoFriends';
@@ -9,6 +8,7 @@ import CartBadge from './CartBadge';
 import TopNavSearch from './algolia/TopNavSearch';
 import { useEscapeable } from './lib/hooks';
 import './Nav.css';
+import Link from './Link';
 
 interface Props {
   showCartBadge: boolean;

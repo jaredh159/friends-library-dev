@@ -7,6 +7,7 @@ interface Props {
   word: string;
   title?: string;
   className?: string;
+  children: React.ReactNode;
 }
 
 const BgWordBlock: React.FC<Props> = ({ word, id, className, children, title }) => (

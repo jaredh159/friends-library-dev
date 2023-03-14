@@ -1,5 +1,5 @@
 import { price } from '@friends-library/lulu';
-import { EditionType, PrintSize } from '@friends-library/types';
+import type { EditionType, PrintSize } from '@friends-library/types';
 
 export interface CartItemData {
   displayTitle: string;

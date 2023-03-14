@@ -1,13 +1,13 @@
 import React from 'react';
-import BackgroundImage from 'gatsby-background-image-preact';
 import { t } from '@friends-library/locale';
-import Meta from './FriendMeta';
+import type { FluidBgImageObject } from '../../../types';
 import Uk from '../../images/maps/UK--2x.png';
 import Us from '../../images/maps/US.png';
 import Europe from '../../images/maps/Europe--2x.png';
 import LocationMarker from '../../icons/LocationMarker';
 import { LANG } from '../../env';
-import { FluidBgImageObject } from '../../../types';
+import BackgroundImage from '../../BackgroundImage';
+import Meta from './FriendMeta';
 import './MapBlock.css';
 
 // @see packages/ui/src/images/maps/readme.md for how to modify map PNGs

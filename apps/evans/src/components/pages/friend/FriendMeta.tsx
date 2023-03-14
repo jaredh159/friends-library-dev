@@ -6,6 +6,7 @@ interface Props {
   title: string;
   color: 'green' | 'blue' | 'maroon' | 'gold';
   className?: string;
+  children: React.ReactNode;
 }
 
 const FriendMeta: React.FC<Props> = ({ children, title, color, className }) => {

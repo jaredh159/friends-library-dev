@@ -8,6 +8,7 @@ const Heading: React.FC<{
   className?: string;
   darkBg?: boolean;
   left?: true | Screen[];
+  children?: React.ReactNode;
 }> = ({ children, className, darkBg, left }) => (
   <h1
     className={cx(

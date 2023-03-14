@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest';
 import { isAddress, isItem } from '../integrity';
 
 describe(`isAddress`, () => {

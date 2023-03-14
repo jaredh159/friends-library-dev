@@ -107,7 +107,7 @@ const FilterSelectDropdown: React.FC<Props> = (props) => (
 
 export default FilterSelectDropdown;
 
-const Option: React.FC<Props & { value: string }> = ({
+const Option: React.FC<Props & { children: React.ReactNode; value: string }> = ({
   children,
   value,
   selected,

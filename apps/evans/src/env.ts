@@ -1,4 +1,4 @@
-import { Lang } from '@friends-library/types';
+import type { Lang } from '@friends-library/types';
 
 export const NODE_ENV =
   process.env.NODE_ENV === `production` ? `production` : `development`;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { t } from '@friends-library/locale';
-import FilterSelectDropdown from './FilterSelectDropdown';
 import PillDropdown from '../../PillDropdown';
+import FilterSelectDropdown from './FilterSelectDropdown';
 
 interface Props {
   selected: string[];

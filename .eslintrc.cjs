@@ -10,7 +10,12 @@ module.exports = {
     `import`,
   ],
   extends: [`eslint:recommended`, `plugin:@typescript-eslint/recommended`, `prettier`],
-  ignorePatterns: [`**/dist/*`, `**/friends.js`],
+  ignorePatterns: [
+    `**/dist/*`,
+    `apps/evans/public/*`,
+    `apps/evans/.cache/*`,
+    `**/friends.js`,
+  ],
   rules: {
     'no-var': `off`,
     'no-console': `error`,
@@ -215,6 +220,13 @@ module.exports = {
         '@typescript-eslint/no-non-null-assertion': `off`,
         'require-atomic-updates': `off`,
         'no-console': `off`,
+      },
+    },
+    {
+      files: [`apps/evans/**`],
+      rules: {
+        'require-atomic-updates': `off`,
+        '@typescript-eslint/no-non-null-assertion': `off`,
       },
     },
     {

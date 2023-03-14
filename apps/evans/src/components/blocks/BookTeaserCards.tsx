@@ -1,6 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
-import BookTeaserCard, { Props as BookTeaserCardProps } from '../BookTeaserCard';
+import type { Props as BookTeaserCardProps } from '../BookTeaserCard';
+import BookTeaserCard from '../BookTeaserCard';
 
 interface Props {
   className?: string;

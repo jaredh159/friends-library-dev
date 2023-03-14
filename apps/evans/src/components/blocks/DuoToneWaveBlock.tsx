@@ -2,10 +2,11 @@ import React from 'react';
 import cx from 'classnames';
 import './DuoToneWaveBlock.css';
 
-const DuoToneWaveBlock: React.FC<{ reverse?: boolean; className?: string }> = ({
-  className,
-  children,
-}) => (
+const DuoToneWaveBlock: React.FC<{
+  children: React.ReactNode;
+  reverse?: boolean;
+  className?: string;
+}> = ({ className, children }) => (
   <section className={cx(className, `DuoToneWaveBlock overflow-hidden relative`)}>
     <Wave colorClass="text-flgreen-600" viewBox="40 60 860 500" />
     <Wave colorClass="text-flgreen-800" viewBox="30 36 840 490" />

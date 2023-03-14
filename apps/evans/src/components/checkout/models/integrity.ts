@@ -1,6 +1,6 @@
 import { isEdition, isPrintSize } from '@friends-library/types';
-import { CartItemData } from './CartItem';
-import { Address } from '../../../types';
+import type { Address } from '../../../types';
+import type { CartItemData } from './CartItem';
 
 export function isAddress(obj: unknown): obj is Address {
   try {

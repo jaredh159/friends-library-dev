@@ -1,3 +1,4 @@
+import { describe, test, it, expect, beforeEach } from 'vitest';
 import Cart from '../Cart';
 import CartItem from '../CartItem';
 import { cartItemData1, cartItemData2 } from './fixtures';

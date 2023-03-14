@@ -1,18 +1,18 @@
 import React from 'react';
-import Link from 'gatsby-link';
 import cx from 'classnames';
 import { t } from '@friends-library/locale';
+import type { AddressWithEmail } from '../../types';
 import Dual from '../Dual';
 import Button from '../Button';
+import ShippingAddress from '../ShippingAddress';
+import { useAddress } from '../lib/hooks';
+import Link from '../Link';
 import Header from './Header';
 import Progress from './Progress';
 import MessageThrobber from './MessageThrobber';
 import Back from './Back';
 import NoProfit from './NoProfit';
 import ErrorMsg from './ErrorMsg';
-import { AddressWithEmail } from '../../types';
-import ShippingAddress from '../ShippingAddress';
-import { useAddress } from '../lib/hooks';
 
 const Delivery: React.FC<{
   onSubmit: (address: AddressWithEmail) => void;

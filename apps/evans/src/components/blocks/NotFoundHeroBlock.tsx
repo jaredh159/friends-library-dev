@@ -1,12 +1,12 @@
 import React from 'react';
-import BackgroundImage from 'gatsby-background-image-preact';
 import { t } from '@friends-library/locale';
+import type { FluidBgImageObject } from '../../types';
 import Button from '../Button';
 import { LANG } from '../env';
 import Dual from '../Dual';
 import { bgLayer } from '../lib/color';
-import { FluidBgImageObject } from '../../types';
 import './NotFoundHeroBlock.css';
+import BackgroundImage from '../BackgroundImage';
 
 interface Props {
   bgImg: FluidBgImageObject;
