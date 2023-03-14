@@ -1,5 +1,4 @@
 import Vapor
-import XVapor
 
 extension Env {
   static var mode = Mode.dev

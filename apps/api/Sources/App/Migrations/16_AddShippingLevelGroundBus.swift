@@ -1,6 +1,5 @@
 import Fluent
 import Vapor
-import XVapor
 
 struct AddShippingLevelGroundBus: AsyncMigration {
 

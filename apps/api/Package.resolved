@@ -325,15 +325,6 @@
       }
     },
     {
-      "identity" : "x-kit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/jaredh159/x-kit",
-      "state" : {
-        "revision" : "7deedcba5da944d4e274dc16105c6624f98493b4",
-        "version" : "1.0.2"
-      }
-    },
-    {
       "identity" : "x-sendgrid",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/jaredh159/x-sendgrid.git",

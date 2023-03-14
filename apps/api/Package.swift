@@ -44,11 +44,8 @@ let package = Package(
       dev: "../../../gertie/duet",
       prod: "gertrude-app/duet@1.0.1"
     ),
-    .package(
-      url: "https://github.com/jaredh159/x-kit.git",
-      from: "1.0.2"
-    ),
     .package(path: "../../libs-swift/x-http"),
+    .package(path: "../../libs-swift/x-kit"),
     .package(
       url: "https://github.com/jaredh159/x-sendgrid.git",
       from: "1.0.3"
@@ -75,7 +72,6 @@ let package = Package(
         .product(name: "NonEmpty", package: "swift-nonempty"),
         .product(name: "Duet", package: "duet"),
         .product(name: "DuetSQL", package: "duet"),
-        .product(name: "XVapor", package: "x-kit"),
         .product(name: "XHttp", package: "x-http"),
         .product(name: "XSendGrid", package: "x-sendgrid"),
         .product(name: "XStripe", package: "x-stripe"),
@@ -97,7 +93,6 @@ let package = Package(
         .product(name: "Duet", package: "duet"),
         .product(name: "DuetMock", package: "duet"),
         .product(name: "DuetSQL", package: "duet"),
-        .product(name: "XGraphQLTest", package: "x-kit"),
         .product(name: "XSendGrid", package: "x-sendgrid"),
         .product(name: "XCTVapor", package: "vapor"),
       ]
