@@ -1,0 +1,9 @@
+{
+  "root": "libs-swift/x-sendgrid",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "command": "cd libs-swift/x-sendgrid && swift build"
+    }
+  }
+}

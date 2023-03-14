@@ -1,0 +1,12 @@
+{
+  "root": "libs-swift/x-slack",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "command": "cd libs-swift/x-slack && swift build"
+    },
+    "test": {
+      "command": "cd libs-swift/x-slack && SWIFT_DETERMINISTIC_HASHING=1 swift test"
+    }
+  }
+}

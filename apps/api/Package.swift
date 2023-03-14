@@ -7,57 +7,23 @@ let package = Package(
     .macOS(.v12),
   ],
   dependencies: [
-    .package(
-      url: "https://github.com/vapor/vapor.git",
-      from: "4.67.4"
-    ),
-    .package(
-      url: "https://github.com/vapor/fluent.git",
-      from: "4.4.0"
-    ),
-    .package(
-      url: "https://github.com/vapor/fluent-postgres-driver.git",
-      from: "2.2.2"
-    ),
-    .package(
-      url: "https://github.com/alexsteinerde/graphql-kit.git",
-      from: "2.3.0"
-    ),
-    .package(
-      url: "https://github.com/m-barthelemy/vapor-queues-fluent-driver.git",
-      from: "1.2.0"
-    ),
-    .package("jaredh159/swift-tagged@0.8.2"),
-    .package(
-      url: "https://github.com/pointfreeco/swift-nonempty.git",
-      from: "0.3.0"
-    ),
-    .package(
-      url: "https://github.com/kylehughes/RomanNumeralKit.git",
-      from: "1.0.0"
-    ),
-    .package(
-      url: "https://github.com/JohnSundell/ShellOut.git",
-      from: "2.0.0"
-    ),
+    .github("vapor/vapor@4.67.4"),
+    .github("vapor/fluent@4.4.0"),
+    .github("vapor/fluent-postgres-driver@2.2.2"),
+    .github("alexsteinerde/graphql-kit@2.3.0"),
+    .github("m-barthelemy/vapor-queues-fluent-driver@1.2.0"),
+    .github("jaredh159/swift-tagged@0.8.2"),
+    .github("pointfreeco/swift-nonempty@0.3.0"),
+    .github("kylehughes/RomanNumeralKit@1.0.0"),
+    .github("JohnSundell/ShellOut@2.0.0"),
     .package(
       dev: "../../../gertie/duet",
       prod: "gertrude-app/duet@1.0.1"
     ),
     .package(path: "../../libs-swift/x-http"),
-    .package(path: "../../libs-swift/x-kit"),
-    .package(
-      url: "https://github.com/jaredh159/x-sendgrid.git",
-      from: "1.0.3"
-    ),
-    .package(
-      url: "https://github.com/jaredh159/x-stripe.git",
-      from: "1.0.1"
-    ),
-    .package(
-      url: "https://github.com/jaredh159/x-slack.git",
-      from: "1.0.2"
-    ),
+    .package(path: "../../libs-swift/x-sendgrid"),
+    .package(path: "../../libs-swift/x-stripe"),
+    .package(path: "../../libs-swift/x-slack"),
   ],
   targets: [
     .target(
@@ -105,16 +71,16 @@ let package = Package(
 import Foundation
 
 extension PackageDescription.Package.Dependency {
-  static func package(_ commitish: String) -> Package.Dependency {
+  static func github(_ commitish: String) -> Package.Dependency {
     let parts = commitish.split(separator: "@")
     return .package(
       url: "https://github.com/\(parts[0]).git",
-      exact: .init(stringLiteral: "\(parts[1])")
+      from: .init(stringLiteral: "\(parts[1])")
     )
   }
 
   static func package(dev: String, prod: String) -> Package.Dependency {
     if FileManager.default.fileExists(atPath: dev) { return .package(path: dev) }
-    return .package(prod)
+    return .github(prod)
   }
 }

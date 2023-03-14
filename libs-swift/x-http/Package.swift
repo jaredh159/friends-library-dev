@@ -3,7 +3,7 @@ import PackageDescription
 
 let package = Package(
   name: "XHttp",
-  platforms: [.macOS(.v12)],
+  platforms: [.macOS(.v10_15)],
   products: [
     .library(name: "XHttp", targets: ["XHttp"]),
   ],

@@ -325,30 +325,12 @@
       }
     },
     {
-      "identity" : "x-sendgrid",
+      "identity" : "x-kit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/jaredh159/x-sendgrid.git",
+      "location" : "https://github.com/jaredh159/x-kit",
       "state" : {
-        "revision" : "4f8af89f85f9fdecbea2e2f5b9dfac245148c7d9",
-        "version" : "1.0.3"
-      }
-    },
-    {
-      "identity" : "x-slack",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/jaredh159/x-slack.git",
-      "state" : {
-        "revision" : "f1c973b108c9afca6067b5548e1281b0b24bcdfc",
+        "revision" : "7deedcba5da944d4e274dc16105c6624f98493b4",
         "version" : "1.0.2"
-      }
-    },
-    {
-      "identity" : "x-stripe",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/jaredh159/x-stripe.git",
-      "state" : {
-        "revision" : "41a0d4345549ad7682bb361624c4da627f99d829",
-        "version" : "1.2.0"
       }
     }
   ],

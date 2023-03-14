@@ -1,0 +1,9 @@
+{
+  "root": "libs-swift/x-stripe",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "command": "cd libs-swift/x-stripe && swift build"
+    }
+  }
+}
