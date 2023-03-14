@@ -11,30 +11,30 @@ extension Audio: Model {
 
   func postgresData(for column: ColumnName) -> Postgres.Data {
     switch column {
-      case .id:
-        return .id(self)
-      case .editionId:
-        return .uuid(editionId)
-      case .reader:
-        return .string(reader)
-      case .isIncomplete:
-        return .bool(isIncomplete)
-      case .mp3ZipSizeHq:
-        return .int(mp3ZipSizeHq.rawValue)
-      case .mp3ZipSizeLq:
-        return .int(mp3ZipSizeLq.rawValue)
-      case .m4bSizeHq:
-        return .int(m4bSizeHq.rawValue)
-      case .m4bSizeLq:
-        return .int(m4bSizeLq.rawValue)
-      case .externalPlaylistIdHq:
-        return .int64(externalPlaylistIdHq?.rawValue)
-      case .externalPlaylistIdLq:
-        return .int64(externalPlaylistIdLq?.rawValue)
-      case .createdAt:
-        return .date(createdAt)
-      case .updatedAt:
-        return .date(updatedAt)
+    case .id:
+      return .id(self)
+    case .editionId:
+      return .uuid(editionId)
+    case .reader:
+      return .string(reader)
+    case .isIncomplete:
+      return .bool(isIncomplete)
+    case .mp3ZipSizeHq:
+      return .int(mp3ZipSizeHq.rawValue)
+    case .mp3ZipSizeLq:
+      return .int(mp3ZipSizeLq.rawValue)
+    case .m4bSizeHq:
+      return .int(m4bSizeHq.rawValue)
+    case .m4bSizeLq:
+      return .int(m4bSizeLq.rawValue)
+    case .externalPlaylistIdHq:
+      return .int64(externalPlaylistIdHq?.rawValue)
+    case .externalPlaylistIdLq:
+      return .int64(externalPlaylistIdLq?.rawValue)
+    case .createdAt:
+      return .date(createdAt)
+    case .updatedAt:
+      return .date(updatedAt)
     }
   }
 }

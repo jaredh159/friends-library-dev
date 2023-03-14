@@ -97,21 +97,21 @@ enum Asciidoc {
       let nextIndex = title.index(title.startIndex, offsetBy: index + 1)
       let nextChar: Character? = title.indices.contains(nextIndex) ? title[nextIndex] : nil
       switch (char.isNumber, number == nil, index == title.count - 1) {
-        case (true, true, false):
-          number = "\(char)"
-        case (true, false, false):
-          number! += "\(char)"
-        case (true, true, true):
-          shortened += toRoman("\(char)", nextChar)
-        case (false, true, _):
-          shortened += "\(char)"
-        case (false, false, _):
-          shortened += toRoman(number, nextChar) + "\(char)"
-          number = nil
-        case (true, false, true):
-          number! += "\(char)"
-          shortened += toRoman(number, nextChar)
-          number = nil
+      case (true, true, false):
+        number = "\(char)"
+      case (true, false, false):
+        number! += "\(char)"
+      case (true, true, true):
+        shortened += toRoman("\(char)", nextChar)
+      case (false, true, _):
+        shortened += "\(char)"
+      case (false, false, _):
+        shortened += toRoman(number, nextChar) + "\(char)"
+        number = nil
+      case (true, false, true):
+        number! += "\(char)"
+        shortened += toRoman(number, nextChar)
+        number = nil
       }
     }
     return shortened.replacingOccurrences(of: "--", with: HtmlEntities.Numbered.mdash.rawValue)

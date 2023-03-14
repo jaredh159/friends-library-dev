@@ -11,18 +11,18 @@ extension FriendResidence: Model {
 
   func postgresData(for column: ColumnName) -> Postgres.Data {
     switch column {
-      case .id:
-        return .id(self)
-      case .friendId:
-        return .uuid(friendId)
-      case .city:
-        return .string(city)
-      case .region:
-        return .string(region)
-      case .createdAt:
-        return .date(createdAt)
-      case .updatedAt:
-        return .date(updatedAt)
+    case .id:
+      return .id(self)
+    case .friendId:
+      return .uuid(friendId)
+    case .city:
+      return .string(city)
+    case .region:
+      return .string(region)
+    case .createdAt:
+      return .date(createdAt)
+    case .updatedAt:
+      return .date(updatedAt)
     }
   }
 }

@@ -11,30 +11,30 @@ extension AudioPart: Model {
 
   func postgresData(for column: ColumnName) -> Postgres.Data {
     switch column {
-      case .id:
-        return .id(self)
-      case .audioId:
-        return .uuid(audioId)
-      case .title:
-        return .string(title)
-      case .duration:
-        return .double(duration.rawValue)
-      case .chapters:
-        return .intArray(chapters.array)
-      case .order:
-        return .int(order)
-      case .mp3SizeHq:
-        return .int(mp3SizeHq.rawValue)
-      case .mp3SizeLq:
-        return .int(mp3SizeLq.rawValue)
-      case .externalIdHq:
-        return .int64(externalIdHq.rawValue)
-      case .externalIdLq:
-        return .int64(externalIdLq.rawValue)
-      case .createdAt:
-        return .date(createdAt)
-      case .updatedAt:
-        return .date(updatedAt)
+    case .id:
+      return .id(self)
+    case .audioId:
+      return .uuid(audioId)
+    case .title:
+      return .string(title)
+    case .duration:
+      return .double(duration.rawValue)
+    case .chapters:
+      return .intArray(chapters.array)
+    case .order:
+      return .int(order)
+    case .mp3SizeHq:
+      return .int(mp3SizeHq.rawValue)
+    case .mp3SizeLq:
+      return .int(mp3SizeLq.rawValue)
+    case .externalIdHq:
+      return .int64(externalIdHq.rawValue)
+    case .externalIdLq:
+      return .int64(externalIdLq.rawValue)
+    case .createdAt:
+      return .date(createdAt)
+    case .updatedAt:
+      return .date(updatedAt)
     }
   }
 }

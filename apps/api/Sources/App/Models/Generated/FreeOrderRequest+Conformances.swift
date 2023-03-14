@@ -11,34 +11,34 @@ extension FreeOrderRequest: Model {
 
   func postgresData(for column: ColumnName) -> Postgres.Data {
     switch column {
-      case .id:
-        return .id(self)
-      case .name:
-        return .string(name)
-      case .email:
-        return .string(email.rawValue)
-      case .requestedBooks:
-        return .string(requestedBooks)
-      case .aboutRequester:
-        return .string(aboutRequester)
-      case .addressStreet:
-        return .string(addressStreet)
-      case .addressStreet2:
-        return .string(addressStreet2)
-      case .addressCity:
-        return .string(addressCity)
-      case .addressState:
-        return .string(addressState)
-      case .addressZip:
-        return .string(addressZip)
-      case .addressCountry:
-        return .string(addressCountry)
-      case .source:
-        return .string(source)
-      case .createdAt:
-        return .date(createdAt)
-      case .updatedAt:
-        return .date(updatedAt)
+    case .id:
+      return .id(self)
+    case .name:
+      return .string(name)
+    case .email:
+      return .string(email.rawValue)
+    case .requestedBooks:
+      return .string(requestedBooks)
+    case .aboutRequester:
+      return .string(aboutRequester)
+    case .addressStreet:
+      return .string(addressStreet)
+    case .addressStreet2:
+      return .string(addressStreet2)
+    case .addressCity:
+      return .string(addressCity)
+    case .addressState:
+      return .string(addressState)
+    case .addressZip:
+      return .string(addressZip)
+    case .addressCountry:
+      return .string(addressCountry)
+    case .source:
+      return .string(source)
+    case .createdAt:
+      return .date(createdAt)
+    case .updatedAt:
+      return .date(updatedAt)
     }
   }
 }

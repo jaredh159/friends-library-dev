@@ -14,20 +14,20 @@ enum FlpSlack {
 
       var string: String {
         switch self {
-          case .errors:
-            return "#errors"
-          case .info:
-            return "#info"
-          case .orders:
-            return "#orders"
-          case .downloads:
-            return "#downloads"
-          case .audioDownloads:
-            return "#audio-downloads"
-          case .debug:
-            return "#debug"
-          case .other(let channel):
-            return channel
+        case .errors:
+          return "#errors"
+        case .info:
+          return "#info"
+        case .orders:
+          return "#orders"
+        case .downloads:
+          return "#downloads"
+        case .audioDownloads:
+          return "#audio-downloads"
+        case .debug:
+          return "#debug"
+        case .other(let channel):
+          return channel
         }
       }
 
@@ -36,10 +36,10 @@ enum FlpSlack {
           return Env.SLACK_API_TOKEN_WORKSPACE_BOT
         }
         switch self {
-          case .debug, .audioDownloads:
-            return Env.SLACK_API_TOKEN_WORKSPACE_BOT
-          case .errors, .info, .orders, .downloads, .other:
-            return Env.SLACK_API_TOKEN_WORKSPACE_MAIN
+        case .debug, .audioDownloads:
+          return Env.SLACK_API_TOKEN_WORKSPACE_BOT
+        case .errors, .info, .orders, .downloads, .other:
+          return Env.SLACK_API_TOKEN_WORKSPACE_MAIN
         }
       }
     }

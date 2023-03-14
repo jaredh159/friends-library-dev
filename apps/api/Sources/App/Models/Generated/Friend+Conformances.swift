@@ -11,30 +11,30 @@ extension Friend: Model {
 
   func postgresData(for column: ColumnName) -> Postgres.Data {
     switch column {
-      case .id:
-        return .id(self)
-      case .lang:
-        return .enum(lang)
-      case .name:
-        return .string(name)
-      case .slug:
-        return .string(slug)
-      case .gender:
-        return .enum(gender)
-      case .description:
-        return .string(description)
-      case .born:
-        return .int(born)
-      case .died:
-        return .int(died)
-      case .published:
-        return .date(published)
-      case .createdAt:
-        return .date(createdAt)
-      case .updatedAt:
-        return .date(updatedAt)
-      case .deletedAt:
-        return .date(deletedAt)
+    case .id:
+      return .id(self)
+    case .lang:
+      return .enum(lang)
+    case .name:
+      return .string(name)
+    case .slug:
+      return .string(slug)
+    case .gender:
+      return .enum(gender)
+    case .description:
+      return .string(description)
+    case .born:
+      return .int(born)
+    case .died:
+      return .int(died)
+    case .published:
+      return .date(published)
+    case .createdAt:
+      return .date(createdAt)
+    case .updatedAt:
+      return .date(updatedAt)
+    case .deletedAt:
+      return .date(deletedAt)
     }
   }
 }

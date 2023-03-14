@@ -209,34 +209,34 @@ final class PreloadedEntitiesStore: MemoryStore {
 
   public func keyPath<M: DuetSQL.Model>(to: M.Type) -> Models<M> {
     switch M.tableName {
-      case Friend.tableName:
-        return \PreloadedEntitiesStore.friends as! Models<M>
-      case FriendQuote.tableName:
-        return \PreloadedEntitiesStore.friendQuotes as! Models<M>
-      case FriendResidence.tableName:
-        return \PreloadedEntitiesStore.friendResidences as! Models<M>
-      case FriendResidenceDuration.tableName:
-        return \PreloadedEntitiesStore.friendResidenceDurations as! Models<M>
-      case Document.tableName:
-        return \PreloadedEntitiesStore.documents as! Models<M>
-      case DocumentTag.tableName:
-        return \PreloadedEntitiesStore.documentTags as! Models<M>
-      case RelatedDocument.tableName:
-        return \PreloadedEntitiesStore.relatedDocuments as! Models<M>
-      case Edition.tableName:
-        return \PreloadedEntitiesStore.editions as! Models<M>
-      case EditionImpression.tableName:
-        return \PreloadedEntitiesStore.editionImpressions as! Models<M>
-      case EditionChapter.tableName:
-        return \PreloadedEntitiesStore.editionChapters as! Models<M>
-      case Audio.tableName:
-        return \PreloadedEntitiesStore.audios as! Models<M>
-      case AudioPart.tableName:
-        return \PreloadedEntitiesStore.audioParts as! Models<M>
-      case Isbn.tableName:
-        return \PreloadedEntitiesStore.isbns as! Models<M>
-      default:
-        preconditionFailure()
+    case Friend.tableName:
+      return \PreloadedEntitiesStore.friends as! Models<M>
+    case FriendQuote.tableName:
+      return \PreloadedEntitiesStore.friendQuotes as! Models<M>
+    case FriendResidence.tableName:
+      return \PreloadedEntitiesStore.friendResidences as! Models<M>
+    case FriendResidenceDuration.tableName:
+      return \PreloadedEntitiesStore.friendResidenceDurations as! Models<M>
+    case Document.tableName:
+      return \PreloadedEntitiesStore.documents as! Models<M>
+    case DocumentTag.tableName:
+      return \PreloadedEntitiesStore.documentTags as! Models<M>
+    case RelatedDocument.tableName:
+      return \PreloadedEntitiesStore.relatedDocuments as! Models<M>
+    case Edition.tableName:
+      return \PreloadedEntitiesStore.editions as! Models<M>
+    case EditionImpression.tableName:
+      return \PreloadedEntitiesStore.editionImpressions as! Models<M>
+    case EditionChapter.tableName:
+      return \PreloadedEntitiesStore.editionChapters as! Models<M>
+    case Audio.tableName:
+      return \PreloadedEntitiesStore.audios as! Models<M>
+    case AudioPart.tableName:
+      return \PreloadedEntitiesStore.audioParts as! Models<M>
+    case Isbn.tableName:
+      return \PreloadedEntitiesStore.isbns as! Models<M>
+    default:
+      preconditionFailure()
     }
   }
 }
@@ -246,10 +246,10 @@ final class PreloadedEntitiesStore: MemoryStore {
 extension Children {
   mutating func push(_ child: C) {
     switch self {
-      case .notLoaded:
-        self = .loaded([child])
-      case .loaded(let children):
-        self = .loaded(children + [child])
+    case .notLoaded:
+      self = .loaded([child])
+    case .loaded(let children):
+      self = .loaded(children + [child])
     }
   }
 }

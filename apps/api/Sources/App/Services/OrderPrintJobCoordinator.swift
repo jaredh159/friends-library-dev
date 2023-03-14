@@ -63,30 +63,30 @@ enum OrderPrintJobCoordinator {
 
       let status = printJob.status.name.rawValue
       switch printJob.status.name {
-        case .created:
-          if order.createdAt < Date(subtractingDays: 1) {
-            await slackError("Print job \(printJob |> slackLink) stuck in `created` state!")
-          }
-        case .unpaid:
-          await slackError("Print job \(printJob |> slackLink) found in state `\(status)`!")
-        case .rejected,
-             .canceled,
-             .error:
-          order.printJobStatus = .rejected
-          updated.append(order)
-          await slackError(
-            "Print job \(printJob |> slackLink) for order \(order.id.lowercased) rejected"
-          )
-        case .paymentInProgress,
-             .productionReady,
-             .productionDelayed,
-             .shipped,
-             .inProduction:
-          order.printJobStatus = .accepted
-          updated.append(order)
-          await slackOrder(
-            "Verified acceptance of print job \(printJob |> slackLink), status: `\(status)`"
-          )
+      case .created:
+        if order.createdAt < Date(subtractingDays: 1) {
+          await slackError("Print job \(printJob |> slackLink) stuck in `created` state!")
+        }
+      case .unpaid:
+        await slackError("Print job \(printJob |> slackLink) found in state `\(status)`!")
+      case .rejected,
+           .canceled,
+           .error:
+        order.printJobStatus = .rejected
+        updated.append(order)
+        await slackError(
+          "Print job \(printJob |> slackLink) for order \(order.id.lowercased) rejected"
+        )
+      case .paymentInProgress,
+           .productionReady,
+           .productionDelayed,
+           .shipped,
+           .inProduction:
+        order.printJobStatus = .accepted
+        updated.append(order)
+        await slackOrder(
+          "Verified acceptance of print job \(printJob |> slackLink), status: `\(status)`"
+        )
       }
     }
 
@@ -107,24 +107,24 @@ enum OrderPrintJobCoordinator {
 
       let status = printJob.status.name.rawValue
       switch printJob.status.name {
-        case .unpaid:
-          await slackError("Print job \(printJob |> slackLink) found in status `\(status)`!")
-        case .canceled, .rejected:
-          order.printJobStatus = printJob.status.name == .canceled ? .canceled : .rejected
-          updated.append(order)
-          await slackError("Order \(order |> slackLink) was found in status `\(status)`!")
-        case .shipped:
-          order.printJobStatus = .shipped
-          updated.append(order)
-          await sendOrderShippedEmail(order, printJob)
-          await slackOrder("Order \(order |> slackLink) shipped")
-        case .paymentInProgress,
-             .productionReady,
-             .productionDelayed,
-             .inProduction,
-             .error,
-             .created:
-          break
+      case .unpaid:
+        await slackError("Print job \(printJob |> slackLink) found in status `\(status)`!")
+      case .canceled, .rejected:
+        order.printJobStatus = printJob.status.name == .canceled ? .canceled : .rejected
+        updated.append(order)
+        await slackError("Order \(order |> slackLink) was found in status `\(status)`!")
+      case .shipped:
+        order.printJobStatus = .shipped
+        updated.append(order)
+        await sendOrderShippedEmail(order, printJob)
+        await slackOrder("Order \(order |> slackLink) shipped")
+      case .paymentInProgress,
+           .productionReady,
+           .productionDelayed,
+           .inProduction,
+           .error,
+           .created:
+        break
       }
     }
 

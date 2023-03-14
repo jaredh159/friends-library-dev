@@ -7,22 +7,22 @@ import Vapor
 extension Model {
   static var isPreloaded: Bool {
     switch tableName {
-      case Friend.tableName,
-           FriendQuote.tableName,
-           FriendResidence.tableName,
-           FriendResidenceDuration.tableName,
-           Document.tableName,
-           DocumentTag.tableName,
-           RelatedDocument.tableName,
-           Edition.tableName,
-           EditionImpression.tableName,
-           EditionChapter.tableName,
-           Audio.tableName,
-           AudioPart.tableName,
-           Isbn.tableName:
-        return true
-      default:
-        return false
+    case Friend.tableName,
+         FriendQuote.tableName,
+         FriendResidence.tableName,
+         FriendResidenceDuration.tableName,
+         Document.tableName,
+         DocumentTag.tableName,
+         RelatedDocument.tableName,
+         Edition.tableName,
+         EditionImpression.tableName,
+         EditionChapter.tableName,
+         Audio.tableName,
+         AudioPart.tableName,
+         Isbn.tableName:
+      return true
+    default:
+      return false
     }
   }
 }

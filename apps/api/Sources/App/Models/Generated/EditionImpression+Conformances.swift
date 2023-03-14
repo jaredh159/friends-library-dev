@@ -11,22 +11,22 @@ extension EditionImpression: Model {
 
   func postgresData(for column: ColumnName) -> Postgres.Data {
     switch column {
-      case .id:
-        return .id(self)
-      case .editionId:
-        return .uuid(editionId)
-      case .adocLength:
-        return .int(adocLength)
-      case .paperbackSizeVariant:
-        return .enum(paperbackSizeVariant)
-      case .paperbackVolumes:
-        return .intArray(paperbackVolumes.array)
-      case .publishedRevision:
-        return .string(publishedRevision.rawValue)
-      case .productionToolchainRevision:
-        return .string(productionToolchainRevision.rawValue)
-      case .createdAt:
-        return .date(createdAt)
+    case .id:
+      return .id(self)
+    case .editionId:
+      return .uuid(editionId)
+    case .adocLength:
+      return .int(adocLength)
+    case .paperbackSizeVariant:
+      return .enum(paperbackSizeVariant)
+    case .paperbackVolumes:
+      return .intArray(paperbackVolumes.array)
+    case .publishedRevision:
+      return .string(publishedRevision.rawValue)
+    case .productionToolchainRevision:
+      return .string(productionToolchainRevision.rawValue)
+    case .createdAt:
+      return .date(createdAt)
     }
   }
 }

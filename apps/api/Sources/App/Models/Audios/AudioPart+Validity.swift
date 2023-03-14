@@ -1,10 +1,10 @@
 extension AudioPart {
   var isValid: Bool {
-    if mp3SizeHq < 2000000, mp3SizeHq != 0 {
+    if mp3SizeHq < 2_000_000, mp3SizeHq != 0 {
       return false
     }
 
-    if mp3SizeLq < 1000000, mp3SizeLq != 0 {
+    if mp3SizeLq < 1_000_000, mp3SizeLq != 0 {
       return false
     }
 
@@ -16,11 +16,11 @@ extension AudioPart {
       return false
     }
 
-    if externalIdHq < 200000000, externalIdHq != 0 {
+    if externalIdHq < 200_000_000, externalIdHq != 0 {
       return false
     }
 
-    if externalIdLq < 200000000, externalIdLq != 0 {
+    if externalIdLq < 200_000_000, externalIdLq != 0 {
       return false
     }
 

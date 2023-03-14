@@ -96,7 +96,8 @@ extension Order {
       "addressState": .string(addressState),
       "addressZip": .string(addressZip),
       "addressCountry": .string(addressCountry),
-      "freeOrderRequestId": freeOrderRequestId != nil ? .string(freeOrderRequestId!.lowercased) : .null,
+      "freeOrderRequestId": freeOrderRequestId != nil ? .string(freeOrderRequestId!.lowercased) :
+        .null,
     ])
     omitting.forEach { try? map.remove($0) }
     return map

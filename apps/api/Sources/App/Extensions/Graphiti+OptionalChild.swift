@@ -12,10 +12,10 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
       name.description,
       at: resolveOptionalChild { parent async throws -> Child? in
         switch parent[keyPath: keyPath] {
-          case .loaded(let child):
-            return child
-          case .notLoaded:
-            return try await loadOptionalChild(at: keyPath, for: parent)
+        case .loaded(let child):
+          return child
+        case .notLoaded:
+          return try await loadOptionalChild(at: keyPath, for: parent)
         }
       },
       as: TypeRef<Child>?.self
@@ -29,14 +29,14 @@ private func loadOptionalChild<Parent: ApiModel, Child: ApiModel>(
 ) async throws -> Child? {
   let fk: Child.ColumnName
   switch keyPath {
-    case \Edition.impression:
-      fk = try Child.column(EditionImpression[.editionId])
-    case \Edition.isbn:
-      fk = try Child.column(Isbn[.editionId])
-    case \Edition.audio:
-      fk = try Child.column(Audio[.editionId])
-    default:
-      throw Abort(.notImplemented, reason: "\(keyPath) not handled for OptionalChild<M> relation")
+  case \Edition.impression:
+    fk = try Child.column(EditionImpression[.editionId])
+  case \Edition.isbn:
+    fk = try Child.column(Isbn[.editionId])
+  case \Edition.audio:
+    fk = try Child.column(Audio[.editionId])
+  default:
+    throw Abort(.notImplemented, reason: "\(keyPath) not handled for OptionalChild<M> relation")
   }
 
   let child = try await Current.db.query(Child.self)

@@ -4,7 +4,7 @@ extension EditionImpression {
       return false
     }
 
-    if adocLength < 500 || adocLength > 5000000 {
+    if adocLength < 500 || adocLength > 5_000_000 {
       return false
     }
 

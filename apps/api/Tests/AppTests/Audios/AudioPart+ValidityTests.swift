@@ -35,15 +35,15 @@ final class AudioPartValidityTests: XCTestCase {
 
   func testSameSizeForMp3HqLqInvalid() {
     let part = AudioPart.valid
-    part.mp3SizeHq = 888888
-    part.mp3SizeLq = 888888
+    part.mp3SizeHq = 888_888
+    part.mp3SizeLq = 888_888
     XCTAssertFalse(part.isValid)
   }
 
   func testLqMp3LargerThanHqInvalid() {
     let part = AudioPart.valid
-    part.mp3SizeHq = 888888
-    part.mp3SizeLq = 999999
+    part.mp3SizeHq = 888_888
+    part.mp3SizeLq = 999_999
     XCTAssertFalse(part.isValid)
   }
 
@@ -67,8 +67,8 @@ final class AudioPartValidityTests: XCTestCase {
 
   func testSameNonZeroExternalIdsInvalid() {
     let part = AudioPart.valid
-    part.externalIdHq = 7777777
-    part.externalIdLq = 7777777
+    part.externalIdHq = 7_777_777
+    part.externalIdLq = 7_777_777
     XCTAssertFalse(part.isValid)
   }
 

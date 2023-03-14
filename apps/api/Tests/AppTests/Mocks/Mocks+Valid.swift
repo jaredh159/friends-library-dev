@@ -87,10 +87,10 @@ extension AudioPart {
     part.order = 7
     part.duration = 3704.5
     part.chapters = .init(4, 5)
-    part.mp3SizeHq = 2000001
-    part.mp3SizeLq = 1000001
-    part.externalIdHq = 200000001
-    part.externalIdLq = 200000002
+    part.mp3SizeHq = 2_000_001
+    part.mp3SizeLq = 1_000_001
+    part.externalIdHq = 200_000_001
+    part.externalIdLq = 200_000_002
     precondition(part.isValid)
     return part
   }
@@ -100,10 +100,10 @@ extension Audio {
   static var valid: Audio {
     let audio = Audio.empty
     audio.reader = "Bob Smith"
-    audio.m4bSizeLq = 3000000
-    audio.m4bSizeHq = 8000000
-    audio.mp3ZipSizeLq = 2000000
-    audio.mp3ZipSizeHq = 5000000
+    audio.m4bSizeLq = 3_000_000
+    audio.m4bSizeHq = 8_000_000
+    audio.mp3ZipSizeLq = 2_000_000
+    audio.mp3ZipSizeHq = 5_000_000
     audio.externalPlaylistIdHq = nil
     audio.externalPlaylistIdLq = nil
     precondition(audio.isValid)

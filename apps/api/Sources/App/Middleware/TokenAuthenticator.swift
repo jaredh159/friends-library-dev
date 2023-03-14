@@ -7,11 +7,11 @@ struct User: Authenticatable {
 
   func hasScope(_ scope: Scope) -> Bool {
     switch token.scopes {
-      case .notLoaded:
-        Current.logger.error("Non-loaded token scopes in User authentication")
-        return false
-      case .loaded(let scopes):
-        return scopes.contains { $0.scope == scope || $0.scope == .all }
+    case .notLoaded:
+      Current.logger.error("Non-loaded token scopes in User authentication")
+      return false
+    case .loaded(let scopes):
+      return scopes.contains { $0.scope == scope || $0.scope == .all }
     }
   }
 }

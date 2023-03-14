@@ -28,8 +28,10 @@ extension Edition {
       "type": .string(type.rawValue),
       "editor": editor != nil ? .string(editor!) : .null,
       "isDraft": .bool(isDraft),
-      "paperbackSplits": paperbackSplits != nil ? .array(paperbackSplits!.array.map { .number(Number($0)) }) : .null,
-      "paperbackOverrideSize": paperbackOverrideSize != nil ? .string(paperbackOverrideSize!.rawValue) : .null,
+      "paperbackSplits": paperbackSplits != nil ?
+        .array(paperbackSplits!.array.map { .number(Number($0)) }) : .null,
+      "paperbackOverrideSize": paperbackOverrideSize != nil ?
+        .string(paperbackOverrideSize!.rawValue) : .null,
     ])
     omitting.forEach { try? map.remove($0) }
     return map

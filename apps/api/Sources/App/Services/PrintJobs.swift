@@ -147,14 +147,14 @@ enum PrintJobs {
 
     var errorDescription: String? {
       switch self {
-        case .noExploratoryMetadataRetrieved:
-          return "No exploratory metadata could be retrieved. Very likely shipping was not possible."
-        case .invalidMoneyStringFromApi(let value):
-          return "Could not convert API currency string value (\(value)) to cents."
-        case .invalidInputForCreditCardFeeOffset:
-          return "Invalid negative or zero amount for calculating credit card offset."
-        case .unexpectedMissingEditionImpression(let orderId, let editionId):
-          return "Unexpected missing edition impression for edition \(editionId) in order \(orderId)."
+      case .noExploratoryMetadataRetrieved:
+        return "No exploratory metadata could be retrieved. Very likely shipping was not possible."
+      case .invalidMoneyStringFromApi(let value):
+        return "Could not convert API currency string value (\(value)) to cents."
+      case .invalidInputForCreditCardFeeOffset:
+        return "Invalid negative or zero amount for calculating credit card offset."
+      case .unexpectedMissingEditionImpression(let orderId, let editionId):
+        return "Unexpected missing edition impression for edition \(editionId) in order \(orderId)."
       }
     }
   }

@@ -12,12 +12,12 @@ final class AudioValidityTests: XCTestCase {
 
   func testTooSmallExternalPlaylistIdInvalid() {
     var audio = Audio.valid
-    audio.externalPlaylistIdLq = 9999999999
+    audio.externalPlaylistIdLq = 9_999_999_999
     audio.externalPlaylistIdHq = 500
     XCTAssertFalse(audio.isValid)
     audio = Audio.valid
     audio.externalPlaylistIdLq = 500
-    audio.externalPlaylistIdHq = 9999999999
+    audio.externalPlaylistIdHq = 9_999_999_999
     XCTAssertFalse(audio.isValid)
 
     // but is valid if not published yet
@@ -29,25 +29,25 @@ final class AudioValidityTests: XCTestCase {
   func testOnlyOneNilPlaylistIdInvalid() {
     var audio = Audio.valid
     audio.externalPlaylistIdHq = nil
-    audio.externalPlaylistIdLq = 888888888
+    audio.externalPlaylistIdLq = 888_888_888
     XCTAssertFalse(audio.isValid)
     audio = Audio.valid
-    audio.externalPlaylistIdHq = 888888888
+    audio.externalPlaylistIdHq = 888_888_888
     audio.externalPlaylistIdLq = nil
     XCTAssertFalse(audio.isValid)
   }
 
   func testM4bLqNotSmallerThanHqInvalid() {
     let audio = Audio.valid
-    audio.m4bSizeHq = 9000000
-    audio.m4bSizeLq = 9000111
+    audio.m4bSizeHq = 9_000_000
+    audio.m4bSizeLq = 9_000_111
     XCTAssertFalse(audio.isValid)
   }
 
   func testMp3ZipLqNotSmallerThanHqInvalid() {
     let audio = Audio.valid
-    audio.mp3ZipSizeHq = 6000000
-    audio.mp3ZipSizeLq = 7000000
+    audio.mp3ZipSizeHq = 6_000_000
+    audio.mp3ZipSizeLq = 7_000_000
     XCTAssertFalse(audio.isValid)
   }
 

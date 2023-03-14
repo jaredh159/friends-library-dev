@@ -38,7 +38,7 @@ extension AudioPart {
     AudioPart(
       audioId: .init(),
       title: "@random".random,
-      duration: .init(rawValue: Double.random(in: 100...999)),
+      duration: .init(rawValue: Double.random(in: 100 ... 999)),
       chapters: NonEmpty<[Int]>(Int.random),
       order: Int.random,
       mp3SizeHq: .init(rawValue: Int.random),

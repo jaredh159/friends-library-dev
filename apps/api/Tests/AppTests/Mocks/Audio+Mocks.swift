@@ -48,8 +48,10 @@ extension Audio {
       "mp3ZipSizeLq": .number(Number(mp3ZipSizeLq.rawValue)),
       "m4bSizeHq": .number(Number(m4bSizeHq.rawValue)),
       "m4bSizeLq": .number(Number(m4bSizeLq.rawValue)),
-      "externalPlaylistIdHq": externalPlaylistIdHq != nil ? .number(Number(externalPlaylistIdHq!.rawValue)) : .null,
-      "externalPlaylistIdLq": externalPlaylistIdLq != nil ? .number(Number(externalPlaylistIdLq!.rawValue)) : .null,
+      "externalPlaylistIdHq": externalPlaylistIdHq != nil ?
+        .number(Number(externalPlaylistIdHq!.rawValue)) : .null,
+      "externalPlaylistIdLq": externalPlaylistIdLq != nil ?
+        .number(Number(externalPlaylistIdLq!.rawValue)) : .null,
     ])
     omitting.forEach { try? map.remove($0) }
     return map

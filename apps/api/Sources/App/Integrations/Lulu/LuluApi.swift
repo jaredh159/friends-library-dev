@@ -120,20 +120,20 @@ extension ShippingAddress {
 extension Order.ShippingLevel {
   var lulu: Lulu.Api.ShippingOptionLevel {
     switch self {
-      case .mail:
-        return .mail
-      case .priorityMail:
-        return .priorityMail
-      case .groundHd:
-        return .groundHd
-      case .groundBus:
-        return .groundBus
-      case .ground:
-        return .ground
-      case .expedited:
-        return .expedited
-      case .express:
-        return .express
+    case .mail:
+      return .mail
+    case .priorityMail:
+      return .priorityMail
+    case .groundHd:
+      return .groundHd
+    case .groundBus:
+      return .groundBus
+    case .ground:
+      return .ground
+    case .expedited:
+      return .expedited
+    case .express:
+      return .express
     }
   }
 }

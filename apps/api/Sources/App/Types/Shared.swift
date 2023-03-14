@@ -19,12 +19,12 @@ enum PrintSizeVariant: String, Codable, CaseIterable {
 
   var printSize: PrintSize {
     switch self {
-      case .s:
-        return .s
-      case .m:
-        return .m
-      case .xl, .xlCondensed:
-        return .xl
+    case .s:
+      return .s
+    case .m:
+      return .m
+    case .xl, .xlCondensed:
+      return .xl
     }
   }
 }

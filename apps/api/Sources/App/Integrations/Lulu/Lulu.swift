@@ -18,12 +18,12 @@ extension Lulu {
   static func podPackageId(size: PrintSize, pages: Int) -> String {
     let sizePrefix: String
     switch size {
-      case .s:
-        sizePrefix = "0425X0687"
-      case .m:
-        sizePrefix = "0550X0850"
-      case .xl:
-        sizePrefix = "0600X0900"
+    case .s:
+      sizePrefix = "0425X0687"
+    case .m:
+      sizePrefix = "0550X0850"
+    case .xl:
+      sizePrefix = "0600X0900"
     }
     return [
       sizePrefix,

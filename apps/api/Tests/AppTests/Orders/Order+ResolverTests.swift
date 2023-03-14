@@ -138,7 +138,7 @@ final class OrderResolverTests: AppTestCase {
 
   func testGetOrderDirectionId() async throws {
     let order = Order.empty
-    order.printJobId = 234432
+    order.printJobId = 234_432
     try await Current.db.create(order)
 
     assertResponse(
@@ -149,7 +149,7 @@ final class OrderResolverTests: AppTestCase {
         }
       }
       """,
-      .containsKeyValuePairs(["printJobId": 234432])
+      .containsKeyValuePairs(["printJobId": 234_432])
     )
   }
 

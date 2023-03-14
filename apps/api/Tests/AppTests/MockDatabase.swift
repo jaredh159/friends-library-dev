@@ -5,48 +5,48 @@ import DuetSQL
 final class MockDatabase: MemoryStore {
   func keyPath<M: Model>(to Model: M.Type) -> Models<M> {
     switch Model.tableName {
-      case Token.tableName:
-        return \MockDatabase.tokens as! Models<M>
-      case Friend.tableName:
-        return \MockDatabase.friends as! Models<M>
-      case FriendQuote.tableName:
-        return \MockDatabase.friendQuotes as! Models<M>
-      case FriendResidence.tableName:
-        return \MockDatabase.friendResidences as! Models<M>
-      case FriendResidenceDuration.tableName:
-        return \MockDatabase.friendResidenceDurations as! Models<M>
-      case Audio.tableName:
-        return \MockDatabase.audios as! Models<M>
-      case AudioPart.tableName:
-        return \MockDatabase.audioParts as! Models<M>
-      case Isbn.tableName:
-        return \MockDatabase.isbns as! Models<M>
-      case Edition.tableName:
-        return \MockDatabase.editions as! Models<M>
-      case EditionChapter.tableName:
-        return \MockDatabase.editionChapters as! Models<M>
-      case EditionImpression.tableName:
-        return \MockDatabase.editionImpressions as! Models<M>
-      case Document.tableName:
-        return \MockDatabase.documents as! Models<M>
-      case RelatedDocument.tableName:
-        return \MockDatabase.relatedDocuments as! Models<M>
-      case TokenScope.tableName:
-        return \MockDatabase.tokenScopes as! Models<M>
-      case Order.tableName:
-        return \MockDatabase.orders as! Models<M>
-      case FreeOrderRequest.tableName:
-        return \MockDatabase.freeOrderRequests as! Models<M>
-      case Download.tableName:
-        return \MockDatabase.downloads as! Models<M>
-      case OrderItem.tableName:
-        return \MockDatabase.orderItems as! Models<M>
-      case ArtifactProductionVersion.tableName:
-        return \MockDatabase.artifactProductionVersions as! Models<M>
-      case DocumentTag.tableName:
-        return \MockDatabase.documentTags as! Models<M>
-      default:
-        fatalError("\(Model.tableName) not supported in mockDb")
+    case Token.tableName:
+      return \MockDatabase.tokens as! Models<M>
+    case Friend.tableName:
+      return \MockDatabase.friends as! Models<M>
+    case FriendQuote.tableName:
+      return \MockDatabase.friendQuotes as! Models<M>
+    case FriendResidence.tableName:
+      return \MockDatabase.friendResidences as! Models<M>
+    case FriendResidenceDuration.tableName:
+      return \MockDatabase.friendResidenceDurations as! Models<M>
+    case Audio.tableName:
+      return \MockDatabase.audios as! Models<M>
+    case AudioPart.tableName:
+      return \MockDatabase.audioParts as! Models<M>
+    case Isbn.tableName:
+      return \MockDatabase.isbns as! Models<M>
+    case Edition.tableName:
+      return \MockDatabase.editions as! Models<M>
+    case EditionChapter.tableName:
+      return \MockDatabase.editionChapters as! Models<M>
+    case EditionImpression.tableName:
+      return \MockDatabase.editionImpressions as! Models<M>
+    case Document.tableName:
+      return \MockDatabase.documents as! Models<M>
+    case RelatedDocument.tableName:
+      return \MockDatabase.relatedDocuments as! Models<M>
+    case TokenScope.tableName:
+      return \MockDatabase.tokenScopes as! Models<M>
+    case Order.tableName:
+      return \MockDatabase.orders as! Models<M>
+    case FreeOrderRequest.tableName:
+      return \MockDatabase.freeOrderRequests as! Models<M>
+    case Download.tableName:
+      return \MockDatabase.downloads as! Models<M>
+    case OrderItem.tableName:
+      return \MockDatabase.orderItems as! Models<M>
+    case ArtifactProductionVersion.tableName:
+      return \MockDatabase.artifactProductionVersions as! Models<M>
+    case DocumentTag.tableName:
+      return \MockDatabase.documentTags as! Models<M>
+    default:
+      fatalError("\(Model.tableName) not supported in mockDb")
     }
   }
 

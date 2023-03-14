@@ -11,36 +11,36 @@ extension Document: Model {
 
   func postgresData(for column: ColumnName) -> Postgres.Data {
     switch column {
-      case .id:
-        return .id(self)
-      case .friendId:
-        return .uuid(friendId)
-      case .altLanguageId:
-        return .uuid(altLanguageId)
-      case .title:
-        return .string(title)
-      case .slug:
-        return .string(slug)
-      case .filename:
-        return .string(filename)
-      case .published:
-        return .int(published)
-      case .originalTitle:
-        return .string(originalTitle)
-      case .incomplete:
-        return .bool(incomplete)
-      case .description:
-        return .string(description)
-      case .partialDescription:
-        return .string(partialDescription)
-      case .featuredDescription:
-        return .string(featuredDescription)
-      case .createdAt:
-        return .date(createdAt)
-      case .updatedAt:
-        return .date(updatedAt)
-      case .deletedAt:
-        return .date(deletedAt)
+    case .id:
+      return .id(self)
+    case .friendId:
+      return .uuid(friendId)
+    case .altLanguageId:
+      return .uuid(altLanguageId)
+    case .title:
+      return .string(title)
+    case .slug:
+      return .string(slug)
+    case .filename:
+      return .string(filename)
+    case .published:
+      return .int(published)
+    case .originalTitle:
+      return .string(originalTitle)
+    case .incomplete:
+      return .bool(incomplete)
+    case .description:
+      return .string(description)
+    case .partialDescription:
+      return .string(partialDescription)
+    case .featuredDescription:
+      return .string(featuredDescription)
+    case .createdAt:
+      return .date(createdAt)
+    case .updatedAt:
+      return .date(updatedAt)
+    case .deletedAt:
+      return .date(deletedAt)
     }
   }
 }

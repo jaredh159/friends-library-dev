@@ -11,18 +11,18 @@ extension RelatedDocument: Model {
 
   func postgresData(for column: ColumnName) -> Postgres.Data {
     switch column {
-      case .id:
-        return .id(self)
-      case .description:
-        return .string(description)
-      case .documentId:
-        return .uuid(documentId)
-      case .parentDocumentId:
-        return .uuid(parentDocumentId)
-      case .createdAt:
-        return .date(createdAt)
-      case .updatedAt:
-        return .date(updatedAt)
+    case .id:
+      return .id(self)
+    case .description:
+      return .string(description)
+    case .documentId:
+      return .uuid(documentId)
+    case .parentDocumentId:
+      return .uuid(parentDocumentId)
+    case .createdAt:
+      return .date(createdAt)
+    case .updatedAt:
+      return .date(updatedAt)
     }
   }
 }

@@ -12,10 +12,10 @@ extension Graphiti.Field where Arguments == NoArgs, Context == Req, ObjectType: 
       name.description,
       at: resolveOptionalParent { child async throws -> Child? in
         switch child[keyPath: keyPath] {
-          case .loaded(let parent):
-            return parent
-          case .notLoaded:
-            return try await loadOptionalParent(at: keyPath, for: child)
+        case .loaded(let parent):
+          return parent
+        case .notLoaded:
+          return try await loadOptionalParent(at: keyPath, for: child)
         }
       },
       as: TypeReference<Child>?.self
@@ -32,17 +32,17 @@ private func loadOptionalParent<Child: ApiModel, Parent: ApiModel>(
   var childFk: UUIDStringable?
   switch keyPath {
 
-    case \Document.altLanguageDocument:
-      childFk = (child as! Document).altLanguageId
+  case \Document.altLanguageDocument:
+    childFk = (child as! Document).altLanguageId
 
-    case \Isbn.edition:
-      childFk = (child as! Isbn).editionId
+  case \Isbn.edition:
+    childFk = (child as! Isbn).editionId
 
-    case \Order.freeOrderRequest:
-      childFk = (child as! Order).freeOrderRequestId
+  case \Order.freeOrderRequest:
+    childFk = (child as! Order).freeOrderRequestId
 
-    default:
-      throw Abort(.notImplemented, reason: "\(keyPath) not handled for OptionalParent<M> relation")
+  default:
+    throw Abort(.notImplemented, reason: "\(keyPath) not handled for OptionalParent<M> relation")
   }
 
   if let fk = childFk {

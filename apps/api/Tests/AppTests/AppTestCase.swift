@@ -110,11 +110,11 @@ func sync(
     }
   }
   switch XCTWaiter.wait(for: [exp], timeout: 10) {
-    case .completed:
-      return
-    case .timedOut:
-      fatalError("Timed out waiting for \(exp.description)")
-    default:
-      fatalError("Unexpected result waiting for \(exp.description)")
+  case .completed:
+    return
+  case .timedOut:
+    fatalError("Timed out waiting for \(exp.description)")
+  default:
+    fatalError("Unexpected result waiting for \(exp.description)")
   }
 }

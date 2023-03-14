@@ -11,26 +11,26 @@ extension EditionChapter: Model {
 
   func postgresData(for column: ColumnName) -> Postgres.Data {
     switch column {
-      case .id:
-        return .id(self)
-      case .editionId:
-        return .uuid(editionId)
-      case .order:
-        return .int(order)
-      case .shortHeading:
-        return .string(shortHeading)
-      case .isIntermediateTitle:
-        return .bool(isIntermediateTitle)
-      case .customId:
-        return .string(customId)
-      case .sequenceNumber:
-        return .int(sequenceNumber)
-      case .nonSequenceTitle:
-        return .string(nonSequenceTitle)
-      case .createdAt:
-        return .date(createdAt)
-      case .updatedAt:
-        return .date(updatedAt)
+    case .id:
+      return .id(self)
+    case .editionId:
+      return .uuid(editionId)
+    case .order:
+      return .int(order)
+    case .shortHeading:
+      return .string(shortHeading)
+    case .isIntermediateTitle:
+      return .bool(isIntermediateTitle)
+    case .customId:
+      return .string(customId)
+    case .sequenceNumber:
+      return .int(sequenceNumber)
+    case .nonSequenceTitle:
+      return .string(nonSequenceTitle)
+    case .createdAt:
+      return .date(createdAt)
+    case .updatedAt:
+      return .date(updatedAt)
     }
   }
 }

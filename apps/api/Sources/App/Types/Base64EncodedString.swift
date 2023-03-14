@@ -35,10 +35,10 @@ extension Base64EncodedString {
 
     var errorDescription: String? {
       switch self {
-        case .notDecodable(let string):
-          return "String `\(string)` not base-64 decodable"
-        case .notEncodable(let string):
-          return "String `\(string)` not base-64 encodable"
+      case .notDecodable(let string):
+        return "String `\(string)` not base-64 decodable"
+      case .notEncodable(let string):
+        return "String `\(string)` not base-64 encodable"
       }
     }
   }
