@@ -1,5 +1,6 @@
 ## Todo
 
+- [ ] api: pnpm install, get deploy-ing correctly
 - [ ] api: update duet to gertie version, w/out codegen
 - [ ] api: deal with todos in `converge-todo.md`
 - [ ] native: add just scripts to launch ios emulators of various sizes

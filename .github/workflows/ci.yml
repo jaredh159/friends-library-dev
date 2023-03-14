@@ -36,6 +36,6 @@ jobs:
       - name: typecheck
         run: just typecheck
       - name: format
-        run: just format
+        run: just format-check
       - name: lint
         run: just lint

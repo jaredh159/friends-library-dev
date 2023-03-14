@@ -7,6 +7,12 @@
     },
     "test": {
       "command": "cd libs-swift/x-http && SWIFT_DETERMINISTIC_HASHING=1 swift test"
+    },
+    "format": {
+      "command": "cd libs-swift/x-http && swiftformat ."
+    },
+    "format:check": {
+      "command": "cd libs-swift/x-http && swiftformat --lint ."
     }
   }
 }

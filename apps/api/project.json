@@ -9,6 +9,12 @@
     },
     "test": {
       "command": "cd apps/api && SWIFT_DETERMINISTIC_HASHING=1 swift test"
+    },
+    "format": {
+      "command": "cd apps/api && swiftformat ."
+    },
+    "format:check": {
+      "command": "cd apps/api && swiftformat --lint ."
     }
   }
 }
