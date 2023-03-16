@@ -46,8 +46,8 @@ if (!success) {
 
 log(c`{gray ${step++}/${numSteps}} {magenta Cleaning up...}`);
 exec(`rm -f schema.graphql`, process.cwd());
-exec(`npx fldev format`, `${process.cwd()}/src/graphql`);
-exec(`npx fldev lint -- --fix`, `${process.cwd()}/src/graphql`);
+exec(`just prettier`, process.cwd()); // working for evans, see justfile
+exec(`pnpm eslint . -- --fix`, `${process.cwd()}/src/graphql`);
 
 if (convertDates) {
   log(c`{gray ${step++}/${numSteps}} {magenta Converting dates to string...}`);

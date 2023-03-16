@@ -3,14 +3,11 @@ import type {
   CreateOrderInput,
   CreateOrderItemInput,
   Lang,
-  PrintSize} from '../../../graphql/globalTypes';
+  PrintSize,
+} from '../../../graphql/globalTypes';
 import type CheckoutApi from './CheckoutApi';
 import { LANG } from '../../env';
-import {
-  OrderSource,
-  PrintJobStatus,
-  ShippingLevel,
-} from '../../../graphql/globalTypes';
+import { OrderSource, PrintJobStatus, ShippingLevel } from '../../../graphql/globalTypes';
 
 /**
  * CheckoutService exists to orchestrate the series of API invocations

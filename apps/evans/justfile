@@ -20,10 +20,18 @@ build-es: write-cover-css && post-build
 analyze: write-cover-css && post-build
   @ANALYZE_BUNDLE_SIZE=true GATSBY_LANG=en pnpm gatsby build
 
+codegen:
+  @mv src/ssg/schema.{graphql,txt} > /dev/null ; true
+  @pnpm flp-gql-codegen --convert-dates-to-string
+  @mv src/ssg/schema.{txt,graphql}
+
 clean:
   @rm ./src/ssg/.dpc-cache.json
   @rm ./src/css/cover.css
   @pnpm gatsby clean
+
+prettier:
+  @just ../../prettier
 
 # helpers
 

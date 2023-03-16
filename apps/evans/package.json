@@ -12,10 +12,6 @@
     "lint:fix": "eslint . --fix",
     "format": "just ../../prettier",
     "format:check": "just ../../prettier-check",
-    "below": "vvv --- TODO --- vvv",
-    "pregraphql:codegen": "mv src/ssg/schema.{graphql,txt}; true",
-    "postgraphql:codegen": "mv src/ssg/schema.{txt,graphql}",
-    "graphql:codegen": "flp-gql-codegen --convert-dates-to-string",
     "prepublishOnly": "tsc src/ssg/query.ts --skipLibCheck --target esnext --moduleResolution node --outDir dist/ --declaration"
   },
   "dependencies": {
