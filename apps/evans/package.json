@@ -1,18 +1,14 @@
 {
   "name": "@friends-library/evans",
   "description": "Friends Library websites (English and Spanish)",
-  "author": "Jared Henderson <jared@netrivet.com>",
-  "repository": "github:friends-library-dev/evans",
   "main": "./dist/ssg/query.js",
-  "version": "1.0.1",
   "scripts": {
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "just ../../prettier",
-    "format:check": "just ../../prettier-check",
-    "prepublishOnly": "tsc src/ssg/query.ts --skipLibCheck --target esnext --moduleResolution node --outDir dist/ --declaration"
+    "format:check": "just ../../prettier-check"
   },
   "dependencies": {
     "@friends-library/types": "workspace:*",

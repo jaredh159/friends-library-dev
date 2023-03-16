@@ -22,13 +22,17 @@ analyze: write-cover-css && post-build
 
 codegen:
   @mv src/ssg/schema.{graphql,txt} > /dev/null ; true
-  @pnpm flp-gql-codegen --convert-dates-to-string
+  @pnpm flp-gql-codegen --convert-dates-to-string --remove-custom-scalars
   @mv src/ssg/schema.{txt,graphql}
 
 clean:
   @rm ./src/ssg/.dpc-cache.json
   @rm ./src/css/cover.css
   @pnpm gatsby clean
+
+# used to create dist/ssg/query.js - for github republish action
+publish-query:
+  @pnpm tsc src/ssg/query.ts --skipLibCheck --target esnext --moduleResolution node --outDir dist/ --declaration
 
 prettier:
   @just ../../prettier

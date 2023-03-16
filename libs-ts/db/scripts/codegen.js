@@ -13,6 +13,11 @@ if (convertDates) {
   numSteps += 1;
 }
 
+const removeScalars = process.argv.includes(`--remove-custom-scalars`);
+if (removeScalars) {
+  numSteps += 1;
+}
+
 let success = true;
 
 let endpoint = `http://127.0.0.1:8080/graphql`;
@@ -35,7 +40,15 @@ if (!success) {
 log(c`{gray ${step++}/${numSteps}} {magenta Downloading types...}`);
 exec.exit(`rm -rf src/graphql`, process.cwd());
 success = exec.out(
-  `npx apollo client:codegen --outputFlat --passthroughCustomScalars --localSchemaFile=schema.graphql --target=typescript --tagName=gql src/graphql`,
+  [
+    `npx apollo client:codegen`,
+    ` --outputFlat`,
+    ` --passthroughCustomScalars`,
+    ` --localSchemaFile=schema.graphql`,
+    ` --target=typescript`,
+    ` --tagName=gql`,
+    ` src/graphql`,
+  ].join(``),
   process.cwd(),
 );
 
@@ -54,20 +67,39 @@ if (convertDates) {
   convertDatesToString();
 }
 
+if (removeScalars) {
+  log(c`{gray ${step++}/${numSteps}} {magenta Removing custom scalars...}`);
+  convertCustomScalars();
+}
+
 green(`\nCodegen complete!\n`);
 process.exit(0);
 
 function convertDatesToString() {
-  const files = glob(`${process.cwd()}/src/graphql/*.ts`);
-
-  if (files.length === 0) {
-    process.stderr.write(`No graphql files found by \`fix-timestamp-types.js\` script\n`);
-    process.stderr.write(`Did you run the script from outside the project root?\n`);
-    process.exit(1);
-  }
-
-  for (const file of files) {
+  for (const file of generatedFiles()) {
     const content = fs.readFileSync(file, `utf-8`);
     fs.writeFileSync(file, content.replace(/: Date( \| null)?;/gm, `: string$1;`));
   }
+}
+
+function convertCustomScalars() {
+  for (const file of generatedFiles()) {
+    const content = fs.readFileSync(file, `utf-8`);
+    fs.writeFileSync(
+      file,
+      content
+        .replace(/: UUID( \| null)?;/gm, `: string$1;`)
+        .replace(/: Int64( \| null)?;/gm, `: number$1;`),
+    );
+  }
+}
+
+function generatedFiles() {
+  const files = glob(`${process.cwd()}/src/graphql/*.ts`);
+  if (files.length === 0) {
+    process.stderr.write(`No graphql files found for post-processing\n`);
+    process.stderr.write(`Did you run the script from outside the project root?\n`);
+    process.exit(1);
+  }
+  return files;
 }

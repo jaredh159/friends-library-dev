@@ -123,8 +123,8 @@ export interface Friends_friends_documents_editions_audio_parts {
   order: number;
   chapters: number[];
   duration: number;
-  externalIdHq: Int64;
-  externalIdLq: Int64;
+  externalIdHq: number;
+  externalIdLq: number;
   mp3SizeHq: number;
   mp3SizeLq: number;
   mp3File: Friends_friends_documents_editions_audio_parts_mp3File;
@@ -192,8 +192,8 @@ export interface Friends_friends_documents_editions_audio {
   reader: string;
   isPublished: boolean;
   isIncomplete: boolean;
-  externalPlaylistIdHq: Int64 | null;
-  externalPlaylistIdLq: Int64 | null;
+  externalPlaylistIdHq: number | null;
+  externalPlaylistIdLq: number | null;
   m4bSizeHq: number;
   m4bSizeLq: number;
   mp3ZipSizeHq: number;

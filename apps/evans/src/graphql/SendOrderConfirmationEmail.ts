@@ -17,5 +17,5 @@ export interface SendOrderConfirmationEmail {
 }
 
 export interface SendOrderConfirmationEmailVariables {
-  id: UUID;
+  id: string;
 }

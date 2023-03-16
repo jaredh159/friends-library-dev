@@ -87,7 +87,7 @@ export interface CreateFreeOrderRequestInput {
   addressStreet2?: string | null;
   addressZip: string;
   email: string;
-  id?: UUID | null;
+  id?: string | null;
   name: string;
   requestedBooks: string;
   source: string;
@@ -109,8 +109,8 @@ export interface CreateOrderInput {
   ccFeeOffset: number;
   email: string;
   fees: number;
-  freeOrderRequestId?: UUID | null;
-  id?: UUID | null;
+  freeOrderRequestId?: string | null;
+  id?: string | null;
   lang: Lang;
   paymentId: string;
   printJobId?: number | null;
@@ -122,9 +122,9 @@ export interface CreateOrderInput {
 }
 
 export interface CreateOrderItemInput {
-  editionId: UUID;
-  id?: UUID | null;
-  orderId: UUID;
+  editionId: string;
+  id?: string | null;
+  orderId: string;
   quantity: number;
   unitPrice: number;
 }
