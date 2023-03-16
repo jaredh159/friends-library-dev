@@ -1,7 +1,7 @@
 import { encode } from 'he';
 import moment from 'moment';
 import type { AudioQuality } from '@friends-library/types';
-import type { Audio, Document, Edition, AudioPart, Friend } from '../build/types';
+import type { Audio, Document, Edition, AudioPart, Friend } from '../ssg/types';
 import { LANG, APP_URL } from '../env';
 
 export async function podcast(

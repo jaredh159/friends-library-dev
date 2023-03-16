@@ -3,7 +3,7 @@
   "description": "Friends Library websites (English and Spanish)",
   "author": "Jared Henderson <jared@netrivet.com>",
   "repository": "github:friends-library-dev/evans",
-  "main": "./dist/build/query.js",
+  "main": "./dist/ssg/query.js",
   "version": "1.0.1",
   "scripts": {
     "typecheck": "tsc --noEmit",
@@ -13,10 +13,10 @@
     "format": "just ../../prettier",
     "format:check": "just ../../prettier-check",
     "below": "vvv --- TODO --- vvv",
-    "pregraphql:codegen": "mv src/build/schema.{graphql,txt}; true",
-    "postgraphql:codegen": "mv src/build/schema.{txt,graphql}",
+    "pregraphql:codegen": "mv src/ssg/schema.{graphql,txt}; true",
+    "postgraphql:codegen": "mv src/ssg/schema.{txt,graphql}",
     "graphql:codegen": "flp-gql-codegen --convert-dates-to-string",
-    "prepublishOnly": "tsc src/build/query.ts --skipLibCheck --target esnext --moduleResolution node --outDir dist/ --declaration"
+    "prepublishOnly": "tsc src/ssg/query.ts --skipLibCheck --target esnext --moduleResolution node --outDir dist/ --declaration"
   },
   "dependencies": {
     "@friends-library/types": "workspace:*",

@@ -1,5 +1,3 @@
-// require(`@friends-library/env/load`);
-
 const LANG = process.env.GATSBY_LANG === `es` ? `es` : `en`;
 
 module.exports = {

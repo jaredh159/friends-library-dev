@@ -12,6 +12,6 @@ apps/jones/src/preview.css
 apps/evans/.cache/
 apps/evans/public/
 apps/evans/src/css/cover.css
-apps/evans/src/build/.dpc-cache.json
+apps/evans/src/ssg/.dpc-cache.json
 **/.parcel-cache
 **/.netlify/

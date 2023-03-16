@@ -21,7 +21,7 @@ analyze: write-cover-css && post-build
   @ANALYZE_BUNDLE_SIZE=true GATSBY_LANG=en pnpm gatsby build
 
 clean:
-  @rm ./src/build/.dpc-cache.json
+  @rm ./src/ssg/.dpc-cache.json
   @rm ./src/css/cover.css
   @pnpm gatsby clean
 
@@ -34,4 +34,4 @@ post-build:
 
 [private]
 write-cover-css:
-  @pnpm ts-node ./src/build/cover-static-css.ts
+  @pnpm ts-node ./src/ssg/cover-static-css.ts

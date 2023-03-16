@@ -1,5 +1,5 @@
 import type { Lang } from '@friends-library/types';
-import type { Document, Friend } from '../build/types';
+import type { Document, Friend } from '../ssg/types';
 
 export function documentDate(
   document: Pick<Document, 'published' | 'directoryPath'>,
