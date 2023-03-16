@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": false,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "module": "ES2020",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "target": "ES2019",
+    "jsx": "react",
+    "baseUrl": ".",
+    "lib": ["ES2019", "DOM"],
+    "paths": {
+      "@evans/*": ["../evans/src/components/*"]
+    }
+  }
+}
