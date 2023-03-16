@@ -12,6 +12,9 @@ jones:
 native:
   @cd apps/native && just
 
+evans:
+  @cd apps/evans && just
+
 # code quality
 
 check:

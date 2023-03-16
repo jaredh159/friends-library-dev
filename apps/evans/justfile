@@ -1,0 +1,37 @@
+_default:
+  @just --choose
+
+start-en: write-cover-css
+  #!/usr/bin/env bash
+  export GATSBY_LANG=en GATSBY_PORT=9222 GATSBY_ALT_PORT=9333
+  pnpm gatsby develop --port $GATSBY_PORT
+
+start-es: write-cover-css
+  #!/usr/bin/env bash
+  export GATSBY_LANG=es GATSBY_PORT=9333 GATSBY_ALT_PORT=9222
+  pnpm gatsby develop --port $GATSBY_PORT
+
+build-en: write-cover-css && post-build
+  @GATSBY_LANG=en pnpm gatsby build
+
+build-es: write-cover-css && post-build
+  @GATSBY_LANG=es pnpm gatsby build
+
+analyze: write-cover-css && post-build
+  @ANALYZE_BUNDLE_SIZE=true GATSBY_LANG=en pnpm gatsby build
+
+clean:
+  @rm ./src/build/.dpc-cache.json
+  @rm ./src/css/cover.css
+  @pnpm gatsby clean
+
+# helpers
+
+[private]
+post-build:
+  @cp ./_redirects ./public
+  @cp ./_headers ./public
+
+[private]
+write-cover-css:
+  @pnpm ts-node ./src/build/cover-static-css.ts
