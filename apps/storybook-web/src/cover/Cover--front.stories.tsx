@@ -1,10 +1,10 @@
 import React from 'react';
-import { Meta } from '@storybook/react';
 import { Front } from '@friends-library/cover-component';
+import type { Meta } from '@storybook/react';
 import { Style, parameters, p, props } from '../cover-helpers';
 
 export default {
-  title: `Cover/Variants/Front`,
+  title: 'Cover/Variants/Front', // eslint-disable-line
   component: Front,
   parameters,
 } as Meta;

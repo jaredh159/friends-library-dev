@@ -81,7 +81,7 @@ function match(books: Props['books'], filters: string[], search: string): Props[
     }
 
     for (const filter of filters) {
-      const [type, value] = filter.split(`.`);
+      const [type = ``, value = ``] = filter.split(`.`);
       if (type === `edition` && book.edition !== value) {
         return false;
       }

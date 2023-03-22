@@ -20,13 +20,13 @@ interface State {
 }
 
 export default class RotatableCover extends React.Component<Props, State> {
-  public state: State = {
+  public override state: State = {
     perspective: `angle-front`,
     controlled: false,
     shouldRotate: false,
   };
 
-  public componentDidMount(): void {
+  public override componentDidMount(): void {
     if (window.CSS && window.CSS.supports(`writing-mode`, `vertical-lr`)) {
       this.setState({ shouldRotate: true });
     } else {
@@ -45,12 +45,12 @@ export default class RotatableCover extends React.Component<Props, State> {
     this.setState({ backToFrontTimeout });
   }
 
-  public componentWillUnmount(): void {
+  public override componentWillUnmount(): void {
     const { showBackTimeout, backToFrontTimeout } = this.state;
     [showBackTimeout, backToFrontTimeout].forEach(clearTimeout);
   }
 
-  public render(): JSX.Element {
+  public override render(): JSX.Element {
     const { className, coverProps } = this.props;
     const { perspective, shouldRotate, showBackTimeout, backToFrontTimeout } = this.state;
     return (

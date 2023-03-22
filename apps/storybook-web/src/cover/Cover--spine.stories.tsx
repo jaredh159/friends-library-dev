@@ -1,11 +1,11 @@
 import React from 'react';
-import { Meta } from '@storybook/react';
-import { PrintSize } from '@friends-library/types';
 import { Spine } from '@friends-library/cover-component';
+import type { Meta } from '@storybook/react';
+import type { PrintSize } from '@friends-library/types';
 import { Wrapped, Style, parameters, p } from '../cover-helpers';
 
 export default {
-  title: `Cover/Variants/Spine`,
+  title: 'Cover/Variants/Spine', // eslint-disable-line
   component: Spine,
   parameters,
 } as Meta;

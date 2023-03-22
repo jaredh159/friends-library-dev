@@ -1,5 +1,8 @@
 ## Todo
 
+- [ ] convert `getTailwindConfig` fn to a real preset, try to fix `evans/../color.ts`
+      without breaking storybook and admin build
+- [ ] update/consolidate versions of `tailwindcss`
 - [ ] api: pnpm install, get deploy-ing correctly
 - [ ] api: update duet to gertie version, w/out codegen
 - [ ] api: deal with todos in `converge-todo.md`
@@ -17,7 +20,6 @@
 - [ ] examine, update, and unify dependencies
 - [ ] evans > astro/next
 - [ ] update tailwind
-- [ ] rebuild storybook
 - [ ] update cloud aws-sdk dep
 - [ ] bring x-ts-utils into monorepo? (fix esm/export issue)
 - [ ] experiment with ts: `exactOptionalPropertyTypes: true`
@@ -25,6 +27,7 @@
 
 ## Done
 
+- [V] rebuild storybook
 - [√] convert cover-web-app from parcel to vite
 - [√] convert admin from snowpack to vite
 - [√] convert cover-web-app from parcel to vite

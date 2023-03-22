@@ -1,12 +1,12 @@
 import React from 'react';
 import css from 'x-syntax';
-import { CoverProps, PrintSize } from '@friends-library/types';
 import {
   Back,
   Spine,
   css as coverCss,
   wrapClasses,
 } from '@friends-library/cover-component';
+import type { CoverProps, PrintSize } from '@friends-library/types';
 
 export const Style: React.FC<{
   scaler?: number;

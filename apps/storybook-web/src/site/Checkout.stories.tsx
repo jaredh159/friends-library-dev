@@ -1,7 +1,4 @@
 import React from 'react';
-import { Meta } from '@storybook/react';
-import { action as a } from '@storybook/addon-actions';
-import { WebCoverStyles } from '../decorators';
 import { ThreeD } from '@friends-library/cover-component';
 import { StripeProvider, Elements } from 'react-stripe-elements';
 import Delivery from '@evans/checkout/Delivery';
@@ -11,10 +8,12 @@ import EmptyCart from '@evans/checkout/EmptyCart';
 import UnrecoverableError from '@evans/checkout/UnrecoverableError';
 import Progress from '@evans/checkout/Progress';
 import Confirmation from '@evans/checkout/Confirmation';
+import type { Meta } from '@storybook/react';
+import { WebCoverStyles } from '../decorators';
 import { props as coverProps } from '../cover-helpers';
 
 export default {
-  title: `Site/Checkout/Components`,
+  title: 'Site/Checkout/Components', // eslint-disable-line
   parameters: { layout: `centered` },
   decorators: [
     WebCoverStyles,
@@ -50,8 +49,8 @@ export const Payment_ = () => (
     <Elements>
       <Payment
         throbbing={false}
-        onPay={a(`on pay`)}
-        onBack={a(`on back`)}
+        onPay={() => {}}
+        onBack={() => {}}
         subTotal={1298}
         shipping={399}
         taxes={132}
@@ -68,8 +67,8 @@ export const PaymentThrobbing = () => (
     <Elements>
       <Payment
         throbbing={true}
-        onPay={a(`on pay`)}
-        onBack={a(`on back`)}
+        onPay={() => {}}
+        onBack={() => {}}
         subTotal={1298}
         shipping={399}
         taxes={132}
@@ -121,21 +120,19 @@ export const InputInvalidValue = () => (
 );
 
 export const Confirmation_ = () => (
-  <Confirmation email="you@example.com" onClose={a(`close`)} />
+  <Confirmation email="you@example.com" onClose={() => {}} />
 );
 
-export const Delivery_ = () => (
-  <Delivery onBack={a(`back`)} onSubmit={a(`submit address`)} />
-);
+export const Delivery_ = () => <Delivery onBack={() => {}} onSubmit={() => {}} />;
 
 export const DeliveryError = () => (
-  <Delivery error onBack={a(`back`)} onSubmit={a(`submit address`)} />
+  <Delivery error onBack={() => {}} onSubmit={() => {}} />
 );
 
 export const DeliveryThrobbing = () => (
-  <Delivery throbbing onBack={a(`back`)} onSubmit={a(`submit address`)} />
+  <Delivery throbbing onBack={() => {}} onSubmit={() => {}} />
 );
 
 export const UnrecoverableError_ = () => (
-  <UnrecoverableError onClose={a(`close`)} onRetry={a(`retry`)} />
+  <UnrecoverableError onClose={() => {}} onRetry={() => {}} />
 );

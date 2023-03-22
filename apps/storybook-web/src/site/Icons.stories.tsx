@@ -1,5 +1,4 @@
 import React from 'react';
-import { Meta } from '@storybook/react';
 import Audio from '@evans/icons/Audio';
 import Calendar from '@evans/icons/Calendar';
 import Clock from '@evans/icons/Clock';
@@ -19,9 +18,10 @@ import Headphones from '@evans/icons/Headphones';
 import Bookmark from '@evans/icons/Bookmark';
 import Globe from '@evans/icons/Globe';
 import Star from '@evans/icons/Star';
+import type { Meta } from '@storybook/react';
 
 export default {
-  title: `Site/Misc/Icons`,
+  title: 'Site/Misc/Icons', // eslint-disable-line
 } as Meta;
 
 export const Icons = () => (
@@ -86,7 +86,7 @@ export const Icons = () => (
   </div>
 );
 
-const Bg: React.FC<{ size?: number; title?: string }> = ({
+const Bg: React.FC<{ children: React.ReactNode; size?: number; title?: string }> = ({
   children,
   title,
   size = 10,

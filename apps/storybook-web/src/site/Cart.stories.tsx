@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { Meta } from '@storybook/react';
 import { action as a } from '@storybook/addon-actions';
-import { WebCoverStyles } from '../decorators';
 import CartModel from '@evans/checkout/models/Cart';
 import CartComponent from '@evans/cart';
 import CartItemComponent from '@evans/cart/Item';
 import { cartItemsData, cartItemData3 } from '@evans/checkout/models/__tests__/fixtures';
-import CartItemModel, { CartItemData } from '@evans/checkout/models/CartItem';
+import CartItemModel from '@evans/checkout/models/CartItem';
+import type { CartItemData } from '@evans/checkout/models/CartItem';
+import type { Meta } from '@storybook/react';
+import { WebCoverStyles } from '../decorators';
 
 export default {
-  title: `Site/Checkout/Cart`,
+  title: 'Site/Checkout/Cart', // eslint-disable-line
   decorators: [WebCoverStyles],
 } as Meta;
 

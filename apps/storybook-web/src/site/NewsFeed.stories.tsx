@@ -1,15 +1,14 @@
 import React from 'react';
-import { Meta } from '@storybook/react';
 import NewsFeedIcon from '@evans/pages/home/news-feed/NewsFeedIcon';
-import NewsFeedItem from '@evans/pages/home/news-feed/NewsFeedItem';
 import NewsFeedYear from '@evans/pages/home/news-feed/NewsFeedYear';
 import NewsFeed from '@evans/pages/home/news-feed/NewsFeed';
 import NewsFeedBlock from '@evans/pages/home/news-feed/NewsFeedBlock';
 import Books11 from '@evans/images/Books11.jpg';
+import type { Meta } from '@storybook/react';
 import { bgImg, fullscreen, name, setBg } from '../decorators';
 
 export default {
-  title: `Site/Misc/NewsFeed`,
+  title: 'Site/Misc/NewsFeed', // eslint-disable-line
   parameters: { layout: `centered` },
 } as Meta;
 
@@ -22,8 +21,6 @@ export const Icons = setBg(`#f1f1f1`, () => (
     <NewsFeedIcon type="chapter" />
   </div>
 ));
-
-export const NewsFeedItem_ = () => <NewsFeedItem {...ITEMS[0]} />;
 
 export const NewsFeedYear_ = () => (
   <NewsFeedYear year="2020" items={ITEMS.filter((i) => i.year === `2020`)} />

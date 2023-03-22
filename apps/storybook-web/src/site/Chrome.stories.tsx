@@ -1,7 +1,4 @@
 import React from 'react';
-import { Meta } from '@storybook/react';
-import { action as a } from '@storybook/addon-actions';
-import { fullscreen, name, bgImg } from '../decorators';
 import Nav from '@evans/Nav';
 import Button from '@evans/Button';
 import Hamburger from '@evans/Hamburger';
@@ -9,15 +6,17 @@ import SlideoverMenu from '@evans/SlideoverMenu';
 import Footer from '@evans/Footer';
 import MultiPill from '@evans/MultiPill';
 import Mountains from '@evans/images/mountains.jpg';
+import type { Meta } from '@storybook/react';
+import { fullscreen, name, bgImg } from '../decorators';
 
 export default {
-  title: `Site/Misc/Chrome`,
+  title: 'Site/Misc/Chrome', // eslint-disable-line
   parameters: { layout: `centered` },
 } as Meta;
 
-export const Slideover_Menu = fullscreen(() => <SlideoverMenu onClose={a(`close`)} />);
+export const Slideover_Menu = fullscreen(() => <SlideoverMenu onClose={() => {}} />);
 
-export const Hambuger_ = () => <Hamburger onClick={a(`hamburger-clicked`)} />;
+export const Hambuger_ = () => <Hamburger onClick={() => {}} />;
 
 export const Footer_ = fullscreen(() => <Footer bgImg={bgImg(Mountains)} />);
 
@@ -44,27 +43,19 @@ export const Button_ = () => (
 );
 
 export const NavDefault = fullscreen(() => (
-  <Nav
-    showCartBadge={false}
-    onCartBadgeClick={a(`cart badge clicked`)}
-    onHamburgerClick={a(`hamburger clicked`)}
-  />
+  <Nav showCartBadge={false} onCartBadgeClick={() => {}} onHamburgerClick={() => {}} />
 ));
 
 export const NavCartBadge = fullscreen(() => (
-  <Nav
-    showCartBadge
-    onCartBadgeClick={a(`cart badge clicked`)}
-    onHamburgerClick={a(`hamburger clicked`)}
-  />
+  <Nav showCartBadge onCartBadgeClick={() => {}} onHamburgerClick={() => {}} />
 ));
 
 export const NavSearching = fullscreen(() => (
   <Nav
     initialSearching
     showCartBadge={false}
-    onCartBadgeClick={a(`cart badge clicked`)}
-    onHamburgerClick={a(`hamburger clicked`)}
+    onCartBadgeClick={() => {}}
+    onHamburgerClick={() => {}}
   />
 ));
 

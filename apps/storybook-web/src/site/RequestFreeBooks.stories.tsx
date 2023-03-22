@@ -1,11 +1,11 @@
 import React from 'react';
-import { Meta } from '@storybook/react';
 import { action as a } from '@storybook/addon-actions';
 import { RequestFreeBooks } from '@evans/RequestFreeBooks';
 import { useAddress } from '@evans/lib/hooks';
+import type { Meta } from '@storybook/react';
 
 export default {
-  title: `Site/Misc/RequestFreeBooks`,
+  title: 'Site/Misc/RequestFreeBooks', // eslint-disable-line
   parameters: { layout: `fullscreen` },
 } as Meta;
 

@@ -1,14 +1,14 @@
 import React from 'react';
-import { Meta } from '@storybook/react';
-import { props as coverProps } from '../cover-helpers';
-import { WebCoverStyles } from '../decorators';
 import HomeHeroBlock from '@evans/pages/home/HeroBlock';
 import HomeFeaturedBooksBlock from '@evans/pages/home/FeaturedBooksBlock';
 import HomeWhoWereTheQuakersBlock from '@evans/pages/home/WhoWereTheQuakersBlock';
 import London from '@evans/images/london.jpg';
+import type { Meta } from '@storybook/react';
+import { WebCoverStyles } from '../decorators';
+import { props as coverProps } from '../cover-helpers';
 
 export default {
-  title: `Site/Pages/Home`,
+  title: 'Site/Pages/Home', // eslint-disable-line
   decorators: [WebCoverStyles],
   parameters: { layout: `fullscreen` },
 } as Meta;

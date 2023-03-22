@@ -1,9 +1,9 @@
 import React from 'react';
-import { Story as StoryType } from '@storybook/react';
 import {
   CoverWebStylesAllStatic,
   CoverWebStylesSizes,
 } from '@friends-library/cover-component';
+import type { Story as StoryType, StoryFn } from '@storybook/react';
 
 export function WebCoverStyles(Story: StoryType): JSX.Element {
   return (
@@ -15,7 +15,7 @@ export function WebCoverStyles(Story: StoryType): JSX.Element {
   );
 }
 
-export function setLayout(story: any, layout: 'padded' | 'fullscreen' | 'centered'): any {
+export function setLayout(story: StoryFn, layout: 'fullscreen' | 'centered'): StoryFn {
   story.parameters = {
     ...story.parameters,
     layout,
@@ -23,24 +23,20 @@ export function setLayout(story: any, layout: 'padded' | 'fullscreen' | 'centere
   return story;
 }
 
-export function padded(story: any): any {
-  return setLayout(story, `padded`);
-}
-
-export function centered(story: any): any {
+export function centered(story: StoryFn): StoryFn {
   return setLayout(story, `centered`);
 }
 
-export function fullscreen(story: any): any {
+export function fullscreen(story: StoryFn): StoryFn {
   return setLayout(story, `fullscreen`);
 }
 
-export function name(name: string, story: any): any {
+export function name(name: string, story: StoryFn): any {
   story.storyName = name;
   return story;
 }
 
-export function setBg(color: string, story: any, name = `custom`): any {
+export function setBg(color: string, story: StoryFn, name = `custom`): any {
   story.parameters = {
     ...story.parameters,
     backgrounds: { default: name, values: [{ name, value: color }] },

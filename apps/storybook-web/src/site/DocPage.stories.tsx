@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-import { Meta } from '@storybook/react';
 import { action as a } from '@storybook/addon-actions';
-import { WebCoverStyles, setBg, fullscreen } from '../decorators';
-import { AudioQuality } from '@friends-library/types';
 import DocBlock from '@evans/pages/document/DocBlock';
 import ListenBlock from '@evans/pages/document/ListenBlock';
 import QualitySwitch from '@evans/pages/document/QualitySwitch';
@@ -14,9 +11,12 @@ import DownloadWizard from '@evans/pages/document/DownloadWizard';
 import DownloadAudiobook from '@evans/pages/document/DownloadAudiobook';
 import DownloadOptions from '@evans/DownloadOptions';
 import PopUnder from '@evans/PopUnder';
+import type { AudioQuality } from '@friends-library/types';
+import type { Meta } from '@storybook/react';
+import { WebCoverStyles, setBg, fullscreen } from '../decorators';
 
 export default {
-  title: `Site/Pages/Document`,
+  title: 'Site/Pages/Document', // eslint-disable-line
   decorators: [WebCoverStyles],
   parameters: { layout: `centered` },
 } as Meta;
@@ -35,7 +35,6 @@ export const DownloadWizard_ = fullscreen(() => (
   <div style={{ transform: `translate(50%)`, marginTop: 50 }}>
     <DownloadWizard
       editions={[`updated`, `modernized`, `original`]}
-      eBookTypeRecommendation="epub"
       onSelect={a(`select`)}
     />
   </div>
@@ -49,7 +48,7 @@ export const Downloading_ = () => (
 
 export const ChooseEbookType_ = () => (
   <PopUnder style={{ width: `22rem`, maxWidth: `100vw` }} tailwindBgColor="flblue">
-    <ChooseEbookType recommendation="epub" onChoose={a(`choose ebook type`)} />
+    <ChooseEbookType onChoose={a(`choose ebook type`)} />
   </PopUnder>
 );
 
@@ -122,6 +121,7 @@ export const DocBlock_ = fullscreen(
       description={blurb}
       showGuides={false}
       isCompilation={false}
+      numDownloads={332}
       customCss=""
       isbn="978-1-64476-004-8"
       customHtml=""

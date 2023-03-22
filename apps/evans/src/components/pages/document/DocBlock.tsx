@@ -162,7 +162,7 @@ const DocBlock: React.FC<Props> = (props) => {
         />
       )}
       <div className="TopWrap md:flex">
-        <RotatableCover className="order-1" coverProps={{ ...props, pages: pages[0] }} />
+        <RotatableCover className="order-1" coverProps={{ ...props, pages: pages[0]! }} />
         <div className="Text mb-8 md:px-12 bg-white md:mr-6 xl:mr-10">
           <h1
             className="font-sans text-3xl md:text-2-5xl font-bold leading-snug mt-8 tracking-wider mb-6"
@@ -203,7 +203,7 @@ const DocBlock: React.FC<Props> = (props) => {
             className="hidden xl:block xl:mt-10"
             onClickAddToCart={() => {
               if (editions.length === 1) {
-                return addToCart(editions[0].type);
+                return addToCart(editions[0]!.type);
               }
               setAddingToCart(!addingToCart);
               setDownloading(false);
@@ -220,7 +220,7 @@ const DocBlock: React.FC<Props> = (props) => {
         className="xl:hidden mt-6"
         onClickAddToCart={() => {
           if (editions.length === 1) {
-            return addToCart(editions[0].type);
+            return addToCart(editions[0]!.type);
           }
           setAddingToCart(!addingToCart);
           setDownloading(false);

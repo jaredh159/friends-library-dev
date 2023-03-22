@@ -15,6 +15,9 @@ native:
 evans:
   @cd apps/evans && just
 
+storybook:
+  @pnpm --filter storybook-web start
+
 # code quality
 
 check:

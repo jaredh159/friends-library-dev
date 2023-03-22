@@ -43,7 +43,7 @@ interface State {
 }
 
 class Payment extends React.Component<Props, State> {
-  public state: State = {
+  public override state: State = {
     numberComplete: false,
     expiryComplete: false,
     cvcComplete: false,
@@ -84,7 +84,7 @@ class Payment extends React.Component<Props, State> {
     );
   };
 
-  public render(): JSX.Element {
+  public override render(): JSX.Element {
     const { throbbing, onBack, error } = this.props;
     const { numberError, cardBrand, expiryError, cvcError } = this.state;
     return (

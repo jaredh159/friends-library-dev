@@ -1,10 +1,10 @@
 import React from 'react';
-import { Meta } from '@storybook/react';
 import { ThreeD } from '@friends-library/cover-component';
+import type { Meta } from '@storybook/react';
 import { Style, parameters, props } from '../cover-helpers';
 
 export default {
-  title: `Cover/Variants/3D`,
+  title: 'Cover/Variants/3D', // eslint-disable-line
   component: ThreeD,
   parameters,
 } as Meta;

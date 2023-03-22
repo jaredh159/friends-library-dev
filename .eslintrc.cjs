@@ -14,6 +14,7 @@ module.exports = {
     `**/dist/*`,
     `apps/evans/public/*`,
     `apps/evans/.cache/*`,
+    `apps/storybook-web/storybook-static/*`,
     `**/friends.js`,
   ],
   rules: {

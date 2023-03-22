@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { Meta } from '@storybook/react';
 import FriendPageHero from '@evans/pages/friends/FriendsPageHero';
 import CircleSilhouette from '@evans/pages/friends/CircleSilhouette';
 import CompilationsBlock from '@evans/pages/friends/CompilationsBlock';
 import FriendCard from '@evans/pages/friends/FriendCard';
 import ControlsBlock from '@evans/pages/friends/ControlsBlock';
-import { bgImg, centered, name, setBg } from '../decorators';
 import Village from '@evans/images/village.jpg';
 import Street from '@evans/images/street.jpg';
+import type { Meta } from '@storybook/react';
+import { bgImg, centered, name, setBg } from '../decorators';
 
 export default {
-  title: `Site/Pages/All Friends`,
+  title: 'Site/Pages/All Friends', // eslint-disable-line
   parameters: { layout: `fullscreen` },
 } as Meta;
 

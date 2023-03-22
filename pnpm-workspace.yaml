@@ -5,6 +5,7 @@ packages:
   - 'apps/native'
   - 'apps/cover-web-app'
   - 'apps/fell'
+  - 'apps/storybook-web'
   - 'apps/cli'
   - 'apps/jones'
   - 'apps/styleguide'

@@ -1,10 +1,10 @@
 import React from 'react';
-import { Meta } from '@storybook/react';
 import { Back } from '@friends-library/cover-component';
+import type { Meta } from '@storybook/react';
 import { Wrapped, Style, parameters } from '../cover-helpers';
 
 export default {
-  title: `Cover/Variants/Back`,
+  title: 'Cover/Variants/Back', // eslint-disable-line
   component: Back,
   parameters,
 } as Meta;

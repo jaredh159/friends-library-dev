@@ -45,7 +45,7 @@ const BookByFriend: React.FC<Props> = (props) => {
         scaler={isAlone ? 1 / 2 : 1 / 3}
         scope={isAlone ? `1-2` : `1-3`}
         className={isAlone ? `-mt-20 md:mt-4 md:-ml-32` : `mt-4 md:-ml-24`}
-        pages={pages[0]}
+        pages={pages[0]!}
         shadow={true}
       />
       <div className="BookByFriend--main mt-6 md:pl-6 md:py-6 lg:pl-2 lg:py-2 self-start flex flex-col">

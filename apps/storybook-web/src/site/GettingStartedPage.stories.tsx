@@ -1,11 +1,11 @@
 import React from 'react';
-import { Meta } from '@storybook/react';
+import PathBlock from '@evans/pages/getting-started/PathBlock';
+import type { Meta } from '@storybook/react';
 import { props as coverProps } from '../cover-helpers';
 import { WebCoverStyles } from '../decorators';
-import PathBlock from '@evans/pages/getting-started/PathBlock';
 
 export default {
-  title: `Site/Pages/Getting Started`,
+  title: 'Site/Pages/Getting Started', // eslint-disable-line
   decorators: [WebCoverStyles],
 } as Meta;
 
@@ -15,6 +15,7 @@ export const PathBlock_ = () => (
     title="Spiritual Life"
     books={[...books]}
     color="blue"
+    children={null}
   />
 );
 

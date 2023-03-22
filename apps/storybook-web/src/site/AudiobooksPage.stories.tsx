@@ -1,11 +1,11 @@
 import React from 'react';
-import { Meta } from '@storybook/react';
+import AudiobookComponent from '@evans/pages/audiobooks/Audiobook';
+import type { Meta } from '@storybook/react';
 import { props as coverProps } from '../cover-helpers';
 import { WebCoverStyles } from '../decorators';
-import AudiobookComponent from '@evans/pages/audiobooks/Audiobook';
 
 export default {
-  title: `Site/Pages/Audiobooks`,
+  title: 'Site/Pages/Audiobooks', // eslint-disable-line
   component: AudiobookComponent,
   decorators: [WebCoverStyles],
 } as Meta;

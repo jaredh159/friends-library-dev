@@ -1,16 +1,16 @@
 import React from 'react';
-import { Meta } from '@storybook/react';
 import { action as a } from '@storybook/addon-actions';
-import { WebCoverStyles } from '../decorators';
 import Modal from '@evans/checkout/Modal';
 import CheckoutMachine from '@evans/checkout/services/CheckoutMachine';
 import CheckoutService from '@evans/checkout/services/CheckoutService';
 import CheckoutFlow from '@evans/checkout/Flow';
 import { cartPlusData, cart } from '@evans/checkout/models/__tests__/fixtures';
+import type { Meta } from '@storybook/react';
+import { WebCoverStyles } from '../decorators';
 import MockCheckoutApi from '../MockCheckoutApi';
 
 export default {
-  title: `Site/Checkout/Flow`,
+  title: 'Site/Checkout/Flow', // eslint-disable-line
   decorators: [WebCoverStyles],
 } as Meta;
 

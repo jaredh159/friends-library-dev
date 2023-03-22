@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-import { Meta } from '@storybook/react';
 import { action as a } from '@storybook/addon-actions';
-import { props as coverProps } from '../cover-helpers';
-import { WebCoverStyles, bgImg, name, centered } from '../decorators';
 import ActiveFilters from '@evans/pages/explore/ActiveFilters';
 import TimePicker from '@evans/pages/explore/TimePicker';
 import FilterSelectDropdown from '@evans/pages/explore/FilterSelectDropdown';
@@ -20,14 +17,17 @@ import SearchBlock from '@evans/pages/explore/SearchBlock';
 import TimelineBlock from '@evans/pages/explore/TimelineBlock';
 import MapSlider from '@evans/pages/explore/MapSlider';
 import BookTeaserCard from '@evans/BookTeaserCard';
-import { Region, Book } from '@evans/pages/explore/types';
 import WaterPath from '@evans/images/water-path.jpg';
 import Headphones from '@evans/images/headphones.jpg';
 import Castle from '@evans/images/castle.jpg';
 import Books3 from '@evans/images/Books3.jpg';
+import type { Region, Book } from '@evans/pages/explore/types';
+import type { Meta } from '@storybook/react';
+import { WebCoverStyles, bgImg, name, centered } from '../decorators';
+import { props as coverProps } from '../cover-helpers';
 
 export default {
-  title: `Site/Pages/Explore`,
+  title: 'Site/Pages/Explore', // eslint-disable-line
   decorators: [WebCoverStyles],
   parameters: { layout: `fullscreen` },
 } as Meta;

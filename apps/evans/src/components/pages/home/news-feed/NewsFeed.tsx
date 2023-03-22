@@ -48,7 +48,7 @@ function groupYears(items: Props['items']): { year: string; items: ItemProps[] }
       idx++;
       groups.push({ year: item.year, items: [] });
     }
-    groups[idx].items.push(item);
+    groups[idx]?.items.push(item);
   });
 
   return groups;

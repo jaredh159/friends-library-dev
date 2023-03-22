@@ -1,11 +1,11 @@
 import React from 'react';
-import { Meta } from '@storybook/react';
 import ContactForm from '@evans/pages/contact/Form';
 import ContactFormBlock from '@evans/pages/contact/FormBlock';
 import Books from '@evans/images/Books7.jpg';
+import type { Meta } from '@storybook/react';
 
 export default {
-  title: `Site/Pages/Contact`,
+  title: 'Site/Pages/Contact', // eslint-disable-line
   parameters: { layout: `fullscreen` },
 } as Meta;
 

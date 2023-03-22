@@ -1,7 +1,4 @@
 import React from 'react';
-import { Meta } from '@storybook/react';
-import { props as coverProps } from '../cover-helpers';
-import { WebCoverStyles, name, bgImg, fullscreen, setBg } from '../decorators';
 import FeaturedQuoteBlock from '@evans/pages/friend/FeaturedQuoteBlock';
 import FriendBlock from '@evans/pages/friend/FriendBlock';
 import BookByFriend from '@evans/pages/friend/BookByFriend';
@@ -14,9 +11,12 @@ import TagsIcon from '@evans/icons/Tags';
 import ClockIcon from '@evans/icons/Clock';
 import DownloadIcon from '@evans/icons/Download';
 import Books7 from '@evans/images/Books7.jpg';
+import type { Meta } from '@storybook/react';
+import { WebCoverStyles, name, bgImg, fullscreen, setBg } from '../decorators';
+import { props as coverProps } from '../cover-helpers';
 
 export default {
-  title: `Site/Pages/Friend`,
+  title: 'Site/Pages/Friend', // eslint-disable-line
   decorators: [WebCoverStyles],
   parameters: { layout: `centered` },
 } as Meta;
@@ -58,6 +58,7 @@ export const BookByFriend_ = setBg(`#f1f1f1`, () => (
     bookUrl="/"
     tags={[`journal`, `letters`]}
     hasAudio
+    numDownloads={243}
     description="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
     pages={[187]}
   />
