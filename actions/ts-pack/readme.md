@@ -9,30 +9,30 @@ Starts `ncc` in watch mode for one or all sub-actions:
 
 ```bash
 # develop the `api-status` action
-$ npm start api-status
+$ pnpm start api-status
 
 # tab-complete-able path to dir works too:
-$ npm start actions/api-status/
+$ pnpm start actions/api-status/
 
 # or, do all at once:
-$ npm start all
+$ pnpm start all
 # same as ^
-$ npm start
+$ pnpm start
 ```
 
-## `npm run build`
+## `pnpm bundle`
 
 Create production bundled javascript for one or all sub-actions:
 
 ```bash
-# build just the `api-status` action
-$ npm run build api-status
+# bundle just the `api-status` action
+$ pnpm bundle api-status
 
 # tab-complete-able path to dir works too:
-$ npm run build actions/api-status/
+$ pnpm bundle actions/api-status/
 
 # or, do all at once:
-$ npm run build all
+$ pnpm bundle all
 # same as ^
-$ npm run build
+$ pnpm bundle
 ```

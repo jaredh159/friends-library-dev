@@ -5,9 +5,9 @@
   "repository": "github:friends-library-dev/action-ts-pack",
   "license": "MIT",
   "scripts": {
-    "start": "pnpm bundle watch",
-    "build": "pnpm bundle build",
-    "bundle": "ts-node ./scripts/bundle.ts",
+    "start": "pnpm ncc-bundle watch",
+    "bundle": "pnpm ncc-bundle build",
+    "ncc-bundle": "ts-node ./scripts/bundle.ts",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

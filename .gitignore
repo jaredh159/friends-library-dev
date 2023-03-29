@@ -18,3 +18,12 @@ apps/poster/src/part-titles.ts
 apps/poster/src/cover-props.ts
 **/.parcel-cache
 **/.netlify/
+
+# bundled actions
+actions/ts-pack/actions/*/bundled/*
+!actions/ts-pack/actions/*/bundled/*.js
+!actions/ts-pack/actions/deploy/bundled/*.wasm
+!actions/ts-pack/actions/pdf/bundled/css1/
+!actions/ts-pack/actions/pdf/bundled/css1/common.css
+actions/ts-pack/actions/pdf/bundled/css1/ebook/*
+!actions/ts-pack/actions/pdf/bundled/css1/pdf/*.css
