@@ -9,7 +9,7 @@ import { getEventJson, latestCommitSha } from './helpers';
  * correct result for a `push` event created by merging a PR
  */
 export async function data(): Promise<{ number: number; title: string } | void> {
-  const [owner, repo] = (process.env.GITHUB_REPOSITORY || ``).split(`/`);
+  const [owner = ``, repo = ``] = (process.env.GITHUB_REPOSITORY || ``).split(`/`);
   const client = new Octokit();
   const prNum = numberFromEnv();
 
@@ -57,7 +57,7 @@ function numberFromEnv(): number | void {
 
 export async function deleteBotCommentsContaining(str: string): Promise<void> {
   const client = new Octokit();
-  const [owner, repo] = (process.env.GITHUB_REPOSITORY || ``).split(`/`);
+  const [owner = ``, repo = ``] = (process.env.GITHUB_REPOSITORY || ``).split(`/`);
   const prNumber = await number();
   if (!prNumber) {
     core.warning(`Unable to find PR number, skipping attempt to delete PR bot comments`);

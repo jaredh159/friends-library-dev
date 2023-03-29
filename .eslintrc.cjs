@@ -12,6 +12,7 @@ module.exports = {
   extends: [`eslint:recommended`, `plugin:@typescript-eslint/recommended`, `prettier`],
   ignorePatterns: [
     `**/dist/*`,
+    `**/bundled/*`,
     `apps/evans/public/*`,
     `apps/evans/.cache/*`,
     `apps/storybook-web/storybook-static/*`,

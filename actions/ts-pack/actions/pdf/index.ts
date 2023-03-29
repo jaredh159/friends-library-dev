@@ -4,8 +4,9 @@ import * as core from '@actions/core';
 import { Octokit } from '@octokit/action';
 import { pdf } from '@friends-library/doc-artifacts';
 import { uploadFile } from '@friends-library/cloud';
-import { genericDpc, DocPrecursor } from '@friends-library/types';
+import { genericDpc } from '@friends-library/types';
 import { paperbackInterior } from '@friends-library/doc-manifests';
+import type { DocPrecursor } from '@friends-library/types';
 import { newOrModifiedFiles, latestCommitSha } from '../helpers';
 import * as pr from '../pull-requests';
 
@@ -17,7 +18,7 @@ async function main(): Promise<void> {
   }
 
   const { GITHUB_REPOSITORY = `` } = process.env;
-  const [owner, repo] = GITHUB_REPOSITORY.split(`/`);
+  const [owner = ``, repo = ``] = GITHUB_REPOSITORY.split(`/`);
   const uploaded: [string, string][] = [];
 
   for (const file of newOrModifiedFiles()) {
@@ -31,7 +32,7 @@ async function main(): Promise<void> {
         condense: false,
         allowSplits: false,
       });
-      const pdfPath = await pdf(manifest, `doc_${Date.now()}`);
+      const pdfPath = await pdf(manifest ?? {}, `doc_${Date.now()}`);
       const [, edition] = file.split(`/`);
       const cloudFilename = `${COMMIT_SHA.substring(0, 8)}--${edition}--${filename}`;
       const url = await uploadFile(pdfPath, `actions/${repo}/${PR_NUM}/${cloudFilename}`);
@@ -69,7 +70,7 @@ function dpcFromAdocFragment(
   dpc.meta.title = `PR Preview`;
   dpc.meta.author.name = repo
     .split(`-`)
-    .map(([first, ...rest]) => first.toUpperCase() + rest.join(``))
+    .map(([first = ``, ...rest]) => first.toUpperCase() + rest.join(``))
     .join(` `);
   return dpc;
 }

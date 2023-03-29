@@ -2,3 +2,4 @@ packages:
   - 'libs-ts/*'
   - 'libs-swift/*'
   - 'apps/*'
+  - 'actions/ts-pack'

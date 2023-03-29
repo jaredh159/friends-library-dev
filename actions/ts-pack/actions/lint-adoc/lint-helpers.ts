@@ -1,6 +1,6 @@
-import { LintOptions, LintResult } from '@friends-library/adoc-lint';
-import { EditionType } from '@friends-library/types';
 import { Parser, ParserError } from '@friends-library/parser';
+import type { LintOptions, LintResult } from '@friends-library/adoc-lint';
+import type { EditionType } from '@friends-library/types';
 
 export interface Annotation {
   path: string;

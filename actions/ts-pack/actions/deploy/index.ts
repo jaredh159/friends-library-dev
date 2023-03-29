@@ -1,9 +1,8 @@
 import * as core from '@actions/core';
-import { latestCommitSha } from '../helpers';
-import * as pr from '../pull-requests';
-
 // @ts-ignore no ts or @types/netlify pkg
 import NetlifyAPI from 'netlify';
+import { latestCommitSha } from '../helpers';
+import * as pr from '../pull-requests';
 
 async function main(): Promise<void> {
   const {

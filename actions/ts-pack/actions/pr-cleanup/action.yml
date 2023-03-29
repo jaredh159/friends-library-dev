@@ -3,5 +3,5 @@ inputs:
   github_token:
     required: true
 runs:
-  using: node12
+  using: node18
   main: ./bundled/index.js

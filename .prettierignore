@@ -1,5 +1,6 @@
 **/tsconfig.tsbuildinfo
 **/dist/
+**/bundled/
 apps/cover-web-app/src/friends.js
 apps/styleguide/src/built-frags.json
 apps/styleguide/src/paperback-interior.css
