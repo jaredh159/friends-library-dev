@@ -1,0 +1,41 @@
+{
+  "name": "@friends-library/action-ts-pack",
+  "version": "1.0.0",
+  "author": "Jared Henderson <jared@netrivet.com>",
+  "repository": "github:friends-library-dev/action-ts-pack",
+  "license": "MIT",
+  "scripts": {
+    "start": "npm run bundle -- watch",
+    "build": "npm run bundle -- build",
+    "bundle": "fldev tsnode ./scripts/bundle.ts",
+    "test": "true",
+    "lint": "fldev lint --ignore-pattern bundled/",
+    "lint:fix": "npm run lint -- --fix",
+    "ts:check": "fldev ts:check",
+    "format": "fldev format",
+    "compile": "true"
+  },
+  "dependencies": {
+    "@actions/core": "1.2.6",
+    "@friends-library/adoc-lint": "^1.15.1",
+    "@friends-library/cloud": "^1.9.1",
+    "@friends-library/doc-artifacts": "^2.0.3",
+    "@friends-library/doc-manifests": "^3.0.0",
+    "@friends-library/evaluator": "^1.4.7",
+    "@friends-library/evans": "^1.0.1",
+    "@friends-library/parser": "^1.5.1",
+    "@friends-library/slack": "^4.0.0",
+    "@octokit/action": "3.6.0",
+    "cross-fetch": "3.1.4",
+    "lodash.isequal": "^4.5.0",
+    "netlify": "4.9.0"
+  },
+  "devDependencies": {
+    "@friends-library/dev": "~4.5.2",
+    "@friends-library/types": "^7.0.0",
+    "@types/lodash.isequal": "^4.5.5",
+    "@vercel/ncc": "0.27.0",
+    "x-chalk": "^1.0.1",
+    "x-exec": "^1.2.0"
+  }
+}
