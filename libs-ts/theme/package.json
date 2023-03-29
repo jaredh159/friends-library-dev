@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "just prettier",
-    "format:check": "just prettier-check"
+    "format:check": "just prettier-check",
+    "postinstall": "pnpm compile"
   },
   "devDependencies": {
     "@friends-library/types": "workspace:*"

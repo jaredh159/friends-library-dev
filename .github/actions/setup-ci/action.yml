@@ -1,0 +1,29 @@
+name: ci setup
+description: install pnpm, cache, install deps, setup just
+
+runs:
+  using: composite
+  steps:
+    # - name: checkout
+    #   uses: actions/checkout@v3
+    - name: install libkrb # only for nodegit
+      shell: bash
+      run: sudo apt-get install libkrb5-dev -y
+    - name: install pnpm
+      uses: pnpm/action-setup@v2
+      with:
+        run_install: false
+    - name: get pnpm store path
+      shell: bash
+      id: pnpm-cache
+      run: |
+        echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+    - uses: actions/cache@v3
+      with:
+        path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+        key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: pnpm-store-
+    - name: install deps
+      shell: bash
+      run: pnpm install
+    - uses: extractions/setup-just@v1
