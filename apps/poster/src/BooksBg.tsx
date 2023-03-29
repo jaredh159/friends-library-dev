@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
-import { CoverProps } from '@friends-library/types';
 import { Front } from '@friends-library/cover-component';
+import type { CoverProps } from '@friends-library/types';
 import coverMap from './cover-props';
 import CoverCss from './CoverCss';
 import './BooksBg.css';

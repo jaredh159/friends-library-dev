@@ -10,7 +10,7 @@
     "graphql:codegen": "flp-gql-codegen",
     "start": "cp ../../.env . && API_DEV=true pnpm netlify dev",
     "dev": "pnpm css && pnpm parcel --port 1234 ./src/index.html",
-    "build": "pnpm css && pnpm parcel build ./src/index.html --no-source-maps",
+    "build": "pnpm css && pnpm parcel build ./src/index.html",
     "css": "ts-node ./src/write-css.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",

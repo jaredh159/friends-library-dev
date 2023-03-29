@@ -46,7 +46,7 @@ const CoverGeneral: React.FC<Props> = ({ editionPath, volNum, numVols }) => {
           </h2>
         )}
         {numVols === 1 ? (
-          <div className={`w-${lang === `en` ? `80` : `96`} pt-6`}>
+          <div className={`${lang === `en` ? `w-80` : `w-96`} pt-6`}>
             <Logo iconColor="white" friendsColor="white" libraryColor="white" />
           </div>
         ) : (

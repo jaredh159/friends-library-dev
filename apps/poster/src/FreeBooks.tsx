@@ -1,5 +1,5 @@
 import React from 'react';
-import { Lang } from '@friends-library/types';
+import type { Lang } from '@friends-library/types';
 import BooksBg from './BooksBg';
 
 interface Props {

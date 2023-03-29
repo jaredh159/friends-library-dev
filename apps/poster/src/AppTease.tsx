@@ -1,6 +1,5 @@
 import React from 'react';
 import cx from 'classnames';
-import { Lang } from '@friends-library/types';
 import Album from 'evans/components/Album';
 import EsSplash from 'evans/images/app-screens/app-splash.es.jpg';
 import EsAudio from 'evans/images/app-screens/app-audio.es.jpg';
@@ -8,6 +7,7 @@ import EsList from 'evans/images/app-screens/app-audio-list.es.jpg';
 import EnSplash from 'evans/images/app-screens/app-splash.en.jpg';
 import EnAudio from 'evans/images/app-screens/app-audio.en.jpg';
 import EnList from 'evans/images/app-screens/app-audio-list.en.jpg';
+import type { Lang } from '@friends-library/types';
 import coverPropsMap from './cover-props';
 import CoverCss from './CoverCss';
 import './AppTease.css';

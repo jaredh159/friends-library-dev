@@ -1,8 +1,8 @@
 import React from 'react';
 import cx from 'classnames';
-import { Lang } from '@friends-library/types';
 import { setLocale } from '@friends-library/locale';
 import Album from 'evans/components/Album';
+import type { Lang } from '@friends-library/types';
 import coverPropsMap from './cover-props';
 import partTitlesMap from './part-titles';
 import BooksBg from './BooksBg';

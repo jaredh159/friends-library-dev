@@ -18,6 +18,9 @@ evans:
 storybook:
   @pnpm --filter storybook-web start
 
+poster:
+  @pnpm --filter poster start
+
 # code quality
 
 check:

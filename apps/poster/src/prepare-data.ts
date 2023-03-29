@@ -3,9 +3,9 @@ import fs from 'fs';
 import { exec } from 'child_process';
 import fetch from 'cross-fetch';
 import env from '@friends-library/env';
-import { CoverProps, PrintSize } from '@friends-library/types';
 import { gql, getClient } from '@friends-library/db';
-import { GetAudios } from './graphql/GetAudios';
+import type { CoverProps, PrintSize } from '@friends-library/types';
+import type { GetAudios } from './graphql/GetAudios';
 
 async function main(): Promise<void> {
   const docsRoot = env.requireVar(`DOCS_REPOS_ROOT`);
