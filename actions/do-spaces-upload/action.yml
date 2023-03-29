@@ -1,0 +1,47 @@
+name: 'Digital Ocean Spaces File Upload'
+author: friends-library-dev
+descriptions: 'Upload a file to a Digital Ocean spaces bucket.'
+inputs:
+  src-file-path:
+    description: 'path to source file for upload'
+    required: true
+  destination-object-key:
+    description: 'destination object key (filename/path) in DO spaces bucket'
+    required: true
+  access-key-id:
+    description: your digital ocean spaces api key id
+    required: true
+  access-key-secret:
+    description: your digital ocean spaces api key secret
+    required: true
+  bucket:
+    description: your digital ocean spaces bucket name
+    required: true
+  region:
+    description: 'your digital ocean spaces region (eg: nyc3)'
+    required: true
+  acl:
+    description:
+      'acl for uploaded file [private | public-read | public-read-write] (default:
+      private)'
+    required: false
+    default: private
+  remove-src-after-upload:
+    description: 'whether to remove src file after upload (default: false)'
+    required: false
+    default: false
+runs:
+  using: docker
+  image: Dockerfile
+  args:
+    - ${{ inputs.src-file-path }}
+    - ${{ inputs.destination-object-key }}
+    - ${{ inputs.access-key-id }}
+    - ${{ inputs.access-key-secret }}
+    - ${{ inputs.bucket }}
+    - ${{ inputs.region }}
+    - ${{ inputs.acl }}
+    - ${{ inputs.remove-src-after-upload }}
+branding:
+  icon: arrow-up
+  color: green
