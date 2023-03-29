@@ -28,6 +28,6 @@ jobs:
         with:
           githubToken: ${{ github.token }}
       - name: create pdf previews
-        uses: friends-library-dev/action-ts-pack/actions/pdf@master
+        uses: friends-library-dev/actions/ts-pack/actions/pdf@master
         with:
           GITHUB_TOKEN: ${{ github.token }}

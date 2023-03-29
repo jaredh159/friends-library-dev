@@ -1,8 +1,6 @@
 {
   "name": "@friends-library/action-ts-pack",
   "version": "1.0.0",
-  "author": "Jared Henderson <jared@netrivet.com>",
-  "repository": "github:friends-library-dev/action-ts-pack",
   "license": "MIT",
   "scripts": {
     "start": "pnpm ncc-bundle watch",

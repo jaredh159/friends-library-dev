@@ -1,5 +1,5 @@
 name: 'Digital Ocean Spaces File Upload'
-author: friends-library-dev
+author: friends-library
 descriptions: 'Upload a file to a Digital Ocean spaces bucket.'
 inputs:
   src-file-path:

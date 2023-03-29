@@ -1,9 +1,5 @@
 {
   "name": "@friends-library/jones",
-  "version": "1.0.0",
-  "description": "Friends Library online source doc editor w/ github integration",
-  "repository": "github:friends-library-dev/joines",
-  "author": "Jared Henderson <jared@netrivet.com>",
   "private": true,
   "license": "MIT",
   "scripts": {

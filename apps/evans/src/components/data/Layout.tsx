@@ -99,7 +99,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           <meta property="og:url" content={`${APP_URL}${pathname}`} />
           <meta
             property="og:image"
-            content={`https://raw.githubusercontent.com/friends-library-dev/native/eb1c41fe86792a61a9ef9383a36b1e62df11616e/release-assets/android/${LANG}/feature.png`}
+            content={`https://raw.githubusercontent.com/friends-library/dev/f487c5bae17501abb91d8f18323391075577ff9b/apps/native/release-assets/android/${LANG}/phone/feature.png`}
           />
           <link
             rel="preconnect"

@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       name: upload something
-      uses: friends-library-dev/action-do-spaces-upload@master
+      uses: friends-library/dev/actions/do-spaces-upload@master
         with:
           src-file-path: ./some-file.txt
           destination-object-key: destination/object/key/file.txt
