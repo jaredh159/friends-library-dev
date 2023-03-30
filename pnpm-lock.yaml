@@ -803,6 +803,7 @@ importers:
       '@storybook/builder-vite': 7.0.0-rc.4
       '@storybook/react': ^7.0.0-rc.4
       '@storybook/react-vite': 7.0.0-rc.4
+      '@types/react': 18.0.31
       '@types/react-stripe-elements': ^6.0.0
       react: ^18.0.0
       react-dom: ^18.0.0
@@ -823,6 +824,7 @@ importers:
       '@storybook/builder-vite': 7.0.0-rc.4_vite@4.2.1
       '@storybook/react': 7.0.0-rc.5_biqbaboplfbrettd7655fr4n2y
       '@storybook/react-vite': 7.0.0-rc.4_i2hehkuemw2qkf5fh2zcmq3w5u
+      '@types/react': 18.0.31
       '@types/react-stripe-elements': 6.0.6
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -6584,7 +6586,7 @@ packages:
       react: '>=16'
     dependencies:
       '@types/mdx': 2.0.3
-      '@types/react': 18.0.27
+      '@types/react': 18.0.31
       react: 18.2.0
     dev: false
 
@@ -11307,7 +11309,7 @@ packages:
   /@types/react-stripe-elements/6.0.6:
     resolution: {integrity: sha512-LrLQ4f0tvUww5WxTYRiWedVp8HijKUall4KrKO5wbp2RrAmGV2WDhzfhhmdUGYOY2mAAUId1su82aIrkSkzz1A==}
     dependencies:
-      '@types/react': 18.0.27
+      '@types/react': 18.0.31
       '@types/stripe-v3': 3.1.27
 
   /@types/react-test-renderer/18.0.0:
@@ -11332,6 +11334,13 @@ packages:
 
   /@types/react/18.0.27:
     resolution: {integrity: sha512-3vtRKHgVxu3Jp9t718R9BuzoD4NcQ8YJ5XRzsSKxNDiDonD2MXIT1TmSkenxuCycZJoQT5d2vE8LwWJxBC1gmA==}
+    dependencies:
+      '@types/prop-types': 15.7.5
+      '@types/scheduler': 0.16.2
+      csstype: 3.1.1
+
+  /@types/react/18.0.31:
+    resolution: {integrity: sha512-EEG67of7DsvRDU6BLLI0p+k1GojDLz9+lZsnCpCRTa/lOokvyPBvp8S5x+A24hME3yyQuIipcP70KJ6H7Qupww==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2

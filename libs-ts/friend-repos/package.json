@@ -12,7 +12,8 @@
     "lint:fix": "eslint . --fix",
     "compile": "tsc --build",
     "format": "just prettier",
-    "format:check": "just prettier-check"
+    "format:check": "just prettier-check",
+    "postinstall": "pnpm compile"
   },
   "dependencies": {
     "node-fetch": "^2.6.1",

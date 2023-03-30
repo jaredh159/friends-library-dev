@@ -1,11 +1,10 @@
-name: ci setup
+nwame: setup ts
 description: install pnpm, cache, install deps, setup just
 
 runs:
   using: composite
   steps:
-    # - name: checkout
-    #   uses: actions/checkout@v3
+    - uses: extractions/setup-just@v1
     - name: install libkrb # only for nodegit
       shell: bash
       run: sudo apt-get install libkrb5-dev -y
@@ -21,9 +20,8 @@ runs:
     - uses: actions/cache@v3
       with:
         path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-        key: pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-        restore-keys: pnpm-store-
+        key: setup-ts-v1-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: setup-ts-
     - name: install deps
       shell: bash
       run: pnpm install
-    - uses: extractions/setup-just@v1

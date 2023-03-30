@@ -8,7 +8,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "just ../../prettier",
-    "format:check": "just ../../prettier-check"
+    "format:check": "just ../../prettier-check",
+    "postinstall": "just publish-query"
   },
   "dependencies": {
     "@friends-library/types": "workspace:*",

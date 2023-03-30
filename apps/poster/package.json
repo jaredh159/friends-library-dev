@@ -12,7 +12,7 @@
     "format:check": "just prettier-check",
     "data": "ts-node ./src/prepare-data.ts",
     "start": "pnpm data && vite",
-    "@TODO: postinstall": "test -f ./src/cover-props.ts || pnpm data -- --empty"
+    "postinstall": "test -f ./src/cover-props.ts || pnpm data -- --empty"
   },
   "dependencies": {
     "@friends-library/adoc-utils": "workspace:*",
