@@ -72,7 +72,7 @@ jobs:
         run: cd apps/cover-web-app && pnpm build
 
 concurrency:
-  group: ${{ github.ref }}
+  group: ${{ github.ref }}-ci-typescript
   cancel-in-progress: true
 
 env:

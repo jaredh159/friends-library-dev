@@ -77,7 +77,7 @@ jobs:
         run: cd apps/api && swift test
 
 concurrency:
-  group: ${{ github.ref }}
+  group: ${{ github.ref }}-ci-swift
   cancel-in-progress: true
 
 env:
