@@ -13,7 +13,6 @@
 - [ ] native: i'm not sure if splash screen is working for android
 - [ ] remove fs-extra package from cli (elsewhere?)
 - [ ] break apart ci to speed up
-- [ ] remove `nodegit` dep (with `librbk5` dep install in ci.yml)
 - [ ] cli cover:watch task for cover-web-app (search `echo node`)
 - [ ] look into cover-component prepack/postpack web/node optimizations...
 - [ ] examine, update, and unify dependencies
@@ -26,6 +25,7 @@
 
 ## Done
 
+- [√] remove `nodegit` dep (with `librbk5` dep install in ci.yml)
 - [V] rebuild storybook
 - [√] convert cover-web-app from parcel to vite
 - [√] convert admin from snowpack to vite

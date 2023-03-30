@@ -5,9 +5,6 @@ runs:
   using: composite
   steps:
     - uses: extractions/setup-just@v1
-    - name: install libkrb # only for nodegit
-      shell: bash
-      run: sudo apt-get install libkrb5-dev -y
     - name: install pnpm
       uses: pnpm/action-setup@v2
       with:

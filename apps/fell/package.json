@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "just prettier",
-    "format:check": "just prettier-check"
+    "format:check": "just prettier-check",
+    "dev": "ts-node ./src/test.ts"
   },
   "dependencies": {
     "@friends-library/env": "workspace:*",
@@ -18,7 +19,7 @@
     "@octokit/rest": "^16.15.0",
     "chalk": "^2.4.1",
     "glob": "^7.1.4",
-    "nodegit": "0.28.0-alpha.18",
+    "simple-git": "3.17.0",
     "x-chalk": "^1.0.1",
     "x-exec": "^1.2.0",
     "x-ts-utils": "^1.2.0",
@@ -26,7 +27,6 @@
   },
   "devDependencies": {
     "@types/glob": "^7.1.3",
-    "@types/nodegit": "^0.26.12",
     "@types/yargs": "^15.0.0"
   }
 }
