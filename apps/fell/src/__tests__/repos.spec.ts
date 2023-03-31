@@ -1,5 +1,5 @@
-import { describe, beforeEach, it, expect, vi } from 'vitest';
 import glob from 'glob';
+import { describe, beforeEach, it, expect, vi } from 'vitest';
 import { getRepos, getBranchMap, getStatusGroups } from '../repos';
 import * as git from '../git';
 

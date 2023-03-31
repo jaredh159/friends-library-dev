@@ -26,7 +26,28 @@ function regen(): void {
     paperbackInterior({ runningHeadTitle: ``, printSize: `m`, numFootnotes: 10 }).replace(
       `background: url(line.svg)`,
       `_background: url(line.svg)`,
-    ),
+    ) +
+      `
+      html,
+      body {
+        margin: 0;
+      }
+      html {
+        font-size: 19px;
+        box-sizing: border-box;
+      }
+      *,
+      *:before,
+      *:after {
+        box-sizing: inherit;
+      }
+      .rendered-adoc .chapter,
+      .rendered-adoc .epigraphs {
+        margin-top: 0 !important;
+      }
+      #generated .chapter-heading {
+        display: none;
+      }\n`,
   );
   const files = glob(adocGlob);
   const frags: { [k: string]: { html: string; adoc: string } } = {};

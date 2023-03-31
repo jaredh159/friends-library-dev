@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Friends Library document styleguide",
   "scripts": {
-    "test": "ts-node --version",
     "start": "pnpm run watch:frags & vite",
     "build:frags": "ts-node --project ./tsconfig.json ./src/build-frags.ts",
     "watch:frags": "pnpm run build:frags -- --watch",

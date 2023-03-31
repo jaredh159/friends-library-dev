@@ -3,12 +3,13 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "test": "test -e .env || cp .env.example .env && just set-env; jest",
+    "test": "pnpm ensure-env ; jest",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "just ../../prettier",
-    "format:check": "just ../../prettier-check"
+    "format:check": "just ../../prettier-check",
+    "ensure-env": "test -e .env || cp .env.example .env && pnpm ts-node ./env/set-env.ts"
   },
   "dependencies": {
     "@friends-library/adoc-utils": "workspace:*",

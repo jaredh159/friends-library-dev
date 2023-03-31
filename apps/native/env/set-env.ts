@@ -32,7 +32,7 @@ function main(): void {
     `export const API_URL = \\\`${API_URL}\\\`;`,
   ];
 
-  exec.exit(`printf "${constants.join(`\n`)}" >> ${GENERATED_FILE}`);
+  exec.exit(`printf "${constants.join(`\n`)}\n" >> ${GENERATED_FILE}`);
 
   exec.exit(`mkdir -p ${APP_DIR}/android/app/src/debug/java/com/friendslibrary`);
   exec.exit(`mkdir -p ${APP_DIR}/android/app/src/main/java/com/friendslibrary`);

@@ -17,7 +17,7 @@ build-en: write-cover-css && post-build
 build-es: write-cover-css && post-build
   @GATSBY_LANG=es pnpm gatsby build
 
-analyze: write-cover-css && post-build
+build-en-analyze: write-cover-css && post-build
   @ANALYZE_BUNDLE_SIZE=true GATSBY_LANG=en pnpm gatsby build
 
 codegen:

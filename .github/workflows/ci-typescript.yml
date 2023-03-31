@@ -1,0 +1,95 @@
+name: ci-typescript
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  ts-test:
+    name: ts-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: setup ts
+        uses: ./.github/actions/setup-ts
+      - name: test typescript
+        run: just test-typescript
+
+  ts-lint:
+    name: ts-lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: setup ts
+        uses: ./.github/actions/setup-ts
+      - name: lint
+        run: just lint
+
+  ts-format:
+    name: ts-format
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: setup ts
+        uses: ./.github/actions/setup-ts
+      - name: check format
+        run: just prettier-check
+
+  ts-typecheck:
+    name: ts-typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: setup ts
+        uses: ./.github/actions/setup-ts
+      - name: generate-files
+        run: |
+          pnpm --filter poster ensure-data
+          pnpm --filter native ensure-env
+          just ./apps/evans/publish-query
+      - name: typecheck
+        run: just typecheck
+
+  app-admin:
+    name: app-admin
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: setup ts
+        uses: ./.github/actions/setup-ts
+      - name: build-admin
+        run: cd apps/admin && pnpm build
+
+  app-covers:
+    name: app-covers
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: setup ts
+        uses: ./.github/actions/setup-ts
+      - name: build-covers
+        run: cd apps/cover-web-app && pnpm build
+
+  app-storybook:
+    name: app-storybook
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: setup ts
+        uses: ./.github/actions/setup-ts
+      - name: build-storybook
+        run: cd apps/storybook-web && pnpm build
+
+concurrency:
+  group: ${{ github.ref }}-ci-typescript
+  cancel-in-progress: true
+
+env:
+  DOCS_REPOS_ROOT: /

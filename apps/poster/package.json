@@ -4,6 +4,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
+    "start": "pnpm data && vite",
     "graphql:codegen": "flp-gql-codegen",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
@@ -11,8 +12,7 @@
     "format": "just prettier",
     "format:check": "just prettier-check",
     "data": "ts-node ./src/prepare-data.ts",
-    "start": "pnpm data && vite",
-    "@TODO: postinstall": "test -f ./src/cover-props.ts || pnpm data -- --empty"
+    "ensure-data": "test -f ./src/cover-props.ts || pnpm data -- --empty"
   },
   "dependencies": {
     "@friends-library/adoc-utils": "workspace:*",

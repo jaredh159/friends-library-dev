@@ -1,0 +1,109 @@
+name: ci-swift
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  build-libs:
+    runs-on: ubuntu-latest
+    container: swift:5.7-focal
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: build duet
+        run: cd libs-swift/duet && swift build
+      - name: build x-http
+        run: cd libs-swift/x-http && swift build
+      - name: build x-kit
+        run: cd libs-swift/x-kit && swift build
+      - name: build x-sendgrid
+        run: cd libs-swift/x-sendgrid && swift build
+      - name: build x-slack
+        run: cd libs-swift/x-slack && swift build
+      - name: build x-stripe
+        run: cd libs-swift/x-stripe && swift build
+
+  test-libs:
+    runs-on: ubuntu-latest
+    container: swift:5.7-focal
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: test duet
+        run: cd libs-swift/duet && swift test
+      - name: test x-http
+        run: cd libs-swift/x-http && swift test
+      - name: test x-kit
+        run: cd libs-swift/x-kit && swift test
+      - name: test x-slack
+        run: cd libs-swift/x-slack && swift test
+
+  build-api:
+    runs-on: ubuntu-latest
+    container: swift:5.7-focal
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: apps/api/.build
+          key: api-v1-${{ hashFiles('api/Package.resolved') }}
+          restore-keys: api-v1-
+      - name: build api
+        run: cd apps/api && swift build
+
+  test-api:
+    runs-on: ubuntu-latest
+    container: swift:5.7-focal
+    env:
+      DATABASE_HOST: postgres
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: vapor_username
+          POSTGRES_PASSWORD: vapor_password
+          POSTGRES_DB: vapor_database
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: apps/api/.build
+          key: api-v1-${{ hashFiles('api/Package.resolved') }}
+          restore-keys: api-v1-
+      - name: test api
+        run: cd apps/api && swift test
+
+concurrency:
+  group: ${{ github.ref }}-ci-swift
+  cancel-in-progress: true
+
+env:
+  SWIFT_DETERMINISTIC_HASHING: 1
+  DATABASE_HOST: postgres
+  DATABASE_NAME: vapor_database
+  DATABASE_USERNAME: vapor_username
+  DATABASE_PASSWORD: vapor_password
+  TEST_DATABASE_NAME: vapor_database
+  PG_DUMP_PATH: not-real
+  SENDGRID_API_KEY: not-real
+  SLACK_API_TOKEN_WORKSPACE_MAIN: not-real
+  SLACK_API_TOKEN_WORKSPACE_BOT: not-real
+  CLOUD_STORAGE_BUCKET_URL: /not-real
+  LULU_API_ENDPOINT: not-real
+  LULU_CLIENT_KEY: not-real
+  LULU_CLIENT_SECRET: not-real
+  LULU_PHONE_NUMBER: not-real
+  STRIPE_PUBLISHABLE_KEY: not-real
+  STRIPE_SECRET_KEY: not-real
+  JARED_CONTACT_FORM_EMAIL: not-real
+  JASON_CONTACT_FORM_EMAIL: not-real
+  PARSE_USERAGENT_BIN: not-real
+  NODE_BIN: not-real
+  LOCATION_API_KEY: not-real
+  MAPBOX_API_KEY: not-real
+  SELF_URL: /not-real
+  WEBSITE_URL_EN: /not-real
+  WEBSITE_URL_ES: /not-real

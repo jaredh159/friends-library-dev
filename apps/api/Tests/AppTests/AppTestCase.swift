@@ -2,7 +2,6 @@ import FluentSQL
 import GraphQLKit
 import Vapor
 import XCTest
-import XGraphQLTest
 import XSendGrid
 
 @testable import App

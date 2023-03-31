@@ -30,7 +30,7 @@ async function fetchApiPage(lang: Lang, page: number): Promise<Repo[]> {
   const repos = (await res.json()) as Record<string, string>[];
 
   return repos
-    .filter((repo) => repo.name !== `friends-library`)
+    .filter((repo) => repo.name !== `dev`)
     .map((repo) => ({
       lang,
       slug: repo.name ?? ``,

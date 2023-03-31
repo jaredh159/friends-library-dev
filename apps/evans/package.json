@@ -21,7 +21,6 @@
     "@friends-library/db": "workspace:*",
     "@friends-library/dpc-fs": "workspace:*",
     "@friends-library/env": "workspace:*",
-    "@friends-library/friend-repos": "workspace:*",
     "@friends-library/locale": "workspace:*",
     "@friends-library/lulu": "workspace:*",
     "@friends-library/theme": "workspace:*",
