@@ -8,7 +8,7 @@ import type { CoverProps, PrintSize } from '@friends-library/types';
 import type { GetAudios } from './graphql/GetAudios';
 
 async function main(): Promise<void> {
-  const docsRoot = env.requireVar(`DOCS_REPOS_ROOT`);
+  const DOCS_ROOT = env.requireVar(`DOCS_REPOS_ROOT`);
   const audios = await getAudios();
   const map: Record<string, CoverProps> = {};
   audios.forEach((audio) => {
@@ -22,7 +22,7 @@ async function main(): Promise<void> {
       edition: audio.edition.type,
       isbn: audio.edition.isbn?.code ?? ``,
       blurb: audio.edition.document.description,
-      ...customCode(audio.edition.document.directoryPath, docsRoot),
+      ...customCode(audio.edition.document.directoryPath, DOCS_ROOT),
     };
   });
   fs.writeFileSync(

@@ -191,6 +191,8 @@ export function fetchFriendRepos(): ReduxThunk {
       const friendRepos = await gh.getFriendRepos();
       dispatch({ type: `RECEIVE_FRIEND_REPOS`, payload: friendRepos });
     } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
       dispatch({ type: `NETWORK_ERROR` });
       return;
     }

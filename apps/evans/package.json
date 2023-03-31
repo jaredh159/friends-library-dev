@@ -8,8 +8,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "just ../../prettier",
-    "format:check": "just ../../prettier-check",
-    "postinstall": "just publish-query"
+    "format:check": "just ../../prettier-check"
   },
   "dependencies": {
     "@friends-library/types": "workspace:*",
@@ -22,7 +21,6 @@
     "@friends-library/db": "workspace:*",
     "@friends-library/dpc-fs": "workspace:*",
     "@friends-library/env": "workspace:*",
-    "@friends-library/friend-repos": "workspace:*",
     "@friends-library/locale": "workspace:*",
     "@friends-library/lulu": "workspace:*",
     "@friends-library/theme": "workspace:*",

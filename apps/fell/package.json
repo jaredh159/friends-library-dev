@@ -10,8 +10,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "just prettier",
-    "format:check": "just prettier-check",
-    "dev": "ts-node ./src/test.ts"
+    "format:check": "just prettier-check"
   },
   "dependencies": {
     "@friends-library/env": "workspace:*",

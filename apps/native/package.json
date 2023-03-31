@@ -9,8 +9,7 @@
     "lint:fix": "eslint . --fix",
     "format": "just ../../prettier",
     "format:check": "just ../../prettier-check",
-    "ensure-env": "test -e .env || cp .env.example .env && just set-env",
-    "postinstall": "pnpm ensure-env"
+    "ensure-env": "test -e .env || cp .env.example .env && pnpm ts-node ./env/set-env.ts"
   },
   "dependencies": {
     "@friends-library/adoc-utils": "workspace:*",

@@ -19,15 +19,15 @@ jobs:
       - name: setup ts
         uses: ./.github/actions/setup-ts
       - name: clone-friend-repos
-        run: cd apps/evans && pnpm friend-repos-clone-all .
-      - name: build:en
+        run: pnpm ts-node ./libs-ts/friend-repos/src/cli-clone.ts apps/evans
+      - name: build
         run: cd apps/evans && just build-en
       - name: deploy
         id: deploy
         uses: friends-library/dev/actions/ts-pack/actions/deploy@master
         with:
           netlify_api_token: ${{ secrets.NETLIFY_API_TOKEN }}
-          site_id: ${{ secrets.DEPLOY_SITE_ID_EN }}
+          site_id: ${{ secrets.EVANS_DEPLOY_SITE_ID_EN }}
           build_dir: apps/evans/public
           github_token: ${{ github.token }}
 
@@ -42,9 +42,10 @@ jobs:
       - name: setup ts
         uses: ./.github/actions/setup-ts
       - name: clone-friend-repos
-        run: cd apps/evans && pnpm friend-repos-clone-all .
-      - name: build:en
-        run: cd apps/evans && just build-es
+        run: pnpm ts-node ./libs-ts/friend-repos/src/cli-clone.ts apps/evans
+      - name: build
+        # avoid 401 errors in api from both jobs making expensive simultaneous requests
+        run: sleep 30 && cd apps/evans && just build-es
       - name: deploy
         id: deploy
         uses: friends-library/dev/actions/ts-pack/actions/deploy@master

@@ -46,6 +46,11 @@ jobs:
         uses: actions/checkout@v3
       - name: setup ts
         uses: ./.github/actions/setup-ts
+      - name: generate-files
+        run: |
+          pnpm --filter poster ensure-data
+          pnpm --filter native ensure-env
+          just ./apps/evans/publish-query
       - name: typecheck
         run: just typecheck
 
@@ -70,6 +75,17 @@ jobs:
         uses: ./.github/actions/setup-ts
       - name: build-covers
         run: cd apps/cover-web-app && pnpm build
+
+  app-storybook:
+    name: app-storybook
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: setup ts
+        uses: ./.github/actions/setup-ts
+      - name: build-storybook
+        run: cd apps/storybook-web && pnpm build
 
 concurrency:
   group: ${{ github.ref }}-ci-typescript
