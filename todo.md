@@ -11,7 +11,6 @@
 - [ ] native: app shouldn't allow non-null assertions
 - [ ] native: i'm not sure if splash screen is working for android
 - [ ] remove fs-extra package from cli (elsewhere?)
-- [ ] cli cover:watch task for cover-web-app (search `echo node`)
 - [ ] look into cover-component prepack/postpack web/node optimizations...
 - [ ] examine, update, and unify dependencies
 - [ ] evans > astro/next
@@ -23,6 +22,7 @@
 
 ## Done
 
+- [√] cli cover:watch task for cover-web-app (search `echo node`)
 - [√] break apart ci to speed up
 - [√] api: pnpm install, get deploy-ing correctly
 - [√] remove `nodegit` dep (with `librbk5` dep install in ci.yml)

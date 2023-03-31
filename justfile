@@ -21,6 +21,9 @@ storybook:
 poster:
   @pnpm --filter poster start
 
+covers:
+  @pnpm --filter cover-web-app start
+
 # code quality
 
 check:

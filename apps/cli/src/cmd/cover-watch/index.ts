@@ -31,7 +31,9 @@ export async function handler({ exec }: { exec: boolean }): Promise<void> {
   while (true) {
     if (fs.existsSync(path)) {
       magenta(`Received job, initiating...`);
-      execSync(`node ${__dirname}/../../app.js cover:watch --exec`);
+      execSync(`pnpm ts-node ./src/app.ts cover:watch --exec`, {
+        cwd: `${DEV_APPS_PATH}/cli`,
+      });
     }
     await new Promise((res) => setTimeout(res, 750));
   }
