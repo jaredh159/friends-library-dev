@@ -38,7 +38,7 @@ jobs:
         with:
           netlify_api_token: ${{ secrets.NETLIFY_API_TOKEN }}
           site_id: ${{ secrets.EVANS_DEPLOY_SITE_ID_EN }}
-          build_dir: evans/public
+          build_dir: apps/evans/public
           github_token: ${{ github.token }}
 
   republish_es:
@@ -60,7 +60,7 @@ jobs:
         with:
           netlify_api_token: ${{ secrets.NETLIFY_API_TOKEN }}
           site_id: ${{ secrets.EVANS_DEPLOY_SITE_ID_ES }}
-          build_dir: evans/public
+          build_dir: apps/evans/public
           github_token: ${{ github.token }}
 
   skip_republish:
