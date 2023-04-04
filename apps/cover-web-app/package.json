@@ -9,14 +9,13 @@
     "format": "just prettier",
     "format:check": "just prettier-check",
     "dev": "vite",
-    "start": "pnpm run tasks",
-    "prestart": "pnpm run friends",
+    "start": "pnpm friends && pnpm tasks",
     "graphql:codegen": "flp-gql-codegen",
     "listen:pdf": "node ./listen/listen-pdf.js",
-    "tasks": "concurrently npm:listen:pdf npm:dev \"sleep 3 && echo node ../../apps/cli/dist/app.js cover:watch\"",
+    "tasks": "concurrently npm:listen:pdf npm:dev \"sleep 3 && ts-node ../../apps/cli/src/app.ts cover:watch\"",
     "preview": "vite preview",
-    "friends": "ts-node --transpile-only --skip-project ./src/scripts/friend-data.ts",
-    "build": "pnpm run friends && vite build"
+    "friends": "ts-node ./src/scripts/friend-data.ts",
+    "build": "pnpm friends && vite build"
   },
   "dependencies": {
     "@friends-library/cover-component": "workspace:*",
