@@ -11,6 +11,7 @@ export default defineConfig({
   },
   build: {
     outDir: `dist`,
+    chunkSizeWarningLimit: 100000000,
   },
   preview: {
     port: 9999,
