@@ -23,6 +23,10 @@ just check
 the following shell aliases are recommended:
 
 ```bash
-alias fl="cd <repo-root>/apps/cli && pnpm ts-node src/app.ts ${@}"
-alias fell="cd <repo-root>/apps/fell && pnpm ts-node src/app.ts ${@}"
+alias fl="<repo-root>/node_modules/.bin/ts-node \
+  --project <repo-root>/apps/cli/tsconfig.json \
+  <repo-root>/apps/cli/src/app.ts ${@}"
+alias fell="<repo-root>/node_modules/.bin/ts-node \
+  --project <repo-root>/apps/fell/tsconfig.json \
+  <repo-root>/apps/fell/src/app.ts ${@}"
 ```
