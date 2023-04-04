@@ -1,6 +1,5 @@
 import { execSync } from 'child_process';
 import fetch from 'node-fetch';
-import env from '@friends-library/env';
 import type { FsDocPrecursor } from '@friends-library/dpc-fs';
 import lintPath from '../../lint/lint-path';
 import * as git from './git';
@@ -42,18 +41,13 @@ function gitStatus(dpc: FsDocPrecursor): void {
 }
 
 async function gitCommit(dpc: FsDocPrecursor): Promise<void> {
-  const { CLI_GITHUB_TOKEN } = env.require(`CLI_GITHUB_TOKEN`);
   const localSha = execSync(`git rev-parse --verify HEAD`, { cwd: git.dpcRootDir(dpc) })
     .toString()
     .trim();
 
   const org = dpc.lang === `en` ? `friends-library` : `biblioteca-de-los-amigos`;
   const path = `repos/${org}/${dpc.friendSlug}/git/refs/heads/master`;
-  const res = await fetch(`https://api.github.com/${path}`, {
-    headers: {
-      Authorization: `token ${CLI_GITHUB_TOKEN}`,
-    },
-  });
+  const res = await fetch(`https://api.github.com/${path}`);
   const json = await res.json();
 
   if (json.object.sha !== localSha) {
