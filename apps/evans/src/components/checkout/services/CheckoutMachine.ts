@@ -172,6 +172,8 @@ export default class CheckoutMachine extends EventEmitter {
   }
 }
 
-const log: any =
-  // eslint-disable-next-line no-console
-  process?.env?.NODE_ENV === `production` ? (): void => {} : console.log.bind(console);
+const log: (...args: unknown[]) => void = window.location.href.match(
+  /(friendslibrary\.com|bibliotecadelosamigos\.org)/,
+)
+  ? (): void => {}
+  : console.log.bind(console); // eslint-disable-line no-console

@@ -47,3 +47,5 @@ post-build:
 [private]
 write-cover-css:
   @pnpm ts-node ./src/ssg/cover-static-css.ts
+
+set dotenv-load

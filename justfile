@@ -91,6 +91,9 @@ migrate-down: build-api
 test-api:
   @cd apps/api && SWIFT_DETERMINISTIC_HASHING=1 swift test
 
+db-sync:
+  @cd apps/api && pnpm ts-node ./sync.ts
+
 # helpers
 
 [private]
