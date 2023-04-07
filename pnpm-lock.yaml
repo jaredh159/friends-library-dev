@@ -753,12 +753,14 @@ importers:
   apps/next-evans:
     specifiers:
       '@friends-library/theme': workspace:*
+      '@prisma/client': 4.12.0
       '@types/node': 18.15.11
       '@types/react': 18.0.33
       '@types/react-dom': 18.0.11
       autoprefixer: 10.4.14
       next: 13.3.0
       postcss: 8.4.21
+      prisma: 4.12.0
       react: 18.2.0
       react-dom: 18.2.0
       tailwindcss: 3.3.1
@@ -776,6 +778,8 @@ importers:
       typescript: 5.0.2
     devDependencies:
       '@friends-library/theme': link:../../libs-ts/theme
+      '@prisma/client': 4.12.0_prisma@4.12.0
+      prisma: 4.12.0
 
   apps/poster:
     specifiers:
@@ -8794,6 +8798,29 @@ packages:
     dependencies:
       '@pnpm/network.ca-file': 1.0.2
       config-chain: 1.1.13
+    dev: true
+
+  /@prisma/client/4.12.0_prisma@4.12.0:
+    resolution: {integrity: sha512-j9/ighfWwux97J2dS15nqhl60tYoH8V0IuSsgZDb6bCFcQD3fXbXmxjYC8GHhIgOk3lB7Pq+8CwElz2MiDpsSg==}
+    engines: {node: '>=14.17'}
+    requiresBuild: true
+    peerDependencies:
+      prisma: '*'
+    peerDependenciesMeta:
+      prisma:
+        optional: true
+    dependencies:
+      '@prisma/engines-version': 4.12.0-67.659ef412370fa3b41cd7bf6e94587c1dfb7f67e7
+      prisma: 4.12.0
+    dev: true
+
+  /@prisma/engines-version/4.12.0-67.659ef412370fa3b41cd7bf6e94587c1dfb7f67e7:
+    resolution: {integrity: sha512-JIHNj5jlXb9mcaJwakM0vpgRYJIAurxTUqM0iX0tfEQA5XLZ9ONkIckkhuAKdAzocZ+80GYg7QSsfpjg7OxbOA==}
+    dev: true
+
+  /@prisma/engines/4.12.0:
+    resolution: {integrity: sha512-0alKtnxhNB5hYU+ymESBlGI4b9XrGGSdv7Ud+8TE/fBNOEhIud0XQsAR+TrvUZgS4na5czubiMsODw0TUrgkIA==}
+    requiresBuild: true
     dev: true
 
   /@reach/accordion/0.11.2_wcqkhtmu7mswc6yz4uyexck3ty:
@@ -27318,6 +27345,15 @@ packages:
     dependencies:
       colors: 1.4.0
       minimist: 1.2.7
+    dev: true
+
+  /prisma/4.12.0:
+    resolution: {integrity: sha512-xqVper4mbwl32BWzLpdznHAYvYDWQQWK2tBfXjdUD397XaveRyAP7SkBZ6kFlIg8kKayF4hvuaVtYwXd9BodAg==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+    requiresBuild: true
+    dependencies:
+      '@prisma/engines': 4.12.0
     dev: true
 
   /probe-image-size/6.0.0:

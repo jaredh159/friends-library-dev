@@ -21,6 +21,8 @@
     "typescript": "5.0.2"
   },
   "devDependencies": {
-    "@friends-library/theme": "workspace:*"
+    "@friends-library/theme": "workspace:*",
+    "@prisma/client": "4.12.0",
+    "prisma": "4.12.0"
   }
 }

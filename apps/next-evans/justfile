@@ -6,3 +6,16 @@ dev-en:
 
 dev-es:
   @NEXT_PUBLIC_LANG=es pnpm dev --port 7333
+
+prisma-generate: cp-env && rm-env
+  @pnpm prisma generate
+
+# helpers
+
+[private]
+cp-env:
+  @cp ../../.env ./.env
+
+[private]
+rm-env:
+  @rm ./.env
