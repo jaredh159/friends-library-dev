@@ -7,15 +7,11 @@ dev-en:
 dev-es:
   @NEXT_PUBLIC_LANG=es pnpm dev --port 7333
 
-prisma-generate: cp-env && rm-env
-  @pnpm prisma generate
+storybook:
+  @cd ../../ && pnpm --filter storybook storybook
 
-# helpers
-
-[private]
-cp-env:
+prisma-generate:
+  @test -e ../../.env || cp ../../.env.example ../../.env
   @cp ../../.env ./.env
-
-[private]
-rm-env:
+  @pnpm prisma generate
   @rm ./.env
