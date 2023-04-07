@@ -1,7 +1,7 @@
-const { getTailwindConfig } = require(`@friends-library/theme`);
+const { tailwindPreset } = require(`@friends-library/theme`);
 
 module.exports = {
-  ...getTailwindConfig(`en`),
+  presets: [tailwindPreset(`en`)],
   content: [
     `./src/**/*.tsx`,
     `../evans/src/**/*.tsx`,

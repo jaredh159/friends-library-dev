@@ -13,6 +13,7 @@
     "postinstall": "pnpm compile"
   },
   "devDependencies": {
-    "@friends-library/types": "workspace:*"
+    "@friends-library/types": "workspace:*",
+    "tailwindcss": "3.3.1"
   }
 }

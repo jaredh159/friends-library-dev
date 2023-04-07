@@ -1,7 +1,8 @@
+import type { Config } from 'tailwindcss';
 import type { Lang } from '@friends-library/types';
 import * as c from './color';
 
-export function getTailwindConfig(lang: Lang = `en`): Record<string, any> {
+export default function tailwindPreset(lang: Lang = `en`): Omit<Config, 'content'> {
   return {
     theme: {
       fontFamily: {
@@ -74,10 +75,6 @@ export function getTailwindConfig(lang: Lang = `en`): Record<string, any> {
       `disabled`,
     ],
     plugins: [],
-    future: {
-      removeDeprecatedGapUtilities: true,
-      purgeLayersByDefault: true,
-    },
   };
 }
 

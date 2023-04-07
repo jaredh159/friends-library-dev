@@ -1,11 +1,11 @@
-const { getTailwindConfig } = require(`@friends-library/theme`);
+const { tailwindPreset } = require(`@friends-library/theme`);
 
-const config = getTailwindConfig();
+const preset = { ...tailwindPreset() };
 
-config.theme.extend.animation = { 'spin-fast': `spin 0.75s ease-in-out infinite` };
+preset.theme.extend.animation = { 'spin-fast': `spin 0.75s ease-in-out infinite` };
 
 module.exports = {
+  presets: [preset],
   content: [`./build/**/*.html`, `./src/**/*.{ts,tsx,html}`],
-  ...config,
   plugins: [require(`@tailwindcss/forms`)],
 };

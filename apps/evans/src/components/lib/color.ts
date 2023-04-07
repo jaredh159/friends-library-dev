@@ -1,12 +1,5 @@
+import { BLACK_RGB, MAROON_RGB, GOLD_RGB, BLUE_RGB } from '@friends-library/theme';
 import { LANG } from '../env';
-
-// TODO: import from @friends-library/theme when converting to next/astro
-// was getting funky errors in storybook, i think maybe converting to a
-// real tailwind preset instead of how it's done now might fix it
-const BLACK_RGB = [45, 42, 41];
-const MAROON_RGB = [108, 49, 66];
-const GOLD_RGB = [193, 140, 89];
-const BLUE_RGB = [95, 140, 158];
 
 export function bgLayer(
   color: string | [number, number, number],
