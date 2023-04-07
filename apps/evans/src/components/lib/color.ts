@@ -1,5 +1,13 @@
-import { BLACK_RGB, MAROON_RGB, GOLD_RGB, BLUE_RGB } from '@friends-library/theme';
 import { LANG } from '../env';
+
+// this fixes a gnarly interaction between storybook-web/evans/native
+// if we change `@friends-library/theme` to not target `commonjs`,
+// then we can import these from there without storybook erroring
+// but, then, the `native` app borks on the `export` keyword
+const BLACK_RGB = [45, 42, 41];
+const MAROON_RGB = [108, 49, 66];
+const GOLD_RGB = [193, 140, 89];
+const BLUE_RGB = [95, 140, 158];
 
 export function bgLayer(
   color: string | [number, number, number],

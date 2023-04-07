@@ -63,7 +63,4 @@ preset.theme.extend.colors[`v1green`] = {
   900: `#22543D`,
 };
 
-module.exports = {
-  presets: [preset],
-  content: [`./screens/**/*.tsx`, `./components/**/*.tsx`],
-};
+module.exports = preset;
