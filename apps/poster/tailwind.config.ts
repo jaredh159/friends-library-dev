@@ -1,9 +1,10 @@
 // @ts-check
-const { tailwindPreset } = require(`@friends-library/theme`);
+import { tailwindPreset } from '@friends-library/theme';
 
 const lang = process.env.LANG === `es` ? `es` : `en`;
 
-module.exports = {
+/** @type {import('tailwindcss').Config} */
+export default {
   presets: [tailwindPreset(lang)],
   content: [
     `./src/**/*.tsx`,

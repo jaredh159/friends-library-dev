@@ -1,6 +1,7 @@
-const { tailwindPreset } = require(`@friends-library/theme`);
+import { tailwindPreset } from '@friends-library/theme';
 
-module.exports = {
+/** @type {import('tailwindcss').Config} */
+export default {
   presets: [tailwindPreset(`en`)],
   content: [
     `./src/**/*.tsx`,
