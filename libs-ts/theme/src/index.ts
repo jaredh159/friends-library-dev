@@ -1,2 +1,2 @@
 export * from './color';
-export { getTailwindConfig } from './tailwind';
+export { default as tailwindPreset } from './tailwind';

@@ -1,12 +1,12 @@
 // @ts-check
-const { getTailwindConfig } = require(`@friends-library/theme`);
+const { tailwindPreset } = require(`@friends-library/theme`);
 
 // hardcode `en` so we don't have to regen tailwind styles
 // when switching languages.  the `flprimary` is barely used
 // in the app, so we can just manually switch on languages then
-const config = { ...getTailwindConfig(`en`) };
+const preset = { ...tailwindPreset(`en`) };
 
-config.theme.screens = {
+preset.theme.screens = {
   // @see https://www.ios-resolution.com/
   tween: `477px`, // 1px larger than largest iPhone
   ipad: `767px`,
@@ -14,7 +14,7 @@ config.theme.screens = {
   'ipad-xl': `1195px`,
 };
 
-config.theme.extend.colors[`ebookcolorscheme`] = {
+preset.theme.extend.colors[`ebookcolorscheme`] = {
   blackbg: `rgb(0, 0, 0)`,
   blackfg: `rgb(169, 169, 169)`,
   blackaccent: `rgb(110, 141, 234)`,
@@ -26,7 +26,7 @@ config.theme.extend.colors[`ebookcolorscheme`] = {
   sepiaaccent: `rgb(201, 154, 61)`,
 };
 
-config.theme.extend.colors[`v1blue`] = {
+preset.theme.extend.colors[`v1blue`] = {
   100: `#EBF8FF`,
   200: `#BEE3F8`,
   300: `#90CDF4`,
@@ -38,7 +38,7 @@ config.theme.extend.colors[`v1blue`] = {
   900: `#2A4365`,
 };
 
-config.theme.extend.colors[`v1gray`] = {
+preset.theme.extend.colors[`v1gray`] = {
   100: `#F7FAFC`,
   200: `#EDF2F7`,
   300: `#E2E8F0`,
@@ -50,7 +50,7 @@ config.theme.extend.colors[`v1gray`] = {
   900: `#1A202C`,
 };
 
-config.theme.extend.colors[`v1green`] = {
+preset.theme.extend.colors[`v1green`] = {
   100: `#F0FFF4`,
   200: `#C6F6D5`,
   300: `#9AE6B4`,
@@ -63,4 +63,4 @@ config.theme.extend.colors[`v1green`] = {
   900: `#22543D`,
 };
 
-module.exports = config;
+module.exports = preset;

@@ -1,8 +1,9 @@
 import { LANG } from '../env';
 
-// TODO: import from @friends-library/theme when converting to next/astro
-// was getting funky errors in storybook, i think maybe converting to a
-// real tailwind preset instead of how it's done now might fix it
+// this fixes a gnarly interaction between storybook-web/evans/native
+// if we change `@friends-library/theme` to not target `commonjs`,
+// then we can import these from there without storybook erroring
+// but, then, the `native` app borks on the `export` keyword
 const BLACK_RGB = [45, 42, 41];
 const MAROON_RGB = [108, 49, 66];
 const GOLD_RGB = [193, 140, 89];

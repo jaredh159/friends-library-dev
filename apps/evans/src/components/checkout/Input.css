@@ -15,7 +15,7 @@
 }
 
 .CartInput:focus {
-  @apply shadow-outline bg-blue-100 border-gray-400;
+  @apply ring bg-blue-100 border-gray-400;
 }
 
 select.CartInput {
