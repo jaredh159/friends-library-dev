@@ -2,6 +2,12 @@ pnpm-lock.yaml
 **/tsconfig.tsbuildinfo
 **/dist/
 **/bundled/
+**/.build/
+**/.next/
+en/
+es/
+artifacts/
+apps/api/
 apps/cover-web-app/src/friends.js
 apps/styleguide/src/built-frags.json
 apps/styleguide/src/paperback-interior.css

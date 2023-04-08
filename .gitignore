@@ -25,6 +25,9 @@ apps/cli/src/cmd/audio/.soundcloud-token
 **/.parcel-cache
 **/.netlify/
 
+# new next-evans
+apps/next-evans/.next/
+
 # bundled actions
 actions/ts-pack/actions/*/bundled/*
 !actions/ts-pack/actions/*/bundled/*.js

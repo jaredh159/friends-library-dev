@@ -24,6 +24,9 @@ poster:
 covers:
   @pnpm --filter cover-web-app start
 
+next:
+  @cd apps/next-evans && just
+
 # code quality
 
 check:

@@ -34,9 +34,6 @@ clean:
 publish-query:
   @pnpm tsc src/ssg/query.ts --skipLibCheck --target esnext --moduleResolution node --outDir dist/ --declaration
 
-prettier:
-  @just ../../prettier
-
 # helpers
 
 [private]

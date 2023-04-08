@@ -51,6 +51,7 @@ jobs:
           pnpm --filter poster ensure-data
           pnpm --filter native ensure-env
           just ./apps/evans/publish-query
+          just ./apps/next-evans/prisma-generate
       - name: typecheck
         run: just typecheck
 

@@ -1,0 +1,17 @@
+_default:
+  @just --choose
+
+dev-en:
+  @NEXT_PUBLIC_LANG=en pnpm dev --port 7222
+
+dev-es:
+  @NEXT_PUBLIC_LANG=es pnpm dev --port 7333
+
+storybook:
+  @cd ../../ && pnpm --filter storybook storybook
+
+prisma-generate:
+  @test -e ../../.env || cp ../../.env.example ../../.env
+  @cp ../../.env ./.env
+  @pnpm prisma generate
+  @rm ./.env
