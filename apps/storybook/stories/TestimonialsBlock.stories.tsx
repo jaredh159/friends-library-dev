@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import TestimonialsBlock from '../../next-evans/components/pages/friend/TestimonialsBlock';
+import { MEDIUM_LOREM } from './helpers';
 import '../styles/globals.css';
 
 const meta = {
-  title: `Friend/TestimonialsBlock`,
+  title: 'Friend/TestimonialsBlock', // eslint-disable-line
   component: TestimonialsBlock,
 } satisfies Meta<typeof TestimonialsBlock>;
 
@@ -14,7 +15,7 @@ export const One: Story = {
     testimonials: [
       {
         cite: `John Doe`,
-        quote: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Id doloribus, aut fugiat provident alias aperiam quae earum totam! Fugit, velit quod! Qui libero nisi est quidem. Voluptatibus aliquid quasi vel. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus atque reiciendis laboriosam, ab voluptate nemo, ad fugiat placeat facere voluptatum perferendis temporibus deserunt cumque harum, eos est vitae. Reiciendis, voluptatibus?`,
+        quote: MEDIUM_LOREM,
       },
     ],
   },
@@ -26,7 +27,7 @@ export const Two: Story = {
       ...One.args.testimonials,
       {
         cite: `Jane Doe`,
-        quote: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Id doloribus, aut fugiat provident alias aperiam quae earum totam! Fugit, velit quod! Qui libero nisi est quidem. Voluptatibus aliquid quasi vel. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus atque reiciendis laboriosam, ab voluptate nemo.`,
+        quote: MEDIUM_LOREM,
       },
     ],
   },
@@ -38,7 +39,7 @@ export const Three: Story = {
       ...Two.args.testimonials,
       {
         cite: `Joe Doe`,
-        quote: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Id doloribus, aut fugiat provident alias aperiam quae earum totam! Fugit, velit quod! Qui libero nisi est quidem. Voluptatibus aliquid quasi vel. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus atque reiciendis laboriosam, ab voluptate nemo. Lorem ipsum dolor sit amet consectetur adipisicing elit.`,
+        quote: MEDIUM_LOREM,
       },
     ],
   },
@@ -50,7 +51,7 @@ export const Four: Story = {
       ...Three.args.testimonials,
       {
         cite: `Jim Doe`,
-        quote: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Id doloribus, aut fugiat provident alias aperiam quae earum totam! Fugit, velit quod! Qui libero nisi est quidem. Voluptatibus aliquid quasi vel. Lorem ipsum dolor sit amet consectetur adipisicing elit.`,
+        quote: MEDIUM_LOREM,
       },
     ],
   },
