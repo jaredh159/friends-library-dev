@@ -1,5 +1,5 @@
+import TestimonialsBlock from '@evans/pages/friend/TestimonialsBlock';
 import type { Meta, StoryObj } from '@storybook/react';
-import TestimonialsBlock from '../../next-evans/components/pages/friend/TestimonialsBlock';
 import { MEDIUM_LOREM, props } from './helpers';
 
 const meta = {

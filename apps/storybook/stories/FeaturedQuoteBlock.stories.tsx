@@ -1,5 +1,5 @@
+import FeaturedQuoteBlock from '@evans/pages/friend/FeaturedQuoteBlock';
 import type { Meta, StoryObj } from '@storybook/react';
-import FeaturedQuoteBlock from '../../next-evans/components/pages/friend/FeaturedQuoteBlock';
 import { LONG_LOREM, SHORT_LOREM, props } from './helpers';
 
 const meta = {

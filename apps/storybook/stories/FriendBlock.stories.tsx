@@ -1,5 +1,5 @@
+import FriendBlock from '@evans/pages/friend/FriendBlock';
 import type { Meta, StoryObj } from '@storybook/react';
-import FriendBlock from '../../next-evans/components/pages/friend/FriendBlock';
 import { MEDIUM_LOREM, props } from './helpers';
 
 const meta = {
