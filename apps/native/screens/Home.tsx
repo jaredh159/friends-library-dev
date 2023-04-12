@@ -28,13 +28,11 @@ const Home: React.FC<Props> = ({ navigation }) => {
     return () => Editions.removeAllChangeListeners();
   }, [setEditionChanges, editionChanges]);
 
-  const { connected, lastAudio, lastEbook } = useSelector((s) => {
-    return {
-      connected: s.network.connected,
-      lastAudio: s.resume.lastAudiobookEditionId,
-      lastEbook: s.resume.lastEbookEditionId,
-    };
-  });
+  const { connected, lastAudio, lastEbook } = useSelector((s) => ({
+    connected: s.network.connected,
+    lastAudio: s.resume.lastAudiobookEditionId,
+    lastEbook: s.resume.lastEbookEditionId,
+  }));
 
   if (Editions.getEditions().length === 0) {
     return connected ? (

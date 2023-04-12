@@ -21,18 +21,16 @@ export const ThreePrintSizes = () => {
   const sizes: PrintSize[] = [`s`, `m`, `xl`];
   return (
     <div>
-      {sizes.map((size) => {
-        return (
-          <>
-            <Wrapped
-              type="spine"
-              {...p({ size, scope: size })}
-              style={{ marginRight: 75 }}
-            />
-            <Style type="spine" scope={size} size={size} />
-          </>
-        );
-      })}
+      {sizes.map((size) => (
+        <>
+          <Wrapped
+            type="spine"
+            {...p({ size, scope: size })}
+            style={{ marginRight: 75 }}
+          />
+          <Style type="spine" scope={size} size={size} />
+        </>
+      ))}
     </div>
   );
 };

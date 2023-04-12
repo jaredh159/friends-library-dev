@@ -86,8 +86,8 @@ const SortButton: React.FC<{
   </TouchableOpacity>
 );
 
-export const propSelector: PropSelector<OwnProps, Props> = (ownProps, dispatch) => {
-  return (state) => {
+export const propSelector: PropSelector<OwnProps, Props> =
+  (ownProps, dispatch) => (state) => {
     if (ownProps.listType === `audio`) {
       return {
         query: state.preferences.audioSearchQuery,
@@ -105,7 +105,6 @@ export const propSelector: PropSelector<OwnProps, Props> = (ownProps, dispatch) 
       setHeight: (height) => dispatch(setEbookSortHeaderHeight(height)),
     };
   };
-};
 
 type OwnProps = {
   listType: 'ebook' | 'audio';

@@ -21,14 +21,12 @@ interface Props {
   }[];
 }
 
-const CheckoutLazy: React.FC<Props> = ({ recommended }) => {
-  return (
-    <CheckoutModal onClose={() => machine.close()}>
-      <ErrorBoundary location="checkout">
-        <CheckoutFlow machine={machine} recommendedBooks={recommended} />
-      </ErrorBoundary>
-    </CheckoutModal>
-  );
-};
+const CheckoutLazy: React.FC<Props> = ({ recommended }) => (
+  <CheckoutModal onClose={() => machine.close()}>
+    <ErrorBoundary location="checkout">
+      <CheckoutFlow machine={machine} recommendedBooks={recommended} />
+    </ErrorBoundary>
+  </CheckoutModal>
+);
 
 export default CheckoutLazy;

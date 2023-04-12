@@ -129,31 +129,29 @@ export const FilterControls_ = () => {
   );
 };
 
-export const ActiveFilters_ = () => {
-  return (
-    <ActiveFilters
-      groups={[
-        {
-          label: `Editions`,
-          filters: [
-            { clear: a(`clear`), text: `Updated (33)` },
-            { clear: a(`clear`), text: `Original (14)` },
-            { clear: a(`clear`), text: `Modernized (53)` },
-          ],
-        },
-        {
-          label: `Tags`,
-          filters: [{ clear: a(`clear`), text: `Journal (54)` }],
-        },
-        {
-          label: `Region`,
-          filters: [{ clear: a(`clear`), text: `Scotland (3)` }],
-        },
-      ]}
-      clearAll={a(`clear all`)}
-    />
-  );
-};
+export const ActiveFilters_ = () => (
+  <ActiveFilters
+    groups={[
+      {
+        label: `Editions`,
+        filters: [
+          { clear: a(`clear`), text: `Updated (33)` },
+          { clear: a(`clear`), text: `Original (14)` },
+          { clear: a(`clear`), text: `Modernized (53)` },
+        ],
+      },
+      {
+        label: `Tags`,
+        filters: [{ clear: a(`clear`), text: `Journal (54)` }],
+      },
+      {
+        label: `Region`,
+        filters: [{ clear: a(`clear`), text: `Scotland (3)` }],
+      },
+    ]}
+    clearAll={a(`clear all`)}
+  />
+);
 
 export const BookTeaserCard_ = () => (
   <div className="bg-flblue py-16">

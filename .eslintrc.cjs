@@ -211,6 +211,12 @@ module.exports = {
   },
   overrides: [
     {
+      files: [`**/*.tsx`],
+      rules: {
+        'arrow-body-style': [`error`, `as-needed`],
+      },
+    },
+    {
       files: [`apps/admin/**`, `apps/cover-web-app/**`, `apps/native/**`],
       rules: {
         '@typescript-eslint/no-non-null-assertion': `off`,

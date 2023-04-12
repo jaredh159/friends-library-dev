@@ -64,14 +64,12 @@ interface Props {
   quotes: Array<{ quote: string; cite: string }>;
 }
 
-const Friend: React.FC<Props> = ({ name, gender, description, quotes }) => {
-  return (
-    <div>
-      <FriendBlock name={name} gender={gender} blurb={description} />
-      {quotes[0] && <FeaturedQuoteBlock cite={quotes[0].cite} quote={quotes[0].quote} />}
-      <TestimonialsBlock testimonials={quotes.slice(1, quotes.length)} />
-    </div>
-  );
-};
+const Friend: React.FC<Props> = ({ name, gender, description, quotes }) => (
+  <div>
+    <FriendBlock name={name} gender={gender} blurb={description} />
+    {quotes[0] && <FeaturedQuoteBlock cite={quotes[0].cite} quote={quotes[0].quote} />}
+    <TestimonialsBlock testimonials={quotes.slice(1, quotes.length)} />
+  </div>
+);
 
 export default Friend;

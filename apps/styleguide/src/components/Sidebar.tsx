@@ -40,13 +40,11 @@ interface ItemProps {
   href?: string;
 }
 
-const Item: React.FC<ItemProps> = ({ text, href }) => {
-  return (
-    <li>
-      <a href={`#${href || text.toLowerCase().replace(/ /g, `-`)}`}>{text}</a>
-    </li>
-  );
-};
+const Item: React.FC<ItemProps> = ({ text, href }) => (
+  <li>
+    <a href={`#${href || text.toLowerCase().replace(/ /g, `-`)}`}>{text}</a>
+  </li>
+);
 
 Item.defaultProps = { href: `` };
 

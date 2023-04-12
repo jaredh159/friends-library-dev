@@ -27,51 +27,49 @@ const BookListItem: React.FC<Props> = ({
   badgeText,
   className,
   orphan,
-}) => {
-  return (
-    <View
-      style={tw.style(`flex-row p-2 border-v1gray-400`, className, !orphan && `border-b`)}
-    >
-      <View style={tw`w-[90px] h-[90px]`}>
-        <CoverImage editionId={editionId} layoutWidth={90} type="square" />
-        {progress > 4 && progress < 96 && <ProgressBar progress={progress} />}
-        {progress >= 96 && <Complete />}
+}) => (
+  <View
+    style={tw.style(`flex-row p-2 border-v1gray-400`, className, !orphan && `border-b`)}
+  >
+    <View style={tw`w-[90px] h-[90px]`}>
+      <CoverImage editionId={editionId} layoutWidth={90} type="square" />
+      {progress > 4 && progress < 96 && <ProgressBar progress={progress} />}
+      {progress >= 96 && <Complete />}
+    </View>
+    <View style={tw`flex-col m-2 mb-0 w-full mt-0 mr-0 flex-shrink`}>
+      <View style={tw`flex-row justify-between mb-px`}>
+        <Sans size={11} style={tw`uppercase text-v1gray-700 mb-1 tracking-[0.75px]`}>
+          {upperLeft}
+        </Sans>
+        <Sans size={11} style={tw`text-v1gray-600 mb-1 tracking-[0.5px]`}>
+          {upperRight}
+        </Sans>
       </View>
-      <View style={tw`flex-col m-2 mb-0 w-full mt-0 mr-0 flex-shrink`}>
-        <View style={tw`flex-row justify-between mb-px`}>
-          <Sans size={11} style={tw`uppercase text-v1gray-700 mb-1 tracking-[0.75px]`}>
-            {upperLeft}
-          </Sans>
-          <Sans size={11} style={tw`text-v1gray-600 mb-1 tracking-[0.5px]`}>
-            {upperRight}
+      <Serif size={22} style={tw`pb-1`} numberOfLines={2}>
+        {typeof title === `function` ? title() : utf8ShortTitle(title)}
+      </Serif>
+      {badgeText && (
+        <View
+          style={tw.style(
+            `mt-px mb-0 h-4 rounded-full bg-v1green-500 text-center items-center justify-center`,
+            {
+              'w-10': badgeText.length < 5,
+              'w-12': badgeText.length === 5,
+              'w-24': badgeText.length > 5,
+            },
+          )}
+        >
+          <Sans
+            style={tw`uppercase text-white text-center font-bold android:-mt-px`}
+            size={9.5}
+          >
+            {badgeText}
           </Sans>
         </View>
-        <Serif size={22} style={tw`pb-1`} numberOfLines={2}>
-          {typeof title === `function` ? title() : utf8ShortTitle(title)}
-        </Serif>
-        {badgeText && (
-          <View
-            style={tw.style(
-              `mt-px mb-0 h-4 rounded-full bg-v1green-500 text-center items-center justify-center`,
-              {
-                'w-10': badgeText.length < 5,
-                'w-12': badgeText.length === 5,
-                'w-24': badgeText.length > 5,
-              },
-            )}
-          >
-            <Sans
-              style={tw`uppercase text-white text-center font-bold android:-mt-px`}
-              size={9.5}
-            >
-              {badgeText}
-            </Sans>
-          </View>
-        )}
-      </View>
+      )}
     </View>
-  );
-};
+  </View>
+);
 
 export default BookListItem;
 

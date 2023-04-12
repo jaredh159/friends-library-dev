@@ -6,24 +6,22 @@ interface Props {
   step: 'Order' | 'Delivery' | 'Payment' | 'Confirmation';
 }
 
-const Progress: React.FC<Props> = ({ step }) => {
-  return (
-    <ol className="flex antialiased font-hairline tracking-wider justify-center font-sans text-center text-md md:text-lg">
-      <Step step={t`Order`} active={step === `Order`} complete={true} />
-      <Step step={t`Delivery`} active={step === `Delivery`} complete={step !== `Order`} />
-      <Step
-        step={t`Payment`}
-        active={step === `Payment`}
-        complete={[`Payment`, `Confirmation`].includes(step)}
-      />
-      <Step
-        step={t`Confirmation`}
-        active={step === `Confirmation`}
-        complete={step === `Confirmation`}
-      />
-    </ol>
-  );
-};
+const Progress: React.FC<Props> = ({ step }) => (
+  <ol className="flex antialiased font-hairline tracking-wider justify-center font-sans text-center text-md md:text-lg">
+    <Step step={t`Order`} active={step === `Order`} complete={true} />
+    <Step step={t`Delivery`} active={step === `Delivery`} complete={step !== `Order`} />
+    <Step
+      step={t`Payment`}
+      active={step === `Payment`}
+      complete={[`Payment`, `Confirmation`].includes(step)}
+    />
+    <Step
+      step={t`Confirmation`}
+      active={step === `Confirmation`}
+      complete={step === `Confirmation`}
+    />
+  </ol>
+);
 
 export default Progress;
 

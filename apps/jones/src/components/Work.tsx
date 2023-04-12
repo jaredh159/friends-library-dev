@@ -101,11 +101,9 @@ class Work extends React.Component<Props> {
   }
 }
 
-const mapState = (state: AppState): Pick<Props, 'task'> => {
-  return {
-    task: requireCurrentTask(state),
-  };
-};
+const mapState = (state: AppState): Pick<Props, 'task'> => ({
+  task: requireCurrentTask(state),
+});
 
 const mapDispatch = {
   checkout: actions.checkout,

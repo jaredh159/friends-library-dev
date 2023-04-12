@@ -39,17 +39,14 @@ export const EditFriend: React.FC<Props> = ({
   selectableDocuments,
 }) => {
   const [friend, dispatch] = useReducer<Reducer<EditableFriend>>(reducer, initialFriend);
-  const replace: ReducerReplace = (path, preprocess) => {
-    return (value) =>
-      dispatch({
-        type: `replace_value`,
-        at: path,
-        with: preprocess ? preprocess(value) : value,
-      });
-  };
-  const deleteFrom: (path: string) => (index: number) => unknown = (path) => {
-    return (index) => dispatch({ type: `delete_item`, at: `${path}[${index}]` });
-  };
+  const replace: ReducerReplace = (path, preprocess) => (value) =>
+    dispatch({
+      type: `replace_value`,
+      at: path,
+      with: preprocess ? preprocess(value) : value,
+    });
+  const deleteFrom: (path: string) => (index: number) => unknown = (path) => (index) =>
+    dispatch({ type: `delete_item`, at: `${path}[${index}]` });
   return (
     <div className="mt-6 space-y-4 mb-24">
       <SaveChangesBar

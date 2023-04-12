@@ -93,32 +93,28 @@ const LinkList: React.FC<{
   title: string;
   links: LinkItem[];
   last?: boolean;
-}> = ({ title, links, last }) => {
-  return (
-    <dl className={cx(!last && `mb-10 md:mb-0 md:pr-8`, `md:flex-grow`)}>
-      <dt className="text-xl font-semibold mb-5 tracking-widest">{title}</dt>
-      <dd>
-        <ul className="text-gray-300">
-          {links
-            .filter((item) => {
-              if (!Array.isArray(item)) {
-                return true;
-              }
-              const [, , lang] = item;
-              return !lang || lang === LANG;
-            })
-            .map((item, idx) => {
-              return (
-                <li
-                  key={`item-${idx}`}
-                  className="mb-2 tracking-wider leading-tight pb-1 opacity-75 text-md"
-                >
-                  {Array.isArray(item) ? <Link to={item[0]}>{item[1]}</Link> : item()}
-                </li>
-              );
-            })}
-        </ul>
-      </dd>
-    </dl>
-  );
-};
+}> = ({ title, links, last }) => (
+  <dl className={cx(!last && `mb-10 md:mb-0 md:pr-8`, `md:flex-grow`)}>
+    <dt className="text-xl font-semibold mb-5 tracking-widest">{title}</dt>
+    <dd>
+      <ul className="text-gray-300">
+        {links
+          .filter((item) => {
+            if (!Array.isArray(item)) {
+              return true;
+            }
+            const [, , lang] = item;
+            return !lang || lang === LANG;
+          })
+          .map((item, idx) => (
+            <li
+              key={`item-${idx}`}
+              className="mb-2 tracking-wider leading-tight pb-1 opacity-75 text-md"
+            >
+              {Array.isArray(item) ? <Link to={item[0]}>{item[1]}</Link> : item()}
+            </li>
+          ))}
+      </ul>
+    </dd>
+  </dl>
+);

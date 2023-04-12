@@ -21,36 +21,34 @@ const AudioScrubber: React.FC<Props> = ({
   downloading,
   downloadingProgress,
   seekTo,
-}) => {
-  return (
-    <View style={{ opacity: playing || downloading ? 1 : 0.6 }}>
-      {!downloading && (
-        <RNScrubber
-          value={position || 0}
-          bufferedValue={0}
-          scrubbedColor={tw.color(`flmaroon`)}
-          totalDuration={partDuration}
-          onSlidingComplete={(newPosition) => seekTo(newPosition)}
-        />
-      )}
-      {downloading && (
-        <>
-          <View style={tw`mt-3 h-2`}>
-            <View style={tw`w-full border-b border-2 border-v1gray-300 absolute`} />
-            <View
-              style={tw.style(`border-b border-2 border-v1gray-500 absolute`, {
-                width: `${downloadingProgress}%`,
-              })}
-            />
-          </View>
-          <View style={tw`flex-row justify-center`}>
-            <Sans size={13}>{`${t`Downloading`}...`}</Sans>
-          </View>
-        </>
-      )}
-    </View>
-  );
-};
+}) => (
+  <View style={{ opacity: playing || downloading ? 1 : 0.6 }}>
+    {!downloading && (
+      <RNScrubber
+        value={position || 0}
+        bufferedValue={0}
+        scrubbedColor={tw.color(`flmaroon`)}
+        totalDuration={partDuration}
+        onSlidingComplete={(newPosition) => seekTo(newPosition)}
+      />
+    )}
+    {downloading && (
+      <>
+        <View style={tw`mt-3 h-2`}>
+          <View style={tw`w-full border-b border-2 border-v1gray-300 absolute`} />
+          <View
+            style={tw.style(`border-b border-2 border-v1gray-500 absolute`, {
+              width: `${downloadingProgress}%`,
+            })}
+          />
+        </View>
+        <View style={tw`flex-row justify-center`}>
+          <Sans size={13}>{`${t`Downloading`}...`}</Sans>
+        </View>
+      </>
+    )}
+  </View>
+);
 
 export function formatTime(totalSeconds: number): string {
   const hours = Math.floor(totalSeconds / (60 * 60));
