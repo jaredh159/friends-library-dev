@@ -1,36 +1,30 @@
 import { PrismaClient } from '@prisma/client';
+import invariant from 'tiny-invariant';
 import type { GetStaticPaths, GetStaticProps } from 'next';
-import type { Lang } from '@/../../libs-ts/types/src';
 import FeaturedQuoteBlock from '@/components/pages/friend/FeaturedQuoteBlock';
 import FriendBlock from '@/components/pages/friend/FriendBlock';
 import TestimonialsBlock from '@/components/pages/friend/TestimonialsBlock';
+import { LANG } from '@/lib/env';
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const prisma = new PrismaClient();
-  const allFriends = await prisma.friends.findMany();
+  const allFriends = await new PrismaClient().friends.findMany({
+    where: { lang: LANG },
+    select: { slug: true },
+  });
+
   const paths = allFriends.map((friend) => ({
-    params: {
-      friend_name: friend.slug,
-    },
+    params: { friend_slug: friend.slug },
   }));
 
-  return {
-    paths,
-    fallback: false,
-  };
+  return { paths, fallback: false };
 };
 
 export const getStaticProps: GetStaticProps<Props> = async (context) => {
-  const prisma = new PrismaClient();
-  if (typeof context.params?.friend_name !== `string`) {
-    return {
-      notFound: true,
-    };
-  }
-  const friend = await prisma.friends.findFirst({
+  invariant(typeof context.params?.friend_slug === `string`);
+  const friend = await new PrismaClient().friends.findFirst({
     where: {
-      slug: context.params.friend_name,
-      lang: process.env.NEXT_PUBLIC_LANG as Lang,
+      slug: context.params.friend_slug,
+      lang: LANG,
     },
     select: {
       name: true,
@@ -44,11 +38,7 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
       },
     },
   });
-  if (!friend) {
-    return {
-      notFound: true,
-    };
-  }
+  invariant(friend !== null);
   return {
     props: {
       ...friend,
