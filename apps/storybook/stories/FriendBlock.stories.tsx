@@ -2,14 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react';
 import FriendBlock from '../../next-evans/components/pages/friend/FriendBlock';
 import '../styles/globals.css';
 
-const meta: Meta<typeof FriendBlock> = {
-  title: 'Friend/FriendBlock',
+const meta = {
+  title: `Friend/FriendBlock`,
   component: FriendBlock,
-};
+} satisfies Meta<typeof FriendBlock>;
 
-export default meta;
-
-type Story = StoryObj<typeof FriendBlock>;
+type Story = StoryObj<typeof meta>;
 
 export const Male: Story = {
   args: {
@@ -23,6 +21,8 @@ export const Female: Story = {
   args: {
     name: `Elizabeth Webb`,
     gender: `female`,
-    blurb: Male.args?.blurb,
+    blurb: Male.args.blurb,
   },
 };
+
+export default meta;

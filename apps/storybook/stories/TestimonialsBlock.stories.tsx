@@ -2,22 +2,19 @@ import type { Meta, StoryObj } from '@storybook/react';
 import TestimonialsBlock from '../../next-evans/components/pages/friend/TestimonialsBlock';
 import '../styles/globals.css';
 
-const meta: Meta<typeof TestimonialsBlock> = {
-  title: 'Friend/TestimonialsBlock',
+const meta = {
+  title: `Friend/TestimonialsBlock`,
   component: TestimonialsBlock,
-};
+} satisfies Meta<typeof TestimonialsBlock>;
 
-export default meta;
-
-type Story = StoryObj<typeof TestimonialsBlock>;
+type Story = StoryObj<typeof meta>;
 
 export const One: Story = {
   args: {
     testimonials: [
       {
-        cite: 'John Doe',
-        quote:
-          'Lorem ipsum dolor sit amet consectetur adipisicing elit. Id doloribus, aut fugiat provident alias aperiam quae earum totam! Fugit, velit quod! Qui libero nisi est quidem. Voluptatibus aliquid quasi vel. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus atque reiciendis laboriosam, ab voluptate nemo, ad fugiat placeat facere voluptatum perferendis temporibus deserunt cumque harum, eos est vitae. Reiciendis, voluptatibus?',
+        cite: `John Doe`,
+        quote: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Id doloribus, aut fugiat provident alias aperiam quae earum totam! Fugit, velit quod! Qui libero nisi est quidem. Voluptatibus aliquid quasi vel. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus atque reiciendis laboriosam, ab voluptate nemo, ad fugiat placeat facere voluptatum perferendis temporibus deserunt cumque harum, eos est vitae. Reiciendis, voluptatibus?`,
       },
     ],
   },
@@ -26,11 +23,10 @@ export const One: Story = {
 export const Two: Story = {
   args: {
     testimonials: [
-      ...One.args?.testimonials!,
+      ...One.args.testimonials,
       {
-        cite: 'Jane Doe',
-        quote:
-          'Lorem ipsum dolor sit amet consectetur adipisicing elit. Id doloribus, aut fugiat provident alias aperiam quae earum totam! Fugit, velit quod! Qui libero nisi est quidem. Voluptatibus aliquid quasi vel. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus atque reiciendis laboriosam, ab voluptate nemo.',
+        cite: `Jane Doe`,
+        quote: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Id doloribus, aut fugiat provident alias aperiam quae earum totam! Fugit, velit quod! Qui libero nisi est quidem. Voluptatibus aliquid quasi vel. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus atque reiciendis laboriosam, ab voluptate nemo.`,
       },
     ],
   },
@@ -39,11 +35,10 @@ export const Two: Story = {
 export const Three: Story = {
   args: {
     testimonials: [
-      ...Two.args?.testimonials!,
+      ...Two.args.testimonials,
       {
-        cite: 'Joe Doe',
-        quote:
-          'Lorem ipsum dolor sit amet consectetur adipisicing elit. Id doloribus, aut fugiat provident alias aperiam quae earum totam! Fugit, velit quod! Qui libero nisi est quidem. Voluptatibus aliquid quasi vel. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus atque reiciendis laboriosam, ab voluptate nemo. Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+        cite: `Joe Doe`,
+        quote: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Id doloribus, aut fugiat provident alias aperiam quae earum totam! Fugit, velit quod! Qui libero nisi est quidem. Voluptatibus aliquid quasi vel. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus atque reiciendis laboriosam, ab voluptate nemo. Lorem ipsum dolor sit amet consectetur adipisicing elit.`,
       },
     ],
   },
@@ -52,12 +47,13 @@ export const Three: Story = {
 export const Four: Story = {
   args: {
     testimonials: [
-      ...Three.args?.testimonials!,
+      ...Three.args.testimonials,
       {
-        cite: 'Jim Doe',
-        quote:
-          'Lorem ipsum dolor sit amet consectetur adipisicing elit. Id doloribus, aut fugiat provident alias aperiam quae earum totam! Fugit, velit quod! Qui libero nisi est quidem. Voluptatibus aliquid quasi vel. Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+        cite: `Jim Doe`,
+        quote: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Id doloribus, aut fugiat provident alias aperiam quae earum totam! Fugit, velit quod! Qui libero nisi est quidem. Voluptatibus aliquid quasi vel. Lorem ipsum dolor sit amet consectetur adipisicing elit.`,
       },
     ],
   },
 };
+
+export default meta;

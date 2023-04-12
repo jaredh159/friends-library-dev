@@ -2,14 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react';
 import FeaturedQuoteBlock from '../../next-evans/components/pages/friend/FeaturedQuoteBlock';
 import '../styles/globals.css';
 
-const meta: Meta<typeof FeaturedQuoteBlock> = {
-  title: 'Friend/FeaturedQuoteBlock',
+const meta = {
+  title: `Friend/FeaturedQuoteBlock`,
   component: FeaturedQuoteBlock,
-};
+} satisfies Meta<typeof FeaturedQuoteBlock>;
 
-export default meta;
-
-type Story = StoryObj<typeof FeaturedQuoteBlock>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
@@ -24,3 +22,5 @@ export const Long: Story = {
     cite: `John Doe (on his death bed)`,
   },
 };
+
+export default meta;
