@@ -7,24 +7,22 @@ interface Props {
   quote: string;
 }
 
-const FeaturedQuoteBlock: React.FC<Props> = ({ cite, quote }) => {
-  return (
-    <blockquote className="FeaturedQuoteBlock text-justify bg-flgreen-600 text-white px-12 py-20 md:py-20 md:px-48 antialiased font-sans leading-loose text-md relative flex flex-col items-center">
-      <div>
-        <p className="relative max-w-4xl">
-          <Quotes className="LeftQuote" />
-          <Quotes className="hidden md:block RightQuote" />
-          <span
-            className="relative block font-serif text-lg"
-            dangerouslySetInnerHTML={{
-              __html: quote.replace(/“/g, `‘`).replace(/”/g, `’`),
-            }}
-          />
-        </p>
-        <cite className="not-italic block mt-4">- {cite}</cite>
-      </div>
-    </blockquote>
-  );
-};
+const FeaturedQuoteBlock: React.FC<Props> = ({ cite, quote }) => (
+  <blockquote className="FeaturedQuoteBlock text-justify bg-flgreen-600 text-white px-12 py-20 md:py-20 md:px-48 antialiased font-sans leading-loose text-md relative flex flex-col items-center">
+    <div>
+      <p className="relative max-w-4xl">
+        <Quotes className="LeftQuote" />
+        <Quotes className="hidden md:block RightQuote" />
+        <span
+          className="relative block font-serif text-lg"
+          dangerouslySetInnerHTML={{
+            __html: quote.replace(/“/g, `‘`).replace(/”/g, `’`),
+          }}
+        />
+      </p>
+      <cite className="not-italic block mt-4">- {cite}</cite>
+    </div>
+  </blockquote>
+);
 
 export default FeaturedQuoteBlock;

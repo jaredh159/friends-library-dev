@@ -35,10 +35,8 @@ export function useQueryResult<
   return { isResolved: true, data };
 }
 
-const QueryError: React.FC<{ error: ApolloError | undefined }> = ({ error }) => {
-  return (
-    <InfoMessage type="error">
-      {!error ? `Missing data` : `Error: ${error.message.replace(/^error\.?/, ``)}`}
-    </InfoMessage>
-  );
-};
+const QueryError: React.FC<{ error: ApolloError | undefined }> = ({ error }) => (
+  <InfoMessage type="error">
+    {!error ? `Missing data` : `Error: ${error.message.replace(/^error\.?/, ``)}`}
+  </InfoMessage>
+);

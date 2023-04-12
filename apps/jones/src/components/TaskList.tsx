@@ -21,15 +21,13 @@ interface Props {
   tasks: TaskType[];
 }
 
-const TaskList: React.FC<Props> = ({ tasks }) => {
-  return (
-    <List>
-      {tasks.map((task) => (
-        <Task key={task.id} task={task} />
-      ))}
-    </List>
-  );
-};
+const TaskList: React.FC<Props> = ({ tasks }) => (
+  <List>
+    {tasks.map((task) => (
+      <Task key={task.id} task={task} />
+    ))}
+  </List>
+);
 
 const mapState = (state: State): Props => ({
   tasks: Object.values(state.tasks.present),

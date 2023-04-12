@@ -73,16 +73,13 @@ class Payment extends React.Component<Props, State> {
     });
   };
 
-  private valid: () => boolean = () => {
-    return (
-      this.state.numberComplete &&
-      !this.state.numberError &&
-      this.state.cvcComplete &&
-      !this.state.cvcError &&
-      this.state.expiryComplete &&
-      !this.state.expiryError
-    );
-  };
+  private valid: () => boolean = () =>
+    this.state.numberComplete &&
+    !this.state.numberError &&
+    this.state.cvcComplete &&
+    !this.state.cvcError &&
+    this.state.expiryComplete &&
+    !this.state.expiryError;
 
   public override render(): JSX.Element {
     const { throbbing, onBack, error } = this.props;

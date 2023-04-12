@@ -39,90 +39,89 @@ export const AudioControls: React.FC<Props> = ({
   position,
   seekTo,
   multipart,
-}) => {
-  return (
-    <View>
-      <View style={tw`ipad:items-center ipad:mt-4`}>
-        <View
-          style={tw.style(
-            `flex-row items-center px-2 ipad:max-w-[400px]`,
-            downloading ? `justify-center` : `justify-between`,
-          )}
-        >
-          {!downloading && (
-            <TouchableOpacity onPress={skipBack}>
-              <Icon
-                style={tw.style(`ipad:pr-16`, {
-                  opacity: multipart ? (skipBack ? 1 : 0.2) : 0,
-                })}
-                name="step-backward"
-                size={25}
-                color={tw.color(`flblue`)}
-              />
-            </TouchableOpacity>
-          )}
-          {!downloading && (
-            <TouchableOpacity onPress={seekBackward}>
-              <Icon
-                style={{ transform: [{ scaleX: -1 }] }}
-                name="repeat"
-                size={25}
-                color={tw.color(`flblue`)}
-              />
-            </TouchableOpacity>
-          )}
-          <TouchableOpacity
-            style={tw`items-center justify-center mb-2`}
-            onPress={togglePlayback}
-          >
+}) => (
+  <View>
+    <View style={tw`ipad:items-center ipad:mt-4`}>
+      <View
+        style={tw.style(
+          `flex-row items-center px-2 ipad:max-w-[400px]`,
+          downloading ? `justify-center` : `justify-between`,
+        )}
+      >
+        {!downloading && (
+          <TouchableOpacity onPress={skipBack}>
             <Icon
-              size={80}
+              style={tw.style(`ipad:pr-16`, {
+                opacity: multipart ? (skipBack ? 1 : 0.2) : 0,
+              })}
+              name="step-backward"
+              size={25}
               color={tw.color(`flblue`)}
-              style={tw`opacity-${downloading ? 50 : 100} ipad:px-16`}
-              name={
-                downloading ? `cloud-download` : playing ? `pause-circle` : `play-circle`
-              }
             />
           </TouchableOpacity>
-          {!downloading && (
-            <TouchableOpacity onPress={seekForward}>
-              <Icon name="repeat" size={25} color={tw.color(`flblue`)} />
-            </TouchableOpacity>
-          )}
-          {!downloading && (
-            <TouchableOpacity onPress={skipNext}>
-              <Icon
-                style={tw.style(`ipad:pl-16`, {
-                  opacity: multipart ? (skipNext ? 1 : 0.2) : 0,
-                })}
-                name="step-forward"
-                size={25}
-                color={tw.color(`flblue`)}
-              />
-            </TouchableOpacity>
-          )}
-        </View>
-      </View>
-      <View style={tw`ipad:mt-4 ipad:px-6 ipad-lg:px-[10%]`}>
-        <AudioScrubber
-          downloading={downloading}
-          downloadingProgress={progress}
-          playing={playing}
-          partDuration={duration}
-          position={position}
-          seekTo={seekTo}
-        />
+        )}
+        {!downloading && (
+          <TouchableOpacity onPress={seekBackward}>
+            <Icon
+              style={{ transform: [{ scaleX: -1 }] }}
+              name="repeat"
+              size={25}
+              color={tw.color(`flblue`)}
+            />
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity
+          style={tw`items-center justify-center mb-2`}
+          onPress={togglePlayback}
+        >
+          <Icon
+            size={80}
+            color={tw.color(`flblue`)}
+            style={tw`opacity-${downloading ? 50 : 100} ipad:px-16`}
+            name={
+              downloading ? `cloud-download` : playing ? `pause-circle` : `play-circle`
+            }
+          />
+        </TouchableOpacity>
+        {!downloading && (
+          <TouchableOpacity onPress={seekForward}>
+            <Icon name="repeat" size={25} color={tw.color(`flblue`)} />
+          </TouchableOpacity>
+        )}
+        {!downloading && (
+          <TouchableOpacity onPress={skipNext}>
+            <Icon
+              style={tw.style(`ipad:pl-16`, {
+                opacity: multipart ? (skipNext ? 1 : 0.2) : 0,
+              })}
+              name="step-forward"
+              size={25}
+              color={tw.color(`flblue`)}
+            />
+          </TouchableOpacity>
+        )}
       </View>
     </View>
-  );
-};
+    <View style={tw`ipad:mt-4 ipad:px-6 ipad-lg:px-[10%]`}>
+      <AudioScrubber
+        downloading={downloading}
+        downloadingProgress={progress}
+        playing={playing}
+        partDuration={duration}
+        position={position}
+        seekTo={seekTo}
+      />
+    </View>
+  </View>
+);
 
 interface OwnProps {
   editionId: EditionId;
 }
 
-export const propSelector: PropSelector<OwnProps, Props> = ({ editionId }, dispatch) => {
-  return (state) => {
+export const propSelector: PropSelector<OwnProps, Props> =
+  ({ editionId }, dispatch) =>
+  (state) => {
     const activePart = select.activeAudioPart(editionId, state);
     if (!activePart) return null;
     const [part, , audio] = activePart;
@@ -146,7 +145,6 @@ export const propSelector: PropSelector<OwnProps, Props> = ({ editionId }, dispa
       seekTo: (position: number) => dispatch(seekTo(editionId, part.index, position)),
     };
   };
-};
 
 const AudioControlsContainer: React.FC<OwnProps> = (ownProps) => {
   const props = useSelector(propSelector(ownProps, useDispatch()));

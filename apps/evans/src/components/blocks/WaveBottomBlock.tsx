@@ -9,15 +9,10 @@ interface Props {
   children: React.ReactNode;
 }
 
-const WaveBottomBlock: React.FC<Props> = ({ id, color, children, className }) => {
-  return (
-    <section
-      id={id}
-      className={cx(className, `WaveBottomBlock WaveBottomBlock--${color}`)}
-    >
-      {children}
-    </section>
-  );
-};
+const WaveBottomBlock: React.FC<Props> = ({ id, color, children, className }) => (
+  <section id={id} className={cx(className, `WaveBottomBlock WaveBottomBlock--${color}`)}>
+    {children}
+  </section>
+);
 
 export default WaveBottomBlock;

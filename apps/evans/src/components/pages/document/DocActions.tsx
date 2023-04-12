@@ -18,27 +18,25 @@ const DocActions: React.FC<Props> = ({
   download,
   gotoAudio,
   className = ``,
-}) => {
-  return (
-    <MultiPill
-      className={className}
-      buttons={[
-        {
-          text: t`Download`,
-          icon: `cloud`,
-          onClick: download,
-        },
-        {
-          text: `${t`Paperback`} $${(price / 100).toFixed(2)}`,
-          icon: `book`,
-          onClick: addToCart,
-        },
-        ...(hasAudio
-          ? [{ text: t`Audiobook`, icon: `headphones`, onClick: gotoAudio }]
-          : []),
-      ]}
-    />
-  );
-};
+}) => (
+  <MultiPill
+    className={className}
+    buttons={[
+      {
+        text: t`Download`,
+        icon: `cloud`,
+        onClick: download,
+      },
+      {
+        text: `${t`Paperback`} $${(price / 100).toFixed(2)}`,
+        icon: `book`,
+        onClick: addToCart,
+      },
+      ...(hasAudio
+        ? [{ text: t`Audiobook`, icon: `headphones`, onClick: gotoAudio }]
+        : []),
+    ]}
+  />
+);
 
 export default DocActions;

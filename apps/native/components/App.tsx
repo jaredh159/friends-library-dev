@@ -36,11 +36,13 @@ const App: React.FC = () => {
   }));
 
   // add a listener for network connectivity events one time
-  useEffect(() => {
-    return NetInfo.addEventListener((state) => {
-      dispatch(setConnected(state.isConnected ?? false));
-    });
-  }, [dispatch]);
+  useEffect(
+    () =>
+      NetInfo.addEventListener((state) => {
+        dispatch(setConnected(state.isConnected ?? false));
+      }),
+    [dispatch],
+  );
 
   // as soon as we know we're connected to the internet, fetch resources
   useEffect(() => {

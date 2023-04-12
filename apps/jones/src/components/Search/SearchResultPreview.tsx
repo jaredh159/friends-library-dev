@@ -57,31 +57,29 @@ interface Props {
   replace: string;
 }
 
-const Component: React.FC<Props> = ({ result, edit, replace }) => {
-  return (
-    <SearchResultPreview
-      onClick={(e: React.MouseEvent<HTMLDivElement>) => {
-        if (e.target instanceof Element && e.target.nodeName === `B`) {
-          edit(result);
-        }
-      }}
-    >
-      {result.context.map((line: SearchResultContext, index: number) => (
-        <Line key={line.lineNumber}>
-          <LineNumber>{line.lineNumber}</LineNumber>
-          <div className="content">
-            <span
-              className="content-inner"
-              dangerouslySetInnerHTML={{
-                __html: lineContent(line, index, result, replace),
-              }}
-            />
-          </div>
-        </Line>
-      ))}
-    </SearchResultPreview>
-  );
-};
+const Component: React.FC<Props> = ({ result, edit, replace }) => (
+  <SearchResultPreview
+    onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+      if (e.target instanceof Element && e.target.nodeName === `B`) {
+        edit(result);
+      }
+    }}
+  >
+    {result.context.map((line: SearchResultContext, index: number) => (
+      <Line key={line.lineNumber}>
+        <LineNumber>{line.lineNumber}</LineNumber>
+        <div className="content">
+          <span
+            className="content-inner"
+            dangerouslySetInnerHTML={{
+              __html: lineContent(line, index, result, replace),
+            }}
+          />
+        </div>
+      </Line>
+    ))}
+  </SearchResultPreview>
+);
 
 export default Component;
 

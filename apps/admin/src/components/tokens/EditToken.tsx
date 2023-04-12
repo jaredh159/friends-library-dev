@@ -22,14 +22,12 @@ export const EditToken: React.FC<Props> = ({ token: initialToken }) => {
     !isClientGeneratedId(initialToken.id),
   );
   const [token, dispatch] = useReducer<Reducer<EditableToken>>(reducer, initialToken);
-  const replace: ReducerReplace = (path, preprocess) => {
-    return (value) =>
-      dispatch({
-        type: `replace_value`,
-        at: path,
-        with: preprocess ? preprocess(value) : value,
-      });
-  };
+  const replace: ReducerReplace = (path, preprocess) => (value) =>
+    dispatch({
+      type: `replace_value`,
+      at: path,
+      with: preprocess ? preprocess(value) : value,
+    });
   return (
     <div className="mt-6 space-y-4 mb-24">
       <SaveChangesBar

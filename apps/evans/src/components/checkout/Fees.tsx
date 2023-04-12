@@ -18,40 +18,38 @@ const Fees: React.FC<Props> = ({
   taxes,
   ccFeeOffset,
   handling,
-}) => {
-  return (
-    <table className={`${className} Fees border-separate border-gray-400`}>
-      <tbody>
+}) => (
+  <table className={`${className} Fees border-separate border-gray-400`}>
+    <tbody>
+      <tr>
+        <td>{t`Subtotal`}</td>
+        <td>{money(subTotal)}</td>
+      </tr>
+      <tr>
+        <td>{t`Shipping`}</td>
+        <td>{money(shipping)}</td>
+      </tr>
+      <tr>
+        <td>{t`Handling Fee`}</td>
+        <td>{money(handling)}</td>
+      </tr>
+      <tr>
+        <td>{t`Credit Card Fee Offset`}</td>
+        <td>{money(ccFeeOffset)}</td>
+      </tr>
+      {taxes > 0 && (
         <tr>
-          <td>{t`Subtotal`}</td>
-          <td>{money(subTotal)}</td>
+          <td>{t`Taxes`}</td>
+          <td>{money(taxes)}</td>
         </tr>
-        <tr>
-          <td>{t`Shipping`}</td>
-          <td>{money(shipping)}</td>
-        </tr>
-        <tr>
-          <td>{t`Handling Fee`}</td>
-          <td>{money(handling)}</td>
-        </tr>
-        <tr>
-          <td>{t`Credit Card Fee Offset`}</td>
-          <td>{money(ccFeeOffset)}</td>
-        </tr>
-        {taxes > 0 && (
-          <tr>
-            <td>{t`Taxes`}</td>
-            <td>{money(taxes)}</td>
-          </tr>
-        )}
-        <tr className="text-black font-bold">
-          <td>{t`Grand Total`}</td>
-          <td>{money(subTotal + shipping + taxes + ccFeeOffset)}</td>
-        </tr>
-      </tbody>
-    </table>
-  );
-};
+      )}
+      <tr className="text-black font-bold">
+        <td>{t`Grand Total`}</td>
+        <td>{money(subTotal + shipping + taxes + ccFeeOffset)}</td>
+      </tr>
+    </tbody>
+  </table>
+);
 
 export default Fees;
 

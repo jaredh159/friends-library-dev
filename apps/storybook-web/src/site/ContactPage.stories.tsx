@@ -26,9 +26,8 @@ export const FormBlockError = () => (
 );
 
 function delay(delay: number, result = true): () => Promise<boolean> {
-  return () => {
-    return new Promise((res) => {
+  return () =>
+    new Promise((res) => {
       setTimeout(() => res(result), delay);
     });
-  };
 }

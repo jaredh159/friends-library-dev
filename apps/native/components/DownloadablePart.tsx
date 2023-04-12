@@ -92,8 +92,9 @@ export const DownloadablePart: React.FC<Props> = (props) => {
 export const propSelector: (
   ownProps: ContainerProps,
   dispatch: Dispatch,
-) => (state: State) => null | Props = ({ editionId, partIndex }, dispatch) => {
-  return (state) => {
+) => (state: State) => null | Props =
+  ({ editionId, partIndex }, dispatch) =>
+  (state) => {
     const found = Editions.getAudioPart(editionId, partIndex);
     if (!found) return null;
     const [part] = found;
@@ -120,7 +121,6 @@ export const propSelector: (
     }
     return { ...common, state: `not_downloaded` };
   };
-};
 
 interface ContainerProps {
   editionId: EditionId;
