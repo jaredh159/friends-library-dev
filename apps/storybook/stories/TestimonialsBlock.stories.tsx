@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import TestimonialsBlock from '../../next-evans/components/pages/friend/TestimonialsBlock';
 import { MEDIUM_LOREM, props } from './helpers';
-import '../styles/globals.css';
 
 const meta = {
   title: 'Friend/TestimonialsBlock', // eslint-disable-line

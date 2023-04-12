@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import FeaturedQuoteBlock from '../../next-evans/components/pages/friend/FeaturedQuoteBlock';
 import { LONG_LOREM, SHORT_LOREM, props } from './helpers';
-import '../styles/globals.css';
 
 const meta = {
   title: 'Friend/FeaturedQuoteBlock', // eslint-disable-line

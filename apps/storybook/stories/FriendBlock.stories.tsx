@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import FriendBlock from '../../next-evans/components/pages/friend/FriendBlock';
 import { MEDIUM_LOREM, props } from './helpers';
-import '../styles/globals.css';
 
 const meta = {
   title: 'Friend/FriendBlock', // eslint-disable-line
