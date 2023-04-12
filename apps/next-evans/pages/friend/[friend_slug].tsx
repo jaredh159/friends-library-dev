@@ -6,8 +6,10 @@ import FriendBlock from '@/components/pages/friend/FriendBlock';
 import TestimonialsBlock from '@/components/pages/friend/TestimonialsBlock';
 import { LANG } from '@/lib/env';
 
+const client = new PrismaClient();
+
 export const getStaticPaths: GetStaticPaths = async () => {
-  const allFriends = await new PrismaClient().friends.findMany({
+  const allFriends = await client.friends.findMany({
     where: { lang: LANG },
     select: { slug: true },
   });
@@ -21,7 +23,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps<Props> = async (context) => {
   invariant(typeof context.params?.friend_slug === `string`);
-  const friend = await new PrismaClient().friends.findFirst({
+  const friend = await client.friends.findFirst({
     where: {
       slug: context.params.friend_slug,
       lang: LANG,
