@@ -5,6 +5,7 @@ import { MEDIUM_LOREM, props } from './helpers';
 const meta = {
   title: 'Friend/FriendBlock', // eslint-disable-line
   component: FriendBlock,
+  parameters: { layout: `fullscreen` },
 } satisfies Meta<typeof FriendBlock>;
 
 type Story = StoryObj<typeof meta>;

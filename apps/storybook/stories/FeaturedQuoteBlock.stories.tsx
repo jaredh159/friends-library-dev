@@ -5,6 +5,7 @@ import { LONG_LOREM, SHORT_LOREM, props } from './helpers';
 const meta = {
   title: 'Friend/FeaturedQuoteBlock', // eslint-disable-line
   component: FeaturedQuoteBlock,
+  parameters: { layout: `fullscreen` },
 } satisfies Meta<typeof FeaturedQuoteBlock>;
 
 type Story = StoryObj<typeof meta>;

@@ -5,6 +5,7 @@ import { MEDIUM_LOREM, props } from './helpers';
 const meta = {
   title: 'Friend/TestimonialsBlock', // eslint-disable-line
   component: TestimonialsBlock,
+  parameters: { layout: `fullscreen` },
 } satisfies Meta<typeof TestimonialsBlock>;
 
 type Story = StoryObj<typeof meta>;
