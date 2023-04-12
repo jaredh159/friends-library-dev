@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import FeaturedQuoteBlock from '../../next-evans/components/pages/friend/FeaturedQuoteBlock';
+import { LONG_LOREM, SHORT_LOREM, props } from './helpers';
 import '../styles/globals.css';
-import { LONG_LOREM, SHORT_LOREM } from './helpers';
 
 const meta = {
   title: 'Friend/FeaturedQuoteBlock', // eslint-disable-line
@@ -10,18 +10,14 @@ const meta = {
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  args: {
-    quote: SHORT_LOREM,
-    cite: `John Doe (on his death bed)`,
-  },
-};
+export const Default: Story = props({
+  quote: SHORT_LOREM,
+  cite: `John Doe (on his death bed)`,
+});
 
-export const Long: Story = {
-  args: {
-    quote: LONG_LOREM,
-    cite: `John Doe (on his death bed)`,
-  },
-};
+export const Long: Story = props({
+  quote: LONG_LOREM,
+  cite: `John Doe (on his death bed)`,
+});
 
 export default meta;

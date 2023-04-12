@@ -1,3 +1,7 @@
+export function props<T>(args: T): { args: T } {
+  return { args };
+}
+
 export const SHORT_LOREM = `Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptas tempora necessitatibus magni culpa ab placeat saepe vitae doloremque ipsa debitis laudantium, eos quasi veniam, dicta alias. Aliquam reiciendis aliquid perspiciatis? Lorem ipsum, dolor sit amet consectetur adipisicing elit.`;
 
 export const MEDIUM_LOREM = `Lorem, ipsum dolor sit amet consectetur adipisicing elit. Totam tempore debitis alias sapiente similique illum quidem at, aliquid ducimus magnam facilis placeat esse dolorum dicta quam, veritatis libero asperiores vitae! Lorem ipsum, dolor sit amet consectetur adipisicing elit. Animi totam porro corrupti vitae? Eaque rem ad possimus quae excepturi incidunt quos distinctio officia ab optio iusto inventore, recusandae officiis laudantium. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sed doloremque dicta, dolorum ducimus eius temporibus pariatur quaerat, tempore accusantium corrupti eos vero laudantium dolorem minus placeat iste harum modi optio?`;
