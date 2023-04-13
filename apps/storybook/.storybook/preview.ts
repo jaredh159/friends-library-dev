@@ -1,5 +1,5 @@
 import type { Preview } from '@storybook/react';
-import './globals.css';
+import '../../next-evans/styles/globals.css';
 
 const preview: Preview = {
   parameters: {

@@ -4,7 +4,14 @@ import type { StorybookConfig } from '@storybook/react-vite';
 const config: StorybookConfig = {
   async viteFinal(config, { configType }) {
     return mergeConfig(config, {
-      define: { 'process.env': {} },
+      define: {
+        'process.env': {},
+      },
+      resolve: {
+        alias: {
+          '@evans': '../../next-evans/components',
+        },
+      },
     });
   },
   stories: ['../stories/**/*.stories.tsx'],
