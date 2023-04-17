@@ -114,6 +114,7 @@ enum PrintJobs {
       }
 
       guard let (cheapest, level) = results.first else {
+        Task { await slackError("shipping not possible: \(address)") }
         throw Error.noExploratoryMetadataRetrieved
       }
 
