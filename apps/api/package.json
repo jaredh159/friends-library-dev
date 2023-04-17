@@ -17,6 +17,7 @@
     "test:db:nuke": "killall Postico; dropdb flp_test && createdb flp_test"
   },
   "devDependencies": {
+    "@friends-library/env": "workspace:*",
     "x-chalk": "^1.0.1",
     "x-exec": "^1.2.0"
   },

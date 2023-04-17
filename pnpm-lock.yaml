@@ -152,9 +152,11 @@ importers:
 
   apps/api:
     specifiers:
+      '@friends-library/env': workspace:*
       x-chalk: ^1.0.1
       x-exec: ^1.2.0
     devDependencies:
+      '@friends-library/env': link:../../libs-ts/env
       x-chalk: 1.0.1
       x-exec: 1.2.0
 
