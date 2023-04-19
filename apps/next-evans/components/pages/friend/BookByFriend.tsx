@@ -1,13 +1,15 @@
 import React from 'react';
 import cx from 'classnames';
 import invariant from 'tiny-invariant';
+import {
+  ArrowDownTrayIcon,
+  BookmarkIcon,
+  ClockIcon,
+  SpeakerWaveIcon,
+} from '@heroicons/react/24/outline';
 import { ThreeD } from '@friends-library/cover-component';
 import { t, translate } from '@friends-library/locale';
 import type { CoverProps } from '@friends-library/types';
-import ClockIcon from '../../icons/Clock';
-import AudioIcon from '../../icons/Audio';
-import TagsIcon from '../../icons/Tags';
-import DownloadIcon from '../../icons/Download';
 import Dual from '../../core/Dual';
 import Button from '../../core/Button';
 
@@ -76,16 +78,16 @@ const BookByFriend: React.FC<Props> = (props) => {
                 <em className="italic pl-1 text-sm">({pages.length} vol)</em>
               )}
             </MetaItem>
-            <MetaItem Icon={TagsIcon}>
+            <MetaItem Icon={BookmarkIcon}>
               {props.tags
                 .map((t) => translate(t.replace(`spiritualLife`, `spiritual life`)))
                 .join(`, `)}
             </MetaItem>
-            {hasAudio && <MetaItem Icon={AudioIcon}>{t`Audio Book`}</MetaItem>}
+            {hasAudio && <MetaItem Icon={SpeakerWaveIcon}>{t`Audio Book`}</MetaItem>}
             {numDownloads > 10 && (
               <Dual.Frag>
-                <MetaItem Icon={DownloadIcon}>{numDownloads} Downloads</MetaItem>
-                <MetaItem Icon={DownloadIcon}>{numDownloads} Descargas</MetaItem>
+                <MetaItem Icon={ArrowDownTrayIcon}>{numDownloads} Downloads</MetaItem>
+                <MetaItem Icon={ArrowDownTrayIcon}>{numDownloads} Descargas</MetaItem>
               </Dual.Frag>
             )}
           </ul>
@@ -111,7 +113,7 @@ const MetaItem: React.FC<{
       className,
     )}
   >
-    <Icon className="mr-2 shrink-0" />
+    <Icon className="mr-2 shrink-0 h-5" />
     {children}
   </li>
 );
