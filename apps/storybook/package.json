@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@friends-library/theme": "workspace:*",
+    "@friends-library/cover-component": "workspace:*",
     "@storybook/addon-essentials": "^7.0.2",
     "@storybook/addon-interactions": "^7.0.2",
     "@storybook/addon-links": "^7.0.2",

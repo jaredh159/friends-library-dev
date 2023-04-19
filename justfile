@@ -111,6 +111,9 @@ deploy-api: deploy-api-staging deploy-api-production
 nx-run-many targets:
   @pnpm exec nx run-many --parallel=10 --targets={{targets}}
 
+nuke-node-modules:
+  find . -name "node_modules" -type d -prune -exec rm -rf {} + && pnpm i
+
 [private]
 exec-api cmd *args:
   @cd apps/api && ./.build/debug/Run {{cmd}} {{args}}

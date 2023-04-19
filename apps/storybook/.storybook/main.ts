@@ -5,7 +5,9 @@ const config: StorybookConfig = {
   async viteFinal(config, { configType }) {
     return mergeConfig(config, {
       define: {
-        'process.env': {},
+        'process.env': {
+          NEXT_PUBLIC_LANG: `en`,
+        },
       },
       resolve: {
         alias: {
@@ -23,6 +25,9 @@ const config: StorybookConfig = {
   framework: '@storybook/react-vite',
   docs: {
     autodocs: 'tag',
+  },
+  env: {
+    NEXT_PUBLIC_LANG: `en`,
   },
 };
 export default config;

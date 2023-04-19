@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@evans/*": ["../next-evans/components/*"]
+      "@evans/*": ["../next-evans/components/*"],
     }
   }
 }

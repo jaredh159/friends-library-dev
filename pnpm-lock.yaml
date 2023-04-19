@@ -839,6 +839,7 @@ importers:
 
   apps/storybook:
     specifiers:
+      '@friends-library/cover-component': workspace:*
       '@friends-library/theme': workspace:*
       '@storybook/addon-essentials': ^7.0.2
       '@storybook/addon-interactions': ^7.0.2
@@ -871,6 +872,7 @@ importers:
       tailwindcss: 3.3.1_postcss@8.4.21
       typescript: 5.0.2
     devDependencies:
+      '@friends-library/cover-component': link:../../libs-ts/cover-component
       '@friends-library/theme': link:../../libs-ts/theme
       '@storybook/addon-essentials': 7.0.2_biqbaboplfbrettd7655fr4n2y
       '@storybook/addon-interactions': 7.0.2_biqbaboplfbrettd7655fr4n2y
