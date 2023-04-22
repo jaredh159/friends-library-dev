@@ -7,11 +7,28 @@ dev-en:
 dev-es:
   @NEXT_PUBLIC_LANG=es pnpm dev --port 7333
 
+build-en:
+  @NEXT_PUBLIC_LANG=en pnpm next build
+
+build-es:
+  @NEXT_PUBLIC_LANG=es pnpm next build
+
 storybook:
   @cd ../../ && pnpm --filter storybook storybook
 
-prisma-generate:
+prisma-generate: pre-prisma && post-prisma
+  @pnpm prisma generate
+
+prisma-db-pull: pre-prisma && post-prisma
+  @pnpm prisma db pull --force
+
+# helpers
+
+[private]
+pre-prisma:
   @test -e ../../.env || cp ../../.env.example ../../.env
   @cp ../../.env ./.env
-  @pnpm prisma generate
+
+[private]
+post-prisma:
   @rm ./.env

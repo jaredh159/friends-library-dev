@@ -93,6 +93,7 @@ private func addMigrations(to app: Application) {
   app.migrations.add(DropFriendResidenceDurationCol())
   app.migrations.add(BackfillLocationData())
   app.migrations.add(RemoveDuplicatePodcastDownloads())
+  app.migrations.add(BigIntToInt())
 
   if Env.get("SEED_DB") == "true" || Env.mode == .test {
     app.migrations.add(Seed())
