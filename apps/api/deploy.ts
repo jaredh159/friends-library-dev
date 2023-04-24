@@ -16,6 +16,7 @@ const { HOST, DEPLOY_DIR, REPO_URL, PORT_START } = env.require(
   `PORT_START`,
 );
 
+const API_DIR = `${DEPLOY_DIR}/apps/api`;
 const NGINX_CONFIG = `/etc/nginx/sites-available/default`;
 const BUILD_CMD = ENV === `staging` ? `swift build` : `swift build -c release`;
 const BUILD_DIR = ENV === `staging` ? `debug` : `release`;
@@ -29,47 +30,47 @@ const SERVE_CMD = `LOG_LEVEL=info ${VAPOR_RUN} serve --port ${NEXT_PORT} --env $
 exec.exit(`ssh ${HOST} "mkdir -p ${DEPLOY_DIR}"`);
 
 log(c`{green git:} {gray ensuring repo exists at} {magenta ${DEPLOY_DIR}}`);
-inDeployDir(`test -d .git || git clone ${REPO_URL} .`);
+inMonorepoRoot(`test -d .git || git clone ${REPO_URL} .`);
 
 log(c`{green git:} {gray updating repo at} {magenta ${DEPLOY_DIR}}`);
-inDeployDir(`git reset --hard HEAD`);
-inDeployDir(`git checkout master`);
-inDeployDir(`git pull origin master`);
+inMonorepoRoot(`git reset --hard HEAD`);
+inMonorepoRoot(`git checkout master`);
+inMonorepoRoot(`git pull origin master`);
 
 if (ENV === `staging` && process.argv.includes(`--branch`)) {
   const branch = process.argv[process.argv.indexOf(`--branch`) + 1];
   log(c`{green git:} {gray checking out branch} {magenta ${branch}}`);
-  inDeployDir(`git fetch`);
-  inDeployDir(`git checkout -b ${branch} origin/${branch}`);
+  inMonorepoRoot(`git fetch`);
+  inMonorepoRoot(`git checkout -b ${branch} origin/${branch}`);
 }
 
 log(c`{green env:} {gray copying .env file to} {magenta ${DEPLOY_DIR}}`);
-exec.exit(`scp ./.env.${ENV} ${HOST}:${DEPLOY_DIR}/.env`);
+exec.exit(`scp ./.env.${ENV} ${HOST}:${API_DIR}/.env`);
 
 log(c`{green swift:} {gray building vapor app with command} {magenta ${BUILD_CMD}}`);
-withCommandOutput(BUILD_CMD);
+inApiDirWithOutput(BUILD_CMD);
 
 log(c`{green vapor:} {gray running migrations}`);
-withCommandOutput(`${VAPOR_RUN} migrate --yes`);
+inApiDirWithOutput(`${VAPOR_RUN} migrate --yes`);
 
 // having trouble with tests on staging for now...
 // if (ENV === `staging`) {
 //   log(c`{green test:} {gray running tests}`);
-//   withCommandOutput(`npm run test`);
+//   inApiDirWithOutput(`npm run test`);
 // }
 
 log(c`{green npm:} {gray ensuring parse-useragent bin available}`);
-withCommandOutput(`sudo npm install -g @jaredh159/parse-useragent@latest`);
+inApiDirWithOutput(`sudo npm install -g @jaredh159/parse-useragent@latest`);
 
 log(c`{green pm2:} {gray setting serve script for pm2} {magenta ${SERVE_CMD}}`);
-inDeployDir(`echo \\"#!/usr/bin/bash\\" > ./serve.sh`);
-inDeployDir(`echo \\"${SERVE_CMD}\\" >> ./serve.sh`);
+inApiDir(`echo \\"#!/usr/bin/bash\\" > ./serve.sh`);
+inApiDir(`echo \\"${SERVE_CMD}\\" >> ./serve.sh`);
 
 log(c`{green pm2:} {gray starting pm2 app} {magenta ${PM2_NEXT_NAME}}`);
-inDeployDir(`pm2 start ./serve.sh --name ${PM2_NEXT_NAME} --time`);
+inApiDir(`pm2 start ./serve.sh --name ${PM2_NEXT_NAME} --time`);
 
 log(c`{green nginx:} {gray changing port in nginx config to} {magenta ${NEXT_PORT}}`);
-inDeployDir(`sudo sed -E -i 's/:${PORT_START}./:${NEXT_PORT}/' ${NGINX_CONFIG}`);
+inApiDir(`sudo sed -E -i 's/:${PORT_START}./:${NEXT_PORT}/' ${NGINX_CONFIG}`);
 
 log(c`{green nginx:} {gray restarting nginx}`);
 exec.exit(`ssh ${HOST} "sudo systemctl reload nginx"`);
@@ -80,13 +81,17 @@ exec(`ssh ${HOST} "pm2 delete ${PM2_PREV_NAME}"`);
 
 // helper functions
 
-function withCommandOutput(cmd: string): void {
-  console.log(``);
-  spawnSync(`ssh`, [HOST, `cd ${DEPLOY_DIR} && ${cmd}`], { stdio: `inherit` });
-  console.log(``);
+function inApiDirWithOutput(cmd: string): void {
+  process.stdout.write(`\n`);
+  spawnSync(`ssh`, [HOST, `cd ${API_DIR} && ${cmd}`], { stdio: `inherit` });
+  process.stdout.write(`\n`);
 }
 
-function inDeployDir(cmd: string): void {
+function inApiDir(cmd: string): void {
+  exec.exit(`ssh ${HOST} "cd ${API_DIR} && ${cmd}"`);
+}
+
+function inMonorepoRoot(cmd: string): void {
   exec.exit(`ssh ${HOST} "cd ${DEPLOY_DIR} && ${cmd}"`);
 }
 
