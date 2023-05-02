@@ -7,10 +7,10 @@ dev-en: write-cover-css
 dev-es: write-cover-css
   @NEXT_PUBLIC_LANG=es pnpm dev --port 7333
 
-build-en:
+build-en: prisma-generate write-cover-css
   @NEXT_PUBLIC_LANG=en pnpm next build
 
-build-es:
+build-es: prisma-generate write-cover-css
   @NEXT_PUBLIC_LANG=es pnpm next build
 
 storybook:
