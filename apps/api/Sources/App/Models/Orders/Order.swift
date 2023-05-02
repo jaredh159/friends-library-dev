@@ -88,6 +88,10 @@ final class Order: Codable {
     self.addressZip = addressZip
     self.addressCountry = addressCountry
     self.freeOrderRequestId = freeOrderRequestId
+
+    if addressCountry == "US" {
+      self.addressState = abbreviateState(addressState)
+    }
   }
 }
 
