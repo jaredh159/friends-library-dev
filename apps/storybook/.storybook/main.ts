@@ -1,17 +1,21 @@
 import { mergeConfig } from 'vite';
 import type { StorybookConfig } from '@storybook/react-vite';
+import tsConfigPaths from 'vite-tsconfig-paths';
 
 const config: StorybookConfig = {
   async viteFinal(config, { configType }) {
     return mergeConfig(config, {
       define: {
-        'process.env': {},
+        'process.env': {
+          NEXT_PUBLIC_LANG: `en`,
+        },
       },
       resolve: {
         alias: {
           '@evans': '../../next-evans/components',
         },
       },
+      plugins: [tsConfigPaths()],
     });
   },
   stories: ['../stories/**/*.stories.tsx'],
