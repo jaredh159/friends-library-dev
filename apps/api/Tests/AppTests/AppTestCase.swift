@@ -24,6 +24,7 @@ class AppTestCase: XCTestCase {
     Current = .mock
     Current.uuid = { UUID() }
     app = Application(.testing)
+    Current.logger = .null
     try! app.autoRevert().wait()
     try! app.autoMigrate().wait()
     try! configure(app)

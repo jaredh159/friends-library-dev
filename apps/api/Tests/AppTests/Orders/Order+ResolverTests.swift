@@ -66,6 +66,68 @@ final class OrderResolverTests: AppTestCase {
     )
   }
 
+  func testCreateOrderAbbreviatesUSStates() async throws {
+    let entities = await Entities.create()
+    let order = Order.random
+    order.addressCountry = "US"
+    order.addressState = "California" // <-- should be abbreviated to CA
+    let item = OrderItem.random
+    item.orderId = order.id
+    item.editionId = entities.edition.id
+    let orderMap = order.gqlMap()
+    let itemMap = item.gqlMap()
+
+    assertResponse(
+      to: /* gql */ """
+      mutation CreateOrderWithItems($order: CreateOrderInput!, $items: [CreateOrderItemInput!]!) {
+        order: createOrderWithItems(order: $order, items: $items) {
+          paymentId
+          printJobStatus
+          shippingLevel
+          email
+          addressName
+          addressStreet
+          addressCity
+          addressState
+          addressZip
+          addressCountry
+          lang
+          source
+          items {
+            quantity
+            unitPriceInCents
+            order {
+              itemOrderId: id
+            }
+            edition {
+              itemEditionId: id
+            }
+          }
+        }
+      }
+      """,
+      withVariables: ["order": orderMap, "items": .array([itemMap])],
+      .containsKeyValuePairs([
+        "paymentId": orderMap["paymentId"],
+        "itemOrderId": orderMap["id"],
+        "itemEditionId": entities.edition.id.lowercased,
+        "printJobStatus": orderMap["printJobStatus"],
+        "shippingLevel": orderMap["shippingLevel"],
+        "email": orderMap["email"],
+        "addressName": orderMap["addressName"],
+        "addressStreet": orderMap["addressStreet"],
+        "addressCity": orderMap["addressCity"],
+        "addressState": "CA", // <-- abbreviated
+        "addressZip": orderMap["addressZip"],
+        "addressCountry": orderMap["addressCountry"],
+        "lang": orderMap["lang"],
+        "source": orderMap["source"],
+        "quantity": itemMap["quantity"],
+        "unitPriceInCents": itemMap["unitPrice"],
+      ])
+    )
+  }
+
   func testCreateOrderWithFreeRequestId() async throws {
     let edition = await Entities.create().edition
     let req = try await Current.db.create(FreeOrderRequest.random)

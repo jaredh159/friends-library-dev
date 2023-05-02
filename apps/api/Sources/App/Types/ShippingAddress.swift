@@ -8,6 +8,28 @@ struct ShippingAddress: Codable {
   var state: String
   var zip: String
   var country: String
+
+  init(
+    name: String,
+    street: String,
+    street2: String? = nil,
+    city: String,
+    state: String,
+    zip: String,
+    country: String
+  ) {
+    self.name = name
+    self.street = street
+    self.street2 = street2
+    self.city = city
+    self.state = state
+    self.zip = zip
+    self.country = country
+
+    if country == "US" {
+      self.state = abbreviateState(state)
+    }
+  }
 }
 
 // extensions
@@ -58,4 +80,65 @@ extension AppSchema {
       InputField("country", at: \.country)
     }
   }
+}
+
+func abbreviateState(_ input: String) -> String {
+  let states = [
+    "alabama": "AL",
+    "alaska": "AK",
+    "arizona": "AZ",
+    "arkansas": "AR",
+    "california": "CA",
+    "colorado": "CO",
+    "connecticut": "CT",
+    "delaware": "DE",
+    "florida": "FL",
+    "georgia": "GA",
+    "hawaii": "HI",
+    "idaho": "ID",
+    "illinois": "IL",
+    "indiana": "IN",
+    "iowa": "IA",
+    "kansas": "KS",
+    "kentucky": "KY",
+    "louisiana": "LA",
+    "maine": "ME",
+    "maryland": "MD",
+    "massachusetts": "MA",
+    "michigan": "MI",
+    "minnesota": "MN",
+    "mississippi": "MS",
+    "missouri": "MO",
+    "montana": "MT",
+    "nebraska": "NE",
+    "nevada": "NV",
+    "new hampshire": "NH",
+    "new jersey": "NJ",
+    "new mexico": "NM",
+    "new york": "NY",
+    "north carolina": "NC",
+    "north dakota": "ND",
+    "ohio": "OH",
+    "oklahoma": "OK",
+    "oregon": "OR",
+    "pennsylvania": "PA",
+    "rhode island": "RI",
+    "south carolina": "SC",
+    "south dakota": "SD",
+    "tennessee": "TN",
+    "texas": "TX",
+    "utah": "UT",
+    "vermont": "VT",
+    "virginia": "VA",
+    "washington": "WA",
+    "west virginia": "WV",
+    "wisconsin": "WI",
+    "wyoming": "WY",
+  ]
+
+  let lowercaseInput = input
+    .trimmingCharacters(in: .whitespacesAndNewlines)
+    .lowercased()
+
+  return states[lowercaseInput] ?? input
 }
