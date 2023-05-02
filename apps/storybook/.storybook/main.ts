@@ -1,5 +1,6 @@
 import { mergeConfig } from 'vite';
 import type { StorybookConfig } from '@storybook/react-vite';
+import tsConfigPaths from 'vite-tsconfig-paths';
 
 const config: StorybookConfig = {
   async viteFinal(config, { configType }) {
@@ -14,6 +15,7 @@ const config: StorybookConfig = {
           '@evans': '../../next-evans/components',
         },
       },
+      plugins: [tsConfigPaths()],
     });
   },
   stories: ['../stories/**/*.stories.tsx'],
