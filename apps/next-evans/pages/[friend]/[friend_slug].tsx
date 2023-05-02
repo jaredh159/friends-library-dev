@@ -55,6 +55,13 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
         },
       },
       documents: {
+        where: {
+          editions: {
+            some: {
+              is_draft: false,
+            },
+          },
+        },
         select: {
           title: true,
           slug: true,
@@ -95,7 +102,9 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
       },
     },
   });
+
   invariant(friend !== null);
+
   const friendProps = {
     ...friend,
     quotes: friend.friend_quotes.map((q) => ({ quote: q.text, cite: q.source })),

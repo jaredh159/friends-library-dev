@@ -26,8 +26,5 @@ const config: StorybookConfig = {
   docs: {
     autodocs: 'tag',
   },
-  env: {
-    NEXT_PUBLIC_LANG: `en`,
-  },
 };
 export default config;
