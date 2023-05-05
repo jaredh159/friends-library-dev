@@ -107,12 +107,14 @@ func downloadFileRouteHandler(req: Request) async throws -> Response {
       referrer: query?.referer ?? req.headers.first(name: .referer)
     )
   } catch {
-    var errorMsg = "Failed to resolve Downloadable file from path: \(path), error: \(error)"
-    if let parseErr = error as? DownloadableFile.ParseLogPathError {
-      let errorDesc = parseErr.errorDescription ?? String(describing: parseErr)
-      errorMsg = "Failed to resolve DownloadableFile: \(errorDesc)"
+    if ["/.git", "/.env", "%0A"].contains(where: path.contains) == false {
+      var errorMsg = "Failed to resolve Downloadable file from path: \(path), error: \(error)"
+      if let parseErr = error as? DownloadableFile.ParseLogPathError {
+        let errorDesc = parseErr.errorDescription ?? String(describing: parseErr)
+        errorMsg = "Failed to resolve DownloadableFile: \(errorDesc)"
+      }
+      Task { [errorMsg] in await slackError(errorMsg) }
     }
-    await slackError(errorMsg)
     return Response(status: .notFound, body: .init(string: "<h1>Not Found</h1>"))
   }
 }
