@@ -10,6 +10,7 @@ import FriendBlock from '@/components/pages/friend/FriendBlock';
 import FeaturedQuoteBlock from '@/components/pages/friend/FeaturedQuoteBlock';
 import BookByFriend from '@/components/pages/friend/BookByFriend';
 import TestimonialsBlock from '@/components/pages/friend/TestimonialsBlock';
+import BackgroundImage from '@/components/core/BackgroundImage';
 
 const client = new PrismaClient();
 
@@ -216,6 +217,7 @@ const Friend: React.FC<Props> = ({
             })}
         </div>
       </div>
+
       <TestimonialsBlock testimonials={quotes.slice(1, quotes.length)} />
     </div>
   );
