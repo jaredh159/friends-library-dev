@@ -18,7 +18,7 @@ const CircleSilhouette: React.FC<Props> = ({ gender, bgColor, fgColor, className
     <div
       className={cx(
         className,
-        `CircleSilhouette CircleSilhouette--${gender} bg-${bgColor}`,
+        `CircleSilhouette CircleSilhouette--${gender} bg-fl${bgColor}`,
         `rounded-full flex items-center justify-center`,
         `border-8 border-${fgColor}`,
       )}

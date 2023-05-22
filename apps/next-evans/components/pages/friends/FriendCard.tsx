@@ -18,7 +18,7 @@ interface Props {
   numBooks: number;
   url: string;
   featured?: boolean;
-  color: string;
+  color: 'blue' | 'green' | 'maroon' | 'gold';
 }
 
 const FriendCard: React.FC<Props> = ({
@@ -33,19 +33,19 @@ const FriendCard: React.FC<Props> = ({
   url,
   featured = false,
 }) => {
-  const textColorClass = `text-${featured ? `white` : color}`;
-  const buttonBgColor = color.replace(/^bg-fl/, ``) as any;
+  const bgColor = `bg-fl${color}`;
+  const textColor = `text-${featured ? `white` : `fl${color}`}`;
+
   return (
     <Stack
       space="8"
       className={cx(
         className,
-        textColorClass,
+        textColor,
         `flex flex-col items-center [&>*]:translate-y-[31px]`,
         featured
-          ? `md:flex-row md:justify-center md:pt-12 md:pb-6 md:[&>*]:transform-none`
-          : `min-w-[100%] [&>*]:translate-y-[36px] sm:min-w-[330px]`,
-        color,
+          ? `md:flex-row md:justify-center md:pt-12 md:pb-6 md:[&>*]:transform-none ${bgColor}`
+          : `min-w-[100%] [&>*]:translate-y-[36px] sm:min-w-[330px] [background-image:linear-gradient(to_bottom,transparent_0,transparent_140px,white_140px,white_100%)]`,
       )}
     >
       <div
@@ -59,7 +59,7 @@ const FriendCard: React.FC<Props> = ({
           className={cx(`box-content hidden md:mt-6`, {
             'border-2 border-white md:block': featured,
           })}
-          bg={buttonBgColor}
+          bg={color}
         >
           {t`Learn More`}
         </Button>
@@ -78,8 +78,7 @@ const FriendCard: React.FC<Props> = ({
         >
           {name}
         </h3>
-        {/* purgeCSS: mb-4 */}
-        <Stack space="4" el="ul" className={cx(`body-text pb-2`, textColorClass)}>
+        <Stack space="4" el="ul" className={cx(`body-text pb-2`, textColor)}>
           <Item key="cal" Icon={CalendarIcon}>
             {lifespan(born, died)}
           </Item>
@@ -99,7 +98,6 @@ const FriendCard: React.FC<Props> = ({
           </Item>
         </Stack>
       </div>
-      {/* purgeCSS: hover:bg-flblue-800 hover:bg-flgreen-800 hover:bg-flmaroon-800 */}
       <Button
         key="button"
         to={url}
@@ -107,7 +105,7 @@ const FriendCard: React.FC<Props> = ({
         className={cx(`box-content`, {
           'border-4 border-white md:hidden': featured,
         })}
-        bg={buttonBgColor}
+        bg={color}
       >
         {t`Learn More`}
       </Button>
