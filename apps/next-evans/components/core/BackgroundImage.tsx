@@ -52,6 +52,7 @@ const BackgroundImage: React.FC<Props> = ({
       width={1000}
       height={1000}
       alt=""
+      role="presentation"
       className={cx(fitMap[fit], positionMap[position], `absolute top-0 left-0`)}
       style={{ width: `100%`, height: `100%` }}
     />

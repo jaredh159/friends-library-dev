@@ -26,10 +26,17 @@ export default function getResidences(
 
 function deriveMap(positions: Position[]): 'UK' | 'US' | 'Europe' {
   if (positions.length === 0) return `UK`;
-  const dict = positions.reduce((acc, pos) => {
-    acc[pos.map] = (acc[pos.map] || []).concat([pos.map]);
-    return acc;
-  }, {} as Record<'UK' | 'US' | 'Europe', Map[]>);
+  const dict = positions.reduce<Record<'UK' | 'US' | 'Europe', Map[]>>(
+    (acc, pos) => {
+      acc[pos.map] = (acc[pos.map] || []).concat([pos.map]);
+      return acc;
+    },
+    {
+      UK: [],
+      US: [],
+      Europe: [],
+    },
+  );
   const arrays = Object.values(dict);
   arrays.sort((a, b) => (a.length < b.length ? 1 : -1));
   invariant(arrays[0] !== undefined && arrays[0][0] !== undefined);
