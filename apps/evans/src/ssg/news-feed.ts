@@ -139,6 +139,22 @@ function getOutOfBandEvents(
 ): (FeedItem & { lang: Lang[] })[] {
   return [
     {
+      lang: [`en`],
+      type: `spanish_translation`,
+      title: `Sewel’s History Spanish Translation Completed`,
+      description: `The twenty-fourth and final chapter has been translated, and after 300 years, the entire book is now available in Spanish for the first time ever.`,
+      ...dateFields(`2023-05-22T16:08:05.231Z`, formatter, `es`),
+      url: `https://www.bibliotecadelosamigos.org/william-sewel/historia-de-los-cuaqueros`,
+    },
+    {
+      lang: [`es`],
+      type: `chapter`,
+      title: `La Historia de los Cuáqueros - (El Último Capítulo)`,
+      description: `El vigésimo cuarto y <em>ÚLTIMO</em> capítulo de La Historia de los Cuáqueros ya está terminado, y después de 300 años, el libro entero está disponible por primera vez en español.`,
+      ...dateFields(`2023-05-22T16:08:05.231Z`, formatter, `es`),
+      url: `/william-sewel/historia-de-los-cuaqueros`,
+    },
+    {
       lang: [`es`],
       type: `chapter`,
       title: `Historia de los Cuáqueros &mdash; (Capítulo 23)`,
