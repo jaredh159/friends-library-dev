@@ -92,6 +92,7 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
           editions: {
             select: {
               type: true,
+              is_draft: true,
               edition_audios: {
                 select: {
                   id: true,
@@ -121,6 +122,16 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
   });
 
   invariant(friend !== null);
+
+  const hasNoNonDraftEditions = friend.documents.every((doc) =>
+    doc.editions.every((edition) => edition.is_draft),
+  );
+
+  if (hasNoNonDraftEditions) {
+    return {
+      notFound: true,
+    };
+  }
 
   const friendProps = {
     ...friend,
