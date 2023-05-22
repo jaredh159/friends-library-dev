@@ -194,8 +194,37 @@ const Friend: React.FC<Props> = ({
   died,
 }) => {
   const onlyOneBook = documents.length === 1;
+  const isCompilations = name === `Compilations`;
   const mapData = getResidences(residences);
-  invariant(mapData[0] !== undefined || name === `Compilations`);
+  let mapBlock;
+  if (!isCompilations) {
+    invariant(mapData[0] !== undefined);
+    mapBlock = (
+      <MapBlock
+        bgImg={BooksBgImage.src}
+        friendName={name}
+        residences={residences.flatMap((r) => {
+          const place = `${trans(r.city)}, ${trans(r.region)}`;
+          if (r.durations) {
+            return r.durations.map((d) => `${place} (${d.start} - ${d.end})`);
+          }
+          let residence = place;
+          if (born && died) {
+            residence += ` (${born} - ${died})`;
+          } else if (died) {
+            residence += ` (died: ${died})`;
+          }
+          return residence;
+        })}
+        map={mapData[0].map}
+        markers={mapData.map((res) => ({
+          label: `${trans(res.city)}, ${trans(res.region)}`,
+          top: res.top,
+          left: res.left,
+        }))}
+      />
+    );
+  }
 
   return (
     <div>
@@ -254,31 +283,7 @@ const Friend: React.FC<Props> = ({
             })}
         </div>
       </div>
-      {name !== `Compilations` && (
-        <MapBlock
-          bgImg={BooksBgImage.src}
-          friendName={name}
-          residences={residences.flatMap((r) => {
-            const place = `${trans(r.city)}, ${trans(r.region)}`;
-            if (r.durations) {
-              return r.durations.map((d) => `${place} (${d.start} - ${d.end})`);
-            }
-            let residence = place;
-            if (born && died) {
-              residence += ` (${born} - ${died})`;
-            } else if (died) {
-              residence += ` (died: ${died})`;
-            }
-            return residence;
-          })}
-          map={mapData[0]!.map}
-          markers={mapData.map((res) => ({
-            label: `${trans(res.city)}, ${trans(res.region)}`,
-            top: res.top,
-            left: res.left,
-          }))}
-        />
-      )}
+      {mapBlock}
       <TestimonialsBlock testimonials={quotes.slice(1, quotes.length)} />
     </div>
   );
