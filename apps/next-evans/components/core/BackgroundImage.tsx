@@ -45,8 +45,7 @@ const BackgroundImage: React.FC<Props> = ({
   children,
   fit,
   position,
-}) => {
-  return (
+}) => (
     <div className={cx(`relative`, className)}>
       <Image
         src={src}
@@ -56,9 +55,8 @@ const BackgroundImage: React.FC<Props> = ({
         className={cx(fitMap[fit], positionMap[position], `absolute top-0 left-0`)}
         style={{ width: `100%`, height: `100%` }}
       />
-      <div className={cx(`absolute top-0 left-0 w-full h-full`)}>{children}</div>
+      <div className="relative Content">{children}</div>
     </div>
   );
-};
 
 export default BackgroundImage;
