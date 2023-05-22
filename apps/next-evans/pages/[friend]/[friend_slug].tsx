@@ -1,15 +1,18 @@
 import { PrismaClient } from '@prisma/client';
 import invariant from 'tiny-invariant';
 import cx from 'classnames';
-import { t } from '@friends-library/locale';
+import { t, translateOptional as trans } from '@friends-library/locale';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import type { Edition } from '@/lib/editions';
+import BooksBgImage from '@/public/images/books-diagonal.jpg';
 import { LANG } from '@/lib/env';
 import { mostModernEdition } from '@/lib/editions';
 import FriendBlock from '@/components/pages/friend/FriendBlock';
 import FeaturedQuoteBlock from '@/components/pages/friend/FeaturedQuoteBlock';
 import BookByFriend from '@/components/pages/friend/BookByFriend';
 import TestimonialsBlock from '@/components/pages/friend/TestimonialsBlock';
+import MapBlock from '@/components/pages/friend/MapBlock';
+import getResidences from '@/lib/residences';
 
 const client = new PrismaClient();
 
@@ -48,10 +51,24 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
       gender: true,
       slug: true,
       description: true,
+      born: true,
+      died: true,
       friend_quotes: {
         select: {
           text: true,
           source: true,
+        },
+      },
+      friend_residences: {
+        select: {
+          city: true,
+          region: true,
+          friend_residence_durations: {
+            select: {
+              start: true,
+              end: true,
+            },
+          },
         },
       },
       documents: {
@@ -75,6 +92,7 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
           editions: {
             select: {
               type: true,
+              is_draft: true,
               edition_audios: {
                 select: {
                   id: true,
@@ -105,9 +123,27 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
 
   invariant(friend !== null);
 
+  const hasNoNonDraftEditions = friend.documents.every((doc) =>
+    doc.editions.every((edition) => edition.is_draft),
+  );
+
+  if (hasNoNonDraftEditions) {
+    return {
+      notFound: true,
+    };
+  }
+
   const friendProps = {
     ...friend,
     quotes: friend.friend_quotes.map((q) => ({ quote: q.text, cite: q.source })),
+    residences: friend.friend_residences.map((r) => ({
+      city: r.city,
+      region: r.region,
+      durations: r.friend_residence_durations.map((d) => ({
+        start: String(d.start),
+        end: String(d.end),
+      })),
+    })),
     documents: friend.documents.map((doc) => {
       const firstEdition = doc.editions[0];
       invariant(firstEdition !== undefined);
@@ -136,6 +172,13 @@ interface Props {
   gender: 'male' | 'female' | 'mixed';
   description: string;
   quotes: Array<{ quote: string; cite: string }>;
+  born: number | null;
+  died: number | null;
+  residences: Array<{
+    city: string;
+    region: string;
+    durations: Array<{ start: string; end: string }>;
+  }>;
   documents: Array<{
     title: string;
     slug: string;
@@ -157,8 +200,43 @@ const Friend: React.FC<Props> = ({
   description,
   quotes,
   documents,
+  residences,
+  born,
+  died,
 }) => {
   const onlyOneBook = documents.length === 1;
+  const isCompilations = name.startsWith(`Compila`);
+  const mapData = getResidences(residences);
+  let mapBlock;
+  if (!isCompilations) {
+    invariant(mapData[0] !== undefined);
+    mapBlock = (
+      <MapBlock
+        bgImg={BooksBgImage.src}
+        friendName={name}
+        residences={residences.flatMap((r) => {
+          const place = `${trans(r.city)}, ${trans(r.region)}`;
+          if (r.durations) {
+            return r.durations.map((d) => `${place} (${d.start} - ${d.end})`);
+          }
+          let residence = place;
+          if (born && died) {
+            residence += ` (${born} - ${died})`;
+          } else if (died) {
+            residence += ` (died: ${died})`;
+          }
+          return residence;
+        })}
+        map={mapData[0].map}
+        markers={mapData.map((res) => ({
+          label: `${trans(res.city)}, ${trans(res.region)}`,
+          top: res.top,
+          left: res.left,
+        }))}
+      />
+    );
+  }
+
   return (
     <div>
       <FriendBlock name={name} gender={gender} blurb={description} />
@@ -216,6 +294,7 @@ const Friend: React.FC<Props> = ({
             })}
         </div>
       </div>
+      {mapBlock}
       <TestimonialsBlock testimonials={quotes.slice(1, quotes.length)} />
     </div>
   );
