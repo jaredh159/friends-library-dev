@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import cx from 'classnames';
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 
 interface Props {
   pillText: string;
@@ -15,7 +16,7 @@ const PillDropdown: React.FC<Props> = ({
   autoHide = false,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const [dropdownVisible, setDropdownVisible] = useState<boolean>(false);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
 
   useEffect(() => {
     const click: (event: any) => any = (event) => {
@@ -26,11 +27,9 @@ const PillDropdown: React.FC<Props> = ({
         setDropdownVisible(false);
       }
     };
-
     const escape: (e: KeyboardEvent) => any = ({ keyCode }) => {
       keyCode === 27 && setDropdownVisible(false);
     };
-
     document.addEventListener(`click`, click);
     document.addEventListener(`keydown`, escape);
     return () => {
@@ -58,9 +57,11 @@ const PillDropdown: React.FC<Props> = ({
         onClick={() => setDropdownVisible(!dropdownVisible)}
         className="h-12 w-12 absolute top-0 right-0 flex justify-center items-center"
       >
-        <i
-          className={`fa fa-chevron-${dropdownVisible ? `up` : `down`} text-flgray-400`}
-        />
+        {dropdownVisible ? (
+          <ChevronUpIcon className="h-6 text-flgray-400" />
+        ) : (
+          <ChevronDownIcon className="h-6 text-flgray-400" />
+        )}
       </div>
       {dropdownVisible && children}
     </div>

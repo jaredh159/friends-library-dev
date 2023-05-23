@@ -72,7 +72,7 @@ const FriendCard: React.FC<Props> = ({
       >
         <h3
           className={cx(
-            `sans-wide text-2xl -mt-2 text-center mb-6 after:block after:h-[3px] max-w-[180px] mt-[15px] ml-auto mr-auto`,
+            `sans-wide text-2xl -mt-2 text-center mb-6 after:block after:h-[3px] mt-[15px] ml-auto mr-auto`,
             featured && `md:mb-10`,
           )}
         >

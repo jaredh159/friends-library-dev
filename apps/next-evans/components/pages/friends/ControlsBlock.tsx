@@ -24,7 +24,7 @@ const ControlsBlock: React.FC<Props> = ({
     className="bg-flgray-100 p-6 pb-12 md:p-8 flex flex-col md:flex-row justify-center items-center"
   >
     <Label>{t`Sort`}</Label>
-    <PillDropdown pillText={translate(sortOption)} autoHide>
+    <PillDropdown pillText={translate(sortOption)}>
       <PillDropdownDropdown>
         <PillDropdownItem
           onClick={() => setSortOption(`First Name`)}

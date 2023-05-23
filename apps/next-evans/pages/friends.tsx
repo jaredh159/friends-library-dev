@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { GetStaticProps } from 'next';
 import { PrismaClient, friends as Friend } from '@prisma/client';
+import invariant from 'tiny-invariant';
 import { LANG } from '@/lib/env';
 import FriendsPageHero from '@/components/pages/friends/FriendsPageHero';
-import BgImage from '@/public/images/street.jpg';
+import HeroBg from '@/public/images/street.jpg';
+import CompilationsBg from '@/public/images/village.jpg';
 import { t } from '@/../../libs-ts/locale/src';
 import FriendCard from '@/components/pages/friends/FriendCard';
-import invariant from 'tiny-invariant';
 import ControlsBlock from '@/components/pages/friends/ControlsBlock';
+import CompilationsBlock from '@/components/pages/friends/CompilationsBlock';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const client = new PrismaClient();
@@ -29,6 +31,11 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
       documents: {
         select: {
           id: true,
+          editions: {
+            select: {
+              is_draft: true,
+            },
+          },
         },
       },
     },
@@ -38,6 +45,12 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     props: {
       friends: friends
         .filter((friend) => friend.friend_residences[0] !== undefined)
+        .filter(
+          (friend) =>
+            !friend.documents.every((doc) =>
+              doc.editions.every((edition) => edition.is_draft),
+            ),
+        )
         .map((friend) => {
           invariant(friend.friend_residences[0] !== undefined);
           return {
@@ -52,14 +65,14 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   };
 };
 
+type PartialFriend = Pick<Friend, 'name' | 'gender' | 'slug' | 'born' | 'died'> & {
+  region: string;
+  numBooks: number;
+  dateAdded: string;
+};
+
 interface Props {
-  friends: Array<
-    Pick<Friend, 'name' | 'gender' | 'slug' | 'born' | 'died'> & {
-      region: string;
-      numBooks: number;
-      dateAdded: string;
-    }
-  >;
+  friends: Array<PartialFriend>;
 }
 
 const Friends: React.FC<Props> = ({ friends }) => {
@@ -69,9 +82,15 @@ const Friends: React.FC<Props> = ({ friends }) => {
     })
     .slice(0, 2);
 
+  const [searchQuery, setSearchQuery] = useState<string>(``);
+  const [sortOption, setSortOption] = useState<string>(`First Name`);
+  const filteredFriends = friends
+    .sort(makeSorter(sortOption))
+    .filter(makeFilter(searchQuery, sortOption));
+
   return (
     <div>
-      <FriendsPageHero numFriends={787} bgImg={BgImage.src} />
+      <FriendsPageHero numFriends={friends.length} bgImg={HeroBg.src} />
       <section className="sm:px-16 py-16">
         <h2 className="text-center pb-8 sans-wider text-2xl px-8">{t`Recently Added Authors`}</h2>
         <div className="flex flex-col xl:flex-row justify-center xl:items-center space-y-16 xl:space-y-0 xl:space-x-12">
@@ -95,15 +114,15 @@ const Friends: React.FC<Props> = ({ friends }) => {
         </div>
       </section>
       <ControlsBlock
-        sortOption={'foo?'}
-        setSortOption={() => {}}
-        searchQuery={'bar?'}
-        setSearchQuery={() => {}}
+        sortOption={sortOption}
+        setSortOption={setSortOption}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
       />
-      <div className="bg-flgray-200 flex justify-center flex-row flex-wrap">
-        {friends.map((friend, i) => (
+      <ul className="bg-flgray-200 flex justify-center flex-row flex-wrap pb-16">
+        {filteredFriends.map((friend, i) => (
           <FriendCard
-            className="m-8 xl:m-16"
+            className="m-8 xl:m-12"
             gender={friend.gender === 'mixed' ? 'male' : friend.gender}
             name={friend.name}
             region={friend.region}
@@ -127,9 +146,44 @@ const Friends: React.FC<Props> = ({ friends }) => {
             })()}
           />
         ))}
-      </div>
+      </ul>
+      <CompilationsBlock bgImg={CompilationsBg.src} />
     </div>
   );
 };
 
 export default Friends;
+
+function makeSorter(
+  sortOption: string,
+): (friendA: PartialFriend, friendB: PartialFriend) => 1 | 0 | -1 {
+  switch (sortOption) {
+    case `Death Date`:
+      return (a, b) => ((a?.died || 0) < (b?.died || 0) ? -1 : 1);
+    case `Birth Date`:
+      return (a, b) => ((a?.born || 0) < (b?.born || 0) ? -1 : 1);
+    case `Last Name`:
+      return (a, b) =>
+        (a.name.split(` `).pop() || ``) < (b.name.split(` `).pop() || ``) ? -1 : 1;
+    default:
+      return (a, b) => (a.name < b.name ? -1 : 1);
+  }
+}
+
+function makeFilter(
+  query: string,
+  sortOption: string,
+): (friend: PartialFriend) => boolean {
+  return (friend) => {
+    if (sortOption === `Death Date` && !friend.died) {
+      return false;
+    }
+    if (sortOption === `Birth Date` && !friend.born) {
+      return false;
+    }
+    return (
+      query.trim() === `` ||
+      friend.name.toLowerCase().includes(query.trim().toLowerCase())
+    );
+  };
+}
