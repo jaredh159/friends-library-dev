@@ -3,15 +3,15 @@ import { t } from '@friends-library/locale';
 import BackgroundImage from '@/components/core/BackgroundImage';
 import Dual from '@/components/core/Dual';
 import { makeScroller } from '@/lib/scroll';
+import HeroBg from '@/public/images/street.jpg';
 
 interface Props {
   numFriends: number;
-  bgImg: string;
 }
 
-const FriendsPageHero: React.FC<Props> = ({ numFriends, bgImg }) => (
+const FriendsPageHero: React.FC<Props> = ({ numFriends }) => (
   <BackgroundImage
-    src={bgImg}
+    src={HeroBg}
     fit="cover"
     position="[object-position:center_88%]"
     className="text-center text-white"

@@ -212,7 +212,6 @@ const Friend: React.FC<Props> = ({
     invariant(mapData[0] !== undefined);
     mapBlock = (
       <MapBlock
-        bgImg={BooksBgImage.src}
         friendName={name}
         residences={residences.flatMap((r) => {
           const place = `${trans(r.city)}, ${trans(r.region)}`;

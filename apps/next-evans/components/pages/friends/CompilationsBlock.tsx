@@ -1,16 +1,13 @@
 import React from 'react';
+import Link from 'next/link';
 import { t } from '@friends-library/locale';
 import BackgroundImage from '@/components/core/BackgroundImage';
 import Dual from '@/components/core/Dual';
-import Link from 'next/link';
 import Button from '@/components/core/Button';
+import CompilationsBg from '@/public/images/village.jpg';
 
-interface Props {
-  bgImg: string;
-}
-
-const CompilationsBlock: React.FC<Props> = ({ bgImg }) => (
-  <BackgroundImage src={bgImg} fit="cover" position="object-bottom" className="">
+const CompilationsBlock: React.FC = () => (
+  <BackgroundImage src={CompilationsBg} fit="cover" position="object-bottom" className="">
     <div className="text-center text-white px-8 py-24 md:py-24 xl:py-32 bg-gradient-to-b from-black/40 to-black/60">
       <h1 className="sans-wider text-4xl font-bold">{t`Compilations`}</h1>
       <Dual.P className="body-text text-white py-8 text-lg leading-loose max-w-screen-sm mx-auto">

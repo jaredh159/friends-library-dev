@@ -4,8 +4,6 @@ import { PrismaClient, friends as Friend } from '@prisma/client';
 import invariant from 'tiny-invariant';
 import { LANG } from '@/lib/env';
 import FriendsPageHero from '@/components/pages/friends/FriendsPageHero';
-import HeroBg from '@/public/images/street.jpg';
-import CompilationsBg from '@/public/images/village.jpg';
 import { t } from '@/../../libs-ts/locale/src';
 import FriendCard from '@/components/pages/friends/FriendCard';
 import ControlsBlock from '@/components/pages/friends/ControlsBlock';
@@ -90,7 +88,7 @@ const Friends: React.FC<Props> = ({ friends }) => {
 
   return (
     <div>
-      <FriendsPageHero numFriends={friends.length} bgImg={HeroBg.src} />
+      <FriendsPageHero numFriends={friends.length} />
       <section className="sm:px-16 py-16">
         <h2 className="text-center pb-8 sans-wider text-2xl px-8">{t`Recently Added Authors`}</h2>
         <div className="flex flex-col xl:flex-row justify-center xl:items-center space-y-16 xl:space-y-0 xl:space-x-12">
@@ -147,7 +145,7 @@ const Friends: React.FC<Props> = ({ friends }) => {
           />
         ))}
       </ul>
-      <CompilationsBlock bgImg={CompilationsBg.src} />
+      <CompilationsBlock />
     </div>
   );
 };

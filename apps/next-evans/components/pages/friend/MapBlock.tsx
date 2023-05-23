@@ -1,16 +1,16 @@
 import React from 'react';
 import { t } from '@friends-library/locale';
 import Image from 'next/image';
+import BackgroundImage from '@/components/core/BackgroundImage';
+import { LANG } from '@/lib/env';
 import FriendMeta from './FriendMeta';
 import LocationMarker from './LocationMarker';
 import Uk from '@/public/images/maps/UK--2x.png';
 import Us from '@/public/images/maps/US.png';
 import Europe from '@/public/images/maps/Europe--2x.png';
-import BackgroundImage from '@/components/core/BackgroundImage';
-import { LANG } from '@/lib/env';
+import BgImage from '@/public/images/books-diagonal.jpg';
 
 interface Props {
-  bgImg: string;
   friendName: string;
   residences: string[];
   map: 'UK' | 'US' | 'Europe';
@@ -21,16 +21,16 @@ interface Props {
   }[];
 }
 
-const MapBlock: React.FC<Props> = ({ bgImg, friendName, markers, residences, map }) => (
+const MapBlock: React.FC<Props> = ({ friendName, markers, residences, map }) => (
   <BackgroundImage
-    src={bgImg}
+    src={BgImage}
     className="relative bg-cover pb-20 md:pb-32 xl:pb-64 xl:[&>.Content>*]:w-[85vw] xl:[&>.Content>*]:max-w-[1400px] xl:pt-12 "
     fit={`cover`}
     position={`center`}
   >
     <div className="relative items-start justify-center xl:flex xl:bg-flgray-100 xl:mx-auto xl:py-10 xl:pt-16 md:pt-8">
       <FriendMeta
-        className="mx-6 z-10 max-w-xs xl:w-64 xl:py-24 translate-y-5 min-h-[15rem] md:translate-y-8 xl:w-[72rem] xl:translate-y-[-125px]"
+        className="mx-6 z-10 max-w-xs xl:py-24 translate-y-5 min-h-[15rem] md:translate-y-8 xl:w-[72rem] xl:translate-y-[-125px]"
         title={t`Where did ${friendName} live?`}
         color="maroon"
       >
@@ -49,6 +49,8 @@ const MapBlock: React.FC<Props> = ({ bgImg, friendName, markers, residences, map
             ))}
           {map === `UK` && (
             <Image
+              width={800}
+              height={800}
               src={Uk}
               alt={LANG === `en` ? `Map of U.K.` : `Mapa de Reino Unido.`}
               className="xl:max-w-[700px]"
@@ -56,6 +58,8 @@ const MapBlock: React.FC<Props> = ({ bgImg, friendName, markers, residences, map
           )}
           {map === `US` && (
             <Image
+              width={800}
+              height={800}
               src={Us}
               alt={LANG === `en` ? `Map of U.S.` : `Mapa, de, estados unidos de américa.`}
               className="xl:max-w-[700px]"
@@ -63,6 +67,8 @@ const MapBlock: React.FC<Props> = ({ bgImg, friendName, markers, residences, map
           )}
           {map === `Europe` && (
             <Image
+              width={800}
+              height={800}
               src={Europe}
               alt={LANG === `en` ? `Map of Europe.` : `Mapa de europa.`}
               className="xl:max-w-[700px]"

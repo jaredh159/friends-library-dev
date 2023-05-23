@@ -1,9 +1,9 @@
 import React from 'react';
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import cx from 'classnames';
 
 interface Props {
-  src: string;
+  src: string | StaticImageData;
   fit: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down';
   position: string;
   children?: React.ReactNode;
