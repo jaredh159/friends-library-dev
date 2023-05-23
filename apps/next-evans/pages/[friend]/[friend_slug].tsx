@@ -4,7 +4,6 @@ import cx from 'classnames';
 import { t, translateOptional as trans } from '@friends-library/locale';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import type { Edition } from '@/lib/editions';
-import BooksBgImage from '@/public/images/books-diagonal.jpg';
 import { LANG } from '@/lib/env';
 import { mostModernEdition } from '@/lib/editions';
 import FriendBlock from '@/components/pages/friend/FriendBlock';

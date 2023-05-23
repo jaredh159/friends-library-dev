@@ -1,12 +1,12 @@
 import React from 'react';
 import cx from 'classnames';
 import { t } from '@friends-library/locale';
+import { BookOpenIcon, CalendarIcon, FlagIcon } from '@heroicons/react/24/outline';
+import type { HeroIcon } from '@/lib/types';
 import CircleSilhouette from './CircleSilhouette';
 import Dual from '@/components/core/Dual';
 import Button from '@/components/core/Button';
 import Stack from '@/components/core/Stack';
-import { HeroIcon } from '@/lib/types';
-import { BookOpenIcon, CalendarIcon, FlagIcon } from '@heroicons/react/24/outline';
 
 interface Props {
   className?: string;

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { GetStaticProps } from 'next';
-import { PrismaClient, friends as Friend } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import invariant from 'tiny-invariant';
+import type { GetStaticProps } from 'next';
+import type { friends as Friend } from '@prisma/client';
 import { LANG } from '@/lib/env';
 import FriendsPageHero from '@/components/pages/friends/FriendsPageHero';
 import { t } from '@/../../libs-ts/locale/src';
@@ -75,9 +76,7 @@ interface Props {
 
 const Friends: React.FC<Props> = ({ friends }) => {
   const mostRecentFriends = friends
-    .sort((a, b) => {
-      return new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime();
-    })
+    .sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime())
     .slice(0, 2);
 
   const [searchQuery, setSearchQuery] = useState<string>(``);
@@ -94,7 +93,7 @@ const Friends: React.FC<Props> = ({ friends }) => {
         <div className="flex flex-col xl:flex-row justify-center xl:items-center space-y-16 xl:space-y-0 xl:space-x-12">
           {mostRecentFriends.map((friend, i) => (
             <FriendCard
-              gender={friend.gender === 'mixed' ? 'male' : friend.gender}
+              gender={friend.gender === `mixed` ? `male` : friend.gender}
               name={friend.name}
               region={friend.region}
               numBooks={friend.numBooks}
@@ -104,7 +103,7 @@ const Friends: React.FC<Props> = ({ friends }) => {
               url={`/${
                 LANG === `en` ? `friend` : friend.gender === `female` ? `amiga` : `amigo`
               }/${friend.slug}`}
-              color={i === 0 ? 'blue' : 'green'}
+              color={i === 0 ? `blue` : `green`}
               className="xl:w-1/2 xl:max-w-screen-sm"
               key={friend.slug}
             />
@@ -120,8 +119,9 @@ const Friends: React.FC<Props> = ({ friends }) => {
       <ul className="bg-flgray-200 flex justify-center flex-row flex-wrap pb-16">
         {filteredFriends.map((friend, i) => (
           <FriendCard
+            key={friend.slug}
             className="m-8 xl:m-12"
-            gender={friend.gender === 'mixed' ? 'male' : friend.gender}
+            gender={friend.gender === `mixed` ? `male` : friend.gender}
             name={friend.name}
             region={friend.region}
             numBooks={friend.numBooks}
@@ -133,13 +133,13 @@ const Friends: React.FC<Props> = ({ friends }) => {
             color={(() => {
               switch (i % 4) {
                 case 0:
-                  return 'blue';
+                  return `blue`;
                 case 1:
-                  return 'green';
+                  return `green`;
                 case 2:
-                  return 'maroon';
+                  return `maroon`;
                 default:
-                  return 'gold';
+                  return `gold`;
               }
             })()}
           />

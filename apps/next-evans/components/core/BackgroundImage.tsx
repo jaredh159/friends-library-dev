@@ -1,6 +1,7 @@
 import React from 'react';
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
 import cx from 'classnames';
+import type { StaticImageData } from 'next/image';
 
 interface Props {
   src: string | StaticImageData;

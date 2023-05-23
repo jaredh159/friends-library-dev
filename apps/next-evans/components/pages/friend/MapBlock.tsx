@@ -1,10 +1,10 @@
 import React from 'react';
 import { t } from '@friends-library/locale';
 import Image from 'next/image';
-import BackgroundImage from '@/components/core/BackgroundImage';
-import { LANG } from '@/lib/env';
 import FriendMeta from './FriendMeta';
 import LocationMarker from './LocationMarker';
+import BackgroundImage from '@/components/core/BackgroundImage';
+import { LANG } from '@/lib/env';
 import Uk from '@/public/images/maps/UK--2x.png';
 import Us from '@/public/images/maps/US.png';
 import Europe from '@/public/images/maps/Europe--2x.png';
