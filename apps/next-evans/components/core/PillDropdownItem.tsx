@@ -11,7 +11,7 @@ const PillDropdownItem: React.FC<{
     onClick={onClick}
     className={cx(
       className,
-      `PillDropdownItem p-3 select-none`,
+      `p-3 select-none`,
       `font-sans tracking-wide text-flgray-500 text-center cursor-pointer`,
       selected && `bg-flgray-300 hover:bg-flgray-400`,
       selected === false && `bg-white hover:bg-gray-200`,

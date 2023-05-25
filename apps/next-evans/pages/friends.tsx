@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { PrismaClient } from '@prisma/client';
 import invariant from 'tiny-invariant';
+import { t } from '@friends-library/locale';
 import type { GetStaticProps } from 'next';
 import type { friends as Friend } from '@prisma/client';
 import { LANG } from '@/lib/env';
 import FriendsPageHero from '@/components/pages/friends/FriendsPageHero';
-import { t } from '@/../../libs-ts/locale/src';
 import FriendCard from '@/components/pages/friends/FriendCard';
 import ControlsBlock from '@/components/pages/friends/ControlsBlock';
 import CompilationsBlock from '@/components/pages/friends/CompilationsBlock';
@@ -43,15 +43,17 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   return {
     props: {
       friends: friends
-        .filter((friend) => friend.friend_residences[0] !== undefined)
         .filter(
           (friend) =>
             !friend.documents.every((doc) =>
               doc.editions.every((edition) => edition.is_draft),
-            ),
+            ) && !friend.name.startsWith(`Compila`),
         )
         .map((friend) => {
-          invariant(friend.friend_residences[0] !== undefined);
+          invariant(
+            friend.friend_residences[0] !== undefined,
+            `${friend.name} has no residence`,
+          );
           return {
             ...friend,
             created_at: null,

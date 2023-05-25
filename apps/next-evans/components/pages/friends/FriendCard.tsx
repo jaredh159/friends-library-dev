@@ -6,7 +6,6 @@ import type { HeroIcon } from '@/lib/types';
 import CircleSilhouette from './CircleSilhouette';
 import Dual from '@/components/core/Dual';
 import Button from '@/components/core/Button';
-import Stack from '@/components/core/Stack';
 
 interface Props {
   className?: string;
@@ -33,19 +32,49 @@ const FriendCard: React.FC<Props> = ({
   url,
   featured = false,
 }) => {
-  const bgColor = `bg-fl${color}`;
-  const textColor = `text-${featured ? `white` : `fl${color}`}`;
+  let hrStyles = ``;
+  let bgColor = ``;
+  let textColor = ``;
+  switch (color) {
+    case `blue`:
+      hrStyles = `${
+        featured ? `after:bg-white` : `after:bg-flblue`
+      } after:w-16 after:mx-auto`;
+      bgColor = `bg-flblue`;
+      textColor = featured ? `text-white` : `text-flblue`;
+      break;
+    case `green`:
+      hrStyles = `${
+        featured ? `after:bg-white` : `after:bg-flgreen`
+      } after:w-16 after:mx-auto`;
+      bgColor = `bg-flgreen`;
+      textColor = featured ? `text-white` : `text-flgreen`;
+      break;
+    case `maroon`:
+      hrStyles = `${
+        featured ? `after:bg-white` : `after:bg-flmaroon`
+      } after:w-16 after:mx-auto`;
+      bgColor = `bg-flmaroon`;
+      textColor = featured ? `text-white` : `text-flmaroon`;
+      break;
+    case `gold`:
+      hrStyles = `${
+        featured ? `after:bg-white` : `after:bg-flgold`
+      } after:w-16 after:mx-auto`;
+      bgColor = `bg-flgold`;
+      textColor = featured ? `text-white` : `text-flgold`;
+      break;
+  }
 
   return (
-    <Stack
-      space="8"
+    <div
       className={cx(
         className,
         textColor,
         `flex flex-col items-center [&>*]:translate-y-[31px]`,
         featured
-          ? `md:flex-row md:justify-center md:pt-12 md:pb-6 md:[&>*]:transform-none ${bgColor}`
-          : `min-w-[100%] [&>*]:translate-y-[36px] sm:min-w-[330px] [background-image:linear-gradient(to_bottom,transparent_0,transparent_140px,white_140px,white_100%)]`,
+          ? `md:flex-row md:justify-center md:pt-12 md:pb-6 md:[&>*]:transform-none ${bgColor} space-y-8 md:space-y-0`
+          : `min-w-[100%] [&>*]:translate-y-[36px] sm:min-w-[330px] [background-image:linear-gradient(to_bottom,transparent_0,transparent_140px,white_140px,white_100%)] space-y-8`,
       )}
     >
       <div
@@ -72,13 +101,13 @@ const FriendCard: React.FC<Props> = ({
       >
         <h3
           className={cx(
-            `sans-wide text-2xl text-center mb-6 after:block after:h-[3px] mt-[15px] ml-auto mr-auto`,
+            `sans-wide text-2xl text-center mb-6 after:block after:h-[3px] ${hrStyles} after:mt-[15px] ml-auto mr-auto`,
             featured && `md:mb-10`,
           )}
         >
           {name}
         </h3>
-        <Stack space="4" el="ul" className={cx(`body-text pb-2`, textColor)}>
+        <ul className={cx(`body-text pb-2 space-y-4`, textColor)}>
           <Item key="cal" Icon={CalendarIcon}>
             {lifespan(born, died)}
           </Item>
@@ -96,7 +125,7 @@ const FriendCard: React.FC<Props> = ({
               </>
             </Dual.Frag>
           </Item>
-        </Stack>
+        </ul>
       </div>
       <Button
         key="button"
@@ -109,7 +138,7 @@ const FriendCard: React.FC<Props> = ({
       >
         {t`Learn More`}
       </Button>
-    </Stack>
+    </div>
   );
 };
 

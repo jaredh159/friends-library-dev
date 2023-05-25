@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import cx from 'classnames';
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
 
 interface Props {
   pillText: string;
@@ -15,7 +15,7 @@ const PillDropdown: React.FC<Props> = ({
   children,
   autoHide = false,
 }) => {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLButtonElement>(null);
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
   useEffect(() => {
@@ -39,12 +39,15 @@ const PillDropdown: React.FC<Props> = ({
   }, [dropdownVisible, autoHide]);
 
   return (
-    <div
+    <button
       ref={ref}
-      className={cx(className, `rounded-full w-64 bg-white relative h-12 cursor-pointer`)}
+      className={cx(
+        className,
+        `rounded-full w-64 bg-white hover:bg-gray-50 transition duration-100 relative h-12 cursor-pointer`,
+      )}
+      onClick={() => setDropdownVisible(!dropdownVisible)}
     >
       <div
-        onClick={() => setDropdownVisible(!dropdownVisible)}
         className={cx(
           `border border-flgray-400 rounded-full subtle-focus`,
           `h-12 w-64 pt-3 text-center select-none`,
@@ -53,18 +56,16 @@ const PillDropdown: React.FC<Props> = ({
       >
         {pillText}
       </div>
-      <div
-        onClick={() => setDropdownVisible(!dropdownVisible)}
-        className="h-12 w-12 absolute top-0 right-0 flex justify-center items-center"
-      >
-        {dropdownVisible ? (
-          <ChevronUpIcon className="h-6 text-flgray-400" />
-        ) : (
-          <ChevronDownIcon className="h-6 text-flgray-400" />
-        )}
+      <div className="h-12 w-12 absolute top-0 right-0 flex justify-center items-center">
+        <ChevronDownIcon
+          className={cx(
+            `h-6 text-flgray-400 transition duration-150`,
+            dropdownVisible && `-rotate-180`,
+          )}
+        />
       </div>
       {dropdownVisible && children}
-    </div>
+    </button>
   );
 };
 

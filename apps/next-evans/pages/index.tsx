@@ -2,6 +2,7 @@ import React from 'react';
 import { PrismaClient } from '@prisma/client';
 import Link from 'next/link';
 import cx from 'classnames';
+import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import type { GetStaticProps } from 'next';
 import { LANG } from '@/lib/env';
 
@@ -31,7 +32,15 @@ const Home: React.FC<Props> = ({ friends }) => (
     <h1 className="bg-flprimary text-white p-3">
       Home, lang is <code className="text-red-200">{LANG}</code>
     </h1>
-    <Link href={LANG === `en` ? `/friends` : `/amigos`} />
+    <div className="flex justify-center items-center p-8 bg-slate-400 text-white rounded-b-3xl">
+      <Link
+        href={LANG === `en` ? `/friends` : `/amigos`}
+        className="shadow-md bg-white text-black rounded-full pl-6 pr-4 py-2 font-bold flex items-center hover:scale-105 transition duration-100 active:scale-95"
+      >
+        All friends
+        <ChevronRightIcon className="h-5 ml-4" />
+      </Link>
+    </div>
     <ul className="bg-gray-50 grid grid-cols-5 gap-4 p-8">
       {friends.map((friend) => (
         <Link

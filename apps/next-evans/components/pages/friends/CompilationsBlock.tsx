@@ -8,7 +8,7 @@ import CompilationsBg from '@/public/images/village.jpg';
 
 const CompilationsBlock: React.FC = () => (
   <BackgroundImage src={CompilationsBg} fit="cover" position="object-bottom" className="">
-    <div className="text-center text-white px-8 py-24 md:py-24 xl:py-32 bg-gradient-to-b from-black/40 to-black/60">
+    <div className="text-center text-white px-8 py-24 md:py-24 xl:py-32 [background:radial-gradient(rgb(0_0_0/0.7),rgb(0_0_0/0.3),rgb(0_0_0/0.4))]">
       <h1 className="sans-wider text-4xl font-bold">{t`Compilations`}</h1>
       <Dual.P className="body-text text-white py-8 text-lg leading-loose max-w-screen-sm mx-auto">
         <>
