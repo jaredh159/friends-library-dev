@@ -16,4 +16,9 @@
   @apply tracking-wider subpixel-antialiased;
 }
 
+.subtle-link {
+  @apply text-flprimary;
+  border-bottom: 1px dotted currentColor;
+}
+
 @tailwind utilities;
