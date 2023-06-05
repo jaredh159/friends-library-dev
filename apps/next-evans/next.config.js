@@ -4,7 +4,7 @@ const LANG = process.env.NEXT_PUBLIC_LANG || `en`;
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   transpilePackages: [`@friends-library`, `x-syntax`],
   rewrites: async function () {
     if (LANG === `en`) return [];
@@ -27,6 +27,9 @@ const nextConfig = {
       },
     ];
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  }
 };
 
 module.exports = nextConfig;

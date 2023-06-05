@@ -1,5 +1,4 @@
 import React from 'react';
-import { PrismaClient } from '@prisma/client';
 import cx from 'classnames';
 import { t } from '@friends-library/locale';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
@@ -18,10 +17,9 @@ import GettingStartedPaths from '@/components/pages/getting-started/GettingStart
 import recommendedBooks from '@/lib/recommended-books';
 import { mostModernEdition } from '@/lib/editions';
 import getCustomCode from '@/lib/get-custom-code';
+import { prisma } from '@/lib/db/prisma';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const prisma = new PrismaClient();
-
   const friends = await prisma.friends.findMany({
     where: { lang: LANG },
     select: {

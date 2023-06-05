@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { PrismaClient } from '@prisma/client';
 import invariant from 'tiny-invariant';
 import { t } from '@friends-library/locale';
 import type { GetStaticProps } from 'next';
@@ -10,9 +9,9 @@ import FriendCard from '@/components/pages/friends/FriendCard';
 import ControlsBlock from '@/components/pages/friends/ControlsBlock';
 import CompilationsBlock from '@/components/pages/friends/CompilationsBlock';
 import { getFriendUrl, isCompilations } from '@/lib/friend';
+import { prisma } from '@/lib/db/prisma';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const prisma = new PrismaClient();
   const friends = await prisma.friends.findMany({
     where: { lang: LANG },
     select: {
