@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { t } from '@friends-library/locale';
 import type { GetStaticProps } from 'next';
 import type { FriendProps } from '@/lib/types';
-import { LANG } from '@/lib/env';
 import FriendsPageHero from '@/components/pages/friends/FriendsPageHero';
 import FriendCard from '@/components/pages/friends/FriendCard';
 import ControlsBlock from '@/components/pages/friends/ControlsBlock';
@@ -97,9 +96,7 @@ const Friends: React.FC<Props> = ({ friends }) => {
                   : `Unknown residence`
               }
               numBooks={friend.numBooks}
-              url={`/${
-                LANG === `en` ? `friend` : friend.gender === `female` ? `amiga` : `amigo`
-              }/${friend.slug}`}
+              url={getFriendUrl(friend.slug, friend.gender)}
               born={friend.born || undefined}
               died={friend.died || undefined}
               color={(() => {

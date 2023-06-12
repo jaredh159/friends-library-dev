@@ -4,7 +4,7 @@ import type { CoverProps } from '@friends-library/types';
 import type { GettingStartedCoverProps } from '@/pages/getting-started';
 import PathBlock from './PathBlock';
 import { LANG } from '@/lib/env';
-import { getFriendUrl, isCompilations } from '@/lib/friend';
+import { getDocumentUrl, getFriendUrl, isCompilations } from '@/lib/friend';
 import { mostModernEdition } from '@/lib/editions';
 
 interface Props {
@@ -83,7 +83,7 @@ function prepareBooks(books: GettingStartedCoverProps[]): (CoverProps & {
     blurb: ``,
     customCss: book.customCSS || ``,
     customHtml: book.customHTML || ``,
-    documentUrl: `/${book.authorSlug}/${book.slug}`,
+    documentUrl: getDocumentUrl(book.authorSlug, book.slug),
     authorUrl: getFriendUrl(book.authorSlug, book.authorGender),
     htmlShortTitle: book.title,
     hasAudio: book.hasAudio,

@@ -12,7 +12,7 @@ import BookByFriend from '@/components/pages/friend/BookByFriend';
 import TestimonialsBlock from '@/components/pages/friend/TestimonialsBlock';
 import MapBlock from '@/components/pages/friend/MapBlock';
 import getResidences from '@/lib/residences';
-import { isCompilations } from '@/lib/friend';
+import { getDocumentUrl, isCompilations } from '@/lib/friend';
 import getFriend, { getAllFriends } from '@/lib/db/friends';
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -124,7 +124,7 @@ const Friend: React.FC<FriendProps> = ({
                   className="mb-8 lg:mb-12"
                   tags={doc.tags}
                   hasAudio={doc.hasAudio}
-                  bookUrl={`/${slug}/${doc.slug}`}
+                  bookUrl={getDocumentUrl(slug, doc.slug)}
                   numDownloads={doc.numDownloads}
                   pages={doc.numPages}
                   description={doc.shortDescription}
