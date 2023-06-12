@@ -13,10 +13,10 @@ import TestimonialsBlock from '@/components/pages/friend/TestimonialsBlock';
 import MapBlock from '@/components/pages/friend/MapBlock';
 import getResidences from '@/lib/residences';
 import { isCompilations } from '@/lib/friend';
-import getFriend, { getFriends } from '@/lib/db/friends';
+import getFriend, { getAllFriends } from '@/lib/db/friends';
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const friends = await getFriends();
+  const friends = await getAllFriends();
 
   const paths = Object.values(friends).map((friend) => {
     if (LANG === `en`) {

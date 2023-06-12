@@ -7,7 +7,7 @@ import getAllCustomCode from './custom-code';
 
 let friendsPromise: Promise<Record<string, FriendProps>> | null = null;
 
-export async function getFriends(): Promise<Record<string, FriendProps>> {
+export async function getAllFriends(): Promise<Record<string, FriendProps>> {
   if (friendsPromise) {
     process.stdout.write(`cache used!\n`);
     return friendsPromise;
@@ -22,13 +22,13 @@ export async function getFriends(): Promise<Record<string, FriendProps>> {
 export default async function getFriend(
   friendSlug: string,
 ): Promise<FriendProps | undefined> {
-  const friends = await getFriends();
+  const friends = await getAllFriends();
   return friends[friendSlug];
 }
 
 // { `friendSlug/documentSlug`: Document }
 export async function getAllDocuments(): Promise<Record<string, DocumentWithFriendMeta>> {
-  const friends = await getFriends();
+  const friends = await getAllFriends();
   const documents: Record<string, DocumentWithFriendMeta> = {};
   Object.values(friends).forEach((friend) => {
     friend.documents.forEach((doc) => {

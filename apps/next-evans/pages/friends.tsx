@@ -8,18 +8,31 @@ import FriendCard from '@/components/pages/friends/FriendCard';
 import ControlsBlock from '@/components/pages/friends/ControlsBlock';
 import CompilationsBlock from '@/components/pages/friends/CompilationsBlock';
 import { getFriendUrl, isCompilations } from '@/lib/friend';
-import { getFriends } from '@/lib/db/friends';
+import { getAllFriends } from '@/lib/db/friends';
 import { getPrimaryResidence } from '@/lib/residences';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const friends = Object.values(await getFriends()).filter(
+  const friends = Object.values(await getAllFriends()).filter(
     (friend) => !isCompilations(friend.name),
   );
-  return { props: { friends } };
+  return {
+    props: {
+      friends: friends.map((friend) => ({
+        ...friend,
+        documents: null,
+        numBooks: friend.documents.length,
+      })),
+    },
+  };
 };
 
+type AllFriendsFriendProps = Pick<
+  FriendProps,
+  'born' | 'died' | 'name' | 'slug' | 'residences' | 'gender' | 'id' | 'dateAdded'
+> & { numBooks: number };
+
 interface Props {
-  friends: Array<FriendProps>;
+  friends: Array<AllFriendsFriendProps>;
 }
 
 const Friends: React.FC<Props> = ({ friends }) => {
@@ -50,7 +63,7 @@ const Friends: React.FC<Props> = ({ friends }) => {
                     ? `${primaryResidence.city}, ${primaryResidence.region}`
                     : `Unknown residence`
                 }
-                numBooks={friend.documents.length}
+                numBooks={friend.numBooks}
                 featured
                 born={friend.born || undefined}
                 died={friend.died || undefined}
@@ -83,7 +96,7 @@ const Friends: React.FC<Props> = ({ friends }) => {
                   ? `${primaryResidence.city}, ${primaryResidence.region}`
                   : `Unknown residence`
               }
-              numBooks={friend.documents.length}
+              numBooks={friend.numBooks}
               url={`/${
                 LANG === `en` ? `friend` : friend.gender === `female` ? `amiga` : `amigo`
               }/${friend.slug}`}
@@ -114,7 +127,7 @@ export default Friends;
 
 function makeSorter(
   sortOption: string,
-): (friendA: FriendProps, friendB: FriendProps) => 1 | 0 | -1 {
+): (friendA: AllFriendsFriendProps, friendB: AllFriendsFriendProps) => 1 | 0 | -1 {
   switch (sortOption) {
     case `Death Date`:
       return (a, b) => ((a?.died || 0) < (b?.died || 0) ? -1 : 1);
@@ -128,7 +141,10 @@ function makeSorter(
   }
 }
 
-function makeFilter(query: string, sortOption: string): (friend: FriendProps) => boolean {
+function makeFilter(
+  query: string,
+  sortOption: string,
+): (friend: AllFriendsFriendProps) => boolean {
   return (friend) => {
     if (sortOption === `Death Date` && !friend.died) {
       return false;

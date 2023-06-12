@@ -29,12 +29,17 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   return { props: { books: organizedBooks, numBooks: documents.length } };
 };
 
+export type GettingStartedCoverProps = Omit<
+  DocumentWithFriendMeta,
+  'numPages' | 'numDownloads' | 'shortDescription' | 'size' | 'tags'
+>;
+
 interface Props {
   books: {
-    history: Array<DocumentWithFriendMeta>;
-    doctrine: Array<DocumentWithFriendMeta>;
-    spiritualLife: Array<DocumentWithFriendMeta>;
-    journals: Array<DocumentWithFriendMeta>;
+    history: Array<GettingStartedCoverProps>;
+    doctrine: Array<GettingStartedCoverProps>;
+    spiritualLife: Array<GettingStartedCoverProps>;
+    journals: Array<GettingStartedCoverProps>;
   };
   numBooks: number;
 }
@@ -267,9 +272,9 @@ export const HistoryBlurb: React.FC = () => (
 );
 
 function filterBooks(
-  books: Array<DocumentWithFriendMeta>,
+  books: Array<GettingStartedCoverProps>,
   category: 'history' | 'doctrine' | 'spiritualLife' | 'journals',
-): Array<DocumentWithFriendMeta> {
+): Array<GettingStartedCoverProps> {
   return books
     .filter((book) =>
       recommendedBooks[category][LANG].some(

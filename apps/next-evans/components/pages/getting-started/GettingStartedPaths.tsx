@@ -1,7 +1,7 @@
 import React from 'react';
 import { t } from '@friends-library/locale';
 import type { CoverProps } from '@friends-library/types';
-import type { DocumentWithFriendMeta } from '@/lib/types';
+import type { GettingStartedCoverProps } from '@/pages/getting-started';
 import PathBlock from './PathBlock';
 import { LANG } from '@/lib/env';
 import { getFriendUrl, isCompilations } from '@/lib/friend';
@@ -13,10 +13,10 @@ interface Props {
   DevotionalBlurb: React.FC;
   DoctrineBlurb: React.FC;
   books: {
-    history: Array<DocumentWithFriendMeta>;
-    doctrine: Array<DocumentWithFriendMeta>;
-    spiritualLife: Array<DocumentWithFriendMeta>;
-    journals: Array<DocumentWithFriendMeta>;
+    history: Array<GettingStartedCoverProps>;
+    doctrine: Array<GettingStartedCoverProps>;
+    spiritualLife: Array<GettingStartedCoverProps>;
+    journals: Array<GettingStartedCoverProps>;
   };
 }
 
@@ -65,7 +65,7 @@ const GettingStartedPaths: React.FC<Props> = ({
 
 export default GettingStartedPaths;
 
-function prepareBooks(books: DocumentWithFriendMeta[]): (CoverProps & {
+function prepareBooks(books: GettingStartedCoverProps[]): (CoverProps & {
   documentUrl: string;
   authorUrl: string;
   htmlShortTitle: string;

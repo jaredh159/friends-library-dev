@@ -6,19 +6,24 @@ import type { GetStaticProps } from 'next';
 import type { FriendProps } from '@/lib/types';
 import { LANG } from '@/lib/env';
 import { getFriendUrl } from '@/lib/friend';
-import { getFriends } from '@/lib/db/friends';
+import { getAllFriends } from '@/lib/db/friends';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const friends = await getFriends();
+  const friends = await getAllFriends();
   return {
     props: {
-      friends: Object.values(friends),
+      friends: Object.values(friends).map((friend) => ({
+        name: friend.name,
+        slug: friend.slug,
+        gender: friend.gender,
+        id: friend.id,
+      })),
     },
   };
 };
 
 interface Props {
-  friends: Array<FriendProps>;
+  friends: Array<Pick<FriendProps, 'name' | 'slug' | 'gender' | 'id'>>;
 }
 
 const Home: React.FC<Props> = ({ friends }) => (
