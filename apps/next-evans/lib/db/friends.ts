@@ -125,40 +125,42 @@ async function _getFriends(): Promise<Record<string, FriendProps>> {
     },
   });
 
-  const friendProps = publishedFriends.map((friend) => {
-    return {
-      ...friend,
-      quotes: friend.friend_quotes.map((q) => ({ quote: q.text, cite: q.source })),
-      created_at: null,
-      dateAdded: friend.created_at.toISOString(),
-      residences: friend.friend_residences.map((r) => ({
-        city: r.city,
-        region: r.region,
-        durations: r.friend_residence_durations.map((d) => ({
-          start: String(d.start),
-          end: String(d.end),
+  const friendProps = publishedFriends
+    .map((friend) => {
+      return {
+        ...friend,
+        quotes: friend.friend_quotes.map((q) => ({ quote: q.text, cite: q.source })),
+        created_at: null,
+        dateAdded: friend.created_at.toISOString(),
+        residences: friend.friend_residences.map((r) => ({
+          city: r.city,
+          region: r.region,
+          durations: r.friend_residence_durations.map((d) => ({
+            start: String(d.start),
+            end: String(d.end),
+          })),
         })),
-      })),
-      documents: friend.documents.map((doc) => {
-        const firstEdition = doc.editions[0];
-        invariant(firstEdition !== undefined);
-        invariant(firstEdition.edition_impressions !== null);
+        documents: friend.documents.map((doc) => {
+          const firstEdition = doc.editions[0];
+          invariant(firstEdition !== undefined);
+          invariant(firstEdition.edition_impressions !== null);
 
-        return {
-          ...doc,
-          editionTypes: doc.editions.map((e) => e.type),
-          shortDescription: doc.partial_description,
-          hasAudio: doc.editions.some((e) => e.edition_audios?.id),
-          tags: doc.document_tags.map((t) => t.type),
-          numDownloads: firstEdition.downloads.length,
-          numPages: firstEdition.edition_impressions.paperback_volumes,
-          size: firstEdition.edition_impressions.paperback_size_variant,
-          customCSS: null,
-          customHTML: null,
-        };
-      }),
-    };
-  });
+          return {
+            ...doc,
+            editionTypes: doc.editions.map((e) => e.type),
+            shortDescription: doc.partial_description,
+            hasAudio: doc.editions.some((e) => e.edition_audios?.id),
+            tags: doc.document_tags.map((t) => t.type),
+            numDownloads: firstEdition.downloads.length,
+            numPages: firstEdition.edition_impressions.paperback_volumes,
+            size: firstEdition.edition_impressions.paperback_size_variant,
+            customCSS: null,
+            customHTML: null,
+          };
+        }),
+      };
+    })
+    .filter((friend) => friend.documents.length > 0);
 
   return friendProps.reduce<Record<string, FriendProps>>((acc, friend) => {
     acc[friend.slug] = friend;
