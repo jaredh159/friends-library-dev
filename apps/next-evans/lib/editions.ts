@@ -1,4 +1,4 @@
-export type Edition = 'original' | 'modernized' | 'updated';
+import type { Edition } from './types';
 
 export function mostModernEdition(editions: Edition[]): Edition {
   if (editions.includes(`updated`)) return `updated`;

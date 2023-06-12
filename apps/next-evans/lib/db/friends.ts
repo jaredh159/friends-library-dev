@@ -1,37 +1,9 @@
 import invariant from 'tiny-invariant';
-import type { Edition } from '../editions';
+import type { CustomCode } from './custom-code';
+import type { DocumentWithFriendMeta, FriendProps } from '../types';
 import { LANG } from '../env';
 import { prisma } from './prisma';
-import { CustomCode, getAllCustomCode } from './custom-code';
-
-export interface FriendProps {
-  name: string;
-  slug: string;
-  gender: 'male' | 'female' | 'mixed';
-  description: string;
-  quotes: Array<{ quote: string; cite: string }>;
-  born: number | null;
-  died: number | null;
-  residences: Array<{
-    city: string;
-    region: string;
-    durations: Array<{ start: string; end: string }>;
-  }>;
-  documents: Array<{
-    title: string;
-    slug: string;
-    id: string;
-    editionTypes: Edition[];
-    shortDescription: string;
-    hasAudio: boolean;
-    tags: Array<string>;
-    numDownloads: number;
-    numPages: number[];
-    size: 's' | 'm' | 'xl' | 'xlCondensed';
-    customCSS: string | null;
-    customHTML: string | null;
-  }>;
-}
+import getAllCustomCode from './custom-code';
 
 let friendsPromise: Promise<Record<string, FriendProps>> | null = null;
 
@@ -47,6 +19,30 @@ export async function getFriends(): Promise<Record<string, FriendProps>> {
   return friendsPromise;
 }
 
+export default async function getFriend(
+  friendSlug: string,
+): Promise<FriendProps | undefined> {
+  const friends = await getFriends();
+  return friends[friendSlug];
+}
+
+// { `friendSlug/documentSlug`: Document }
+export async function getAllDocuments(): Promise<Record<string, DocumentWithFriendMeta>> {
+  const friends = await getFriends();
+  const documents: Record<string, DocumentWithFriendMeta> = {};
+  Object.values(friends).forEach((friend) => {
+    friend.documents.forEach((doc) => {
+      documents[`${friend.slug}/${doc.slug}`] = {
+        ...doc,
+        authorGender: friend.gender,
+        authorName: friend.name,
+        authorSlug: friend.slug,
+      };
+    });
+  });
+  return documents;
+}
+
 async function _getFriends(): Promise<Record<string, FriendProps>> {
   const publishedFriends = await prisma.friends.findMany({
     where: {
@@ -54,11 +50,13 @@ async function _getFriends(): Promise<Record<string, FriendProps>> {
     },
     select: {
       name: true,
+      id: true,
       gender: true,
       slug: true,
       description: true,
       born: true,
       died: true,
+      created_at: true,
       friend_quotes: {
         select: {
           text: true,
@@ -131,6 +129,8 @@ async function _getFriends(): Promise<Record<string, FriendProps>> {
     return {
       ...friend,
       quotes: friend.friend_quotes.map((q) => ({ quote: q.text, cite: q.source })),
+      created_at: null,
+      dateAdded: friend.created_at.toISOString(),
       residences: friend.friend_residences.map((r) => ({
         city: r.city,
         region: r.region,
@@ -166,13 +166,6 @@ async function _getFriends(): Promise<Record<string, FriendProps>> {
   }, {});
 }
 
-export default async function getFriend(
-  friendSlug: string,
-): Promise<FriendProps | undefined> {
-  const friends = await getFriends();
-  return friends[friendSlug];
-}
-
 function addCustomCodeToFriends(
   friends: Record<string, FriendProps>,
   customCode: Record<string, CustomCode>,
@@ -183,14 +176,10 @@ function addCustomCodeToFriends(
     const friendDocuments = friend.documents.map((document) => {
       const documentSlug = document.slug;
       const documentCustomCode = customCode[`${friendSlug}/${documentSlug}`];
-      invariant(
-        documentCustomCode,
-        `no custom code found for ${friendSlug}/${documentSlug}`,
-      );
       return {
         ...document,
-        customCSS: documentCustomCode.css ?? null,
-        customHTML: documentCustomCode.html ?? null,
+        customCSS: documentCustomCode?.css ?? null,
+        customHTML: documentCustomCode?.html ?? null,
       };
     });
     acc[friendSlug] = {

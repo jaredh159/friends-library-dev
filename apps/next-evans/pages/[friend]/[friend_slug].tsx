@@ -3,7 +3,6 @@ import invariant from 'tiny-invariant';
 import cx from 'classnames';
 import { t, translateOptional as trans } from '@friends-library/locale';
 import type { GetStaticPaths, GetStaticProps } from 'next';
-import type { FriendProps } from '@/lib/db/friends';
 import { LANG } from '@/lib/env';
 import { mostModernEdition } from '@/lib/editions';
 import FriendBlock from '@/components/pages/friend/FriendBlock';
@@ -14,6 +13,7 @@ import MapBlock from '@/components/pages/friend/MapBlock';
 import getResidences from '@/lib/residences';
 import { isCompilations } from '@/lib/friend';
 import getFriend, { getFriends } from '@/lib/db/friends';
+import { FriendProps } from '@/lib/types';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const friends = await getFriends();

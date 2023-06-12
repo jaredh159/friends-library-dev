@@ -1,31 +1,24 @@
 import React from 'react';
-import { PrismaClient } from '@prisma/client';
 import Link from 'next/link';
 import cx from 'classnames';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import type { GetStaticProps } from 'next';
+import type { FriendProps } from '@/lib/types';
 import { LANG } from '@/lib/env';
 import { getFriendUrl } from '@/lib/friend';
+import { getFriends } from '@/lib/db/friends';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const prisma = new PrismaClient();
-  const friends = await prisma.friends.findMany({
-    select: { name: true, slug: true, id: true, gender: true },
-  });
+  const friends = await getFriends();
   return {
     props: {
-      friends,
+      friends: Object.values(friends),
     },
   };
 };
 
 interface Props {
-  friends: Array<{
-    name: string;
-    slug: string;
-    id: string;
-    gender: 'male' | 'female' | 'mixed';
-  }>;
+  friends: Array<FriendProps>;
 }
 
 const Home: React.FC<Props> = ({ friends }) => (

@@ -1,10 +1,11 @@
 import React from 'react';
 import { t } from '@friends-library/locale';
 import type { CoverProps } from '@friends-library/types';
-import type { GettingStartedCoverProps } from '@/pages/getting-started';
+import type { DocumentWithFriendMeta } from '@/lib/types';
 import PathBlock from './PathBlock';
 import { LANG } from '@/lib/env';
 import { getFriendUrl, isCompilations } from '@/lib/friend';
+import { mostModernEdition } from '@/lib/editions';
 
 interface Props {
   HistoryBlurb: React.FC;
@@ -12,10 +13,10 @@ interface Props {
   DevotionalBlurb: React.FC;
   DoctrineBlurb: React.FC;
   books: {
-    history: Array<GettingStartedCoverProps>;
-    doctrine: Array<GettingStartedCoverProps>;
-    spiritualLife: Array<GettingStartedCoverProps>;
-    journals: Array<GettingStartedCoverProps>;
+    history: Array<DocumentWithFriendMeta>;
+    doctrine: Array<DocumentWithFriendMeta>;
+    spiritualLife: Array<DocumentWithFriendMeta>;
+    journals: Array<DocumentWithFriendMeta>;
   };
 }
 
@@ -64,7 +65,7 @@ const GettingStartedPaths: React.FC<Props> = ({
 
 export default GettingStartedPaths;
 
-function prepareBooks(books: GettingStartedCoverProps[]): (CoverProps & {
+function prepareBooks(books: DocumentWithFriendMeta[]): (CoverProps & {
   documentUrl: string;
   authorUrl: string;
   htmlShortTitle: string;
@@ -73,16 +74,16 @@ function prepareBooks(books: GettingStartedCoverProps[]): (CoverProps & {
   return books.map((book) => ({
     lang: LANG,
     title: book.title,
-    isCompilation: isCompilations(book.author),
-    author: book.author,
+    isCompilation: isCompilations(book.authorName),
+    author: book.authorName,
     size: `s`,
     pages: 7,
-    edition: book.edition,
+    edition: mostModernEdition(book.editionTypes),
     isbn: ``,
     blurb: ``,
-    customCss: book.customCss,
-    customHtml: book.customHtml,
-    documentUrl: `/${book.authorSlug}/${book.documentSlug}`,
+    customCss: book.customCSS || ``,
+    customHtml: book.customHTML || ``,
+    documentUrl: `/${book.authorSlug}/${book.slug}`,
     authorUrl: getFriendUrl(book.authorSlug, book.authorGender),
     htmlShortTitle: book.title,
     hasAudio: book.hasAudio,
