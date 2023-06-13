@@ -4,7 +4,8 @@ import type { CoverProps } from '@friends-library/types';
 import type { GettingStartedCoverProps } from '@/pages/getting-started';
 import PathBlock from './PathBlock';
 import { LANG } from '@/lib/env';
-import { getFriendUrl, isCompilations } from '@/lib/friend';
+import { getDocumentUrl, getFriendUrl, isCompilations } from '@/lib/friend';
+import { mostModernEdition } from '@/lib/editions';
 
 interface Props {
   HistoryBlurb: React.FC;
@@ -73,16 +74,16 @@ function prepareBooks(books: GettingStartedCoverProps[]): (CoverProps & {
   return books.map((book) => ({
     lang: LANG,
     title: book.title,
-    isCompilation: isCompilations(book.author),
-    author: book.author,
+    isCompilation: isCompilations(book.authorName),
+    author: book.authorName,
     size: `s`,
     pages: 7,
-    edition: book.edition,
+    edition: mostModernEdition(book.editionTypes),
     isbn: ``,
     blurb: ``,
-    customCss: book.customCss,
-    customHtml: book.customHtml,
-    documentUrl: `/${book.authorSlug}/${book.documentSlug}`,
+    customCss: book.customCSS || ``,
+    customHtml: book.customHTML || ``,
+    documentUrl: getDocumentUrl(book.authorSlug, book.slug),
     authorUrl: getFriendUrl(book.authorSlug, book.authorGender),
     htmlShortTitle: book.title,
     hasAudio: book.hasAudio,

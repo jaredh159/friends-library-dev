@@ -14,6 +14,10 @@ export function getFriendUrl(friendSlug: string, gender: Gender): string {
   return `/${firstPart}/${friendSlug}`;
 }
 
+export function getDocumentUrl(friendSlug: string, documentSlug: string): string {
+  return `/${friendSlug}/${documentSlug}`;
+}
+
 export function isCompilations(friendNameOrSlug: string): boolean {
   return friendNameOrSlug.toLowerCase().startsWith(`compila`);
 }

@@ -1,11 +1,9 @@
 import React from 'react';
-import { PrismaClient } from '@prisma/client';
 import cx from 'classnames';
 import { t } from '@friends-library/locale';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
-import type { gender as Gender } from '@prisma/client';
 import type { GetStaticProps } from 'next';
-import type { CoverProps } from '@friends-library/types';
+import type { DocumentWithFriendMeta } from '@/lib/types';
 import Dual from '@/components/core/Dual';
 import Heading from '@/components/core/Heading';
 import BackgroundImage from '@/components/core/BackgroundImage';
@@ -16,83 +14,34 @@ import { LANG } from '@/lib/env';
 import { makeScroller } from '@/lib/scroll';
 import GettingStartedPaths from '@/components/pages/getting-started/GettingStartedPaths';
 import recommendedBooks from '@/lib/recommended-books';
-import { mostModernEdition } from '@/lib/editions';
-import getCustomCode from '@/lib/get-custom-code';
+import { getAllDocuments } from '@/lib/db/friends';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const prisma = new PrismaClient();
-
-  const friends = await prisma.friends.findMany({
-    where: { lang: LANG },
-    select: {
-      slug: true,
-      name: true,
-      gender: true,
-      documents: {
-        select: {
-          slug: true,
-          title: true,
-          editions: {
-            select: {
-              type: true,
-              edition_audios: {
-                select: {
-                  id: true,
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-  });
-
-  const customCode = await Promise.all(
-    friends.map((friend) =>
-      getCustomCode(
-        friend.slug,
-        friend.documents.map((doc) => doc.slug),
-      ),
-    ),
-  );
-
-  const allBooks: GettingStartedCoverProps[] = friends.flatMap((friend, index) => {
-    const codeForFriend = customCode[index];
-    return friend.documents.map((doc) => {
-      const codeForDocument = codeForFriend ? codeForFriend[doc.slug] : undefined;
-      return {
-        authorSlug: friend.slug,
-        authorGender: friend.gender,
-        author: friend.name,
-        title: doc.title,
-        edition: mostModernEdition(doc.editions.map((edition) => edition.type)),
-        customCss: codeForDocument ? codeForDocument.css || `` : ``,
-        customHtml: codeForDocument ? codeForDocument.html || `` : ``,
-        hasAudio: doc.editions.some((edition) => edition.edition_audios),
-        documentSlug: doc.slug,
-      };
-    });
-  });
+  const documents = Object.values(await getAllDocuments());
 
   const organizedBooks = {
-    history: filterBooks(allBooks, `history`),
-    doctrine: filterBooks(allBooks, `doctrine`),
-    spiritualLife: filterBooks(allBooks, `spiritualLife`),
-    journals: filterBooks(allBooks, `journals`),
+    history: filterBooks(documents, `history`),
+    doctrine: filterBooks(documents, `doctrine`),
+    spiritualLife: filterBooks(documents, `spiritualLife`),
+    journals: filterBooks(documents, `journals`),
   };
 
-  return { props: { books: organizedBooks, numBooks: allBooks.length } };
+  return { props: { books: organizedBooks, numBooks: documents.length } };
 };
 
 export type GettingStartedCoverProps = Pick<
-  CoverProps,
-  'title' | 'author' | 'edition' | 'customCss' | 'customHtml'
-> & {
-  authorSlug: string;
-  hasAudio: boolean;
-  documentSlug: string;
-  authorGender: Gender;
-};
+  DocumentWithFriendMeta,
+  | 'authorGender'
+  | 'authorName'
+  | 'authorSlug'
+  | 'customCSS'
+  | 'customHTML'
+  | 'editionTypes'
+  | 'hasAudio'
+  | 'id'
+  | 'slug'
+  | 'title'
+>;
 
 interface Props {
   books: {
@@ -340,16 +289,16 @@ function filterBooks(
       recommendedBooks[category][LANG].some(
         (recommendedBook) =>
           recommendedBook.author === book.authorSlug &&
-          recommendedBook.title === book.documentSlug,
+          recommendedBook.title === book.slug,
       ),
     )
     .sort(
       (a, b) =>
         recommendedBooks[category][LANG].findIndex(
-          (book) => book.title === a.documentSlug && book.author === a.authorSlug,
+          (book) => book.title === a.slug && book.author === a.authorSlug,
         ) -
         recommendedBooks[category][LANG].findIndex(
-          (book) => book.title === b.documentSlug && book.author === b.authorSlug,
+          (book) => book.title === b.slug && book.author === b.authorSlug,
         ),
     );
 }
