@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import invariant from 'tiny-invariant';
 import { t } from '@friends-library/locale';
 import type { GetStaticProps } from 'next';
 import type { FriendProps } from '@/lib/types';
@@ -84,17 +85,14 @@ const Friends: React.FC<Props> = ({ friends }) => {
       <ul className="bg-flgray-200 flex justify-center flex-row flex-wrap pb-16">
         {filteredFriends.map((friend, i) => {
           const primaryResidence = getPrimaryResidence(friend.residences);
+          invariant(primaryResidence);
           return (
             <FriendCard
               key={friend.slug}
               className="m-8 xl:m-12"
               gender={friend.gender === `mixed` ? `male` : friend.gender}
               name={friend.name}
-              region={
-                primaryResidence
-                  ? `${primaryResidence.city}, ${primaryResidence.region}`
-                  : `Unknown residence`
-              }
+              region={`${primaryResidence.city}, ${primaryResidence.region}`}
               numBooks={friend.numBooks}
               url={getFriendUrl(friend.slug, friend.gender)}
               born={friend.born || undefined}

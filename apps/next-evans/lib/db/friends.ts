@@ -9,10 +9,8 @@ let friendsPromise: Promise<Record<string, FriendProps>> | null = null;
 
 export async function getAllFriends(): Promise<Record<string, FriendProps>> {
   if (friendsPromise) {
-    process.stdout.write(`cache used!\n`);
     return friendsPromise;
   }
-  process.stdout.write(`fetching friends...\n`);
   friendsPromise = Promise.all([_getFriends(), getAllCustomCode()]).then(
     ([friends, customCode]) => addCustomCodeToFriends(friends, customCode),
   );

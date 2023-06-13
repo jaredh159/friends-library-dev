@@ -14,10 +14,8 @@ export default function getAllCustomCode(): Promise<
   Record<FriendDocCombination, CustomCode>
 > {
   if (codePromise) {
-    process.stdout.write(`cache used!\n`);
     return codePromise;
   }
-  process.stdout.write(`fetching custom code...\n`);
   codePromise = getFriendDocuments().then(getGithubCode);
   return codePromise;
 }
@@ -35,11 +33,10 @@ function getGithubCode(
       const [friendSlug, documentSlug] = url.split(`/`);
       invariant(friendSlug);
       invariant(documentSlug);
-      const customCode = Promise.all([
+      return Promise.all([
         getCode(friendSlug, documentSlug, `css`),
         getCode(friendSlug, documentSlug, `html`),
       ]).then(([css, html]) => ({ url, css, html }));
-      return customCode;
     }),
   ).then((code) =>
     code.reduce(
@@ -54,16 +51,11 @@ async function getCode(
   documentSlug: string,
   type: 'css' | 'html',
 ): Promise<string | undefined> {
-  try {
-    var res = await fetch(
-      `https://raw.githubusercontent.com/${
-        LANG === `en` ? `friends-library` : `biblioteca-de-los-amigos`
-      }/${friendSlug}/master/${documentSlug}/paperback-cover.${type}`,
-    );
-  } catch (err) {
-    process.stdout.write(`${JSON.stringify(err)}\n`);
-    return;
-  }
+  const res = await fetch(
+    `https://raw.githubusercontent.com/${
+      LANG === `en` ? `friends-library` : `biblioteca-de-los-amigos`
+    }/${friendSlug}/master/${documentSlug}/paperback-cover.${type}`,
+  );
   if (res.status === 404) {
     return undefined;
   }

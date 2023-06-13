@@ -29,9 +29,18 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   return { props: { books: organizedBooks, numBooks: documents.length } };
 };
 
-export type GettingStartedCoverProps = Omit<
+export type GettingStartedCoverProps = Pick<
   DocumentWithFriendMeta,
-  'numPages' | 'numDownloads' | 'shortDescription' | 'size' | 'tags'
+  | 'authorGender'
+  | 'authorName'
+  | 'authorSlug'
+  | 'customCSS'
+  | 'customHTML'
+  | 'editionTypes'
+  | 'hasAudio'
+  | 'id'
+  | 'slug'
+  | 'title'
 >;
 
 interface Props {
