@@ -1,65 +1,9 @@
-import { dirname } from 'path';
-import omit from 'lodash.omit';
-import env from '@friends-library/env';
 import { translate, setLocale } from '@friends-library/locale';
 import { utf8ShortTitle } from '@friends-library/adoc-utils';
 import type { AudioQuality, Lang } from '@friends-library/types';
-import type {
-  SoundCloudTrackAttrs,
-  Audio,
-  SoundCloudPlaylistAttrs,
-  SoundCloudTrack,
-} from './types';
+import type { SoundCloudTrackAttrs, Audio, SoundCloudPlaylistAttrs } from './types';
 import { logDebug } from '../../sub-log';
-import Client from './SoundCloudClient';
 import { getPartTitle } from './tags';
-
-export function getTrack(trackId: number): Promise<null | SoundCloudTrack> {
-  return getClient().getTrack(trackId);
-}
-
-export function getPlaylist(playlistId: number): Promise<null | Record<string, any>> {
-  return getClient().getPlaylist(playlistId);
-}
-
-export function replaceTrack(trackId: number, localPath: string): Promise<boolean> {
-  return getClient().replaceTrack(trackId, localPath);
-}
-
-export function updatePlaylistAttrs(
-  playlistId: number,
-  attrs: SoundCloudPlaylistAttrs,
-): Promise<boolean> {
-  return getClient().setPlaylistAttrs(playlistId, attrs);
-}
-
-export function updateTrackAttrs(
-  trackId: number,
-  attrs: SoundCloudTrackAttrs,
-): Promise<Record<string, any>> {
-  return getClient().updateTrackAttrs(trackId, {
-    ...omit(attrs, `tags`),
-    tag_list: attrs.tags.join(` `),
-  });
-}
-
-export function createPlaylist(audio: Audio, quality: AudioQuality): Promise<number> {
-  return getClient().createPlaylist(playlistAttrs(audio, quality));
-}
-
-export function setPlaylistArtwork(
-  playlistId: number,
-  localArtworkPath: string,
-): Promise<boolean> {
-  return getClient().setPlaylistArtwork(playlistId, localArtworkPath);
-}
-
-export function setTrackArtwork(
-  trackId: number,
-  localArtworkPath: string,
-): Promise<boolean> {
-  return getClient().setTrackArtwork(trackId, localArtworkPath);
-}
 
 export function playlistAttrs(
   audio: Audio,
@@ -214,44 +158,3 @@ const COMMON_ATTRS = {
   embeddable_by: `all`,
   downloadable: true,
 } as const;
-
-export function uploadNewTrack(
-  audio: Audio,
-  audioPath: string,
-  partIdx: number,
-  quality: AudioQuality,
-): Promise<number> {
-  return getClient().uploadTrack(
-    audioPath,
-    `${dirname(audioPath)}/cover.png`,
-    trackAttrs(audio, partIdx, quality),
-  );
-}
-
-let client: Client | undefined;
-
-export function getClient(): Client {
-  if (client) {
-    return client;
-  }
-  const {
-    SOUNDCLOUD_USERNAME,
-    SOUNDCLOUD_PASSWORD,
-    SOUNDCLOUD_CLIENT_ID,
-    SOUNDCLOUD_CLIENT_SECRET,
-  } = env.require(
-    `SOUNDCLOUD_USERNAME`,
-    `SOUNDCLOUD_PASSWORD`,
-    `SOUNDCLOUD_CLIENT_ID`,
-    `SOUNDCLOUD_CLIENT_SECRET`,
-  );
-
-  client = new Client({
-    username: SOUNDCLOUD_USERNAME,
-    password: SOUNDCLOUD_PASSWORD,
-    clientId: SOUNDCLOUD_CLIENT_ID,
-    clientSecret: SOUNDCLOUD_CLIENT_SECRET,
-  });
-
-  return client;
-}
