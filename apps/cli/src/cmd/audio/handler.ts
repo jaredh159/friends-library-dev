@@ -15,9 +15,7 @@ import { logDebug, logAction, logError } from '../../sub-log';
 import * as ffmpeg from '../../ffmpeg';
 import * as cache from './cache';
 import * as m4bTool from './m4b';
-import * as soundcloud from './soundcloud';
 import getSrcFsData from './audio-fs-data';
-import SoundCloudResumableIds from './SoundCloudResumableIds';
 import * as api from './api';
 import { getAudios } from './query';
 
@@ -64,12 +62,7 @@ async function handleAudio(audio: Audio): Promise<void> {
   await syncMp3s(audio, fsData);
   await syncMp3Zips(audio, fsData);
   await syncM4bs(audio, fsData);
-
-  const resumableIds = new SoundCloudResumableIds(audio.id);
-  await syncSoundCloudTracks(audio, fsData, resumableIds);
-  await syncSoundCloudPlaylists(audio, fsData, resumableIds);
-  await updateEntities(audio, fsData, resumableIds);
-  resumableIds.destroy();
+  await updateEntities(audio, fsData);
 
   await cleanCacheFiles(fsData);
 
@@ -209,139 +202,7 @@ async function syncM4bs(audio: Audio, fsData: AudioFsData): Promise<void> {
   }
 }
 
-async function syncSoundCloudTracks(
-  audio: Audio,
-  fsData: AudioFsData,
-  resumableIds: SoundCloudResumableIds,
-): Promise<void> {
-  for (let idx = 0; idx < audio.parts.length; idx++) {
-    const part = audio.parts[idx]!;
-    const partCache = cache.getPart(fsData, idx);
-    for (const quality of AUDIO_QUALITIES) {
-      const localPath = fsData.parts[idx]!.mp3s[quality].localPath;
-      const trackIdProp = quality === `HQ` ? `externalIdHq` : `externalIdLq`;
-      let trackId = part[trackIdProp];
-      const fileDesc = `pt${idx + 1} (${quality})`;
-
-      // STEP 1: no track yet? upload it. (0 is my convention for non-uploaded audios)
-      if (trackId === 0) {
-        logAction(`uploading new soundcloud file for ${c`{cyan ${fileDesc}}`}`);
-        if (!argv.dryRun) {
-          await ensureLocalMp3(audio, fsData, idx, quality);
-          trackId = await soundcloud.uploadNewTrack(audio, localPath, idx, quality);
-          logAction(`soundcloud track added for ${fileDesc} ${c`{green ${trackId}}`}`);
-          resumableIds.setPartId(idx, quality, trackId);
-          logAction(`awaiting soundcloud track API data for ${c`{cyan ${fileDesc}}`}`);
-          await newSoundcloudTrackReady(trackId);
-        } else {
-          logError(`cannot continue in dry-run mode without trackId`);
-          continue;
-        }
-      }
-
-      // STEP 2: bail w/ error if funky id detected
-      const track = await soundcloud.getTrack(trackId);
-      if (!track || track.user.permalink !== `friendslibrary`) {
-        logError(`bad soundcloud id for ${fileDesc}: ${trackId}\n`);
-        process.exit(1);
-      }
-
-      // STEP 3: replace the remote file if it's not exactly the same size as local
-      // HACK: we use the `release` track attribute to store our hashes
-      const [remoteArtworkHash = ``, remoteMp3Hash = ``] = `${track.release}`.split(`/`);
-      const localHash = partCache[quality]?.mp3Hash;
-
-      if (localHash !== remoteMp3Hash) {
-        logAction(`replacing soundcloud file for ${c`{cyan ${fileDesc}}`}`);
-        if (!argv.dryRun) {
-          await ensureLocalMp3(audio, fsData, idx, quality);
-          await soundcloud.replaceTrack(trackId, localPath);
-        }
-      } else {
-        logDebug(`soundcloud track verified for ${fileDesc}: ${track.id}`);
-      }
-
-      // STEP 4: (before check attrs!) replace remote artwork if not same as local
-      const localArtworkPath = `${fsData.derivedPath}/cover.png`;
-      const localArtworkHash = await md5File(localArtworkPath);
-      if (localArtworkHash !== remoteArtworkHash) {
-        logAction(`replacing soundcloud artwork for ${c`{cyan ${fileDesc}}`}`);
-        !argv.dryRun && (await soundcloud.setTrackArtwork(trackId, localArtworkPath));
-      } else {
-        logDebug(`verified correct soundcloud artwork for ${fileDesc}`);
-      }
-
-      // STEP 5: check all the track attributes, update if they don't match exactly
-      const attrs = soundcloud.trackAttrs(audio, idx, quality);
-      attrs.release = `${localArtworkHash}/${localHash}`; // hack, see above ^^^
-      if (!soundcloud.attrsMatch(attrs, track)) {
-        logAction(`updating soundcloud attrs for ${c`{cyan ${fileDesc}}`}`);
-        !argv.dryRun && (await soundcloud.updateTrackAttrs(trackId, attrs));
-      } else {
-        logDebug(`soundcloud attrs verified for ${fileDesc}`);
-      }
-    }
-  }
-}
-
-async function syncSoundCloudPlaylists(
-  audio: Audio,
-  fsData: AudioFsData,
-  resumableIds: SoundCloudResumableIds,
-): Promise<void> {
-  if (audio.parts.length === 1) {
-    return;
-  }
-
-  for (const quality of AUDIO_QUALITIES) {
-    const propKey = quality === `HQ` ? `externalPlaylistIdHq` : `externalPlaylistIdLq`;
-    let playlistId = audio[propKey] ?? -1;
-
-    // STEP 1: create the playlist if necessary
-    if (playlistId === -1) {
-      logAction(`creating soundcloud playlist for ${c`{cyan (${quality})}`}`);
-      if (!argv.dryRun) {
-        playlistId = await soundcloud.createPlaylist(audio, quality);
-        resumableIds.setPlaylistId(quality, playlistId);
-      } else {
-        logError(`cannot continue in dry-run mode without playlistId`);
-        continue;
-      }
-    }
-
-    // STEP 2: verify remote playlist artwork
-    const playlist = await soundcloud.getPlaylist(playlistId);
-    if (!playlist) {
-      logError(`Unexpected missing playlist for id: ${playlistId}`);
-      process.exit(1);
-    }
-
-    const remoteArtworkHash = playlist.tracks[0]?.release.split(`/`).shift();
-    const localArtworkPath = `${fsData.derivedPath}/cover.png`;
-    const localArtworkHash = await md5File(localArtworkPath);
-    if (localArtworkHash !== remoteArtworkHash) {
-      logAction(`replacing soundcloud playlist artwork for ${c`{cyan (${quality})}`}`);
-      !argv.dryRun && (await soundcloud.setPlaylistArtwork(playlistId, localArtworkPath));
-    } else {
-      logDebug(`verified correct soundcloud playlist artwork for (${quality})`);
-    }
-
-    // STEP 3: check all the track attributes, update if they don't match exactly
-    const attrs = soundcloud.playlistAttrs(audio, quality);
-    if (!soundcloud.attrsMatch(attrs, playlist)) {
-      logAction(`updating soundcloud playlist attrs for ${c`{cyan (${quality})}`}`);
-      !argv.dryRun && (await soundcloud.updatePlaylistAttrs(playlistId, attrs));
-    } else {
-      logDebug(`soundcloud playlist attrs verified for (${quality})`);
-    }
-  }
-}
-
-async function updateEntities(
-  audio: Audio,
-  fsData: AudioFsData,
-  resumableIds: SoundCloudResumableIds,
-): Promise<void> {
+async function updateEntities(audio: Audio, fsData: AudioFsData): Promise<void> {
   const cached = cache.get(fsData);
   const hqCache = ensureCache(cached.HQ);
   const lqCache = ensureCache(cached.LQ);
@@ -361,8 +222,6 @@ async function updateEntities(
 
   const updatedAudio: UpdateAudioInput = {
     ...existingAudio,
-    externalPlaylistIdHq: resumableIds.getPlaylistId(`HQ`) ?? audio.externalPlaylistIdHq,
-    externalPlaylistIdLq: resumableIds.getPlaylistId(`LQ`) ?? audio.externalPlaylistIdLq,
     m4bSizeHq: assertDefined(hqCache.m4bSize),
     m4bSizeLq: assertDefined(lqCache.m4bSize),
     mp3ZipSizeHq: assertDefined(hqCache.mp3ZipSize),
@@ -393,8 +252,6 @@ async function updateEntities(
 
     const updatedPart: UpdateAudioPartInput = {
       ...existingPart,
-      externalIdHq: resumableIds.getPartId(index, `HQ`) ?? part.externalIdHq,
-      externalIdLq: resumableIds.getPartId(index, `LQ`) ?? part.externalIdLq,
       mp3SizeHq: assertDefined(cache.getPart(fsData, index).HQ?.mp3Size),
       mp3SizeLq: assertDefined(cache.getPart(fsData, index).LQ?.mp3Size),
       duration: ffmpeg.getDuration(assertDefined(fsData.parts[index]?.srcLocalPath))[1],
@@ -456,14 +313,6 @@ async function createMp3Zip(
 
   exec.exit(`zip ${zipFilename} ${mp3Filenames.join(` `)}`, fsData.derivedPath);
   unhashed.forEach((unhashedPath) => fs.unlinkSync(unhashedPath));
-}
-
-async function newSoundcloudTrackReady(trackId: number): Promise<void> {
-  const track = await soundcloud.getTrack(trackId);
-  if (track) return;
-  // poll every 15 seconds until API responds with track
-  await new Promise((res) => setTimeout(res, 15000));
-  return newSoundcloudTrackReady(trackId);
 }
 
 async function createMp3(
