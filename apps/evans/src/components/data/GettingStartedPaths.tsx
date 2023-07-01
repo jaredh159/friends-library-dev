@@ -231,7 +231,7 @@ const GettingStartedPaths: React.FC<Props> = ({
       ) {
         ...RecommendedBook
       }
-      es_howgill: document(
+      es_howgill_mysteries: document(
         slug: { eq: "algunos-de-los-misterios-del-reino" }
         friendSlug: { eq: "francis-howgill" }
       ) {
@@ -249,8 +249,14 @@ const GettingStartedPaths: React.FC<Props> = ({
       ) {
         ...RecommendedBook
       }
-      es_titip: document(
-        slug: { eq: "verdad-en-lo-intimo" }
+      es_titip_1: document(
+        slug: { eq: "verdad-en-lo-intimo-v1" }
+        friendSlug: { eq: "compilaciones" }
+      ) {
+        ...RecommendedBook
+      }
+      es_titip_2: document(
+        slug: { eq: "verdad-en-lo-intimo-v2" }
         friendSlug: { eq: "compilaciones" }
       ) {
         ...RecommendedBook
@@ -261,9 +267,42 @@ const GettingStartedPaths: React.FC<Props> = ({
       ) {
         ...RecommendedBook
       }
-      es_sewel_cheevers: document(
-        slug: { eq: "sufrimientos-de-catharine-evans-sarah-cheevers" }
-        friendSlug: { eq: "william-sewel" }
+      es_francis_howgill: document(
+        slug: { eq: "seleccion-de-la-vida" }
+        friendSlug: { eq: "francis-howgill" }
+      ) {
+        ...RecommendedBook
+      }
+      es_alice_hayes: document(slug: { eq: "vida" }, friendSlug: { eq: "alice-hayes" }) {
+        ...RecommendedBook
+      }
+      es_david_ferris: document(
+        slug: { eq: "seleccion-del-diario" }
+        friendSlug: { eq: "david-ferris" }
+      ) {
+        ...RecommendedBook
+      }
+      es_marshall_way: document(
+        slug: { eq: "camino-de-vida-revelado" }
+        friendSlug: { eq: "charles-marshall" }
+      ) {
+        ...RecommendedBook
+      }
+      es_spalding_babylon: document(
+        slug: { eq: "salgan-de-babilonia" }
+        friendSlug: { eq: "john-spalding" }
+      ) {
+        ...RecommendedBook
+      }
+      es_shewen: document(
+        slug: { eq: "meditaciones-experiencias" }
+        friendSlug: { eq: "william-shewen" }
+      ) {
+        ...RecommendedBook
+      }
+      es_turford: document(
+        slug: { eq: "andar-en-el-espiritu" }
+        friendSlug: { eq: "hugh-turford" }
       ) {
         ...RecommendedBook
       }
@@ -303,9 +342,10 @@ const GettingStartedPaths: React.FC<Props> = ({
           // spanish
           data.es_barclay_uttermost,
           data.es_phipps,
-          data.es_ip_1,
-          data.es_ip_2,
+          data.es_penn_ncnc,
+          data.es_spalding_babylon,
           data.es_barclay_waiting,
+          data.es_marshall_way,
         ])}
         color="blue"
       >
@@ -324,12 +364,13 @@ const GettingStartedPaths: React.FC<Props> = ({
           data.en_shewen,
           data.en_piety_promoted,
           // spanish
+          data.es_turford,
           data.es_ip_1,
           data.es_ip_2,
-          data.es_penn_ncnc,
-          data.es_howgill,
+          data.es_shewen,
           data.es_crisp_plain_pathway,
           data.es_crisp_babylon_bethel,
+          data.es_howgill_mysteries,
         ])}
         color="green"
       >
@@ -350,9 +391,12 @@ const GettingStartedPaths: React.FC<Props> = ({
           data.en_edmundson_journal,
           data.en_martin_journal,
           // spanish
-          data.es_titip,
+          data.es_titip_1,
+          data.es_titip_2,
           data.es_parnell_life,
-          data.es_sewel_cheevers,
+          data.es_alice_hayes,
+          data.es_francis_howgill,
+          data.es_david_ferris,
         ])}
         color="gold"
       >
