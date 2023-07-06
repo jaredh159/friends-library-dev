@@ -3,7 +3,7 @@ import type { ArrowRightIcon } from '@heroicons/react/24/outline';
 
 export type HeroIcon = typeof ArrowRightIcon;
 
-export interface FriendProps {
+export interface FriendType {
   name: string;
   slug: string;
   id: string;
@@ -14,16 +14,10 @@ export interface FriendProps {
   died: number | null;
   dateAdded: string;
   residences: Residence[];
-  documents: Document[];
+  documents: DocumentType[];
 }
 
-export interface Residence {
-  city: string;
-  region: string;
-  durations: Array<{ start: string; end: string }>;
-}
-
-export interface Document {
+export interface DocumentType {
   title: string;
   slug: string;
   id: string;
@@ -36,12 +30,32 @@ export interface Document {
   size: 's' | 'm' | 'xl' | 'xlCondensed';
   customCSS: string | null;
   customHTML: string | null;
+  dateAdded: string;
+  isbn: string;
 }
 
-export type DocumentWithFriendMeta = Document & {
+export type DocumentWithMeta = DocumentType & {
   authorSlug: string;
   authorName: string;
   authorGender: Gender;
+  publishedRegion: Region;
+  publishedDate: number | null;
 };
 
 export type Edition = 'original' | 'modernized' | 'updated';
+
+export type Period = 'early' | 'mid' | 'late';
+
+export type Region =
+  | 'Eastern US'
+  | 'Western US'
+  | 'England'
+  | 'Scotland'
+  | 'Ireland'
+  | 'Other';
+
+export type Residence = {
+  city: string;
+  region: string;
+  durations: Array<{ start: number | null; end: number | null }>;
+};
