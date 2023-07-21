@@ -1,6 +1,70 @@
 import { describe, test, expect } from 'vitest';
 import { ChapterResult } from '@friends-library/evaluator';
-import { shouldUseMultiColLayout } from '../frontmatter';
+import { shouldUseMultiColLayout, multiColTocParts } from '../frontmatter';
+
+describe(`multiColTocParts()`, () => {
+  const cases = [
+    [
+      new ChapterResult(
+        0,
+        ``,
+        `Forward by the Editor`,
+        false,
+        undefined,
+        `Forward by the Editor`,
+      ),
+      [``, `Forward by the Editor`],
+    ],
+    [
+      new ChapterResult(
+        1,
+        ``,
+        `Chapter I &#8212; On Conversion and Regeneration`,
+        false,
+        1,
+        `On Conversion and Regeneration`,
+      ),
+      [`I`, `On Conversion and Regeneration`],
+    ],
+    [
+      new ChapterResult(
+        2,
+        ``,
+        `Chapter II — The Worship Ordained of God`,
+        false,
+        2,
+        `The Worship Ordained of God Under the Christian Dispensation`,
+      ),
+      [`II`, `The Worship Ordained of God`], // <-- should use short title sans prefix
+    ],
+    [
+      new ChapterResult(
+        3,
+        ``,
+        `Chapter III — Baptism, Worship, and Partaking of the Flesh and Blood`,
+        false,
+        3,
+        `Baptism, Worship, and Partaking of the Flesh and Blood`,
+      ),
+      [`III`, `Baptism, Worship, and Partaking of the Flesh and Blood`],
+    ],
+    [
+      new ChapterResult(
+        4,
+        ``,
+        `Concluding Observations`,
+        false,
+        undefined,
+        `Concluding Observations`,
+      ),
+      [``, `Concluding Observations`],
+    ],
+  ] as const;
+
+  test.each(cases)(`chapter converted to multi-col parts`, (chapter, expected) => {
+    expect(multiColTocParts(chapter)).toEqual(expected);
+  });
+});
 
 describe(`shouldUseMultiColLayout()`, () => {
   const BARE_TITLE = new ChapterResult(0, ``, `Preface`, false, undefined, `Preface`);

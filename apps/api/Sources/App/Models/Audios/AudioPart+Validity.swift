@@ -24,10 +24,6 @@ extension AudioPart {
       return false
     }
 
-    if externalIdHq == externalIdLq, externalIdHq != 0 {
-      return false
-    }
-
     if isPublished, duration < 200 {
       return false
     }

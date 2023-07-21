@@ -54,10 +54,28 @@ function multiColTocEntry(chapter: ChapterResult): string {
     return tocEntry(chapter);
   }
 
+  const [chapterCol, mainCol] = multiColTocParts(chapter);
+  return `
+    <p class="multicol-toc-entry">
+      <a href="#${chapter.id}">
+        <span class="multicol-toc-chapter">
+          ${chapterCol}
+        </span>
+        <span class="multicol-toc-main">
+          ${mainCol}
+        </span>
+      </a>
+    </p>
+    `.trim();
+}
+
+export function multiColTocParts(
+  chapter: ChapterResult,
+): [chapter: string, main: string] {
   // if we have a sequence (chapter) number, and a non-sequence title
   // we split the chapter number left, and non-sequence title right
   // otherwise, everything goes on right
-  const splittable =
+  const shouldSplit =
     typeof chapter.sequenceNumber === `number` && chapter.hasNonSequenceTitle;
 
   let main = chapter.shortHeading;
@@ -65,18 +83,17 @@ function multiColTocEntry(chapter: ChapterResult): string {
     main = chapter.nonSequenceTitle;
   }
 
-  return `
-    <p class="multicol-toc-entry">
-      <a href="#${chapter.id}">
-        <span class="multicol-toc-chapter">
-          ${splittable ? toRoman(chapter.sequenceNumber ?? 1) : ``}
-        </span>
-        <span class="multicol-toc-main">
-          ${main}
-        </span>
-      </a>
-    </p>
-    `.trim();
+  if (shouldSplit) {
+    const withoutLeadingSequence = main.replace(
+      /^(Chapter|Section|Capítulo|Sección) [IVXL]+ (&#8212;|--|—) /,
+      ``,
+    );
+    if (withoutLeadingSequence.trim().length > 0) {
+      main = withoutLeadingSequence;
+    }
+  }
+
+  return [shouldSplit ? toRoman(chapter.sequenceNumber ?? 1) : ``, main];
 }
 
 function tocEntry(chapter: ChapterResult): string {
