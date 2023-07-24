@@ -1,6 +1,6 @@
 import React from 'react';
 import type { GetStaticProps } from 'next';
-import type { DocumentWithMeta, Period } from '@/lib/types';
+import type { Doc, Period } from '@/lib/types';
 import BackgroundImage from '@/components/core/BackgroundImage';
 import Dual from '@/components/core/Dual';
 import HeroImg from '@/public/images/explore-books.jpg';
@@ -35,27 +35,18 @@ interface Props {
   numBooks: number;
   numBooksInAltLang: number;
   books: Array<
-    Pick<
-      DocumentWithMeta,
-      | 'title'
-      | 'altLanguageId'
-      | 'slug'
+    Doc<
       | 'id'
-      | 'editions'
-      | 'mostModernEdition'
-      | 'shortDescription'
-      | 'hasAudio'
       | 'tags'
-      | 'numDownloads'
-      | 'customCSS'
-      | 'customHTML'
-      | 'dateAdded'
-      | 'isbn'
-      | 'authorSlug'
-      | 'authorName'
+      | 'editions'
+      | 'hasAudio'
+      | 'createdAt'
       | 'authorGender'
+      | 'numDownloads'
+      | 'publishedYear'
       | 'publishedRegion'
-      | 'publishedDate'
+      | 'shortDescription'
+      | 'mostModernEdition'
     >
   >;
 }
@@ -94,7 +85,7 @@ const ExploreBooks: React.FC<Props> = ({ numBooks, numBooksInAltLang, books }) =
     <AudioBooksBlock books={books.filter((book) => book.hasAudio)} />
     <NewBooksBlock
       books={books
-        .sort((a, b) => newestFirst(a.dateAdded, b.dateAdded))
+        .sort(newestFirst)
         .slice(0, 4)
         .map((book) => ({ ...book, audioDuration: undefined }))}
     />
@@ -109,8 +100,8 @@ const ExploreBooks: React.FC<Props> = ({ numBooks, numBooksInAltLang, books }) =
     {LANG === `en` && (
       <TimelineBlock
         books={books
-          .filter((book) => book.publishedDate)
-          .map((book) => ({ ...book, date: book.publishedDate ?? 1650 }))}
+          .filter((book) => book.publishedYear)
+          .map((book) => ({ ...book, date: book.publishedYear ?? 1650 }))}
       />
     )}
     <AltSiteBlock
@@ -131,7 +122,7 @@ const ExploreBooks: React.FC<Props> = ({ numBooks, numBooksInAltLang, books }) =
           ...book,
           edition: book.edition,
           region: book.publishedRegion,
-          period: book.publishedDate ? getPeriod(book.publishedDate) : `early`,
+          period: book.publishedYear ? getPeriod(book.publishedYear) : `early`,
         }))}
     />
   </div>

@@ -5,7 +5,7 @@ import { Front } from '@friends-library/cover-component';
 import Link from 'next/link';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import { htmlShortTitle } from '@friends-library/adoc-utils';
-import type { DocumentWithMeta } from '@/lib/types';
+import type { Doc } from '@/lib/types';
 import { useWindowWidth } from '@/lib/hooks/window-width';
 import { SCREEN_LG, SCREEN_MD, SCREEN_XL } from '@/lib/constants';
 import { LANG } from '@/lib/env';
@@ -14,20 +14,7 @@ import { getDocumentUrl, getFriendUrl, isCompilations } from '@/lib/friend';
 import { mostModernEditionType } from '@/lib/editions';
 
 interface Props {
-  books: Array<
-    Pick<
-      DocumentWithMeta,
-      | 'title'
-      | 'slug'
-      | 'editions'
-      | 'customCSS'
-      | 'customHTML'
-      | 'isbn'
-      | 'authorSlug'
-      | 'authorName'
-      | 'authorGender'
-    >
-  >;
+  books: Array<Doc<'editions' | 'authorGender'>>;
   className?: string;
 }
 
@@ -149,7 +136,7 @@ const BookSlider: React.FC<Props> = ({ books, className }) => {
 
 export default BookSlider;
 
-const Arrow: React.FC<{ direction: 'left' | 'right'; onClick: () => any }> = ({
+const Arrow: React.FC<{ direction: 'left' | 'right'; onClick(): unknown }> = ({
   direction,
   onClick,
 }) => (

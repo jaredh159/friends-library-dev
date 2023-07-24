@@ -1,20 +1,22 @@
+import type { EditionType } from '@friends-library/types';
 import type { gender as Gender } from '@prisma/client';
 import type { ArrowRightIcon } from '@heroicons/react/24/outline';
 
+export { type EditionType };
 export type HeroIcon = typeof ArrowRightIcon;
 
 export interface Friend {
+  id: UUID;
   name: string;
   slug: string;
-  id: string;
   gender: 'male' | 'female' | 'mixed';
   description: string;
   quotes: Array<{ quote: string; cite: string }>;
   born: number | null;
   died: number | null;
-  dateAdded: string;
+  createdAt: ISODateString;
   residences: Residence[];
-  documents: DocumentType[];
+  documents: FriendDocument[];
 }
 
 export interface Edition {
@@ -22,14 +24,14 @@ export interface Edition {
   numPages: number[];
   size: 's' | 'm' | 'xl' | 'xlCondensed';
   audiobook: Audiobook | null;
-  impressionCreatedAt: string;
+  impressionCreatedAt: ISODateString;
 }
 
-export interface DocumentType {
+interface FriendDocument {
+  id: UUID;
+  altLanguageId: UUID | null;
   title: string;
-  altLanguageId: string | null;
   slug: string;
-  id: string;
   editions: Array<Edition>;
   mostModernEdition: Edition;
   shortDescription: string;
@@ -39,25 +41,28 @@ export interface DocumentType {
   numDownloads: number;
   customCSS: string | null;
   customHTML: string | null;
-  dateAdded: string;
+  createdAt: ISODateString;
   isbn: string;
 }
 
-export type DocumentWithMeta = DocumentType & {
+export type Doc<T extends keyof Document = never> = Pick<
+  Document,
+  'isbn' | 'title' | 'slug' | 'customCSS' | 'customHTML' | 'authorName' | 'authorSlug' | T
+>;
+
+export interface Document extends FriendDocument {
   authorSlug: string;
   authorName: string;
   authorGender: Gender;
   publishedRegion: Region;
-  publishedDate: number | null;
-};
-
-export interface Audiobook {
-  id: string;
-  isIncomplete: boolean;
-  dateAdded: string;
+  publishedYear: number | null;
 }
 
-export type EditionType = 'original' | 'modernized' | 'updated';
+export interface Audiobook {
+  id: UUID;
+  isIncomplete: boolean;
+  createdAt: ISODateString;
+}
 
 export type Period = 'early' | 'mid' | 'late';
 

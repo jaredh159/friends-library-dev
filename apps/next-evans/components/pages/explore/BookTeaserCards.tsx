@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import type { DocumentWithMeta } from '@/lib/types';
+import type { Doc } from '@/lib/types';
 import BookTeaserCard from '../../core/BookTeaserCard';
 import { getDocumentUrl, getFriendUrl } from '@/lib/friend';
 
@@ -11,22 +11,7 @@ interface Props {
   titleEl: 'h1' | 'h2' | 'h3' | 'h4';
   bgColor: string;
   titleTextColor: string;
-  books: Array<
-    Pick<
-      DocumentWithMeta,
-      | 'title'
-      | 'slug'
-      | 'editions'
-      | 'shortDescription'
-      | 'customCSS'
-      | 'customHTML'
-      | 'dateAdded'
-      | 'authorSlug'
-      | 'authorName'
-      | 'authorGender'
-      | 'isbn'
-    >
-  >;
+  books: Array<Doc<'editions' | 'createdAt' | 'authorGender' | 'shortDescription'>>;
 }
 
 const BookTeaserCards: React.FC<Props> = ({
@@ -72,7 +57,7 @@ const BookTeaserCards: React.FC<Props> = ({
             documentUrl={getDocumentUrl(book)}
             authorUrl={getFriendUrl(book.authorSlug, book.authorGender)}
             description={book.shortDescription}
-            badgeText={new Date(book.dateAdded).toLocaleDateString(`en-US`, {
+            badgeText={new Date(book.createdAt).toLocaleDateString(`en-US`, {
               month: `short`,
               day: `numeric`,
             })}

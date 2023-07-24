@@ -2,7 +2,7 @@ import { t } from '@friends-library/locale';
 import { htmlShortTitle } from '@friends-library/adoc-utils';
 import invariant from 'tiny-invariant';
 import type { Lang } from '@friends-library/types';
-import type { Audiobook, DocumentWithMeta, NewsFeedType } from '@/lib/types';
+import type { Audiobook, Document, NewsFeedType } from '@/lib/types';
 import { months, newestFirst } from '@/lib/dates';
 import { LANG } from '@/lib/env';
 import { isNotNullish } from '@/lib/utils';
@@ -20,16 +20,16 @@ export interface FeedItem {
 }
 
 type NewsfeedDocumentProps = Pick<
-  DocumentWithMeta,
-  | 'authorName'
-  | 'dateAdded'
+  Document,
   | 'id'
-  | 'title'
-  | 'authorSlug'
   | 'slug'
+  | 'title'
   | 'editions'
-  | 'mostModernEdition'
+  | 'createdAt'
+  | 'authorName'
+  | 'authorSlug'
   | 'altLanguageId'
+  | 'mostModernEdition'
 >;
 
 export async function getNewsFeedItems(
@@ -47,7 +47,7 @@ export async function getNewsFeedItems(
   return recentAdditions
     .concat(outOfBandEvents.filter((item) => item.lang.includes(lang)))
     .concat(recentAudios)
-    .sort((a, b) => newestFirst(a.date, b.date))
+    .sort(newestFirst)
     .slice(0, MAX_NUM_NEWS_FEED_ITEMS);
 }
 
@@ -57,38 +57,36 @@ function getRecentAdditions(
   altLanguageDocuments: Array<NewsfeedDocumentProps> = [],
 ): FeedItem[] {
   const type = LANG === `en` && lang === `es` ? `spanish_translation` : `book`;
-  return documents
-    .sort((a, b) => newestFirst(a.dateAdded, b.dateAdded))
-    .map((doc) => {
-      return {
-        type,
-        title:
-          lang === `en`
-            ? htmlShortTitle(doc.title)
-            : `${htmlShortTitle(doc.title)}${LANG === `en` ? ` &mdash; (Spanish)` : ``}`,
-        ...dateFields(doc.mostModernEdition.impressionCreatedAt, LANG),
-        description:
-          type === `book`
-            ? LANG === `en`
-              ? `Download free eBook or pdf, or purchase a paperback at cost.`
-              : `Descárgalo en formato ebook o pdf, o compra el libro impreso a precio de costo.`
-            : `${doc.authorName}&rsquo;s <em>${
-                altLanguageDocuments.find((altDoc) => altDoc.altLanguageId === doc.id)
-                  ?.title ?? ``
-              }</em> is now translated and available on the Spanish site.`,
-        url:
-          type === `spanish_translation`
-            ? `https://bibliotecadelosamigos.org/${doc.authorSlug}/${doc.slug}`
-            : getDocumentUrl(doc),
-      };
-    });
+  return documents.sort(newestFirst).map((doc) => {
+    return {
+      type,
+      title:
+        lang === `en`
+          ? htmlShortTitle(doc.title)
+          : `${htmlShortTitle(doc.title)}${LANG === `en` ? ` &mdash; (Spanish)` : ``}`,
+      ...dateFields(doc.mostModernEdition.impressionCreatedAt, LANG),
+      description:
+        type === `book`
+          ? LANG === `en`
+            ? `Download free eBook or pdf, or purchase a paperback at cost.`
+            : `Descárgalo en formato ebook o pdf, o compra el libro impreso a precio de costo.`
+          : `${doc.authorName}&rsquo;s <em>${
+              altLanguageDocuments.find((altDoc) => altDoc.altLanguageId === doc.id)
+                ?.title ?? ``
+            }</em> is now translated and available on the Spanish site.`,
+      url:
+        type === `spanish_translation`
+          ? `https://bibliotecadelosamigos.org/${doc.authorSlug}/${doc.slug}`
+          : getDocumentUrl(doc),
+    };
+  });
 }
 
 function getRecentAudios(
   documents: Array<
     Pick<
-      DocumentWithMeta,
-      'authorName' | 'dateAdded' | 'id' | 'title' | 'authorSlug' | 'slug' | 'editions'
+      Document,
+      'id' | 'slug' | 'title' | 'editions' | 'createdAt' | 'authorName' | 'authorSlug'
     >
   >,
 ): FeedItem[] {
@@ -98,8 +96,8 @@ function getRecentAudios(
         (acc, ed) => {
           if (
             ed.audiobook &&
-            new Date(ed.audiobook.dateAdded).getTime() >
-              new Date(acc?.dateAdded ?? `January 1, 1970`).getTime()
+            new Date(ed.audiobook.createdAt).getTime() >
+              new Date(acc?.createdAt ?? `January 1, 1970`).getTime()
           ) {
             return {
               ...ed.audiobook,
@@ -116,7 +114,7 @@ function getRecentAudios(
     .map((audio) => ({
       type: `audiobook`,
       title: `${audio.title} &mdash; (${t`Audiobook`})`,
-      ...dateFields(audio.dateAdded, LANG),
+      ...dateFields(audio.createdAt, LANG),
       description:
         LANG === `en`
           ? `Free audiobook is now available for download or listening online.`

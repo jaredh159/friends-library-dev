@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { t } from '@friends-library/locale';
-import type { DocumentWithMeta, EditionType, Period, Region } from '@/lib/types';
+import type { Doc, EditionType, Period, Region } from '@/lib/types';
 import SearchControls from './SearchControls';
 import SearchResult from './SearchResult';
 import { getDocumentUrl } from '@/lib/friend';
@@ -11,28 +11,7 @@ interface Props {
   initialFilters?: string[];
   initialUsed?: boolean;
   books: Array<
-    Pick<
-      DocumentWithMeta,
-      | 'title'
-      | 'altLanguageId'
-      | 'slug'
-      | 'id'
-      | 'editions'
-      | 'mostModernEdition'
-      | 'shortDescription'
-      | 'hasAudio'
-      | 'tags'
-      | 'numDownloads'
-      | 'customCSS'
-      | 'customHTML'
-      | 'dateAdded'
-      | 'isbn'
-      | 'authorSlug'
-      | 'authorName'
-      | 'authorGender'
-      | 'publishedRegion'
-      | 'publishedDate'
-    > & {
+    Doc<'id' | 'tags'> & {
       period: Period;
       region: Region;
       edition: EditionType;

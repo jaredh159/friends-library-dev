@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import cx from 'classnames';
-import type { DocumentWithMeta } from '@/lib/types';
+import type { Doc } from '@/lib/types';
 import BgWordBlock from './BgWordBlock';
 import BookSlider from './BookSlider';
 import TimePicker from './TimePicker';
@@ -11,25 +11,13 @@ import PillDropdown from '@/components/core/PillDropdown';
 import PillDropdownDropdown from '@/components/core/PillDropdownDropdown';
 import PillDropdownItem from '@/components/core/PillDropdownItem';
 import CastleBgImage from '@/public/images/castle.jpg';
-import { newestFirst } from '@/lib/dates';
 
 interface Props {
-  books: (Pick<
-    DocumentWithMeta,
-    | 'title'
-    | 'slug'
-    | 'editions'
-    | 'customCSS'
-    | 'customHTML'
-    | 'isbn'
-    | 'authorSlug'
-    | 'authorName'
-    | 'authorGender'
-    | 'publishedRegion'
-    | 'publishedDate'
-  > & {
-    date: number;
-  })[];
+  books: Array<
+    Doc<'editions' | 'authorGender' | 'publishedYear' | 'publishedRegion'> & {
+      date: number;
+    }
+  >;
 }
 
 const TimelineBlock: React.FC<Props> = ({ books }) => {
@@ -107,7 +95,7 @@ const TimelineBlock: React.FC<Props> = ({ books }) => {
         <BookSlider
           books={books
             .filter((b) => b.date >= date && b.date < nextDate)
-            .sort((a, b) => newestFirst(a.date, b.date))}
+            .sort((a, b) => b.date - a.date)}
           className="z-0 sm:z-10"
         />
       </div>
