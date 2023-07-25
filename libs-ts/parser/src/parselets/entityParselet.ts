@@ -21,6 +21,7 @@ export default entity;
 function entityType(tokenLiteral: string, parser: Parser): EntityType {
   switch (tokenLiteral) {
     case `&#8212;`:
+    case `&mdash;`:
       return e.EMDASH;
     case `&hellip;`:
       return e.ELLIPSES;

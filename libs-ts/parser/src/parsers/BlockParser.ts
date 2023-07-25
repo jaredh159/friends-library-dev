@@ -153,7 +153,7 @@ export default class BlockParser {
     }
     const para = new Node(n.PARAGRAPH, block, { context, startToken: this.p.current });
     block.children.push(para);
-    para.children = this.p.parseUntilAnyOf(para, [t.DOUBLE_EOL], [t.EOL, t.EOF]);
+    para.children = this.p.parseUntilAnyOf(para, [t.DOUBLE_EOL], [t.EOL, t.EOF], [t.EOF]);
     para.endToken = this.p.lastSignificantToken();
   }
 
