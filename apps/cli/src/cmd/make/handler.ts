@@ -1,7 +1,7 @@
 import { execSync } from 'child_process';
 import fs from 'fs-extra';
 import { sync as glob } from 'glob';
-import { log, red } from 'x-chalk';
+import { log, red, c } from 'x-chalk';
 import * as manifest from '@friends-library/doc-manifests';
 import * as artifacts from '@friends-library/doc-artifacts';
 import { appEbook as appEbookCss } from '@friends-library/doc-css';
@@ -18,7 +18,7 @@ import send from './send';
 export interface MakeOptions {
   pattern: string;
   isolate?: number;
-  noOpen: boolean;
+  skipOpen: boolean;
   noFrontmatter: boolean;
   target: ArtifactType[];
   condense: boolean;
@@ -33,7 +33,7 @@ export interface MakeOptions {
 }
 
 export default async function handler(argv: Arguments<MakeOptions>): Promise<void> {
-  const { noOpen, pattern, isolate, email, skipLint, fix } = argv;
+  const { skipOpen, pattern, isolate, email, skipLint, fix } = argv;
   const dpcs = await dpcQuery.getByPattern(pattern);
   if (dpcs.length === 0) {
     red(`Pattern: \`${pattern}\` matched 0 docs.`);
@@ -61,8 +61,11 @@ export default async function handler(argv: Arguments<MakeOptions>): Promise<voi
   artifacts.deleteNamespaceDir(namespace);
 
   let files: string[] = [];
+  dpcs.sort((a, b) => a.path.localeCompare(b.path));
+
   for (const dpc of dpcs) {
     try {
+      if (dpcs.length > 3) log(c`{gray starting} {green ${dpc.path}}`);
       files = files.concat(await makeDpc(dpc, argv, namespace));
     } catch (err) {
       if (err instanceof ParserError || `codeFrame` in (err as any)) {
@@ -74,7 +77,7 @@ export default async function handler(argv: Arguments<MakeOptions>): Promise<voi
     }
   }
 
-  !noOpen && files.forEach((file) => execSync(`open "${file}"`));
+  !skipOpen && files.forEach((file) => execSync(`open "${file}"`));
   argv.send && send(files, email);
 }
 
