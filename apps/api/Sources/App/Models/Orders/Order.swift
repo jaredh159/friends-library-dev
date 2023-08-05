@@ -90,7 +90,11 @@ final class Order: Codable {
     self.freeOrderRequestId = freeOrderRequestId
 
     if addressCountry == "US" {
-      self.addressState = abbreviateState(addressState)
+      self.addressState = abbreviate(us: addressState)
+    }
+
+    if addressCountry == "CA" {
+      self.addressState = abbreviate(ca: addressState)
     }
   }
 }

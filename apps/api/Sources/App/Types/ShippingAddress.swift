@@ -27,7 +27,11 @@ struct ShippingAddress: Codable {
     self.country = country
 
     if country == "US" {
-      self.state = abbreviateState(state)
+      self.state = abbreviate(us: state)
+    }
+
+    if country == "CA" {
+      self.state = abbreviate(ca: state)
     }
   }
 }
@@ -82,7 +86,35 @@ extension AppSchema {
   }
 }
 
-func abbreviateState(_ input: String) -> String {
+func abbreviate(ca input: String) -> String {
+  let provinces = [
+    "alberta": "AB",
+    "british columbia": "BC",
+    "manitoba": "MB",
+    "new brunswick": "NB",
+    "newfoundland and labrador": "NL",
+    "labrador": "NL",
+    "newfoundland": "NL",
+    "nova scotia": "NS",
+    "northwest territories": "NT",
+    "nunavut": "NU",
+    "ontario": "ON",
+    "prince edward island": "PE",
+    "pie": "PE",
+    "quebec": "QC",
+    "que": "QC",
+    "saskatchewan": "SK",
+    "yukon": "YT",
+  ]
+
+  let lowercaseInput = input
+    .trimmingCharacters(in: .whitespacesAndNewlines)
+    .lowercased()
+
+  return provinces[lowercaseInput] ?? input
+}
+
+func abbreviate(us input: String) -> String {
   let states = [
     "alabama": "AL",
     "alaska": "AK",

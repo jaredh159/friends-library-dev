@@ -64,10 +64,11 @@ const ShippingError: React.FC = () => (
   <ErrorMsg>
     <Dual.Frag>
       <>
-        Sorry, we’re not able to ship to that address. Please double-check for any{` `}
-        <i>errors,</i> or try an <i>alternate address</i> where you could receive a
-        shipment. Still no luck? We might not be able to ship directly to your location,
-        but you can{` `}
+        Sorry, we’re not able to ship to that address. Sometimes using an{` `}
+        <i>abbreviation</i> for the state/province/region makes a difference. If not,
+        please double-check for any errors, or try an <i>alternate address</i> where you
+        could receive a shipment. Still no luck? We might not be able to ship directly to
+        your location, but you can{` `}
         <Link to={t`/contact`} className="underline">
           contact us
         </Link>
