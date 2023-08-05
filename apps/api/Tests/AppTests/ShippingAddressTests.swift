@@ -14,7 +14,8 @@ class StateAbbreviationTests: XCTestCase {
       ("US", "  ", "  "),
       ("US", "Alaska", "AK"),
       ("US", "Delaware ", "DE"),
-      ("GB", "Delaware", "Delaware"), // only abbreviates for US
+      ("GB", "Delaware", "Delaware"), // only abbreviates for US, CA
+      ("CA", "Ontario ", "ON"),
     ]
 
     for (country, input, expected) in tests {
