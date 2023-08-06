@@ -3,6 +3,11 @@ import { configDefaults, defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
-    exclude: [...configDefaults.exclude, `libs-swift/*`, `apps/api/*`],
+    exclude: [
+      ...configDefaults.exclude,
+      `libs-swift/**`,
+      `apps/api/**`,
+      `apps/native/**`,
+    ],
   },
 });

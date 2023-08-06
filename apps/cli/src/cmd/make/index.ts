@@ -11,7 +11,7 @@ export const builder: CommandBuilder = function (yargs) {
       required: true,
       describe: `pattern to match repo dirs against`,
     })
-    .option(`no-open`, {
+    .option(`skip-open`, {
       alias: `o`,
       type: `boolean`,
       describe: `do not open created file/s`,

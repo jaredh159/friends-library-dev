@@ -52,6 +52,12 @@ export async function push(
   await git(repoPath).push(remoteName, branch, force ? [`--force`] : []);
 }
 
+export async function isAheadOfOriginMaster(repoPath: Repo): Promise<boolean> {
+  await git(repoPath).fetch(`origin`, `master`);
+  const output = await git(repoPath).raw([`rev-list`, `HEAD...origin/master`, `--count`]);
+  return Number(output.trim()) > 0;
+}
+
 export async function isAheadOfMaster(repoPath: Repo): Promise<boolean> {
   return (await git(repoPath).status()).ahead > 0;
 }

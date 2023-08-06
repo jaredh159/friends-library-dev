@@ -8,6 +8,7 @@
     "scaffold:lint": "echo was: `yarn ts-node ./scripts/scaffold-lint.ts`",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
+    "test:watch": "vitest . -- watch",
     "lint": "eslint . --rule 'no-irregular-whitespace: off'",
     "lint:fix": "eslint . --fix --rule 'no-irregular-whitespace: off'",
     "format": "just prettier",

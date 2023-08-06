@@ -3,6 +3,68 @@ import RegexLintRunner from '../RegexLintRunner';
 
 const runner = new RegexLintRunner([
   {
+    test: `strong`,
+    search: /\b(S|s)trong(-| )hold(s?)\b/g,
+    replace: `$1tronghold$3`,
+    // not always incorrect, e.g. "London had a strong hold on his affections"
+    isMaybe: true,
+    fixable: false,
+  },
+  {
+    test: `coast`,
+    search: /\b(S|s)ea(-| )coast(s?)\b/g,
+    replace: `$1eacoast$3`,
+  },
+  {
+    test: `side`,
+    search: /\b(S|s)ea(-| )side(s?)\b/g,
+    replace: `$1easide$3`,
+  },
+  {
+    test: `rail-road`,
+    search: /\b(R|r)ail-road(s?)\b/g,
+    replace: `$1ailroad$2`,
+  },
+  {
+    test: `steam-boat`,
+    search: /\b(S|s)team-boat(s?)\b/g,
+    replace: `$1teamboat$2`,
+  },
+  {
+    test: `light-house`,
+    search: /\b(L|l)ight-house(s?)\b/g,
+    replace: `$1ighthouse$2`,
+  },
+  {
+    test: `school-house`,
+    search: /\b(S|s)chool-house(s?)\b/g,
+    replace: `$1choolhouse$2`,
+  },
+  {
+    test: `head-ache`,
+    search: /\b(H|h)ead-ache(s?)\b/g,
+    replace: `$1eadache$2`,
+  },
+  {
+    test: `child-like`,
+    search: /\b(C|c)hild-like\b/g,
+    replace: `$1hildlike`,
+  },
+  {
+    test: `horse`,
+    search: /\b(H|h)orse(-| )back\b/g,
+    replace: `$1orseback`,
+  },
+  {
+    test: `body`,
+    search: /\b(A|a)ny(-| )body\b/g,
+    replace: `$1nybody`,
+    message: `Any body should usually be replaced with anybody, but not always`,
+    // not always incorrect, especially when dealing with a "body" of friends
+    isMaybe: true,
+    fixable: false,
+  },
+  {
     test: `Staten-Island`,
     search: /\bStaten-Island/gi,
     replace: `Staten Island`,

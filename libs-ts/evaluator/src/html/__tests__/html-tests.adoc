@@ -16,6 +16,24 @@ Hello **there** __world.__
 ++++
 
 // ********************************
+## line ending with mdash
+// ********************************
+
+****
+== Preface
+
+Hello--
+world.
+****
+
+++++
+<div id="chapter-1" class="chapter chapter-1 chapter--no-signed-section">
+  <!-- preface chapter heading markup here -->
+  <p class="paragraph">Hello—world.</p>
+</div>
+++++
+
+// ********************************
 ## curly quotes
 // ********************************
 

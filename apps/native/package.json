@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "test": "pnpm ensure-env ; jest",
+    "test:watch": "vitest . -- watch",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

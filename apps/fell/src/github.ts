@@ -7,6 +7,7 @@ export async function openPullRequest(
   title: string,
   body = ``,
 ): Promise<number | false> {
+  env.require(`FELL_GITHUB_TOKEN`);
   try {
     const {
       data: { number },
@@ -21,6 +22,7 @@ export async function openPullRequest(
     });
     return number;
   } catch (e) {
+    console.error(e); // eslint-disable-line no-console
     return false;
   }
 }

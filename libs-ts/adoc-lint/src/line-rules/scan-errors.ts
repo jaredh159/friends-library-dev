@@ -4,6 +4,17 @@ import RegexLintRunner from '../RegexLintRunner';
 const runner = new RegexLintRunner(
   [
     {
+      test: `tor`, // --> for
+      search: /\btor\b/g,
+      replace: `for`,
+    },
+    {
+      test: `i`,
+      search: /( |^)i( |$)/g,
+      replace: `$1I$2`,
+      allowIfNear: /\]/,
+    },
+    {
       test: `f`,
       search: /( |^)(F|f)( |$)/g,
       replace: `$1I `,
@@ -20,13 +31,11 @@ const runner = new RegexLintRunner(
       replace: (full: string, prev: string) => {
         return full.replace(prev, ``);
       },
-      fixable: true,
     },
     {
       test: `yon`,
       search: /\b(Y|y)on\b/g,
       replace: `$1ou`,
-      fixable: false,
     },
     {
       test: `mmd`,

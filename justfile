@@ -35,6 +35,10 @@ check:
 test:
   @just nx-run-many test
 
+# apps/native stil uses jest
+ts-vitest-watch:
+  @pnpm vitest . --watch
+
 compile:
   @just nx-run-many compile
 

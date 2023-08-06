@@ -16,7 +16,19 @@ const symbol: Parselet = (parser, parent) => {
     startToken: current,
     endToken: current,
   });
+
+  const symbolType = current.type;
   parser.consume();
+
+  // lines ending with `--` should join directly to next line
+  if (
+    symbolType === t.DOUBLE_DASH &&
+    parser.currentIs(t.EOL) &&
+    parent.type !== n.VERSE_LINE // except for verses ending in `--`
+  ) {
+    parser.consume();
+  }
+
   return node;
 };
 

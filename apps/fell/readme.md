@@ -86,8 +86,7 @@ message and the pull request body will be empty, unless you pass custom strings 
 **Note:** This command _auto-scopes_ to the `<branch>` you pass.
 
 **Note:** You can pass a `--delay` flag (in seconds) to add seconds between PR creation.
-This helps prevent GitHub api abuse sensors, and gives time for the API to not be
-overwhelmed making pdf previews.
+This helps prevent GitHub api abuse sensors.
 
 ```SHELL
 $ fell push feature-x --open-pr --pr-title "my rad pr!"

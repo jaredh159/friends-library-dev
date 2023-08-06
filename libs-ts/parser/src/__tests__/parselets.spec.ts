@@ -266,7 +266,7 @@ describe(`Parser.parseUntil() using parselets`, () => {
     ]);
   });
 
-  test(`line starting with dot not implmented, thus error`, () => {
+  test(`line starting with dot (not implemented) errors`, () => {
     expect(() => getParser(`.Hello`).parseUntil(getPara(), t.EOL)).toThrow(
       /not implemented/,
     );
@@ -437,6 +437,18 @@ describe(`Parser.parseUntil() using parselets`, () => {
   it(`throws if nodes close out of order`, () => {
     const parser = getParser(`_Hello **world_ foo**\n`);
     expect(() => parser.parseUntil(getPara(), t.EOL)).toThrow(/unclosed STRONG/i);
+  });
+
+  it(`doesn't add whitespace between lines after mdash`, () => {
+    const parser = getParser(`Foo Hello--\nworld\n\n`);
+    const nodes = parser.parseUntil(getPara(), t.DOUBLE_EOL);
+    nodes.forEach(assertAllNodesHaveTokens);
+    expect(nodes).toHaveLength(3);
+    expect(nodes).toMatchObject([
+      { type: n.TEXT, value: `Foo Hello` },
+      { type: n.SYMBOL, value: `--`, meta: { subType: t.DOUBLE_DASH } },
+      { type: n.TEXT, value: `world` },
+    ]);
   });
 
   it(`can move through newlines`, () => {

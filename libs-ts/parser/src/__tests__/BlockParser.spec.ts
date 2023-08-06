@@ -396,6 +396,32 @@ describe(`BlockParser.parse()`, () => {
     });
   });
 
+  it(`can parse a sub-block ending with mdash`, () => {
+    const block = getParsedBlock(`
+      [.postscript]
+      ====
+
+      Hello world--
+
+      ====
+    `);
+
+    expect(block.toJSON()).toMatchObject({
+      type: n.BLOCK,
+      meta: { subType: `example` },
+      context: { classList: [`postscript`] },
+      children: [
+        {
+          type: n.PARAGRAPH,
+          children: [
+            { type: n.TEXT, value: `Hello world` },
+            { type: n.SYMBOL, value: `--` },
+          ],
+        },
+      ],
+    });
+  });
+
   it(`can parse an example-block`, () => {
     const block = getParsedBlock(`
       [.postscript]
@@ -518,6 +544,32 @@ describe(`BlockParser.parse()`, () => {
           type: n.VERSE_STANZA,
           children: [
             { type: n.VERSE_LINE, children: [T.text(`Hello Mama`)] },
+            { type: n.VERSE_LINE, children: [T.text(`Hello Papa`)] },
+          ],
+        },
+      ],
+    });
+  });
+
+  it(`does not join verse line ending with -- to next line`, () => {
+    const block = getParsedBlock(`
+      [verse]
+      ____
+      Hello Mama--
+      Hello Papa
+      ____
+    `);
+    expect(block.toJSON()).toMatchObject({
+      type: n.BLOCK,
+      meta: { subType: `verse` },
+      children: [
+        {
+          type: n.VERSE_STANZA,
+          children: [
+            {
+              type: n.VERSE_LINE,
+              children: [T.text(`Hello Mama`), { type: n.SYMBOL }],
+            },
             { type: n.VERSE_LINE, children: [T.text(`Hello Papa`)] },
           ],
         },
