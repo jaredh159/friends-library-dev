@@ -27,9 +27,18 @@ export async function handler({
 }: Argv): Promise<void> {
   let exitStatus = 0;
   let repos = await getRepos(exclude, branch);
+
   if (branch !== `master`) {
-    const ahead = await Promise.all(repos.map((repo) => git.isAheadOfMaster(repo)));
+    const ahead = await Promise.all(repos.map((repo) => git.isAheadOfOriginMaster(repo)));
     repos = repos.filter((repo, index) => ahead[index]);
+  }
+
+  green(`${repos.length} repos will be pushed, starting in 10 seconds...\n`);
+  await new Promise((resolve) => setTimeout(resolve, 10000));
+
+  if (branch === `master` && force) {
+    red(`Refusing to force push to master`);
+    process.exit(1);
   }
 
   await Promise.all(repos.map((repo) => git.push(repo, branch, force)));
@@ -79,6 +88,6 @@ export const builder: CommandBuilder = function (yargs) {
     })
     .option(`delay`, {
       type: `number`,
-      default: 5,
+      default: 15,
     });
 };

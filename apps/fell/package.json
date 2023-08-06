@@ -16,7 +16,7 @@
   "dependencies": {
     "@friends-library/env": "workspace:*",
     "@friends-library/friend-repos": "workspace:*",
-    "@octokit/rest": "^16.15.0",
+    "@octokit/rest": "^17.11.2",
     "chalk": "^2.4.1",
     "glob": "^7.1.4",
     "simple-git": "3.17.0",
