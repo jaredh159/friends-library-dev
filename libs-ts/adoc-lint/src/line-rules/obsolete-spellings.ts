@@ -3,6 +3,53 @@ import RegexLintRunner from '../RegexLintRunner';
 
 const runner = new RegexLintRunner([
   {
+    test: `stedfast`,
+    search: /\b(S|s)tedfast(ly)?\b/g,
+    replace: `$1teadfast$2`,
+  },
+  {
+    test: `scull`,
+    search: /\bscull(s?)\b/g, // only lowercase, for surname "Scull"
+    replace: `skull$1`,
+  },
+  {
+    test: `befal`,
+    search: /\bbefal\b/g,
+    replace: `befall`,
+  },
+  {
+    test: `waggon`,
+    search: /\b(W|w)aggon(s?)\b/g,
+    replace: `$1agon$2`,
+  },
+  {
+    test: `comb`,
+    search: /\b((High|West)-)?Wic?combe?\b/gi,
+    replace: (_, __, prefix) => `${prefix === undefined ? `` : `${prefix} `}Wycombe`,
+    fixable: true,
+  },
+  {
+    test: `chesa`,
+    search: /\bchesapeak\b/gi,
+    replace: `Chesapeake`,
+    fixable: true,
+  },
+  {
+    test: `ndors`,
+    search: /\b(I|i)ndors(e|ed|es|ing)\b/gi,
+    replace: (_, start, end) => `${start === `I` ? `E` : `e`}ndors${end}`,
+    fixable: true,
+  },
+  {
+    test: `stablish`,
+    search: /((A|a) )?\b(S|s)tablish(ed|ing|es)\b/g,
+    replace: (_, a, __, s, end) =>
+      `${a !== undefined ? a.replace(` `, `n `) : ``}${
+        s === `S` ? `E` : `e`
+      }stablish${end}`,
+    fixable: true,
+  },
+  {
     test: `much`,
     search: /\bin-(so|as)-much\b/g,
     replace: `in$1much`,
@@ -21,8 +68,8 @@ const runner = new RegexLintRunner([
     replace: (_, un, b, end) => `${un !== undefined ? un : ``}${b}ias${end}`,
   },
   {
-    test: `jun`,
-    search: /\bjun\./g,
+    test: `j`,
+    search: /\b(jun|jr)\./g,
     replace: `Jr.`,
   },
   {
