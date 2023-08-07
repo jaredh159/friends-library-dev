@@ -98,10 +98,10 @@ const runner = new RegexLintRunner([
     replace: `$1eather`,
   },
   {
-    test: `inclose`,
-    search: /\b(Un|un)?(I|i)nclose?/g,
-    replace: (_, un, i) => {
-      const str = `${i === `I` ? `E` : `e`}nclose`;
+    test: `inclos`,
+    search: /\b(Un|un)?(I|i)nclos(e|ed|es|ing|ure)/g,
+    replace: (_, un, i, end) => {
+      const str = `${i === `I` ? `E` : `e`}nclos${end}`;
       if (un !== undefined) {
         return `${un}${str}`;
       }
