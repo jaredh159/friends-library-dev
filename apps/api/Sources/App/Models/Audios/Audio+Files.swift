@@ -5,11 +5,19 @@ struct AudioFiles: Encodable {
   struct Qualities: Encodable {
     let hq: DownloadableFile
     let lq: DownloadableFile
+
+    var all: [DownloadableFile] {
+      [hq, lq]
+    }
   }
 
   let podcast: Qualities
   let mp3s: Qualities
   let m4b: Qualities
+
+  var all: [DownloadableFile] {
+    podcast.all + mp3s.all + m4b.all
+  }
 }
 
 extension Audio {
