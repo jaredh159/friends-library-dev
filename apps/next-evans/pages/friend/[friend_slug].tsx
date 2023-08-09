@@ -20,7 +20,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const friends = await getAllFriends();
   const paths = Object.values(friends).map((friend) => ({
     params: {
-      friend: LANG === `en` ? `friend` : friend.gender === `female` ? `amiga` : `amigo`,
       friend_slug: friend.slug,
     },
   }));
@@ -32,7 +31,6 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
   invariant(typeof context.params?.friend_slug === `string`);
   const friend = await getFriend(context.params.friend_slug);
   invariant(friend);
-
   return {
     props: friend,
   };
