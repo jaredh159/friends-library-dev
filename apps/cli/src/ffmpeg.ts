@@ -93,9 +93,18 @@ function ffmpeg(
   hostDir: string,
   throwErr = true,
 ): ReturnType<typeof exec> {
-  const [err, output] = exec(`ffmpeg ${ffmpegArgs.join(` `)}`, hostDir);
+  const user = exec.exit(`echo "$(id -u):$(id -g)"`).trim();
+  const dockerArgs = [
+    `docker run`,
+    `--rm`,
+    `--user ${user}`,
+    `--workdir /tmp/workdir`,
+    `--volume ${hostDir}:/tmp/workdir`,
+    IMAGE,
+  ];
+  const [err, output] = exec(`${dockerArgs.join(` `)} ${ffmpegArgs.join(` `)}`);
   if (err && throwErr) {
-    throw new Error(`ffmpeg error: ${err}, out: ${output}`);
+    throw new Error(`ffmpeg error: ${output}`);
   }
   return [err, output];
 }
@@ -107,9 +116,16 @@ function getTagArgs(audio: Audio, partIndex: number): string {
 }
 
 export function ensureExists(): void {
-  if (!exec.success(`which ffmpeg`)) {
-    red(`Missing required 'ffmpeg' binary`);
-    red(`Follow install directions at https://github.com/sandreas/m4b-tool`);
+  if (!exec.success(`docker --version`)) {
+    red(`Docker required to run ffmpeg`);
     process.exit(1);
   }
+
+  if (!exec.success(`docker image inspect ${IMAGE}`)) {
+    exec.exit(`docker pull ${IMAGE}`);
+  }
+
+  exec.exit(`docker image inspect ${IMAGE}`);
 }
+
+const IMAGE = `sandreas/ffmpeg:5.0.1-3`;
