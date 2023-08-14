@@ -57,9 +57,12 @@ async function getFriendsFromDB(lang: Lang): Promise<Record<string, Friend>> {
             ...doc,
             altLanguageId: doc.alt_language_id,
             created_at: null,
+            isComplete: !doc.incomplete,
+            originalTitle: doc.original_title,
             isbn: firstEdition.isbns[0]?.code ?? ``,
             createdAt: doc.created_at.toISOString(),
             featuredDescription: doc.featured_description,
+            blurb: doc.description,
             mostModernEdition: toEdition(newestEdition),
             editions: doc.editions.map(toEdition),
             shortDescription: doc.partial_description,
@@ -90,13 +93,26 @@ function toEdition(dbEdition: DBEdition): Edition {
   invariant(dbEdition.edition_impressions !== null); // TODO ~ prisma types are wrong
   return {
     type: dbEdition.type,
+    id: dbEdition.id,
     impressionCreatedAt: dbEdition.edition_impressions.created_at.toISOString(),
     numPages: dbEdition.edition_impressions.paperback_volumes,
+    numChapters: dbEdition.edition_chapters.length,
     size: dbEdition.edition_impressions.paperback_size_variant,
     audiobook: audiobook && {
       id: audiobook.id,
       isIncomplete: audiobook.is_incomplete,
       createdAt: audiobook.created_at.toISOString(),
+      hq_mp3ZipFilesize: audiobook.mp3_zip_size_hq,
+      lq_mp3ZipFilesize: audiobook.mp3_zip_size_lq,
+      hq_m4bFilesize: audiobook.m4b_size_hq,
+      lq_m4bFilesize: audiobook.m4b_size_lq,
+      lq_externalPlaylistId: audiobook.external_playlist_id_lq,
+      hq_externalPlaylistId: audiobook.external_playlist_id_hq,
+      parts: audiobook.edition_audio_parts.map((part) => ({
+        id: part.id,
+        lq_externalTrackId: part.external_id_lq,
+        hq_externalTrackId: part.external_id_hq,
+      })),
     },
   };
 }
@@ -170,7 +186,10 @@ function queryFriends(lang: Lang) {
           title: true,
           created_at: true,
           slug: true,
+          incomplete: true,
+          original_title: true,
           partial_description: true,
+          description: true,
           featured_description: true,
           id: true,
           alt_language_id: true,
@@ -186,13 +205,32 @@ function queryFriends(lang: Lang) {
               },
             },
             select: {
+              id: true,
               type: true,
               is_draft: true,
+              edition_chapters: {
+                select: {
+                  id: true,
+                },
+              },
               edition_audios: {
                 select: {
                   id: true,
                   created_at: true,
                   is_incomplete: true,
+                  mp3_zip_size_hq: true,
+                  mp3_zip_size_lq: true,
+                  m4b_size_hq: true,
+                  m4b_size_lq: true,
+                  external_playlist_id_hq: true,
+                  external_playlist_id_lq: true,
+                  edition_audio_parts: {
+                    select: {
+                      id: true,
+                      external_id_hq: true,
+                      external_id_lq: true,
+                    },
+                  },
                 },
               },
               isbns: {

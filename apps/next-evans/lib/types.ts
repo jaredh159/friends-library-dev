@@ -21,7 +21,9 @@ export interface Friend {
 
 export interface Edition {
   type: EditionType;
+  id: UUID;
   numPages: number[];
+  numChapters: number;
   size: 's' | 'm' | 'xl' | 'xlCondensed';
   audiobook: Audiobook | null;
   impressionCreatedAt: ISODateString;
@@ -35,6 +37,7 @@ interface FriendDocument {
   editions: Array<Edition>;
   mostModernEdition: Edition;
   shortDescription: string;
+  blurb: string;
   featuredDescription: string | null;
   hasAudio: boolean;
   tags: Array<string>;
@@ -43,6 +46,8 @@ interface FriendDocument {
   customHTML: string | null;
   createdAt: ISODateString;
   isbn: string;
+  isComplete: boolean;
+  originalTitle: string | null;
 }
 
 export type Doc<T extends keyof Document = never> = Pick<
@@ -62,6 +67,17 @@ export interface Audiobook {
   id: UUID;
   isIncomplete: boolean;
   createdAt: ISODateString;
+  hq_mp3ZipFilesize: number;
+  lq_mp3ZipFilesize: number;
+  hq_m4bFilesize: number;
+  lq_m4bFilesize: number;
+  lq_externalPlaylistId: number | null;
+  hq_externalPlaylistId: number | null;
+  parts: Array<{
+    id: UUID;
+    lq_externalTrackId: number | null;
+    hq_externalTrackId: number | null;
+  }>;
 }
 
 export type Period = 'early' | 'mid' | 'late';
