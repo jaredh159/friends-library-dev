@@ -5,11 +5,13 @@ import { serialize } from 'next-mdx-remote/serialize';
 import invariant from 'tiny-invariant';
 import { type MDXRemoteSerializeResult } from 'next-mdx-remote';
 import type { GetStaticPaths, GetStaticProps } from 'next';
+import type { MdxPageFrontmatter } from '@/lib/types';
 import { WhiteOverlay } from '../explore';
 import HeroImg from '@/public/images/explore-books.jpg';
 import * as mdx from '@/lib/mdx';
 import { LANG } from '@/lib/env';
 import BackgroundImage from '@/components/core/BackgroundImage';
+import { getAllDocuments } from '@/lib/db/documents';
 
 export const getStaticPaths: GetStaticPaths = async () => ({
   paths: mdx
@@ -24,14 +26,24 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
   invariant(typeof slug === `string`);
   const source = mdx.source(slug, LANG);
   const { content, data: frontmatter } = matter(source);
+  invariant(mdx.verifyFrontmatter(frontmatter));
   const mdxSource = await serialize(content, { scope: frontmatter });
-  return { props: { source: mdxSource, frontmatter } };
-};
+  const englishBooks = Object.values(await getAllDocuments(`en`));
+  const spanishBOoks = Object.values(await getAllDocuments(`es`));
 
-interface Props {
-  source: MDXRemoteSerializeResult;
-  frontmatter: Record<string, unknown>;
-}
+  return {
+    props: {
+      source: mdxSource,
+      frontmatter,
+      numAudiobooks:
+        LANG === `en`
+          ? englishBooks.filter((book) => book.hasAudio).length
+          : spanishBOoks.filter((book) => book.hasAudio).length,
+      numEnglishBooks: englishBooks.length,
+      numSpanishBooks: spanishBOoks.length,
+    },
+  };
+};
 
 const components: React.ComponentProps<typeof MDXRemote>['components'] = {
   h2: ({ children }) => (
@@ -86,24 +98,52 @@ const components: React.ComponentProps<typeof MDXRemote>['components'] = {
     </ul>
   ),
 
-  Lead: ({ children }) => <div className="Lead">{children}</div>,
+  Lead: ({ children }) => (
+    <div className="text-xl pb-4 pt-2 leading-loose sm:!text-2xl [&>p]:text-xl [&>p]:pb-4 [&>p]:pt-2 [&>p]:leading-loose [&>p]:sm:!text-2xl">
+      {children}
+    </div>
+  ),
 };
 
-const StaticPage: React.FC<Props> = ({ source, frontmatter }) => (
-  <div>
-    <BackgroundImage src={HeroImg} fineTuneImageStyles={{ objectFit: `cover` }}>
-      <div className="p-8 sm:p-16 lg:p-24 bg-black/60 lg:backdrop-blur-sm">
-        <WhiteOverlay>
-          <h1 className="heading-text text-2xl sm:text-4xl bracketed text-flprimary">
-            {frontmatter.title as string}
-          </h1>
-        </WhiteOverlay>
+interface Props {
+  source: MDXRemoteSerializeResult;
+  frontmatter: MdxPageFrontmatter;
+  numAudiobooks: number;
+  numSpanishBooks: number;
+  numEnglishBooks: number;
+}
+
+const StaticPage: React.FC<Props> = ({
+  source,
+  frontmatter,
+  numAudiobooks,
+  numEnglishBooks,
+  numSpanishBooks,
+}) => {
+  function replaceCounts(str: string): string {
+    return str
+      .replace(/%NUM_AUDIOBOOKS%/g, String(numAudiobooks))
+      .replace(/%NUM_SPANISH_BOOKS%/g, String(numSpanishBooks))
+      .replace(/%NUM_ENGLISH_BOOKS%/g, String(numEnglishBooks))
+      .replace(/ -- /g, ` — `);
+  }
+
+  return (
+    <div>
+      <BackgroundImage src={HeroImg} fineTuneImageStyles={{ objectFit: `cover` }}>
+        <div className="p-8 sm:p-16 lg:p-24 bg-black/60 lg:backdrop-blur-sm">
+          <WhiteOverlay>
+            <h1 className="heading-text text-2xl sm:text-4xl bracketed text-flprimary">
+              {frontmatter.title as string}
+            </h1>
+          </WhiteOverlay>
+        </div>
+      </BackgroundImage>
+      <div className="MDX p-10 md:px-16 lg:px-24 body-text max-w-6xl mx-auto mt-4">
+        <MDXRemote {...source} components={components} />
       </div>
-    </BackgroundImage>
-    <div className="MDX p-10 md:px-16 lg:px-24 body-text max-w-6xl mx-auto mt-4">
-      <MDXRemote {...source} components={components} />
     </div>
-  </div>
-);
+  );
+};
 
 export default StaticPage;

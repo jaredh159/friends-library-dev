@@ -86,3 +86,8 @@ export type NewsFeedType =
   | `spanish_translation`
   | `feature`
   | `chapter`;
+
+export type MdxPageFrontmatter = {
+  title: string;
+  description: string;
+};
