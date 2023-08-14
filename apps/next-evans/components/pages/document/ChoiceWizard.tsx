@@ -1,5 +1,5 @@
-import PopUnder from '@/components/core/PopUnder';
 import React from 'react';
+import PopUnder from '@/components/core/PopUnder';
 
 interface Props {
   top?: number;

@@ -1,21 +1,21 @@
-import { GetStaticPaths, GetStaticProps } from 'next';
 import React from 'react';
-import { Doc } from '../../../lib/types';
-import { getAllDocuments, getDocument } from '@/lib/db/documents';
 import invariant from 'tiny-invariant';
-import DocBlock from '@/components/pages/document/DocBlock';
 import { price } from '@friends-library/lulu';
+import { t } from '@friends-library/locale';
+import type { GetStaticPaths, GetStaticProps } from 'next';
+import type { Doc } from '../../../lib/types';
+import { getAllDocuments, getDocument } from '@/lib/db/documents';
+import DocBlock from '@/components/pages/document/DocBlock';
 import ListenBlock from '@/components/pages/document/ListenBlock';
 import BookTeaserCards from '@/components/pages/explore/BookTeaserCards';
 import { isCompilations } from '@/lib/friend';
-import { t } from '@friends-library/locale';
 import ExploreBooksBlock from '@/components/pages/home/ExploreBooksBlock';
 import { formatFilesize } from '@/lib/filesize';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const documents = Object.keys(await getAllDocuments()).map((path) => ({
-    friendSlug: path.split('/')[0],
-    bookSlug: path.split('/')[1],
+    friendSlug: path.split(`/`)[0],
+    bookSlug: path.split(`/`)[1],
   }));
 
   return {
@@ -88,7 +88,7 @@ const DocumentPage: React.FC<Props> = ({
     <div>
       <DocBlock {...primaryDocument} />
       {audiobook && (
-        <ListenBlock // TODO: fill in props
+        <ListenBlock
           complete={!audiobook.isIncomplete}
           m4bFilesizeLq={formatFilesize(audiobook.lq_m4bFilesize)}
           m4bFilesizeHq={formatFilesize(audiobook.hq_m4bFilesize)}
@@ -114,9 +114,9 @@ const DocumentPage: React.FC<Props> = ({
             ? t`Other Compilations`
             : t`Other Books by this Author`
         }
-        titleEl={'h2'}
-        bgColor={'flgray-100'}
-        titleTextColor={'flblack'}
+        titleEl={`h2`}
+        bgColor={`flgray-100`}
+        titleTextColor={`flblack`}
         books={otherBooksByAuthor}
         noBadges
       />

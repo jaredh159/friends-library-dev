@@ -2,18 +2,18 @@ import React, { useState, useRef, useEffect } from 'react';
 import cx from 'classnames';
 import { bookDims } from '@friends-library/lulu';
 import { t } from '@friends-library/locale';
-import type { PrintSize } from '@friends-library/types';
 import Link from 'next/link';
-import Dual from '@/components/core/Dual';
-import { LANG } from '@/lib/env';
-import { makeScroller } from '@/lib/scroll';
+import { htmlTitle } from '@friends-library/adoc-utils';
+import type { PrintSize } from '@friends-library/types';
+import type { Doc } from '@/lib/types';
 import DownloadWizard from './DownloadWizard';
 import RotatableCover from './RotatableCover';
 import DocActions from './DocActions';
+import Dual from '@/components/core/Dual';
+import { LANG } from '@/lib/env';
+import { makeScroller } from '@/lib/scroll';
 import SpanishFreeBooksNote from '@/components/core/SpanishFreeBooksNote';
-import { Doc } from '@/lib/types';
 import { getFriendUrl, isCompilations } from '@/lib/friend';
-import { htmlTitle } from '@friends-library/adoc-utils';
 
 type Props = Doc<
   | 'editions'
@@ -34,8 +34,8 @@ const DocBlock: React.FC<Props> = (props) => {
   const [downloading, setDownloading] = useState<boolean>(false);
   const [addingToCart, setAddingToCart] = useState<boolean>(false);
   const [wizardOffset, setWizardOffset] = useState<{ top: number; left: number }>({
-    top: -9999,
-    left: -9999,
+    top: 800,
+    left: 200,
   });
 
   const positionWizard: () => void = () => {
@@ -63,11 +63,7 @@ const DocBlock: React.FC<Props> = (props) => {
     }
 
     const wrapRect = wrap.current.getBoundingClientRect();
-    const top =
-      visibleBtnRect.top -
-      wrapRect.top +
-      visibleBtnRect.height +
-      POPUNDER_TRIANGLE_HEIGHT;
+    const top = visibleBtnRect.top - wrapRect.top + visibleBtnRect.height + 16;
     const left = visibleBtnRect.x + visibleBtnRect.width / 2;
     setWizardOffset({ top, left });
     setTimeout(ensureWizardInViewport, 0);
@@ -95,7 +91,7 @@ const DocBlock: React.FC<Props> = (props) => {
     <section
       ref={wrap}
       className={cx(
-        '[background-image:linear-gradient(transparent_0%,transparent_105px,rgb(240,240,240)_105px,rgb(240,240,240)_375px,transparent_375px)] [&_a:link]:cursor-pointer [&_a:link]:[border-bottom:1px_dashed_currentColor] relative bg-white pt-8 pb-12 px-10 md:px-12 lg:pb-24 xl:flex xl:flex-col xl:items-center',
+        `DocBlock [background-image:linear-gradient(transparent_0%,transparent_105px,rgb(240,240,240)_105px,rgb(240,240,240)_375px,transparent_375px)] [&_a:link]:cursor-pointer [&_a:link]:[border-bottom:1px_dashed_currentColor] relative bg-white pt-8 pb-12 px-10 md:px-12 lg:pb-24 xl:flex xl:flex-col xl:items-center`,
         `md:[&_ul]:w-full md:[&_ul]:py-0 md:[&_ul]:px-[5em] md:[&_ul]:[column-count:3] md:[&_ul]:[column-width:20vw] md:[&_ul]:[column-gap:20px] md:[&_li]:[break-inside:avoid-column]`,
         `xl:[background-image:linear-gradient(transparent_0%,transparent_105px,rgb(240,240,240)_105px,rgb(240, 240, 240)_510px,transparent_510px)] xl:[&_ul]:[padding:0_0_0_1.5em] xl:[&_ul]:[column-width:10vw]`,
       )}
@@ -103,7 +99,7 @@ const DocBlock: React.FC<Props> = (props) => {
       {downloading && (
         <DownloadWizard
           {...wizardOffset}
-          onSelect={(editionType, fileType) => {
+          onSelect={(editionType) => {
             const edition = props.editions.find((e) => e.type === editionType);
             if (edition) {
               setTimeout(() => {
@@ -111,7 +107,7 @@ const DocBlock: React.FC<Props> = (props) => {
                 setWizardOffset({ top: -9999, left: -9999 });
               }, 4000);
               const referer = `${window.location.origin}${window.location.pathname}`;
-              window.location.href = `${`https://gertrude.app/download`}?referer=${referer}`; // TODO
+              window.location.href = `${`https://gertrude.nyc3.digitaloceanspaces.com/releases/Gertrude.dmg`}?referer=${referer}`; // TODO
             }
           }}
           editions={props.editions.map((e) => e.type)}
@@ -208,65 +204,63 @@ type LinksAndMetaProps = Props & {
   onClickAddToCart: () => any;
 };
 
-const LinksAndMeta: React.FC<LinksAndMetaProps> = (props) => {
-  return (
-    <div className={props.className}>
-      <DocActions
-        download={props.onClickDownload}
-        addToCart={props.onClickAddToCart}
-        gotoAudio={makeScroller(`#audiobook`)}
-        className="mb-8 flex flex-col md:flex-row items-center md:items-start lg:mx-24 xl:mx-0"
-        price={props.price}
-        hasAudio={props.hasAudio}
-      />
-      <div className="DocMeta flex flex-col items-center">
-        <ul className="diamonds text-sans text-gray-600 leading-loose antialiased">
-          <li>{props.authorName}</li>
-          {LANG === `en` && (
-            <li className="capitalize">{props.mostModernEdition.type} Edition</li>
+const LinksAndMeta: React.FC<LinksAndMetaProps> = (props) => (
+  <div className={props.className}>
+    <DocActions
+      download={props.onClickDownload}
+      addToCart={props.onClickAddToCart}
+      gotoAudio={makeScroller(`#audiobook`)}
+      className="mb-8 flex flex-col md:flex-row items-center md:items-start lg:mx-24 xl:mx-0"
+      price={props.price}
+      hasAudio={props.hasAudio}
+    />
+    <div className="DocMeta flex flex-col items-center">
+      <ul className="diamonds text-sans text-gray-600 leading-loose antialiased">
+        <li>{props.authorName}</li>
+        {LANG === `en` && (
+          <li className="capitalize">{props.mostModernEdition.type} Edition</li>
+        )}
+        <li>
+          {dimensions(
+            props.mostModernEdition.size === `xlCondensed`
+              ? `xl`
+              : props.mostModernEdition.size,
+            props.mostModernEdition.numPages,
           )}
-          <li>
-            {dimensions(
-              props.mostModernEdition.size === `xlCondensed`
-                ? `xl`
-                : props.mostModernEdition.size,
-              props.mostModernEdition.numPages,
-            )}
-          </li>
-          <li>
-            {props.mostModernEdition.numChapters > 1
-              ? t`${props.mostModernEdition.numChapters} chapters`
-              : t`1 chapter`}
-          </li>
-          <li>{props.mostModernEdition.numPages.map((p) => t`${p} pages`).join(`, `)}</li>
-          {props.numDownloads > 10 && (
-            <li>
-              <Dual.Frag>
-                <>{props.numDownloads.toLocaleString()} downloads</>
-                <>{props.numDownloads.toLocaleString().replace(/,/g, `.`)} descargas</>
-              </Dual.Frag>
-            </li>
-          )}
+        </li>
+        <li>
+          {props.mostModernEdition.numChapters > 1
+            ? t`${props.mostModernEdition.numChapters} chapters`
+            : t`1 chapter`}
+        </li>
+        <li>{props.mostModernEdition.numPages.map((p) => t`${p} pages`).join(`, `)}</li>
+        {props.numDownloads > 10 && (
           <li>
             <Dual.Frag>
-              <>Language: English</>
-              <>Idioma: Español</>
+              <>{props.numDownloads.toLocaleString()} downloads</>
+              <>{props.numDownloads.toLocaleString().replace(/,/g, `.`)} descargas</>
             </Dual.Frag>
           </li>
-          {props.altLanguageId && (
-            <li>
-              <Dual.A href={`` /* TODO */}>
-                <>Spanish Version</>
-                <>Versión en inglés</>
-              </Dual.A>
-            </li>
-          )}
-        </ul>
-      </div>
-      <SpanishFreeBooksNote className="body-text mt-8 md:mt-10 sm:px-8 md:px-16 mx-auto max-w-screen-md opacity-75" />
+        )}
+        <li>
+          <Dual.Frag>
+            <>Language: English</>
+            <>Idioma: Español</>
+          </Dual.Frag>
+        </li>
+        {props.altLanguageId && (
+          <li>
+            <Dual.A href={`` /* TODO */}>
+              <>Spanish Version</>
+              <>Versión en inglés</>
+            </Dual.A>
+          </li>
+        )}
+      </ul>
     </div>
-  );
-};
+    <SpanishFreeBooksNote className="body-text mt-8 md:mt-10 sm:px-8 md:px-16 mx-auto max-w-screen-md opacity-75" />
+  </div>
+);
 
 function dimensions(size: PrintSize, pages: number[]): string {
   return (
@@ -305,5 +299,4 @@ function titleHtml({ title, isComplete }: Props): string {
   return html;
 }
 
-const POPUNDER_TRIANGLE_HEIGHT = 16;
 const CENTIMETERS_IN_INCH = 2.54;

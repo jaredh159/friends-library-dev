@@ -1,11 +1,11 @@
 import React from 'react';
 import { t } from '@friends-library/locale';
-import MultiPill from '@/components/core/MultiPill';
 import {
   BookOpenIcon,
   CloudArrowDownIcon,
   MicrophoneIcon,
 } from '@heroicons/react/24/outline';
+import MultiPill from '@/components/core/MultiPill';
 
 interface Props {
   price: number;

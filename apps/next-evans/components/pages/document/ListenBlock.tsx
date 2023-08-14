@@ -3,9 +3,9 @@ import cx from 'classnames';
 import { t } from '@friends-library/locale';
 import type { AudioQuality } from '@friends-library/types';
 import WaveBottomBlock from '../getting-started/WaveBottomBlock';
+import DownloadAudiobook from './DownloadAudiobook';
 import { LANG } from '@/lib/env';
 import EmbeddedAudio from '@/components/core/EmbeddedAudio';
-import DownloadAudiobook from './DownloadAudiobook';
 
 interface Props {
   complete: boolean;

@@ -22,10 +22,9 @@ const PopUnder: React.FC<Props> = ({
       className,
       `bg-${tailwindBgColor}`,
       `text-${tailwindBgColor}`,
-      `rounded-lg shadow-direct relative POPUNDER`, // REMOVE
+      `rounded-lg shadow-direct relative flex flex-col items-center`,
       alignRight && `align-right`,
-      `after:absolute after:top-0 after:left-[50%] after:w-0 after:h-0 after:[border:15px_solid_transparent] after:[border-bottom-color:currentColor] after:border-t-none after:ml-[-15px] after:mt-[-15px]`,
-      `[&.align-right]:after:left-auto [&.align-right]:after:right-[19px]`,
+      `after:w-6 after:h-6 after:bg-flblue after:absolute after:-top-2 after:rotate-45 z-10`,
     )}
   >
     {children}

@@ -1,9 +1,8 @@
 import React from 'react';
 import cx from 'classnames';
+import type { HeroIcon } from '@/lib/types';
 import Button from './Button';
 import { LANG } from '@/lib/env';
-import { HeroIcon } from '@/lib/types';
-// import './MultiPill.css';
 
 interface Props {
   className?: string;
@@ -17,8 +16,8 @@ const MultiPill: React.FC<Props> = ({ buttons, className }) => (
   <div
     className={cx(
       className,
-      `[&>button+button]:ml-[-3.15rem] md:flex`,
-      LANG === 'es' && `max-md:[&>button]:!w-[300px]`,
+      `[&>button+button]:ml-[-3.15rem] md:flex MultiPill`,
+      LANG === `es` && `max-md:[&>button]:!w-[300px]`,
     )}
   >
     {buttons.map((button, idx) => (

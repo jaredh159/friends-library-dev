@@ -1,7 +1,7 @@
 import React from 'react';
 import { Diamonds } from '@friends-library/cover-component';
-import type { EditionType } from '@friends-library/types';
 import Link from 'next/link';
+import type { EditionType } from '@friends-library/types';
 import ChoiceStep from './ChoiceStep';
 import ChoiceItem from './ChoiceItem';
 

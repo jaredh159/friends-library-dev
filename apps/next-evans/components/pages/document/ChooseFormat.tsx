@@ -1,5 +1,6 @@
 import React from 'react';
 import { t } from '@friends-library/locale';
+import { ChatBubbleLeftEllipsisIcon } from '@heroicons/react/24/outline';
 import ChoiceItem from './ChoiceItem';
 import ChoiceStep from './ChoiceStep';
 import Ebook from '@/components/custom-icons/Ebook';
@@ -15,19 +16,19 @@ const ChooseFormat: React.FC<Props> = ({ onChoose }) => (
       label={t`E-Book`}
       description={t`Best for reading on a computer, phone, or tablet.`}
       recommended
-      Icon={Ebook} // todo
+      Icon={Ebook}
       onChoose={() => onChoose(`ebook`)}
     />
     <ChoiceItem
       label="PDF"
       description={t`Best for printing out your own copy.`}
-      Icon={Pdf} // todo
+      Icon={Pdf}
       onChoose={() => onChoose(`web_pdf`)}
     />
     <ChoiceItem
       label={LANG === `es` ? `Texto Sin Formato` : `Plain Text`}
       description={t`Best for text-to-speech apps like “Voice Dream.”`}
-      Icon={() => <i className="fa-commenting-o fa text-4xl pl-1" />}
+      Icon={() => <ChatBubbleLeftEllipsisIcon />}
       onChoose={() => onChoose(`speech`)}
     />
   </ChoiceStep>
