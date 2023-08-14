@@ -18,6 +18,16 @@ struct EditionImpressionFiles: Encodable {
 
   let ebook: Ebook
   let paperback: Paperback
+
+  var all: [DownloadableFile] {
+    paperback.interior + paperback.cover + [
+      ebook.epub,
+      ebook.mobi,
+      ebook.pdf,
+      ebook.speech,
+      ebook.app,
+    ]
+  }
 }
 
 extension EditionImpression {
