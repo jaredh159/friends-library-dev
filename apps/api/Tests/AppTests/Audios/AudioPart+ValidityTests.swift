@@ -3,6 +3,9 @@ import XCTest
 @testable import App
 
 final class AudioPartValidityTests: XCTestCase {
+  override static func setUp() {
+    Current.logger = .null
+  }
 
   func testEmptyTitleInvalid() {
     let part = AudioPart.valid
@@ -95,6 +98,7 @@ final class AudioPartValidityTests: XCTestCase {
     part.title = "Nota para el oyente"
     part.mp3SizeLq = 300_000
     part.mp3SizeHq = 400_000
+    part.duration = 25
     XCTAssertTrue(part.isValid)
   }
 }
