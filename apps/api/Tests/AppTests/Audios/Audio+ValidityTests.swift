@@ -3,6 +3,9 @@ import XCTest
 @testable import App
 
 final class AudioValidityTests: XCTestCase {
+  override static func setUp() {
+    Current.logger = .null
+  }
 
   func testEmptyReaderInvalid() {
     let audio = Audio.valid
