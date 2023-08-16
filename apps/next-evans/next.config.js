@@ -7,9 +7,6 @@ const LANG = process.env.NEXT_PUBLIC_LANG || `en`;
 const nextConfig = {
   reactStrictMode: false,
   transpilePackages: [`@friends-library`, `x-syntax`],
-  experimental: {
-    appDir: true,
-  },
   rewrites: async function () {
     return {
       afterFiles: [],
@@ -59,7 +56,7 @@ function staticFiles() {
       `editions`,
       `plain-text-format`,
       `quakers`,
-      `translation`,
+      `spanish-translations`,
     ].map((slug) => ({
       source: `/${slug}`,
       destination: `/static/${slug}`,
@@ -72,7 +69,7 @@ function staticFiles() {
     [`ebook-help`, `ebook-ayuda`],
     [`plain-text-format`, `descargar-texto-sin-formato`],
     [`quakers`, `cuaqeros`],
-    [`translation`, `nuestras-traducciones`],
+    [`spanish-translations`, `nuestras-traducciones`],
   ].map(([en, es]) => ({
     source: `/${es}`,
     destination: `/static/${en}`,

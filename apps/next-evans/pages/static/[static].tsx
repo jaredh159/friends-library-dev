@@ -24,23 +24,35 @@ export const getStaticPaths: GetStaticPaths = async () => ({
 export const getStaticProps: GetStaticProps<Props> = async (context) => {
   const slug = context.params?.static;
   invariant(typeof slug === `string`);
-  const source = mdx.source(slug, LANG);
+
+  const englishBooks = Object.values(await getAllDocuments(`en`));
+  const spanishBooks = Object.values(await getAllDocuments(`es`));
+  const numAudiobooks =
+    LANG === `en`
+      ? englishBooks.filter((book) => book.hasAudio).length
+      : spanishBooks.filter((book) => book.hasAudio).length;
+
+  const source = replacePlaceholders(
+    mdx.source(slug, LANG),
+    englishBooks.length,
+    spanishBooks.length,
+    numAudiobooks,
+  );
+
   const { content, data: frontmatter } = matter(source);
   invariant(mdx.verifyFrontmatter(frontmatter));
+  frontmatter.description = replacePlaceholders(
+    frontmatter.description,
+    englishBooks.length,
+    spanishBooks.length,
+    numAudiobooks,
+  );
   const mdxSource = await serialize(content, { scope: frontmatter });
-  const englishBooks = Object.values(await getAllDocuments(`en`));
-  const spanishBOoks = Object.values(await getAllDocuments(`es`));
 
   return {
     props: {
       source: mdxSource,
       frontmatter,
-      numAudiobooks:
-        LANG === `en`
-          ? englishBooks.filter((book) => book.hasAudio).length
-          : spanishBOoks.filter((book) => book.hasAudio).length,
-      numEnglishBooks: englishBooks.length,
-      numSpanishBooks: spanishBOoks.length,
     },
   };
 };
@@ -99,7 +111,7 @@ const components: React.ComponentProps<typeof MDXRemote>['components'] = {
   ),
 
   Lead: ({ children }) => (
-    <div className="text-xl pb-4 pt-2 leading-loose sm:!text-2xl [&>p]:text-xl [&>p]:pb-4 [&>p]:pt-2 [&>p]:leading-loose [&>p]:sm:!text-2xl">
+    <div className="text-xl pb-4 pt-2 leading-loose sm:!text-2xl [&>p]:text-xl [&>p]:pb-4 [&>p]:pt-2 [&>p]:leading-loose [&>p]:sm:!text-2xl [&_a]:text-flprimary [&_a]:border-b-2 [&_a]:border-flprimary [&_a]:pb-0.5 [&_a:hover]:pb-0 [&_a]:transition-[padding-bottom] duration-200">
       {children}
     </div>
   ),
@@ -108,42 +120,36 @@ const components: React.ComponentProps<typeof MDXRemote>['components'] = {
 interface Props {
   source: MDXRemoteSerializeResult;
   frontmatter: MdxPageFrontmatter;
-  numAudiobooks: number;
-  numSpanishBooks: number;
-  numEnglishBooks: number;
 }
 
-const StaticPage: React.FC<Props> = ({
-  source,
-  frontmatter,
-  numAudiobooks,
-  numEnglishBooks,
-  numSpanishBooks,
-}) => {
-  function replaceCounts(str: string): string {
-    return str
-      .replace(/%NUM_AUDIOBOOKS%/g, String(numAudiobooks))
-      .replace(/%NUM_SPANISH_BOOKS%/g, String(numSpanishBooks))
-      .replace(/%NUM_ENGLISH_BOOKS%/g, String(numEnglishBooks))
-      .replace(/ -- /g, ` — `);
-  }
-
-  return (
-    <div>
-      <BackgroundImage src={HeroImg} fineTuneImageStyles={{ objectFit: `cover` }}>
-        <div className="p-8 sm:p-16 lg:p-24 bg-black/60 lg:backdrop-blur-sm">
-          <WhiteOverlay>
-            <h1 className="heading-text text-2xl sm:text-4xl bracketed text-flprimary">
-              {frontmatter.title as string}
-            </h1>
-          </WhiteOverlay>
-        </div>
-      </BackgroundImage>
-      <div className="MDX p-10 md:px-16 lg:px-24 body-text max-w-6xl mx-auto mt-4">
-        <MDXRemote {...source} components={components} />
+const StaticPage: React.FC<Props> = ({ source, frontmatter }) => (
+  <div>
+    <BackgroundImage src={HeroImg} fineTuneImageStyles={{ objectFit: `cover` }}>
+      <div className="p-8 sm:p-16 lg:p-24 bg-black/60 lg:backdrop-blur-sm">
+        <WhiteOverlay>
+          <h1 className="heading-text text-2xl sm:text-4xl bracketed text-flprimary">
+            {frontmatter.title}
+          </h1>
+        </WhiteOverlay>
       </div>
+    </BackgroundImage>
+    <div className="MDX p-10 md:px-16 lg:px-24 body-text max-w-6xl mx-auto mt-4">
+      <MDXRemote {...source} components={components} />
     </div>
-  );
-};
+  </div>
+);
 
 export default StaticPage;
+
+function replacePlaceholders(
+  content: string,
+  numEnglishBooks: number,
+  numSpanishBooks: number,
+  numAudiobooks: number,
+): string {
+  return content
+    .replace(/%NUM_AUDIOBOOKS%/g, String(numAudiobooks))
+    .replace(/%NUM_SPANISH_BOOKS%/g, String(numSpanishBooks))
+    .replace(/%NUM_ENGLISH_BOOKS%/g, String(numEnglishBooks))
+    .replace(/ -- /g, ` — `);
+}
