@@ -1,10 +1,14 @@
 extension AudioPart {
   var isValid: Bool {
-    if mp3SizeHq < 2_000_000, mp3SizeHq != 0 {
+    // while recording sewel chapter by chapter, we have a 25 second
+    // "note to the listener" which is special cased, because it is so small
+    let isTempNoteToListener = title == "Nota para el oyente"
+
+    if !isTempNoteToListener, mp3SizeHq < 2_000_000, mp3SizeHq != 0 {
       return false
     }
 
-    if mp3SizeLq < 1_000_000, mp3SizeLq != 0 {
+    if !isTempNoteToListener, mp3SizeLq < 1_000_000, mp3SizeLq != 0 {
       return false
     }
 
