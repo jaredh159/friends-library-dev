@@ -144,7 +144,6 @@ const DownloadLinks: React.FC<Props> = (props) => {
           </dd>
         </dl>
       </div>
-      {/* purgeCSS: mb-6 */}
       <div className="flex flex-col gap-6 items-center mt-6 mb-4">
         <QualitySwitch key="switch" quality={props.quality} onChange={props.setQuality} />
         <p key="text" className="text-flgray-500 text-base antialiased tracking-wider">

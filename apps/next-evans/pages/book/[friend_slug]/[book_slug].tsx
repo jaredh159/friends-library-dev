@@ -84,6 +84,7 @@ const DocumentPage: React.FC<Props> = ({
   numTotalBooks,
 }) => {
   const audiobook = primaryDocument.mostModernEdition.audiobook;
+  const baseDownloadUrl = `https://api.friendslibrary.com/download/${primaryDocument.mostModernEdition.id}/audio`;
   return (
     <div>
       <DocBlock {...primaryDocument} />
@@ -94,12 +95,12 @@ const DocumentPage: React.FC<Props> = ({
           m4bFilesizeHq={formatFilesize(audiobook.hq_m4bFilesize)}
           mp3ZipFilesizeLq={formatFilesize(audiobook.lq_mp3ZipFilesize)}
           mp3ZipFilesizeHq={formatFilesize(audiobook.hq_mp3ZipFilesize)}
-          m4bUrlLq={`https://api.friendslibrary.com/download/${primaryDocument.mostModernEdition.id}/audio/m4b/lq`}
-          m4bUrlHq={`https://api.friendslibrary.com/download/${primaryDocument.mostModernEdition.id}/audio/m4b/hq`}
-          mp3ZipUrlLq={`https://api.friendslibrary.com/download/${primaryDocument.mostModernEdition.id}/audio/mp3s/lq`}
-          mp3ZipUrlHq={`https://api.friendslibrary.com/download/${primaryDocument.mostModernEdition.id}/audio/mp3s/hq`}
-          podcastUrlLq={`https://api.friendslibrary.com/download/${primaryDocument.mostModernEdition.id}/audio/podcast/lq/podcast.rss`}
-          podcastUrlHq={`https://api.friendslibrary.com/download/${primaryDocument.mostModernEdition.id}/audio/podcast/hq/podcast.rss`}
+          m4bUrlLq={`${baseDownloadUrl}/m4b/lq`}
+          m4bUrlHq={`${baseDownloadUrl}/m4b/hq`}
+          mp3ZipUrlLq={`${baseDownloadUrl}/mp3s/lq`}
+          mp3ZipUrlHq={`${baseDownloadUrl}/mp3s/hq`}
+          podcastUrlLq={`${baseDownloadUrl}/podcast/lq/podcast.rss`}
+          podcastUrlHq={`${baseDownloadUrl}/podcast/hq/podcast.rss`}
           title={primaryDocument.title}
           trackIdLq={audiobook.parts[0]?.lq_externalTrackId ?? 0}
           trackIdHq={audiobook.parts[0]?.hq_externalTrackId ?? 0}

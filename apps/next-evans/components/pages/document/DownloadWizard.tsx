@@ -6,7 +6,7 @@ import ChooseFormat from './ChooseFormat';
 import ChooseEbookType from './ChooseEbookType';
 import Downloading from './Downloading';
 
-type DownloadType = 'web_pdf' | 'epub' | 'mobi' | 'speech';
+export type DownloadType = 'web_pdf' | 'epub' | 'mobi' | 'speech';
 
 interface Props {
   editions: EditionType[];

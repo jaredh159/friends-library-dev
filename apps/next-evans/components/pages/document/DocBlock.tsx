@@ -14,6 +14,7 @@ import { LANG } from '@/lib/env';
 import { makeScroller } from '@/lib/scroll';
 import SpanishFreeBooksNote from '@/components/core/SpanishFreeBooksNote';
 import { getFriendUrl, isCompilations } from '@/lib/friend';
+import { downloadUrl } from '@/lib/download';
 
 type Props = Doc<
   | 'editions'
@@ -99,7 +100,7 @@ const DocBlock: React.FC<Props> = (props) => {
       {downloading && (
         <DownloadWizard
           {...wizardOffset}
-          onSelect={(editionType) => {
+          onSelect={(editionType, format) => {
             const edition = props.editions.find((e) => e.type === editionType);
             if (edition) {
               setTimeout(() => {
@@ -107,7 +108,7 @@ const DocBlock: React.FC<Props> = (props) => {
                 setWizardOffset({ top: -9999, left: -9999 });
               }, 4000);
               const referer = `${window.location.origin}${window.location.pathname}`;
-              window.location.href = `${`https://gertrude.nyc3.digitaloceanspaces.com/releases/Gertrude.dmg`}?referer=${referer}`; // TODO
+              window.location.href = downloadUrl(format, edition.id, referer);
             }
           }}
           editions={props.editions.map((e) => e.type)}
