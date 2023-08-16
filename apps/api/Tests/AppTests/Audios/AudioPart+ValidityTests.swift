@@ -89,4 +89,12 @@ final class AudioPartValidityTests: XCTestCase {
     part.externalIdLq = 0
     XCTAssertTrue(part.isValid)
   }
+
+  func testTempNoteToListenerAllowedWithSmallerSize() {
+    let part = AudioPart.valid
+    part.title = "Nota para el oyente"
+    part.mp3SizeLq = 300_000
+    part.mp3SizeHq = 400_000
+    XCTAssertTrue(part.isValid)
+  }
 }
