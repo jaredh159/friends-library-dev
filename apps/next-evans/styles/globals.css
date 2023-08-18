@@ -37,4 +37,32 @@
   border-bottom: 1px dotted currentColor;
 }
 
+.bracketed::before {
+  content: '[';
+  padding-right: 0.4em;
+}
+
+.bracketed::after {
+  content: ']';
+  padding-left: 0.4em;
+}
+
+.diamonds li:before {
+  content: '\25c6';
+  padding-right: 0.6em;
+  margin-left: -1.35em;
+  color: rgb(108, 49, 66);
+}
+
+/* hack to target safari only */
+_::-webkit-full-page-media,
+_:future,
+:root .diamonds li:before {
+  font-size: 11px;
+}
+
+:lang(es) .diamonds li:before {
+  color: rgb(193, 140, 89);
+}
+
 @tailwind utilities;
