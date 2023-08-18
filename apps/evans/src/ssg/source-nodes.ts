@@ -116,6 +116,8 @@ const sourceNodes: GatsbyNode['sourceNodes'] = async ({
           customCode: { css: {}, html: {} },
         };
         if (!dpcData.initialized) {
+          // eslint-disable-next-line no-console
+          console.log(`hydrating ${edition.path}...`);
           const dpc = dpcs.find((dpc) => dpc.path === edition.path);
           if (dpc) {
             hydrate.customCode(dpc);
@@ -125,6 +127,9 @@ const sourceNodes: GatsbyNode['sourceNodes'] = async ({
             };
             dpcCache.set(edition.path, dpcData);
             persistDpcCache(dpcCache);
+          } else {
+            // eslint-disable-next-line no-console
+            console.log(`!!! no dpc to hydrate ${edition.path}`);
           }
         }
 

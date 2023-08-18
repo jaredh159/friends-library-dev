@@ -7,6 +7,10 @@ import type { FsDocPrecursor } from '../types';
 export default function customCode(dpc: FsDocPrecursor): void {
   const docDir = path.resolve(dpc.fullPath, `..`);
   const files = glob(`${docDir}/*.{css,html}`);
+
+  // eslint-disable-next-line no-console
+  console.log(`- custom code: ${files.length} files for \`${docDir}\``);
+
   files.forEach((file) => {
     const type = path.extname(file).replace(/^\./, ``) as 'css' | 'html';
     const target = path
