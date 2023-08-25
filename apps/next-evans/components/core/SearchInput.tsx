@@ -45,7 +45,7 @@ const SearchInput: React.FC<Props> = ({
         )}
       />
       <div
-        className={`rounded-full border-l border-${lineColor} border-0 h-${size} w-${size} absolute top-0 right-0 flex justify-center items-center`}
+        className={`rounded-full border-l border-${lineColor} border-0 h-${size} w-${size} absolute top-0 right-0 flex justify-center items-center cursor-pointer`}
       >
         <MagnifyingGlassIcon
           className={cx(`h-6 text-flgray-400`, inNav && `!text-flprimary-600`)}

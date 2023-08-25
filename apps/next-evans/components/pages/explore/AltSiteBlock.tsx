@@ -24,7 +24,7 @@ const AltSiteBlock: React.FC<{ numBooks: number; url: string }> = ({ numBooks, u
         iconColor="white"
         friendsColor="white"
       />
-      <Dual.H3 className="relative z-50">
+      <Dual.H3 className="relative z-40">
         <>
           We also have {numBooks} books{` `}
           <Link href="/spanish-translations" className="subtle-link text-white">
