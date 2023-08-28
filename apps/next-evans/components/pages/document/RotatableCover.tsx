@@ -3,6 +3,7 @@ import cx from 'classnames';
 import { ThreeD } from '@friends-library/cover-component';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import type { CoverProps } from '@friends-library/types';
+import Rotate from '@/components/custom-icons/Rotate';
 
 type Perspective = 'back' | 'front' | 'spine' | 'angle-front' | 'angle-back';
 
@@ -63,7 +64,7 @@ export default class RotatableCover extends React.Component<Props, State> {
         </div>
         <button
           className={cx(
-            `focus:outline-none [perspective:100px] transition duration-100 active:scale-95 hover:bg-gray-100/50 flex justify-center items-center p-2 rounded-full active:bg-gray-100 backdrop-blur-md`,
+            `transition-transform duration-100 active:scale-95`,
             !shouldRotate && `hidden`,
           )}
           onClick={() => {
@@ -76,7 +77,7 @@ export default class RotatableCover extends React.Component<Props, State> {
             });
           }}
         >
-          <ArrowPathIcon className="text-gray-500 h-8 sm:h-10" />
+          <Rotate />
         </button>
       </div>
     );

@@ -15,6 +15,7 @@ import getResidences from '@/lib/residences';
 import { getDocumentUrl, isCompilations } from '@/lib/friend';
 import getFriend, { getAllFriends } from '@/lib/db/friends';
 import { editionTypes } from '@/lib/document';
+import { bookSize } from '@/lib/book-sizes';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const friends = await getAllFriends();
@@ -117,10 +118,6 @@ const Friend: React.FC<Props> = ({
               return 1;
             })
             .map((doc) => {
-              const docSizeProp =
-                doc.mostModernEdition.size === `xlCondensed`
-                  ? `xl`
-                  : doc.mostModernEdition.size;
               return (
                 <BookByFriend
                   key={doc.id}
@@ -138,7 +135,7 @@ const Friend: React.FC<Props> = ({
                   blurb={``} // never see the back of a book in this component
                   isCompilation={isCompilations(name)}
                   author={name}
-                  size={docSizeProp}
+                  size={bookSize(doc.mostModernEdition.size)}
                   edition={doc.mostModernEdition.type}
                   isbn={doc.isbn}
                   customCss={doc.customCSS || ``}

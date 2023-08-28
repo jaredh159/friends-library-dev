@@ -56,6 +56,7 @@ async function getFriendsFromDB(lang: Lang): Promise<Record<string, Friend>> {
           return {
             ...doc,
             altLanguageId: doc.alt_language_id,
+            altLanguageSlug: null, // <-- TODO(@kiahjh)
             created_at: null,
             isComplete: !doc.incomplete,
             originalTitle: doc.original_title,
@@ -102,16 +103,20 @@ function toEdition(dbEdition: DBEdition): Edition {
       id: audiobook.id,
       isIncomplete: audiobook.is_incomplete,
       createdAt: audiobook.created_at.toISOString(),
-      hq_mp3ZipFilesize: audiobook.mp3_zip_size_hq,
-      lq_mp3ZipFilesize: audiobook.mp3_zip_size_lq,
-      hq_m4bFilesize: audiobook.m4b_size_hq,
-      lq_m4bFilesize: audiobook.m4b_size_lq,
-      lq_externalPlaylistId: audiobook.external_playlist_id_lq,
-      hq_externalPlaylistId: audiobook.external_playlist_id_hq,
+      hq: {
+        mp3ZipFilesize: audiobook.mp3_zip_size_hq,
+        m4bFilesize: audiobook.m4b_size_hq,
+        externalPlaylistId: audiobook.external_playlist_id_hq,
+      },
+      lq: {
+        mp3ZipFilesize: audiobook.mp3_zip_size_lq,
+        m4bFilesize: audiobook.m4b_size_lq,
+        externalPlaylistId: audiobook.external_playlist_id_lq,
+      },
       parts: audiobook.edition_audio_parts.map((part) => ({
         id: part.id,
-        lq_externalTrackId: part.external_id_lq,
-        hq_externalTrackId: part.external_id_hq,
+        lqExternalTrackId: part.external_id_lq,
+        hqExternalTrackId: part.external_id_hq,
       })),
     },
   };
@@ -140,6 +145,14 @@ function addCustomCodeToFriends(
     return acc;
   }, {});
 }
+
+// async function getDocumentSlug(id: string): Promise<string | null> {
+//   const doc = await prisma.documents.findUnique({
+//     where: { id },
+//     select: { slug: true },
+//   });
+//   return doc?.slug ?? null;
+// }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function queryFriends(lang: Lang) {

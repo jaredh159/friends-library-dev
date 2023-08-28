@@ -16,7 +16,7 @@ const MultiPill: React.FC<Props> = ({ buttons, className }) => (
   <div
     className={cx(
       className,
-      `[&>button+button]:ml-[-3.15rem] md:flex MultiPill`,
+      `md:[&>button+button]:ml-[-3.15rem] flex flex-col md:flex-row`,
       LANG === `es` && `max-md:[&>button]:!w-[300px]`,
     )}
   >
@@ -38,7 +38,7 @@ const MultiPill: React.FC<Props> = ({ buttons, className }) => (
             'md:pl-16': idx === 0,
           },
           `w-full relative after:opacity-0 after:inset-0 after:bg-gray-200 after:rounded-full after:block after:absolute after:transition-opacity after:duration-200 after:ease-in-out after:hover:opacity-[0.085]`,
-          `flex items-center`,
+          `flex items-center justify-center md:justify-start`,
         )}
       >
         {button.icon && <button.icon className="h-6 pr-3" />}

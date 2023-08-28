@@ -34,6 +34,7 @@ interface FriendDocument {
   altLanguageId: UUID | null;
   title: string;
   slug: string;
+  altLanguageSlug: string | null;
   editions: Array<Edition>;
   mostModernEdition: Edition;
   shortDescription: string;
@@ -67,16 +68,20 @@ export interface Audiobook {
   id: UUID;
   isIncomplete: boolean;
   createdAt: ISODateString;
-  hq_mp3ZipFilesize: number;
-  lq_mp3ZipFilesize: number;
-  hq_m4bFilesize: number;
-  lq_m4bFilesize: number;
-  lq_externalPlaylistId: number | null;
-  hq_externalPlaylistId: number | null;
+  hq: {
+    mp3ZipFilesize: number;
+    m4bFilesize: number;
+    externalPlaylistId: number | null;
+  };
+  lq: {
+    mp3ZipFilesize: number;
+    m4bFilesize: number;
+    externalPlaylistId: number | null;
+  };
   parts: Array<{
     id: UUID;
-    lq_externalTrackId: number | null;
-    hq_externalTrackId: number | null;
+    lqExternalTrackId: number | null;
+    hqExternalTrackId: number | null;
   }>;
 }
 

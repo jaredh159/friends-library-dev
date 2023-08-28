@@ -8,7 +8,10 @@ const SpanishFreeBooksNote: React.FC<{ className?: string }> = ({ className }) =
     <p className={cx(className, `text-center italic`)}>
       Si deseas un ejemplar impreso pero, por razones económicas o de otro tipo, no puedes
       hacer un pedido en línea,{` `}
-      <button onClick={() => {}} className="italic subtle-link hover:border-solid">
+      <button
+        onClick={() => {}} // <- TODO
+        className="italic subtle-link hover:border-solid"
+      >
         haz clic aquí
       </button>
       {` `}

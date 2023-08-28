@@ -1,4 +1,5 @@
 import React from 'react';
+import cx from 'classnames';
 import PopUnder from '@/components/core/PopUnder';
 
 interface Props {
@@ -9,14 +10,12 @@ interface Props {
 
 const ChoiceWizard: React.FC<Props> = ({ top, left, children }) => (
   <PopUnder
-    className="ChoiceWizard z-50 top-0 left-0"
+    className={cx(
+      'ChoiceWizard z-50 top-0 left-0 w-[22rem] max-w-[100vw] !absolute translate-x-[-50%]',
+    )}
     style={{
-      width: `22rem`,
-      maxWidth: `100vw`,
       top: top || 0,
       left: left || 0,
-      position: `absolute`,
-      transform: `translateX(-50%)`,
     }}
     tailwindBgColor="flblue"
   >

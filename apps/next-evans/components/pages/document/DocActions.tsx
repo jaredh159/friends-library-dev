@@ -1,4 +1,5 @@
 import React from 'react';
+import cx from 'classnames';
 import { t } from '@friends-library/locale';
 import {
   BookOpenIcon,
@@ -25,7 +26,7 @@ const DocActions: React.FC<Props> = ({
   className = ``,
 }) => (
   <MultiPill
-    className={className}
+    className={cx(`MultiPill`, className)}
     buttons={[
       {
         text: t`Download`,

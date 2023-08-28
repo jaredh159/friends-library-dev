@@ -12,7 +12,7 @@ interface Props {
   bgColor: string;
   titleTextColor: string;
   books: Array<Doc<'editions' | 'createdAt' | 'authorGender' | 'shortDescription'>>;
-  noBadges?: boolean;
+  withDateBadges?: boolean;
 }
 
 const BookTeaserCards: React.FC<Props> = ({
@@ -23,7 +23,7 @@ const BookTeaserCards: React.FC<Props> = ({
   titleTextColor,
   books,
   titleEl: TitleEl,
-  noBadges = false,
+  withDateBadges = false,
 }) => {
   if (books.length === 0) return null;
   return (
@@ -60,12 +60,12 @@ const BookTeaserCards: React.FC<Props> = ({
             authorUrl={getFriendUrl(book.authorSlug, book.authorGender)}
             description={book.shortDescription}
             badgeText={
-              noBadges
-                ? undefined
-                : new Date(book.createdAt).toLocaleDateString(`en-US`, {
+              withDateBadges
+                ? new Date(book.createdAt).toLocaleDateString(`en-US`, {
                     month: `short`,
                     day: `numeric`,
                   })
+                : undefined
             }
             isbn={book.isbn}
           />

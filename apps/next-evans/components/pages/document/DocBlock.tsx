@@ -15,6 +15,7 @@ import { makeScroller } from '@/lib/scroll';
 import SpanishFreeBooksNote from '@/components/core/SpanishFreeBooksNote';
 import { getFriendUrl, isCompilations } from '@/lib/friend';
 import { downloadUrl } from '@/lib/download';
+import { bookSize } from '@/lib/book-sizes';
 
 type Props = Doc<
   | 'editions'
@@ -27,16 +28,15 @@ type Props = Doc<
   | 'isComplete'
   | 'originalTitle'
   | 'numDownloads'
-  | 'altLanguageId'
-> & { price: number };
+> & { price: number; alternateLanguageSlug?: string };
 
 const DocBlock: React.FC<Props> = (props) => {
   const wrap = useRef<HTMLDivElement | null>(null);
   const [downloading, setDownloading] = useState<boolean>(false);
   const [addingToCart, setAddingToCart] = useState<boolean>(false);
   const [wizardOffset, setWizardOffset] = useState<{ top: number; left: number }>({
-    top: 800,
-    left: 200,
+    top: 0,
+    left: 0,
   });
 
   const positionWizard: () => void = () => {
@@ -127,14 +127,11 @@ const DocBlock: React.FC<Props> = (props) => {
             customCss: props.customCSS || ``,
             customHtml: props.customHTML || ``,
             author: props.authorName,
-            size:
-              props.mostModernEdition.size === `xlCondensed`
-                ? `xl`
-                : props.mostModernEdition.size,
+            size: bookSize(props.mostModernEdition.size),
             edition: props.mostModernEdition.type,
           }}
         />
-        <div className="Text mb-8 md:px-12 bg-white md:mr-6 xl:mr-10">
+        <div className="mb-8 md:px-12 bg-white md:mr-6 xl:mr-10">
           <h1
             className="font-sans text-3xl md:text-2-5xl font-bold leading-snug mt-8 tracking-wider mb-6"
             dangerouslySetInnerHTML={{ __html: titleHtml(props) }}
@@ -223,9 +220,7 @@ const LinksAndMeta: React.FC<LinksAndMetaProps> = (props) => (
         )}
         <li>
           {dimensions(
-            props.mostModernEdition.size === `xlCondensed`
-              ? `xl`
-              : props.mostModernEdition.size,
+            bookSize(props.mostModernEdition.size),
             props.mostModernEdition.numPages,
           )}
         </li>
@@ -249,9 +244,13 @@ const LinksAndMeta: React.FC<LinksAndMetaProps> = (props) => (
             <>Idioma: Español</>
           </Dual.Frag>
         </li>
-        {props.altLanguageId && (
+        {props.alternateLanguageSlug && (
           <li>
-            <Dual.A href={`` /* TODO */}>
+            <Dual.A
+              href={`https://${
+                LANG === `en` ? `bibliotecadelosamigos.org` : `friendslibrary.com`
+              }/${props.authorSlug}/${props.alternateLanguageSlug}`}
+            >
               <>Spanish Version</>
               <>Versión en inglés</>
             </Dual.A>

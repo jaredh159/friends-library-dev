@@ -38,10 +38,10 @@ const ChooseEdition: React.FC<Props> = ({ editions, onSelect }) => (
         Icon={Diamonds.original}
       />
     )}
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center pb-2">
       <Link
         href="/editions"
-        className="inline-block pb-1 mt-8 opacity-75 border-flblue-700 border-b-4"
+        className="inline-block pb-1 mt-8 opacity-75 !border-b-4 !border-solid border-flblue-700"
       >
         Learn more about editions
       </Link>
