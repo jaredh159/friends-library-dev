@@ -146,14 +146,6 @@ function addCustomCodeToFriends(
   }, {});
 }
 
-// async function getDocumentSlug(id: string): Promise<string | null> {
-//   const doc = await prisma.documents.findUnique({
-//     where: { id },
-//     select: { slug: true },
-//   });
-//   return doc?.slug ?? null;
-// }
-
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 function queryFriends(lang: Lang) {
   return prisma.friends.findMany({

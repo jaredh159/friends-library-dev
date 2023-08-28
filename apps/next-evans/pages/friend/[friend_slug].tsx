@@ -117,32 +117,30 @@ const Friend: React.FC<Props> = ({
               }
               return 1;
             })
-            .map((doc) => {
-              return (
-                <BookByFriend
-                  key={doc.id}
-                  htmlShortTitle={htmlShortTitle(doc.title)}
-                  isAlone={onlyOneBook}
-                  className="mb-8 lg:mb-12"
-                  tags={doc.tags}
-                  hasAudio={doc.hasAudio}
-                  bookUrl={getDocumentUrl(slug, doc.slug)}
-                  numDownloads={doc.numDownloads}
-                  pages={doc.mostModernEdition.numPages}
-                  description={doc.shortDescription}
-                  lang={LANG}
-                  title={doc.title}
-                  blurb={``} // never see the back of a book in this component
-                  isCompilation={isCompilations(name)}
-                  author={name}
-                  size={bookSize(doc.mostModernEdition.size)}
-                  edition={doc.mostModernEdition.type}
-                  isbn={doc.isbn}
-                  customCss={doc.customCSS || ``}
-                  customHtml={doc.customHTML || ``}
-                />
-              );
-            })}
+            .map((doc) => (
+              <BookByFriend
+                key={doc.id}
+                htmlShortTitle={htmlShortTitle(doc.title)}
+                isAlone={onlyOneBook}
+                className="mb-8 lg:mb-12"
+                tags={doc.tags}
+                hasAudio={doc.hasAudio}
+                bookUrl={getDocumentUrl(slug, doc.slug)}
+                numDownloads={doc.numDownloads}
+                pages={doc.mostModernEdition.numPages}
+                description={doc.shortDescription}
+                lang={LANG}
+                title={doc.title}
+                blurb={``} // never see the back of a book in this component
+                isCompilation={isCompilations(name)}
+                author={name}
+                size={bookSize(doc.mostModernEdition.size)}
+                edition={doc.mostModernEdition.type}
+                isbn={doc.isbn}
+                customCss={doc.customCSS || ``}
+                customHtml={doc.customHTML || ``}
+              />
+            ))}
         </div>
       </div>
       {mapBlock}

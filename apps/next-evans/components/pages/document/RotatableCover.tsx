@@ -1,7 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
 import { ThreeD } from '@friends-library/cover-component';
-import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import type { CoverProps } from '@friends-library/types';
 import Rotate from '@/components/custom-icons/Rotate';
 

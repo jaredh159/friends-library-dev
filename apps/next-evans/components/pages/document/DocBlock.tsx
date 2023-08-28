@@ -28,7 +28,7 @@ type Props = Doc<
   | 'isComplete'
   | 'originalTitle'
   | 'numDownloads'
-> & { price: number; alternateLanguageSlug?: string };
+> & { price: number; alternateLanguageSlug: string | null };
 
 const DocBlock: React.FC<Props> = (props) => {
   const wrap = useRef<HTMLDivElement | null>(null);

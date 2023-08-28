@@ -3,13 +3,13 @@ import invariant from 'tiny-invariant';
 import { price } from '@friends-library/lulu';
 import { t } from '@friends-library/locale';
 import type { GetStaticPaths, GetStaticProps } from 'next';
-import type { Doc } from '../../lib/types';
+import type { Doc } from '@/lib/types';
 import { getAllDocuments, getDocument } from '@/lib/db/documents';
 import DocBlock from '@/components/pages/document/DocBlock';
 import ListenBlock from '@/components/pages/document/ListenBlock';
 import BookTeaserCards from '@/components/pages/explore/BookTeaserCards';
-import { isCompilations } from '@/lib/friend';
 import ExploreBooksBlock from '@/components/pages/home/ExploreBooksBlock';
+import { isCompilations } from '@/lib/friend';
 import { formatFilesize } from '@/lib/filesize';
 import { bookSize } from '@/lib/book-sizes';
 import { LANG } from '@/lib/env';
@@ -52,7 +52,7 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
       primaryDocument: {
         ...primaryDocument,
         price: price(bookSize(newestEdition.size), newestEdition.numPages),
-        alternateLanguageSlug: alternateLanguageBook?.slug,
+        alternateLanguageSlug: alternateLanguageBook?.slug ?? null,
       },
       otherBooksByAuthor,
       numTotalBooks,
@@ -73,7 +73,7 @@ interface Props {
     | 'originalTitle'
     | 'numDownloads'
     | 'blurb'
-  > & { price: number; alternateLanguageSlug?: string };
+  > & { price: number; alternateLanguageSlug: string | null };
   otherBooksByAuthor: Array<
     Doc<'shortDescription' | 'editions' | 'authorGender' | 'createdAt'>
   >;
