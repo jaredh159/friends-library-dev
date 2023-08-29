@@ -1,5 +1,6 @@
 import Vapor
 import XCTVapor
+import XExpect
 
 @testable import GraphQLKit
 
@@ -164,10 +165,10 @@ func _assertGraphQLResponse(
     switch expectation {
 
     case .success(let expectedData):
-      XCTAssertEqual(res.status, .ok)
+      expect(res.status).toEqual(.ok)
       switch expectedData {
       case .exactlyMatches(let exact):
-        XCTAssertEqual(rawResponse, exact)
+        expect(rawResponse).toEqual(exact)
       case .contains(let substring):
         XCTAssertContains(rawResponse, substring)
       case .containsAllUUIDs(let uuids):
@@ -181,7 +182,7 @@ func _assertGraphQLResponse(
       case .containsJson(let json):
         XCTAssertContains(rawResponse, jsonCondense(json))
       case .isExactJson(let json):
-        XCTAssertEqual(rawResponse, #"{"data":\#(jsonCondense(json))}"#)
+        expect(rawResponse).toEqual(#"{"data":\#(jsonCondense(json))}"#)
       case .containsKeyValuePairs(let pairs):
         for (key, value) in pairs {
           switch value {

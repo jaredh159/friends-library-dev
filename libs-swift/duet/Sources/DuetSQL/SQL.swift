@@ -3,6 +3,7 @@ import FluentSQL
 import XCore
 
 public enum SQL {
+
   public enum OrderDirection {
     case asc
     case desc
@@ -187,36 +188,47 @@ public enum SQL {
     _ statement: PreparedStatement,
     on db: SQLDatabase
   ) async throws -> [SQLRow] {
-    // e.g. SELECT statements with no WHERE clause have
-    // no bindings, and so can't be sent as a pg prepared statement
-    if statement.bindings.isEmpty {
-      return try await db.raw("\(raw: statement.query)").all()
-    }
+    if #available(macOS 12, *) {
+      // e.g. SELECT statements with no WHERE clause have
+      // no bindings, and so can't be sent as a pg prepared statement
+      if statement.bindings.isEmpty {
+        if LOG_SQL {
+          print("\n```SQL\n\(statement.query)\n```")
+        }
+        return try await db.raw("\(raw: statement.query)").all()
+      }
 
-    let types = statement.bindings.map(\.typeName).list
-    let params = statement.bindings.map(\.param).list
-    let key = [statement.query, types].joined()
-    let name: String
+      let types = statement.bindings.map(\.typeName).list
+      let params = statement.bindings.map(\.param).list
+      let key = [statement.query, types].joined()
+      let name: String
 
-    if let previouslyInsertedName = await prepared.get(key) {
-      name = previouslyInsertedName
+      if let previouslyInsertedName = await prepared.get(key) {
+        name = previouslyInsertedName
+      } else {
+        let id = UUID().uuidString.replacingOccurrences(of: "-", with: "").lowercased()
+        name = "plan_\(id)"
+        let insertPrepareSql = """
+        PREPARE \(name)(\(types)) AS
+        \(statement.query)
+        """
+
+        if LOG_SQL {
+          print("\n```SQL\n\(insertPrepareSql)\n```")
+        }
+
+        await prepared.set(name, forKey: key)
+        _ = try await db.raw("\(raw: insertPrepareSql)").all().get()
+      }
+
+      if LOG_SQL {
+        print("\n```SQL\n\(unPrepare(statement: statement))\n```")
+      }
+
+      return try await db.raw("\(raw: "EXECUTE \(name)(\(params))")").all()
     } else {
-      let id = UUID().uuidString.replacingOccurrences(of: "-", with: "").lowercased()
-      name = "plan_\(id)"
-      let insertPrepareSql = """
-      PREPARE \(name)(\(types)) AS
-      \(statement.query)
-      """
-
-      await prepared.set(name, forKey: key)
-      _ = try await db.raw("\(raw: insertPrepareSql)").all().get()
+      fatalError("SQL.execute() is not available on this platform")
     }
-
-    if LOG_SQL {
-      print("\n```SQL\n\(unPrepare(statement: statement))\n```")
-    }
-
-    return try await db.raw("\(raw: "EXECUTE \(name)(\(params))")").all()
   }
 
   private static func whereClause<M: Model>(
@@ -230,7 +242,7 @@ public enum SQL {
     return "\(separatedBy)WHERE \(constraint.sql(boundTo: &bindings))"
   }
 
-  static func resetPreparedStatements() async {
+  public static func resetPreparedStatements() async {
     await prepared.reset()
   }
 }
@@ -283,10 +295,7 @@ private var prepared = PreparedStatements()
 private func unPrepare(statement: SQL.PreparedStatement) -> String {
   var sql = statement.query
   for (index, binding) in statement.bindings.reversed().enumerated() {
-    sql = sql.replacingOccurrences(
-      of: "$\(statement.bindings.count - index)",
-      with: binding.param
-    )
+    sql = sql.replacingOccurrences(of: "$\(statement.bindings.count - index)", with: binding.param)
   }
   return sql
 }

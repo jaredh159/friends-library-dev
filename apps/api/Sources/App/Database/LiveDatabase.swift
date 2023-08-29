@@ -2,13 +2,14 @@ import DuetSQL
 import FluentSQL
 
 class LiveDatabase: DuetSQL.Client {
+
   private let db: SQLDatabase
   private let dbClient: DuetSQL.Client
   private var _entityClient: DuetSQL.Client?
 
   init(db: SQLDatabase) {
     self.db = db
-    dbClient = LiveClient(db: db)
+    dbClient = LiveClient(sql: db)
   }
 
   func query<M: DuetSQL.Model>(_ Model: M.Type) -> DuetQuery<M> {
@@ -95,6 +96,14 @@ class LiveDatabase: DuetSQL.Client {
     )
   }
 
+  func count<M>(
+    _: M.Type,
+    where: DuetSQL.SQL.WhereConstraint<M>,
+    withSoftDeleted: Bool
+  ) async throws -> Int where M: DuetSQL.Model {
+    try await dbClient.count(M.self, where: `where`, withSoftDeleted: withSoftDeleted)
+  }
+
   private var entityClient: DuetSQL.Client {
     get async throws {
       if let client = _entityClient {
@@ -117,9 +126,5 @@ class LiveDatabase: DuetSQL.Client {
     withBindings: [Postgres.Data]?
   ) async throws -> [J] {
     fatalError("queryJoined not implemented")
-  }
-
-  func count<M: DuetSQL.Model>(_: M.Type, where: SQL.WhereConstraint<M>) async throws -> Int {
-    fatalError("LiveDatabase.count not implemented")
   }
 }

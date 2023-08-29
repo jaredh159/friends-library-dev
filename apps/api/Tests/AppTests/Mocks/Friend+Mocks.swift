@@ -1,5 +1,3 @@
-// auto-generated, do not edit
-import DuetMock
 import Foundation
 import GraphQL
 

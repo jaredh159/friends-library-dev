@@ -28,6 +28,7 @@ class AppTestCase: XCTestCase {
     try! app.autoRevert().wait()
     try! app.autoMigrate().wait()
     try! configure(app)
+    app.logger = .null
     Current.logger = .null
     Current.db = MockClient()
   }
@@ -92,6 +93,30 @@ class AppTestCase: XCTestCase {
       line: line
     )
   }
+}
+
+func mockUUIDs() -> (UUID, UUID, UUID) {
+  let uuids = (UUID(), UUID(), UUID())
+  var array = [uuids.0, uuids.1, uuids.2]
+
+  UUID.new = {
+    guard !array.isEmpty else { return UUID() }
+    return array.removeFirst()
+  }
+
+  return uuids
+}
+
+public extension String {
+  var random: String { "\(self)@random-\(Int.random)" }
+}
+
+public extension Int {
+  static var random: Int { Int.random(in: 1_000_000_000 ... 9_999_999_999) }
+}
+
+public extension Int64 {
+  static var random: Int64 { Int64.random(in: 1_000_000_000 ... 9_999_999_999) }
 }
 
 func sync(

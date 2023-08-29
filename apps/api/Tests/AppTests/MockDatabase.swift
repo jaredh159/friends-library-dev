@@ -178,8 +178,12 @@ class MockClient: Client {
     fatalError("queryJoined (MockDatabase) not implemented")
   }
 
-  func count<M: Model>(_: M.Type, where: SQL.WhereConstraint<M>) async throws -> Int {
-    fatalError("count (MockDatabase) not implemented")
+  func count<M>(
+    _: M.Type,
+    where: DuetSQL.SQL.WhereConstraint<M>,
+    withSoftDeleted: Bool
+  ) async throws -> Int where M: DuetSQL.Model {
+    fatalError("count(_:where:withSoftDeleted:) not implemented")
   }
 }
 

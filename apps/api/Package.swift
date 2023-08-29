@@ -19,6 +19,7 @@ let package = Package(
     .package(path: "../../libs-swift/x-sendgrid"),
     .package(path: "../../libs-swift/x-stripe"),
     .package(path: "../../libs-swift/x-slack"),
+    .package(path: "../../libs-swift/x-expect"),
   ],
   targets: [
     .target(
@@ -52,9 +53,9 @@ let package = Package(
       dependencies: [
         .target(name: "App"),
         .product(name: "Duet", package: "duet"),
-        .product(name: "DuetMock", package: "duet"),
         .product(name: "DuetSQL", package: "duet"),
         .product(name: "XSendGrid", package: "x-sendgrid"),
+        .product(name: "XExpect", package: "x-expect"),
         .product(name: "XCTVapor", package: "vapor"),
       ]
     ),
