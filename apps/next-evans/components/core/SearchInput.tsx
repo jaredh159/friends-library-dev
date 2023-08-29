@@ -9,6 +9,7 @@ interface Props {
   open?: boolean;
   textColor?: string;
   lineColor?: 'flgray-400' | 'flprimary';
+  inNav?: boolean;
 }
 
 const SearchInput: React.FC<Props> = ({
@@ -18,6 +19,7 @@ const SearchInput: React.FC<Props> = ({
   open = true,
   lineColor = `flgray-400`,
   textColor = `flgray-500`,
+  inNav = false,
 }) => {
   // purgeCSS: h-12 w-12 h-10 w-10 text-flgray-500
   const size = small ? 10 : 12;
@@ -43,9 +45,11 @@ const SearchInput: React.FC<Props> = ({
         )}
       />
       <div
-        className={`rounded-full border-l border-${lineColor} border-0 h-${size} w-${size} absolute top-0 right-0 flex justify-center items-center`}
+        className={`rounded-full border-l border-${lineColor} border-0 h-${size} w-${size} absolute top-0 right-0 flex justify-center items-center cursor-pointer`}
       >
-        <MagnifyingGlassIcon className="h-6 text-flgray-400" />
+        <MagnifyingGlassIcon
+          className={cx(`h-6 text-flgray-400`, inNav && `!text-flprimary-600`)}
+        />
       </div>
     </form>
   );

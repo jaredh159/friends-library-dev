@@ -1,82 +1,67 @@
 import React from 'react';
-import Link from 'next/link';
-import cx from 'classnames';
-import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import type { GetStaticProps } from 'next';
-import type { Friend } from '@/lib/types';
+import type { FeedItem } from '@/components/pages/home/news-feed/news-feed';
+import FeaturedBooksBlock from '@/components/pages/home/FeaturedBooksBlock';
+import HeroBlock from '@/components/pages/home/HeroBlock';
+import SubHeroBlock from '@/components/pages/home/SubHeroBlock';
+import { getAllDocuments } from '@/lib/db/documents';
+import GettingStartedBlock from '@/components/pages/home/GettingStartedBlock';
+import WhoWereTheQuakersBlock from '@/components/pages/home/WhoWereTheQuakersBlock';
+import FormatsBlock from '@/components/pages/home/FormatsBlock';
+import ExploreBooksBlock from '@/components/pages/home/ExploreBooksBlock';
+import NewsFeedBlock from '@/components/pages/home/news-feed/NewsFeedBlock';
+import { getNewsFeedItems } from '@/components/pages/home/news-feed/news-feed';
 import { LANG } from '@/lib/env';
-import { getFriendUrl } from '@/lib/friend';
-import { getAllFriends } from '@/lib/db/friends';
+import { isNotNullish } from '@/lib/utils';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const friends = await getAllFriends();
+  const documents = { en: await getAllDocuments(`en`), es: await getAllDocuments(`es`) };
+  let featuredBooks = [
+    documents.en[`compilations/truth-in-the-inward-parts-v1`],
+    documents.en[`hugh-turford/walk-in-the-spirit`],
+    documents.en[`isaac-penington/writings-volume-1`],
+    documents.en[`isaac-penington/writings-volume-2`],
+    documents.en[`william-penn/no-cross-no-crown`],
+    documents.en[`william-sewel/history-of-quakers`],
+  ].filter(isNotNullish);
+  if (LANG === `es`) {
+    featuredBooks = [
+      documents.es[`isaac-penington/escritos-volumen-1`],
+      documents.es[`isaac-penington/escritos-volumen-2`],
+      documents.es[`william-penn/no-cruz-no-corona`],
+    ].filter(isNotNullish);
+  }
+  const newsFeedItems = await getNewsFeedItems(LANG, {
+    en: Object.values(documents.en),
+    es: Object.values(documents.es),
+  });
+
   return {
     props: {
-      friends: Object.values(friends).map((friend) => ({
-        name: friend.name,
-        slug: friend.slug,
-        gender: friend.gender,
-        id: friend.id,
-      })),
+      featuredBooks,
+      newsFeedItems,
+      numTotalBooks: Object.values(documents[LANG]).length,
     },
   };
 };
 
 interface Props {
-  friends: Array<Pick<Friend, 'name' | 'slug' | 'gender' | 'id'>>;
+  featuredBooks: React.ComponentProps<typeof FeaturedBooksBlock>['books'];
+  newsFeedItems: FeedItem[];
+  numTotalBooks: number;
 }
 
-const Home: React.FC<Props> = ({ friends }) => (
-  <div>
-    <h1 className="bg-flprimary text-white p-3">
-      Home, lang is <code className="text-red-200">{LANG}</code>
-    </h1>
-    <div className="flex justify-center space-x-8 items-center p-8 border-b">
-      <Link
-        href={LANG === `en` ? `/friends` : `/amigos`}
-        className="px-4 py-2 bg-indigo-500 text-white rounded-lg font-lg hover:bg-indigo-600 flex items-center"
-      >
-        All friends
-        <ChevronRightIcon className="h-5 ml-2" />
-      </Link>
-      <Link
-        href="/getting-started"
-        className="px-4 py-2 bg-indigo-500 text-white rounded-lg font-lg hover:bg-indigo-600 flex items-center"
-      >
-        Getting started
-        <ChevronRightIcon className="h-5 ml-2" />
-      </Link>
-      <Link
-        href="/explore"
-        className="px-4 py-2 bg-indigo-500 text-white rounded-lg font-lg hover:bg-indigo-600 flex items-center"
-      >
-        Explore
-        <ChevronRightIcon className="h-5 ml-2" />
-      </Link>
-      <Link
-        href="/home"
-        className="px-4 py-2 bg-indigo-500 text-white rounded-lg font-lg hover:bg-indigo-600 flex items-center"
-      >
-        Home
-        <ChevronRightIcon className="h-5 ml-2" />
-      </Link>
-    </div>
-    <ul className="bg-gray-50 grid grid-cols-5 gap-4 p-8">
-      {friends.map((friend) => (
-        <Link
-          href={getFriendUrl(friend.slug, friend.gender)}
-          className={cx(
-            `mt-2 bg-white p-4 shadow-md rounded-xl hover:bg-slate-100`,
-            friend.name === `Compilations` && `bg-flprimary/20 hover:bg-flprimary/30`,
-          )}
-          key={friend.id}
-        >
-          <h2 className="font-bold">{friend.name}</h2>
-          <h3 className="text-flprimary">{friend.gender}</h3>
-        </Link>
-      ))}
-    </ul>
-  </div>
+const Home: React.FC<Props> = ({ featuredBooks, newsFeedItems, numTotalBooks }) => (
+  <main className="overflow-hidden">
+    <HeroBlock />
+    <SubHeroBlock numTotalBooks={0} />
+    <NewsFeedBlock items={newsFeedItems} />
+    <FeaturedBooksBlock books={featuredBooks} />
+    <GettingStartedBlock />
+    <WhoWereTheQuakersBlock />
+    <FormatsBlock />
+    <ExploreBooksBlock numTotalBooks={numTotalBooks} />
+  </main>
 );
 
 export default Home;
