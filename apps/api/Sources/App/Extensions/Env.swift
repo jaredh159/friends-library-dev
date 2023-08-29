@@ -1,7 +1,6 @@
 import Vapor
 
 extension Env {
-  static var mode = Mode.dev
   static let PG_DUMP_PATH = get("PG_DUMP_PATH")!
   static let SENDGRID_API_KEY = get("SENDGRID_API_KEY")!
   static let SLACK_API_TOKEN_WORKSPACE_MAIN = get("SLACK_API_TOKEN_WORKSPACE_MAIN")!

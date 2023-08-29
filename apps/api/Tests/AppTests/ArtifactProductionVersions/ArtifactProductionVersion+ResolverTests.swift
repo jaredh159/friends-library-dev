@@ -1,48 +1,52 @@
+import DuetSQL
 import XCTest
+import XExpect
 
 @testable import App
 
+extension Token {
+  static func allScopes() async -> Token {
+    let token = try! await Token.create(.init(description: "@testing"))
+    let scope = try! await TokenScope.create(.init(tokenId: token.id, scope: .all))
+    token.scopes = .loaded([scope])
+    return token
+  }
+}
+
+extension AuthedContext {
+  static var authed: Self {
+    get async {
+      let token = await Token.allScopes()
+      return .init(requestId: UUID().uuidString, scopes: token.scopes.require())
+    }
+  }
+}
+
 final class ArtifactProductionVersionResolverTests: AppTestCase {
 
-  func testGetLatestRevision() async throws {
-    let older = ArtifactProductionVersion.mockOld
-    older.version = .init(rawValue: UUID().uuidString)
-    try await Current.db.create(older)
+  func testLatestRevision() async throws {
+    try await ArtifactProductionVersion.create(.init(version: "older"))
+    try await ArtifactProductionVersion.create(.init(version: "newer"))
 
-    let latest = ArtifactProductionVersion.mock
-    latest.version = .init(rawValue: UUID().uuidString)
-    try await Current.db.create(latest)
+    let output = try await LatestArtifactProductionVersion.resolve(in: .authed)
 
-    assertResponse(
-      to: /* gql */ """
-      query GetLatestArtifactProductionVersion {
-        version: getLatestArtifactProductionVersion {
-          id
-          sha: version
-        }
-      }
-      """,
-      .containsKeyValuePairs([
-        "id": latest.id.lowercased,
-        "sha": latest.version,
-      ])
-    )
+    expect(output.version).toEqual("newer")
   }
 
-  func testCreateArtifactProductionVersion() throws {
-    let revision = UUID().uuidString
+  func testCreateArtifactProductionVersion() async throws {
+    try await ArtifactProductionVersion.deleteAll()
+    let sha = "d3a484ceb896aadd21adae7cad1a2f6debf05671"
 
-    assertResponse(
-      to: /* gql */ """
-      mutation CreateArtifactProductionVersion($input: CreateArtifactProductionVersionInput!) {
-        version: createArtifactProductionVersion(input: $input) {
-          sha: version
-        }
-      }
-      """,
-      bearer: Seeded.tokens.mutateArtifactProductionVersions,
-      withVariables: ["input": .dictionary(["version": .string(revision)])],
-      .containsKeyValuePairs(["sha": revision])
+    let output = try await CreateArtifactProductionVersion.resolve(
+      with: .init(version: .init(sha)),
+      in: .authed
     )
+
+    let retrieved = try? await ArtifactProductionVersion.query()
+      .where(.version == sha)
+      .first()
+
+    expect(retrieved).not.toBeNil()
+    expect(output).toEqual(.init(id: retrieved?.id ?? .init()))
   }
 }

@@ -36,9 +36,6 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   AppSchema.CreateIsbnInputType
   AppSchema.UpdateIsbnInputType
 
-  AppSchema.ArtifactProductionVersionType
-  AppSchema.CreateArtifactProductionVersionInputType
-
   // download types
   AppSchema.DownloadType
   AppSchema.CreateDownloadInputType
@@ -147,8 +144,6 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
     AppSchema.getToken
     AppSchema.getTokens
 
-    Field("getLatestArtifactProductionVersion", at: Resolver.getLatestArtifactProductionVersion)
-
     Field("getTokenByValue", at: Resolver.getTokenByValue) {
       Argument("value", at: \.value)
     }
@@ -163,7 +158,6 @@ let appSchema = try! Graphiti.Schema<Resolver, Request> {
   Mutation {
     AppSchema.submitContactForm
     AppSchema.createDownload
-    AppSchema.createArtifactProductionVersion
     AppSchema.logJsError
 
     // token mutations

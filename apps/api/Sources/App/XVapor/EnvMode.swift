@@ -1,13 +1,15 @@
 import Vapor
 
 extension Vapor.Environment {
+  static var mode = Mode.dev
+
   enum Mode: Equatable {
     case prod
     case dev
     case staging
     case test
 
-    public init(from env: Vapor.Environment) {
+    init(from env: Env) {
       switch env.name {
       case "production":
         self = .prod
@@ -22,7 +24,7 @@ extension Vapor.Environment {
       }
     }
 
-    public var name: String {
+    var name: String {
       switch self {
       case .prod:
         return "production"
@@ -32,6 +34,19 @@ extension Vapor.Environment {
         return "staging"
       case .test:
         return "testing"
+      }
+    }
+
+    var coloredName: String {
+      switch self {
+      case .prod:
+        return name.uppercased().red.bold
+      case .dev:
+        return name.uppercased().green.bold
+      case .staging:
+        return name.uppercased().yellow.bold
+      case .test:
+        return name.uppercased().magenta.bold
       }
     }
   }

@@ -37,6 +37,13 @@ public func configure(_ app: Application) throws {
     try await downloadFileRouteHandler(req: $0)
   }
 
+  app.on(
+    .POST,
+    "pairql", ":domain", ":operation",
+    body: .collect(maxSize: "512kb"),
+    use: PairQLRoute.handler(_:)
+  )
+
   app
     .grouped(UserAuthenticator())
     .register(
@@ -58,7 +65,7 @@ public func configure(_ app: Application) throws {
     app.http.server.configuration.hostname = hostname
   }
 
-  app.logger.notice("App environment is `\(Env.mode.name)`")
+  Current.logger.notice("\("[,]".magenta.bold) API environment is \(Env.mode.coloredName)")
 }
 
 private func addMigrations(to app: Application) {
@@ -69,7 +76,7 @@ private func addMigrations(to app: Application) {
   app.migrations.add(CreateTokenScopes())
   app.migrations.add(CreateFreeOrderRequests())
   app.migrations.add(AddOrderRequestId())
-  app.migrations.add(CreateArtifactProductionVersion())
+  app.migrations.add(CreateArtifactProductionVersions())
   app.migrations.add(AddMutateArtifactProductionVersionScope())
   app.migrations.add(HandleEditionIds())
   app.migrations.add(CreateFriends())

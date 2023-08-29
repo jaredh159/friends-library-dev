@@ -15,20 +15,14 @@ public protocol PairOutput: Codable, Equatable, Sendable {
 
 public protocol Pair {
   static var name: String { get }
-  static var auth: ClientAuth { get }
+  static var auth: Auth { get }
+  associatedtype Auth: Codable & Equatable & Sendable
   associatedtype Input: PairInput = NoInput
   associatedtype Output: PairOutput = SuccessOutput
 }
 
 public extension Pair {
   static var name: String { "\(Self.self)" }
-}
-
-public enum ClientAuth: String {
-  case none
-  case user
-  case admin
-  case superAdmin
 }
 
 public struct PairJsonEncodingError: Error {}
@@ -80,6 +74,32 @@ extension String: PairOutput {}
 extension String: PairInput {}
 extension UUID: PairInput {}
 
+public protocol Resolver: Pair {
+  associatedtype Context
+  static func resolve(with input: Input, in context: Context) async throws -> Output
+}
+
+public protocol NoInputResolver: Pair where Input == NoInput {
+  associatedtype Context
+  static func resolve(in context: Context) async throws -> Output
+}
+
+public protocol RouteResponder {
+  associatedtype RouteContext
+  associatedtype RouteResponse
+  static func respond(to route: Self, in context: RouteContext) async throws -> RouteResponse
+}
+
+extension Resolver {
+  static func result(with input: Input, in context: Context) async -> Result<Output, Error> {
+    do {
+      return .success(try await resolve(with: input, in: context))
+    } catch {
+      return .failure(error)
+    }
+  }
+}
+
 public struct Operation<P: Pair>: ParserPrinter {
   private var pair: P.Type
 
@@ -99,13 +119,42 @@ public struct Operation<P: Pair>: ParserPrinter {
 public extension Conversion {
   static func input<P: Pair>(
     _ Pair: P.Type,
-    dateDecodingStrategy strategy: JSONDecoder.DateDecodingStrategy? = nil
+    dateDecodingStrategy strategy: JSONDecoder.DateDecodingStrategy? = .forgivingIso8601
   ) -> Self where Self == Conversions.JSON<P.Input> {
-    if let strategy = strategy {
+    if let strategy {
       let decoder = JSONDecoder()
       decoder.dateDecodingStrategy = strategy
       return .init(Pair.Input, decoder: decoder)
     }
     return .init(Pair.Input)
   }
+}
+
+public extension JSONDecoder.DateDecodingStrategy {
+  static let forgivingIso8601 = custom {
+    let container = try $0.singleValueContainer()
+    let string = try container.decode(String.self)
+    if let date = Formatter.iso8601withFractionalSeconds.date(from: string) ?? Formatter.iso8601
+      .date(from: string) {
+      return date
+    }
+    throw DecodingError.dataCorruptedError(
+      in: container,
+      debugDescription: "Invalid date: \(string)"
+    )
+  }
+}
+
+public extension Formatter {
+  static let iso8601withFractionalSeconds: ISO8601DateFormatter = {
+    let formatter = ISO8601DateFormatter()
+    formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+    return formatter
+  }()
+
+  static let iso8601: ISO8601DateFormatter = {
+    let formatter = ISO8601DateFormatter()
+    formatter.formatOptions = [.withInternetDateTime]
+    return formatter
+  }()
 }

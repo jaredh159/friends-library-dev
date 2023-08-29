@@ -36,3 +36,30 @@ final class TokenScope: Codable {
 extension Scope: PostgresEnum {
   var typeName: String { TokenScope.M5.dbEnumName }
 }
+
+extension Scope {
+  func can(_ requested: Scope) -> Bool {
+    switch (self, requested) {
+    case (.all, _): return true
+    case(let a, let b) where a == b: return true
+    case (.mutateDownloads, .queryDownloads): return true
+    case (.mutateOrders, .queryOrders): return true
+    case (.mutateArtifactProductionVersions, .queryArtifactProductionVersions): return true
+    case (.mutateEntities, .queryEntities): return true
+    case (.mutateTokens, .queryTokens): return true
+    default: return false
+    }
+  }
+}
+
+extension Array where Element == TokenScope {
+  func can(_ perform: Scope) -> Bool {
+    contains(where: { $0.scope.can(perform) })
+  }
+}
+
+extension Array where Element == Scope {
+  func can(_ perform: Scope) -> Bool {
+    contains(where: { $0.can(perform) })
+  }
+}
