@@ -3,38 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "private": true,
-  "main": "index.js",
   "license": "MIT",
-  "scripts": {
-    "start": "watchexec --project-origin . --restart --watch Sources --exts swift --signal SIGINT swift run",
-    "start:ip": "HOSTNAME=192.168.10.227 swift run",
-    "start:tests": "watchexec --restart --watch Sources --watch Tests --exts swift --signal SIGINT swift test",
-    "deploy:staging": "fldev tsnode deploy.ts",
-    "deploy:production": "fldev tsnode deploy.ts --production",
-    "db:sync": "fldev tsnode sync.ts",
-    "schema:update": "apollo client:download-schema --endpoint=http://127.0.0.1:8080/graphql ./Sources/App/GraphQL/schema.graphql",
-    "nuke": "npm run migrate:nuke; npm run test:db:nuke",
-    "test:db:nuke": "killall Postico; dropdb flp_test && createdb flp_test"
-  },
   "devDependencies": {
     "@friends-library/env": "workspace:*",
     "x-chalk": "^1.0.1",
     "x-exec": "^1.2.0"
-  },
-  "duet": {
-    "modelDirs": {
-      "OrderItem": "/Orders",
-      "FreeOrderRequest": "/Orders",
-      "FriendQuote": "/Friends",
-      "FriendResidence": "/Friends",
-      "FriendResidenceDuration": "/Friends",
-      "EditionChapter": "/Editions",
-      "EditionImpression": "/Editions",
-      "DocumentTag": "/Documents",
-      "RelatedDocument": "/Documents",
-      "AudioPart": "/Audios",
-      "TokenScope": "/Tokens",
-      "Isbn": ""
-    }
   }
 }

@@ -3,6 +3,10 @@ import Foundation
 import Graphiti
 import Vapor
 
+typealias Future = EventLoopFuture
+typealias Req = Vapor.Request
+typealias NoArgs = Graphiti.NoArguments
+
 let appSchema = try! Graphiti.Schema<Resolver, Request> {
   Scalar(UUID.self)
   Scalar(Int64.self)

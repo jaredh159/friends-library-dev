@@ -27,7 +27,7 @@ class AppTestCase: XCTestCase {
     Current.logger = .null
     try! app.autoRevert().wait()
     try! app.autoMigrate().wait()
-    try! configure(app)
+    try! Configure.app(app)
     app.logger = .null
     Current.logger = .null
     Current.db = MockClient()
