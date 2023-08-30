@@ -16,7 +16,7 @@ export interface FeedItem {
   title: string;
   description: string;
   url: string;
-  date: string;
+  createdAt: string;
 }
 
 type NewsfeedDocumentProps = Pick<
@@ -126,7 +126,7 @@ function getRecentAudios(
 function dateFields(
   dateStr: string,
   lang: Lang,
-): Pick<FeedItem, 'month' | 'year' | 'day' | 'date'> {
+): Pick<FeedItem, 'month' | 'year' | 'day' | 'createdAt'> {
   const date = new Date(dateStr);
   const month = months[lang][date.getMonth()]?.substring(0, 3);
   invariant(month !== undefined);
@@ -135,7 +135,7 @@ function dateFields(
     month,
     year: String(date.getFullYear()),
     day: String(date.getDate()),
-    date: dateStr,
+    createdAt: dateStr,
   };
 }
 

@@ -12,6 +12,7 @@ interface Props {
   bgColor: string;
   titleTextColor: string;
   books: Array<Doc<'editions' | 'createdAt' | 'authorGender' | 'shortDescription'>>;
+  withDateBadges?: boolean;
 }
 
 const BookTeaserCards: React.FC<Props> = ({
@@ -22,6 +23,7 @@ const BookTeaserCards: React.FC<Props> = ({
   titleTextColor,
   books,
   titleEl: TitleEl,
+  withDateBadges = false,
 }) => {
   if (books.length === 0) return null;
   return (
@@ -30,7 +32,7 @@ const BookTeaserCards: React.FC<Props> = ({
       className={cx(
         className,
         `bg-${bgColor}`,
-        `BookTeaserCards pb-16`,
+        `pb-16`,
         `md:pt-16 md:pb-1`,
         `xl:flex xl:flex-wrap xl:justify-center`,
       )}
@@ -57,10 +59,14 @@ const BookTeaserCards: React.FC<Props> = ({
             documentUrl={getDocumentUrl(book)}
             authorUrl={getFriendUrl(book.authorSlug, book.authorGender)}
             description={book.shortDescription}
-            badgeText={new Date(book.createdAt).toLocaleDateString(`en-US`, {
-              month: `short`,
-              day: `numeric`,
-            })}
+            badgeText={
+              withDateBadges
+                ? new Date(book.createdAt).toLocaleDateString(`en-US`, {
+                    month: `short`,
+                    day: `numeric`,
+                  })
+                : undefined
+            }
             isbn={book.isbn}
           />
         ))}

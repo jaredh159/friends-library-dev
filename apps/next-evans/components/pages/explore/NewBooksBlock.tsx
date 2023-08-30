@@ -15,6 +15,7 @@ const NewBooksBlock: React.FC<Props> = ({ books }) => (
     title={t`Recently Added Books`}
     titleEl="h2"
     books={books}
+    withDateBadges
   />
 );
 

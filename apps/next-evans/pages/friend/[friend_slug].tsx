@@ -15,6 +15,7 @@ import getResidences from '@/lib/residences';
 import { getDocumentUrl, isCompilations } from '@/lib/friend';
 import getFriend, { getAllFriends } from '@/lib/db/friends';
 import { editionTypes } from '@/lib/document';
+import { bookSize } from '@/lib/book-sizes';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const friends = await getAllFriends();
@@ -116,36 +117,30 @@ const Friend: React.FC<Props> = ({
               }
               return 1;
             })
-            .map((doc) => {
-              const docSizeProp =
-                doc.mostModernEdition.size === `xlCondensed`
-                  ? `xl`
-                  : doc.mostModernEdition.size;
-              return (
-                <BookByFriend
-                  key={doc.id}
-                  htmlShortTitle={htmlShortTitle(doc.title)}
-                  isAlone={onlyOneBook}
-                  className="mb-8 lg:mb-12"
-                  tags={doc.tags}
-                  hasAudio={doc.hasAudio}
-                  bookUrl={getDocumentUrl(slug, doc.slug)}
-                  numDownloads={doc.numDownloads}
-                  pages={doc.mostModernEdition.numPages}
-                  description={doc.shortDescription}
-                  lang={LANG}
-                  title={doc.title}
-                  blurb={``} // never see the back of a book in this component
-                  isCompilation={isCompilations(name)}
-                  author={name}
-                  size={docSizeProp}
-                  edition={doc.mostModernEdition.type}
-                  isbn={doc.isbn}
-                  customCss={doc.customCSS || ``}
-                  customHtml={doc.customHTML || ``}
-                />
-              );
-            })}
+            .map((doc) => (
+              <BookByFriend
+                key={doc.id}
+                htmlShortTitle={htmlShortTitle(doc.title)}
+                isAlone={onlyOneBook}
+                className="mb-8 lg:mb-12"
+                tags={doc.tags}
+                hasAudio={doc.hasAudio}
+                bookUrl={getDocumentUrl(slug, doc.slug)}
+                numDownloads={doc.numDownloads}
+                pages={doc.mostModernEdition.numPages}
+                description={doc.shortDescription}
+                lang={LANG}
+                title={doc.title}
+                blurb={``} // never see the back of a book in this component
+                isCompilation={isCompilations(name)}
+                author={name}
+                size={bookSize(doc.mostModernEdition.size)}
+                edition={doc.mostModernEdition.type}
+                isbn={doc.isbn}
+                customCss={doc.customCSS || ``}
+                customHtml={doc.customHTML || ``}
+              />
+            ))}
         </div>
       </div>
       {mapBlock}
