@@ -33,6 +33,10 @@ struct ShippingAddress: Codable {
     if country == "CA" {
       self.state = abbreviate(ca: state)
     }
+
+    if country == "AU" {
+      self.state = abbreviate(au: state)
+    }
   }
 }
 
@@ -84,6 +88,26 @@ extension AppSchema {
       InputField("country", at: \.country)
     }
   }
+}
+
+func abbreviate(au input: String) -> String {
+  let states = [
+    "australian capital territory": "ACT",
+    "new south wales": "NSW",
+    "queensland": "QLD",
+    "south australia": "SA",
+    "tasmania": "TAS",
+    "victoria": "VIC",
+    "western australia": "WA",
+    "jervis bay teritory": "JBT",
+    "northern territory": "NT",
+  ]
+
+  let lowercaseInput = input
+    .trimmingCharacters(in: .whitespacesAndNewlines)
+    .lowercased()
+
+  return states[lowercaseInput] ?? input
 }
 
 func abbreviate(ca input: String) -> String {
