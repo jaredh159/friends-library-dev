@@ -96,6 +96,10 @@ final class Order: Codable {
     if addressCountry == "CA" {
       self.addressState = abbreviate(ca: addressState)
     }
+
+    if addressCountry == "AU" {
+      self.addressState = abbreviate(au: addressState)
+    }
   }
 }
 
