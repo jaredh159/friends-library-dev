@@ -3,7 +3,7 @@ import Rainbow
 import Vapor
 import VaporRouting
 
-enum PairQLRoute: RouteResponder {
+enum PairQLRoute: RouteHandler, RouteResponder {
   static func respond(to route: Self, in context: Context) async throws -> Response {
     switch route {
     case .dev(let devRoute):

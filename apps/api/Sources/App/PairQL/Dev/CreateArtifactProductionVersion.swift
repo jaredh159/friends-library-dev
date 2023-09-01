@@ -4,7 +4,7 @@ struct CreateArtifactProductionVersion: Pair {
   static var auth: Scope = .mutateArtifactProductionVersions
 
   struct Input: PairInput {
-    var version: GitCommitSha
+    var version: String
   }
 
   struct Output: PairOutput {
@@ -15,7 +15,14 @@ struct CreateArtifactProductionVersion: Pair {
 extension CreateArtifactProductionVersion: PairQL.Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    let apf = try await ArtifactProductionVersion.create(.init(version: input.version))
+    if !input.version.isValidGitCommitFullSha {
+      throw context.error(
+        id: "4e50182e",
+        type: .badRequest,
+        detail: "invalid version, must be 40 char full git sha"
+      )
+    }
+    let apf = try await ArtifactProductionVersion.create(.init(version: .init(input.version)))
     return Output(id: apf.id)
   }
 }

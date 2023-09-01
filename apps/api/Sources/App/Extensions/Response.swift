@@ -7,4 +7,11 @@ extension Response {
       body: .init(data: (try? JSONEncoder().encode(error)) ?? .init())
     )
   }
+
+  convenience init(_ codegenOutput: CodegenRoute.Output) {
+    self.init(
+      status: .ok,
+      body: .init(data: (try? JSONEncoder().encode(codegenOutput)) ?? .init())
+    )
+  }
 }

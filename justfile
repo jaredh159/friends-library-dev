@@ -109,6 +109,9 @@ deploy-api-production:
 
 deploy-api: deploy-api-staging deploy-api-production
 
+codegen:
+  @pnpm ts-node libs-ts/pairql/src/pairql-codegen.ts
+
 # helpers
 
 [private]

@@ -28,6 +28,7 @@
     "@friends-library/hilkiah": "workspace:*",
     "@friends-library/locale": "workspace:*",
     "@friends-library/lulu": "workspace:*",
+    "@friends-library/pairql": "workspace:*",
     "@friends-library/parser": "workspace:*",
     "@friends-library/slack": "workspace:*",
     "@friends-library/types": "workspace:*",

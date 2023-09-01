@@ -5,13 +5,8 @@ protocol ResolverContext {
 }
 
 extension ResolverContext {
-  func error(id: String, type: PqlError.Kind, detail: String) -> PqlError {
-    .init(
-      id: "8271f8a1",
-      requestId: requestId,
-      type: type,
-      detail: detail
-    )
+  func error(id: String, type: PqlError.Kind, detail: String? = nil) -> PqlError {
+    .init(id: id, requestId: requestId, type: type, detail: detail)
   }
 }
 

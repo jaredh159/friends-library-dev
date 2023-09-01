@@ -7,11 +7,11 @@ public extension Configure {
 
     app.get(
       "download", "**",
-      use: downloadFileRouteHandler(req:)
+      use: DownloadRoute.handler(_:)
     )
 
     app.get(
-      "codegen", "**",
+      "codegen", ":domain",
       use: CodegenRoute.handler(_:)
     )
 
@@ -32,4 +32,8 @@ public extension Configure {
         postBodyStreamStrategy: .collect(maxSize: "64kb")
       )
   }
+}
+
+protocol RouteHandler {
+  static func handler(_ request: Request) async throws -> Response
 }

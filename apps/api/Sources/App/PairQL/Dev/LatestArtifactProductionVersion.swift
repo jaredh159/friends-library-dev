@@ -4,7 +4,7 @@ struct LatestArtifactProductionVersion: Pair {
   static var auth: Scope = .queryArtifactProductionVersions
 
   struct Output: PairOutput {
-    var version: GitCommitSha
+    var version: String
   }
 }
 
@@ -14,6 +14,6 @@ extension LatestArtifactProductionVersion: NoInputResolver {
     let latest = try await ArtifactProductionVersion.query()
       .orderBy(.createdAt, .desc)
       .first()
-    return .init(version: latest.version)
+    return .init(version: latest.version.rawValue)
   }
 }
