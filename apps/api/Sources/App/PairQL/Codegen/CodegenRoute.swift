@@ -60,7 +60,7 @@ extension CodegenRoute.Output.Pair {
 
     let fetcher = """
     \(functionName)(input: P.\(name).Input): Promise<Result<P.\(name).Output>> {
-      return query<P.\(name).Input, P.\(name).Output>(input, `\(P.name)`);
+      return this.query<P.\(name).Output>(input, `\(P.name)`);
     }
     """
     self = .init(decl: decl, fetcher: fetcher)

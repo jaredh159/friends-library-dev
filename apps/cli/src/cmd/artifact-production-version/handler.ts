@@ -1,12 +1,12 @@
 import { c, log } from 'x-chalk';
-import { createArtifactProductionVersion } from '../../pairql/client';
+import api from '../../client';
 
 interface Argv {
   sha: string;
 }
 
 export default async function handler({ sha }: Argv): Promise<void> {
-  const result = await createArtifactProductionVersion({ version: sha });
+  const result = await api.createArtifactProductionVersion({ version: sha });
   result.with({
     success: () => log(c`\nSuccessfully added version {green ${sha}}\n`),
     error: (err) => {
