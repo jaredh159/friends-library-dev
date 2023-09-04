@@ -4,26 +4,7 @@ import XExpect
 
 @testable import App
 
-extension Token {
-  static func allScopes() async -> Token {
-    let token = try! await Token.create(.init(description: "@testing"))
-    let scope = try! await TokenScope.create(.init(tokenId: token.id, scope: .all))
-    token.scopes = .loaded([scope])
-    return token
-  }
-}
-
-extension AuthedContext {
-  static var authed: Self {
-    get async {
-      let token = await Token.allScopes()
-      return .init(requestId: UUID().uuidString, scopes: token.scopes.require())
-    }
-  }
-}
-
-final class ArtifactProductionVersionResolverTests: AppTestCase {
-
+final class DevDomainTests: AppTestCase {
   func testLatestRevision() async throws {
     try await ArtifactProductionVersion.create(.init(version: "older"))
     try await ArtifactProductionVersion.create(.init(version: "newer"))
@@ -48,5 +29,23 @@ final class ArtifactProductionVersionResolverTests: AppTestCase {
 
     expect(retrieved).not.toBeNil()
     expect(output).toEqual(.init(id: retrieved?.id ?? .init()))
+  }
+}
+
+extension Token {
+  static func allScopes() async -> Token {
+    let token = try! await Token.create(.init(description: "@testing"))
+    let scope = try! await TokenScope.create(.init(tokenId: token.id, scope: .all))
+    token.scopes = .loaded([scope])
+    return token
+  }
+}
+
+extension AuthedContext {
+  static var authed: Self {
+    get async {
+      let token = await Token.allScopes()
+      return .init(requestId: UUID().uuidString, scopes: token.scopes.require())
+    }
   }
 }

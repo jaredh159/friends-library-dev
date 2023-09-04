@@ -26,6 +26,17 @@ export default class Result<T> {
     }
   }
 
+  public reduce<K>(config: {
+    success: (value: T) => K;
+    error: (error: PqlError) => K;
+  }): K {
+    if (this.data.type === `success`) {
+      return config.success?.(this.data.value);
+    } else {
+      return config.error(this.data.error);
+    }
+  }
+
   public valueOrThrow(): T {
     if (this.data.type === `success`) {
       return this.data.value;
