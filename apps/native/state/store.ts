@@ -69,7 +69,16 @@ export default async function getStore(): Promise<Store<any, AnyAction>> {
     ),
   );
 
-  SplashScreen.hide();
+  if (Platform.OS !== `android`) {
+    // rebuilding for sdk target 31 for google play compliance, amongst many
+    // terrible issues i fumbled through, i was getting a java fatal error
+    // `java.lang.IllegalArgumentException: View=DecorView[...] not attached to window manager`
+    // removing this fixed (maybe in combination with adding the onPause override)
+    // see https://github.com/crazycodeboy/react-native-splash-screen/issues/32
+    // ... strangely, the splash screen seems to hide fine without this, maybe due
+    // to the onPause override as well... ¯\_(ツ)_/¯
+    SplashScreen.hide();
+  }
 
   return store;
 }

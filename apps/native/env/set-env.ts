@@ -63,6 +63,7 @@ function main(): void {
     `android/app/src/release/java/com/friendslibrary/ReactNativeFlipper.java`,
   );
   const resDirs = [
+    `layout`,
     `drawable`,
     `mipmap-hdpi`,
     `mipmap-mdpi`,

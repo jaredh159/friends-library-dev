@@ -24,4 +24,11 @@ public class SplashActivity extends AppCompatActivity {
     startActivity(intent);
     finish();
   }
+
+  // added by jared, see https://github.com/crazycodeboy/react-native-splash-screen/issues/32
+  @Override
+  protected void onPause() {
+    SplashScreen.hide(this);
+    super.onPause();
+  }
 }

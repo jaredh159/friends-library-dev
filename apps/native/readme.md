@@ -25,10 +25,12 @@ https://github.com/facebook/hermes/issues/114
 - hook up device via usb, accept "trust" prompt if necessary
 - if you run `adb devices` you should see it available
 - close any emulators running
-- run `just install-android`
+- run `pnpm react-native run-android` (from native dir)
 - if you get an error about "signature not matching", uninstall any prior versions from
   the device and try again
 - see https://reactnative.dev/docs/running-on-device
+- i was debugging a crash on the fire, and connecting via usb and running
+  `adb logcat --buffer=crash` gave me something to work with at least...
 
 ## LEGACY STUFF:
 
