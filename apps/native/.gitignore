@@ -15,6 +15,7 @@ android/app/src/main/res/raw
 android/app/src/main/res/values/colors.xml
 android/app/src/main/res/values/strings.xml
 android/app/src/main/res/layout/launch_screen.xml
+ios/assets/
 ios/FriendsLibrary/Info.plist
 ios/FriendsLibrary/LaunchScreen.storyboard
 ios/FriendsLibrary/Images.xcassets/AppIcon.appiconset/

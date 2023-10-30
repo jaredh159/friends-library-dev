@@ -97,6 +97,7 @@ class Player {
       android: {
         appKilledPlaybackBehavior: AppKilledPlaybackBehavior.PausePlayback,
       },
+      progressUpdateEventInterval: 1,
       forwardJumpInterval: 30,
       backwardJumpInterval: 15,
       alwaysPauseOnInterruption: true,
