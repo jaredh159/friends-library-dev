@@ -99,7 +99,7 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.friendslibrary"
+    namespace "{ANDROID_APP_IDENTIFIER}"
     defaultConfig {
         applicationId "{ANDROID_APP_IDENTIFIER}"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -139,7 +139,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }

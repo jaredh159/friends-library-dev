@@ -55,21 +55,21 @@ module.exports = async function () {
     },
   );
 
+  // previously i did this logic in a `setInterval` callback,
+  // but found that on android, when screen was locked, the
+  // callback wouldn't fire, causing the stored resume playback
+  // position to be incorrect (thanks jakub!)
   let counter = 0;
-  setInterval(async () => {
-    counter++;
-    const [position, state] = await Promise.all([
-      Player.getPosition(),
-      Player.getState(),
-    ]);
-    if (state !== `PLAYING` || position < 0) {
-      return;
-    }
-    Player.dispatch(setCurrentTrackPosition(position));
-    if (counter % 5 === 0) {
-      Player.dispatch(maybeDownloadNextQueuedTrack(position));
-    }
-  }, 1000);
+  Player.addEventListener(
+    Event.PlaybackProgressUpdated,
+    ({ position }: { position: number }) => {
+      counter++;
+      Player.dispatch(setCurrentTrackPosition(position));
+      if (counter % 10 === 0) {
+        Player.dispatch(maybeDownloadNextQueuedTrack(position));
+      }
+    },
+  );
 
   const events = [
     `playback-state`,
@@ -84,6 +84,7 @@ module.exports = async function () {
     `remote-duck`,
     `remote-jump-forward`,
     `remote-jump-backward`,
+    `playback-progress-updated`,
     `playback-track-changed`,
     `playback-queue-ended`,
   ];

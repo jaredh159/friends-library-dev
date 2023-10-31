@@ -25,10 +25,12 @@ https://github.com/facebook/hermes/issues/114
 - hook up device via usb, accept "trust" prompt if necessary
 - if you run `adb devices` you should see it available
 - close any emulators running
-- run `just install-android`
+- run `pnpm react-native run-android` (from native dir)
 - if you get an error about "signature not matching", uninstall any prior versions from
   the device and try again
 - see https://reactnative.dev/docs/running-on-device
+- i was debugging a crash on the fire, and connecting via usb and running
+  `adb logcat --buffer=crash` gave me something to work with at least...
 
 ## LEGACY STUFF:
 
@@ -60,8 +62,8 @@ npx react-native bundle --dev false --platform ios --entry-file index.js --bundl
 
 Then, make sure that the `ios/main.jsbundle` was added to the _FriendsLibrary_ target.
 Then, run from Xcode, targeting the simulator I wanted to use. Once I got it to run, I
-"shook" it and configured the bundler with `10.0.1.212 / 8081 / index` to hook it back up
-to the local dev metro server.
+"shook" it and configured the bundler with `192.168.10.227 / 8081 / index` to hook it back
+up to the local dev metro server
 
 **Update 9/21**: Maybe it's Xcode 12.5 or something, but the app crashes and hangs a lot
 now in the simulator, which means I have to configure the bundler over and over. To

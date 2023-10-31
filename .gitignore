@@ -2,8 +2,8 @@
 *.swp
 node_modules/
 audios/
-en/
-es/
+/en/
+/es/
 artifacts/
 .env
 **/.build/

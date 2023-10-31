@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/async-kit.git",
       "state" : {
-        "revision" : "c3329e444bafbb12d1d312af9191be95348a8175",
-        "version" : "1.13.0"
+        "revision" : "e2f741640364c1d271405da637029ea6a33f754e",
+        "version" : "1.11.1"
       }
     },
     {
@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/fluent-kit.git",
       "state" : {
-        "revision" : "33d498d9a9323a3562fa380da28a2a17dd5df408",
-        "version" : "1.35.2"
+        "revision" : "3c06388997a1ee72e97bcd752aff47d5b64722f5",
+        "version" : "1.23.2"
       }
     },
     {
@@ -32,17 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/sql-kit.git",
       "state" : {
-        "revision" : "fcc29f543b3de7b661cbe7540805974234cb9740",
-        "version" : "3.24.0"
-      }
-    },
-    {
-      "identity" : "swift-atomics",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-atomics.git",
-      "state" : {
-        "revision" : "ff3d2212b6b093db7f177d0855adbc4ef9c5f036",
-        "version" : "1.0.3"
+        "revision" : "9cc30f8cef132e91a07e36005612b37f918731fc",
+        "version" : "3.16.0"
       }
     },
     {
@@ -50,8 +41,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-log.git",
       "state" : {
-        "revision" : "32e8d724467f8fe623624570367e3d50c5638e46",
-        "version" : "1.5.2"
+        "revision" : "5d66f7ba25daf4f94100e7022febf3c75e37a6c7",
+        "version" : "1.4.2"
       }
     },
     {
@@ -59,14 +50,14 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-nio.git",
       "state" : {
-        "revision" : "b4e0a274f7f34210e97e2f2c50ab02a10b549250",
-        "version" : "2.41.1"
+        "revision" : "d6e3762e0a5f7ede652559f53623baf11006e17c",
+        "version" : "2.39.0"
       }
     },
     {
       "identity" : "swift-tagged",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/jaredh159/swift-tagged",
+      "location" : "https://github.com/jaredh159/swift-tagged.git",
       "state" : {
         "revision" : "cb4284055f6e9cc5576ff9be13723b3a039905a5",
         "version" : "0.8.2"

@@ -35,7 +35,21 @@ set-env:
 edit-env:
   @$EDITOR ./.env
 
-# util
+[private]
+force-edit-env:
+  @echo "\nSet MODE=release, and desired LANG in .env file...\n" && sleep 4
+  @just edit-env
 
-clean:
-  @cd android && ./gradlew clean
+# build android
+
+android-build-for-play-store: force-edit-env set-env
+  @cd ./android && ./gradlew bundleRelease
+  @open ./android/app/build/outputs/bundle/release
+
+android-build-apk: force-edit-env set-env
+  @cd ./android && ./gradlew assembleRelease
+  @open ./android/app/build/outputs/apk/release
+
+#  - more legacy build script info here:
+#  - @https://github.com/friends-library-dev/native/blob/master/package.json
+
