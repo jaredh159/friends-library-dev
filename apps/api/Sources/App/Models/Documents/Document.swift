@@ -1,4 +1,4 @@
-import Duet
+import DuetSQL
 
 final class Document: Codable {
   var id: Id
@@ -84,5 +84,17 @@ final class Document: Codable {
     self.description = description
     self.partialDescription = partialDescription
     self.featuredDescription = featuredDescription
+  }
+}
+
+// loaders
+
+extension Document {
+  func friend() async throws -> Friend {
+    try await friend.useLoaded(or: {
+      try await Friend.query()
+        .where(.id == friendId)
+        .first()
+    })
   }
 }

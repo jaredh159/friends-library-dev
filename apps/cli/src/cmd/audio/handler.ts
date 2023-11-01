@@ -72,7 +72,7 @@ async function handleAudio(audio: Audio): Promise<void> {
 }
 
 async function ensureAudioImage(audio: Audio, fsData: AudioFsData): Promise<void> {
-  const cloudPath = audio.edition.images.square.w1400.path;
+  const cloudPath = audio.edition.coverImagePath;
   const localPath = `${fsData.derivedPath}/cover.png`;
   if (fs.existsSync(localPath)) {
     const localHash = await md5File(localPath);
@@ -243,7 +243,7 @@ async function updateEntities(audio: Audio, fsData: AudioFsData): Promise<void> 
       title: part.title,
       order: part.order,
       chapters: part.chapters,
-      duration: part.duration,
+      duration: part.durationInSeconds,
       externalIdHq: part.externalIdHq,
       externalIdLq: part.externalIdLq,
       mp3SizeHq: part.mp3SizeHq,

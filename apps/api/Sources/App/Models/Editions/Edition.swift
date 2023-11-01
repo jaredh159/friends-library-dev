@@ -1,4 +1,4 @@
-import Duet
+import DuetSQL
 import NonEmpty
 
 final class Edition: Codable {
@@ -47,5 +47,17 @@ final class Edition: Codable {
     self.isDraft = isDraft
     self.paperbackSplits = paperbackSplits
     self.paperbackOverrideSize = paperbackOverrideSize
+  }
+}
+
+// loaders
+
+extension Edition {
+  func document() async throws -> Document {
+    try await document.useLoaded(or: {
+      try await Document.query()
+        .where(.id == documentId)
+        .first()
+    })
   }
 }

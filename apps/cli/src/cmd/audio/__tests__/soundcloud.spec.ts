@@ -7,7 +7,7 @@ describe(`trackAttrs()`, () => {
     const attrs = trackAttrs(fixtures.turfordEn, 0, `HQ`);
     expect(attrs.label_name).toBe(`Friends Library Publishing`);
     expect(attrs.title).toBe(`Walk in the Spirit — pt. 1`);
-    expect(attrs.description).toBe(fixtures.turfordEn.edition.document.description);
+    expect(attrs.description).toBe(fixtures.turfordEn.document.description);
     expect(attrs.tags).toMatchObject([
       `doctrinal`,
       `treatise`,

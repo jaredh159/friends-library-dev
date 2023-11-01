@@ -16,9 +16,8 @@ export async function create(
   src: AudioFsData,
   quality: AudioQuality,
 ): Promise<void> {
-  const edition = audio.edition;
-  const document = edition.document;
-  const friend = document.friend;
+  const document = audio.document;
+  const friend = audio.friend;
   const shortTitle = utf8ShortTitle(document.title);
   const m4bDir = `${src.derivedPath}/m4b`;
   const relWorkDir = `Religion/${friend.name}/${shortTitle}`;

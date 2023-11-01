@@ -10,7 +10,7 @@ export function metadata(
   numVols: number,
   durations: number[],
 ): string {
-  const lang = audio.edition.document.friend.lang;
+  const lang = audio.friend.lang;
   let meta = delim(`Title`, title(audio, volNum, numVols, lang));
   meta += delim(
     `Description`,
@@ -39,8 +39,8 @@ function description(
     lang === `en`
       ? `https://www.friendslibrary.com`
       : `https://www.bibliotecadelosamigos.org`;
-  const document = audio.edition.document;
-  const friend = document.friend;
+  const document = audio.document;
+  const friend = audio.friend;
   const title = utf8ShortTitle(document.title);
   let desc =
     lang === `en`
@@ -102,7 +102,7 @@ function timestamps(
 }
 
 function title(audio: Audio, volNum: number, numVols: number, lang: Lang): string {
-  let title = utf8ShortTitle(audio.edition.document.title);
+  let title = utf8ShortTitle(audio.document.title);
   if (numVols > 1) {
     title += ` ${volNum}/${numVols}`;
   }

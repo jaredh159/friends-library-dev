@@ -29,6 +29,16 @@ export default class DevClient extends Client {
     );
   }
 
+  public editorDocumentMap(
+    input: P.EditorDocumentMap.Input,
+  ): Promise<Result<P.EditorDocumentMap.Output>> {
+    return this.query<P.EditorDocumentMap.Output>(input, `EditorDocumentMap`);
+  }
+
+  public getAudios(input: P.GetAudios.Input): Promise<Result<P.GetAudios.Output>> {
+    return this.query<P.GetAudios.Output>(input, `GetAudios`);
+  }
+
   public createArtifactProductionVersion(
     input: P.CreateArtifactProductionVersion.Input,
   ): Promise<Result<P.CreateArtifactProductionVersion.Output>> {
@@ -36,11 +46,5 @@ export default class DevClient extends Client {
       input,
       `CreateArtifactProductionVersion`,
     );
-  }
-
-  public editorDocumentMap(
-    input: P.EditorDocumentMap.Input,
-  ): Promise<Result<P.EditorDocumentMap.Output>> {
-    return this.query<P.EditorDocumentMap.Output>(input, `EditorDocumentMap`);
   }
 }

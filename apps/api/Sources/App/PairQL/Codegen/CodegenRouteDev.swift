@@ -7,6 +7,7 @@ extension CodegenRoute.Dev: CodegenRouteHandler {
       EditorDocumentMap.self,
       CreateArtifactProductionVersion.self,
       LatestArtifactProductionVersion.self,
+      GetAudios.self,
     ]
   }
 }

@@ -9,9 +9,8 @@ export function playlistAttrs(
   audio: Audio,
   quality: AudioQuality,
 ): SoundCloudPlaylistAttrs {
-  const edition = audio.edition;
-  const document = edition.document;
-  const friend = document.friend;
+  const document = audio.document;
+  const friend = audio.friend;
   const lang = friend.lang;
   const trackIdProp = quality === `HQ` ? `externalIdHq` : `externalIdLq`;
   return {
@@ -21,19 +20,15 @@ export function playlistAttrs(
     trackIds: audio.parts.map((part) => part[trackIdProp]),
     title: utf8ShortTitle(document.title),
     description: document.description,
-    tags: soundcloudTags(
-      document.tags.map((t) => t.type),
-      quality,
-      lang,
-    ),
+    tags: soundcloudTags(document.tags, quality, lang),
   };
 }
 
 function permalink(audio: Audio, quality: AudioQuality, suffix?: string): string {
   const edition = audio.edition;
-  const document = edition.document;
+  const document = audio.document;
   const editionSuffix = edition.type !== `updated` ? `-${edition.type}` : ``;
-  const friend = document.friend;
+  const friend = audio.friend;
   let permalink = `${friend.slug}-${document.slug}${editionSuffix}${suffix ?? ``}`;
   if (quality === `LQ`) {
     permalink += `-lq`;
@@ -46,9 +41,8 @@ export function trackAttrs(
   partIndex: number,
   quality: AudioQuality,
 ): SoundCloudTrackAttrs {
-  const edition = audio.edition;
-  const document = edition.document;
-  const friend = document.friend;
+  const document = audio.document;
+  const friend = audio.friend;
   const lang = friend.lang;
   const numParts = audio.parts.length;
   let permalinkSuffix = ``;
@@ -64,11 +58,7 @@ export function trackAttrs(
     label_name: lang === `en` ? `Friends Library Publishing` : `Biblioteca de los Amigos`,
     title: getPartTitle(audio, partIndex),
     description: document.description,
-    tags: soundcloudTags(
-      document.tags.map((t) => t.type),
-      quality,
-      lang,
-    ),
+    tags: soundcloudTags(document.tags, quality, lang),
   };
 }
 

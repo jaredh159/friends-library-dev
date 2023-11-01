@@ -21,19 +21,23 @@ enum DevRoute: PairRoute {
 
 enum AuthedDevRoute: PairRoute {
   case createArtifactProductionVersion(CreateArtifactProductionVersion.Input)
-  case latestArtifactProductionVersion
   case editorDocumentMap
+  case getAudios
+  case latestArtifactProductionVersion
 
   static let router: AnyParserPrinter<URLRequestData, AuthedDevRoute> = OneOf {
     Route(/Self.createArtifactProductionVersion) {
       Operation(CreateArtifactProductionVersion.self)
       Body(.input(CreateArtifactProductionVersion.self))
     }
-    Route(/Self.latestArtifactProductionVersion) {
-      Operation(LatestArtifactProductionVersion.self)
-    }
     Route(/Self.editorDocumentMap) {
       Operation(EditorDocumentMap.self)
+    }
+    Route(/Self.getAudios) {
+      Operation(GetAudios.self)
+    }
+    Route(/Self.latestArtifactProductionVersion) {
+      Operation(LatestArtifactProductionVersion.self)
     }
   }
   .eraseToAnyParserPrinter()
@@ -48,6 +52,9 @@ extension DevRoute: RouteResponder {
       switch authedRoute {
       case .createArtifactProductionVersion(let input):
         let output = try await CreateArtifactProductionVersion.resolve(with: input, in: authed)
+        return try respond(with: output)
+      case .getAudios:
+        let output = try await GetAudios.resolve(in: authed)
         return try respond(with: output)
       case .latestArtifactProductionVersion:
         let output = try await LatestArtifactProductionVersion.resolve(in: authed)

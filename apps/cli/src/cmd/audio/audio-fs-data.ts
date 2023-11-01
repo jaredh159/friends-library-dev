@@ -8,7 +8,7 @@ import { md5String } from './utils';
 
 export default async function getSrcFsData(audio: Audio): Promise<AudioFsData> {
   const { AUDIOS_PATH } = env.require(`AUDIOS_PATH`);
-  const basename = audio.edition.document.filename;
+  const basename = audio.document.filename;
   const errors: string[] = [];
   const cachedDataDir = `${AUDIOS_PATH}/${audio.edition.path}/_cached_audio_data`;
   const data: Omit<AudioFsData, 'm4bs' | 'mp3Zips'> = {

@@ -1,6 +1,6 @@
-import type { GetAudios } from '../../graphql/GetAudios';
+import type { Types as PairQLTypes } from '@friends-library/pairql/dev';
 
-export type Audio = GetAudios['audios'][0];
+export type Audio = PairQLTypes.GetAudios.Output[number];
 
 interface FileFsData {
   localFilename: string;
