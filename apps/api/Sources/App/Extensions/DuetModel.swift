@@ -18,6 +18,10 @@ extension Model {
     Current.db.query(Self.self)
   }
 
+  func delete() async throws {
+    try await Current.db.query(Self.self).byId(id).delete()
+  }
+
   @discardableResult
   static func create(_ model: Self) async throws -> Self {
     try await Current.db.create(model)

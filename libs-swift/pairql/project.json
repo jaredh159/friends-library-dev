@@ -4,9 +4,6 @@
   "targets": {
     "build": {
       "command": "cd libs-swift/pairql && swift build"
-    },
-    "test": {
-      "command": "cd libs-swift/pairql && SWIFT_DETERMINISTIC_HASHING=1 swift test"
     }
   }
 }

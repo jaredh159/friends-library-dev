@@ -55,6 +55,11 @@ public struct NoInput: PairInput {
   public init() {}
 }
 
+public struct Infallible: PairOutput {
+  private init() {}
+  public static var success: Self { .init() }
+}
+
 public struct SuccessOutput: PairOutput {
   public let success: Bool
 

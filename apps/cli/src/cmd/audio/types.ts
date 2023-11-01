@@ -1,6 +1,6 @@
-import type { Types as PairQLTypes } from '@friends-library/pairql/dev';
+import type { T } from '@friends-library/pairql/dev';
 
-export type Audio = PairQLTypes.GetAudios.Output[number];
+export type Audio = T.GetAudios.Output[number];
 
 interface FileFsData {
   localFilename: string;

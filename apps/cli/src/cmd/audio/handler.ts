@@ -9,15 +9,14 @@ import { AUDIO_QUALITIES } from '@friends-library/types';
 import * as cloud from '@friends-library/cloud';
 import type { AudioQuality, Lang } from '@friends-library/types';
 import type { Audio } from './types';
-import type { UpdateAudioInput, UpdateAudioPartInput } from '../../graphql/globalTypes';
 import type { AudioFsData } from './types';
 import { logDebug, logAction, logError } from '../../sub-log';
 import * as ffmpeg from '../../ffmpeg';
+import api, { type T as Api } from '../../client';
 import * as cache from './cache';
 import * as m4bTool from './m4b';
 import getSrcFsData from './audio-fs-data';
-import * as api from './api';
-import { getAudios } from './query';
+import queryFilteredAudios from './query-filtered-audios';
 
 interface Argv {
   lang: Lang | 'both';
@@ -40,7 +39,7 @@ export default async function handler(passedArgv: Argv): Promise<void> {
   argv = passedArgv;
   ffmpeg.ensureExists();
   m4bTool.ensureExists();
-  const audios = await getAudios(argv.lang, argv.pattern, argv.limit);
+  const audios = await queryFilteredAudios(argv.lang, argv.pattern, argv.limit);
   if (audios.length === 0) {
     logError(`No audios matched`);
     return;
@@ -207,7 +206,7 @@ async function updateEntities(audio: Audio, fsData: AudioFsData): Promise<void> 
   const hqCache = ensureCache(cached.HQ);
   const lqCache = ensureCache(cached.LQ);
 
-  const existingAudio: UpdateAudioInput = {
+  const existingAudio: Api.UpdateAudio.Input = {
     id: audio.id,
     editionId: audio.edition.id,
     isIncomplete: audio.isIncomplete,
@@ -220,7 +219,7 @@ async function updateEntities(audio: Audio, fsData: AudioFsData): Promise<void> 
     reader: audio.reader,
   };
 
-  const updatedAudio: UpdateAudioInput = {
+  const updatedAudio: Api.UpdateAudio.Input = {
     ...existingAudio,
     m4bSizeHq: assertDefined(hqCache.m4bSize),
     m4bSizeLq: assertDefined(lqCache.m4bSize),
@@ -237,7 +236,7 @@ async function updateEntities(audio: Audio, fsData: AudioFsData): Promise<void> 
 
   for (let index = 0; index < audio.parts.length; index++) {
     const part = assertDefined(audio.parts[index]);
-    const existingPart: UpdateAudioPartInput = {
+    const existingPart: Api.UpdateAudioPart.Input = {
       id: part.id,
       audioId: audio.id,
       title: part.title,
@@ -250,7 +249,7 @@ async function updateEntities(audio: Audio, fsData: AudioFsData): Promise<void> 
       mp3SizeLq: part.mp3SizeLq,
     };
 
-    const updatedPart: UpdateAudioPartInput = {
+    const updatedPart: Api.UpdateAudioPart.Input = {
       ...existingPart,
       mp3SizeHq: assertDefined(cache.getPart(fsData, index).HQ?.mp3Size),
       mp3SizeLq: assertDefined(cache.getPart(fsData, index).LQ?.mp3Size),

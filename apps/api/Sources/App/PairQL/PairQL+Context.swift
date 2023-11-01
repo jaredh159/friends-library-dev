@@ -1,3 +1,5 @@
+import PairQL
+import TypeScriptInterop
 import Vapor
 
 protocol ResolverContext {
@@ -27,4 +29,8 @@ struct AuthedContext: ResolverContext {
       )
     }
   }
+}
+
+extension Infallible: TypeScriptAliased {
+  public static var typescriptAlias: String { "void" }
 }

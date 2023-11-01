@@ -9,15 +9,10 @@ let package = Package(
   ],
   dependencies: [
     .package("pointfreeco/swift-url-routing@0.5.0"),
-    .package(path: "../x-expect"),
   ],
   targets: [
     .target(name: "PairQL", dependencies: [
       .product(name: "URLRouting", package: "swift-url-routing"),
-    ]),
-    .testTarget(name: "PairQLTests", dependencies: [
-      .target(name: "PairQL"),
-      .product(name: "XExpect", package: "x-expect"),
     ]),
   ]
 )

@@ -1,4 +1,4 @@
-import type * as Types from './src/dev/pairs';
+import type * as T from './src/dev/pairs';
 import DevClient from './src/dev/DevClient';
-export type { Types };
+export type { T };
 export default DevClient;

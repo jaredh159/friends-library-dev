@@ -8,6 +8,8 @@ extension CodegenRoute.Dev: CodegenRouteHandler {
       CreateArtifactProductionVersion.self,
       LatestArtifactProductionVersion.self,
       GetAudios.self,
+      UpdateAudio.self,
+      UpdateAudioPart.self,
     ]
   }
 }

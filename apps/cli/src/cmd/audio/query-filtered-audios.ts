@@ -2,7 +2,7 @@ import type { Lang } from '@friends-library/types';
 import type { Audio } from './types';
 import api from '../../client';
 
-export async function getAudios(
+export default async function queryFilteredAudios(
   lang: Lang | 'both',
   pattern?: string,
   limit?: number,

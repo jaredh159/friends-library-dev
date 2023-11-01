@@ -20,12 +20,12 @@ export default class DevClient extends Client {
     return Client.inferWeb(DevClient, href, getToken);
   }
 
-  public latestArtifactProductionVersion(
-    input: P.LatestArtifactProductionVersion.Input,
-  ): Promise<Result<P.LatestArtifactProductionVersion.Output>> {
-    return this.query<P.LatestArtifactProductionVersion.Output>(
+  public createArtifactProductionVersion(
+    input: P.CreateArtifactProductionVersion.Input,
+  ): Promise<Result<P.CreateArtifactProductionVersion.Output>> {
+    return this.query<P.CreateArtifactProductionVersion.Output>(
       input,
-      `LatestArtifactProductionVersion`,
+      `CreateArtifactProductionVersion`,
     );
   }
 
@@ -35,16 +35,26 @@ export default class DevClient extends Client {
     return this.query<P.EditorDocumentMap.Output>(input, `EditorDocumentMap`);
   }
 
+  public updateAudioPart(
+    input: P.UpdateAudioPart.Input,
+  ): Promise<Result<P.UpdateAudioPart.Output>> {
+    return this.query<P.UpdateAudioPart.Output>(input, `UpdateAudioPart`);
+  }
+
   public getAudios(input: P.GetAudios.Input): Promise<Result<P.GetAudios.Output>> {
     return this.query<P.GetAudios.Output>(input, `GetAudios`);
   }
 
-  public createArtifactProductionVersion(
-    input: P.CreateArtifactProductionVersion.Input,
-  ): Promise<Result<P.CreateArtifactProductionVersion.Output>> {
-    return this.query<P.CreateArtifactProductionVersion.Output>(
+  public latestArtifactProductionVersion(
+    input: P.LatestArtifactProductionVersion.Input,
+  ): Promise<Result<P.LatestArtifactProductionVersion.Output>> {
+    return this.query<P.LatestArtifactProductionVersion.Output>(
       input,
-      `CreateArtifactProductionVersion`,
+      `LatestArtifactProductionVersion`,
     );
+  }
+
+  public updateAudio(input: P.UpdateAudio.Input): Promise<Result<P.UpdateAudio.Output>> {
+    return this.query<P.UpdateAudio.Output>(input, `UpdateAudio`);
   }
 }
