@@ -20,7 +20,96 @@ export default class DevClient extends Client {
     return Client.inferWeb(DevClient, href, getToken);
   }
 
-  public createArtifactProductionVersion(
+  public async createArtifactProductionVersion(
+    input: P.CreateArtifactProductionVersion.Input,
+  ): Promise<P.CreateArtifactProductionVersion.Output> {
+    const result = await this.query<P.CreateArtifactProductionVersion.Output>(
+      input,
+      `CreateArtifactProductionVersion`,
+    );
+    return result.unwrap();
+  }
+
+  public async createEditionChapters(
+    input: P.CreateEditionChapters.Input,
+  ): Promise<P.CreateEditionChapters.Output> {
+    const result = await this.query<P.CreateEditionChapters.Output>(
+      input,
+      `CreateEditionChapters`,
+    );
+    return result.unwrap();
+  }
+
+  public async deleteEntities(
+    input: P.DeleteEntities.Input,
+  ): Promise<P.DeleteEntities.Output> {
+    const result = await this.query<P.DeleteEntities.Output>(input, `DeleteEntities`);
+    return result.unwrap();
+  }
+
+  public async editorDocumentMap(
+    input: P.EditorDocumentMap.Input,
+  ): Promise<P.EditorDocumentMap.Output> {
+    const result = await this.query<P.EditorDocumentMap.Output>(
+      input,
+      `EditorDocumentMap`,
+    );
+    return result.unwrap();
+  }
+
+  public async getAudios(input: P.GetAudios.Input): Promise<P.GetAudios.Output> {
+    const result = await this.query<P.GetAudios.Output>(input, `GetAudios`);
+    return result.unwrap();
+  }
+
+  public async getEdition(input: P.GetEdition.Input): Promise<P.GetEdition.Output> {
+    const result = await this.query<P.GetEdition.Output>(input, `GetEdition`);
+    return result.unwrap();
+  }
+
+  public async getEditionImpression(
+    input: P.GetEditionImpression.Input,
+  ): Promise<P.GetEditionImpression.Output> {
+    const result = await this.query<P.GetEditionImpression.Output>(
+      input,
+      `GetEditionImpression`,
+    );
+    return result.unwrap();
+  }
+
+  public async latestArtifactProductionVersion(
+    input: P.LatestArtifactProductionVersion.Input,
+  ): Promise<P.LatestArtifactProductionVersion.Output> {
+    const result = await this.query<P.LatestArtifactProductionVersion.Output>(
+      input,
+      `LatestArtifactProductionVersion`,
+    );
+    return result.unwrap();
+  }
+
+  public async updateAudio(input: P.UpdateAudio.Input): Promise<P.UpdateAudio.Output> {
+    const result = await this.query<P.UpdateAudio.Output>(input, `UpdateAudio`);
+    return result.unwrap();
+  }
+
+  public async updateAudioPart(
+    input: P.UpdateAudioPart.Input,
+  ): Promise<P.UpdateAudioPart.Output> {
+    const result = await this.query<P.UpdateAudioPart.Output>(input, `UpdateAudioPart`);
+    return result.unwrap();
+  }
+
+  public async upsertEditionImpression(
+    input: P.UpsertEditionImpression.Input,
+  ): Promise<P.UpsertEditionImpression.Output> {
+    const result = await this.query<P.UpsertEditionImpression.Output>(
+      input,
+      `UpsertEditionImpression`,
+    );
+    return result.unwrap();
+  }
+
+  public createArtifactProductionVersionResult(
     input: P.CreateArtifactProductionVersion.Input,
   ): Promise<Result<P.CreateArtifactProductionVersion.Output>> {
     return this.query<P.CreateArtifactProductionVersion.Output>(
@@ -29,39 +118,41 @@ export default class DevClient extends Client {
     );
   }
 
-  public createEditionChapters(
+  public createEditionChaptersResult(
     input: P.CreateEditionChapters.Input,
   ): Promise<Result<P.CreateEditionChapters.Output>> {
     return this.query<P.CreateEditionChapters.Output>(input, `CreateEditionChapters`);
   }
 
-  public deleteEntities(
+  public deleteEntitiesResult(
     input: P.DeleteEntities.Input,
   ): Promise<Result<P.DeleteEntities.Output>> {
     return this.query<P.DeleteEntities.Output>(input, `DeleteEntities`);
   }
 
-  public editorDocumentMap(
+  public editorDocumentMapResult(
     input: P.EditorDocumentMap.Input,
   ): Promise<Result<P.EditorDocumentMap.Output>> {
     return this.query<P.EditorDocumentMap.Output>(input, `EditorDocumentMap`);
   }
 
-  public getAudios(input: P.GetAudios.Input): Promise<Result<P.GetAudios.Output>> {
+  public getAudiosResult(input: P.GetAudios.Input): Promise<Result<P.GetAudios.Output>> {
     return this.query<P.GetAudios.Output>(input, `GetAudios`);
   }
 
-  public getEdition(input: P.GetEdition.Input): Promise<Result<P.GetEdition.Output>> {
-    return this.query<P.GetEdition.Output>(input, `GetEdition`);
-  }
-
-  public getEditionImpression(
+  public getEditionImpressionResult(
     input: P.GetEditionImpression.Input,
   ): Promise<Result<P.GetEditionImpression.Output>> {
     return this.query<P.GetEditionImpression.Output>(input, `GetEditionImpression`);
   }
 
-  public latestArtifactProductionVersion(
+  public getEditionResult(
+    input: P.GetEdition.Input,
+  ): Promise<Result<P.GetEdition.Output>> {
+    return this.query<P.GetEdition.Output>(input, `GetEdition`);
+  }
+
+  public latestArtifactProductionVersionResult(
     input: P.LatestArtifactProductionVersion.Input,
   ): Promise<Result<P.LatestArtifactProductionVersion.Output>> {
     return this.query<P.LatestArtifactProductionVersion.Output>(
@@ -70,17 +161,19 @@ export default class DevClient extends Client {
     );
   }
 
-  public updateAudio(input: P.UpdateAudio.Input): Promise<Result<P.UpdateAudio.Output>> {
-    return this.query<P.UpdateAudio.Output>(input, `UpdateAudio`);
-  }
-
-  public updateAudioPart(
+  public updateAudioPartResult(
     input: P.UpdateAudioPart.Input,
   ): Promise<Result<P.UpdateAudioPart.Output>> {
     return this.query<P.UpdateAudioPart.Output>(input, `UpdateAudioPart`);
   }
 
-  public upsertEditionImpression(
+  public updateAudioResult(
+    input: P.UpdateAudio.Input,
+  ): Promise<Result<P.UpdateAudio.Output>> {
+    return this.query<P.UpdateAudio.Output>(input, `UpdateAudio`);
+  }
+
+  public upsertEditionImpressionResult(
     input: P.UpsertEditionImpression.Input,
   ): Promise<Result<P.UpsertEditionImpression.Output>> {
     return this.query<P.UpsertEditionImpression.Output>(input, `UpsertEditionImpression`);

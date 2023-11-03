@@ -21,6 +21,7 @@
   "dependencies": {
     "@apollo/client": "^3.5.8",
     "@friends-library/db": "workspace:*",
+    "@friends-library/pairql": "workspace:*",
     "@headlessui/react": "^1.4.3",
     "@heroicons/react": "^1.0.4",
     "classnames": "^2.3.1",

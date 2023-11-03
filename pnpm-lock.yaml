@@ -87,6 +87,7 @@ importers:
     specifiers:
       '@apollo/client': ^3.5.8
       '@friends-library/db': workspace:*
+      '@friends-library/pairql': workspace:*
       '@friends-library/theme': workspace:*
       '@friends-library/types': workspace:*
       '@headlessui/react': ^1.4.3
@@ -119,6 +120,7 @@ importers:
     dependencies:
       '@apollo/client': 3.7.6_gdcq4dv6opitr3wbfwyjmanyra
       '@friends-library/db': link:../../libs-ts/db
+      '@friends-library/pairql': link:../../libs-ts/pairql
       '@headlessui/react': 1.7.8_biqbaboplfbrettd7655fr4n2y
       '@heroicons/react': 1.0.6_react@18.2.0
       classnames: 2.3.2
@@ -165,7 +167,6 @@ importers:
       '@friends-library/adoc-lint': workspace:*
       '@friends-library/adoc-utils': workspace:*
       '@friends-library/cloud': workspace:*
-      '@friends-library/db': workspace:*
       '@friends-library/doc-artifacts': workspace:*
       '@friends-library/doc-css': workspace:*
       '@friends-library/doc-manifests': workspace:*
@@ -223,7 +224,6 @@ importers:
       '@friends-library/adoc-lint': link:../../libs-ts/adoc-lint
       '@friends-library/adoc-utils': link:../../libs-ts/adoc-utils
       '@friends-library/cloud': link:../../libs-ts/cloud
-      '@friends-library/db': link:../../libs-ts/db
       '@friends-library/doc-artifacts': link:../../libs-ts/doc-artifacts
       '@friends-library/doc-css': link:../../libs-ts/doc-css
       '@friends-library/doc-manifests': link:../../libs-ts/doc-manifests
@@ -12384,7 +12384,6 @@ packages:
 
   /@types/node/18.11.18:
     resolution: {integrity: sha512-DHQpWGjyQKSHj3ebjFI/wRKcqQcdR+MoFBygntYOZytCqNfkd2ZC4ARDJ2DQqhjH5p85Nnd3jhUJIXrszFX/JA==}
-    dev: true
 
   /@types/node/18.14.2:
     resolution: {integrity: sha512-1uEQxww3DaghA0RxqHx0O0ppVlo43pJhepY51OxuQIKHpjbnYLA7vcdwioNPzIqmC2u3I/dmylcqjlh0e7AyUA==}

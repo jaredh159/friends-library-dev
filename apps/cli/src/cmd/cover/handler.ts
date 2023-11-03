@@ -14,7 +14,7 @@ export default async function handler(argv: CoverOptions): Promise<void> {
 
   for (const dpc of dpcs) {
     hydrate.customCode(dpc);
-    const edition = (await api.getEdition(dpc.editionId)).unwrap();
+    const edition = await api.getEdition(dpc.editionId);
     const impression = edition.impression;
     if (!impression) {
       throw new Error(`No EditionImpression found for ${dpc.path}`);

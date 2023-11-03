@@ -6,7 +6,7 @@ interface Argv {
 }
 
 export default async function handler({ sha }: Argv): Promise<void> {
-  const result = await api.createArtifactProductionVersion({ version: sha });
+  const result = await api.createArtifactProductionVersionResult({ version: sha });
   result.with({
     success: () => log(c`\nSuccessfully added version {green ${sha}}\n`),
     error: (err) => {

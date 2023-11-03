@@ -45,7 +45,7 @@ export default async function publish(argv: PublishOptions): Promise<void> {
 
   const [COVER_PORT, productionRevision] = await Promise.all([
     argv.coverServerPort ? Promise.resolve(argv.coverServerPort) : coverServer.start(),
-    api.latestArtifactProductionVersion().then((res) => res.unwrap().version),
+    api.latestArtifactProductionVersion().then(({ version }) => version),
   ]);
 
   const [makeScreenshot, closeHeadlessBrowser] = await coverServer.screenshot(COVER_PORT);
@@ -126,7 +126,7 @@ export default async function publish(argv: PublishOptions): Promise<void> {
 }
 
 async function initialData(dpc: FsDocPrecursor): Promise<PublishData> {
-  const edition = (await api.getEdition(dpc.editionId)).unwrap();
+  const edition = await api.getEdition(dpc.editionId);
   const fileId = getFileId(dpc);
   const previousImpression = edition.impression
     ? {
@@ -369,10 +369,9 @@ async function saveEditionImpression(
 ): Promise<CloudFiles> {
   if (isEqual(impression.current, impression.previous)) {
     logDebug(`skipping save EditionImpression, all properties unchanged...`);
-    const result = await api.getEditionImpression(impression.current.id);
-    return result.unwrap().cloudFiles;
+    return (await api.getEditionImpression(impression.current.id)).cloudFiles;
   }
-  const result = await api.upsertEditionImpression(impression.current);
+  const result = await api.upsertEditionImpressionResult(impression.current);
   return result.mapOrRethrow(
     (i) => i.cloudFiles,
     async (err) => {
@@ -393,9 +392,9 @@ async function rollbackSaveEditionImpression(
   try {
     if (!impression.previous) {
       const id = impression.current.id;
-      (await api.deleteEntities({ case: `editionImpression`, id })).unwrap();
+      await api.deleteEntities({ case: `editionImpression`, id });
     } else {
-      (await api.upsertEditionImpression(impression.previous)).unwrap();
+      await api.upsertEditionImpression(impression.previous);
     }
     logAction(`rolled back save EditionImpression successfully`);
   } catch (err) {
@@ -443,7 +442,7 @@ async function uploadFiles(
 }
 
 async function replaceEditionChapters(dpc: FsDocPrecursor): Promise<void> {
-  const deleteRes = await api.deleteEntities({
+  const deleteRes = await api.deleteEntitiesResult({
     case: `editionChapters`,
     id: dpc.editionId,
   });
@@ -453,7 +452,7 @@ async function replaceEditionChapters(dpc: FsDocPrecursor): Promise<void> {
     );
   }
   const inputs = paperback.editionChapters(dpc);
-  const createRes = await api.createEditionChapters(inputs);
+  const createRes = await api.createEditionChaptersResult(inputs);
   if (!createRes.isError) {
     throw new Error(
       `Error creating EditionChapter entities for ${dpc.path}, (${createRes.error})`,

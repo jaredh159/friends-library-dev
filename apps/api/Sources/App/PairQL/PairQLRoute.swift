@@ -8,16 +8,24 @@ enum PairQLRoute: RouteHandler, RouteResponder {
     switch route {
     case .dev(let devRoute):
       return try await DevRoute.respond(to: devRoute, in: context)
+    case .admin(let adminRoute):
+      return try await AdminRoute.respond(to: adminRoute, in: context)
     }
   }
 
   case dev(DevRoute)
+  case admin(AdminRoute)
 
   static let router = OneOf {
     Route(.case(PairQLRoute.dev)) {
       Method.post
       Path { "dev" }
       DevRoute.router
+    }
+    Route(.case(PairQLRoute.admin)) {
+      Method.post
+      Path { "admin" }
+      AdminRoute.router
     }
   }
 
@@ -61,5 +69,8 @@ private func logOperation(_ route: PairQLRoute, _ request: Request) {
   case .dev:
     Current.logger
       .notice("PairQL request: \("Dev".magenta) \(operation.yellow)")
+  case .admin:
+    Current.logger
+      .notice("PairQL request: \("Admin".cyan) \(operation.yellow)")
   }
 }

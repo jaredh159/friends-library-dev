@@ -6,7 +6,10 @@ enum CodegenRoute: RouteHandler {
   struct Output: Content {
     struct Pair: Content {
       let decl: String
-      let fetcher: String
+      let resultFetcher: String
+      let unwrappedFetcher: String
+      let fnNameCamel: String
+      let fnNamePascal: String
     }
 
     var shared: [String: String]
@@ -17,6 +20,8 @@ enum CodegenRoute: RouteHandler {
     switch request.parameters.get("domain") {
     case "dev":
       return try await CodegenRoute.Dev.handler(request)
+    case "admin":
+      return try await CodegenRoute.Admin.handler(request)
     default:
       throw Abort(.notFound, reason: "invalid pairql domain")
     }
@@ -54,15 +59,29 @@ extension CodegenRoute.Output.Pair {
       decl = pairLines.joined(separator: "\n")
     }
 
-    var fetchName = "\(name)".regexReplace("_.*$", "")
+    let fnNamePascal = "\(name)".regexReplace("_.*$", "")
+    var fetchName = fnNamePascal
     let firstLetter = fetchName.removeFirst()
-    let functionName = String(firstLetter).lowercased() + fetchName
+    let fnNameCamel = String(firstLetter).lowercased() + fetchName
 
-    let fetcher = """
-    \(functionName)(input: P.\(name).Input): Promise<Result<P.\(name).Output>> {
+    let resultFetcher = """
+    __FN_NAME__(input: P.\(name).Input): Promise<Result<P.\(name).Output>> {
       return this.query<P.\(name).Output>(input, `\(P.name)`);
     }
     """
-    self = .init(decl: decl, fetcher: fetcher)
+
+    let unwrappedFetcher = """
+    async __FN_NAME__(input: P.\(name).Input): Promise<P.\(name).Output> {
+      const result = await this.query<P.\(name).Output>(input, `\(P.name)`);
+      return result.unwrap();
+    }
+    """
+    self = .init(
+      decl: decl,
+      resultFetcher: resultFetcher,
+      unwrappedFetcher: unwrappedFetcher,
+      fnNameCamel: fnNameCamel,
+      fnNamePascal: fnNamePascal
+    )
   }
 }

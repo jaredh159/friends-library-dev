@@ -2,7 +2,7 @@ import DevClient from '@friends-library/pairql/dev';
 import type { Handler } from '@netlify/functions';
 
 const handler: Handler = async () => {
-  const result = await client().editorDocumentMap();
+  const result = await client().editorDocumentMapResult();
   return result.reduce({
     success: (map) => ({ statusCode: 200, body: JSON.stringify(map) }),
     error: (error) => ({ statusCode: 500, body: JSON.stringify(error) }),
