@@ -12,7 +12,7 @@ import type { Audio } from './types';
 import type { AudioFsData } from './types';
 import { logDebug, logAction, logError } from '../../sub-log';
 import * as ffmpeg from '../../ffmpeg';
-import api, { type T as Api } from '../../client';
+import api, { type T } from '../../api-client';
 import * as cache from './cache';
 import * as m4bTool from './m4b';
 import getSrcFsData from './audio-fs-data';
@@ -206,7 +206,7 @@ async function updateEntities(audio: Audio, fsData: AudioFsData): Promise<void> 
   const hqCache = ensureCache(cached.HQ);
   const lqCache = ensureCache(cached.LQ);
 
-  const existingAudio: Api.UpdateAudio.Input = {
+  const existingAudio: T.UpdateAudio.Input = {
     id: audio.id,
     editionId: audio.edition.id,
     isIncomplete: audio.isIncomplete,
@@ -219,7 +219,7 @@ async function updateEntities(audio: Audio, fsData: AudioFsData): Promise<void> 
     reader: audio.reader,
   };
 
-  const updatedAudio: Api.UpdateAudio.Input = {
+  const updatedAudio: T.UpdateAudio.Input = {
     ...existingAudio,
     m4bSizeHq: assertDefined(hqCache.m4bSize),
     m4bSizeLq: assertDefined(lqCache.m4bSize),
@@ -236,7 +236,7 @@ async function updateEntities(audio: Audio, fsData: AudioFsData): Promise<void> 
 
   for (let index = 0; index < audio.parts.length; index++) {
     const part = assertDefined(audio.parts[index]);
-    const existingPart: Api.UpdateAudioPart.Input = {
+    const existingPart: T.UpdateAudioPart.Input = {
       id: part.id,
       audioId: audio.id,
       title: part.title,
@@ -249,7 +249,7 @@ async function updateEntities(audio: Audio, fsData: AudioFsData): Promise<void> 
       mp3SizeLq: part.mp3SizeLq,
     };
 
-    const updatedPart: Api.UpdateAudioPart.Input = {
+    const updatedPart: T.UpdateAudioPart.Input = {
       ...existingPart,
       mp3SizeHq: assertDefined(cache.getPart(fsData, index).HQ?.mp3Size),
       mp3SizeLq: assertDefined(cache.getPart(fsData, index).LQ?.mp3Size),

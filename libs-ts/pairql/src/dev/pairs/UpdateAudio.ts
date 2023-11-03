@@ -1,4 +1,5 @@
 // auto-generated, do not edit
+
 export namespace UpdateAudio {
   export interface Input {
     id: UUID;

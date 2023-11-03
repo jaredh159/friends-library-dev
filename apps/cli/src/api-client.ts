@@ -1,9 +1,4 @@
-import fetch from 'cross-fetch';
-import * as db from '@friends-library/db';
+import DevClient, { T } from '@friends-library/pairql/dev';
 
-const client = db.getClient({ env: `infer_node`, process, fetch });
-
-export default client;
-
-export const gql = db.gql;
-export const writable = db.writable;
+export default DevClient.node(process);
+export { T };

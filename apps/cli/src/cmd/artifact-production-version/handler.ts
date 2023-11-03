@@ -1,5 +1,5 @@
 import { c, log } from 'x-chalk';
-import api from '../../client';
+import api from '../../api-client';
 
 interface Argv {
   sha: string;

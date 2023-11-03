@@ -23,7 +23,7 @@ extension Configure {
     app.migrations.add(CreateIsbns())
     app.migrations.add(CreateAudios())
     app.migrations.add(CreateAudioParts())
-    app.migrations.add(CreateEditionChapters())
+    app.migrations.add(CreateEditionChaptersTable())
     app.migrations.add(CreateRelatedDocuments())
     app.migrations.add(AddTokenScopes())
     app.migrations.add(CreateFriendResidenceDurations())

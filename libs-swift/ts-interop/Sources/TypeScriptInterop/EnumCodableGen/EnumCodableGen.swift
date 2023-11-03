@@ -33,6 +33,7 @@ public extension EnumCodableGen {
 
 // helpers
 
+// TODO: test if Swift._typeName(_:qualified:) could replace this
 func typeName(_ type: Any.Type) -> String {
   String(reflecting: type)
     .split(separator: ".")

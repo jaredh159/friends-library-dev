@@ -8,12 +8,12 @@ struct UpdateAudio: Pair {
     let editionId: Edition.Id
     let reader: String
     let isIncomplete: Bool
-    let mp3ZipSizeHq: Int
-    let mp3ZipSizeLq: Int
-    let m4bSizeHq: Int
-    let m4bSizeLq: Int
-    let externalPlaylistIdHq: Int64?
-    let externalPlaylistIdLq: Int64?
+    let mp3ZipSizeHq: Bytes
+    let mp3ZipSizeLq: Bytes
+    let m4bSizeHq: Bytes
+    let m4bSizeLq: Bytes
+    let externalPlaylistIdHq: Audio.ExternalPlaylistId?
+    let externalPlaylistIdLq: Audio.ExternalPlaylistId?
   }
 
   typealias Output = Infallible
@@ -21,15 +21,17 @@ struct UpdateAudio: Pair {
 
 extension UpdateAudio: PairQL.Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
+    try context.verify(Self.auth)
     let audio = try await Audio.find(input.id)
     audio.editionId = input.editionId
     audio.reader = input.reader
-    audio.isIncomplete = .init(input.isIncomplete)
-    audio.mp3ZipSizeHq = .init(input.mp3ZipSizeHq)
-    audio.mp3ZipSizeLq = .init(input.mp3ZipSizeLq)
-    audio.m4bSizeHq = .init(input.m4bSizeHq)
-    audio.externalPlaylistIdHq = input.externalPlaylistIdHq.map { .init($0) }
-    audio.externalPlaylistIdLq = input.externalPlaylistIdLq.map { .init($0) }
+    audio.isIncomplete = input.isIncomplete
+    audio.mp3ZipSizeHq = input.mp3ZipSizeHq
+    audio.mp3ZipSizeLq = input.mp3ZipSizeLq
+    audio.m4bSizeHq = input.m4bSizeHq
+    audio.m4bSizeLq = input.m4bSizeLq
+    audio.externalPlaylistIdHq = input.externalPlaylistIdHq
+    audio.externalPlaylistIdLq = input.externalPlaylistIdLq
     guard audio.isValid else { throw ModelError.invalidEntity }
     try await audio.save()
     return .success

@@ -14,6 +14,9 @@ export type PrintSize = (typeof PRINT_SIZES)[number];
 export const PRINT_SIZE_VARIANTS = [`s`, `m`, `xl`, `xl--condensed`] as const;
 export type PrintSizeVariant = (typeof PRINT_SIZE_VARIANTS)[number];
 
+export const DB_PRINT_SIZE_VARIANTS = [`s`, `m`, `xl`, `xlCondensed`] as const;
+export type DbPrintSizeVariant = (typeof DB_PRINT_SIZE_VARIANTS)[number];
+
 export const AUDIO_QUALITIES = [`HQ`, `LQ`] as const;
 export type AudioQuality = (typeof AUDIO_QUALITIES)[number];
 
@@ -33,6 +36,24 @@ export interface CoverProps {
   showGuides?: boolean;
   scope?: string;
   scaler?: number;
+}
+
+export function toDbPrintSizeVariant(variant: PrintSizeVariant): DbPrintSizeVariant {
+  switch (variant) {
+    case `xl--condensed`:
+      return `xlCondensed`;
+    default:
+      return variant;
+  }
+}
+
+export function fromDbPrintSizeVariant(variant: DbPrintSizeVariant): PrintSizeVariant {
+  switch (variant) {
+    case `xlCondensed`:
+      return `xl--condensed`;
+    default:
+      return variant;
+  }
 }
 
 export function isPrintSize(x: unknown): x is PrintSize {

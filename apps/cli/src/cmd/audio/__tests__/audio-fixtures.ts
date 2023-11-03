@@ -1,7 +1,4 @@
 import type { Audio } from '../types';
-import { EditionType, Lang } from '../../../graphql/globalTypes';
-
-// see below for query used to generate these
 
 export const turfordEn: Audio = {
   id: `26e7c6d5-93b0-43d1-8017-4d3efadd4a5b`,
@@ -48,7 +45,7 @@ export const turfordEn: Audio = {
   ],
   friend: {
     slug: `hugh-turford`,
-    lang: Lang.en,
+    lang: `en`,
     name: `Hugh Turford`,
     alphabeticalName: `Turford, Hugh`,
     isCompilations: false,
@@ -64,7 +61,7 @@ export const turfordEn: Audio = {
   edition: {
     path: `en/hugh-turford/walk-in-the-spirit/updated`,
     id: `6e2e1153-9c88-40f2-b469-05bf25e03ad7`,
-    type: EditionType.updated,
+    type: `updated`,
     coverImagePath: `en/hugh-turford/walk-in-the-spirit/updated/images/cover--1400x1400.png`,
   },
   externalPlaylistIdHq: 971886379,
@@ -93,7 +90,7 @@ export const story: Audio = {
   ],
   friend: {
     slug: `thomas-story`,
-    lang: Lang.en,
+    lang: `en`,
     name: `Thomas Story`,
     alphabeticalName: `Story, Thomas`,
     isCompilations: false,
@@ -109,7 +106,7 @@ export const story: Audio = {
   edition: {
     path: `en/thomas-story/journal-selection/updated`,
     id: `7b2fa5a7-9a56-4a5f-8bd3-929a97875485`,
-    type: EditionType.updated,
+    type: `updated`,
     coverImagePath: `en/thomas-story/journal-selection/updated/images/cover--1400x1400.png`,
   },
   m4bSizeLq: 24234464,
@@ -137,7 +134,7 @@ export const webbEs: Audio = {
   ],
   friend: {
     slug: `elizabeth-webb`,
-    lang: Lang.es,
+    lang: `es`,
     name: `Elizabeth Webb`,
     alphabeticalName: `Webb, Elizabeth`,
     isCompilations: false,
@@ -154,7 +151,7 @@ export const webbEs: Audio = {
     path: `es/elizabeth-webb/carta/updated`,
     id: `ee9f4b22-f042-47b3-b817-023992c01349`,
     coverImagePath: `es/elizabeth-webb/carta/updated/images/cover--1400x1400.png`,
-    type: EditionType.updated,
+    type: `updated`,
   },
   m4bSizeLq: 22051722,
 };
@@ -292,7 +289,7 @@ export const titipEn: Audio = {
   ],
   friend: {
     slug: `compilations`,
-    lang: Lang.en,
+    lang: `en`,
     name: `Compilations`,
     alphabeticalName: `Compilations`,
     isCompilations: true,
@@ -308,7 +305,7 @@ export const titipEn: Audio = {
   edition: {
     path: `en/compilations/truth-in-the-inward-parts-v1/updated`,
     id: `5a26698d-29bc-4738-beb7-5f65fc5de26a`,
-    type: EditionType.updated,
+    type: `updated`,
     coverImagePath: `en/compilations/truth-in-the-inward-parts-v1/updated/images/cover--1400x1400.png`,
   },
   externalPlaylistIdHq: 1009946857,
@@ -337,7 +334,7 @@ export const wayOfLife: Audio = {
   ],
   friend: {
     slug: `charles-marshall`,
-    lang: Lang.en,
+    lang: `en`,
     name: `Charles Marshall`,
     alphabeticalName: `Marshall, Charles`,
     isCompilations: false,
@@ -353,7 +350,7 @@ export const wayOfLife: Audio = {
   edition: {
     path: `en/charles-marshall/way-of-life-revealed/updated`,
     id: `e89669d8-94a3-4830-86b1-0a56348031b8`,
-    type: EditionType.updated,
+    type: `updated`,
     coverImagePath: `en/charles-marshall/way-of-life-revealed/updated/images/cover--1400x1400.png`,
   },
   m4bSizeLq: 34387276,

@@ -60,4 +60,12 @@ extension Edition {
         .first()
     })
   }
+
+  func impression() async throws -> EditionImpression? {
+    try await impression.useLoaded(or: {
+      try await EditionImpression.query()
+        .where(.editionId == id)
+        .first()
+    })
+  }
 }

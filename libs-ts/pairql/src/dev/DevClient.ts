@@ -29,20 +29,36 @@ export default class DevClient extends Client {
     );
   }
 
+  public createEditionChapters(
+    input: P.CreateEditionChapters.Input,
+  ): Promise<Result<P.CreateEditionChapters.Output>> {
+    return this.query<P.CreateEditionChapters.Output>(input, `CreateEditionChapters`);
+  }
+
+  public deleteEntities(
+    input: P.DeleteEntities.Input,
+  ): Promise<Result<P.DeleteEntities.Output>> {
+    return this.query<P.DeleteEntities.Output>(input, `DeleteEntities`);
+  }
+
   public editorDocumentMap(
     input: P.EditorDocumentMap.Input,
   ): Promise<Result<P.EditorDocumentMap.Output>> {
     return this.query<P.EditorDocumentMap.Output>(input, `EditorDocumentMap`);
   }
 
-  public updateAudioPart(
-    input: P.UpdateAudioPart.Input,
-  ): Promise<Result<P.UpdateAudioPart.Output>> {
-    return this.query<P.UpdateAudioPart.Output>(input, `UpdateAudioPart`);
-  }
-
   public getAudios(input: P.GetAudios.Input): Promise<Result<P.GetAudios.Output>> {
     return this.query<P.GetAudios.Output>(input, `GetAudios`);
+  }
+
+  public getEdition(input: P.GetEdition.Input): Promise<Result<P.GetEdition.Output>> {
+    return this.query<P.GetEdition.Output>(input, `GetEdition`);
+  }
+
+  public getEditionImpression(
+    input: P.GetEditionImpression.Input,
+  ): Promise<Result<P.GetEditionImpression.Output>> {
+    return this.query<P.GetEditionImpression.Output>(input, `GetEditionImpression`);
   }
 
   public latestArtifactProductionVersion(
@@ -56,5 +72,17 @@ export default class DevClient extends Client {
 
   public updateAudio(input: P.UpdateAudio.Input): Promise<Result<P.UpdateAudio.Output>> {
     return this.query<P.UpdateAudio.Output>(input, `UpdateAudio`);
+  }
+
+  public updateAudioPart(
+    input: P.UpdateAudioPart.Input,
+  ): Promise<Result<P.UpdateAudioPart.Output>> {
+    return this.query<P.UpdateAudioPart.Output>(input, `UpdateAudioPart`);
+  }
+
+  public upsertEditionImpression(
+    input: P.UpsertEditionImpression.Input,
+  ): Promise<Result<P.UpsertEditionImpression.Output>> {
+    return this.query<P.UpsertEditionImpression.Output>(input, `UpsertEditionImpression`);
   }
 }

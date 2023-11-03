@@ -37,7 +37,28 @@ export default class Result<T> {
     }
   }
 
-  public valueOrThrow(): T {
+  public mapOrThrow<K>(mapFn: (value: T) => K): K {
+    return this.reduce({
+      success: mapFn,
+      error: (error) => {
+        throw error;
+      },
+    });
+  }
+
+  public async mapOrRethrow<K>(
+    mapFn: (value: T) => K,
+    errFn: (error: PqlError) => Promise<never>,
+  ): Promise<K> {
+    if (this.data.type === `success`) {
+      return mapFn(this.data.value);
+    } else {
+      await errFn(this.data.error);
+      throw this.data.error; // keep typescript happy
+    }
+  }
+
+  public unwrap(): T {
     if (this.data.type === `success`) {
       return this.data.value;
     }

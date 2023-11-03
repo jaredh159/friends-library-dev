@@ -8,7 +8,7 @@ import { PRINT_SIZE_VARIANTS } from '@friends-library/types';
 import { paperbackInterior as paperbackManifest } from '@friends-library/doc-manifests';
 import type { PrintSizeVariant, PrintSize } from '@friends-library/types';
 import type { FsDocPrecursor } from '@friends-library/dpc-fs';
-import type { CreateEditionChapterInput } from '../../graphql/globalTypes';
+import type { T } from '../../api-client';
 import { logDebug } from '../../sub-log';
 
 type SinglePages = { [K in PrintSizeVariant]: number };
@@ -65,7 +65,7 @@ export async function publish(
   };
 }
 
-export function editionChapters(dpc: FsDocPrecursor): CreateEditionChapterInput[] {
+export function editionChapters(dpc: FsDocPrecursor): T.CreateEditionChapters.Input {
   return evaluate.toPdfSrcHtml(dpc).chapters.map((chapterResult, index) => ({
     editionId: dpc.editionId,
     order: index + 1,
