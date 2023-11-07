@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { OrderSource, PrintJobStatus } from '../../graphql/globalTypes';
 import { money } from '../../lib/money';
-import { useFetchResult } from '../../lib/query';
+import { useQuery } from '../../lib/query';
 import api, { type T } from '../../api-client';
 
 interface Props {
@@ -36,7 +36,7 @@ export const ListOrders: React.FC<Props> = ({ orders }) => (
 );
 
 const ListOrdersContainer: React.FC = () => {
-  const query = useFetchResult(() => api.listOrdersResult());
+  const query = useQuery(() => api.listOrdersResult());
   if (!query.isResolved) {
     return query.unresolvedElement;
   }

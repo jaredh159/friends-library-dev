@@ -5,20 +5,7 @@ import TaggedMoney
 struct ListTokens: Pair {
   static var auth: Scope = .queryTokens
 
-  struct TokenOutput: PairOutput {
-    struct ScopeOutput: PairNestable {
-      var id: TokenScope.Id
-      var type: Scope
-    }
-
-    var id: Token.Id
-    var description: String
-    var uses: Int?
-    var scopes: [ScopeOutput]
-    var createdAt: Date
-  }
-
-  typealias Output = [TokenOutput]
+  typealias Output = [EditToken.Output]
 }
 
 extension ListTokens: NoInputResolver {
@@ -29,6 +16,7 @@ extension ListTokens: NoInputResolver {
       let scopes = try await token.scopes()
       return .init(
         id: token.id,
+        value: token.value,
         description: token.description,
         uses: token.uses,
         scopes: scopes.map { .init(id: $0.id, type: $0.scope) },

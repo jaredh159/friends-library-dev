@@ -22,11 +22,13 @@ enum AdminRoute: PairRoute {
 enum AuthedAdminRoute: PairRoute {
   case editDocument(Document.Id)
   case editFriend(Friend.Id)
+  case editToken(Token.Id)
   case getOrder(Order.Id)
   case listDocuments
   case listFriends
   case listOrders
   case listTokens
+  case orderEditions
   case selectableDocuments
 
   static let router: AnyParserPrinter<URLRequestData, AuthedAdminRoute> = OneOf {
@@ -37,6 +39,10 @@ enum AuthedAdminRoute: PairRoute {
     Route(/Self.editFriend) {
       Operation(EditFriend.self)
       Body(.input(EditFriend.self))
+    }
+    Route(/Self.editToken) {
+      Operation(EditToken.self)
+      Body(.input(EditToken.self))
     }
     Route(/Self.getOrder) {
       Operation(GetOrder.self)
@@ -53,6 +59,9 @@ enum AuthedAdminRoute: PairRoute {
     }
     Route(/Self.listTokens) {
       Operation(ListTokens.self)
+    }
+    Route(/Self.orderEditions) {
+      Operation(OrderEditions.self)
     }
     Route(/Self.selectableDocuments) {
       Operation(SelectableDocuments.self)
@@ -74,6 +83,9 @@ extension AdminRoute: RouteResponder {
       case .editFriend(let id):
         let output = try await EditFriend.resolve(with: id, in: authed)
         return try respond(with: output)
+      case .editToken(let id):
+        let output = try await EditToken.resolve(with: id, in: authed)
+        return try respond(with: output)
       case .getOrder(let id):
         let output = try await GetOrder.resolve(with: id, in: authed)
         return try respond(with: output)
@@ -88,6 +100,9 @@ extension AdminRoute: RouteResponder {
         return try respond(with: output)
       case .listTokens:
         let output = try await ListTokens.resolve(in: authed)
+        return try respond(with: output)
+      case .orderEditions:
+        let output = try await OrderEditions.resolve(in: authed)
         return try respond(with: output)
       case .selectableDocuments:
         let output = try await SelectableDocuments.resolve(in: authed)

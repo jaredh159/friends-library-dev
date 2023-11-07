@@ -1,7 +1,7 @@
 import cx from 'classnames';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useFetchResult } from '../../lib/query';
+import { useQuery } from '../../lib/query';
 import api, { type T } from '../../api-client';
 import { Lang } from '../../graphql/globalTypes';
 import TextInput from '../TextInput';
@@ -59,7 +59,7 @@ const ListDocuments: React.FC<Props> = ({ documents }) => {
 // container
 
 const ListDocumentsContainer: React.FC = () => {
-  const query = useFetchResult(() => api.listDocumentsResult());
+  const query = useQuery(() => api.listDocumentsResult());
   if (!query.isResolved) {
     return query.unresolvedElement;
   }

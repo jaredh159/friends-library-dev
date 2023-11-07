@@ -1,11 +1,11 @@
 import React from 'react';
-import { useFetchResult } from '../../lib/query';
+import { useQuery } from '../../lib/query';
 import * as empty from '../../lib/empty';
 import api from '../../api-client';
 import { EditFriend } from './EditFriend';
 
 const CreateFriend: React.FC = () => {
-  const query = useFetchResult(() => api.selectableDocumentsResult());
+  const query = useQuery(() => api.selectableDocumentsResult());
   if (!query.isResolved) {
     return query.unresolvedElement;
   }

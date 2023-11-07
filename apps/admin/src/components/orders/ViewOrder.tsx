@@ -2,7 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 import { useParams } from 'react-router-dom';
 import { money } from '../../lib/money';
-import { useFetchResult } from '../../lib/query';
+import { useQuery } from '../../lib/query';
 import api, { type T } from '../../api-client';
 
 interface Props {
@@ -149,7 +149,7 @@ export const ViewOrder: React.FC<Props> = ({ order }) => (
 
 const ViewOrderContainer: React.FC = () => {
   const { id = `` } = useParams<{ id: UUID }>();
-  const query = useFetchResult(() => api.getOrderResult(id));
+  const query = useQuery(() => api.getOrderResult(id));
 
   if (!query.isResolved) {
     return query.unresolvedElement;

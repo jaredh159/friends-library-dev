@@ -2,7 +2,7 @@ import cx from 'classnames';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { PlusCircleIcon } from '@heroicons/react/solid';
-import { useFetchResult } from '../../lib/query';
+import { useQuery } from '../../lib/query';
 import api, { type T } from '../../api-client';
 import { Lang } from '../../graphql/globalTypes';
 import TextInput from '../TextInput';
@@ -70,7 +70,7 @@ const ListFriends: React.FC<Props> = ({ friends }) => {
 // container
 
 const ListFriendsContainer: React.FC = () => {
-  const query = useFetchResult(() => api.listFriendsResult());
+  const query = useQuery(() => api.listFriendsResult());
   if (!query.isResolved) {
     return query.unresolvedElement;
   }

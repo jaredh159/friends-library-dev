@@ -4,6 +4,7 @@ extension CodegenRoute.Admin: CodegenRouteHandler {
   static var sharedTypes: [(String, Any.Type)] {
     [
       ("SelectableDocument", SelectableDocuments.SelectableDocument.self),
+      // todo... why all the `Editable*` prefixes? ¯\_(ツ)_/¯
       ("EditableAudioPart", EditDocument.EditAudioPart.self),
       ("EditableAudio", EditDocument.EditAudio.self),
       ("EditableEdition", EditDocument.EditEdition.self),
@@ -18,11 +19,13 @@ extension CodegenRoute.Admin: CodegenRouteHandler {
     [
       EditDocument.self,
       EditFriend.self,
+      EditToken.self,
       GetOrder.self,
       ListDocuments.self,
       ListFriends.self,
       ListOrders.self,
       ListTokens.self,
+      OrderEditions.self,
       SelectableDocuments.self,
     ]
   }

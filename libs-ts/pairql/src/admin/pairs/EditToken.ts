@@ -1,9 +1,9 @@
 // auto-generated, do not edit
 
-export namespace ListTokens {
-  export type Input = void;
+export namespace EditToken {
+  export type Input = UUID;
 
-  export type Output = Array<{
+  export interface Output {
     id: UUID;
     value: UUID;
     description: string;
@@ -24,5 +24,5 @@ export namespace ListTokens {
         | 'mutateTokens';
     }>;
     createdAt: ISODateString;
-  }>;
+  }
 }

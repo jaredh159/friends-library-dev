@@ -30,6 +30,11 @@ export default class AdminClient extends Client {
     return result.unwrap();
   }
 
+  public async editToken(input: P.EditToken.Input): Promise<P.EditToken.Output> {
+    const result = await this.query<P.EditToken.Output>(input, `EditToken`);
+    return result.unwrap();
+  }
+
   public async getOrder(input: P.GetOrder.Input): Promise<P.GetOrder.Output> {
     const result = await this.query<P.GetOrder.Output>(input, `GetOrder`);
     return result.unwrap();
@@ -57,6 +62,13 @@ export default class AdminClient extends Client {
     return result.unwrap();
   }
 
+  public async orderEditions(
+    input: P.OrderEditions.Input,
+  ): Promise<P.OrderEditions.Output> {
+    const result = await this.query<P.OrderEditions.Output>(input, `OrderEditions`);
+    return result.unwrap();
+  }
+
   public async selectableDocuments(
     input: P.SelectableDocuments.Input,
   ): Promise<P.SelectableDocuments.Output> {
@@ -77,6 +89,10 @@ export default class AdminClient extends Client {
     input: P.EditFriend.Input,
   ): Promise<Result<P.EditFriend.Output>> {
     return this.query<P.EditFriend.Output>(input, `EditFriend`);
+  }
+
+  public editTokenResult(input: P.EditToken.Input): Promise<Result<P.EditToken.Output>> {
+    return this.query<P.EditToken.Output>(input, `EditToken`);
   }
 
   public getOrderResult(input: P.GetOrder.Input): Promise<Result<P.GetOrder.Output>> {
@@ -105,6 +121,12 @@ export default class AdminClient extends Client {
     input: P.ListTokens.Input,
   ): Promise<Result<P.ListTokens.Output>> {
     return this.query<P.ListTokens.Output>(input, `ListTokens`);
+  }
+
+  public orderEditionsResult(
+    input: P.OrderEditions.Input,
+  ): Promise<Result<P.OrderEditions.Output>> {
+    return this.query<P.OrderEditions.Output>(input, `OrderEditions`);
   }
 
   public selectableDocumentsResult(

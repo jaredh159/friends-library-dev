@@ -1,22 +1,17 @@
 import { v4 as uuid } from 'uuid';
 import type { Scope as TokenScope } from '../graphql/globalTypes';
-import type {
-  EditableRelatedDocument,
-  EditableToken,
-  EditableTokenScope,
-} from '../types';
+import type { EditableRelatedDocument, EditableTokenScope } from '../types';
 import { type T } from '../api-client';
-import { EditionType, Gender, Lang } from '../graphql/globalTypes';
 
 export function friend(): T.EditableFriend {
   return {
-    lang: Lang.en,
+    lang: `en`,
     id: clientGeneratedId(),
     name: ``,
     slug: ``,
     born: undefined,
     died: undefined,
-    gender: Gender.male,
+    gender: `male`,
     description: ``,
     published: undefined,
     quotes: [],
@@ -44,7 +39,7 @@ export function edition(_documentId: UUID): T.EditableEdition {
     // __typename: `Edition`,
     id: clientGeneratedId(),
     isDraft: true,
-    type: EditionType.updated,
+    type: `updated`,
     paperbackOverrideSize: undefined,
     paperbackSplits: undefined,
     isbn: undefined,
@@ -167,14 +162,13 @@ export function documentTag(
   };
 }
 
-export function token(): EditableToken {
+export function token(): T.EditToken.Output {
   return {
-    __typename: `Token`,
     id: clientGeneratedId(),
     createdAt: new Date().toISOString(),
     description: ``,
     value: uuid(),
-    uses: null,
+    uses: undefined,
     scopes: [],
   };
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 import { Link, useNavigate } from 'react-router-dom';
 import { PlusCircleIcon } from '@heroicons/react/solid';
-import { useFetchResult } from '../../lib/query';
+import { useQuery } from '../../lib/query';
 import api, { type T } from '../../api-client';
 import { Scope as TokenScope } from '../../graphql/globalTypes';
 import PillButton from '../PillButton';
@@ -54,7 +54,7 @@ const ListTokens: React.FC<Props> = ({ tokens }) => {
 };
 
 const ListTokensContainer: React.FC = () => {
-  const query = useFetchResult(() => api.listTokensResult());
+  const query = useQuery(() => api.listTokensResult());
   if (!query.isResolved) {
     return query.unresolvedElement;
   }

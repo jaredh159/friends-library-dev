@@ -2,7 +2,7 @@ import React, { useReducer } from 'react';
 import isEqual from 'lodash.isequal';
 import { useParams } from 'react-router-dom';
 import type { Reducer, ReducerReplace } from '../../types';
-import { useFetchResult } from '../../lib/query';
+import { useQuery } from '../../lib/query';
 import TextInput from '../TextInput';
 import LabeledSelect from '../LabeledSelect';
 import reducer, { isValidYear } from '../../lib/reducer';
@@ -286,7 +286,7 @@ export const EditFriend: React.FC<Props> = ({
 
 const EditFriendContainer: React.FC = () => {
   const { id = `` } = useParams<{ id: UUID }>();
-  const query = useFetchResult(() => api.editFriendResult(id));
+  const query = useQuery(() => api.editFriendResult(id));
   if (!query.isResolved) {
     return query.unresolvedElement;
   }

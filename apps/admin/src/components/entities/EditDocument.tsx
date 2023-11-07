@@ -3,7 +3,7 @@ import isEqual from 'lodash.isequal';
 import { useParams } from 'react-router-dom';
 import type { ReducerReplace, Reducer } from '../../types';
 import TextInput from '../TextInput';
-import { useFetchResult } from '../../lib/query';
+import { useQuery } from '../../lib/query';
 import reducer from '../../lib/reducer';
 import { Lang } from '../../graphql/globalTypes';
 import api, { type T } from '../../api-client';
@@ -226,7 +226,7 @@ const EditDocumentContainer: React.FC = () => {
     reducer,
     null as any,
   );
-  const query = useFetchResult(() => api.editDocumentResult(id));
+  const query = useQuery(() => api.editDocumentResult(id));
 
   if (!query.isResolved) {
     return query.unresolvedElement;
