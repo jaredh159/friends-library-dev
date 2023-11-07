@@ -68,4 +68,20 @@ extension Edition {
         .first()
     })
   }
+
+  func isbn() async throws -> Isbn? {
+    try await isbn.useLoaded(or: {
+      try await Isbn.query()
+        .where(.editionId == id)
+        .first()
+    })
+  }
+
+  func audio() async throws -> Audio? {
+    try await audio.useLoaded(or: {
+      try await Audio.query()
+        .where(.editionId == id)
+        .first()
+    })
+  }
 }

@@ -17,13 +17,17 @@ extension ListFriends: NoInputResolver {
   static func resolve(in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
     let friends = try await Friend.query().all()
-    return friends.map { friend in
-      .init(
-        id: friend.id,
-        name: friend.name,
-        alphabeticalName: friend.alphabeticalName,
-        lang: friend.lang
-      )
-    }
+    return friends.map(ListFriends.FriendOutput.init)
+  }
+}
+
+extension ListFriends.FriendOutput {
+  init(model friend: Friend) {
+    self.init(
+      id: friend.id,
+      name: friend.name,
+      alphabeticalName: friend.alphabeticalName,
+      lang: friend.lang
+    )
   }
 }

@@ -1,4 +1,4 @@
-import Duet
+import DuetSQL
 import TaggedMoney
 
 final class OrderItem: Codable {
@@ -26,5 +26,17 @@ final class OrderItem: Codable {
     self.editionId = editionId
     self.quantity = quantity
     self.unitPrice = unitPrice
+  }
+}
+
+// loaders
+
+extension OrderItem {
+  func edition() async throws -> Edition {
+    try await edition.useLoaded(or: {
+      try await Edition.query()
+        .where(.id == editionId)
+        .first()
+    })
   }
 }

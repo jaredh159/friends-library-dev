@@ -1,6 +1,6 @@
 import Graphiti
 
-struct ShippingAddress: Codable {
+struct ShippingAddress: Codable, Equatable {
   var name: String
   var street: String
   var street2: String?

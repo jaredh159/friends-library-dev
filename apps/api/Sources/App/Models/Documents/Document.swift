@@ -97,4 +97,28 @@ extension Document {
         .first()
     })
   }
+
+  func editions() async throws -> [Edition] {
+    try await editions.useLoaded(or: {
+      try await Edition.query()
+        .where(.documentId == id)
+        .all()
+    })
+  }
+
+  func tags() async throws -> [DocumentTag] {
+    try await tags.useLoaded(or: {
+      try await DocumentTag.query()
+        .where(.documentId == id)
+        .all()
+    })
+  }
+
+  func relatedDocuments() async throws -> [RelatedDocument] {
+    try await relatedDocuments.useLoaded(or: {
+      try await RelatedDocument.query()
+        .where(.parentDocumentId == id)
+        .all()
+    })
+  }
 }

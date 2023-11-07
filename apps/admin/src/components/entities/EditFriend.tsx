@@ -1,44 +1,32 @@
 import React, { useReducer } from 'react';
 import isEqual from 'lodash.isequal';
 import { useParams } from 'react-router-dom';
-import { gql } from '@apollo/client';
-import type {
-  EditFriend as EditFriendQuery,
-  EditFriendVariables,
-} from '../../graphql/EditFriend';
-import type {
-  EditableFriend,
-  Reducer,
-  ReducerReplace,
-  SelectableDocuments,
-} from '../../types';
-import { useQueryResult } from '../../lib/query';
+import type { Reducer, ReducerReplace } from '../../types';
+import { useFetchResult } from '../../lib/query';
 import TextInput from '../TextInput';
 import LabeledSelect from '../LabeledSelect';
-import { Gender, Lang } from '../../graphql/globalTypes';
 import reducer, { isValidYear } from '../../lib/reducer';
-import {
-  EDIT_DOCUMENT_FIELDS,
-  SELECTABLE_DOCUMENTS_FIELDS,
-  writable,
-} from '../../client';
 import * as empty from '../../lib/empty';
 import SaveChangesBar from '../SaveChangesBar';
 import LabeledToggle from '../LabeledToggle';
+import api, { type T } from '../../api-client';
 import * as sort from './sort';
 import { EditDocument } from './EditDocument';
 import NestedCollection from './NestedCollection';
 
 interface Props {
-  friend: EditableFriend;
-  selectableDocuments: SelectableDocuments;
+  friend: T.EditableFriend;
+  selectableDocuments: T.SelectableDocument[];
 }
 
 export const EditFriend: React.FC<Props> = ({
   friend: initialFriend,
   selectableDocuments,
 }) => {
-  const [friend, dispatch] = useReducer<Reducer<EditableFriend>>(reducer, initialFriend);
+  const [friend, dispatch] = useReducer<Reducer<T.EditableFriend>>(
+    reducer,
+    initialFriend,
+  );
   const replace: ReducerReplace = (path, preprocess) => (value) =>
     dispatch({
       type: `replace_value`,
@@ -62,8 +50,8 @@ export const EditFriend: React.FC<Props> = ({
             selected={friend.lang}
             setSelected={replace(`lang`)}
             options={[
-              [Lang.en, `English`],
-              [Lang.es, `Spanish`],
+              [`en`, `English`],
+              [`es`, `Spanish`],
             ]}
           />
         )}
@@ -92,9 +80,9 @@ export const EditFriend: React.FC<Props> = ({
           selected={friend.gender}
           setSelected={replace(`gender`)}
           options={[
-            [Gender.male, `male`],
-            [Gender.female, `female`],
-            [Gender.mixed, `mixed (compilations)`],
+            [`male`, `male`],
+            [`female`, `female`],
+            [`mixed`, `mixed (compilations)`],
           ]}
           className="w-1/2"
         />
@@ -139,7 +127,7 @@ export const EditFriend: React.FC<Props> = ({
           dispatch({
             type: `add_item`,
             at: `residences`,
-            value: empty.friendResidence(friend),
+            value: empty.friendResidence(),
           })
         }
         onDelete={deleteFrom(`residences`)}
@@ -183,7 +171,7 @@ export const EditFriend: React.FC<Props> = ({
                 dispatch({
                   type: `add_item`,
                   at: `residences[${residenceIndex}].durations`,
-                  value: empty.friendResidenceDuration(residence),
+                  value: empty.friendResidenceDuration(),
                 })
               }
               onDelete={deleteFrom(`residences[${residenceIndex}].durations`)}
@@ -298,67 +286,16 @@ export const EditFriend: React.FC<Props> = ({
 
 const EditFriendContainer: React.FC = () => {
   const { id = `` } = useParams<{ id: UUID }>();
-  const query = useQueryResult<EditFriendQuery, EditFriendVariables>(QUERY_FRIEND, {
-    variables: { id },
-  });
+  const query = useFetchResult(() => api.editFriendResult(id));
   if (!query.isResolved) {
     return query.unresolvedElement;
   }
   return (
     <EditFriend
-      friend={sort.friend(writable(query.data.friend))}
+      friend={sort.friend(query.data.friend)}
       selectableDocuments={query.data.selectableDocuments}
     />
   );
 };
 
 export default EditFriendContainer;
-
-const QUERY_FRIEND = gql`
-  ${EDIT_DOCUMENT_FIELDS}
-  ${SELECTABLE_DOCUMENTS_FIELDS}
-  query EditFriend($id: UUID!) {
-    friend: getFriend(id: $id) {
-      id
-      lang
-      name
-      slug
-      gender
-      born
-      died
-      description
-      published
-      quotes {
-        id
-        source
-        text
-        order
-        friend {
-          id
-        }
-      }
-      documents {
-        ...EditDocumentFields
-      }
-      residences {
-        id
-        city
-        region
-        durations {
-          id
-          start
-          end
-          residence {
-            id
-          }
-        }
-        friend {
-          id
-        }
-      }
-    }
-    selectableDocuments: getDocuments {
-      ...SelectableDocumentsFields
-    }
-  }
-`;

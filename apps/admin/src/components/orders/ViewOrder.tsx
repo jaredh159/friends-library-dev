@@ -1,14 +1,12 @@
 import React from 'react';
 import cx from 'classnames';
 import { useParams } from 'react-router-dom';
-import type { ViewOrder as ViewOrderQuery } from '../../graphql/ViewOrder';
-import { gql } from '../../client';
-import { OrderSource } from '../../graphql/globalTypes';
 import { money } from '../../lib/money';
-import { useQueryResult } from '../../lib/query';
+import { useFetchResult } from '../../lib/query';
+import api, { type T } from '../../api-client';
 
 interface Props {
-  order: ViewOrderQuery['order'];
+  order: T.GetOrder.Output;
 }
 
 export const ViewOrder: React.FC<Props> = ({ order }) => (
@@ -44,7 +42,7 @@ export const ViewOrder: React.FC<Props> = ({ order }) => (
             <li>{order.address.country}</li>
           </ul>
         </div>
-        {order.source !== OrderSource.internal ? (
+        {order.source !== `internal` ? (
           <div>
             <h1 className="label">
               Stripe:{` `}
@@ -118,16 +116,16 @@ export const ViewOrder: React.FC<Props> = ({ order }) => (
         {order.items.map((item) => (
           <div className="bg-[#efefef] rounded-lg p-3 pr-6 flex" key={item.id}>
             <img
-              alt={item.edition.document.title}
-              height={item.edition.images.threeD.w250.height}
-              width={item.edition.images.threeD.w250.width}
-              src={item.edition.images.threeD.w250.url}
+              alt={item.edition.documentTitle}
+              height={item.edition.image.height}
+              width={item.edition.image.width}
+              src={item.edition.image.url}
               className="w-24 md:w-32"
             />
             <div className="pt-1.5 space-y-1">
-              <h1 className="subtle-text">{item.edition.document.title}</h1>
+              <h1 className="subtle-text">{item.edition.documentTitle}</h1>
               <h2 className="subtle-text italic serif text-flprimary">
-                {item.edition.document.friend.name}
+                {item.edition.authorName}
               </h2>
               <div className="pt-1.5 flex">
                 <span className="label pr-1.5">Edition:</span>
@@ -151,68 +149,15 @@ export const ViewOrder: React.FC<Props> = ({ order }) => (
 
 const ViewOrderContainer: React.FC = () => {
   const { id = `` } = useParams<{ id: UUID }>();
-  const query = useQueryResult<ViewOrderQuery>(QUERY_ORDER, {
-    variables: { id },
-  });
+  const query = useFetchResult(() => api.getOrderResult(id));
+
   if (!query.isResolved) {
     return query.unresolvedElement;
   }
-  return <ViewOrder order={query.data.order} />;
+  return <ViewOrder order={query.data} />;
 };
 
 export default ViewOrderContainer;
-
-const QUERY_ORDER = gql`
-  query ViewOrder($id: UUID!) {
-    order: getOrder(id: $id) {
-      id
-      printJobStatus
-      printJobId
-      amountInCents
-      shippingInCents
-      taxesInCents
-      ccFeeOffsetInCents
-      feesInCents
-      paymentId
-      email
-      address {
-        name
-        street
-        street2
-        city
-        state
-        zip
-        country
-      }
-      lang
-      source
-      createdAt
-      items {
-        id
-        quantity
-        unitPriceInCents
-        edition {
-          type
-          document {
-            title: trimmedUtf8ShortTitle
-            friend {
-              name
-            }
-          }
-          images {
-            threeD {
-              w250 {
-                width
-                height
-                url
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
 
 const ListItem: React.FC<{ label: string; children: React.ReactNode }> = ({
   label,

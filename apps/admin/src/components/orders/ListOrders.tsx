@@ -1,13 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import type { ListOrders as ListOrdersQuery } from '../../graphql/ListOrders';
-import { gql } from '../../client';
 import { OrderSource, PrintJobStatus } from '../../graphql/globalTypes';
 import { money } from '../../lib/money';
-import { useQueryResult } from '../../lib/query';
+import { useFetchResult } from '../../lib/query';
+import api, { type T } from '../../api-client';
 
 interface Props {
-  orders: ListOrdersQuery['orders'];
+  orders: T.ListOrders.Output;
 }
 
 export const ListOrders: React.FC<Props> = ({ orders }) => (
@@ -37,11 +36,11 @@ export const ListOrders: React.FC<Props> = ({ orders }) => (
 );
 
 const ListOrdersContainer: React.FC = () => {
-  const query = useQueryResult<ListOrdersQuery>(QUERY);
+  const query = useFetchResult(() => api.listOrdersResult());
   if (!query.isResolved) {
     return query.unresolvedElement;
   }
-  const orders = [...query.data.orders].filter(
+  const orders = [...query.data].filter(
     (order) => order.printJobStatus !== PrintJobStatus.bricked,
   );
   orders.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
@@ -49,16 +48,3 @@ const ListOrdersContainer: React.FC = () => {
 };
 
 export default ListOrdersContainer;
-
-const QUERY = gql`
-  query ListOrders {
-    orders: getOrders {
-      id
-      amountInCents
-      addressName
-      printJobStatus
-      source
-      createdAt
-    }
-  }
-`;

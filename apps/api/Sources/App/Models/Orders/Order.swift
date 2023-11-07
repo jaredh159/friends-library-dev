@@ -149,6 +149,18 @@ extension Order {
   }
 }
 
+// loaders
+
+extension Order {
+  func items() async throws -> [OrderItem] {
+    try await items.useLoaded(or: {
+      try await OrderItem.query()
+        .where(.orderId == id)
+        .all()
+    })
+  }
+}
+
 // extensions
 
 extension Order {

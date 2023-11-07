@@ -1,26 +1,12 @@
 import React, { useReducer, useState } from 'react';
 import isEqual from 'lodash.isequal';
-import { gql } from '@apollo/client';
 import { useParams } from 'react-router-dom';
-import type {
-  EditDocument as EditDocumentQuery,
-  EditDocumentVariables as Vars,
-} from '../../graphql/EditDocument';
-import type {
-  ReducerReplace,
-  Reducer,
-  EditableDocument,
-  SelectableDocuments,
-} from '../../types';
-import {
-  EDIT_DOCUMENT_FIELDS,
-  SELECTABLE_DOCUMENTS_FIELDS,
-  writable,
-} from '../../client';
+import type { ReducerReplace, Reducer } from '../../types';
 import TextInput from '../TextInput';
-import { useQueryResult } from '../../lib/query';
+import { useFetchResult } from '../../lib/query';
 import reducer from '../../lib/reducer';
-import { Lang, TagType } from '../../graphql/globalTypes';
+import { Lang } from '../../graphql/globalTypes';
+import api, { type T } from '../../api-client';
 import LabeledToggle from '../LabeledToggle';
 import * as empty from '../../lib/empty';
 import LabledCheckbox from '../LabledCheckbox';
@@ -31,8 +17,8 @@ import EditEdition from './EditEdition';
 import * as sort from './sort';
 
 interface Props {
-  document: EditableDocument;
-  selectableDocuments: SelectableDocuments;
+  document: T.EditableDocument;
+  selectableDocuments: T.SelectableDocument[];
   replace: ReducerReplace;
   deleteItem(path: string): unknown;
   addItem(path: string, item: unknown): unknown;
@@ -62,7 +48,7 @@ export const EditDocument: React.FC<Props> = ({
         label={`${
           doc.friend.lang === Lang.en ? `Spanish` : `English`
         } Version Document ID:`}
-        value={doc.altLanguageId}
+        value={doc.altLanguageId ?? null}
         isValid={(fn) => !!fn.match(/^([a-f0-9-]){36}$/)}
         invalidMessage="Letters, numbers, and underscores only"
         onChange={replace(`altLanguageId`)}
@@ -112,7 +98,18 @@ export const EditDocument: React.FC<Props> = ({
     </div>
     <div className="pt-2 pb-1 space-x-3 flex justify-between">
       <label className="label">Tags:</label>
-      {Object.values(TagType).map((tag) => (
+      {(
+        [
+          `journal`,
+          `letters`,
+          `exhortation`,
+          `doctrinal`,
+          `treatise`,
+          `history`,
+          `allegory`,
+          `spiritualLife`,
+        ] as const
+      ).map((tag) => (
         <LabledCheckbox
           key={`${doc.id}--${tag}`}
           id={`${doc.id}--${tag}`}
@@ -121,7 +118,7 @@ export const EditDocument: React.FC<Props> = ({
           onToggle={(checked) => {
             const tags = [...doc.tags];
             if (checked) {
-              tags.push(empty.documentTag(tag, doc));
+              tags.push(empty.documentTag(tag /*doc.id*/));
             } else {
               const index = tags.findIndex((t) => t.type === tag);
               if (index !== -1) {
@@ -137,7 +134,7 @@ export const EditDocument: React.FC<Props> = ({
       type="textarea"
       textareaSize="h-24"
       label="Original Title:"
-      value={doc.originalTitle}
+      value={doc.originalTitle ?? null}
       onChange={replace(`originalTitle`)}
     />
     <TextInput
@@ -158,35 +155,38 @@ export const EditDocument: React.FC<Props> = ({
       type="textarea"
       textareaSize="h-24"
       label="Featured Description:"
-      value={doc.featuredDescription}
+      value={doc.featuredDescription ?? null}
       onChange={replace(`featuredDescription`)}
     />
     <NestedCollection
       label="Related Document"
       items={doc.relatedDocuments}
-      onAdd={() =>
-        replace(`relatedDocuments`)(
-          [...doc.relatedDocuments].concat([
-            empty.relatedDocument(
-              [...selectableDocuments].sort(sortSelectableDocuments)[0]?.id ?? ``,
-              doc.id,
-            ),
-          ]),
-        )
+      onAdd={
+        () => {
+          throw new Error(`TODO: not implemented`);
+        }
+        // replace(`relatedDocuments`)(
+        //   [...doc.relatedDocuments].concat([
+        //     empty.relatedDocument(
+        //       [...selectableDocuments].sort(sortSelectableDocuments)[0]?.id ?? ``,
+        //       doc.id,
+        //     ),
+        //   ]),
+        // )
       }
       onDelete={(index) => deleteItem(`relatedDocuments[${index}]`)}
       renderItem={(related, index) => (
         <div className="space-y-4">
           <LabeledSelect
             label="Document:"
-            selected={related.document.id}
+            selected={doc.id}
             setSelected={replace(`relatedDocuments[${index}].document.id`)}
             options={[...selectableDocuments]
-              .filter((selectableDoc) => selectableDoc.friend.lang === doc.friend.lang)
+              .filter((selectableDoc) => selectableDoc.lang === doc.friend.lang)
               .sort(sortSelectableDocuments)
               .map((selectableDoc) => [
                 selectableDoc.id,
-                `${selectableDoc.friend.alphabeticalName}: ${selectableDoc.title}`,
+                `${selectableDoc.friendAlphabeticalName}: ${selectableDoc.title}`,
               ])}
           />
           <TextInput
@@ -222,13 +222,11 @@ export const EditDocument: React.FC<Props> = ({
 const EditDocumentContainer: React.FC = () => {
   const { id = `` } = useParams<{ id: UUID }>();
   const [loaded, setLoaded] = useState(false);
-  const [document, dispatch] = useReducer<Reducer<EditableDocument>>(
+  const [document, dispatch] = useReducer<Reducer<T.EditableDocument>>(
     reducer,
     null as any,
   );
-  const query = useQueryResult<EditDocumentQuery, Vars>(QUERY_DOCUMENT, {
-    variables: { id },
-  });
+  const query = useFetchResult(() => api.editDocumentResult(id));
 
   if (!query.isResolved) {
     return query.unresolvedElement;
@@ -238,7 +236,7 @@ const EditDocumentContainer: React.FC = () => {
     setLoaded(true);
     dispatch({
       type: `replace`,
-      state: sort.document(writable(query.data.document)),
+      state: sort.document(query.data.document),
     });
   }
 
@@ -260,7 +258,7 @@ const EditDocumentContainer: React.FC = () => {
       </div>
       <SaveChangesBar
         entityName="Document"
-        disabled={isEqual(query.data.document, document)}
+        disabled={isEqual(query.data, document)}
         // @ts-ignore
         getEntities={() => [document, query.data.document]}
       />
@@ -270,22 +268,9 @@ const EditDocumentContainer: React.FC = () => {
 
 export default EditDocumentContainer;
 
-const QUERY_DOCUMENT = gql`
-  ${EDIT_DOCUMENT_FIELDS}
-  ${SELECTABLE_DOCUMENTS_FIELDS}
-  query EditDocument($id: UUID!) {
-    document: getDocument(id: $id) {
-      ...EditDocumentFields
-    }
-    selectableDocuments: getDocuments {
-      ...SelectableDocumentsFields
-    }
-  }
-`;
-
 function sortSelectableDocuments(
-  a: SelectableDocuments[0],
-  b: SelectableDocuments[0],
+  a: T.SelectableDocument,
+  b: T.SelectableDocument,
 ): number {
-  return a.friend.alphabeticalName < b.friend.alphabeticalName ? -1 : 1;
+  return a.friendAlphabeticalName < b.friendAlphabeticalName ? -1 : 1;
 }
