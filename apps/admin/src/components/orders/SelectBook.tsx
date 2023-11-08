@@ -120,7 +120,7 @@ export const SelectBook: React.FC<Props> = ({ editions, onCancel, onSelect }) =>
 // container
 
 const SelectBookContainer: React.FC<ContainerProps> = ({ onCancel, onSelect }) => {
-  const query = useQuery(() => api.orderEditionsResult());
+  const query = useQuery(() => api.orderEditions());
   if (!query.isResolved) {
     return query.unresolvedElement;
   }

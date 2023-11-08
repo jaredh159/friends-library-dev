@@ -40,8 +40,10 @@ export const EditFriend: React.FC<Props> = ({
       <SaveChangesBar
         entityName="Friend"
         disabled={isEqual(friend, initialFriend)}
-        // @ts-ignore
-        getEntities={() => [friend, initialFriend]}
+        getEntities={() => [
+          { case: `friend`, entity: friend },
+          { case: `friend`, entity: initialFriend },
+        ]}
       />
       <div className="flex space-x-4">
         {friend.id.startsWith(`_`) && (
@@ -91,7 +93,7 @@ export const EditFriend: React.FC<Props> = ({
             type="number"
             label="Born:"
             isValid={isValidYear}
-            value={friend.born === null ? `` : String(friend.born)}
+            value={friend.born === undefined ? `` : String(friend.born)}
             onChange={(year) => dispatch({ type: `update_year`, at: `born`, with: year })}
             className="w-1/2"
           />
@@ -99,16 +101,16 @@ export const EditFriend: React.FC<Props> = ({
             type="number"
             label="Died:"
             isValid={isValidYear}
-            value={friend.died === null ? `` : String(friend.died)}
+            value={friend.died === undefined ? `` : String(friend.died)}
             onChange={(year) => dispatch({ type: `update_year`, at: `died`, with: year })}
             className="w-1/2"
           />
           <LabeledToggle
             label="Published:"
-            enabled={friend.published !== null}
+            enabled={friend.published !== undefined}
             setEnabled={(enabled) =>
               replace(`published`)(
-                enabled ? initialFriend.published ?? new Date().toISOString() : null,
+                enabled ? initialFriend.published ?? new Date().toISOString() : undefined,
               )
             }
           />
@@ -127,7 +129,7 @@ export const EditFriend: React.FC<Props> = ({
           dispatch({
             type: `add_item`,
             at: `residences`,
-            value: empty.friendResidence(),
+            value: empty.friendResidence(friend.id),
           })
         }
         onDelete={deleteFrom(`residences`)}
@@ -171,7 +173,7 @@ export const EditFriend: React.FC<Props> = ({
                 dispatch({
                   type: `add_item`,
                   at: `residences[${residenceIndex}].durations`,
-                  value: empty.friendResidenceDuration(),
+                  value: empty.friendResidenceDuration(residence.id),
                 })
               }
               onDelete={deleteFrom(`residences[${residenceIndex}].durations`)}
@@ -286,7 +288,7 @@ export const EditFriend: React.FC<Props> = ({
 
 const EditFriendContainer: React.FC = () => {
   const { id = `` } = useParams<{ id: UUID }>();
-  const query = useQuery(() => api.editFriendResult(id));
+  const query = useQuery(() => api.editFriend(id));
   if (!query.isResolved) {
     return query.unresolvedElement;
   }

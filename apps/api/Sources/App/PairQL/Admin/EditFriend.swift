@@ -9,25 +9,25 @@ struct EditFriend: Pair {
   struct FriendOutput: PairNestable {
     struct Quote: PairNestable {
       let id: FriendQuote.Id
+      let friendId: Friend.Id
       let source: String
       let text: String
       let order: Int
-      // had a ref to friend->id
     }
 
     struct Residence: PairNestable {
       struct Duration: PairNestable {
         let id: FriendResidenceDuration.Id
+        let friendResidenceId: FriendResidence.Id
         let start: Int
         let end: Int
-        // had a ref to residence->id
       }
 
       let id: FriendResidence.Id
+      let friendId: Friend.Id
       let city: String
       let region: String
       let durations: [Duration]
-      // had a ref to friend->id
     }
 
     let id: Friend.Id
@@ -72,13 +72,19 @@ extension EditFriend: PairQL.Resolver {
           let durations = try await residence.durations()
           return .init(
             id: residence.id,
+            friendId: residence.friendId,
             city: residence.city,
             region: residence.region,
-            durations: durations.map { .init(id: $0.id, start: $0.start, end: $0.end) }
+            durations: durations.map { .init(
+              id: $0.id,
+              friendResidenceId: $0.friendResidenceId,
+              start: $0.start,
+              end: $0.end
+            ) }
           )
         },
         quotes: try await quotes.map {
-          .init(id: $0.id, source: $0.source, text: $0.text, order: $0.order)
+          .init(id: $0.id, friendId: $0.friendId, source: $0.source, text: $0.text, order: $0.order)
         },
         documents: try await documents.concurrentMap { try await .init(model: $0) }
       ),

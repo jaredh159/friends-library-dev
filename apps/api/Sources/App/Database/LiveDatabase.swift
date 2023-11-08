@@ -2,7 +2,6 @@ import DuetSQL
 import FluentSQL
 
 class LiveDatabase: DuetSQL.Client {
-
   private let db: SQLDatabase
   private let dbClient: DuetSQL.Client
   private var _entityClient: DuetSQL.Client?
@@ -116,7 +115,7 @@ class LiveDatabase: DuetSQL.Client {
     }
   }
 
-  private func flushEntities() async {
+  fileprivate func flushEntities() async {
     _entityClient = nil
     await LegacyRest.cachedData.flush()
   }
@@ -126,5 +125,13 @@ class LiveDatabase: DuetSQL.Client {
     withBindings: [Postgres.Data]?
   ) async throws -> [J] {
     fatalError("queryJoined not implemented")
+  }
+}
+
+extension DuetSQL.Client {
+  func clearEntityCache() async throws {
+    if let liveDb = self as? LiveDatabase {
+      await liveDb.flushEntities()
+    }
   }
 }

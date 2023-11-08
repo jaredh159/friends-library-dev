@@ -36,7 +36,7 @@ export const ListOrders: React.FC<Props> = ({ orders }) => (
 );
 
 const ListOrdersContainer: React.FC = () => {
-  const query = useQuery(() => api.listOrdersResult());
+  const query = useQuery(() => api.listOrders());
   if (!query.isResolved) {
     return query.unresolvedElement;
   }

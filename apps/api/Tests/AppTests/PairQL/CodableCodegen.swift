@@ -18,8 +18,12 @@ struct ApiTypeScriptEnumsCodableGenerator: AggregateCodeGenerator {
       path: "\(requireEnvVar("DEV_ROOT_PATH"))/apps/api/Sources/App/PairQL/Codegen/Enums+Codable.swift",
       types: [
         (DeleteEntities.Input.self, false),
+        (AdminRoute.Upsert.self, false),
       ],
-      imports: ["Tagged": "Tagged"],
+      imports: [
+        "Tagged": "Tagged",
+        "TaggedTime": "TaggedTime",
+      ],
       replacements: [
         "Foundation.UUID": "UUID",
         "Tagged.Tagged": "Tagged",

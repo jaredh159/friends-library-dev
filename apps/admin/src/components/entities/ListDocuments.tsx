@@ -59,7 +59,7 @@ const ListDocuments: React.FC<Props> = ({ documents }) => {
 // container
 
 const ListDocumentsContainer: React.FC = () => {
-  const query = useQuery(() => api.listDocumentsResult());
+  const query = useQuery(() => api.listDocuments());
   if (!query.isResolved) {
     return query.unresolvedElement;
   }

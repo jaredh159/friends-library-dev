@@ -10,7 +10,8 @@ struct EditToken: Pair {
   struct Output: PairOutput {
     struct ScopeOutput: PairNestable {
       var id: TokenScope.Id
-      var type: Scope
+      var tokenId: Token.Id
+      var scope: Scope
     }
 
     var id: Token.Id
@@ -32,7 +33,7 @@ extension EditToken: PairQL.Resolver {
       value: token.value,
       description: token.description,
       uses: token.uses,
-      scopes: scopes.map { .init(id: $0.id, type: $0.scope) },
+      scopes: scopes.map { .init(id: $0.id, tokenId: token.id, scope: $0.scope) },
       createdAt: token.createdAt
     )
   }

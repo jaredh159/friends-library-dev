@@ -68,7 +68,7 @@ export const EditDocument: React.FC<Props> = ({
         label="Published:"
         placeholder="1600"
         value={String(doc.published ?? ``)}
-        onChange={replace(`published`)}
+        onChange={replace(`published`, (s) => (s === `` ? undefined : Number(s)))}
         className="w-[12%]"
       />
       <LabeledToggle
@@ -118,7 +118,7 @@ export const EditDocument: React.FC<Props> = ({
           onToggle={(checked) => {
             const tags = [...doc.tags];
             if (checked) {
-              tags.push(empty.documentTag(tag /*doc.id*/));
+              tags.push(empty.documentTag(tag, doc.id));
             } else {
               const index = tags.findIndex((t) => t.type === tag);
               if (index !== -1) {
@@ -161,26 +161,23 @@ export const EditDocument: React.FC<Props> = ({
     <NestedCollection
       label="Related Document"
       items={doc.relatedDocuments}
-      onAdd={
-        () => {
-          throw new Error(`TODO: not implemented`);
-        }
-        // replace(`relatedDocuments`)(
-        //   [...doc.relatedDocuments].concat([
-        //     empty.relatedDocument(
-        //       [...selectableDocuments].sort(sortSelectableDocuments)[0]?.id ?? ``,
-        //       doc.id,
-        //     ),
-        //   ]),
-        // )
+      onAdd={() =>
+        replace(`relatedDocuments`)(
+          [...doc.relatedDocuments].concat([
+            empty.relatedDocument(
+              [...selectableDocuments].sort(sortSelectableDocuments)[0]?.id ?? ``,
+              doc.id,
+            ),
+          ]),
+        )
       }
       onDelete={(index) => deleteItem(`relatedDocuments[${index}]`)}
       renderItem={(related, index) => (
         <div className="space-y-4">
           <LabeledSelect
             label="Document:"
-            selected={doc.id}
-            setSelected={replace(`relatedDocuments[${index}].document.id`)}
+            selected={related.documentId}
+            setSelected={replace(`relatedDocuments[${index}].documentId`)}
             options={[...selectableDocuments]
               .filter((selectableDoc) => selectableDoc.lang === doc.friend.lang)
               .sort(sortSelectableDocuments)
@@ -226,7 +223,7 @@ const EditDocumentContainer: React.FC = () => {
     reducer,
     null as any,
   );
-  const query = useQuery(() => api.editDocumentResult(id));
+  const query = useQuery(() => api.editDocument(id));
 
   if (!query.isResolved) {
     return query.unresolvedElement;
@@ -248,19 +245,22 @@ const EditDocumentContainer: React.FC = () => {
           selectableDocuments={query.data.selectableDocuments}
           deleteItem={(path) => dispatch({ type: `delete_item`, at: path })}
           addItem={(path, item) => dispatch({ type: `add_item`, at: path, value: item })}
-          replace={(path, preprocess) => (value) =>
+          replace={(path, preprocess) => (value) => {
             dispatch({
               type: `replace_value`,
               at: path,
               with: preprocess ? preprocess(value) : value,
-            })}
+            });
+          }}
         />
       </div>
       <SaveChangesBar
         entityName="Document"
-        disabled={isEqual(query.data, document)}
-        // @ts-ignore
-        getEntities={() => [document, query.data.document]}
+        disabled={isEqual(query.data.document, document)}
+        getEntities={() => [
+          { case: `document`, entity: document },
+          { case: `document`, entity: query.data.document },
+        ]}
       />
     </>
   );

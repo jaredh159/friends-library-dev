@@ -34,8 +34,10 @@ export const EditToken: React.FC<Props> = ({ token: initialToken }) => {
     <div className="mt-6 space-y-4 mb-24">
       <SaveChangesBar
         entityName="Token"
-        // @ts-ignore
-        getEntities={() => [token, initialToken]}
+        getEntities={() => [
+          { case: `token`, entity: token },
+          { case: `token`, entity: initialToken },
+        ]}
         disabled={isEqual(token, initialToken) && !isClientGeneratedId(token.id)}
       />
       <TextInput
@@ -81,12 +83,12 @@ export const EditToken: React.FC<Props> = ({ token: initialToken }) => {
               key={scope}
               id={scope}
               label={scope.replace(/^(query|mutate)/, `$1 `)}
-              checked={token.scopes.some((currentScope) => scope === currentScope.type)}
+              checked={token.scopes.some((currentScope) => scope === currentScope.scope)}
               onToggle={(checked) => {
                 const scopes = [...token.scopes];
                 if (checked) {
                   const initialIndex = initialToken.scopes.findIndex(
-                    (s) => s.type === scope,
+                    (s) => s.scope === scope,
                   );
                   if (initialIndex !== -1) {
                     scopes.splice(initialIndex, 0, initialToken.scopes[initialIndex]!);
@@ -94,7 +96,7 @@ export const EditToken: React.FC<Props> = ({ token: initialToken }) => {
                     scopes.push(empty.tokenScope(token.id, scope));
                   }
                 } else {
-                  const index = scopes.findIndex((s) => s.type === scope);
+                  const index = scopes.findIndex((s) => s.scope === scope);
                   if (index !== -1) {
                     scopes.splice(index, 1);
                   }
@@ -111,7 +113,7 @@ export const EditToken: React.FC<Props> = ({ token: initialToken }) => {
 
 const EditTokenContainer: React.FC = () => {
   const { id = `` } = useParams<{ id: UUID }>();
-  const query = useQuery(() => api.editTokenResult(id));
+  const query = useQuery(() => api.editToken(id));
   if (!query.isResolved) {
     return query.unresolvedElement;
   }

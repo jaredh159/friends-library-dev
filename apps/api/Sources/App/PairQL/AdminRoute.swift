@@ -20,6 +20,8 @@ enum AdminRoute: PairRoute {
 }
 
 enum AuthedAdminRoute: PairRoute {
+  case createEntity(CreateEntity.Input)
+  case deleteEntity(DeleteEntity.Input)
   case editDocument(Document.Id)
   case editFriend(Friend.Id)
   case editToken(Token.Id)
@@ -30,8 +32,17 @@ enum AuthedAdminRoute: PairRoute {
   case listTokens
   case orderEditions
   case selectableDocuments
+  case updateEntity(UpdateEntity.Input)
 
   static let router: AnyParserPrinter<URLRequestData, AuthedAdminRoute> = OneOf {
+    Route(/Self.createEntity) {
+      Operation(CreateEntity.self)
+      Body(.input(CreateEntity.self))
+    }
+    Route(/Self.deleteEntity) {
+      Operation(DeleteEntity.self)
+      Body(.input(DeleteEntity.self))
+    }
     Route(/Self.editDocument) {
       Operation(EditDocument.self)
       Body(.input(EditDocument.self))
@@ -66,6 +77,10 @@ enum AuthedAdminRoute: PairRoute {
     Route(/Self.selectableDocuments) {
       Operation(SelectableDocuments.self)
     }
+    Route(/Self.updateEntity) {
+      Operation(UpdateEntity.self)
+      Body(.input(UpdateEntity.self))
+    }
   }
   .eraseToAnyParserPrinter()
 }
@@ -77,6 +92,12 @@ extension AdminRoute: RouteResponder {
       let token = try await Token.query().where(.value == token).first()
       let authed = AuthedContext(requestId: context.requestId, scopes: try await token.scopes())
       switch authedRoute {
+      case .createEntity(let input):
+        let output = try await CreateEntity.resolve(with: input, in: authed)
+        return try respond(with: output)
+      case .deleteEntity(let input):
+        let output = try await DeleteEntity.resolve(with: input, in: authed)
+        return try respond(with: output)
       case .editDocument(let id):
         let output = try await EditDocument.resolve(with: id, in: authed)
         return try respond(with: output)
@@ -106,6 +127,9 @@ extension AdminRoute: RouteResponder {
         return try respond(with: output)
       case .selectableDocuments:
         let output = try await SelectableDocuments.resolve(in: authed)
+        return try respond(with: output)
+      case .updateEntity(let input):
+        let output = try await UpdateEntity.resolve(with: input, in: authed)
         return try respond(with: output)
       }
     }

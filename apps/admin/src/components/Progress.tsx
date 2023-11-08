@@ -33,7 +33,7 @@ const Progress: React.FC<Props> = ({ items }) => {
               <td className="pr-6 text-gray-500">
                 {index + 1}/{items.length}
               </td>
-              <td className="pr-6">{workItemDescription(item)}</td>
+              <td className="pr-6 capitalize">{workItemDescription(item)}</td>
               <td className="pr-6 italic">
                 <Status status={item.status} />
               </td>
@@ -54,11 +54,11 @@ const Progress: React.FC<Props> = ({ items }) => {
 function workItemDescription(item: WorkItem): string {
   switch (item.operation.type) {
     case `create`:
-      return `Create ${item.operation.entity.__typename}`;
+      return `Create ${item.operation.entity.case}`;
     case `update`:
-      return `Update ${item.operation.current.__typename}`;
+      return `Update ${item.operation.current.case}`;
     case `delete`:
-      return `Delete ${item.operation.entity.__typename}`;
+      return `Delete ${item.operation.entity.case}`;
     case `noop`:
       return ``;
   }

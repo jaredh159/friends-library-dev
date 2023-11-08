@@ -1,28 +1,7 @@
 // auto-generated, do not edit
+import type { EditableToken } from '../shared';
 
 export namespace ListTokens {
   export type Input = void;
-
-  export type Output = Array<{
-    id: UUID;
-    value: UUID;
-    description: string;
-    uses?: number;
-    scopes: Array<{
-      id: UUID;
-      type:
-        | 'all'
-        | 'queryDownloads'
-        | 'mutateDownloads'
-        | 'queryOrders'
-        | 'mutateOrders'
-        | 'queryArtifactProductionVersions'
-        | 'mutateArtifactProductionVersions'
-        | 'queryEntities'
-        | 'mutateEntities'
-        | 'queryTokens'
-        | 'mutateTokens';
-    }>;
-    createdAt: ISODateString;
-  }>;
+  export type Output = EditableToken[];
 }

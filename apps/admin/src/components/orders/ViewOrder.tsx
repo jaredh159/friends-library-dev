@@ -149,7 +149,7 @@ export const ViewOrder: React.FC<Props> = ({ order }) => (
 
 const ViewOrderContainer: React.FC = () => {
   const { id = `` } = useParams<{ id: UUID }>();
-  const query = useQuery(() => api.getOrderResult(id));
+  const query = useQuery(() => api.getOrder(id));
 
   if (!query.isResolved) {
     return query.unresolvedElement;

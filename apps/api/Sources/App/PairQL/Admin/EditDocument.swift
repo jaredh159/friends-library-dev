@@ -8,6 +8,7 @@ struct EditDocument: Pair {
 
   struct EditEdition: PairNestable {
     let id: Edition.Id
+    let documentId: Document.Id
     let type: EditionType
     let paperbackSplits: [Int]?
     let paperbackOverrideSize: PrintSizeVariant?
@@ -15,11 +16,11 @@ struct EditDocument: Pair {
     let isbn: String?
     let isDraft: Bool
     let audio: EditAudio?
-    // had a ref to -> document.id
   }
 
   struct EditAudio: PairNestable {
     let id: Audio.Id
+    let editionId: Edition.Id
     let reader: String
     let isIncomplete: Bool
     let mp3ZipSizeHq: Bytes
@@ -29,11 +30,11 @@ struct EditDocument: Pair {
     let externalPlaylistIdHq: Audio.ExternalPlaylistId?
     let externalPlaylistIdLq: Audio.ExternalPlaylistId?
     let parts: [EditAudioPart]
-    // had a ref to -> edition.id
   }
 
   struct EditAudioPart: PairNestable {
     let id: AudioPart.Id
+    let audioId: Audio.Id
     let order: Int
     let title: String
     let duration: Seconds<Double>
@@ -42,7 +43,6 @@ struct EditDocument: Pair {
     let mp3SizeLq: Bytes
     let externalIdHq: AudioPart.ExternalId
     let externalIdLq: AudioPart.ExternalId
-    // had a ref to -> audio.id
   }
 
   struct EditDocumentOutput: PairNestable {
@@ -54,17 +54,19 @@ struct EditDocument: Pair {
 
     struct TagOutput: PairNestable {
       let id: DocumentTag.Id
+      let documentId: Document.Id
       let type: DocumentTag.TagType
-      // had a ref to -> document.id
     }
 
     struct RelatedDocumentOutput: PairNestable {
-      let id: Document.Id
-      let description: String
+      let id: RelatedDocument.Id
+      let documentId: Document.Id
       let parentDocumentId: Document.Id
+      let description: String
     }
 
     let id: Document.Id
+    let friendId: Friend.Id
     let altLanguageId: Document.Id?
     let title: String
     let slug: String
@@ -135,6 +137,7 @@ extension EditDocument.EditDocumentOutput {
         let parts = try await audio.parts()
         audioOutput = .init(
           id: audio.id,
+          editionId: audio.editionId,
           reader: audio.reader,
           isIncomplete: audio.isIncomplete,
           mp3ZipSizeHq: audio.mp3ZipSizeHq,
@@ -146,6 +149,7 @@ extension EditDocument.EditDocumentOutput {
           parts: parts.map { part in
             .init(
               id: part.id,
+              audioId: part.audioId,
               order: part.order,
               title: part.title,
               duration: part.duration,
@@ -160,6 +164,7 @@ extension EditDocument.EditDocumentOutput {
       }
       return .init(
         id: edition.id,
+        documentId: edition.documentId,
         type: edition.type,
         paperbackSplits: edition.paperbackSplits.map { Array($0) },
         paperbackOverrideSize: edition.paperbackOverrideSize,
@@ -170,13 +175,15 @@ extension EditDocument.EditDocumentOutput {
       )
     }
 
-    self.tags = try await tags.map { .init(id: $0.id, type: $0.type) }
-    self.relatedDocuments = try await relatedDocuments.map { doc in
+    self.tags = try await tags.map { .init(id: $0.id, documentId: $0.documentId, type: $0.type) }
+    self.relatedDocuments = try await relatedDocuments.map { relatedDoc in
       .init(
-        id: doc.documentId,
-        description: doc.description,
-        parentDocumentId: doc.parentDocumentId
+        id: relatedDoc.id,
+        documentId: relatedDoc.documentId,
+        parentDocumentId: relatedDoc.parentDocumentId,
+        description: relatedDoc.description
       )
     }
+    friendId = try await friend.id
   }
 }

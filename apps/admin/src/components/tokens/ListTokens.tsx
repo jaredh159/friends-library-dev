@@ -4,7 +4,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { PlusCircleIcon } from '@heroicons/react/solid';
 import { useQuery } from '../../lib/query';
 import api, { type T } from '../../api-client';
-import { Scope as TokenScope } from '../../graphql/globalTypes';
 import PillButton from '../PillButton';
 
 interface Props {
@@ -16,7 +15,7 @@ const ListTokens: React.FC<Props> = ({ tokens }) => {
   return (
     <div className="space-y-3">
       {tokens.map((token) => {
-        const hasAllScopes = token.scopes.some((scope) => scope.type === TokenScope.all);
+        const hasAllScopes = token.scopes.some((scope) => scope.scope === `all`);
         return (
           <Link
             to={`/tokens/${token.id}`}
@@ -54,7 +53,7 @@ const ListTokens: React.FC<Props> = ({ tokens }) => {
 };
 
 const ListTokensContainer: React.FC = () => {
-  const query = useQuery(() => api.listTokensResult());
+  const query = useQuery(() => api.listTokens());
   if (!query.isResolved) {
     return query.unresolvedElement;
   }

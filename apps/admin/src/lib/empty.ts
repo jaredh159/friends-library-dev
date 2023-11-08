@@ -1,6 +1,4 @@
 import { v4 as uuid } from 'uuid';
-import type { Scope as TokenScope } from '../graphql/globalTypes';
-import type { EditableRelatedDocument, EditableTokenScope } from '../types';
 import { type T } from '../api-client';
 
 export function friend(): T.EditableFriend {
@@ -22,22 +20,30 @@ export function friend(): T.EditableFriend {
 
 export function friendQuote(friend: T.EditableFriend): T.EditableFriendQuote {
   return {
-    // __typename: `FriendQuote`,
     id: clientGeneratedId(),
+    friendId: friend.id,
     source: ``,
     text: ``,
-    // friend: {
-    //   __typename: `Friend`,
-    //   id: friend.id,
-    // },
     order: Math.max(0, ...friend.quotes.map((q) => q.order)) + 1,
   };
 }
 
-export function edition(_documentId: UUID): T.EditableEdition {
+export function relatedDocument(
+  documentId: UUID,
+  parentDocumentId: UUID,
+): T.EditableRelatedDocument {
   return {
-    // __typename: `Edition`,
     id: clientGeneratedId(),
+    documentId,
+    parentDocumentId,
+    description: ``,
+  };
+}
+
+export function edition(documentId: UUID): T.EditableEdition {
+  return {
+    id: clientGeneratedId(),
+    documentId,
     isDraft: true,
     type: `updated`,
     paperbackOverrideSize: undefined,
@@ -45,17 +51,13 @@ export function edition(_documentId: UUID): T.EditableEdition {
     isbn: undefined,
     editor: undefined,
     audio: undefined,
-    // document: {
-    //   __typename: `Document`,
-    //   id: documentId,
-    // },
   };
 }
 
-export function audio(_editionId: UUID): T.EditableAudio {
+export function audio(editionId: UUID): T.EditableAudio {
   return {
-    // __typename: `Audio`,
     id: clientGeneratedId(),
+    editionId,
     reader: `Jessie Henderson`,
     isIncomplete: false,
     m4bSizeHq: 0,
@@ -65,18 +67,13 @@ export function audio(_editionId: UUID): T.EditableAudio {
     externalPlaylistIdHq: undefined,
     externalPlaylistIdLq: undefined,
     parts: [],
-    // edition: {
-    //   __typename: `Edition`,
-    //   id: editionId,
-    // },
   };
 }
 
 export function audioPart(audio: T.EditableAudio): T.EditableAudioPart {
-  // throw new Error(`todo: Not implemented`);
   return {
-    // __typename: `AudioPart`,
     id: clientGeneratedId(),
+    audioId: audio.id,
     order: Math.max(0, ...audio.parts.map((part) => part.order)) + 1,
     title: ``,
     duration: 0,
@@ -85,52 +82,34 @@ export function audioPart(audio: T.EditableAudio): T.EditableAudioPart {
     mp3SizeLq: 0,
     externalIdHq: 0,
     externalIdLq: 0,
-    // audio: {
-    //   // __typename: `Audio`,
-    //   id: audio.id,
-    // },
   };
 }
 
-export function friendResidence(): T.EditableFriendResidence {
+export function friendResidence(friendId: UUID): T.EditableFriendResidence {
   return {
-    id: clientGeneratedId(), // todo...
+    id: clientGeneratedId(),
+    friendId,
     city: ``,
     region: `England`,
     durations: [],
   };
 }
 
-export function friendResidenceDuration(): T.EditableFriendResidence['durations'][number] {
+export function friendResidenceDuration(
+  friendResidenceId: UUID,
+): T.EditableFriendResidence['durations'][number] {
   return {
     id: clientGeneratedId(),
+    friendResidenceId,
     start: 1600,
     end: 1700,
-  };
-}
-
-export function relatedDocument(
-  documentId: UUID,
-  parentDocumentId: UUID,
-): EditableRelatedDocument {
-  return {
-    __typename: `RelatedDocument`,
-    id: clientGeneratedId(),
-    description: ``,
-    document: {
-      __typename: `Document`,
-      id: documentId,
-    },
-    parentDocument: {
-      __typename: `Document`,
-      id: parentDocumentId,
-    },
   };
 }
 
 export function document(friend: T.EditableFriend): T.EditableDocument {
   return {
     id: clientGeneratedId(),
+    friendId: friend.id,
     slug: ``,
     description: ``,
     title: ``,
@@ -152,12 +131,13 @@ export function document(friend: T.EditableFriend): T.EditableDocument {
   };
 }
 
-// todo: is this pulling it's weight?
 export function documentTag(
-  type: T.EditableDocument['tags'][number]['type'],
-): T.EditableDocument['tags'][number] {
+  type: T.EditableDocumentTag['type'],
+  documentId: UUID,
+): T.EditableDocumentTag {
   return {
     id: clientGeneratedId(),
+    documentId,
     type,
   };
 }
@@ -173,15 +153,14 @@ export function token(): T.EditToken.Output {
   };
 }
 
-export function tokenScope(tokenId: UUID, type: TokenScope): EditableTokenScope {
+export function tokenScope(
+  tokenId: UUID,
+  scope: T.EditableTokenScope['scope'],
+): T.EditableTokenScope {
   return {
-    __typename: `TokenScope`,
     id: clientGeneratedId(),
-    type,
-    token: {
-      __typename: `Token`,
-      id: tokenId,
-    },
+    scope,
+    tokenId,
   };
 }
 

@@ -5,7 +5,7 @@ import type { Domain } from './types';
 async function main(): Promise<void> {
   const domains: CodegenDomain[] = [
     new CodegenDomain(`dev`, `DevClient`, true),
-    new CodegenDomain(`admin`, `AdminClient`, true),
+    new CodegenDomain(`admin`, `AdminClient`, false),
   ];
 
   const promises = domains.map(async (domain) => {
