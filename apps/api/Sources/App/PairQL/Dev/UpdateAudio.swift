@@ -15,8 +15,6 @@ struct UpdateAudio: Pair {
     let externalPlaylistIdHq: Audio.ExternalPlaylistId?
     let externalPlaylistIdLq: Audio.ExternalPlaylistId?
   }
-
-  typealias Output = Infallible
 }
 
 extension UpdateAudio: PairQL.Resolver {

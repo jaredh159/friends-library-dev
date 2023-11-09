@@ -103,7 +103,7 @@ export const SelectBook: React.FC<Props> = ({ editions, onCancel, onSelect }) =>
                   quantity: 1,
                   unitPrice: edition.priceInCents,
                   printSize: edition.paperbackSize,
-                  pages: edition.paperbackVolumes,
+                  volumes: edition.paperbackVolumes,
                 });
               }}
               className="ml-auto whitespace-no-wrap flex-shrink-0 bg-flblue-600 hover:ring-2 ring-offset-2 ring-flblue-400 cursor-pointer mr-2 antialiased uppercase text-xs self-end mb-4 rounded-full text-white px-4 py-1"

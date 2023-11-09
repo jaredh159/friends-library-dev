@@ -46,3 +46,15 @@ extension Model {
     try await Current.db.create(models)
   }
 }
+
+extension Array where Element: Model {
+  @discardableResult
+  func create() async throws -> Self {
+    try await Current.db.create(self)
+  }
+
+  @discardableResult
+  func save() async throws -> Self {
+    try await Current.db.update(self)
+  }
+}

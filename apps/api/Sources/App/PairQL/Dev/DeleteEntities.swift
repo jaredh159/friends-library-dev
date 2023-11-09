@@ -9,8 +9,6 @@ struct DeleteEntities: Pair {
     case editionImpression(id: EditionImpression.Id)
     case editionChapters(id: Edition.Id)
   }
-
-  typealias Output = Infallible
 }
 
 extension DeleteEntities: PairQL.Resolver {

@@ -5,6 +5,7 @@ export * from './DeleteEntity';
 export * from './EditDocument';
 export * from './EditFriend';
 export * from './EditToken';
+export * from './GetFreeOrderRequest';
 export * from './GetOrder';
 export * from './ListDocuments';
 export * from './ListFriends';

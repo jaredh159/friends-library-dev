@@ -16,8 +16,6 @@ struct UpdateAudioPart: Pair {
     let externalIdHq: Int64
     let externalIdLq: Int64
   }
-
-  typealias Output = Infallible
 }
 
 extension UpdateAudioPart: PairQL.Resolver {

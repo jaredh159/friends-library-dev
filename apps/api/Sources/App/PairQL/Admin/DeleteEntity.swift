@@ -9,8 +9,6 @@ struct DeleteEntity: Pair {
     let type: AdminRoute.EntityType
     let id: UUID
   }
-
-  typealias Output = Infallible
 }
 
 // resolver

@@ -6,6 +6,7 @@ async function main(): Promise<void> {
   const domains: CodegenDomain[] = [
     new CodegenDomain(`dev`, `DevClient`, true),
     new CodegenDomain(`admin`, `AdminClient`, false),
+    new CodegenDomain(`order`, `OrderClient`, false),
   ];
 
   const promises = domains.map(async (domain) => {

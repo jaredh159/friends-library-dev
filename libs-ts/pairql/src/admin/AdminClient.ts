@@ -46,6 +46,12 @@ export default class AdminClient extends Client {
     return this.query<P.EditToken.Output>(input, `EditToken`);
   }
 
+  public getFreeOrderRequest(
+    input: P.GetFreeOrderRequest.Input,
+  ): Promise<Result<P.GetFreeOrderRequest.Output>> {
+    return this.query<P.GetFreeOrderRequest.Output>(input, `GetFreeOrderRequest`);
+  }
+
   public getOrder(input: P.GetOrder.Input): Promise<Result<P.GetOrder.Output>> {
     return this.query<P.GetOrder.Output>(input, `GetOrder`);
   }

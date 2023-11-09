@@ -16,13 +16,17 @@ public protocol PairOutput: Codable, Equatable, Sendable {
 public protocol Pair {
   static var name: String { get }
   static var auth: Auth { get }
-  associatedtype Auth: Codable & Equatable & Sendable
+  associatedtype Auth: Codable & Equatable & Sendable = NoAuth
   associatedtype Input: PairInput = NoInput
-  associatedtype Output: PairOutput = SuccessOutput
+  associatedtype Output: PairOutput = Infallible
 }
 
 public extension Pair {
   static var name: String { "\(Self.self)" }
+}
+
+public extension Pair where Auth == NoAuth {
+  static var auth: Auth { .init() }
 }
 
 public struct PairJsonEncodingError: Error {}
@@ -52,6 +56,10 @@ extension Dictionary: PairOutput where Key == String, Value: PairOutput {}
 extension Dictionary: PairInput where Key == String, Value: PairInput {}
 
 public struct NoInput: PairInput {
+  public init() {}
+}
+
+public struct NoAuth: Equatable, Codable, Sendable {
   public init() {}
 }
 

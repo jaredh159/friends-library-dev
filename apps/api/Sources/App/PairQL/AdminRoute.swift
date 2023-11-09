@@ -26,6 +26,7 @@ enum AuthedAdminRoute: PairRoute {
   case editFriend(Friend.Id)
   case editToken(Token.Id)
   case getOrder(Order.Id)
+  case getFreeOrderRequest(FreeOrderRequest.Id)
   case listDocuments
   case listFriends
   case listOrders
@@ -58,6 +59,10 @@ enum AuthedAdminRoute: PairRoute {
     Route(/Self.getOrder) {
       Operation(GetOrder.self)
       Body(.input(GetOrder.self))
+    }
+    Route(/Self.getFreeOrderRequest) {
+      Operation(GetFreeOrderRequest.self)
+      Body(.input(GetFreeOrderRequest.self))
     }
     Route(/Self.listFriends) {
       Operation(ListFriends.self)
@@ -109,6 +114,9 @@ extension AdminRoute: RouteResponder {
         return try respond(with: output)
       case .getOrder(let id):
         let output = try await GetOrder.resolve(with: id, in: authed)
+        return try respond(with: output)
+      case .getFreeOrderRequest(let id):
+        let output = try await GetFreeOrderRequest.resolve(with: id, in: authed)
         return try respond(with: output)
       case .listDocuments:
         let output = try await ListDocuments.resolve(in: authed)

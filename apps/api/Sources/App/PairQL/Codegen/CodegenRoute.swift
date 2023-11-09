@@ -22,6 +22,8 @@ enum CodegenRoute: RouteHandler {
       return try await CodegenRoute.Dev.handler(request)
     case "admin":
       return try await CodegenRoute.Admin.handler(request)
+    case "order":
+      return try await CodegenRoute.Order.handler(request)
     default:
       throw Abort(.notFound, reason: "invalid pairql domain")
     }
@@ -32,7 +34,7 @@ enum CodegenRoute: RouteHandler {
 
 extension CodegenRoute {
   enum Dev {}
-  enum Evans {}
+  enum Order {}
   enum Admin {}
 }
 

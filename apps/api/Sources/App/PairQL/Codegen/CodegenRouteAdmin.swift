@@ -41,6 +41,7 @@ extension CodegenRoute.Admin: CodegenRouteHandler {
       EditFriend.self,
       EditToken.self,
       GetOrder.self,
+      GetFreeOrderRequest.self,
       ListDocuments.self,
       ListFriends.self,
       ListOrders.self,

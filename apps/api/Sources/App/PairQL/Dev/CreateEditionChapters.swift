@@ -14,7 +14,6 @@ struct CreateEditionChapters: Pair {
   }
 
   typealias Input = [CreateEditionChapterInput]
-  typealias Output = Infallible
 }
 
 extension CreateEditionChapters: PairQL.Resolver {

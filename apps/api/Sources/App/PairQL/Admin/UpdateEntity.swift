@@ -5,7 +5,6 @@ import TaggedTime
 struct UpdateEntity: Pair {
   static var auth: Scope = .queryTokens
   typealias Input = AdminRoute.Upsert
-  typealias Output = Infallible
 }
 
 // resolver
