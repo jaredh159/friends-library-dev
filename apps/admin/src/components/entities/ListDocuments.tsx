@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '../../lib/query';
 import api, { type T } from '../../api-client';
-import { Lang } from '../../graphql/globalTypes';
 import TextInput from '../TextInput';
 
 interface Props {
@@ -42,7 +41,7 @@ const ListDocuments: React.FC<Props> = ({ documents }) => {
             key={doc.id}
             to={`/documents/${doc.id}`}
             className={cx(
-              doc.friend.lang === Lang.en
+              doc.friend.lang === `en`
                 ? `text-flmaroon ring-flmaroon/75`
                 : `text-flgold ring-flgold/75`,
               `block mx-2 focus:outline-none focus:ring-2 px-1 rounded-md`,

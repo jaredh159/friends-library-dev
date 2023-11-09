@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom';
 import type { Reducer, ReducerReplace } from '../../types';
 import { useQuery } from '../../lib/query';
 import TextInput from '../TextInput';
-import { Scope as TokenScope } from '../../graphql/globalTypes';
 import LabledCheckbox from '../LabledCheckbox';
 import reducer from '../../lib/reducer';
 import SaveChangesBar from '../SaveChangesBar';
@@ -145,3 +144,17 @@ function scopeParts(scope: TokenScope): [verb: string, entity: string, isAll: bo
 }
 
 export default EditTokenContainer;
+
+enum TokenScope {
+  all = `all`,
+  mutateArtifactProductionVersions = `mutateArtifactProductionVersions`,
+  mutateDownloads = `mutateDownloads`,
+  mutateEntities = `mutateEntities`,
+  mutateOrders = `mutateOrders`,
+  mutateTokens = `mutateTokens`,
+  queryArtifactProductionVersions = `queryArtifactProductionVersions`,
+  queryDownloads = `queryDownloads`,
+  queryEntities = `queryEntities`,
+  queryOrders = `queryOrders`,
+  queryTokens = `queryTokens`,
+}

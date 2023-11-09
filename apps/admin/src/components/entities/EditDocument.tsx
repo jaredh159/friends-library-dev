@@ -5,7 +5,6 @@ import type { ReducerReplace, Reducer } from '../../types';
 import TextInput from '../TextInput';
 import { useQuery } from '../../lib/query';
 import reducer from '../../lib/reducer';
-import { Lang } from '../../graphql/globalTypes';
 import api, { type T } from '../../api-client';
 import LabeledToggle from '../LabeledToggle';
 import * as empty from '../../lib/empty';
@@ -45,9 +44,7 @@ export const EditDocument: React.FC<Props> = ({
       />
       <TextInput
         type="text"
-        label={`${
-          doc.friend.lang === Lang.en ? `Spanish` : `English`
-        } Version Document ID:`}
+        label={`${doc.friend.lang === `en` ? `Spanish` : `English`} Version Document ID:`}
         value={doc.altLanguageId ?? null}
         isValid={(fn) => !!fn.match(/^([a-f0-9-]){36}$/)}
         invalidMessage="Letters, numbers, and underscores only"

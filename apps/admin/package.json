@@ -5,7 +5,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "graphql:codegen": "flp-gql-codegen --convert-dates-to-string",
     "start": "vite",
     "build": "vite build",
     "preview": "vite preview",
@@ -19,13 +18,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@apollo/client": "^3.5.8",
-    "@friends-library/db": "workspace:*",
     "@friends-library/pairql": "workspace:*",
     "@headlessui/react": "^1.4.3",
     "@heroicons/react": "^1.0.4",
     "classnames": "^2.3.1",
-    "graphql": "^16.3.0",
     "immer": "^9.0.12",
     "lodash.get": "^4.4.2",
     "lodash.isequal": "^4.5.0",

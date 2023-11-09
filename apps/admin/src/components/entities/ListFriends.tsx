@@ -4,7 +4,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { PlusCircleIcon } from '@heroicons/react/solid';
 import { useQuery } from '../../lib/query';
 import api, { type T } from '../../api-client';
-import { Lang } from '../../graphql/globalTypes';
 import TextInput from '../TextInput';
 import PillButton from '../PillButton';
 
@@ -53,7 +52,7 @@ const ListFriends: React.FC<Props> = ({ friends }) => {
             key={friend.id}
             to={`/friends/${friend.id}`}
             className={cx(
-              friend.lang === Lang.en
+              friend.lang === `en`
                 ? `text-flmaroon ring-flmaroon/75`
                 : `text-flgold ring-flgold/75`,
               `mx-2 focus:outline-none focus:ring-2 px-1 rounded-md`,

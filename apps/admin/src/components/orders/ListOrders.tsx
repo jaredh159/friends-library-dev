@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { OrderSource, PrintJobStatus } from '../../graphql/globalTypes';
 import { money } from '../../lib/money';
 import { useQuery } from '../../lib/query';
 import api, { type T } from '../../api-client';
@@ -25,7 +24,7 @@ export const ListOrders: React.FC<Props> = ({ orders }) => (
           {order.addressName.toLocaleLowerCase()}
         </span>
         <span className="label">{money(order.amountInCents)}</span>
-        {order.source === OrderSource.internal && (
+        {order.source === `internal` && (
           <span className="text-[10px] px-2 py-px bg-flgreen/75 text-white antialiased font-light uppercase rounded-lg">
             free
           </span>
@@ -40,9 +39,7 @@ const ListOrdersContainer: React.FC = () => {
   if (!query.isResolved) {
     return query.unresolvedElement;
   }
-  const orders = [...query.data].filter(
-    (order) => order.printJobStatus !== PrintJobStatus.bricked,
-  );
+  const orders = [...query.data].filter((order) => order.printJobStatus !== `bricked`);
   orders.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
   return <ListOrders orders={orders} />;
 };
