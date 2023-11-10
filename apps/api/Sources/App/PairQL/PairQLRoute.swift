@@ -4,6 +4,12 @@ import Vapor
 import VaporRouting
 
 enum PairQLRoute: RouteHandler, RouteResponder {
+  case dev(DevRoute)
+  case admin(AdminRoute)
+  case order(OrderRoute)
+  case evans(EvansRoute)
+  case evansBuild(EvansBuildRoute)
+
   static func respond(to route: Self, in context: Context) async throws -> Response {
     switch route {
     case .dev(let devRoute):
@@ -12,15 +18,12 @@ enum PairQLRoute: RouteHandler, RouteResponder {
       return try await AdminRoute.respond(to: adminRoute, in: context)
     case .order(let orderRoute):
       return try await OrderRoute.respond(to: orderRoute, in: context)
+    case .evans(let evansRoute):
+      return try await EvansRoute.respond(to: evansRoute, in: context)
     case .evansBuild(let evansBuildRoute):
       return try await EvansBuildRoute.respond(to: evansBuildRoute, in: context)
     }
   }
-
-  case dev(DevRoute)
-  case admin(AdminRoute)
-  case order(OrderRoute)
-  case evansBuild(EvansBuildRoute)
 
   static let router = OneOf {
     Route(.case(PairQLRoute.dev)) {
@@ -37,6 +40,11 @@ enum PairQLRoute: RouteHandler, RouteResponder {
       Method.post
       Path { "order" }
       OrderRoute.router
+    }
+    Route(.case(PairQLRoute.evans)) {
+      Method.post
+      Path { "evans" }
+      EvansRoute.router
     }
     Route(.case(PairQLRoute.evansBuild)) {
       Method.post
@@ -91,6 +99,9 @@ private func logOperation(_ route: PairQLRoute, _ request: Request) {
   case .order:
     Current.logger
       .notice("PairQL request: \("Order".red) \(operation.yellow)")
+  case .evans:
+    Current.logger
+      .notice("PairQL request: \("Evans".lightBlue) \(operation.yellow)")
   case .evansBuild:
     Current.logger
       .notice("PairQL request: \("EvansBuild".green) \(operation.yellow)")

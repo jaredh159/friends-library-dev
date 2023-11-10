@@ -1,13 +1,8 @@
+import { type T } from '@friends-library/pairql/order';
 import type Cart from '../models/Cart';
-import type {
-  CreateOrderInput,
-  CreateOrderItemInput,
-  Lang,
-  PrintSize,
-} from '../../../graphql/globalTypes';
+import type { Lang, PrintSize } from '@friends-library/types';
 import type CheckoutApi from './CheckoutApi';
 import { LANG } from '../../env';
-import { OrderSource, PrintJobStatus, ShippingLevel } from '../../../graphql/globalTypes';
 
 /**
  * CheckoutService exists to orchestrate the series of API invocations
@@ -23,7 +18,7 @@ export default class CheckoutService {
   public orderId = ``;
   public paymentIntentId = ``;
   public paymentIntentClientSecret = ``;
-  public shippingLevel = ShippingLevel.mail;
+  public shippingLevel: T.GetPrintJobExploratoryMetadata.Output['shippingLevel'] = `mail`;
   public metadata = {
     fees: 0,
     shipping: 0,
@@ -47,18 +42,23 @@ export default class CheckoutService {
         quantity: item.quantity,
       }));
 
-    if (!this.cart.address) throw new Error(`Missing address`);
+    if (!this.cart.address || !this.cart.email)
+      throw new Error(`Missing address or email`);
 
-    const result = await this.api.getExploratoryMetadata(items, this.cart.address);
+    const result = await this.api.getExploratoryMetadata(items, {
+      ...this.cart.address,
+      email: this.cart.email,
+    });
+
     switch (result.status) {
       case `success`:
         this.cart.address.unusable = false;
-        this.shippingLevel = result.data.data.shippingLevel;
+        this.shippingLevel = result.data.shippingLevel;
         this.metadata = {
-          fees: result.data.data.feesInCents,
-          shipping: result.data.data.shippingInCents,
-          taxes: result.data.data.taxesInCents,
-          ccFeeOffset: result.data.data.creditCardFeeOffsetInCents,
+          fees: result.data.fees,
+          shipping: result.data.shipping,
+          taxes: result.data.taxes,
+          ccFeeOffset: result.data.creditCardFeeOffset,
         };
         return;
       case `shipping_not_possible`:
@@ -74,10 +74,10 @@ export default class CheckoutService {
     const result = await this.api.createOrderInitialization(amount);
     switch (result.success) {
       case true:
-        this.token = result.data.data.token;
-        this.paymentIntentId = result.data.data.orderPaymentId;
-        this.paymentIntentClientSecret = result.data.data.stripeClientSecret;
-        this.orderId = result.data.data.orderId;
+        this.token = result.data.createOrderToken;
+        this.paymentIntentId = result.data.orderPaymentId;
+        this.paymentIntentClientSecret = result.data.stripeClientSecret;
+        this.orderId = result.data.orderId;
         return;
       case false:
         return `error creating order initialization`;
@@ -133,15 +133,12 @@ export default class CheckoutService {
     if (!this.cart.address) throw new Error(`Missing address`);
     const items = this.cart.items
       .filter((i) => i.quantity > 0)
-      .map(
-        (item): CreateOrderItemInput => ({
-          orderId: this.orderId,
-          editionId: item.editionId,
-          quantity: item.quantity,
-          unitPrice: item.price(),
-        }),
-      );
-    const order: CreateOrderInput = {
+      .map((item): T.CreateOrder.Input['items'][0] => ({
+        editionId: item.editionId,
+        quantity: item.quantity,
+        unitPrice: item.price(),
+      }));
+    const order: Omit<T.CreateOrder.Input, 'items'> = {
       id: this.orderId,
       paymentId: this.paymentIntentId,
       amount: this.cart.subTotal() + this.sumFees(),
@@ -158,8 +155,7 @@ export default class CheckoutService {
       addressState: this.cart.address.state,
       addressZip: this.cart.address.zip,
       addressCountry: this.cart.address.country,
-      source: OrderSource.website,
-      printJobStatus: PrintJobStatus.presubmit,
+      source: `website`,
       lang: LANG as Lang,
     };
     return [order, items, this.token];
@@ -170,7 +166,7 @@ export default class CheckoutService {
     this.orderId = ``;
     this.paymentIntentId = ``;
     this.paymentIntentClientSecret = ``;
-    this.shippingLevel = ShippingLevel.mail;
+    this.shippingLevel = `mail`;
     this.metadata = { fees: 0, shipping: 0, taxes: 0, ccFeeOffset: 0 };
     delete this.stripeError;
   }

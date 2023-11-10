@@ -9,6 +9,7 @@ extension CodegenRoute.Order: CodegenRouteHandler {
     [
       BrickOrder.self,
       CreateOrder.self,
+      CreateFreeOrderRequest.self,
       GetPrintJobExploratoryMetadata.self,
       LogJsError.self,
       InitOrder.self,

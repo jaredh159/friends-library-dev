@@ -24,6 +24,8 @@ enum CodegenRoute: RouteHandler {
       return try await CodegenRoute.Admin.handler(request)
     case "order":
       return try await CodegenRoute.Order.handler(request)
+    case "evans":
+      return try await CodegenRoute.Evans.handler(request)
     case "evans-build":
       return try await CodegenRoute.EvansBuild.handler(request)
     default:
@@ -38,6 +40,7 @@ extension CodegenRoute {
   enum Dev {}
   enum Order {}
   enum Admin {}
+  enum Evans {}
   enum EvansBuild {}
 }
 

@@ -6,9 +6,9 @@ import Vapor
 
 enum OrderRoute: PairRoute {
   case brickOrder(BrickOrder.Input)
+  case createFreeOrderRequest(CreateFreeOrderRequest.Input)
   case createOrder(UUID, CreateOrder.Input)
   case initOrder(Cents<Int>)
-  case logJsError(LogJsError.Input)
   case getPrintJobExploratoryMetadata(GetPrintJobExploratoryMetadata.Input)
   case sendOrderConfirmationEmail(Order.Id)
 
@@ -17,13 +17,13 @@ enum OrderRoute: PairRoute {
       Operation(BrickOrder.self)
       Body(.input(BrickOrder.self))
     }
+    Route(/Self.createFreeOrderRequest) {
+      Operation(CreateFreeOrderRequest.self)
+      Body(.input(CreateFreeOrderRequest.self))
+    }
     Route(/Self.getPrintJobExploratoryMetadata) {
       Operation(GetPrintJobExploratoryMetadata.self)
       Body(.input(GetPrintJobExploratoryMetadata.self))
-    }
-    Route(/Self.logJsError) {
-      Operation(LogJsError.self)
-      Body(.input(LogJsError.self))
     }
     Route(/Self.createOrder) {
       Headers {
@@ -52,15 +52,15 @@ extension OrderRoute: RouteResponder {
     case .brickOrder(let input):
       let output = try await BrickOrder.resolve(with: input, in: context)
       return try respond(with: output)
+    case .createFreeOrderRequest(let input):
+      let output = try await CreateFreeOrderRequest.resolve(with: input, in: context)
+      return try respond(with: output)
     case .getPrintJobExploratoryMetadata(let input):
       let output = try await GetPrintJobExploratoryMetadata.resolve(with: input, in: context)
       return try respond(with: output)
     case .createOrder(let token, let input):
       try await CreateOrder.authenticate(with: .init(token))
       let output = try await CreateOrder.resolve(with: input, in: context)
-      return try respond(with: output)
-    case .logJsError(let input):
-      let output = try await LogJsError.resolve(with: input, in: context)
       return try respond(with: output)
     case .initOrder(let input):
       let output = try await InitOrder.resolve(with: input, in: context)

@@ -332,7 +332,6 @@ importers:
     specifiers:
       '@babel/plugin-transform-typescript': ^7.11.0
       '@friends-library/cover-component': workspace:*
-      '@friends-library/db': workspace:*
       '@friends-library/dpc-fs': workspace:*
       '@friends-library/env': workspace:*
       '@friends-library/locale': workspace:*
@@ -364,7 +363,6 @@ importers:
       babel-plugin-typescript-strip-namespaces: ^1.1.1
       babel-preset-gatsby: ^0.5.13
       classnames: ^2.2.6
-      cross-fetch: ^3.1.5
       eslint: ^7.9.0
       filesize: ^6.1.0
       fs-extra: ^9.0.1
@@ -418,7 +416,6 @@ importers:
     devDependencies:
       '@babel/plugin-transform-typescript': 7.21.0
       '@friends-library/cover-component': link:../../libs-ts/cover-component
-      '@friends-library/db': link:../../libs-ts/db
       '@friends-library/dpc-fs': link:../../libs-ts/dpc-fs
       '@friends-library/env': link:../../libs-ts/env
       '@friends-library/locale': link:../../libs-ts/locale
@@ -448,7 +445,6 @@ importers:
       babel-plugin-typescript-strip-namespaces: 1.1.1
       babel-preset-gatsby: 0.5.16
       classnames: 2.3.2
-      cross-fetch: 3.1.5
       eslint: 7.32.0
       filesize: 6.4.0
       fs-extra: 9.1.0
@@ -16159,6 +16155,7 @@ packages:
       node-fetch: 2.6.7
     transitivePeerDependencies:
       - encoding
+    dev: false
 
   /cross-spawn/5.1.0:
     resolution: {integrity: sha512-pTgQJ5KC0d2hcY8eyL1IzlBPYjTkyH72XRZPnLyKus2mBfNjQs3klqbJU2VILqZryAZUt9JOb3h/mWMy23/f5A==}

@@ -24,6 +24,12 @@ export default class OrderClient extends Client {
     return this.query<P.BrickOrder.Output>(input, `BrickOrder`);
   }
 
+  public createFreeOrderRequest(
+    input: P.CreateFreeOrderRequest.Input,
+  ): Promise<Result<P.CreateFreeOrderRequest.Output>> {
+    return this.query<P.CreateFreeOrderRequest.Output>(input, `CreateFreeOrderRequest`);
+  }
+
   public createOrder(input: P.CreateOrder.Input): Promise<Result<P.CreateOrder.Output>> {
     return this.query<P.CreateOrder.Output>(input, `CreateOrder`);
   }

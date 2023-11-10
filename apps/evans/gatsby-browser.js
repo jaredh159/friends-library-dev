@@ -1,5 +1,5 @@
 // @ts-check
-import { sendJsError } from './src/components/lib/Client';
+import EvansClient from '@friends-library/pairql/evans';
 import './src/css/fontawesome.css';
 import './src/css/tailwind.css';
 import './src/css/cover.css';
@@ -34,10 +34,10 @@ export function onClientEntry() {
     // catch uncaught errors
     if (process.env.NODE_ENV !== `development`) {
       window.onerror = (event, source, lineno, colno, err) => {
-        sendJsError({
-          errorMessage: err.message,
-          errorName: err.name,
-          errorStack: err.stack,
+        EvansClient.web(window.location.href, () => undefined).logJsError({
+          errorMessage: err?.message,
+          errorName: err?.name,
+          errorStack: err?.stack,
           event: String(event),
           lineNumber: lineno,
           colNumber: colno,
@@ -45,7 +45,7 @@ export function onClientEntry() {
           source: source,
           url: window.location.href,
           userAgent: navigator.userAgent,
-          additionalInfo: null,
+          additionalInfo: undefined,
         });
       };
     }
