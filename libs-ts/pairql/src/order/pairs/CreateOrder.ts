@@ -2,6 +2,7 @@
 
 export namespace CreateOrder {
   export interface Input {
+    id?: UUID;
     lang: 'en' | 'es';
     source: 'website' | 'internal';
     paymentId: string;

@@ -7,8 +7,12 @@ extension CodegenRoute.Order: CodegenRouteHandler {
 
   static var pairqlPairs: [any Pair.Type] {
     [
+      BrickOrder.self,
       CreateOrder.self,
       GetPrintJobExploratoryMetadata.self,
+      LogJsError.self,
+      InitOrder.self,
+      SendOrderConfirmationEmail.self,
     ]
   }
 }

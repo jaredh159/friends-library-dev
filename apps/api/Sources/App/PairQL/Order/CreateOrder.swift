@@ -11,6 +11,7 @@ struct CreateOrder: Pair {
       let unitPrice: Cents<Int>
     }
 
+    let id: Order.Id?
     let lang: Lang
     let source: Order.OrderSource
     let paymentId: Order.PaymentId
@@ -71,6 +72,7 @@ extension CreateOrder {
 extension Order {
   convenience init(_ input: CreateOrder.Input) {
     self.init(
+      id: input.id ?? .init(),
       lang: input.lang,
       source: input.source,
       paymentId: input.paymentId,
