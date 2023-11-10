@@ -24,6 +24,7 @@ enum AuthedDevRoute: PairRoute {
   case createEditionChapters(CreateEditionChapters.Input)
   case coverWebAppFriends
   case deleteEntities(DeleteEntities.Input)
+  case dpcEditions
   case editorDocumentMap
   case getAudios
   case getEdition(Edition.Id)
@@ -48,6 +49,9 @@ enum AuthedDevRoute: PairRoute {
     Route(/Self.deleteEntities) {
       Operation(DeleteEntities.self)
       Body(.input(DeleteEntities.self))
+    }
+    Route(/Self.dpcEditions) {
+      Operation(DpcEditions.self)
     }
     Route(/Self.editorDocumentMap) {
       Operation(EditorDocumentMap.self)
@@ -100,6 +104,9 @@ extension DevRoute: RouteResponder {
         return try respond(with: output)
       case .deleteEntities(let input):
         let output = try await DeleteEntities.resolve(with: input, in: authed)
+        return try respond(with: output)
+      case .dpcEditions:
+        let output = try await DpcEditions.resolve(in: authed)
         return try respond(with: output)
       case .getEdition(let input):
         let output = try await GetEdition.resolve(with: input, in: authed)

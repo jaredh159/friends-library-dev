@@ -57,6 +57,11 @@ export default class DevClient extends Client {
     return result.unwrap();
   }
 
+  public async dpcEditions(input: P.DpcEditions.Input): Promise<P.DpcEditions.Output> {
+    const result = await this.query<P.DpcEditions.Output>(input, `DpcEditions`);
+    return result.unwrap();
+  }
+
   public async editorDocumentMap(
     input: P.EditorDocumentMap.Input,
   ): Promise<P.EditorDocumentMap.Output> {
@@ -144,6 +149,12 @@ export default class DevClient extends Client {
     input: P.DeleteEntities.Input,
   ): Promise<Result<P.DeleteEntities.Output>> {
     return this.query<P.DeleteEntities.Output>(input, `DeleteEntities`);
+  }
+
+  public dpcEditionsResult(
+    input: P.DpcEditions.Input,
+  ): Promise<Result<P.DpcEditions.Output>> {
+    return this.query<P.DpcEditions.Output>(input, `DpcEditions`);
   }
 
   public editorDocumentMapResult(

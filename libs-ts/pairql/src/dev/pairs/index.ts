@@ -4,6 +4,7 @@ export * from './CoverWebAppFriends';
 export * from './CreateArtifactProductionVersion';
 export * from './CreateEditionChapters';
 export * from './DeleteEntities';
+export * from './DpcEditions';
 export * from './EditorDocumentMap';
 export * from './GetAudios';
 export * from './GetEdition';

@@ -213,6 +213,6 @@ let dpcs: FsDocPrecursor[] | null = null;
 
 async function getDpcs(): Promise<FsDocPrecursor[]> {
   if (dpcs) return dpcs;
-  dpcs = await query.getByPattern(undefined, api.clientConfig());
+  dpcs = await query.getByPattern();
   return dpcs;
 }

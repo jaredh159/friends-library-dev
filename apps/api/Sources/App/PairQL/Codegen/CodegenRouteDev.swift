@@ -13,6 +13,7 @@ extension CodegenRoute.Dev: CodegenRouteHandler {
       CreateEditionChapters.self,
       CoverWebAppFriends.self,
       DeleteEntities.self,
+      DpcEditions.self,
       EditorDocumentMap.self,
       GetAudios.self,
       GetEdition.self,

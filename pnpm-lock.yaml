@@ -1310,17 +1310,15 @@ importers:
 
   libs-ts/dpc-fs:
     specifiers:
-      '@friends-library/db': workspace:*
       '@friends-library/env': workspace:*
+      '@friends-library/pairql': workspace:*
       '@friends-library/types': workspace:*
       '@types/glob': ^7.1.3
-      cross-fetch: ^3.1.5
       glob: ^7.1.4
     dependencies:
-      '@friends-library/db': link:../db
       '@friends-library/env': link:../env
+      '@friends-library/pairql': link:../pairql
       '@friends-library/types': link:../types
-      cross-fetch: 3.1.5
       glob: 7.2.3
     devDependencies:
       '@types/glob': 7.2.0

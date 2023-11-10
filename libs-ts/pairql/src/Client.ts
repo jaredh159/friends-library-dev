@@ -38,7 +38,11 @@ export default abstract class Client {
     pattern?: string | undefined,
   ): T {
     let env: Env = `dev`;
-    if (process.argv.includes(`--api-staging`) || process.env.API_STAGING) {
+    if (
+      process.argv.includes(`--api-staging`) ||
+      process.env.API_STAGING ||
+      process.env.GATSBY_NETLIFY_CONTEXT === `preview`
+    ) {
       env = `staging`;
     } else if (process.argv.includes(`--api-dev`) || process.env.API_DEV) {
       env = `dev`;
