@@ -5,28 +5,30 @@ struct CoverWebAppFriends: Pair {
   static var auth: Scope = .queryEntities
 
   struct FriendOuput: PairOutput {
-    struct DocumentOutput: PairNestable {
-      struct EditionOutput: PairNestable {
-        let id: Edition.Id
-        let path: String
-        let type: EditionType
-        let pages: [Int]?
-        let size: PrintSize?
-        let isbn: ISBN?
-      }
+    let name: String
+    let alphabeticalName: String
+    let description: String
+    let documents: [DocumentOutput]
 
+    struct DocumentOutput: PairNestable {
       let lang: Lang
       let title: String
       let isCompilation: Bool
       let directoryPath: String
       let description: String
       let editions: [EditionOutput]
-    }
 
-    let name: String
-    let alphabeticalName: String
-    let description: String
-    let documents: [DocumentOutput]
+      struct EditionOutput: PairNestable {
+        let id: Edition.Id
+        let path: String
+        let isDraft: Bool
+        let type: EditionType
+        let pages: [Int]?
+        let size: PrintSize?
+        let isbn: ISBN?
+        let audioPartTitles: [String]?
+      }
+    }
   }
 
   typealias Output = [FriendOuput]
@@ -50,13 +52,20 @@ extension CoverWebAppFriends: NoInputResolver {
             editions: try await (try await doc.editions()).concurrentMap { edition in
               let isbn = try await edition.isbn()
               let impression = try await edition.impression()
+              var audioPartTitles: [String]?
+              if let audio = try await edition.audio() {
+                let parts = try await audio.parts()
+                audioPartTitles = parts.map(\.title)
+              }
               return .init(
                 id: edition.id,
                 path: edition.directoryPath,
+                isDraft: edition.isDraft,
                 type: edition.type,
                 pages: impression.map { Array($0.paperbackVolumes) },
                 size: impression?.paperbackSize,
-                isbn: isbn?.code
+                isbn: isbn?.code,
+                audioPartTitles: audioPartTitles
               )
             }
           )

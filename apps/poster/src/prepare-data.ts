@@ -1,30 +1,36 @@
 import '@friends-library/env/load';
 import fs from 'fs';
 import { exec } from 'child_process';
-import fetch from 'cross-fetch';
 import env from '@friends-library/env';
-import { gql, getClient } from '@friends-library/db';
-import type { CoverProps, PrintSize } from '@friends-library/types';
-import type { GetAudios } from './graphql/GetAudios';
+import DevClient, { type T } from '@friends-library/pairql/dev';
+import type { CoverProps } from '@friends-library/types';
 
 async function main(): Promise<void> {
   const DOCS_ROOT = env.requireVar(`DOCS_REPOS_ROOT`);
-  const audios = await getAudios();
+  const friends = await getFriends();
   const map: Record<string, CoverProps> = {};
-  audios.forEach((audio) => {
-    map[audio.edition.path] = {
-      lang: audio.edition.document.friend.lang,
-      title: audio.edition.document.title,
-      isCompilation: audio.edition.document.friend.isCompilations,
-      author: audio.edition.document.friend.name,
-      size: (audio.edition.impression?.paperbackSize ?? `m`) as PrintSize,
-      pages: audio.edition.impression?.paperbackVolumes[0] ?? 222,
-      edition: audio.edition.type,
-      isbn: audio.edition.isbn?.code ?? ``,
-      blurb: audio.edition.document.description,
-      ...customCode(audio.edition.document.directoryPath, DOCS_ROOT),
-    };
-  });
+  const partTitles: Record<string, string[]> = {};
+
+  for (const friend of friends) {
+    for (const doc of friend.documents) {
+      for (const edition of doc.editions.filter((e) => !e.isDraft && e.audioPartTitles)) {
+        map[edition.path] = {
+          lang: doc.lang,
+          title: doc.title,
+          isCompilation: doc.isCompilation,
+          author: friend.name,
+          size: edition.size ?? `m`,
+          pages: edition.pages?.[0] ?? 222,
+          edition: edition.type,
+          isbn: edition.isbn ?? ``,
+          blurb: doc.description,
+          ...customCode(doc.directoryPath, DOCS_ROOT),
+        };
+        partTitles[edition.path] = edition.audioPartTitles ?? [];
+      }
+    }
+  }
+
   fs.writeFileSync(
     `${__dirname}/cover-props.ts`,
     [
@@ -39,11 +45,6 @@ async function main(): Promise<void> {
 
   exec(`prettier --write ${__dirname}/cover-props.ts`);
 
-  const partTitles: Record<string, string[]> = {};
-  audios.forEach((audio) => {
-    partTitles[audio.edition.path] = audio.parts.map((p) => p.title);
-  });
-
   fs.writeFileSync(
     `${__dirname}/part-titles.ts`,
     [
@@ -57,13 +58,12 @@ async function main(): Promise<void> {
   exec(`prettier --write ${__dirname}/part-titles.ts`);
 }
 
-async function getAudios(): Promise<GetAudios['audios']> {
+function getFriends(): Promise<T.CoverWebAppFriends.Output> {
   if (process.argv.includes(`--empty`)) {
-    return [];
+    return Promise.resolve([]);
+  } else {
+    return DevClient.node(process).coverWebAppFriends();
   }
-  const client = getClient({ env: `infer_node`, process, fetch });
-  const { data } = await client.query<GetAudios>({ query: QUERY });
-  return data.audios.filter(({ edition }) => !edition.isDraft);
 }
 
 function customCode(
@@ -82,37 +82,5 @@ function customCode(
   }
   return { customCss, customHtml };
 }
-
-const QUERY = gql`
-  query GetAudios {
-    audios: getAudios {
-      parts {
-        title
-      }
-      edition {
-        type
-        isDraft
-        path: directoryPath
-        isbn {
-          code
-        }
-        document {
-          description
-          title
-          directoryPath
-          friend {
-            lang
-            isCompilations
-            name
-          }
-        }
-        impression {
-          paperbackSize
-          paperbackVolumes
-        }
-      }
-    }
-  }
-`;
 
 main();

@@ -16,10 +16,12 @@ export namespace CoverWebAppFriends {
       editions: Array<{
         id: UUID;
         path: string;
+        isDraft: boolean;
         type: 'updated' | 'original' | 'modernized';
         pages?: number[];
         size?: 's' | 'm' | 'xl';
         isbn?: string;
+        audioPartTitles?: string[];
       }>;
     }>;
   }>;
