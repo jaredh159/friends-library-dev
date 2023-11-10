@@ -10,9 +10,9 @@ const onPostBuild: GatsbyNode['onPostBuild'] = async () => {
   (await api.queryEditions()).forEach(async ({ edition, document, friend }) => {
     if (friend.lang === LANG && edition.audio) {
       const xmlHq = await podcast(edition, document, friend, `HQ`);
-      fs.outputFileSync(`./public/${edition.audio.files.podcast.hq.sourcePath}`, xmlHq);
+      fs.outputFileSync(`./public/${edition.audio.podcastSourcePathHq}`, xmlHq);
       const xmlLq = await podcast(edition, document, friend, `LQ`);
-      fs.outputFileSync(`./public/${edition.audio.files.podcast.lq.sourcePath}`, xmlLq);
+      fs.outputFileSync(`./public/${edition.audio.podcastSourcePathLq}`, xmlLq);
     }
   });
 

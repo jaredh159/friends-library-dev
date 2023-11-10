@@ -11,16 +11,14 @@ describe(`sortFriends()`, () => {
       documents: [],
       residences: [
         {
-          __typename: `FriendResidence`,
           city: `Aberdeen`,
           region: `Scotland`,
-          durations: [{ __typename: `FriendResidenceDuration`, start: 1700, end: 1710 }],
+          durations: [{ start: 1700, end: 1710 }],
         },
         {
-          __typename: `FriendResidence`,
           city: `London`,
           region: `England`,
-          durations: [{ __typename: `FriendResidenceDuration`, start: 1690, end: 1700 }],
+          durations: [{ start: 1690, end: 1700 }],
         },
       ],
     } as Pick<Friend, 'residences' | 'quotes' | 'documents' | 'relatedDocuments'>;

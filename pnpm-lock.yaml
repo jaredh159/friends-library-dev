@@ -337,6 +337,7 @@ importers:
       '@friends-library/env': workspace:*
       '@friends-library/locale': workspace:*
       '@friends-library/lulu': workspace:*
+      '@friends-library/pairql': workspace:*
       '@friends-library/theme': workspace:*
       '@friends-library/types': workspace:*
       '@mdx-js/mdx': ^1.6.22
@@ -410,6 +411,7 @@ importers:
       x-chalk: ^1.0.1
       x-syntax: ^1.0.0
     dependencies:
+      '@friends-library/pairql': link:../../libs-ts/pairql
       '@friends-library/types': link:../../libs-ts/types
       graphql: 14.7.0
       x-syntax: 1.0.0

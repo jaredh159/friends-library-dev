@@ -84,4 +84,12 @@ extension Edition {
         .first()
     })
   }
+
+  func chapters() async throws -> [EditionChapter] {
+    try await chapters.useLoaded(or: {
+      try await EditionChapter.query()
+        .where(.editionId == id)
+        .all()
+    })
+  }
 }

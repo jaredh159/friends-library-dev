@@ -121,4 +121,13 @@ extension Document {
         .all()
     })
   }
+
+  func altLanguageDocument() async throws -> Document? {
+    try await altLanguageDocument.useLoaded(or: {
+      guard let altLanguageId = altLanguageId else { return nil }
+      return try await Document.query()
+        .where(.id == altLanguageId)
+        .first()
+    })
+  }
 }

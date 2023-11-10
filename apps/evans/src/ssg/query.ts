@@ -1,11 +1,11 @@
-import gql from 'x-syntax';
+/// <reference types="../../globals.d.ts" />
 import type { EditionType } from '@friends-library/types';
 import type { Friend } from './types';
 
 export function sortFriends(friends: Friend[]): Friend[] {
   friends.sort((a, b) => (a.id < b.id ? -1 : 1));
   for (const friend of friends) {
-    friend.relatedDocuments.sort((a, b) => (a.document.id < b.document.id ? -1 : 1));
+    friend.relatedDocuments.sort((a, b) => (a.documentId < b.documentId ? -1 : 1));
     friend.quotes.sort(byOrder);
     friend.documents.sort(sortDocuments);
 
@@ -23,12 +23,11 @@ export function sortFriends(friends: Friend[]): Friend[] {
 
     for (const document of friend.documents) {
       document.editions.sort(editionsByType);
-      document.tags.sort((a, b) => (a.type < b.type ? -1 : 1));
-      document.relatedDocuments.sort((a, b) => (a.document.id < b.document.id ? -1 : 1));
+      document.tags.sort((a, b) => (a < b ? -1 : 1));
+      document.relatedDocuments.sort((a, b) => (a.documentId < b.documentId ? -1 : 1));
       for (const edition of document.editions) {
-        edition.chapters.sort((a, b) => (a.id < b.id ? -1 : 1));
         if (edition.audio?.isPublished === false) {
-          edition.audio = null;
+          edition.audio = undefined;
         } else if (edition.audio) {
           edition.audio.parts = edition.audio.parts.filter((part) => part.isPublished);
           edition.audio.parts.sort(byOrder);
@@ -54,7 +53,7 @@ function byOrder<T extends { order: number }>(a: T, b: T): number {
 }
 
 type SortableDoc = {
-  primaryEdition: null | { type: EditionType };
+  primaryEdition?: { type: EditionType };
   title: string;
 };
 
@@ -70,202 +69,3 @@ export function sortDocuments(a: SortableDoc, b: SortableDoc): number {
   }
   return a.title < b.title ? -1 : 1;
 }
-
-export const QUERY = gql`
-  query Friends {
-    friends: getFriends {
-      id
-      lang
-      slug
-      gender
-      name
-      born
-      died
-      description
-      isCompilations
-      published
-      hasNonDraftDocument
-      primaryResidence {
-        region
-        city
-      }
-      documents {
-        id
-        title
-        htmlTitle
-        htmlShortTitle
-        utf8ShortTitle
-        originalTitle
-        slug
-        published
-        incomplete
-        directoryPath
-        description
-        partialDescription
-        featuredDescription
-        hasNonDraftEdition
-        tags {
-          type
-        }
-        altLanguageDocument {
-          slug
-          htmlShortTitle
-          hasNonDraftEdition
-          friend {
-            slug
-          }
-        }
-        editions {
-          id
-          type
-          isDraft
-          path: directoryPath
-          chapters {
-            id
-          }
-          isbn {
-            code
-          }
-          images {
-            square {
-              w1400 {
-                url
-              }
-            }
-          }
-          impression {
-            paperbackPriceInCents
-            paperbackSize
-            paperbackVolumes
-            createdAt
-            files {
-              ebook {
-                pdf {
-                  logUrl
-                }
-                mobi {
-                  logUrl
-                }
-                epub {
-                  logUrl
-                }
-                speech {
-                  logUrl
-                }
-              }
-            }
-          }
-          audio {
-            reader
-            isPublished
-            isIncomplete
-            externalPlaylistIdHq
-            externalPlaylistIdLq
-            m4bSizeHq
-            m4bSizeLq
-            mp3ZipSizeHq
-            mp3ZipSizeLq
-            humanDurationClock
-            createdAt
-            parts {
-              title
-              isPublished
-              order
-              chapters
-              duration
-              externalIdHq
-              externalIdLq
-              mp3SizeHq
-              mp3SizeLq
-              mp3File {
-                hq {
-                  logUrl
-                }
-                lq {
-                  logUrl
-                }
-              }
-            }
-            files {
-              m4b {
-                hq {
-                  logUrl
-                }
-                lq {
-                  logUrl
-                }
-              }
-              mp3s {
-                hq {
-                  logUrl
-                }
-                lq {
-                  logUrl
-                }
-              }
-              podcast {
-                hq {
-                  logUrl
-                  sourcePath
-                }
-                lq {
-                  logUrl
-                  sourcePath
-                }
-              }
-            }
-          }
-        }
-        primaryEdition {
-          id
-          type
-          images {
-            threeD {
-              w700 {
-                url
-              }
-            }
-          }
-        }
-        relatedDocuments {
-          description
-          document {
-            id
-            htmlShortTitle
-            description
-          }
-        }
-      }
-      relatedDocuments {
-        description
-        document {
-          id
-          htmlShortTitle
-          description
-        }
-      }
-      quotes {
-        order
-        source
-        text
-      }
-      residences {
-        city
-        region
-        durations {
-          start
-          end
-        }
-      }
-    }
-  }
-`;
-
-export const DOCUMENT_DOWNLOAD_COUNTS_QUERY = gql`
-  query GetDocumentDownloadCounts {
-    counts: getDocumentDownloadCounts {
-      documentId
-      downloadCount
-    }
-  }
-`;

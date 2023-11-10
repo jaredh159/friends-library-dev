@@ -44,7 +44,7 @@ interface Props {
         numDownloads: number;
       })[];
       quotes?: { source: string; text: string }[];
-      relatedDocuments: { description: string; document: { id: string } }[];
+      relatedDocuments: { description: string; documentId: string }[];
       residences: {
         city: string;
         region: string;
@@ -148,7 +148,7 @@ const FriendPage: React.FC<Props> = ({ data: { friend, relatedDocuments, booksBg
         titleEl="h3"
         books={relatedDocuments.nodes.map((relatedDoc) => {
           const friendDoc = friend.relatedDocuments.find(
-            (doc) => doc.document.id === relatedDoc.id,
+            (doc) => doc.documentId === relatedDoc.id,
           );
           if (!friendDoc) throw new Error(`Missing related doc`);
           return {
@@ -186,9 +186,7 @@ export const query = graphql`
       }
       relatedDocuments {
         description
-        document {
-          id
-        }
+        documentId
       }
       born
       died

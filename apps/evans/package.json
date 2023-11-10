@@ -12,6 +12,7 @@
     "format:check": "just ../../prettier-check"
   },
   "dependencies": {
+    "@friends-library/pairql": "workspace:*",
     "@friends-library/types": "workspace:*",
     "graphql": "14.7.0",
     "x-syntax": "^1.0.0"

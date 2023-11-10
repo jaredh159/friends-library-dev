@@ -7,6 +7,7 @@ async function main(): Promise<void> {
     new CodegenDomain(`dev`, `DevClient`, true),
     new CodegenDomain(`admin`, `AdminClient`, false),
     new CodegenDomain(`order`, `OrderClient`, false),
+    new CodegenDomain(`evans-build`, `EvansBuildClient`, true),
   ];
 
   const promises = domains.map(async (domain) => {

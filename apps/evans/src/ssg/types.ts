@@ -1,11 +1,11 @@
-import type { Friends } from '../graphql/Friends';
+import { type T } from '@friends-library/pairql/evans-build';
 
-export type Friend = Friends['friends'][0];
+export type Friend = T.GetFriends.Output[number];
 export type FriendResidence = Friend['residences'][0];
-export type Document = Friend['documents'][0];
-export type Edition = Document['editions'][0];
+export type Document = Friend['documents'][number];
+export type Edition = Document['editions'][number];
 export type Audio = NonNullable<Edition['audio']>;
-export type AudioPart = Audio['parts'][0];
+export type AudioPart = Audio['parts'][number];
 export type Impression = NonNullable<Edition['impression']>;
 
 type LangCounts = { en: number; es: number };
