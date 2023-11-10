@@ -22,6 +22,7 @@ enum DevRoute: PairRoute {
 enum AuthedDevRoute: PairRoute {
   case createArtifactProductionVersion(CreateArtifactProductionVersion.Input)
   case createEditionChapters(CreateEditionChapters.Input)
+  case coverWebAppFriends
   case deleteEntities(DeleteEntities.Input)
   case editorDocumentMap
   case getAudios
@@ -40,6 +41,9 @@ enum AuthedDevRoute: PairRoute {
     Route(/Self.createEditionChapters) {
       Operation(CreateEditionChapters.self)
       Body(.input(CreateEditionChapters.self))
+    }
+    Route(/Self.coverWebAppFriends) {
+      Operation(CoverWebAppFriends.self)
     }
     Route(/Self.deleteEntities) {
       Operation(DeleteEntities.self)
@@ -90,6 +94,9 @@ extension DevRoute: RouteResponder {
         return try respond(with: output)
       case .createEditionChapters(let input):
         let output = try await CreateEditionChapters.resolve(with: input, in: authed)
+        return try respond(with: output)
+      case .coverWebAppFriends:
+        let output = try await CoverWebAppFriends.resolve(in: authed)
         return try respond(with: output)
       case .deleteEntities(let input):
         let output = try await DeleteEntities.resolve(with: input, in: authed)

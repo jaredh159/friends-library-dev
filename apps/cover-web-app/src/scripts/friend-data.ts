@@ -2,12 +2,9 @@ import '@friends-library/env/load';
 import * as fs from 'fs';
 import { resolve } from 'path';
 import exec from 'x-exec';
-import fetch from 'cross-fetch';
 import env from '@friends-library/env';
-import { getClient, gql, writable } from '@friends-library/db';
-import type { PrintSize } from '@friends-library/types';
+import DevClient from '@friends-library/pairql/dev';
 import type { FriendData } from '../types';
-import type { GetFriends } from '../graphql/GetFriends';
 
 const ROOT = env.requireVar(`DOCS_REPOS_ROOT`);
 
@@ -15,9 +12,8 @@ async function main(): Promise<void> {
   const friends: FriendData[] = [];
 
   if (!process.env.CI) {
-    var client = getClient({ env: `infer_node`, process, fetch });
-    const { data } = await client.query<GetFriends>({ query: QUERY });
-    const sortedFriends = writable(data.friends).sort((a, b) =>
+    const data = await DevClient.node(process).coverWebAppFriends();
+    const sortedFriends = data.sort((a, b) =>
       a.alphabeticalName < b.alphabeticalName ? -1 : 1,
     );
     for (const friend of sortedFriends) {
@@ -26,17 +22,17 @@ async function main(): Promise<void> {
         alphabeticalName: friend.alphabeticalName,
         description: friend.description,
         documents: friend.documents.map((doc) => ({
-          lang: friend.lang,
+          lang: doc.lang,
           title: doc.title,
           description: doc.description,
-          isCompilation: friend.isCompilations,
+          isCompilation: doc.isCompilation,
           editions: doc.editions.map((ed) => ({
             id: ed.id,
             path: ed.path,
             type: ed.type,
-            pages: ed.impression?.paperbackVolumes[0] ?? 222,
-            size: (ed.impression?.paperbackSize ?? `m`) as PrintSize,
-            isbn: ed.isbn?.code ?? ``,
+            pages: ed.pages?.[0] ?? 222,
+            size: ed.size ?? `m`,
+            isbn: ed.isbn ?? ``,
           })),
           ...getCustomCode(doc.directoryPath),
         })),
@@ -66,34 +62,5 @@ function getCustomCode(path: string): {
   }
   return { customCss, customHtml };
 }
-
-const QUERY = gql`
-  query GetFriends {
-    friends: getFriends {
-      name
-      alphabeticalName
-      lang
-      description
-      isCompilations
-      documents {
-        title
-        description
-        directoryPath
-        editions {
-          id
-          path: directoryPath
-          type
-          isbn {
-            code
-          }
-          impression {
-            paperbackVolumes
-            paperbackSize
-          }
-        }
-      }
-    }
-  }
-`;
 
 main();

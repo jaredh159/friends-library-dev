@@ -11,6 +11,7 @@ extension CodegenRoute.Dev: CodegenRouteHandler {
     [
       CreateArtifactProductionVersion.self,
       CreateEditionChapters.self,
+      CoverWebAppFriends.self,
       DeleteEntities.self,
       EditorDocumentMap.self,
       GetAudios.self,

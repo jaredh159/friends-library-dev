@@ -20,6 +20,16 @@ export default class DevClient extends Client {
     return Client.inferWeb(DevClient, href, getToken);
   }
 
+  public async coverWebAppFriends(
+    input: P.CoverWebAppFriends.Input,
+  ): Promise<P.CoverWebAppFriends.Output> {
+    const result = await this.query<P.CoverWebAppFriends.Output>(
+      input,
+      `CoverWebAppFriends`,
+    );
+    return result.unwrap();
+  }
+
   public async createArtifactProductionVersion(
     input: P.CreateArtifactProductionVersion.Input,
   ): Promise<P.CreateArtifactProductionVersion.Output> {
@@ -107,6 +117,12 @@ export default class DevClient extends Client {
       `UpsertEditionImpression`,
     );
     return result.unwrap();
+  }
+
+  public coverWebAppFriendsResult(
+    input: P.CoverWebAppFriends.Input,
+  ): Promise<Result<P.CoverWebAppFriends.Output>> {
+    return this.query<P.CoverWebAppFriends.Output>(input, `CoverWebAppFriends`);
   }
 
   public createArtifactProductionVersionResult(
