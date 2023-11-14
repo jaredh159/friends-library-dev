@@ -1,8 +1,9 @@
+/// <reference types="../../../../apps/evans/globals.d.ts" />
 import fs from 'fs';
 import fetch from 'cross-fetch';
 import isEqual from 'lodash.isequal';
 import * as core from '@actions/core';
-import { QUERY, sortFriends } from '@friends-library/evans';
+import { sortFriends } from '@friends-library/evans';
 import * as cloud from '@friends-library/cloud';
 import log from '@friends-library/slack';
 
@@ -56,25 +57,19 @@ function normalize(unsorted: Friend[]): Friend[] {
 }
 
 async function getApiFriends(): Promise<Friend[] | null> {
-  const endpoint = process.env.INPUT_FLP_API_ENDPOINT;
+  const endpoint = process.env.INPUT_FLP_API_ENDPOINT ?? ``;
   try {
-    const res = await fetch(endpoint ?? ``, {
+    const res = await fetch(`${endpoint}/pairql/evans-build/GetFriends`, {
       method: `POST`,
-      headers: {
-        Authorization: `Bearer ${process.env.INPUT_FLP_API_TOKEN}`,
-        'Content-Type': `application/json`,
-      },
-      body: JSON.stringify({ query: QUERY }),
+      headers: { Authorization: `Bearer ${process.env.INPUT_FLP_API_TOKEN}` },
     });
-    const json: {
-      data?: { friends: Friend[] };
-      errors?: Array<{ message: string }>;
-    } = await res.json();
-    if (json.errors || !json.data) {
-      reportError(`Got errors fetching evans build data: ${JSON.stringify(json.errors)}`);
+
+    if (res.status >= 300) {
+      reportError(`Got non-200 status code fetching evans build data: ${res.status}`);
       return null;
     }
-    return normalize(json.data.friends);
+    const json: Friend[] = await res.json();
+    return normalize(json);
   } catch (error: unknown) {
     reportError(`Error fetching evans build data: ${error}`);
     return null;

@@ -1,7 +1,7 @@
 {
   "name": "@friends-library/evans",
   "description": "Friends Library websites (English and Spanish)",
-  "main": "./dist/ssg/query.js",
+  "main": "./dist/query.js",
   "scripts": {
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
