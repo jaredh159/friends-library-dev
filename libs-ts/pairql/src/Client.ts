@@ -21,7 +21,8 @@ export default abstract class Client {
     let env: Env = `dev`;
     if (
       href.includes(`https://deploy-preview-`) ||
-      (href.startsWith(`https://`) && href.includes(`--staging`))
+      (href.startsWith(`https://`) && href.includes(`--staging`)) ||
+      process.env.GATSBY_NETLIFY_CONTEXT === `preview`
     ) {
       env = `staging`;
     } else if (href.startsWith(`http://`)) {
