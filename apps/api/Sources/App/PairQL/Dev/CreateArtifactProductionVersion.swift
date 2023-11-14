@@ -12,7 +12,7 @@ struct CreateArtifactProductionVersion: Pair {
   }
 }
 
-extension CreateArtifactProductionVersion: PairQL.Resolver {
+extension CreateArtifactProductionVersion: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
     if !input.version.isValidGitCommitFullSha {

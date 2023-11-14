@@ -14,7 +14,7 @@ struct GetPrintJobExploratoryMetadata: Pair {
 
 // resolver
 
-extension GetPrintJobExploratoryMetadata: PairQL.Resolver {
+extension GetPrintJobExploratoryMetadata: Resolver {
   static func resolve(with input: Input, in context: Context) async throws -> Output {
     try await PrintJobs.getExploratoryMetadata(
       for: input.items,

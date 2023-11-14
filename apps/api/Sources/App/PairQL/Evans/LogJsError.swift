@@ -19,7 +19,7 @@ struct LogJsError: Pair {
 
 // resolver
 
-extension LogJsError: PairQL.Resolver {
+extension LogJsError: Resolver {
   static func resolve(with input: Input, in context: Context) async throws -> Output {
     await slackError(
       """

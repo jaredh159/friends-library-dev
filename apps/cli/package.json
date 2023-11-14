@@ -4,7 +4,6 @@
   "description": "cli for friends-library",
   "private": true,
   "scripts": {
-    "graphql:codegen": "flp-gql-codegen",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest . -- watch",

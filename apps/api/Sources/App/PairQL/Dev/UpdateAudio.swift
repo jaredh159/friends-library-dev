@@ -17,7 +17,7 @@ struct UpdateAudio: Pair {
   }
 }
 
-extension UpdateAudio: PairQL.Resolver {
+extension UpdateAudio: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
     let audio = try await Audio.find(input.id)

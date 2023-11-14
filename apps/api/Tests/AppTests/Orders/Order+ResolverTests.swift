@@ -1,235 +1,105 @@
-import GraphQL
 import XCTest
+import XExpect
+
+#if canImport(FoundationNetworking)
+  import FoundationNetworking
+#endif
 
 @testable import App
 @testable import XStripe
 
 final class OrderResolverTests: AppTestCase {
-
-  func testCreateOrder() async throws {
+  func orderSetup() async throws -> (CreateOrder.Input, OrderItem) {
     let entities = await Entities.create()
     let order = Order.random
     let item = OrderItem.random
     item.orderId = order.id
     item.editionId = entities.edition.id
-    let orderMap = order.gqlMap()
-    let itemMap = item.gqlMap()
 
-    assertResponse(
-      to: /* gql */ """
-      mutation CreateOrderWithItems($order: CreateOrderInput!, $items: [CreateOrderItemInput!]!) {
-        order: createOrderWithItems(order: $order, items: $items) {
-          paymentId
-          printJobStatus
-          shippingLevel
-          email
-          addressName
-          addressStreet
-          addressCity
-          addressState
-          addressZip
-          addressCountry
-          lang
-          source
-          items {
-            quantity
-            unitPriceInCents
-            order {
-              itemOrderId: id
-            }
-            edition {
-              itemEditionId: id
-            }
-          }
-        }
-      }
-      """,
-      withVariables: ["order": orderMap, "items": .array([itemMap])],
-      .containsKeyValuePairs([
-        "paymentId": orderMap["paymentId"],
-        "itemOrderId": orderMap["id"],
-        "itemEditionId": entities.edition.id.lowercased,
-        "printJobStatus": orderMap["printJobStatus"],
-        "shippingLevel": orderMap["shippingLevel"],
-        "email": orderMap["email"],
-        "addressName": orderMap["addressName"],
-        "addressStreet": orderMap["addressStreet"],
-        "addressCity": orderMap["addressCity"],
-        "addressState": orderMap["addressState"],
-        "addressZip": orderMap["addressZip"],
-        "addressCountry": orderMap["addressCountry"],
-        "lang": orderMap["lang"],
-        "source": orderMap["source"],
-        "quantity": itemMap["quantity"],
-        "unitPriceInCents": itemMap["unitPrice"],
-      ])
+    let input = CreateOrder.Input(
+      id: order.id,
+      lang: order.lang,
+      source: order.source,
+      paymentId: order.paymentId,
+      amount: order.amount,
+      taxes: order.taxes,
+      fees: order.fees,
+      ccFeeOffset: order.ccFeeOffset,
+      shipping: order.shipping,
+      shippingLevel: order.shippingLevel,
+      email: order.email,
+      addressName: order.addressName,
+      addressStreet: order.addressStreet,
+      addressStreet2: order.addressStreet2,
+      addressCity: order.addressCity,
+      addressState: order.addressState,
+      addressZip: order.addressZip,
+      addressCountry: order.addressCountry,
+      freeOrderRequestId: order.freeOrderRequestId,
+      items: [.init(
+        editionId: item.editionId,
+        quantity: item.quantity,
+        unitPrice: item.unitPrice
+      )]
     )
+
+    return (input, item)
   }
 
-  func testCreateOrderAbbreviatesUSStates() async throws {
-    let entities = await Entities.create()
-    let order = Order.random
-    order.addressCountry = "US"
-    order.addressState = "California" // <-- should be abbreviated to CA
-    let item = OrderItem.random
-    item.orderId = order.id
-    item.editionId = entities.edition.id
-    let orderMap = order.gqlMap()
-    let itemMap = item.gqlMap()
+  func testCreateOrder() async throws {
+    let (input, item) = try await orderSetup()
+    let output = try await CreateOrder.resolve(with: input, in: .mock)
 
-    assertResponse(
-      to: /* gql */ """
-      mutation CreateOrderWithItems($order: CreateOrderInput!, $items: [CreateOrderItemInput!]!) {
-        order: createOrderWithItems(order: $order, items: $items) {
-          paymentId
-          printJobStatus
-          shippingLevel
-          email
-          addressName
-          addressStreet
-          addressCity
-          addressState
-          addressZip
-          addressCountry
-          lang
-          source
-          items {
-            quantity
-            unitPriceInCents
-            order {
-              itemOrderId: id
-            }
-            edition {
-              itemEditionId: id
-            }
-          }
-        }
-      }
-      """,
-      withVariables: ["order": orderMap, "items": .array([itemMap])],
-      .containsKeyValuePairs([
-        "paymentId": orderMap["paymentId"],
-        "itemOrderId": orderMap["id"],
-        "itemEditionId": entities.edition.id.lowercased,
-        "printJobStatus": orderMap["printJobStatus"],
-        "shippingLevel": orderMap["shippingLevel"],
-        "email": orderMap["email"],
-        "addressName": orderMap["addressName"],
-        "addressStreet": orderMap["addressStreet"],
-        "addressCity": orderMap["addressCity"],
-        "addressState": "CA", // <-- abbreviated
-        "addressZip": orderMap["addressZip"],
-        "addressCountry": orderMap["addressCountry"],
-        "lang": orderMap["lang"],
-        "source": orderMap["source"],
-        "quantity": itemMap["quantity"],
-        "unitPriceInCents": itemMap["unitPrice"],
-      ])
-    )
+    let retrieved = try await Order.find(output)
+    let items = try await retrieved.items()
+
+    expect(retrieved.id).toEqual(input.id)
+    expect(retrieved.email).toEqual(input.email)
+    expect(items).toHaveCount(1)
+    expect(items.first?.editionId).toEqual(item.editionId)
+  }
+
+  func testCreateOrderHttpAuthAndStateAbbrev() async throws {
+    var (input, _) = try await orderSetup()
+    input.addressState = "California" // should be abbreviated
+    input.addressCountry = "US"
+
+    let badToken = UUID()
+    var request = URLRequest(url: URL(string: "order/CreateOrder")!)
+    request.httpMethod = "POST"
+    request.addValue("Bearer \(badToken.lowercased)", forHTTPHeaderField: "Authorization")
+    request.httpBody = try JSONEncoder().encode(input)
+
+    var matched = try PairQLRoute.router.match(request: request)
+    let expected = PairQLRoute.order(.createOrder(badToken, input))
+    expect(matched).toEqual(expected)
+
+    try await expectErrorFrom {
+      try await PairQLRoute.respond(to: matched, in: .mock)
+    }.toContain("notFound")
+
+    let token = try await Token(description: "one-time", uses: 1).create()
+    try await TokenScope(tokenId: token.id, scope: .mutateOrders).create()
+
+    request.setValue("Bearer \(token.value.lowercased)", forHTTPHeaderField: "Authorization")
+    matched = try PairQLRoute.router.match(request: request)
+
+    let response = try await PairQLRoute.respond(to: matched, in: .mock)
+    expect("\(response.body)").toEqual("\"\(input.id!.lowercased)\"")
+
+    let retrieved = try await Order.find(input.id!)
+    expect(retrieved.addressState).toEqual("CA")
   }
 
   func testCreateOrderWithFreeRequestId() async throws {
-    let edition = await Entities.create().edition
     let req = try await Current.db.create(FreeOrderRequest.random)
-    let order = Order.random
-    order.freeOrderRequestId = req.id
-    let item = OrderItem.random
-    item.orderId = order.id
-    item.editionId = edition.id
+    var (input, _) = try await orderSetup()
+    input.freeOrderRequestId = req.id
+    let output = try await CreateOrder.resolve(with: input, in: .mock)
 
-    assertResponse(
-      to: /* gql */ """
-      mutation CreateOrderWithItems($order: CreateOrderInput!, $items: [CreateOrderItemInput!]!) {
-        order: createOrderWithItems(order: $order, items: $items) {
-          freeOrderRequest {
-            id
-          }
-        }
-      }
-      """,
-      withVariables: ["order": order.gqlMap(), "items": [item.gqlMap()]],
-      .containsKeyValuePairs(["id": req.id.lowercased])
-    )
-  }
+    let retrieved = try await Order.find(output)
 
-  func testUpdateOrder() async throws {
-    let order = try await Current.db.create(Order.empty)
-
-    // now update
-    order.printJobId = 12345
-    order.printJobStatus = .accepted
-
-    assertResponse(
-      to: /* gql */ """
-      mutation UpdateOrder($input: UpdateOrderInput!) {
-        order: updateOrder(input: $input) {
-          printJobId
-          printJobStatus
-        }
-      }
-      """,
-      withVariables: ["input": order.gqlMap()],
-      .containsKeyValuePairs([
-        "printJobId": 12345,
-        "printJobStatus": "accepted",
-      ])
-    )
-  }
-
-  func testUpdateOrders() async throws {
-    let order1 = try await Current.db.create(Order.empty)
-    let order2 = try await Current.db.create(Order.empty)
-
-    // now update
-    order1.printJobId = 5555
-    order2.printJobId = 3333
-
-    assertResponse(
-      to: /* gql */ """
-      mutation UpdateOrders($input: [UpdateOrderInput!]!) {
-        order: updateOrders(input: $input) {
-          printJobId
-        }
-      }
-      """,
-      bearer: Seeded.tokens.allScopes,
-      withVariables: ["input": .array([order1.gqlMap(), order2.gqlMap()])],
-      .containsAll(["5555", "3333"])
-    )
-  }
-
-  func testGetOrderDirectionId() async throws {
-    let order = Order.empty
-    order.printJobId = 234_432
-    try await Current.db.create(order)
-
-    assertResponse(
-      to: /* gql */ """
-      query {
-        order: getOrder(id: "\(order.id.uuidString)") {
-          printJobId
-        }
-      }
-      """,
-      .containsKeyValuePairs(["printJobId": 234_432])
-    )
-  }
-
-  func testGetOrderDirectionIdFailsWithWrongTokenScope() async throws {
-    Current.auth = .live
-    let order = try await Current.db.create(Order.empty)
-
-    assertResponse(
-      to: /* gql */ """
-      query {
-        order: getOrder(id: "\(order.id.uuidString)") {
-          printJobId
-        }
-      }
-      """,
-      bearer: Seeded.tokens.queryDownloads, // 👋 <-- bad scope
-      isError: .withStatus(.unauthorized)
-    )
+    expect(retrieved.freeOrderRequestId).toEqual(req.id)
   }
 
   func testBrickOrder() async throws {
@@ -250,24 +120,16 @@ final class OrderResolverTests: AppTestCase {
       return .init(id: pi, clientSecret: "")
     }
 
-    let input: Map = .dictionary([
-      "orderId": .string(order.id.lowercased),
-      "orderPaymentId": "stripe_pi_id",
-      "userAgent": "operafox",
-      "stateHistory": .array(["foo", "bar"]),
-    ])
-
-    assertResponse(
-      to: /* gql */ """
-      mutation BrickOrder($input: BrickOrderInput!) {
-        brickOrder(input: $input) {
-          success
-        }
-      }
-      """,
-      withVariables: ["input": input],
-      .containsKeyValuePairs(["success": true])
+    let input = BrickOrder.Input(
+      orderPaymentId: "stripe_pi_id",
+      orderId: order.id.lowercased,
+      userAgent: "operafox",
+      stateHistory: ["foo", "bar"]
     )
+
+    let output = try await BrickOrder.resolve(with: input, in: .mock)
+
+    expect(output).toEqual(.success)
 
     let retrieved = try await Current.db.find(order.id)
     XCTAssertEqual(retrieved.printJobStatus, .bricked)
@@ -284,7 +146,7 @@ final class OrderResolverTests: AppTestCase {
         *Bricked Order*
         ```
         \(JSON.encode(
-          BrickOrderInput(
+          BrickOrder.Input(
             orderPaymentId: "stripe_pi_id",
             orderId: orderId,
             userAgent: "operafox",

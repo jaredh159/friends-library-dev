@@ -46,7 +46,7 @@ struct GetOrder: Pair {
   }
 }
 
-extension GetOrder: PairQL.Resolver {
+extension GetOrder: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
     let order = try await Order.find(input)

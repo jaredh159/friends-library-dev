@@ -11,7 +11,7 @@ struct DeleteEntities: Pair {
   }
 }
 
-extension DeleteEntities: PairQL.Resolver {
+extension DeleteEntities: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
     switch input {

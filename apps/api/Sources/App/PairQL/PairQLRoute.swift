@@ -3,7 +3,7 @@ import Rainbow
 import Vapor
 import VaporRouting
 
-enum PairQLRoute: RouteHandler, RouteResponder {
+enum PairQLRoute: RouteHandler, RouteResponder, Equatable {
   case dev(DevRoute)
   case admin(AdminRoute)
   case order(OrderRoute)

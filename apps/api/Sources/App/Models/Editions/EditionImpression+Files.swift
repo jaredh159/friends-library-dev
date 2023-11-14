@@ -1,5 +1,4 @@
 import Foundation
-import Graphiti
 import NonEmpty
 
 struct EditionImpressionFiles: Encodable {
@@ -64,33 +63,5 @@ extension EditionImpression {
         cover: .init(covers.removeFirst()) + covers
       )
     )
-  }
-}
-
-// extensions
-
-extension AppSchema {
-  static var EditionImpressionEbookFilesType: AppType<EditionImpressionFiles.Ebook> {
-    Type(EditionImpressionFiles.Ebook.self, as: "EditionImpressionEbookFiles") {
-      Field("mobi", at: \.mobi)
-      Field("epub", at: \.epub)
-      Field("pdf", at: \.pdf)
-      Field("app", at: \.app)
-      Field("speech", at: \.speech)
-    }
-  }
-
-  static var EditionImpressionPaperbackFilesType: AppType<EditionImpressionFiles.Paperback> {
-    Type(EditionImpressionFiles.Paperback.self, as: "EditionImpressionPaperbackFiles") {
-      Field("cover", at: \.cover.rawValue)
-      Field("interior", at: \.interior.rawValue)
-    }
-  }
-
-  static var EditionImpressionFilesType: AppType<EditionImpressionFiles> {
-    Type(EditionImpressionFiles.self) {
-      Field("ebook", at: \.ebook)
-      Field("paperback", at: \.paperback)
-    }
   }
 }

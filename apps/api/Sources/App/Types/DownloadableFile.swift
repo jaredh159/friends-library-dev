@@ -1,4 +1,3 @@
-import Graphiti
 import Vapor
 import XCore
 
@@ -244,20 +243,6 @@ extension DownloadableFile {
       case .invalidMp3Part(let path):
         return "Invalid mp3 part in path \(path)"
       }
-    }
-  }
-}
-
-// graphql extensions
-
-extension AppSchema {
-  static var DownloadableFileType: AppType<DownloadableFile> {
-    Type(DownloadableFile.self) {
-      Field("filename", at: \.filename)
-      Field("logPath", at: \.logPath)
-      Field("sourcePath", at: \.sourcePath)
-      Field("logUrl", at: \.logUrl.absoluteString)
-      Field("sourceUrl", at: \.sourceUrl.absoluteString)
     }
   }
 }

@@ -12,7 +12,7 @@ struct BrickOrder: Pair {
 
 // resolver
 
-extension BrickOrder: PairQL.Resolver {
+extension BrickOrder: Resolver {
   static func resolve(with input: Input, in context: Context) async throws -> Output {
     let forOrder = "for bricked order `\(input.orderId ?? "<no order id>")`"
     if let paymentIntentId = input.orderPaymentId, !paymentIntentId.isEmpty {

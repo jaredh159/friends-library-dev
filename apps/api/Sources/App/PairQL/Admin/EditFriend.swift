@@ -50,7 +50,7 @@ struct EditFriend: Pair {
   }
 }
 
-extension EditFriend: PairQL.Resolver {
+extension EditFriend: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
     let friend = try await Friend.find(input)

@@ -55,33 +55,6 @@
       }
     },
     {
-      "identity" : "graphiti",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/GraphQLSwift/Graphiti.git",
-      "state" : {
-        "revision" : "af903a243862c6427935677b91f67df0c21f2a71",
-        "version" : "0.26.0"
-      }
-    },
-    {
-      "identity" : "graphql",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/GraphQLSwift/GraphQL.git",
-      "state" : {
-        "revision" : "7c910f22508b918900c7a91e53638184dc6504d4",
-        "version" : "2.5.0"
-      }
-    },
-    {
-      "identity" : "graphql-kit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/alexsteinerde/graphql-kit.git",
-      "state" : {
-        "revision" : "73485f3ae2d200431ad6cd48e998eabc66214b64",
-        "version" : "2.4.0"
-      }
-    },
-    {
       "identity" : "multipart-kit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/multipart-kit.git",

@@ -19,7 +19,7 @@ struct CreateFreeOrderRequest: Pair {
 
 // resolver
 
-extension CreateFreeOrderRequest: PairQL.Resolver {
+extension CreateFreeOrderRequest: Resolver {
   static func resolve(with input: Input, in context: Context) async throws -> Output {
     let order = try await FreeOrderRequest(
       name: input.name,

@@ -23,7 +23,7 @@ struct EditToken: Pair {
   }
 }
 
-extension EditToken: PairQL.Resolver {
+extension EditToken: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
     let token = try await Token.find(input)

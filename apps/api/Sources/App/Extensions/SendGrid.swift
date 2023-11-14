@@ -2,7 +2,7 @@ import XSendGrid
 
 extension SendGrid.EmailAddress {
   static let friendsLibrary: Self = .init(
-    email: "notifications@graphql-api.friendslibrary.com",
+    email: "notifications@api.friendslibrary.com",
     name: "Friends Library"
   )
 }

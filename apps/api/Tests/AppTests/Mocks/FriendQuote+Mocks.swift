@@ -1,5 +1,3 @@
-import GraphQL
-
 @testable import App
 
 extension FriendQuote {
@@ -18,18 +16,5 @@ extension FriendQuote {
       text: "@random".random,
       order: Int.random
     )
-  }
-
-  func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
-    var map: GraphQL.Map = .dictionary([
-      "id": .string(id.lowercased),
-      "friendId": .string(friendId.lowercased),
-      "source": .string(source),
-      "text": .string(text),
-      "order": .number(Number(order)),
-      "context": context != nil ? .string(context!) : .null,
-    ])
-    omitting.forEach { try? map.remove($0) }
-    return map
   }
 }

@@ -8,7 +8,6 @@ struct Environment {
   var uuid: () -> UUID = UUID.init
   var date: () -> Date = Date.init
   var db: DuetSQL.Client = ThrowingClient()
-  var auth: Auth = .live
   var logger = Logger(label: "api.friendslibrary")
   var slackClient: FlpSlack.Client = .init()
   var luluClient: Lulu.Api.Client = .live

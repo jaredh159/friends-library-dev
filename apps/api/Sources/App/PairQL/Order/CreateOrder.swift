@@ -6,31 +6,31 @@ import Vapor
 struct CreateOrder: Pair {
   struct Input: PairInput {
     struct Item: PairNestable {
-      let editionId: Edition.Id
-      let quantity: Int
-      let unitPrice: Cents<Int>
+      var editionId: Edition.Id
+      var quantity: Int
+      var unitPrice: Cents<Int>
     }
 
-    let id: Order.Id?
-    let lang: Lang
-    let source: Order.OrderSource
-    let paymentId: Order.PaymentId
-    let amount: Cents<Int>
-    let taxes: Cents<Int>
-    let fees: Cents<Int>
-    let ccFeeOffset: Cents<Int>
-    let shipping: Cents<Int>
-    let shippingLevel: Order.ShippingLevel
-    let email: EmailAddress
-    let addressName: String
-    let addressStreet: String
-    let addressStreet2: String?
-    let addressCity: String
-    let addressState: String
-    let addressZip: String
-    let addressCountry: String
-    let freeOrderRequestId: FreeOrderRequest.Id?
-    let items: [Item]
+    var id: Order.Id?
+    var lang: Lang
+    var source: Order.OrderSource
+    var paymentId: Order.PaymentId
+    var amount: Cents<Int>
+    var taxes: Cents<Int>
+    var fees: Cents<Int>
+    var ccFeeOffset: Cents<Int>
+    var shipping: Cents<Int>
+    var shippingLevel: Order.ShippingLevel
+    var email: EmailAddress
+    var addressName: String
+    var addressStreet: String
+    var addressStreet2: String?
+    var addressCity: String
+    var addressState: String
+    var addressZip: String
+    var addressCountry: String
+    var freeOrderRequestId: FreeOrderRequest.Id?
+    var items: [Item]
   }
 
   typealias Output = Order.Id
@@ -38,7 +38,7 @@ struct CreateOrder: Pair {
 
 // resolver
 
-extension CreateOrder: PairQL.Resolver {
+extension CreateOrder: Resolver {
   static func resolve(with input: Input, in context: Context) async throws -> Output {
     let order = Order(input)
     let items = input.items.map { OrderItem($0, orderId: order.id) }
@@ -90,7 +90,8 @@ extension Order {
       addressCity: input.addressCity,
       addressState: input.addressState,
       addressZip: input.addressZip,
-      addressCountry: input.addressCountry
+      addressCountry: input.addressCountry,
+      freeOrderRequestId: input.freeOrderRequestId
     )
   }
 }

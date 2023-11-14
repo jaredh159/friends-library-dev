@@ -9,7 +9,7 @@ struct UpdateEntity: Pair {
 
 // resolver
 
-extension UpdateEntity: PairQL.Resolver {
+extension UpdateEntity: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
     let model: any ApiModel

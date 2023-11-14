@@ -91,7 +91,7 @@ struct EditDocument: Pair {
 
 // resolver
 
-extension EditDocument: PairQL.Resolver {
+extension EditDocument: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
     let document = try await Document.find(input)

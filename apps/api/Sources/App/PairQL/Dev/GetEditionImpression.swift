@@ -21,7 +21,7 @@ struct GetEditionImpression: Pair {
   }
 }
 
-extension GetEditionImpression: PairQL.Resolver {
+extension GetEditionImpression: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
     let impression = try await EditionImpression.find(input)

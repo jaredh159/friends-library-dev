@@ -19,7 +19,7 @@ struct SubmitContactForm: Pair {
 
 // resolver
 
-extension SubmitContactForm: PairQL.Resolver {
+extension SubmitContactForm: Resolver {
   static func resolve(with input: Input, in context: Context) async throws -> Output {
     try await Current.sendGridClient.send(SendGrid.Email(
       to: input |> emailTo,

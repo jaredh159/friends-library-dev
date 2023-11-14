@@ -2,13 +2,12 @@
 import PackageDescription
 
 let package = Package(
-  name: "graphql-api",
+  name: "api",
   platforms: [.macOS(.v12)],
   dependencies: [
     .github("vapor/vapor@4.67.4"),
     .github("vapor/fluent@4.4.0"),
     .github("vapor/fluent-postgres-driver@2.2.2"),
-    .github("alexsteinerde/graphql-kit@2.3.0"),
     .github("m-barthelemy/vapor-queues-fluent-driver@1.2.0"),
     .github("jaredh159/swift-tagged@0.8.2"),
     .github("pointfreeco/swift-nonempty@0.3.0"),
@@ -46,7 +45,6 @@ let package = Package(
         .product(name: "XStripe", package: "x-stripe"),
         .product(name: "XSlack", package: "x-slack"),
         .product(name: "QueuesFluentDriver", package: "vapor-queues-fluent-driver"),
-        .product(name: "GraphQLKit", package: "graphql-kit"),
         "RomanNumeralKit",
         "Rainbow",
         "ShellOut",

@@ -16,7 +16,7 @@ struct UpsertEditionImpression: Pair {
   typealias Output = GetEditionImpression.Output
 }
 
-extension UpsertEditionImpression: PairQL.Resolver {
+extension UpsertEditionImpression: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
     let impression = EditionImpression(

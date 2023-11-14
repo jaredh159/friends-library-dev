@@ -3,7 +3,6 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "graphql:codegen": "flp-gql-codegen",
     "start": "cp ../../.env . && API_DEV=true pnpm netlify dev",
     "dev": "pnpm css && pnpm parcel --port 1234 ./src/index.html",
     "build": "pnpm css && pnpm parcel build ./src/index.html",

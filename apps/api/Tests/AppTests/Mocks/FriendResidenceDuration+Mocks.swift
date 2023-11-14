@@ -1,5 +1,3 @@
-import GraphQL
-
 @testable import App
 
 extension FriendResidenceDuration {
@@ -13,16 +11,5 @@ extension FriendResidenceDuration {
 
   static var random: FriendResidenceDuration {
     FriendResidenceDuration(friendResidenceId: .init(), start: Int.random, end: Int.random)
-  }
-
-  func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
-    var map: GraphQL.Map = .dictionary([
-      "id": .string(id.lowercased),
-      "friendResidenceId": .string(friendResidenceId.lowercased),
-      "start": .number(Number(start)),
-      "end": .number(Number(end)),
-    ])
-    omitting.forEach { try? map.remove($0) }
-    return map
   }
 }

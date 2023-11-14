@@ -31,7 +31,7 @@ struct GetEdition: Pair {
   }
 }
 
-extension GetEdition: PairQL.Resolver {
+extension GetEdition: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
     let edition = try await Edition.find(input)

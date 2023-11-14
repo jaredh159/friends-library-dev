@@ -386,7 +386,6 @@ importers:
       gatsby-source-filesystem: ^3.15.0
       gatsby-transformer-sharp: ^3.15.0
       glob: ^7.0.0
-      graphql: 14.7.0
       he: ^1.2.0
       js-cookie: ^2.2.1
       lodash.throttle: ^4.1.1
@@ -411,7 +410,6 @@ importers:
     dependencies:
       '@friends-library/pairql': link:../../libs-ts/pairql
       '@friends-library/types': link:../../libs-ts/types
-      graphql: 14.7.0
       x-syntax: 1.0.0
     devDependencies:
       '@babel/plugin-transform-typescript': 7.21.0
@@ -453,7 +451,7 @@ importers:
       gatsby-image: 2.11.0
       gatsby-link: 2.11.0_qmqalz36s4gyblkl2pvyp4rabi
       gatsby-plugin-google-fonts-with-attributes: 1.0.8
-      gatsby-plugin-manifest: 3.15.0_moknnji7ra7zzcjs5r6fgyg3e4
+      gatsby-plugin-manifest: 3.15.0_gatsby@3.15.0
       gatsby-plugin-mdx: 1.10.1_ecih36s6orllhyip6wdwtjygdu
       gatsby-plugin-pnpm: 1.2.10_gatsby@3.15.0
       gatsby-plugin-postcss: 3.7.0_riosy2lb6b6yyuz53ciiozfg3y
@@ -461,7 +459,7 @@ importers:
       gatsby-plugin-react-helmet: 3.10.0_e25jyjytav7ydmhn63cdorjt5q
       gatsby-plugin-remove-serviceworker: 1.0.0
       gatsby-plugin-remove-trailing-slashes: 3.15.0_gatsby@3.15.0
-      gatsby-plugin-sharp: 3.15.0_moknnji7ra7zzcjs5r6fgyg3e4
+      gatsby-plugin-sharp: 3.15.0_gatsby@3.15.0
       gatsby-plugin-sitemap: 3.3.0_bntvpeo5q5vhcyxgm5plibzre4
       gatsby-plugin-typescript: 3.15.0_gatsby@3.15.0
       gatsby-plugin-webpack-bundle-analyzer: 1.0.5_gatsby@3.15.0
@@ -19597,7 +19595,7 @@ packages:
     resolution: {integrity: sha512-SQlPKpzhKtpfkmZoNiFMdKhI54XNDyBABT8hNJa+VCM0/pGtnT9kewvNOTbcwG9xQ5R1K0ZG2HfF6q+n9+D1RQ==}
     dev: true
 
-  /gatsby-plugin-manifest/3.15.0_moknnji7ra7zzcjs5r6fgyg3e4:
+  /gatsby-plugin-manifest/3.15.0_gatsby@3.15.0:
     resolution: {integrity: sha512-zvAwx45/IOMWOn9JfSU2b1HQF/Q8VaH8dBTCBIPILUEXSbpDad6z0HVBV++Z6ouLveUQCndTgWj/RRUCEqRSZg==}
     engines: {node: '>=12.13.0'}
     peerDependencies:
@@ -19606,7 +19604,7 @@ packages:
       '@babel/runtime': 7.21.0
       gatsby: 3.15.0_wcqkhtmu7mswc6yz4uyexck3ty
       gatsby-core-utils: 2.15.0
-      gatsby-plugin-utils: 1.15.0_moknnji7ra7zzcjs5r6fgyg3e4
+      gatsby-plugin-utils: 1.15.0_gatsby@3.15.0
       semver: 7.3.8
       sharp: 0.29.3
     transitivePeerDependencies:
@@ -19751,7 +19749,7 @@ packages:
       gatsby: 3.15.0_wcqkhtmu7mswc6yz4uyexck3ty
     dev: true
 
-  /gatsby-plugin-sharp/3.15.0_moknnji7ra7zzcjs5r6fgyg3e4:
+  /gatsby-plugin-sharp/3.15.0_gatsby@3.15.0:
     resolution: {integrity: sha512-KufXSnFsNC24lbeFOa/A0p357Hek04OICMJ014Hml9cWLvr7naevP9mMSz2wi443RaGievov3ezxdN9OPcBi3Q==}
     engines: {node: '>=12.13.0'}
     peerDependencies:
@@ -19765,7 +19763,7 @@ packages:
       fs-extra: 10.1.0
       gatsby: 3.15.0_wcqkhtmu7mswc6yz4uyexck3ty
       gatsby-core-utils: 2.15.0
-      gatsby-plugin-utils: 1.15.0_moknnji7ra7zzcjs5r6fgyg3e4
+      gatsby-plugin-utils: 1.15.0_gatsby@3.15.0
       gatsby-telemetry: 2.15.0
       got: 11.8.6
       lodash: 4.17.21
@@ -19816,7 +19814,7 @@ packages:
       - supports-color
     dev: true
 
-  /gatsby-plugin-utils/1.15.0_moknnji7ra7zzcjs5r6fgyg3e4:
+  /gatsby-plugin-utils/1.15.0_gatsby@3.15.0:
     resolution: {integrity: sha512-QAvZ6BlQJL+6sllOp0frlX2YoYt/6OebMn4JN7/pip7c3rDQPuMC/fnAnmrjUdm0dKg24O5M2zacvj0zU1RxZQ==}
     engines: {node: '>=12.13.0'}
     peerDependencies:
@@ -19826,7 +19824,6 @@ packages:
       '@babel/runtime': 7.21.0
       fastq: 1.15.0
       gatsby: 3.15.0_wcqkhtmu7mswc6yz4uyexck3ty
-      graphql: 14.7.0
       joi: 17.8.3
     dev: true
 
@@ -19998,7 +19995,7 @@ packages:
       common-tags: 1.8.2
       fs-extra: 10.1.0
       gatsby: 3.15.0_wcqkhtmu7mswc6yz4uyexck3ty
-      gatsby-plugin-sharp: 3.15.0_moknnji7ra7zzcjs5r6fgyg3e4
+      gatsby-plugin-sharp: 3.15.0_gatsby@3.15.0
       probe-image-size: 6.0.0
       semver: 7.3.8
       sharp: 0.29.3
@@ -20808,12 +20805,6 @@ packages:
     dependencies:
       graphql: 15.8.0
     dev: true
-
-  /graphql/14.7.0:
-    resolution: {integrity: sha512-l0xWZpoPKpppFzMfvVyFmp9vLN7w/ZZJPefUicMCepfJeQ8sMcztloGYY9DfjVPo6tIUDzU5Hw3MUbIjj9AVVA==}
-    engines: {node: '>= 6.x'}
-    dependencies:
-      iterall: 1.3.0
 
   /graphql/15.8.0:
     resolution: {integrity: sha512-5gghUc24tP9HRznNpV2+FIoq3xKkj5dTQqf4v0CpdPbFVwFkWoxOM+o+2OC9ZSvjEMTjfmG9QT+gcvggTwW1zw==}
@@ -22358,6 +22349,7 @@ packages:
 
   /iterall/1.3.0:
     resolution: {integrity: sha512-QZ9qOMdF+QLHxy1QIpUHUU1D5pS2CG2P69LF6L6CPjPYA/XMOmKV3PZpawHoAjHNyB0swdVTRxdYT4tbBbxqwg==}
+    dev: true
 
   /jake/10.8.5:
     resolution: {integrity: sha512-sVpxYeuAhWt0OTWITwT98oyV0GsXyMlXCF+3L1SuafBVUIr/uILGRB+NqwkzhgXKvoJpDIpQvqkUALgdmQsQxw==}

@@ -1,5 +1,3 @@
-import GraphQL
-
 @testable import App
 
 extension Isbn {
@@ -16,15 +14,5 @@ extension Isbn {
       code: .init(rawValue: "@random".random),
       editionId: Bool.random() ? .init() : nil
     )
-  }
-
-  func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
-    var map: GraphQL.Map = .dictionary([
-      "id": .string(id.lowercased),
-      "code": .string(code.rawValue),
-      "editionId": editionId != nil ? .string(editionId!.lowercased) : .null,
-    ])
-    omitting.forEach { try? map.remove($0) }
-    return map
   }
 }

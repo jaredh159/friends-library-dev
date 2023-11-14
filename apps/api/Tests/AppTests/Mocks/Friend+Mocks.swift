@@ -1,5 +1,4 @@
 import Foundation
-import GraphQL
 
 @testable import App
 
@@ -41,21 +40,5 @@ extension Friend {
       died: Bool.random() ? Int.random : nil,
       published: Bool.random() ? Date() : nil
     )
-  }
-
-  func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
-    var map: GraphQL.Map = .dictionary([
-      "id": .string(id.lowercased),
-      "lang": .string(lang.rawValue),
-      "name": .string(name),
-      "slug": .string(slug),
-      "gender": .string(gender.rawValue),
-      "description": .string(description),
-      "born": born != nil ? .number(Number(born!)) : .null,
-      "died": died != nil ? .number(Number(died!)) : .null,
-      "published": published != nil ? .string(published!.isoString) : .null,
-    ])
-    omitting.forEach { try? map.remove($0) }
-    return map
   }
 }
