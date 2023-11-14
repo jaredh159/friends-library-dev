@@ -1,4 +1,4 @@
-import Duet
+import DuetSQL
 
 final class Document: Codable {
   var id: Id
@@ -84,5 +84,50 @@ final class Document: Codable {
     self.description = description
     self.partialDescription = partialDescription
     self.featuredDescription = featuredDescription
+  }
+}
+
+// loaders
+
+extension Document {
+  func friend() async throws -> Friend {
+    try await friend.useLoaded(or: {
+      try await Friend.query()
+        .where(.id == friendId)
+        .first()
+    })
+  }
+
+  func editions() async throws -> [Edition] {
+    try await editions.useLoaded(or: {
+      try await Edition.query()
+        .where(.documentId == id)
+        .all()
+    })
+  }
+
+  func tags() async throws -> [DocumentTag] {
+    try await tags.useLoaded(or: {
+      try await DocumentTag.query()
+        .where(.documentId == id)
+        .all()
+    })
+  }
+
+  func relatedDocuments() async throws -> [RelatedDocument] {
+    try await relatedDocuments.useLoaded(or: {
+      try await RelatedDocument.query()
+        .where(.parentDocumentId == id)
+        .all()
+    })
+  }
+
+  func altLanguageDocument() async throws -> Document? {
+    try await altLanguageDocument.useLoaded(or: {
+      guard let altLanguageId = altLanguageId else { return nil }
+      return try await Document.query()
+        .where(.id == altLanguageId)
+        .first()
+    })
   }
 }

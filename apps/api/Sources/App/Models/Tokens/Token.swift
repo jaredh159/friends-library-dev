@@ -1,4 +1,4 @@
-import Duet
+import DuetSQL
 import Tagged
 
 final class Token: Codable {
@@ -24,4 +24,14 @@ final class Token: Codable {
 
 extension Token {
   typealias Value = Tagged<(Token, value: ()), UUID>
+}
+
+extension Token {
+  func scopes() async throws -> [TokenScope] {
+    try await scopes.useLoaded(or: {
+      try await TokenScope.query()
+        .where(.tokenId == id)
+        .all()
+    })
+  }
 }

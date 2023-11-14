@@ -11,18 +11,18 @@ import * as manifest from '@friends-library/doc-manifests';
 import { appEbook as appEbookCss } from '@friends-library/doc-css';
 import { hydrate, query as dpcQuery } from '@friends-library/dpc-fs';
 import { ParserError } from '@friends-library/parser';
+import { toDbPrintSizeVariant } from '@friends-library/types';
 import type { FsDocPrecursor } from '@friends-library/dpc-fs';
 import type { DocPrecursor } from '@friends-library/types';
 import type { ScreenshotTaker } from './cover-server';
 import type { CloudFiles, PendingUploads, PublishData } from './types';
 import { logAction, logDebug, logError } from '../../sub-log';
-import { PrintSizeVariant } from '../../graphql/globalTypes';
+import api from '../../api-client';
 import * as coverServer from './cover-server';
 import validate from './validate';
 import { logDocStart, logDocComplete, logPublishComplete, logPublishStart } from './log';
 import * as paperback from './paperback';
 import * as git from './git';
-import * as api from './api';
 import { emptyPendingUploads } from './types';
 
 interface PublishOptions {
@@ -45,7 +45,7 @@ export default async function publish(argv: PublishOptions): Promise<void> {
 
   const [COVER_PORT, productionRevision] = await Promise.all([
     argv.coverServerPort ? Promise.resolve(argv.coverServerPort) : coverServer.start(),
-    api.getlatestArtifactProductionVersion(),
+    api.latestArtifactProductionVersion().then(({ version }) => version),
   ]);
 
   const [makeScreenshot, closeHeadlessBrowser] = await coverServer.screenshot(COVER_PORT);
@@ -146,7 +146,7 @@ async function initialData(dpc: FsDocPrecursor): Promise<PublishData> {
         id: uuid(),
         editionId: dpc.editionId,
         adocLength: -1,
-        paperbackSizeVariant: PrintSizeVariant.m,
+        paperbackSizeVariant: `m` as const,
         paperbackVolumes: [],
         publishedRevision: ``,
         productionToolchainRevision: ``,
@@ -190,11 +190,11 @@ async function handleSquareCoverImages(
   const dirname = artifacts.dirs(opts).ARTIFACT_DIR;
   fs.ensureDirSync(dirname);
   const buffer = await makeScreenshot(dpc.path, `audio`);
-  const largestWidth = edition.images.square.all
+  const largestWidth = edition.allSquareImages
     .map(({ width }) => width)
     .sort((a, b) => b - a)[0]!;
   uploads.images.square = await Promise.all(
-    edition.images.square.all
+    edition.allSquareImages
       .map(({ width, filename, path }) => ({
         width,
         localPath: `${dirname}/${filename}`,
@@ -219,11 +219,11 @@ async function handle3dPaperbackCoverImages(
   const dirname = artifacts.dirs(opts).ARTIFACT_DIR;
   fs.ensureDirSync(dirname);
   const buffer = await makeScreenshot(dpc.path, `threeD`);
-  const largestWidth = edition.images.threeD.all
+  const largestWidth = edition.allThreeDImages
     .map(({ width }) => width)
     .sort((a, b) => b - a)[0]!;
   uploads.images.threeD = await Promise.all(
-    edition.images.threeD.all
+    edition.allThreeDImages
       .map(({ width, filename, path }) => ({
         width,
         localPath: `${dirname}/${filename}`,
@@ -260,10 +260,9 @@ async function handlePaperbackAndCover(data: PublishData): Promise<void> {
   logDebug(`Starting paperback interior generation...`);
   const published = await paperback.publish(data.dpc, data.artifactOptions);
   data.uploads.paperback.interior = published.paths;
-  data.impression.current.paperbackSizeVariant = published.printSizeVariant.replace(
-    `xl--condensed`,
-    `xlCondensed`,
-  ) as PrintSizeVariant;
+  data.impression.current.paperbackSizeVariant = toDbPrintSizeVariant(
+    published.printSizeVariant,
+  );
   data.impression.current.paperbackVolumes = published.volumes;
 
   const coverManifests = await manifest.paperbackCover(data.dpc, {
@@ -370,23 +369,16 @@ async function saveEditionImpression(
 ): Promise<CloudFiles> {
   if (isEqual(impression.current, impression.previous)) {
     logDebug(`skipping save EditionImpression, all properties unchanged...`);
-    return await api.getEditionImpressionCloudFiles(impression.current.id);
+    return (await api.getEditionImpression(impression.current.id)).cloudFiles;
   }
-  try {
-    const result = await api.saveEditionImpression(
-      impression.current,
-      impression.previous,
-    );
-    if (!result) {
+  const result = await api.upsertEditionImpressionResult(impression.current);
+  return result.mapOrRethrow(
+    (i) => i.cloudFiles,
+    async (err) => {
       await rollbackSaveEditionImpression(impression);
-      throw new Error(`failed to save EditionImpression`);
-    } else {
-      return result;
-    }
-  } catch (err) {
-    await rollbackSaveEditionImpression(impression);
-    throw new Error(`failed to save EditionImpression, error=${err}`);
-  }
+      throw new Error(`failed to save EditionImpression, error=${err}`);
+    },
+  );
 }
 
 async function rollbackSaveEditionImpression(
@@ -399,9 +391,10 @@ async function rollbackSaveEditionImpression(
 
   try {
     if (!impression.previous) {
-      await api.deleteEditionImpression(impression.current.id);
+      const id = impression.current.id;
+      await api.deleteEntities({ case: `editionImpression`, id });
     } else {
-      await api.saveEditionImpression(impression.previous, null);
+      await api.upsertEditionImpression(impression.previous);
     }
     logAction(`rolled back save EditionImpression successfully`);
   } catch (err) {
@@ -414,11 +407,11 @@ async function uploadFiles(
   cloudPaths: CloudFiles,
 ): Promise<void> {
   const files = new Map<string, string>();
-  files.set(uploads.ebook.epub, cloudPaths.ebook.epub.cloudPath);
-  files.set(uploads.ebook.mobi, cloudPaths.ebook.mobi.cloudPath);
-  files.set(uploads.ebook.pdf, cloudPaths.ebook.pdf.cloudPath);
-  files.set(uploads.ebook.speech, cloudPaths.ebook.speech.cloudPath);
-  files.set(uploads.ebook.app, cloudPaths.ebook.app.cloudPath);
+  files.set(uploads.ebook.epub, cloudPaths.epub);
+  files.set(uploads.ebook.mobi, cloudPaths.mobi);
+  files.set(uploads.ebook.pdf, cloudPaths.pdf);
+  files.set(uploads.ebook.speech, cloudPaths.speech);
+  files.set(uploads.ebook.app, cloudPaths.app);
 
   uploads.images.square.forEach(({ localPath, cloudPath }) =>
     files.set(localPath, cloudPath),
@@ -434,34 +427,35 @@ async function uploadFiles(
 
   if (
     uploads.paperback.cover.length !== uploads.paperback.interior.length ||
-    cloudPaths.paperback.cover.length !== cloudPaths.paperback.interior.length ||
-    uploads.paperback.cover.length !== cloudPaths.paperback.cover.length
+    cloudPaths.paperbackCover.length !== cloudPaths.paperbackInterior.length ||
+    uploads.paperback.cover.length !== cloudPaths.paperbackCover.length
   ) {
     throw new Error(`Unmatched paperback volume numbers`);
   }
 
   for (let index = 0; index < uploads.paperback.cover.length; index++) {
-    files.set(
-      uploads.paperback.cover[index]!,
-      cloudPaths.paperback.cover[index]!.cloudPath,
-    );
-    files.set(
-      uploads.paperback.interior[index]!,
-      cloudPaths.paperback.interior[index]!.cloudPath,
-    );
+    files.set(uploads.paperback.cover[index]!, cloudPaths.paperbackCover[index]!);
+    files.set(uploads.paperback.interior[index]!, cloudPaths.paperbackInterior[index]!);
   }
 
   await cloud.uploadFiles(files);
 }
 
 async function replaceEditionChapters(dpc: FsDocPrecursor): Promise<void> {
-  const deleteSuccess = await api.deleteEditionEditionChapters(dpc.editionId);
-  if (!deleteSuccess) {
-    throw new Error(`Error deleting existing EditionChapter entities for ${dpc.path}`);
+  const deleteRes = await api.deleteEntitiesResult({
+    case: `editionChapters`,
+    id: dpc.editionId,
+  });
+  if (deleteRes.isError) {
+    throw new Error(
+      `Error deleting existing EditionChapter entities for ${dpc.path}, (${deleteRes.error})`,
+    );
   }
   const inputs = paperback.editionChapters(dpc);
-  const createSuccess = await api.createEditionChapters(inputs);
-  if (!createSuccess) {
-    throw new Error(`Error creating EditionChapter entities for ${dpc.path}`);
+  const createRes = await api.createEditionChaptersResult(inputs);
+  if (!createRes.isError) {
+    throw new Error(
+      `Error creating EditionChapter entities for ${dpc.path}, (${createRes.error})`,
+    );
   }
 }

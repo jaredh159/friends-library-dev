@@ -1,5 +1,4 @@
 import Foundation
-import Graphiti
 import Vapor
 
 extension Edition {
@@ -101,59 +100,6 @@ extension Edition {
         w1120: threeDImage(1120, path)
       )
     )
-  }
-}
-
-// extensions
-
-extension AppSchema {
-  static var EditionImageType: AppType<Edition.Images.Image> {
-    Type(Edition.Images.Image.self, as: "EditionImage") {
-      Field("width", at: \.width)
-      Field("height", at: \.height)
-      Field("url", at: \.url.absoluteString)
-      Field("path", at: \.path)
-      Field("filename", at: \.filename)
-    }
-  }
-
-  static var EditionSquareImagesType: AppType<Edition.Images.Square> {
-    Type(Edition.Images.Square.self, as: "EditionSquareImages") {
-      Field("w45", at: \.w45)
-      Field("w90", at: \.w90)
-      Field("w180", at: \.w180)
-      Field("w270", at: \.w270)
-      Field("w300", at: \.w300)
-      Field("w450", at: \.w450)
-      Field("w600", at: \.w600)
-      Field("w750", at: \.w750)
-      Field("w900", at: \.w900)
-      Field("w1150", at: \.w1150)
-      Field("w1400", at: \.w1400)
-      Field("all", at: \.all)
-    }
-  }
-
-  static var EditionThreeDImagesType: AppType<Edition.Images.ThreeD> {
-    Type(Edition.Images.ThreeD.self, as: "EditionThreeDImages") {
-      Field("w55", at: \.w55)
-      Field("w110", at: \.w110)
-      Field("w250", at: \.w250)
-      Field("w400", at: \.w400)
-      Field("w550", at: \.w550)
-      Field("w700", at: \.w700)
-      Field("w850", at: \.w850)
-      Field("w1000", at: \.w1000)
-      Field("w1120", at: \.w1120)
-      Field("all", at: \.all)
-    }
-  }
-
-  static var EditionImagesType: AppType<Edition.Images> {
-    Type(Edition.Images.self, as: "EditionImages") {
-      Field("square", at: \.square)
-      Field("threeD", at: \.threeD)
-    }
   }
 }
 

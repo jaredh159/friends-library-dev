@@ -1,4 +1,4 @@
-import Duet
+import DuetSQL
 import NonEmpty
 
 final class Edition: Codable {
@@ -47,5 +47,49 @@ final class Edition: Codable {
     self.isDraft = isDraft
     self.paperbackSplits = paperbackSplits
     self.paperbackOverrideSize = paperbackOverrideSize
+  }
+}
+
+// loaders
+
+extension Edition {
+  func document() async throws -> Document {
+    try await document.useLoaded(or: {
+      try await Document.query()
+        .where(.id == documentId)
+        .first()
+    })
+  }
+
+  func impression() async throws -> EditionImpression? {
+    try await impression.useLoaded(or: {
+      try await EditionImpression.query()
+        .where(.editionId == id)
+        .first()
+    })
+  }
+
+  func isbn() async throws -> Isbn? {
+    try await isbn.useLoaded(or: {
+      try await Isbn.query()
+        .where(.editionId == id)
+        .first()
+    })
+  }
+
+  func audio() async throws -> Audio? {
+    try await audio.useLoaded(or: {
+      try await Audio.query()
+        .where(.editionId == id)
+        .first()
+    })
+  }
+
+  func chapters() async throws -> [EditionChapter] {
+    try await chapters.useLoaded(or: {
+      try await EditionChapter.query()
+        .where(.editionId == id)
+        .all()
+    })
   }
 }

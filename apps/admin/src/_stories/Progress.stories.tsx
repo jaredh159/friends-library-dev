@@ -32,7 +32,7 @@ const meta: StoryMeta = {
 export default meta;
 
 function op(type: EntityOperation['type'], entityTypeName: string): EntityOperation {
-  const entity = { __typename: entityTypeName } as EditableEntity;
+  const entity = { case: entityTypeName } as EditableEntity;
   switch (type) {
     case `create`:
     case `delete`:

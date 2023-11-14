@@ -1,0 +1,20 @@
+{
+  "name": "@friends-library/pairql",
+  "version": "2.0.1",
+  "description": "pairql client lib",
+  "main": "./src/index.ts",
+  "license": "MIT",
+  "sideEffects": false,
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "true",
+    "test:watch": "true",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "just prettier",
+    "format:check": "just prettier-check"
+  },
+  "devDependencies": {
+    "x-exec": "^1.2.0"
+  }
+}

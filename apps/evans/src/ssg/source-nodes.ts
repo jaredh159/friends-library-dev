@@ -84,7 +84,7 @@ const sourceNodes: GatsbyNode['sourceNodes'] = async ({
         hasNonDraftEdition: document.hasNonDraftEdition,
         hasAudio: document.editions.some((ed) => !!ed.audio),
         numDownloads: documentDownloadCounts[document.id] || 0,
-        tags: document.tags.map((t) => t.type),
+        tags: document.tags,
         region: documentRegion(friend),
         date: documentDate(document, friend),
         period: periodFromDate(documentDate(document, friend)),
@@ -93,7 +93,7 @@ const sourceNodes: GatsbyNode['sourceNodes'] = async ({
         documentId: document.id,
         friendSlug: friend.slug,
         authorName: friend.name,
-        ogImageUrl: document.primaryEdition!.images.threeD.w700.url,
+        ogImageUrl: document.primaryEdition!.ogImageUrl,
       };
 
       if (
@@ -102,7 +102,7 @@ const sourceNodes: GatsbyNode['sourceNodes'] = async ({
       ) {
         documentProps.altLanguageUrl = `${APP_ALT_URL}${url.documentUrl(
           document.altLanguageDocument,
-          document.altLanguageDocument.friend,
+          { slug: document.altLanguageDocument.friendSlug },
         )}`;
       }
 
@@ -136,7 +136,7 @@ const sourceNodes: GatsbyNode['sourceNodes'] = async ({
         return {
           id: edition.id,
           type: edition.type,
-          isbn: edition.isbn?.code ?? ``,
+          isbn: edition.isbn ?? ``,
           ...published(impression.createdAt, LANG),
           paperbackCoverBlurb: document.description,
           friendSlug: friend.slug,
@@ -144,14 +144,14 @@ const sourceNodes: GatsbyNode['sourceNodes'] = async ({
           printSize: impression.paperbackSize,
           pages: impression.paperbackVolumes,
           downloadUrl: {
-            web_pdf: impression.files.ebook.pdf.logUrl,
-            epub: impression.files.ebook.epub.logUrl,
-            mobi: impression.files.ebook.mobi.logUrl,
-            speech: impression.files.ebook.speech.logUrl,
+            web_pdf: impression.ebookPdfLogUrl,
+            epub: impression.ebookEpubLogUrl,
+            mobi: impression.ebookMobiLogUrl,
+            speech: impression.ebookSpeechLogUrl,
           },
           price: impression.paperbackPriceInCents,
           customCode: dpcData.customCode,
-          numChapters: edition.chapters.length,
+          numChapters: edition.numChapters,
           audio: edition.audio
             ? {
                 reader: edition.audio.reader,
@@ -163,12 +163,12 @@ const sourceNodes: GatsbyNode['sourceNodes'] = async ({
                 m4bFilesizeLq: humansize(edition.audio.m4bSizeLq),
                 mp3ZipFilesizeHq: humansize(edition.audio.mp3ZipSizeHq),
                 mp3ZipFilesizeLq: humansize(edition.audio.mp3ZipSizeLq),
-                m4bUrlHq: edition.audio.files.m4b.hq.logUrl,
-                m4bUrlLq: edition.audio.files.m4b.lq.logUrl,
-                mp3ZipUrlHq: edition.audio.files.mp3s.hq.logUrl,
-                mp3ZipUrlLq: edition.audio.files.mp3s.lq.logUrl,
-                podcastUrlHq: edition.audio.files.podcast.hq.logUrl,
-                podcastUrlLq: edition.audio.files.podcast.lq.logUrl,
+                m4bUrlHq: edition.audio.m4bFileLogUrlHq,
+                m4bUrlLq: edition.audio.m4bFileLogUrlLq,
+                mp3ZipUrlHq: edition.audio.mp3ZipFileLogUrlHq,
+                mp3ZipUrlLq: edition.audio.mp3ZipFileLogUrlLq,
+                podcastUrlHq: edition.audio.podcastLogUrlHq,
+                podcastUrlLq: edition.audio.podcastLogUrlLq,
                 externalPlaylistIdHq: edition.audio.externalPlaylistIdHq,
                 externalPlaylistIdLq: edition.audio.externalPlaylistIdLq,
                 parts: edition.audio.parts.map((part) => ({
@@ -213,6 +213,6 @@ let dpcs: FsDocPrecursor[] | null = null;
 
 async function getDpcs(): Promise<FsDocPrecursor[]> {
   if (dpcs) return dpcs;
-  dpcs = await query.getByPattern(undefined, api.clientConfig());
+  dpcs = await query.getByPattern();
   return dpcs;
 }

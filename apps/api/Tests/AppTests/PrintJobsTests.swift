@@ -1,5 +1,5 @@
-import GraphQL
 import XCTest
+import XExpect
 
 @testable import App
 
@@ -15,36 +15,24 @@ final class PrintJobsTests: AppTestCase {
       await responses.next()
     }
 
-    let input: Map = .dictionary([
-      "items": .array([
-        .dictionary([
-          "volumes": .array([55]),
-          "printSize": "m",
-          "quantity": 1,
-        ]),
-      ]),
-      "address": ShippingAddress.mock.gqlMap(),
-    ])
-
-    assertResponse(
-      to: /* gql */ """
-      query GetPrintJobExploratoryMetadata($input: GetPrintJobExploratoryMetadataInput!) {
-        getPrintJobExploratoryMetadata(input: $input) {
-          shippingInCents
-          taxesInCents
-          feesInCents
-          creditCardFeeOffsetInCents
-        }
-      }
-      """,
-      withVariables: ["input": input],
-      .containsKeyValuePairs([
-        "shippingInCents": 999,
-        "taxesInCents": 333,
-        "feesInCents": 150,
-        "creditCardFeeOffsetInCents": 88,
-      ])
+    var output = try await GetPrintJobExploratoryMetadata.resolve(
+      with: .init(
+        items: [.init(volumes: .init(55), printSize: .m, quantity: 1)],
+        email: "foo@bar",
+        address: .mock
+      ),
+      in: .mock
     )
+
+    output.shippingLevel = .mail // not testing, dependent on order of .allCases
+
+    expect(output).toEqual(.init(
+      shippingLevel: .mail,
+      shipping: 999,
+      taxes: 333,
+      fees: 150,
+      creditCardFeeOffset: 88
+    ))
   }
 
   func testCreatePrintJob() async throws {
@@ -65,9 +53,9 @@ final class PrintJobsTests: AppTestCase {
 
     let job = try await PrintJobs.create(order)
 
-    XCTAssertEqual(1, job.id)
-    XCTAssertEqual(
-      payload,
+    expect(job.id).toEqual(1)
+
+    expect(payload).toEqual(
       .init(
         shippingLevel: order.shippingLevel.lulu,
         shippingAddress: order.address.lulu,
@@ -109,9 +97,8 @@ final class PrintJobsTests: AppTestCase {
 
     let job = try await PrintJobs.create(order)
 
-    XCTAssertEqual(1, job.id)
-    XCTAssertEqual(
-      payload,
+    expect(job.id).toEqual(1)
+    expect(payload).toEqual(
       .init(
         shippingLevel: order.shippingLevel.lulu,
         shippingAddress: order.address.lulu,

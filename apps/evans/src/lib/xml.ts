@@ -13,8 +13,8 @@ export async function podcast(
   const audio = edition.audio!;
   const quality = qualityType === `HQ` ? `hq` : `lq`;
   const launchDate = moment(`2020-03-27`);
-  const imageUrl = edition.images.square.w1400.url;
-  const podcastUrl = audio.files.podcast[quality].logUrl;
+  const imageUrl = edition.podcastImageUrl;
+  const podcastUrl = quality === `hq` ? audio.podcastLogUrlHq : audio.podcastLogUrlLq;
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <rss
@@ -58,7 +58,7 @@ export async function podcast(
         return `<item>
       <title>${partTitle(document, num, audio.parts.length)}</title>
       <enclosure
-        url="${part.mp3File[quality].logUrl}"
+        url="${quality === `hq` ? part.mp3FileLogUrlHq : part.mp3FileLogUrlLq}"
         length="${part[quality === `hq` ? `mp3SizeHq` : `mp3SizeLq`]}"
         type="audio/mpeg"
       />
@@ -67,7 +67,7 @@ export async function podcast(
       <itunes:subtitle>${desc}</itunes:subtitle>
       <description>${desc}</description>
       <guid isPermaLink="false">${
-        audio.files.podcast[quality].sourcePath
+        quality === `hq` ? audio.podcastSourcePathHq : audio.podcastSourcePathLq
       } pt-${num} at ${APP_URL}</guid>
       <pubDate>${(moment(audio.createdAt).isBefore(launchDate)
         ? launchDate

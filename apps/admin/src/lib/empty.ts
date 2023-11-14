@@ -1,95 +1,79 @@
 import { v4 as uuid } from 'uuid';
-import type { Scope as TokenScope } from '../graphql/globalTypes';
-import type {
-  EditableFriendQuote,
-  EditableDocument,
-  EditableEdition,
-  EditableFriend,
-  EditableFriendResidence,
-  EditableFriendResidenceDuration,
-  EditableRelatedDocument,
-  EditableDocumentTag,
-  EditableAudio,
-  EditableAudioPart,
-  EditableToken,
-  EditableTokenScope,
-} from '../types';
-import { EditionType, Gender, Lang } from '../graphql/globalTypes';
+import { type T } from '../api-client';
 
-export function friend(): EditableFriend {
+export function friend(): T.EditableFriend {
   return {
-    __typename: `Friend`,
-    lang: Lang.en,
+    lang: `en`,
     id: clientGeneratedId(),
     name: ``,
     slug: ``,
-    born: null,
-    died: null,
-    gender: Gender.male,
+    born: undefined,
+    died: undefined,
+    gender: `male`,
     description: ``,
-    published: null,
+    published: undefined,
     quotes: [],
     documents: [],
     residences: [],
   };
 }
 
-export function friendQuote(friend: EditableFriend): EditableFriendQuote {
+export function friendQuote(friend: T.EditableFriend): T.EditableFriendQuote {
   return {
-    __typename: `FriendQuote`,
     id: clientGeneratedId(),
+    friendId: friend.id,
     source: ``,
     text: ``,
-    friend: {
-      __typename: `Friend`,
-      id: friend.id,
-    },
     order: Math.max(0, ...friend.quotes.map((q) => q.order)) + 1,
   };
 }
 
-export function edition(documentId: UUID): EditableEdition {
+export function relatedDocument(
+  documentId: UUID,
+  parentDocumentId: UUID,
+): T.EditableRelatedDocument {
   return {
-    __typename: `Edition`,
     id: clientGeneratedId(),
-    isDraft: true,
-    type: EditionType.updated,
-    paperbackOverrideSize: null,
-    paperbackSplits: null,
-    isbn: null,
-    editor: null,
-    audio: null,
-    document: {
-      __typename: `Document`,
-      id: documentId,
-    },
+    documentId,
+    parentDocumentId,
+    description: ``,
   };
 }
 
-export function audio(editionId: UUID): EditableAudio {
+export function edition(documentId: UUID): T.EditableEdition {
   return {
-    __typename: `Audio`,
     id: clientGeneratedId(),
+    documentId,
+    isDraft: true,
+    type: `updated`,
+    paperbackOverrideSize: undefined,
+    paperbackSplits: undefined,
+    isbn: undefined,
+    editor: undefined,
+    audio: undefined,
+  };
+}
+
+export function audio(editionId: UUID): T.EditableAudio {
+  return {
+    id: clientGeneratedId(),
+    editionId,
     reader: `Jessie Henderson`,
     isIncomplete: false,
     m4bSizeHq: 0,
     m4bSizeLq: 0,
     mp3ZipSizeHq: 0,
     mp3ZipSizeLq: 0,
-    externalPlaylistIdHq: null,
-    externalPlaylistIdLq: null,
+    externalPlaylistIdHq: undefined,
+    externalPlaylistIdLq: undefined,
     parts: [],
-    edition: {
-      __typename: `Edition`,
-      id: editionId,
-    },
   };
 }
 
-export function audioPart(audio: EditableAudio): EditableAudioPart {
+export function audioPart(audio: T.EditableAudio): T.EditableAudioPart {
   return {
-    __typename: `AudioPart`,
     id: clientGeneratedId(),
+    audioId: audio.id,
     order: Math.max(0, ...audio.parts.map((part) => part.order)) + 1,
     title: ``,
     duration: 0,
@@ -98,65 +82,34 @@ export function audioPart(audio: EditableAudio): EditableAudioPart {
     mp3SizeLq: 0,
     externalIdHq: 0,
     externalIdLq: 0,
-    audio: {
-      __typename: `Audio`,
-      id: audio.id,
-    },
   };
 }
 
-export function friendResidence(friend: EditableFriend): EditableFriendResidence {
+export function friendResidence(friendId: UUID): T.EditableFriendResidence {
   return {
-    __typename: `FriendResidence`,
     id: clientGeneratedId(),
+    friendId,
     city: ``,
     region: `England`,
     durations: [],
-    friend: {
-      __typename: `Friend`,
-      id: friend.id,
-    },
   };
 }
 
 export function friendResidenceDuration(
-  residence: EditableFriendResidence,
-): EditableFriendResidenceDuration {
+  friendResidenceId: UUID,
+): T.EditableFriendResidence['durations'][number] {
   return {
-    __typename: `FriendResidenceDuration`,
     id: clientGeneratedId(),
-    residence: {
-      __typename: `FriendResidence`,
-      id: residence.id,
-    },
+    friendResidenceId,
     start: 1600,
     end: 1700,
   };
 }
 
-export function relatedDocument(
-  documentId: UUID,
-  parentDocumentId: UUID,
-): EditableRelatedDocument {
+export function document(friend: T.EditableFriend): T.EditableDocument {
   return {
-    __typename: `RelatedDocument`,
     id: clientGeneratedId(),
-    description: ``,
-    document: {
-      __typename: `Document`,
-      id: documentId,
-    },
-    parentDocument: {
-      __typename: `Document`,
-      id: parentDocumentId,
-    },
-  };
-}
-
-export function document(friend: EditableFriend): EditableDocument {
-  return {
-    __typename: `Document`,
-    id: clientGeneratedId(),
+    friendId: friend.id,
     slug: ``,
     description: ``,
     title: ``,
@@ -164,57 +117,50 @@ export function document(friend: EditableFriend): EditableDocument {
     incomplete: false,
     originalTitle: ``,
     partialDescription: ``,
-    featuredDescription: null,
-    published: null,
+    featuredDescription: undefined,
+    published: undefined,
     friend: {
-      __typename: `Friend`,
       id: friend.id,
       lang: friend.lang,
       name: friend.name,
     },
     editions: [],
-    altLanguageId: null,
+    altLanguageId: undefined,
     tags: [],
     relatedDocuments: [],
   };
 }
 
 export function documentTag(
-  type: EditableDocumentTag['type'],
-  document: EditableDocument,
-): EditableDocumentTag {
+  type: T.EditableDocumentTag['type'],
+  documentId: UUID,
+): T.EditableDocumentTag {
   return {
-    __typename: `DocumentTag`,
     id: clientGeneratedId(),
+    documentId,
     type,
-    document: {
-      __typename: `Document`,
-      id: document.id,
-    },
   };
 }
 
-export function token(): EditableToken {
+export function token(): T.EditToken.Output {
   return {
-    __typename: `Token`,
     id: clientGeneratedId(),
     createdAt: new Date().toISOString(),
     description: ``,
     value: uuid(),
-    uses: null,
+    uses: undefined,
     scopes: [],
   };
 }
 
-export function tokenScope(tokenId: UUID, type: TokenScope): EditableTokenScope {
+export function tokenScope(
+  tokenId: UUID,
+  scope: T.EditableTokenScope['scope'],
+): T.EditableTokenScope {
   return {
-    __typename: `TokenScope`,
     id: clientGeneratedId(),
-    type,
-    token: {
-      __typename: `Token`,
-      id: tokenId,
-    },
+    scope,
+    tokenId,
   };
 }
 

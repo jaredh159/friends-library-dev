@@ -9,15 +9,14 @@ import { AUDIO_QUALITIES } from '@friends-library/types';
 import * as cloud from '@friends-library/cloud';
 import type { AudioQuality, Lang } from '@friends-library/types';
 import type { Audio } from './types';
-import type { UpdateAudioInput, UpdateAudioPartInput } from '../../graphql/globalTypes';
 import type { AudioFsData } from './types';
 import { logDebug, logAction, logError } from '../../sub-log';
 import * as ffmpeg from '../../ffmpeg';
+import api, { type T } from '../../api-client';
 import * as cache from './cache';
 import * as m4bTool from './m4b';
 import getSrcFsData from './audio-fs-data';
-import * as api from './api';
-import { getAudios } from './query';
+import queryFilteredAudios from './query-filtered-audios';
 
 interface Argv {
   lang: Lang | 'both';
@@ -40,7 +39,7 @@ export default async function handler(passedArgv: Argv): Promise<void> {
   argv = passedArgv;
   ffmpeg.ensureExists();
   m4bTool.ensureExists();
-  const audios = await getAudios(argv.lang, argv.pattern, argv.limit);
+  const audios = await queryFilteredAudios(argv.lang, argv.pattern, argv.limit);
   if (audios.length === 0) {
     logError(`No audios matched`);
     return;
@@ -72,7 +71,7 @@ async function handleAudio(audio: Audio): Promise<void> {
 }
 
 async function ensureAudioImage(audio: Audio, fsData: AudioFsData): Promise<void> {
-  const cloudPath = audio.edition.images.square.w1400.path;
+  const cloudPath = audio.edition.coverImagePath;
   const localPath = `${fsData.derivedPath}/cover.png`;
   if (fs.existsSync(localPath)) {
     const localHash = await md5File(localPath);
@@ -207,7 +206,7 @@ async function updateEntities(audio: Audio, fsData: AudioFsData): Promise<void> 
   const hqCache = ensureCache(cached.HQ);
   const lqCache = ensureCache(cached.LQ);
 
-  const existingAudio: UpdateAudioInput = {
+  const existingAudio: T.UpdateAudio.Input = {
     id: audio.id,
     editionId: audio.edition.id,
     isIncomplete: audio.isIncomplete,
@@ -220,7 +219,7 @@ async function updateEntities(audio: Audio, fsData: AudioFsData): Promise<void> 
     reader: audio.reader,
   };
 
-  const updatedAudio: UpdateAudioInput = {
+  const updatedAudio: T.UpdateAudio.Input = {
     ...existingAudio,
     m4bSizeHq: assertDefined(hqCache.m4bSize),
     m4bSizeLq: assertDefined(lqCache.m4bSize),
@@ -237,20 +236,20 @@ async function updateEntities(audio: Audio, fsData: AudioFsData): Promise<void> 
 
   for (let index = 0; index < audio.parts.length; index++) {
     const part = assertDefined(audio.parts[index]);
-    const existingPart: UpdateAudioPartInput = {
+    const existingPart: T.UpdateAudioPart.Input = {
       id: part.id,
       audioId: audio.id,
       title: part.title,
       order: part.order,
       chapters: part.chapters,
-      duration: part.duration,
+      duration: part.durationInSeconds,
       externalIdHq: part.externalIdHq,
       externalIdLq: part.externalIdLq,
       mp3SizeHq: part.mp3SizeHq,
       mp3SizeLq: part.mp3SizeLq,
     };
 
-    const updatedPart: UpdateAudioPartInput = {
+    const updatedPart: T.UpdateAudioPart.Input = {
       ...existingPart,
       mp3SizeHq: assertDefined(cache.getPart(fsData, index).HQ?.mp3Size),
       mp3SizeLq: assertDefined(cache.getPart(fsData, index).LQ?.mp3Size),

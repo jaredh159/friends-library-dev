@@ -1,7 +1,3 @@
-// auto-generated, do not edit
-import DuetMock
-import GraphQL
-
 @testable import App
 
 extension App.Document {
@@ -51,24 +47,5 @@ extension App.Document {
       partialDescription: "@random".random,
       featuredDescription: Bool.random() ? "@random".random : nil
     )
-  }
-
-  func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
-    var map: GraphQL.Map = .dictionary([
-      "id": .string(id.lowercased),
-      "friendId": .string(friendId.lowercased),
-      "altLanguageId": altLanguageId != nil ? .string(altLanguageId!.lowercased) : .null,
-      "title": .string(title),
-      "slug": .string(slug),
-      "filename": .string(filename),
-      "published": published != nil ? .number(Number(published!)) : .null,
-      "originalTitle": originalTitle != nil ? .string(originalTitle!) : .null,
-      "incomplete": .bool(incomplete),
-      "description": .string(description),
-      "partialDescription": .string(partialDescription),
-      "featuredDescription": featuredDescription != nil ? .string(featuredDescription!) : .null,
-    ])
-    omitting.forEach { try? map.remove($0) }
-    return map
   }
 }

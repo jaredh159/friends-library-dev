@@ -1,19 +1,12 @@
 import React from 'react';
-import gql from 'x-syntax';
+import EvansClient from '@friends-library/pairql/evans';
 import { graphql } from 'gatsby';
 import { t } from '@friends-library/locale';
 import type { FluidBgImageObject } from '../types';
-import type {
-  SubmitContactForm,
-  SubmitContactFormVariables,
-} from '../graphql/SubmitContactForm';
-import type { Subject as ContactFormSubject } from '../graphql/globalTypes';
 import ContactFormBlock from '../components/pages/contact/FormBlock';
 import { PAGE_META_DESCS } from '../lib/seo';
 import { Layout, Seo } from '../components/data';
 import { LANG } from '../env';
-import Client from '../components/lib/Client';
-import { Lang } from '../graphql/globalTypes';
 
 interface Props {
   data: {
@@ -28,7 +21,20 @@ interface Props {
 const ContactPage: React.FC<Props> = ({ data }) => (
   <Layout>
     <Seo title={t`Contact Us`} description={PAGE_META_DESCS.contact[LANG]} />
-    <ContactFormBlock bgImg={data.books.image.fluid} onSubmit={submit} />
+    <ContactFormBlock
+      bgImg={data.books.image.fluid}
+      onSubmit={async (name, email, message, subject) => {
+        const client = EvansClient.web(window.location.href, () => undefined);
+        const result = await client.submitContactForm({
+          lang: LANG === `es` ? `es` : `en`,
+          name,
+          email,
+          message,
+          subject,
+        });
+        return result.isSuccess;
+      }}
+    />
   </Layout>
 );
 
@@ -42,42 +48,6 @@ export const query = graphql`
           ...GatsbyImageSharpFluid_withWebp
         }
       }
-    }
-  }
-`;
-
-async function submit(
-  name: string,
-  email: string,
-  message: string,
-  subject: ContactFormSubject,
-): Promise<boolean> {
-  try {
-    const result = await new Client().mutate<
-      SubmitContactForm,
-      SubmitContactFormVariables
-    >({
-      mutation: SUBMIT_MUTATION,
-      variables: {
-        input: {
-          lang: LANG === `es` ? Lang.es : Lang.en,
-          name,
-          email,
-          message,
-          subject,
-        },
-      },
-    });
-    return result.success;
-  } catch {
-    return false;
-  }
-}
-
-const SUBMIT_MUTATION = gql`
-  mutation SubmitContactForm($input: SubmitContactFormInput!) {
-    result: submitContactForm(input: $input) {
-      success
     }
   }
 `;

@@ -1,62 +1,45 @@
-import DuetMock
 import XCTest
+import XExpect
 
 @testable import App
 @testable import XStripe
 
 final class OrderInitializationTests: AppTestCase {
-
   func testCreateOrderInitializationSuccess() async throws {
     try await Current.db.deleteAll(Token.self)
 
-    let (orderId, _, tokenValue, _) = mockUUIDs()
+    let (orderId, _, tokenValue) = mockUUIDs()
 
     Current.stripeClient.createPaymentIntent = { amount, currency, metadata, _ in
-      XCTAssertEqual(amount, 555)
-      XCTAssertEqual(currency, .USD)
-      XCTAssertEqual(metadata, ["orderId": orderId])
+      expect(amount).toEqual(555)
+      expect(currency).toEqual(.USD)
+      expect(metadata).toEqual(["orderId": orderId.lowercased])
       return .init(id: "pi_id", clientSecret: "pi_secret")
     }
 
-    assertResponse(
-      to: /* gql */ """
-      mutation CreateOrderInitialization($input: CreateOrderInitializationInput!) {
-        createOrderInitialization(input: $input) {
-          orderPaymentId
-          stripeClientSecret
-          orderId
-          createOrderToken
-        }
-      }
-      """,
-      withVariables: ["input": .dictionary(["amount": .int(555)])],
-      .containsKeyValuePairs([
-        "orderPaymentId": "pi_id",
-        "stripeClientSecret": "pi_secret",
-        "orderId": orderId,
-        "createOrderToken": tokenValue,
-      ])
-    )
+    let output = try await InitOrder.resolve(with: 555, in: .mock)
+
+    expect(output).toEqual(InitOrder.Output(
+      orderId: .init(orderId),
+      orderPaymentId: "pi_id",
+      stripeClientSecret: "pi_secret",
+      createOrderToken: .init(tokenValue)
+    ))
   }
 
   func testCreateOrderInitializationFailure() async throws {
     Current.stripeClient.createPaymentIntent = { _, _, _, _ in throw "some error" }
 
-    assertResponse(
-      to: /* gql */ """
-      mutation CreateOrderInitialization($input: CreateOrderInitializationInput!) {
-        createOrderInitialization(input: $input) {
-          orderPaymentId
-          stripeClientSecret
-          orderId
-          createOrderToken
-        }
-      }
-      """,
-      withVariables: ["input": .dictionary(["amount": .int(555)])],
-      isError: .withStatus(.internalServerError)
-    )
+    try await expectErrorFrom {
+      try await InitOrder.resolve(with: 555, in: .mock)
+    }.toContain("500")
 
-    XCTAssertEqual(sent.slacks, [.error("Error creating OrderInitialization: some error")])
+    expect(sent.slacks).toEqual([.error("InitOrder error: some error")])
+  }
+}
+
+extension Context {
+  static var mock: Self {
+    .init(requestId: "mock-req-id")
   }
 }

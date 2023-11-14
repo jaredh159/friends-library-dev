@@ -7,7 +7,7 @@ import type { AudioFsData, Audio } from '../audio/types';
 import * as ffmpeg from '../../ffmpeg';
 import getAudioFsData from '../audio/audio-fs-data';
 import { logAction, logDebug } from '../../sub-log';
-import { getAudios } from '../audio/query';
+import queryFilteredAudios from '../audio/query-filtered-audios';
 import { slideshowConcatFileLines } from './slideshow';
 import { metadata } from './metadata';
 import * as posterApp from './poster-server';
@@ -22,7 +22,7 @@ interface Argv {
 
 export default async function handler(argv: Argv): Promise<void> {
   ffmpeg.ensureExists();
-  for (const audio of await getAudios(argv.lang, argv.pattern, argv.limit)) {
+  for (const audio of await queryFilteredAudios(argv.lang, argv.pattern, argv.limit)) {
     await handleAudio(audio, argv);
   }
 }
@@ -35,7 +35,7 @@ async function handleAudio(audio: Audio, argv: Argv): Promise<void> {
   const audioFsData = await getAudioFsData(audio);
   const workDir = audioFsData.derivedPath;
   exec.exit(`open ${workDir}`);
-  const durations = audio.parts.map((p) => p.duration);
+  const durations = audio.parts.map((p) => p.durationInSeconds);
   const splits = splitVolumes(durations);
   for (let idx = 0; idx < splits.length; idx++) {
     await makeVideo(
@@ -124,8 +124,8 @@ async function makeVideo(
 
   logDebug(`creating video`);
   const slideFilepath = `${workDir}/slides.txt`;
-  const document = audio.edition.document;
-  const friend = document.friend;
+  const document = audio.document;
+  const friend = audio.friend;
   const videoFile = `${friend.slug}-${document.slug}${suffix}.mp4`;
   fs.writeFileSync(slideFilepath, slideLines.join(`\n`));
   ffmpeg.makeVideo(workDir, audioFilename, videoFile);
@@ -149,7 +149,7 @@ async function capturePosterImages(
   numVols: number,
   port: number,
 ): Promise<string[]> {
-  const lang = audio.edition.document.friend.lang;
+  const lang = audio.friend.lang;
   const path = audio.edition.path;
   const [makeScreenshot, closeHeadlessBrowser] = await posterApp.screenshot(port);
 

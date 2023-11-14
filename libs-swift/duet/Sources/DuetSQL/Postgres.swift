@@ -1,15 +1,25 @@
 import Duet
 import Foundation
+import XCore
 
 public protocol PostgresEnum {
   var typeName: String { get }
   var rawValue: String { get }
 }
 
+public extension PostgresEnum where Self: CaseIterable {
+  static var typeName: String {
+    guard let first = allCases.first else {
+      fatalError("PostgresEnum \(Self.self) has no cases")
+    }
+    return first.typeName
+  }
+}
+
 public protocol PostgresJsonable: Codable {}
 
 public extension PostgresJsonable {
-  var toPostgresJson: String { json(self) }
+  var toPostgresJson: String { try! JSON.encode(self) }
   init(fromPostgresJson json: String) throws {
     self = try JSONDecoder().decode(Self.self, from: json.data(using: .utf8)!)
   }
@@ -35,6 +45,7 @@ public enum Postgres {
   public enum Data {
     case id(UUIDIdentifiable)
     case string(String?)
+    case varchar(String?)
     case intArray([Int]?)
     case int(Int?)
     case int64(Int64?)
@@ -53,6 +64,8 @@ public enum Postgres {
       case .id, .currentTimestamp, .null:
         return false
       case .string(let wrapped):
+        return wrapped == nil
+      case .varchar(let wrapped):
         return wrapped == nil
       case .intArray(let wrapped):
         return wrapped == nil
@@ -81,6 +94,8 @@ public enum Postgres {
       switch self {
       case .string:
         return "text"
+      case .varchar:
+        return "varchar"
       case .int, .int64, .double, .float:
         return "numeric"
       case .intArray:
@@ -94,11 +109,11 @@ public enum Postgres {
       case .null:
         return "unknown"
       case .date:
-        return "timestamp"
+        return "timestamp with time zone"
       case .json:
         return "jsonb"
       case .currentTimestamp:
-        return "timestamp"
+        return "timestamp with time zone"
       }
     }
 
@@ -107,6 +122,8 @@ public enum Postgres {
       case .enum(let enumVal):
         return nullable(enumVal?.rawValue)
       case .string(let string):
+        return nullable(string)
+      case .varchar(let string):
         return nullable(string)
       case .int64(let int64):
         return nullable(int64)
@@ -290,16 +307,3 @@ private func nullable<N: Numeric>(_ string: N?) -> String {
     return "\(number)"
   }
 }
-
-// helpers
-
-private func json<T: Encodable>(_ msg: T) -> String {
-  let data = try? jsonEncoder.encode(msg)
-  return String(data: data ?? .init(), encoding: .utf8)!
-}
-
-private let jsonEncoder: JSONEncoder = {
-  let encoder = JSONEncoder()
-  encoder.outputFormatting = [.sortedKeys]
-  return encoder
-}()

@@ -2,14 +2,12 @@ import React from 'react';
 import cx from 'classnames';
 import { Link, useNavigate } from 'react-router-dom';
 import { PlusCircleIcon } from '@heroicons/react/solid';
-import type { GetTokens } from '../../graphql/GetTokens';
-import { gql, writable } from '../../client';
-import { useQueryResult } from '../../lib/query';
-import { Scope as TokenScope } from '../../graphql/globalTypes';
+import { useQuery } from '../../lib/query';
+import api, { type T } from '../../api-client';
 import PillButton from '../PillButton';
 
 interface Props {
-  tokens: GetTokens['tokens'];
+  tokens: T.ListTokens.Output;
 }
 
 const ListTokens: React.FC<Props> = ({ tokens }) => {
@@ -17,7 +15,7 @@ const ListTokens: React.FC<Props> = ({ tokens }) => {
   return (
     <div className="space-y-3">
       {tokens.map((token) => {
-        const hasAllScopes = token.scopes.some((scope) => scope.type === TokenScope.all);
+        const hasAllScopes = token.scopes.some((scope) => scope.scope === `all`);
         return (
           <Link
             to={`/tokens/${token.id}`}
@@ -55,28 +53,12 @@ const ListTokens: React.FC<Props> = ({ tokens }) => {
 };
 
 const ListTokensContainer: React.FC = () => {
-  const query = useQueryResult<GetTokens>(QUERY_TOKENS);
+  const query = useQuery(() => api.listTokens());
   if (!query.isResolved) {
     return query.unresolvedElement;
   }
-  const tokens: GetTokens['tokens'] = writable(query.data.tokens);
-  tokens.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
-  return <ListTokens tokens={tokens} />;
+  query.data.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+  return <ListTokens tokens={query.data} />;
 };
 
 export default ListTokensContainer;
-
-const QUERY_TOKENS = gql`
-  query GetTokens {
-    tokens: getTokens {
-      id
-      description
-      createdAt
-      uses
-      scopes {
-        id
-        type: scope
-      }
-    }
-  }
-`;

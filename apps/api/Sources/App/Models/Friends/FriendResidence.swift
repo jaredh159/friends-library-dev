@@ -1,4 +1,4 @@
-import Duet
+import DuetSQL
 
 final class FriendResidence: Codable {
   var id: Id
@@ -20,5 +20,17 @@ final class FriendResidence: Codable {
     self.friendId = friendId
     self.city = city
     self.region = region
+  }
+}
+
+// loaders
+
+extension FriendResidence {
+  func durations() async throws -> [FriendResidenceDuration] {
+    try await durations.useLoaded(or: {
+      try await FriendResidenceDuration.query()
+        .where(.friendResidenceId == id)
+        .all()
+    })
   }
 }

@@ -1,7 +1,3 @@
-// auto-generated, do not edit
-import DuetMock
-import GraphQL
-
 @testable import App
 
 extension TokenScope {
@@ -15,15 +11,5 @@ extension TokenScope {
 
   static var random: TokenScope {
     TokenScope(tokenId: .init(), scope: Scope.allCases.shuffled().first!)
-  }
-
-  func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
-    var map: GraphQL.Map = .dictionary([
-      "id": .string(id.lowercased),
-      "scope": .string(scope.rawValue),
-      "tokenId": .string(tokenId.lowercased),
-    ])
-    omitting.forEach { try? map.remove($0) }
-    return map
   }
 }

@@ -1,34 +1,11 @@
-import gql from 'x-syntax';
-import type { BrickOrder, BrickOrderVariables } from '../../../graphql/BrickOrder';
-import type {
-  CreateOrderInit,
-  CreateOrderInitVariables,
-} from '../../../graphql/CreateOrderInit';
-import type {
-  CreateOrderWithItems,
-  CreateOrderWithItemsVariables,
-} from '../../../graphql/CreateOrderWithItems';
-import type {
-  ExploratoryMetadata,
-  ExploratoryMetadataVariables,
-} from '../../../graphql/ExploratoryMetadata';
-import type {
-  PrintJobExploratoryItemInput,
-  ShippingAddressInput,
-} from '../../../graphql/globalTypes';
-import type { CreateOrderInput } from '../../../graphql/globalTypes';
-import type { CreateOrderItemInput } from '../../../graphql/globalTypes';
-import type {
-  SendOrderConfirmationEmail,
-  SendOrderConfirmationEmailVariables,
-} from '../../../graphql/SendOrderConfirmationEmail';
-import Client from '../../lib/Client';
+import OrderClient, { type T } from '@friends-library/pairql/order';
 
 export default class CheckoutApi {
-  private client: Client;
+  private client: OrderClient;
+  private token: string | undefined;
 
-  public constructor(endpoint?: string) {
-    this.client = new Client(endpoint);
+  public constructor() {
+    this.client = OrderClient.web(window.location.href, () => this.token);
   }
 
   public async brickOrder(
@@ -36,72 +13,63 @@ export default class CheckoutApi {
     orderId: string,
     orderPaymentId: string,
   ): Promise<void> {
-    await this.client.mutate<BrickOrder, BrickOrderVariables>({
-      mutation: BRICK_ORDER_MUTATION,
-      variables: {
-        input: {
-          orderId,
-          orderPaymentId,
-          stateHistory,
-          userAgent: navigator ? navigator.userAgent : undefined,
-        },
-      },
+    await this.client.brickOrder({
+      orderId,
+      orderPaymentId,
+      stateHistory,
+      userAgent: navigator ? navigator.userAgent : undefined,
     });
   }
 
   public async createOrderInitialization(
     amountInCents: number,
-  ): Promise<{ success: true; data: CreateOrderInit } | { success: false }> {
-    return await this.client.mutate<CreateOrderInit, CreateOrderInitVariables>({
-      mutation: CREATE_ORDER_INITIALIZATION_MUTATION,
-      variables: { input: { amount: amountInCents } },
-    });
+  ): Promise<{ success: true; data: T.InitOrder.Output } | { success: false }> {
+    const result = await this.client.initOrder(amountInCents);
+    if (result.isSuccess) {
+      return { success: true, data: result.unwrap() };
+    } else {
+      return { success: false };
+    }
   }
 
   public async getExploratoryMetadata(
-    items: Array<PrintJobExploratoryItemInput>,
-    address: ShippingAddressInput,
+    items: T.GetPrintJobExploratoryMetadata.Input['items'],
+    address: T.ShippingAddress & { email: string },
   ): Promise<
-    | { status: `success`; data: ExploratoryMetadata }
+    | { status: `success`; data: T.GetPrintJobExploratoryMetadata.Output }
     | { status: `shipping_not_possible` }
     | { status: `error` }
   > {
-    const result = await this.client.mutate<
-      ExploratoryMetadata,
-      ExploratoryMetadataVariables
-    >({
-      mutation: PRINT_JOB_EXPLORATORY_METADATA_QUERY,
-      variables: { input: { items, address } },
+    const result = await this.client.getPrintJobExploratoryMetadata({
+      items,
+      address,
+      email: address.email,
     });
-    switch (result.success) {
+    switch (result.isSuccess) {
       case true:
-        return { status: `success`, data: result.data };
-      case false:
+        return { status: `success`, data: result.unwrap() };
+      case false: {
+        const error = JSON.stringify(result.error);
         if (
-          result.error.includes(`not possible`) ||
-          result.error.includes(`noExploratoryMetadataRetrieved`)
+          error.includes(`not possible`) ||
+          error.includes(`noExploratoryMetadataRetrieved`)
         ) {
           return { status: `shipping_not_possible` };
         } else {
           return { status: `error` };
         }
+      }
     }
   }
 
   public async createOrder(
-    orderInput: CreateOrderInput,
-    itemInputs: Array<CreateOrderItemInput>,
+    order: Omit<T.CreateOrder.Input, 'items'>,
+    items: T.CreateOrder.Input['items'],
     token: string,
   ): Promise<boolean> {
-    const { success } = await this.client.mutate<
-      CreateOrderWithItems,
-      CreateOrderWithItemsVariables
-    >({
-      mutation: CREATE_ORDER_MUTATION,
-      variables: { order: orderInput, items: itemInputs },
-      token,
-    });
-    return success;
+    this.token = token;
+    const result = await this.client.createOrder({ ...order, items: items });
+    return result.isSuccess;
   }
 
   public async chargeCreditCard(
@@ -125,66 +93,10 @@ export default class CheckoutApi {
 
   public async sendOrderConfirmationEmail(orderId: string): Promise<boolean> {
     try {
-      const { success } = await this.client.mutate<
-        SendOrderConfirmationEmail,
-        SendOrderConfirmationEmailVariables
-      >({
-        mutation: SEND_ORDER_CONFIRMATION_EMAIL_MUTATION,
-        variables: { id: orderId },
-      });
-      return success;
+      await this.client.sendOrderConfirmationEmail(orderId);
+      return true;
     } catch {
       return false;
     }
   }
 }
-
-const BRICK_ORDER_MUTATION = gql`
-  mutation BrickOrder($input: BrickOrderInput!) {
-    result: brickOrder(input: $input) {
-      success
-    }
-  }
-`;
-
-const CREATE_ORDER_INITIALIZATION_MUTATION = gql`
-  mutation CreateOrderInit($input: CreateOrderInitializationInput!) {
-    data: createOrderInitialization(input: $input) {
-      orderId
-      orderPaymentId
-      stripeClientSecret
-      token: createOrderToken
-    }
-  }
-`;
-
-const PRINT_JOB_EXPLORATORY_METADATA_QUERY = gql`
-  query ExploratoryMetadata($input: GetPrintJobExploratoryMetadataInput!) {
-    data: getPrintJobExploratoryMetadata(input: $input) {
-      shippingLevel
-      shippingInCents
-      taxesInCents
-      feesInCents
-      creditCardFeeOffsetInCents
-    }
-  }
-`;
-
-const CREATE_ORDER_MUTATION = gql`
-  mutation CreateOrderWithItems(
-    $order: CreateOrderInput!
-    $items: [CreateOrderItemInput!]!
-  ) {
-    order: createOrderWithItems(order: $order, items: $items) {
-      id
-    }
-  }
-`;
-
-const SEND_ORDER_CONFIRMATION_EMAIL_MUTATION = gql`
-  mutation SendOrderConfirmationEmail($id: UUID!) {
-    response: sendOrderConfirmationEmail(id: $id) {
-      success
-    }
-  }
-`;

@@ -1,7 +1,3 @@
-// auto-generated, do not edit
-import DuetMock
-import GraphQL
-
 @testable import App
 
 extension OrderItem {
@@ -20,17 +16,5 @@ extension OrderItem {
       quantity: Int.random,
       unitPrice: .init(rawValue: Int.random)
     )
-  }
-
-  func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
-    var map: GraphQL.Map = .dictionary([
-      "id": .string(id.lowercased),
-      "orderId": .string(orderId.lowercased),
-      "editionId": .string(editionId.lowercased),
-      "quantity": .number(Number(quantity)),
-      "unitPrice": .number(Number(unitPrice.rawValue)),
-    ])
-    omitting.forEach { try? map.remove($0) }
-    return map
   }
 }

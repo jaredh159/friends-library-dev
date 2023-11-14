@@ -8,7 +8,7 @@ class LiveDatabase: DuetSQL.Client {
 
   init(db: SQLDatabase) {
     self.db = db
-    dbClient = LiveClient(db: db)
+    dbClient = LiveClient(sql: db)
   }
 
   func query<M: DuetSQL.Model>(_ Model: M.Type) -> DuetQuery<M> {
@@ -95,6 +95,14 @@ class LiveDatabase: DuetSQL.Client {
     )
   }
 
+  func count<M>(
+    _: M.Type,
+    where: DuetSQL.SQL.WhereConstraint<M>,
+    withSoftDeleted: Bool
+  ) async throws -> Int where M: DuetSQL.Model {
+    try await dbClient.count(M.self, where: `where`, withSoftDeleted: withSoftDeleted)
+  }
+
   private var entityClient: DuetSQL.Client {
     get async throws {
       if let client = _entityClient {
@@ -107,7 +115,7 @@ class LiveDatabase: DuetSQL.Client {
     }
   }
 
-  private func flushEntities() async {
+  fileprivate func flushEntities() async {
     _entityClient = nil
     await LegacyRest.cachedData.flush()
   }
@@ -118,8 +126,12 @@ class LiveDatabase: DuetSQL.Client {
   ) async throws -> [J] {
     fatalError("queryJoined not implemented")
   }
+}
 
-  func count<M: DuetSQL.Model>(_: M.Type, where: SQL.WhereConstraint<M>) async throws -> Int {
-    fatalError("LiveDatabase.count not implemented")
+extension DuetSQL.Client {
+  func clearEntityCache() async throws {
+    if let liveDb = self as? LiveDatabase {
+      await liveDb.flushEntities()
+    }
   }
 }

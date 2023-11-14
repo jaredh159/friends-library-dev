@@ -1,4 +1,4 @@
-import Duet
+import DuetSQL
 import Tagged
 
 final class Audio: Codable {
@@ -65,4 +65,22 @@ final class Audio: Codable {
 
 extension Audio {
   typealias ExternalPlaylistId = Tagged<Audio, Int64>
+}
+
+extension Audio {
+  func parts() async throws -> [AudioPart] {
+    try await parts.useLoaded(or: {
+      try await AudioPart.query()
+        .where(.audioId == id)
+        .all()
+    })
+  }
+
+  func edition() async throws -> Edition {
+    try await edition.useLoaded(or: {
+      try await Edition.query()
+        .where(.id == editionId)
+        .first()
+    })
+  }
 }

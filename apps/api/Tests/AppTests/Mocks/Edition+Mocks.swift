@@ -1,7 +1,3 @@
-// auto-generated, do not edit
-import DuetMock
-import GraphQL
-
 @testable import App
 
 extension Edition {
@@ -19,21 +15,5 @@ extension Edition {
       type: EditionType.allCases.shuffled().first!,
       editor: Bool.random() ? "@random".random : nil
     )
-  }
-
-  func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
-    var map: GraphQL.Map = .dictionary([
-      "id": .string(id.lowercased),
-      "documentId": .string(documentId.lowercased),
-      "type": .string(type.rawValue),
-      "editor": editor != nil ? .string(editor!) : .null,
-      "isDraft": .bool(isDraft),
-      "paperbackSplits": paperbackSplits != nil ?
-        .array(paperbackSplits!.array.map { .number(Number($0)) }) : .null,
-      "paperbackOverrideSize": paperbackOverrideSize != nil ?
-        .string(paperbackOverrideSize!.rawValue) : .null,
-    ])
-    omitting.forEach { try? map.remove($0) }
-    return map
   }
 }

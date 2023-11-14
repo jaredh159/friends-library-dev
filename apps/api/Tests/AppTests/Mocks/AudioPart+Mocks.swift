@@ -1,6 +1,3 @@
-// auto-generated, do not edit
-import DuetMock
-import GraphQL
 import NonEmpty
 
 @testable import App
@@ -46,22 +43,5 @@ extension AudioPart {
       externalIdHq: .init(rawValue: Int64.random),
       externalIdLq: .init(rawValue: Int64.random)
     )
-  }
-
-  func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
-    var map: GraphQL.Map = .dictionary([
-      "id": .string(id.lowercased),
-      "audioId": .string(audioId.lowercased),
-      "title": .string(title),
-      "duration": .number(Number(duration.rawValue)),
-      "chapters": .array(chapters.array.map { .number(Number($0)) }),
-      "order": .number(Number(order)),
-      "mp3SizeHq": .number(Number(mp3SizeHq.rawValue)),
-      "mp3SizeLq": .number(Number(mp3SizeLq.rawValue)),
-      "externalIdHq": .number(Number(externalIdHq.rawValue)),
-      "externalIdLq": .number(Number(externalIdLq.rawValue)),
-    ])
-    omitting.forEach { try? map.remove($0) }
-    return map
   }
 }

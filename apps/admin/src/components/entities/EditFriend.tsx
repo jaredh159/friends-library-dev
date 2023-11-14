@@ -1,44 +1,32 @@
 import React, { useReducer } from 'react';
 import isEqual from 'lodash.isequal';
 import { useParams } from 'react-router-dom';
-import { gql } from '@apollo/client';
-import type {
-  EditFriend as EditFriendQuery,
-  EditFriendVariables,
-} from '../../graphql/EditFriend';
-import type {
-  EditableFriend,
-  Reducer,
-  ReducerReplace,
-  SelectableDocuments,
-} from '../../types';
-import { useQueryResult } from '../../lib/query';
+import type { Reducer, ReducerReplace } from '../../types';
+import { useQuery } from '../../lib/query';
 import TextInput from '../TextInput';
 import LabeledSelect from '../LabeledSelect';
-import { Gender, Lang } from '../../graphql/globalTypes';
 import reducer, { isValidYear } from '../../lib/reducer';
-import {
-  EDIT_DOCUMENT_FIELDS,
-  SELECTABLE_DOCUMENTS_FIELDS,
-  writable,
-} from '../../client';
 import * as empty from '../../lib/empty';
 import SaveChangesBar from '../SaveChangesBar';
 import LabeledToggle from '../LabeledToggle';
+import api, { type T } from '../../api-client';
 import * as sort from './sort';
 import { EditDocument } from './EditDocument';
 import NestedCollection from './NestedCollection';
 
 interface Props {
-  friend: EditableFriend;
-  selectableDocuments: SelectableDocuments;
+  friend: T.EditableFriend;
+  selectableDocuments: T.SelectableDocument[];
 }
 
 export const EditFriend: React.FC<Props> = ({
   friend: initialFriend,
   selectableDocuments,
 }) => {
-  const [friend, dispatch] = useReducer<Reducer<EditableFriend>>(reducer, initialFriend);
+  const [friend, dispatch] = useReducer<Reducer<T.EditableFriend>>(
+    reducer,
+    initialFriend,
+  );
   const replace: ReducerReplace = (path, preprocess) => (value) =>
     dispatch({
       type: `replace_value`,
@@ -52,8 +40,10 @@ export const EditFriend: React.FC<Props> = ({
       <SaveChangesBar
         entityName="Friend"
         disabled={isEqual(friend, initialFriend)}
-        // @ts-ignore
-        getEntities={() => [friend, initialFriend]}
+        getEntities={() => [
+          { case: `friend`, entity: friend },
+          { case: `friend`, entity: initialFriend },
+        ]}
       />
       <div className="flex space-x-4">
         {friend.id.startsWith(`_`) && (
@@ -62,8 +52,8 @@ export const EditFriend: React.FC<Props> = ({
             selected={friend.lang}
             setSelected={replace(`lang`)}
             options={[
-              [Lang.en, `English`],
-              [Lang.es, `Spanish`],
+              [`en`, `English`],
+              [`es`, `Spanish`],
             ]}
           />
         )}
@@ -92,9 +82,9 @@ export const EditFriend: React.FC<Props> = ({
           selected={friend.gender}
           setSelected={replace(`gender`)}
           options={[
-            [Gender.male, `male`],
-            [Gender.female, `female`],
-            [Gender.mixed, `mixed (compilations)`],
+            [`male`, `male`],
+            [`female`, `female`],
+            [`mixed`, `mixed (compilations)`],
           ]}
           className="w-1/2"
         />
@@ -103,7 +93,7 @@ export const EditFriend: React.FC<Props> = ({
             type="number"
             label="Born:"
             isValid={isValidYear}
-            value={friend.born === null ? `` : String(friend.born)}
+            value={friend.born === undefined ? `` : String(friend.born)}
             onChange={(year) => dispatch({ type: `update_year`, at: `born`, with: year })}
             className="w-1/2"
           />
@@ -111,16 +101,16 @@ export const EditFriend: React.FC<Props> = ({
             type="number"
             label="Died:"
             isValid={isValidYear}
-            value={friend.died === null ? `` : String(friend.died)}
+            value={friend.died === undefined ? `` : String(friend.died)}
             onChange={(year) => dispatch({ type: `update_year`, at: `died`, with: year })}
             className="w-1/2"
           />
           <LabeledToggle
             label="Published:"
-            enabled={friend.published !== null}
+            enabled={friend.published !== undefined}
             setEnabled={(enabled) =>
               replace(`published`)(
-                enabled ? initialFriend.published ?? new Date().toISOString() : null,
+                enabled ? initialFriend.published ?? new Date().toISOString() : undefined,
               )
             }
           />
@@ -139,7 +129,7 @@ export const EditFriend: React.FC<Props> = ({
           dispatch({
             type: `add_item`,
             at: `residences`,
-            value: empty.friendResidence(friend),
+            value: empty.friendResidence(friend.id),
           })
         }
         onDelete={deleteFrom(`residences`)}
@@ -183,7 +173,7 @@ export const EditFriend: React.FC<Props> = ({
                 dispatch({
                   type: `add_item`,
                   at: `residences[${residenceIndex}].durations`,
-                  value: empty.friendResidenceDuration(residence),
+                  value: empty.friendResidenceDuration(residence.id),
                 })
               }
               onDelete={deleteFrom(`residences[${residenceIndex}].durations`)}
@@ -298,67 +288,16 @@ export const EditFriend: React.FC<Props> = ({
 
 const EditFriendContainer: React.FC = () => {
   const { id = `` } = useParams<{ id: UUID }>();
-  const query = useQueryResult<EditFriendQuery, EditFriendVariables>(QUERY_FRIEND, {
-    variables: { id },
-  });
+  const query = useQuery(() => api.editFriend(id));
   if (!query.isResolved) {
     return query.unresolvedElement;
   }
   return (
     <EditFriend
-      friend={sort.friend(writable(query.data.friend))}
+      friend={sort.friend(query.data.friend)}
       selectableDocuments={query.data.selectableDocuments}
     />
   );
 };
 
 export default EditFriendContainer;
-
-const QUERY_FRIEND = gql`
-  ${EDIT_DOCUMENT_FIELDS}
-  ${SELECTABLE_DOCUMENTS_FIELDS}
-  query EditFriend($id: UUID!) {
-    friend: getFriend(id: $id) {
-      id
-      lang
-      name
-      slug
-      gender
-      born
-      died
-      description
-      published
-      quotes {
-        id
-        source
-        text
-        order
-        friend {
-          id
-        }
-      }
-      documents {
-        ...EditDocumentFields
-      }
-      residences {
-        id
-        city
-        region
-        durations {
-          id
-          start
-          end
-          residence {
-            id
-          }
-        }
-        friend {
-          id
-        }
-      }
-    }
-    selectableDocuments: getDocuments {
-      ...SelectableDocumentsFields
-    }
-  }
-`;

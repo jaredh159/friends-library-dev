@@ -6,8 +6,8 @@ describe(`documentDate()`, () => {
   let friend: Parameters<typeof documentDate>[1];
 
   beforeEach(() => {
-    document = { directoryPath: `/`, published: null };
-    friend = { born: null, died: null, isCompilations: false };
+    document = { directoryPath: `/`, published: undefined };
+    friend = { born: undefined, died: undefined, isCompilations: false };
   });
 
   it(`should use published date when present`, () => {

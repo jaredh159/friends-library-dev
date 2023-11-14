@@ -1,5 +1,4 @@
 import FluentSQL
-import GraphQLKit
 import Vapor
 import XCTest
 import XSendGrid
@@ -27,7 +26,8 @@ class AppTestCase: XCTestCase {
     Current.logger = .null
     try! app.autoRevert().wait()
     try! app.autoMigrate().wait()
-    try! configure(app)
+    try! Configure.app(app)
+    app.logger = .null
     Current.logger = .null
     Current.db = MockClient()
   }
@@ -50,48 +50,30 @@ class AppTestCase: XCTestCase {
     Current.slackClient.send = { [self] in sent.slacks.append($0) }
     Current.sendGridClient.send = { [self] in sent.emails.append($0) }
   }
+}
 
-  public func assertResponse(
-    to operation: String,
-    bearer: UUID? = nil,
-    addingHeaders headers: [HTTPHeaders.Name: String]? = nil,
-    withVariables variables: [String: Map]? = nil,
-    _ expectedData: ExpectedData,
-    file: StaticString = #file,
-    line: UInt = #line
-  ) {
-    assertGraphQLResponse(
-      to: operation,
-      auth: bearer == nil ? nil : .bearer(bearer!.lowercased),
-      addingHeaders: headers,
-      withVariables: variables,
-      on: app,
-      expectedData,
-      file: file,
-      line: line
-    )
+func mockUUIDs() -> (UUID, UUID, UUID) {
+  let uuids = (UUID(), UUID(), UUID())
+  var array = [uuids.0, uuids.1, uuids.2]
+
+  UUID.new = {
+    guard !array.isEmpty else { return UUID() }
+    return array.removeFirst()
   }
 
-  public func assertResponse(
-    to operation: String,
-    bearer: UUID? = nil,
-    addingHeaders headers: [HTTPHeaders.Name: String]? = nil,
-    withVariables variables: [String: Map]? = nil,
-    isError expectedError: ExpectedError,
-    file: StaticString = #file,
-    line: UInt = #line
-  ) {
-    assertGraphQLResponse(
-      to: operation,
-      auth: bearer == nil ? nil : .bearer(bearer!.lowercased),
-      addingHeaders: headers,
-      withVariables: variables,
-      on: app,
-      isError: expectedError,
-      file: file,
-      line: line
-    )
-  }
+  return uuids
+}
+
+public extension String {
+  var random: String { "\(self)@random-\(Int.random)" }
+}
+
+public extension Int {
+  static var random: Int { Int.random(in: 1_000_000_000 ... 9_999_999_999) }
+}
+
+public extension Int64 {
+  static var random: Int64 { Int64.random(in: 1_000_000_000 ... 9_999_999_999) }
 }
 
 func sync(

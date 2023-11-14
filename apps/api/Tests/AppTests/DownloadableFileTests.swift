@@ -85,7 +85,7 @@ final class DownloadableFileTests: AppTestCase {
     ]
     for userAgent in userAgents {
       let file = DownloadableFile(edition: edition, format: .ebook(.epub))
-      let res = try await logAndRedirect(file: file, userAgent: userAgent)
+      let res = try await DownloadRoute.logAndRedirect(file: file, userAgent: userAgent)
       let download = try await Current.db.query(Download.self)
         .where(.userAgent == .string(userAgent))
         .first()
@@ -98,7 +98,7 @@ final class DownloadableFileTests: AppTestCase {
     Current.userAgentParser = .bot
     let botUa = "GoogleBot"
     let file = DownloadableFile(edition: edition, format: .ebook(.epub))
-    let res = try await logAndRedirect(file: file, userAgent: botUa)
+    let res = try await DownloadRoute.logAndRedirect(file: file, userAgent: botUa)
     let downloads = try await Current.db.query(Download.self)
       .where(.userAgent == .string("GoogleBot"))
       .all()
@@ -113,7 +113,7 @@ final class DownloadableFileTests: AppTestCase {
     let device = Current.userAgentParser.parse(userAgent)
     let file = DownloadableFile(edition: edition, format: .ebook(.epub))
 
-    let res = try await logAndRedirect(
+    let res = try await DownloadRoute.logAndRedirect(
       file: file,
       userAgent: userAgent,
       ipAddress: "1.2.3.4",
@@ -158,7 +158,7 @@ final class DownloadableFileTests: AppTestCase {
       format: .audio(.mp3(quality: .high, multipartIndex: 3))
     )
 
-    _ = try await logAndRedirect(
+    _ = try await DownloadRoute.logAndRedirect(
       file: file,
       userAgent: userAgent,
       ipAddress: "1.2.3.4",
@@ -182,7 +182,7 @@ final class DownloadableFileTests: AppTestCase {
   func testAppUaIsNotCountedAsBot() async throws {
     let userAgent = "FriendsLibrary GoogleBot".random
     let file = DownloadableFile(edition: edition, format: .ebook(.epub))
-    _ = try await logAndRedirect(file: file, userAgent: userAgent)
+    _ = try await DownloadRoute.logAndRedirect(file: file, userAgent: userAgent)
 
     let inserted = try await Current.db.query(Download.self)
       .where(.userAgent == .string(userAgent))
@@ -212,7 +212,7 @@ final class DownloadableFileTests: AppTestCase {
 
     let file = DownloadableFile(edition: edition, format: .audio(.podcast(.high)))
 
-    _ = try await logAndRedirect(file: file, userAgent: "", ipAddress: "1.2.3.4")
+    _ = try await DownloadRoute.logAndRedirect(file: file, userAgent: "", ipAddress: "1.2.3.4")
 
     let afterDupe = try await Current.db.query(Download.self)
       .where(.editionId == edition.id)

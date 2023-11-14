@@ -1,18 +1,13 @@
 {
   "root": "libs-swift/duet",
   "projectType": "library",
+  "implicitDependencies": ["x-kit"],
   "targets": {
     "build": {
       "command": "cd libs-swift/duet && swift build"
     },
     "test": {
       "command": "cd libs-swift/duet && SWIFT_DETERMINISTIC_HASHING=1 swift test"
-    },
-    "format": {
-      "command": "cd libs-swift/duet && swiftformat ."
-    },
-    "format:check": {
-      "command": "cd libs-swift/duet && swiftformat --lint ."
     }
   }
 }

@@ -1,5 +1,4 @@
 import Foundation
-import Graphiti
 
 struct AudioFiles: Encodable {
   struct Qualities: Encodable {
@@ -38,24 +37,5 @@ extension Audio {
         lq: .init(edition: edition, format: .audio(.m4b(.low)))
       )
     )
-  }
-}
-
-// extensions
-
-extension AppSchema {
-  static var AudioFileQualitiesType: AppType<AudioFiles.Qualities> {
-    Type(AudioFiles.Qualities.self, as: "AudioFileQualities") {
-      Field("hq", at: \.hq)
-      Field("lq", at: \.lq)
-    }
-  }
-
-  static var AudioFilesType: AppType<AudioFiles> {
-    Type(AudioFiles.self) {
-      Field("podcast", at: \.podcast)
-      Field("mp3s", at: \.mp3s)
-      Field("m4b", at: \.m4b)
-    }
   }
 }

@@ -109,6 +109,14 @@ deploy-api-production:
 
 deploy-api: deploy-api-staging deploy-api-production
 
+codegen-ts:
+  @pnpm ts-node libs-ts/pairql/src/pairql-codegen.ts
+
+codegen-swift:
+  @cd apps/api && SWIFT_DETERMINISTIC_HASHING=1 CODEGEN_SWIFT=1 swift test --filter Codegen
+
+codegen: codegen-ts codegen-swift
+
 # helpers
 
 [private]

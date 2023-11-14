@@ -132,7 +132,7 @@ public struct DuetQuery<M: Model> {
       offset: offset,
       withSoftDeleted: force || _withSoftDeleted
     )
-    guard !models.isEmpty else { throw DuetSQLError.notFound }
+    guard !models.isEmpty else { throw DuetSQLError.notFound("\(M.self)") }
     guard models.count == 1 else { throw DuetSQLError.tooManyResultsForDeleteOne }
     if force {
       try await db.forceDelete(
@@ -159,19 +159,11 @@ public struct DuetQuery<M: Model> {
     )
   }
 
-  public func firstOrThrowNotFound() async throws -> M {
-    try await all().firstOrThrowNotFound()
-  }
-
-  public func first() async throws -> M {
-    try await all().firstOrThrowNotFound()
-  }
-
-  public func firstOrThrow(_ error: Error) async throws -> M {
-    try await all().firstOrThrow(error)
+  public func first(orThrow error: Error = DuetSQLError.notFound("\(M.self)")) async throws -> M {
+    try await all().first(orThrow: error)
   }
 
   public func count() async throws -> Int {
-    try await db.count(M.self, where: constraint)
+    try await db.count(M.self, where: constraint, withSoftDeleted: _withSoftDeleted)
   }
 }

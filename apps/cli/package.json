@@ -4,7 +4,6 @@
   "description": "cli for friends-library",
   "private": true,
   "scripts": {
-    "graphql:codegen": "flp-gql-codegen",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest . -- watch",
@@ -18,7 +17,6 @@
     "@friends-library/adoc-lint": "workspace:*",
     "@friends-library/adoc-utils": "workspace:*",
     "@friends-library/cloud": "workspace:*",
-    "@friends-library/db": "workspace:*",
     "@friends-library/doc-artifacts": "workspace:*",
     "@friends-library/doc-css": "workspace:*",
     "@friends-library/doc-manifests": "workspace:*",
@@ -28,6 +26,7 @@
     "@friends-library/hilkiah": "workspace:*",
     "@friends-library/locale": "workspace:*",
     "@friends-library/lulu": "workspace:*",
+    "@friends-library/pairql": "workspace:*",
     "@friends-library/parser": "workspace:*",
     "@friends-library/slack": "workspace:*",
     "@friends-library/types": "workspace:*",

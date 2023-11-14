@@ -1,18 +1,13 @@
 import React, { useContext, useState, useEffect } from 'react';
-import gql from 'x-syntax';
+import OrderClient, { type T } from '@friends-library/pairql/order';
 import cx from 'classnames';
 import type { Props as ShippingAddressProps } from './ShippingAddress';
-import type {
-  CreateFreeOrderRequest,
-  CreateFreeOrderRequestVariables,
-} from '../graphql/CreateFreeOrderRequest';
 import ShippingAddress from './ShippingAddress';
 import MessageThrobber from './checkout/MessageThrobber';
 import Button from './Button';
 import { CloseButton } from './checkout/Modal';
 import { useAddress } from './lib/hooks';
 import { AppDispatch } from './lib/app-state';
-import Client from './lib/Client';
 
 type AddressProps = Omit<ShippingAddressProps, 'autoFocusFirst'>;
 
@@ -147,24 +142,22 @@ const RequestFreeBooksContainer: React.FC<{ currentPageBook: string }> = ({
           addressIsValid={addressValid}
           onSubmit={async (aboutRequester, requestedBooks) => {
             setState(`submitting`);
-            const input = {
+            const input: T.CreateFreeOrderRequest.Input = {
               email: address.email,
               requestedBooks,
               aboutRequester,
               name: address.name,
               addressStreet: address.street,
-              addressStreet2: address.street2 ?? null,
+              addressStreet2: address.street2,
               addressCity: address.city,
               addressState: address.state,
               addressZip: address.zip,
               addressCountry: address.country,
               source: window.location.href,
             };
-            const { success } = await new Client().mutate<
-              CreateFreeOrderRequest,
-              CreateFreeOrderRequestVariables
-            >({ mutation: CREATE_FREE_ORDER_MUTATION, variables: { input } });
-            setState(success ? `submit_success` : `submit_error`);
+            const client = OrderClient.web(window.location.href, () => undefined);
+            const result = await client.createFreeOrderRequest(input);
+            setState(result.isSuccess ? `submit_success` : `submit_error`);
           }}
           onClose={close}
         />
@@ -212,11 +205,3 @@ const Wrap: React.FC<{ children: React.ReactNode; onClose: () => unknown }> = ({
     {children}
   </div>
 );
-
-const CREATE_FREE_ORDER_MUTATION = gql`
-  mutation CreateFreeOrderRequest($input: CreateFreeOrderRequestInput!) {
-    request: createFreeOrderRequest(input: $input) {
-      id
-    }
-  }
-`;

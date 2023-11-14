@@ -1,5 +1,4 @@
 import CheckoutApi from '@evans/checkout/services/CheckoutApi';
-import { ShippingLevel } from '@evans/../graphql/globalTypes';
 
 type Base = CheckoutApi;
 type Resolved<T extends (...args: any[]) => any> = Awaited<ReturnType<T>>;
@@ -18,7 +17,7 @@ export default class MockCheckoutApi extends CheckoutApi {
   };
 
   public constructor(private delay: number = 0) {
-    super(``);
+    super();
   }
 
   public override async getExploratoryMetadata(): ReturnType<
@@ -31,14 +30,11 @@ export default class MockCheckoutApi extends CheckoutApi {
     const defaultResponse: ExploratoryMetadata = {
       status: `success`,
       data: {
-        data: {
-          __typename: `PrintJobExploratoryMetadata`,
-          shippingLevel: ShippingLevel.mail,
-          feesInCents: 0,
-          taxesInCents: 0,
-          creditCardFeeOffsetInCents: 0,
-          shippingInCents: 0,
-        },
+        shippingLevel: `mail`,
+        fees: 0,
+        taxes: 0,
+        creditCardFeeOffset: 0,
+        shipping: 0,
       },
     };
     return this.maybeDelay(defaultResponse);
@@ -50,13 +46,10 @@ export default class MockCheckoutApi extends CheckoutApi {
     const response: CreateOrderInitialization = {
       success: true,
       data: {
-        data: {
-          __typename: `OrderInitialization`,
-          orderPaymentId: `pi_123`,
-          orderId: `order-id`,
-          token: `token-123`,
-          stripeClientSecret: `secret-123`,
-        },
+        orderPaymentId: `pi_123`,
+        orderId: `order-id`,
+        createOrderToken: `token-123`,
+        stripeClientSecret: `secret-123`,
       },
     };
     return this.maybeDelay(response);

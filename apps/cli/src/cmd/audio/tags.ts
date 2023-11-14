@@ -2,9 +2,8 @@ import { utf8ShortTitle } from '@friends-library/adoc-utils';
 import type { Audio } from './types';
 
 export function getPartTags(audio: Audio, partIndex: number): Record<string, string> {
-  const edition = audio.edition;
-  const document = edition.document;
-  const friend = document.friend;
+  const document = audio.document;
+  const friend = audio.friend;
   const lang = friend.lang;
   const docShortTitle = utf8ShortTitle(document.title);
   const publisher = lang === `en` ? `Friends Library` : `Biblioteca de los Amigos`;
@@ -39,7 +38,7 @@ export function getPartTags(audio: Audio, partIndex: number): Record<string, str
 
 export function getPartTitle(audio: Audio, partIndex: number): string {
   const partTitle = audio.parts[partIndex]!.title;
-  const docShortTitle = utf8ShortTitle(audio.edition.document.title);
+  const docShortTitle = utf8ShortTitle(audio.document.title);
 
   if (audio.parts.length > 1) {
     return partTitle.replace(

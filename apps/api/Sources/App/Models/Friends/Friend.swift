@@ -63,6 +63,34 @@ final class Friend: Codable {
   }
 }
 
+// loaders
+
+extension Friend {
+  func documents() async throws -> [Document] {
+    try await documents.useLoaded(or: {
+      try await Document.query()
+        .where(.friendId == id)
+        .all()
+    })
+  }
+
+  func residences() async throws -> [FriendResidence] {
+    try await residences.useLoaded(or: {
+      try await FriendResidence.query()
+        .where(.friendId == id)
+        .all()
+    })
+  }
+
+  func quotes() async throws -> [FriendQuote] {
+    try await quotes.useLoaded(or: {
+      try await FriendQuote.query()
+        .where(.friendId == id)
+        .all()
+    })
+  }
+}
+
 // extensions
 
 extension Friend {

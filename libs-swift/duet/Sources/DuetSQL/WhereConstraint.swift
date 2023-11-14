@@ -194,7 +194,56 @@ public func == <M: Model>(
   .equals(lhs, .uuid(rhs))
 }
 
+public func == <M: Model>(
+  lhs: M.ColumnName,
+  rhs: PostgresEnum
+) -> SQL.WhereConstraint<M> {
+  .equals(lhs, .enum(rhs))
+}
+
+public func == <M: Model>(
+  lhs: M.ColumnName,
+  rhs: String
+) -> SQL.WhereConstraint<M> {
+  .equals(lhs, .string(rhs))
+}
+
+public func != <M: Model>(
+  lhs: M.ColumnName,
+  rhs: Postgres.Data
+) -> SQL.WhereConstraint<M> {
+  .not(.equals(lhs, rhs))
+}
+
+public func != <M: Model>(
+  lhs: M.ColumnName,
+  rhs: UUIDStringable
+) -> SQL.WhereConstraint<M> {
+  .not(.equals(lhs, .uuid(rhs)))
+}
+
+public func != <M: Model>(
+  lhs: M.ColumnName,
+  rhs: PostgresEnum
+) -> SQL.WhereConstraint<M> {
+  .not(.equals(lhs, .enum(rhs)))
+}
+
+public func != <M: Model>(
+  lhs: M.ColumnName,
+  rhs: String
+) -> SQL.WhereConstraint<M> {
+  .not(.equals(lhs, .string(rhs)))
+}
+
 infix operator |=|
+
+public func |=| <M: Model>(
+  lhs: M.ColumnName,
+  rhs: [UUIDStringable]
+) -> SQL.WhereConstraint<M> {
+  .in(lhs, rhs.map { .uuid($0) })
+}
 
 public func |=| <M: Model>(
   lhs: M.ColumnName,
@@ -242,6 +291,13 @@ public func |!=| <M: Model>(
   rhs: [Postgres.Data]
 ) -> SQL.WhereConstraint<M> {
   .not(.in(lhs, rhs))
+}
+
+public func |!=| <M: Model>(
+  lhs: M.ColumnName,
+  rhs: [PostgresEnum]
+) -> SQL.WhereConstraint<M> {
+  .not(.in(lhs, rhs.map { .enum($0) }))
 }
 
 infix operator <>

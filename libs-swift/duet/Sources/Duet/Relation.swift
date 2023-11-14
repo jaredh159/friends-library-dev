@@ -19,6 +19,15 @@ public enum Siblings<C: Duet.Identifiable> {
       return loaded
     }
   }
+
+  public mutating func useLoaded(or load: () async throws -> [C]) async throws -> [C] {
+    guard case .loaded(let loaded) = self else {
+      let models = try await load()
+      self = .loaded(models)
+      return models
+    }
+    return loaded
+  }
 }
 
 public enum Children<C: Duet.Identifiable> {
@@ -37,6 +46,15 @@ public enum Children<C: Duet.Identifiable> {
       }
       return loaded
     }
+  }
+
+  public mutating func useLoaded(or load: () async throws -> [C]) async throws -> [C] {
+    guard case .loaded(let loaded) = self else {
+      let models = try await load()
+      self = .loaded(models)
+      return models
+    }
+    return loaded
   }
 }
 
@@ -57,6 +75,15 @@ public enum Parent<P: Duet.Identifiable> {
       return loaded
     }
   }
+
+  public mutating func useLoaded(or load: () async throws -> P) async throws -> P {
+    guard case .loaded(let loaded) = self else {
+      let model = try await load()
+      self = .loaded(model)
+      return model
+    }
+    return loaded
+  }
 }
 
 public enum OptionalParent<P: Duet.Identifiable> {
@@ -76,6 +103,15 @@ public enum OptionalParent<P: Duet.Identifiable> {
       return loaded
     }
   }
+
+  public mutating func useLoaded(or load: () async throws -> P?) async throws -> P? {
+    guard case .loaded(let loaded) = self else {
+      let optionalParent = try await load()
+      self = .loaded(optionalParent)
+      return optionalParent
+    }
+    return loaded
+  }
 }
 
 public enum OptionalChild<C: Duet.Identifiable> {
@@ -94,6 +130,15 @@ public enum OptionalChild<C: Duet.Identifiable> {
       }
       return loaded
     }
+  }
+
+  public mutating func useLoaded(or load: () async throws -> C?) async throws -> C? {
+    guard case .loaded(let loaded) = self else {
+      let optionalChild = try await load()
+      self = .loaded(optionalChild)
+      return optionalChild
+    }
+    return loaded
   }
 }
 

@@ -1,7 +1,3 @@
-// auto-generated, do not edit
-import DuetMock
-import GraphQL
-
 @testable import App
 
 extension Order {
@@ -72,34 +68,5 @@ extension Order {
       addressZip: "@random".random,
       addressCountry: "@random".random
     )
-  }
-
-  func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
-    var map: GraphQL.Map = .dictionary([
-      "id": .string(id.lowercased),
-      "lang": .string(lang.rawValue),
-      "source": .string(source.rawValue),
-      "paymentId": .string(paymentId.rawValue),
-      "printJobId": printJobId != nil ? .number(Number(printJobId!.rawValue)) : .null,
-      "printJobStatus": .string(printJobStatus.rawValue),
-      "amount": .number(Number(amount.rawValue)),
-      "taxes": .number(Number(taxes.rawValue)),
-      "fees": .number(Number(fees.rawValue)),
-      "ccFeeOffset": .number(Number(ccFeeOffset.rawValue)),
-      "shipping": .number(Number(shipping.rawValue)),
-      "shippingLevel": .string(shippingLevel.rawValue),
-      "email": .string(email.rawValue),
-      "addressName": .string(addressName),
-      "addressStreet": .string(addressStreet),
-      "addressStreet2": addressStreet2 != nil ? .string(addressStreet2!) : .null,
-      "addressCity": .string(addressCity),
-      "addressState": .string(addressState),
-      "addressZip": .string(addressZip),
-      "addressCountry": .string(addressCountry),
-      "freeOrderRequestId": freeOrderRequestId != nil ? .string(freeOrderRequestId!.lowercased) :
-        .null,
-    ])
-    omitting.forEach { try? map.remove($0) }
-    return map
   }
 }

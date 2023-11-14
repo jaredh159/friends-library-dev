@@ -1,0 +1,12 @@
+{
+  "root": "libs-swift/x-expect",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "command": "cd libs-swift/x-expect && swift build"
+    },
+    "test": {
+      "command": "true"
+    }
+  }
+}

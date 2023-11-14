@@ -1,10 +1,8 @@
 import type { FsDocPrecursor } from '@friends-library/dpc-fs';
-import type { UpdateEditionImpressionInput } from '../../graphql/globalTypes';
-import type { PublishEdition } from '../../graphql/PublishEdition';
-import type { UpdateEditionImpression } from '../../graphql/UpdateEditionImpression';
+import type { T } from '../../api-client';
 
-export type Edition = PublishEdition['edition'];
-export type CloudFiles = UpdateEditionImpression['impression']['files'];
+export type Edition = T.GetEdition.Output;
+export type CloudFiles = T.GetEditionImpression.Output['cloudFiles'];
 
 export interface PendingUploads {
   paperback: {
@@ -39,7 +37,7 @@ export interface PublishData {
   uploads: PendingUploads;
   artifactOptions: { namespace: string; srcPath: string };
   impression: {
-    current: UpdateEditionImpressionInput;
-    previous: UpdateEditionImpressionInput | null;
+    current: T.UpsertEditionImpression.Input;
+    previous: T.UpsertEditionImpression.Input | null;
   };
 }

@@ -1,0 +1,12 @@
+{
+  "root": "libs-swift/ts-interop",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "command": "cd libs-swift/ts-interop && swift build"
+    },
+    "test": {
+      "command": "cd libs-swift/ts-interop && SWIFT_DETERMINISTIC_HASHING=1 swift test"
+    }
+  }
+}

@@ -1,11 +1,6 @@
 import type React from 'react';
 import type { PrintSize, Lang } from '@friends-library/types';
-import type { EditFriend as EditFriendQuery } from './graphql/EditFriend';
-import type {
-  EditDocument as EditDocumentQuery,
-  EditDocument_document_editions_audio,
-} from './graphql/EditDocument';
-import type { EditToken } from './graphql/EditToken';
+import type { T } from './api-client';
 
 export type Action<State> =
   | { type: `replace`; state: State }
@@ -21,60 +16,45 @@ export type ReducerReplace = (
   preprocess?: (newValue: unknown) => unknown,
 ) => (value: unknown) => unknown;
 
-export type OmitTypename<U> = Omit<U, '__typename'>;
-
-export type SelectableDocuments = EditDocumentQuery['selectableDocuments'];
-export type EditableFriend = EditFriendQuery['friend'];
-export type EditableFriendQuote = EditableFriend['quotes'][0];
-export type EditableFriendResidence = EditableFriend['residences'][0];
-export type EditableFriendResidenceDuration = EditableFriendResidence['durations'][0];
-export type EditableDocument = EditDocumentQuery['document'];
-export type EditableDocumentTag = EditableDocument['tags'][0];
-export type EditableRelatedDocument = EditableDocument['relatedDocuments'][0];
-export type EditableEdition = EditableDocument['editions'][0];
-export type EditableAudio = EditDocument_document_editions_audio;
-export type EditableAudioPart = EditableAudio['parts'][0];
-export type EditableToken = EditToken['token'];
-export type EditableTokenScope = EditableToken['scopes'][0];
-
 export type EditableEntity =
-  | EditableFriend
-  | EditableFriendQuote
-  | EditableFriendResidence
-  | EditableFriendResidenceDuration
-  | EditableDocument
-  | EditableDocumentTag
-  | EditableRelatedDocument
-  | EditableEdition
-  | EditableAudio
-  | EditableAudioPart
-  | EditableToken
-  | EditableTokenScope;
+  | { case: 'token'; entity: T.EditableToken }
+  | { case: 'tokenScope'; entity: T.EditableTokenScope }
+  | { case: 'audio'; entity: T.EditableAudio }
+  | { case: 'audioPart'; entity: T.EditableAudioPart }
+  | { case: 'document'; entity: T.EditableDocument }
+  | { case: 'documentTag'; entity: T.EditableDocumentTag }
+  | { case: 'edition'; entity: T.EditableEdition }
+  | { case: 'friend'; entity: T.EditableFriend }
+  | { case: 'friendQuote'; entity: T.EditableFriendQuote }
+  | { case: 'friendResidence'; entity: T.EditableFriendResidence }
+  | { case: 'friendResidenceDuration'; entity: T.EditableFriendResidenceDuration }
+  | { case: 'relatedDocument'; entity: T.EditableRelatedDocument };
 
-export type CreateOperation<T extends EditableEntity> = {
+export type CreateOperation = {
   type: `create`;
-  entity: T;
+  entity: EditableEntity;
 };
-export type DeleteOperation<T extends EditableEntity> = {
+
+export type DeleteOperation = {
   type: `delete`;
-  entity: T;
+  entity: EditableEntity;
 };
-export type UpdateOperation<T extends EditableEntity> = {
+
+export type UpdateOperation = {
   type: `update`;
-  previous: T;
-  current: T;
+  previous: EditableEntity;
+  current: EditableEntity;
 };
+
 export type NoopOperation = {
   type: `noop`;
 };
 
-export type Operation<T extends EditableEntity> =
-  | CreateOperation<T>
-  | DeleteOperation<T>
-  | UpdateOperation<T>
+export type EntityOperation =
+  | CreateOperation
+  | DeleteOperation
+  | UpdateOperation
   | NoopOperation;
-
-export type EntityOperation = Operation<EditableEntity>;
 
 export type EntityOperationStatus =
   | `not started`
@@ -86,11 +66,14 @@ export type EntityOperationStatus =
   | `rollback failed`;
 
 export type ErrorMsg = string;
+
 export type WorkItem = {
   operation: EntityOperation;
   status: EntityOperationStatus;
 };
+
 export type WorkQueue = Array<WorkItem>;
+
 export type Progress = (steps: WorkItem[], error?: string) => unknown;
 
 export type ReducerDeleteFrom = (path: string) => (index: number) => unknown;
@@ -106,7 +89,7 @@ export interface OrderItem {
   unitPrice: number;
   quantity: number;
   printSize: PrintSize;
-  pages: number[];
+  volumes: number[];
 }
 
 export interface OrderAddress {

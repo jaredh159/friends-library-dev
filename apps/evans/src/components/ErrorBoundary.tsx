@@ -1,8 +1,7 @@
 import React from 'react';
-import type { LogJsErrorDataInput } from '../graphql/globalTypes';
+import EvansClient, { type T } from '@friends-library/pairql/evans';
 import { NODE_ENV } from '../env';
 import Dual from './Dual';
-import { sendJsError } from './lib/Client';
 
 interface State {
   hasError: boolean;
@@ -27,27 +26,27 @@ export default class ErrorBoundary extends React.Component<Props, State> {
       return;
     }
 
-    const data: LogJsErrorDataInput = {
+    const data: T.LogJsError.Input = {
       errorMessage: String(error),
-      additionalInfo: errorInfo === undefined ? null : String(errorInfo),
+      additionalInfo: errorInfo === undefined ? undefined : String(errorInfo),
       location: this.props.location,
       url: window.location.href,
       userAgent: navigator.userAgent,
-      colNumber: null,
-      errorName: null,
-      errorStack: null,
-      event: null,
-      lineNumber: null,
-      source: null,
+      colNumber: undefined,
+      errorName: undefined,
+      errorStack: undefined,
+      event: undefined,
+      lineNumber: undefined,
+      source: undefined,
     };
 
     if (error instanceof Error) {
       data.errorMessage = error.message;
       data.errorName = error.name;
-      data.errorStack = error.stack ?? null;
+      data.errorStack = error.stack ?? undefined;
     }
 
-    sendJsError(data);
+    EvansClient.web(window.location.href, () => undefined).logJsError(data);
   }
 
   render(): React.ReactNode {

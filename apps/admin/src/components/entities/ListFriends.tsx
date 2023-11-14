@@ -1,16 +1,14 @@
-import { gql } from '@apollo/client';
 import cx from 'classnames';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { PlusCircleIcon } from '@heroicons/react/solid';
-import type { GetFriends } from '../../graphql/GetFriends';
-import { useQueryResult } from '../../lib/query';
-import { Lang } from '../../graphql/globalTypes';
+import { useQuery } from '../../lib/query';
+import api, { type T } from '../../api-client';
 import TextInput from '../TextInput';
 import PillButton from '../PillButton';
 
 interface Props {
-  friends: GetFriends['friends'];
+  friends: T.ListFriends.Output;
 }
 
 const ListFriends: React.FC<Props> = ({ friends }) => {
@@ -54,7 +52,7 @@ const ListFriends: React.FC<Props> = ({ friends }) => {
             key={friend.id}
             to={`/friends/${friend.id}`}
             className={cx(
-              friend.lang === Lang.en
+              friend.lang === `en`
                 ? `text-flmaroon ring-flmaroon/75`
                 : `text-flgold ring-flgold/75`,
               `mx-2 focus:outline-none focus:ring-2 px-1 rounded-md`,
@@ -71,13 +69,13 @@ const ListFriends: React.FC<Props> = ({ friends }) => {
 // container
 
 const ListFriendsContainer: React.FC = () => {
-  const query = useQueryResult<GetFriends>(QUERY_FRIENDS);
+  const query = useQuery(() => api.listFriends());
   if (!query.isResolved) {
     return query.unresolvedElement;
   }
   return (
     <ListFriends
-      friends={[...query.data.friends].sort((a, b) =>
+      friends={[...query.data].sort((a, b) =>
         a.alphabeticalName < b.alphabeticalName ? -1 : 1,
       )}
     />
@@ -85,14 +83,3 @@ const ListFriendsContainer: React.FC = () => {
 };
 
 export default ListFriendsContainer;
-
-const QUERY_FRIENDS = gql`
-  query GetFriends {
-    friends: getFriends {
-      id
-      name
-      alphabeticalName
-      lang
-    }
-  }
-`;

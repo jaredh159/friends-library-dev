@@ -1,8 +1,8 @@
 import { describe, it, beforeEach, expect, vi } from 'vitest';
+import { type T } from '@friends-library/pairql/order';
 import type CheckoutApi from '../CheckoutApi';
 import CheckoutService from '../CheckoutService';
 import { cartPlusData } from '../../models/__tests__/fixtures';
-import { ShippingLevel } from '../../../../graphql/globalTypes';
 
 vi.useFakeTimers();
 
@@ -22,7 +22,7 @@ describe(`CheckoutService()`, () => {
   describe(`.getExploratoryMetadata()`, () => {
     function successResponse(
       input: Partial<{
-        shippingLevel: ShippingLevel;
+        shippingLevel: T.GetPrintJobExploratoryMetadata.Output['shippingLevel'];
         shippingInCents: number;
         taxesInCents: number;
         feesInCents: number;
@@ -32,14 +32,11 @@ describe(`CheckoutService()`, () => {
       return Promise.resolve({
         status: `success`,
         data: {
-          data: {
-            __typename: `PrintJobExploratoryMetadata`,
-            shippingLevel: input.shippingLevel ?? ShippingLevel.mail,
-            shippingInCents: input.shippingInCents ?? 399,
-            taxesInCents: input.taxesInCents ?? 0,
-            feesInCents: input.feesInCents ?? 0,
-            creditCardFeeOffsetInCents: input.creditCardFeeOffsetInCents ?? 42,
-          },
+          shippingLevel: input.shippingLevel ?? `mail`,
+          shipping: input.shippingInCents ?? 399,
+          taxes: input.taxesInCents ?? 0,
+          fees: input.feesInCents ?? 0,
+          creditCardFeeOffset: input.creditCardFeeOffsetInCents ?? 42,
         },
       });
     }
@@ -59,7 +56,16 @@ describe(`CheckoutService()`, () => {
           printSize: i.printSize,
           quantity: i.quantity,
         })),
-        service.cart.address,
+        {
+          city: service.cart.address!.city,
+          country: service.cart.address!.country,
+          name: service.cart.address!.name,
+          state: service.cart.address!.state,
+          street: service.cart.address!.street,
+          street2: service.cart.address!.street2,
+          zip: service.cart.address!.zip,
+          email: service.cart.email,
+        },
       );
     });
 
@@ -70,7 +76,7 @@ describe(`CheckoutService()`, () => {
       const err = await service.getExploratoryMetadata();
 
       expect(err).toBeUndefined();
-      expect(service.shippingLevel).toBe(ShippingLevel.mail);
+      expect(service.shippingLevel).toBe(`mail`);
       expect(service.metadata).toEqual({
         shipping: 399,
         taxes: 0,
@@ -103,7 +109,7 @@ describe(`CheckoutService()`, () => {
     beforeEach(() => apiCreateOrder.mockClear());
 
     it(`passes correct payload to api`, async () => {
-      service.shippingLevel = ShippingLevel.expedited;
+      service.shippingLevel = `expedited`;
       service.paymentIntentId = `pi_123abc`;
       service.token = `rad-token`;
       service.metadata = { fees: 0, shipping: 1, taxes: 0, ccFeeOffset: 1 };
@@ -123,7 +129,6 @@ describe(`CheckoutService()`, () => {
           fees: 0,
           ccFeeOffset: 1,
           source: `website`,
-          printJobStatus: `presubmit`,
           email: service.cart.email,
           addressName: service.cart.address!.name,
           addressStreet: service.cart.address!.street,
@@ -134,7 +139,6 @@ describe(`CheckoutService()`, () => {
           addressCountry: service.cart.address!.country,
         },
         service.cart.items.map((i) => ({
-          orderId: `order-id`,
           editionId: i.editionId,
           quantity: i.quantity,
           unitPrice: i.price(),

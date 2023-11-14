@@ -1,27 +1,28 @@
 import React, { useReducer, useState } from 'react';
 import isEqual from 'lodash.isequal';
 import { useParams } from 'react-router-dom';
-import type { EditToken as EditTokenQuery } from '../../graphql/EditToken';
-import type { EditableToken, Reducer, ReducerReplace } from '../../types';
-import { useQueryResult } from '../../lib/query';
-import { gql, writable } from '../../client';
+import type { Reducer, ReducerReplace } from '../../types';
+import { useQuery } from '../../lib/query';
 import TextInput from '../TextInput';
-import { Scope as TokenScope } from '../../graphql/globalTypes';
 import LabledCheckbox from '../LabledCheckbox';
 import reducer from '../../lib/reducer';
 import SaveChangesBar from '../SaveChangesBar';
 import * as empty from '../../lib/empty';
 import { isClientGeneratedId } from '../../lib/api/entities/helpers';
+import api, { type T } from '../../api-client';
 
 interface Props {
-  token: EditableToken;
+  token: T.EditToken.Output;
 }
 
 export const EditToken: React.FC<Props> = ({ token: initialToken }) => {
   const [valueRedacted, setValueRedacted] = useState(
     !isClientGeneratedId(initialToken.id),
   );
-  const [token, dispatch] = useReducer<Reducer<EditableToken>>(reducer, initialToken);
+  const [token, dispatch] = useReducer<Reducer<T.EditToken.Output>>(
+    reducer,
+    initialToken,
+  );
   const replace: ReducerReplace = (path, preprocess) => (value) =>
     dispatch({
       type: `replace_value`,
@@ -32,8 +33,10 @@ export const EditToken: React.FC<Props> = ({ token: initialToken }) => {
     <div className="mt-6 space-y-4 mb-24">
       <SaveChangesBar
         entityName="Token"
-        // @ts-ignore
-        getEntities={() => [token, initialToken]}
+        getEntities={() => [
+          { case: `token`, entity: token },
+          { case: `token`, entity: initialToken },
+        ]}
         disabled={isEqual(token, initialToken) && !isClientGeneratedId(token.id)}
       />
       <TextInput
@@ -79,24 +82,20 @@ export const EditToken: React.FC<Props> = ({ token: initialToken }) => {
               key={scope}
               id={scope}
               label={scope.replace(/^(query|mutate)/, `$1 `)}
-              checked={token.scopes.some((currentScope) => scope === currentScope.type)}
+              checked={token.scopes.some((currentScope) => scope === currentScope.scope)}
               onToggle={(checked) => {
                 const scopes = [...token.scopes];
                 if (checked) {
                   const initialIndex = initialToken.scopes.findIndex(
-                    (s) => s.type === scope,
+                    (s) => s.scope === scope,
                   );
                   if (initialIndex !== -1) {
-                    scopes.splice(
-                      initialIndex,
-                      0,
-                      writable(initialToken.scopes[initialIndex]!),
-                    );
+                    scopes.splice(initialIndex, 0, initialToken.scopes[initialIndex]!);
                   } else {
                     scopes.push(empty.tokenScope(token.id, scope));
                   }
                 } else {
-                  const index = scopes.findIndex((s) => s.type === scope);
+                  const index = scopes.findIndex((s) => s.scope === scope);
                   if (index !== -1) {
                     scopes.splice(index, 1);
                   }
@@ -113,13 +112,11 @@ export const EditToken: React.FC<Props> = ({ token: initialToken }) => {
 
 const EditTokenContainer: React.FC = () => {
   const { id = `` } = useParams<{ id: UUID }>();
-  const query = useQueryResult<EditTokenQuery>(QUERY_TOKEN, {
-    variables: { id },
-  });
+  const query = useQuery(() => api.editToken(id));
   if (!query.isResolved) {
     return query.unresolvedElement;
   }
-  return <EditToken token={writable(query.data.token)} />;
+  return <EditToken token={query.data} />;
 };
 
 function sortScopes(scopes: TokenScope[]): TokenScope[] {
@@ -148,21 +145,16 @@ function scopeParts(scope: TokenScope): [verb: string, entity: string, isAll: bo
 
 export default EditTokenContainer;
 
-const QUERY_TOKEN = gql`
-  query EditToken($id: UUID!) {
-    token: getToken(id: $id) {
-      id
-      value
-      description
-      createdAt
-      uses
-      scopes {
-        id
-        type: scope
-        token {
-          id
-        }
-      }
-    }
-  }
-`;
+enum TokenScope {
+  all = `all`,
+  mutateArtifactProductionVersions = `mutateArtifactProductionVersions`,
+  mutateDownloads = `mutateDownloads`,
+  mutateEntities = `mutateEntities`,
+  mutateOrders = `mutateOrders`,
+  mutateTokens = `mutateTokens`,
+  queryArtifactProductionVersions = `queryArtifactProductionVersions`,
+  queryDownloads = `queryDownloads`,
+  queryEntities = `queryEntities`,
+  queryOrders = `queryOrders`,
+  queryTokens = `queryTokens`,
+}

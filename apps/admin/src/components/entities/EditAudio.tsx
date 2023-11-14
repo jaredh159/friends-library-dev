@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { ExclamationIcon, CheckCircleIcon } from '@heroicons/react/solid';
-import type { EditableAudio, EditableAudioPart, ReducerReplace } from '../../types';
+import type { ReducerReplace } from '../../types';
 import LabeledSelect from '../LabeledSelect';
 import LabeledToggle from '../LabeledToggle';
 import TextInput from '../TextInput';
 import * as empty from '../../lib/empty';
+import { type T } from '../../api-client';
 import NestedCollection from './NestedCollection';
 import * as nonEmptyIntArray from './non-empty-int-array';
 
 interface AudioProps {
-  audio: EditableAudio;
+  audio: T.EditableAudio;
   replace: ReducerReplace;
 }
 
@@ -72,7 +73,7 @@ export const EditAudio: React.FC<AudioProps> = ({ audio, replace }) => (
 );
 
 interface AudioPartProps {
-  part: EditableAudioPart;
+  part: T.EditableAudioPart;
   replace: ReducerReplace;
 }
 

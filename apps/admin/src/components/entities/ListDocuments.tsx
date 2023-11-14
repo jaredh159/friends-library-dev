@@ -1,14 +1,12 @@
-import { gql } from '@apollo/client';
 import cx from 'classnames';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import type { GetDocuments } from '../../graphql/GetDocuments';
-import { useQueryResult } from '../../lib/query';
-import { Lang } from '../../graphql/globalTypes';
+import { useQuery } from '../../lib/query';
+import api, { type T } from '../../api-client';
 import TextInput from '../TextInput';
 
 interface Props {
-  documents: GetDocuments['documents'];
+  documents: T.ListDocuments.Output;
 }
 
 const ListDocuments: React.FC<Props> = ({ documents }) => {
@@ -43,7 +41,7 @@ const ListDocuments: React.FC<Props> = ({ documents }) => {
             key={doc.id}
             to={`/documents/${doc.id}`}
             className={cx(
-              doc.friend.lang === Lang.en
+              doc.friend.lang === `en`
                 ? `text-flmaroon ring-flmaroon/75`
                 : `text-flgold ring-flgold/75`,
               `block mx-2 focus:outline-none focus:ring-2 px-1 rounded-md`,
@@ -60,13 +58,13 @@ const ListDocuments: React.FC<Props> = ({ documents }) => {
 // container
 
 const ListDocumentsContainer: React.FC = () => {
-  const query = useQueryResult<GetDocuments>(QUERY_DOCUMENTS);
+  const query = useQuery(() => api.listDocuments());
   if (!query.isResolved) {
     return query.unresolvedElement;
   }
   return (
     <ListDocuments
-      documents={[...query.data.documents].sort((a, b) => {
+      documents={[...query.data].sort((a, b) => {
         if (a.friend.alphabeticalName === b.friend.alphabeticalName) {
           return a.title < b.title ? -1 : 1;
         } else {
@@ -78,17 +76,3 @@ const ListDocumentsContainer: React.FC = () => {
 };
 
 export default ListDocumentsContainer;
-
-const QUERY_DOCUMENTS = gql`
-  query GetDocuments {
-    documents: getDocuments {
-      id
-      title
-      friend {
-        name
-        alphabeticalName
-        lang
-      }
-    }
-  }
-`;

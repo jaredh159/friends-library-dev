@@ -1,4 +1,5 @@
 import NonEmpty
+import TypeScriptInterop
 
 extension NonEmpty {
   enum InitError: Error {
@@ -6,9 +7,20 @@ extension NonEmpty {
   }
 }
 
-extension NonEmpty where Collection == [Int] {
-  var array: [Int] {
+extension NonEmpty {
+  var array: [Element] {
     [first] + dropFirst()
+  }
+}
+
+extension NonEmpty: TypeScriptAliased {
+  public static var typescriptAlias: String {
+    switch Element.self {
+    case is String.Type: return "string[]"
+    case is any Numeric.Type: return "number[]"
+    case is Bool.Type: return "boolean[]"
+    default: fatalError("Typescript alias not declared for NonEmpty<[\(Element.self)]>")
+    }
   }
 }
 

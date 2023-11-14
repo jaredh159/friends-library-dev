@@ -1,31 +1,15 @@
 import React from 'react';
-import { gql } from '@apollo/client';
-import type { SelectableDocuments } from '../../graphql/SelectableDocuments';
-import { SELECTABLE_DOCUMENTS_FIELDS } from '../../client';
-import { useQueryResult } from '../../lib/query';
+import { useQuery } from '../../lib/query';
 import * as empty from '../../lib/empty';
+import api from '../../api-client';
 import { EditFriend } from './EditFriend';
 
 const CreateFriend: React.FC = () => {
-  const query = useQueryResult<SelectableDocuments>(QUERY_SELECTABLE_DOCUMENTS);
+  const query = useQuery(() => api.selectableDocuments());
   if (!query.isResolved) {
     return query.unresolvedElement;
   }
-  return (
-    <EditFriend
-      friend={empty.friend()}
-      selectableDocuments={query.data.selectableDocuments}
-    />
-  );
+  return <EditFriend friend={empty.friend()} selectableDocuments={query.data} />;
 };
 
 export default CreateFriend;
-
-const QUERY_SELECTABLE_DOCUMENTS = gql`
-  ${SELECTABLE_DOCUMENTS_FIELDS}
-  query SelectableDocuments {
-    selectableDocuments: getDocuments {
-      ...SelectableDocumentsFields
-    }
-  }
-`;

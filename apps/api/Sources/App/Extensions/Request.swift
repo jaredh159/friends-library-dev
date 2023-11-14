@@ -1,6 +1,15 @@
 import Vapor
 
 extension Request {
+  var id: String {
+    if let value = logger[metadataKey: "request-id"],
+       let uuid = UUID(uuidString: "\(value)") {
+      return uuid.uuidString.lowercased()
+    } else {
+      return UUID().uuidString.lowercased()
+    }
+  }
+
   var ipAddress: String? {
     let ip = headers.first(name: .xForwardedFor)
       ?? headers.first(name: "X-Real-IP")

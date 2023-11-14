@@ -1,30 +1,28 @@
-import GraphQL
 import XCTVapor
+import XExpect
 
 @testable import App
 
 final class JsErrorLoggingTests: AppTestCase {
-
   func testLoggingJsError() async throws {
-    let input: Map = .dictionary([
-      "userAgent": "operafox",
-      "url": "/some-url",
-      "location": "/some-location",
-      "lineNumber": 33,
-    ])
-
-    assertResponse(
-      to: /* gql */ """
-      mutation logJsError($input: LogJsErrorDataInput!) {
-        logJsError(input: $input) {
-          success
-        }
-      }
-      """,
-      withVariables: ["input": input],
-      .containsKeyValuePairs(["success": true])
+    let output = try await LogJsError.resolve(
+      with: .init(
+        userAgent: "operafox",
+        url: "/some-url",
+        location: "/some-location",
+        additionalInfo: nil,
+        errorMessage: nil,
+        errorName: nil,
+        errorStack: nil,
+        event: nil,
+        source: nil,
+        lineNumber: 33,
+        colNumber: nil
+      ),
+      in: .mock
     )
 
+    expect(output).toEqual(.success)
     XCTAssertEqual(sent.slacks.count, 1)
     XCTAssertEqual(sent.slacks.first?.channel, .errors)
     XCTAssertContains(sent.slacks.first?.message.text, "operafox")

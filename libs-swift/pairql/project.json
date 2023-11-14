@@ -1,0 +1,9 @@
+{
+  "root": "libs-swift/pairql",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "command": "cd libs-swift/pairql && swift build"
+    }
+  }
+}

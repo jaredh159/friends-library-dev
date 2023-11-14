@@ -7,7 +7,6 @@ extension Environment {
     uuid: { .mock },
     date: { Date(timeIntervalSince1970: 0) },
     db: MockClient(),
-    auth: .mockWithAllScopes,
     logger: .null,
     slackClient: .mock,
     luluClient: .mock,

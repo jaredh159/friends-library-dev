@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import cx from 'classnames';
-import omit from 'lodash.omit';
 import {
   PlusCircleIcon,
   XCircleIcon,
@@ -11,7 +10,6 @@ import {
 } from '@heroicons/react/solid';
 import { Link } from 'react-router-dom';
 import type { OrderAddress, OrderItem } from '../../types';
-import * as orders from '../../lib/api/orders';
 import EmptyWell from '../EmptyWell';
 import PillButton from '../PillButton';
 import TextInput from '../TextInput';
@@ -20,6 +18,8 @@ import COUNTRIES from '../../lib/countries';
 import * as price from '../../lib/price';
 import Button from '../Button';
 import InfoMessage from '../InfoMessage';
+import { isAddressValid, createOrder, type T } from '../../order-client';
+import api from '../../api-client';
 import SelectBook from './SelectBook';
 
 const CreateOrder: React.FC = () => {
@@ -27,23 +27,24 @@ const CreateOrder: React.FC = () => {
   const [items, setItems] = useState<OrderItem[]>([]);
   const [checkingAddress, setCheckingAddress] = useState(false);
   const [submittingOrder, setSubmittingOrder] = useState(false);
-  const [submitResult, setSubmitResult] = useState<Result<string> | null>(null);
+  const [submitResult, setSubmitResult] = useState<UUID | Error | null>(null);
   const [email, setEmail] = useState(``);
   const [requestId, setRequestId] = useState(``);
-  const [address, setAddress] = useState<OrderAddress>(emptyAddress());
+  const [address, setAddress] = useState<T.ShippingAddress>(emptyAddress());
 
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
     const requestId = query.get(`request`);
     if (!requestId) return;
     setRequestId(requestId);
-    orders.getFreeOrderRequest(requestId).then((result) => {
-      if (!result.success) {
+    api.getFreeOrderRequest(requestId).then((result) => {
+      if (!result.isSuccess) {
         alert(`Failed to retrieve order data for id=${requestId}`);
         return;
       }
-      setEmail(result.value.email);
-      setAddress(omit(result.value.address, `__typename`));
+      const order = result.unwrap();
+      setEmail(order.email);
+      setAddress(order.address);
     });
   }, []);
 
@@ -214,13 +215,15 @@ const CreateOrder: React.FC = () => {
             onClick={async () => {
               if (!addressIsValid) return;
               setCheckingAddress(true);
-              const checkResult = await orders.isAddressValid(address);
+              const checkResultError = await isAddressValid(address);
               setCheckingAddress(false);
               setTimeout(() => {
-                if (checkResult.success) {
+                if (!checkResultError) {
                   alert(`✅ Address was accepted.`);
+                } else if (checkResultError.message.includes(`noExploratoryMetadata`)) {
+                  alert(`🚨 No bueno! Shipping not possible.`);
                 } else {
-                  alert(`🚨 No bueno! ${checkResult.error}.`);
+                  alert(`🚨 No bueno! ${checkResultError}.`);
                 }
               }, 10);
             }}
@@ -235,10 +238,10 @@ const CreateOrder: React.FC = () => {
           fullWidth
           onClick={async () => {
             setSubmittingOrder(true);
-            const result = await orders.createOrder(address, items, email, requestId);
+            const result = await createOrder(address, items, email, requestId);
             setSubmittingOrder(false);
             setSubmitResult(result);
-            if (result.success) {
+            if (typeof result === `string`) {
               setItems([]);
               setAddress(emptyAddress());
               setEmail(``);
@@ -254,19 +257,19 @@ const CreateOrder: React.FC = () => {
           <CloudUploadIcon className="w-5 h-5 mr-2" />
           {submittingOrder ? `Submitting...` : `Submit Order`}
         </Button>
-        {submitResult?.success === true && (
+        {typeof submitResult === `string` && (
           <InfoMessage type="success">
             Success! Order{` `}
-            <Link to={`/orders/${submitResult.value}`}>
-              <code className="text-blue-500">{submitResult.value}</code>
+            <Link to={`/orders/${submitResult}`}>
+              <code className="text-blue-500">{submitResult}</code>
             </Link>
             {` `}
             created.
           </InfoMessage>
         )}
-        {submitResult?.success === false && (
+        {submitResult && typeof submitResult !== `string` && (
           <InfoMessage type="error">
-            Error submitting order: {submitResult.error}
+            Error submitting order: {submitResult.message}
           </InfoMessage>
         )}
       </div>
@@ -323,7 +326,7 @@ function makeQuantityIncrement(
   };
 }
 
-function emptyAddress(): OrderAddress {
+function emptyAddress(): T.ShippingAddress {
   return {
     name: ``,
     street: ``,

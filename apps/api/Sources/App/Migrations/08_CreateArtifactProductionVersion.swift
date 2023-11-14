@@ -1,10 +1,12 @@
 import Fluent
 import Vapor
 
-struct CreateArtifactProductionVersion: Migration {
+struct CreateArtifactProductionVersions: Migration {
+  // for rename to prevent conflict with pair type
+  var name: String { "App.CreateArtifactProductionVersion" }
 
   func prepare(on database: Database) -> Future<Void> {
-    Current.logger.info("Running migration: CreateArtifactProductionVersion UP")
+    Current.logger.info("Running migration: CreateArtifactProductionVersions UP")
     return database.schema(ArtifactProductionVersion.M8.tableName)
       .id()
       .field(ArtifactProductionVersion.M8.version, .string, .required)
@@ -14,7 +16,7 @@ struct CreateArtifactProductionVersion: Migration {
   }
 
   func revert(on database: Database) -> Future<Void> {
-    Current.logger.info("Running migration: CreateArtifactProductionVersion DOWN")
+    Current.logger.info("Running migration: CreateArtifactProductionVersions DOWN")
     return database.schema(FreeOrderRequest.M6.tableName).delete()
   }
 }

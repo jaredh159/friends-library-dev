@@ -1,33 +1,24 @@
-import GraphQL
 import XCTVapor
+import XExpect
 
 @testable import App
 
 final class ContactFormTests: AppTestCase {
-
-  let SUBMIT_CONTACT_FORM_MUTATION = /* gql */ """
-  mutation SubmitContactForm($input: SubmitContactFormInput!) {
-    submitContactForm(input: $input) {
-      success
-    }
-  }
-  """
-
   func testSubmitContactFormEnglish() async throws {
     Current.date = { Date(timeIntervalSinceReferenceDate: 0) }
 
-    assertResponse(
-      to: SUBMIT_CONTACT_FORM_MUTATION,
-      withVariables: ["input": .dictionary([
-        "lang": "en",
-        "name": "Bob Villa",
-        "email": "bob@thisoldhouse.com",
-        "subject": "tech",
-        "message": "hey there",
-      ])],
-      .containsKeyValuePairs(["success": true])
+    let output = try await SubmitContactForm.resolve(
+      with: .init(
+        lang: .en,
+        name: "Bob Villa",
+        email: "bob@thisoldhouse.com",
+        subject: .tech,
+        message: "hey there"
+      ),
+      in: .mock
     )
 
+    expect(output).toEqual(.success)
     let email = sent.emails.first
     XCTAssertEqual(sent.emails.count, 1)
     XCTAssertEqual(email?.subject, "friendslibrary.com contact form -- \(Current.date())")
@@ -44,16 +35,15 @@ final class ContactFormTests: AppTestCase {
   func testSubmitContactFormSpanish() async throws {
     Current.date = { Date(timeIntervalSinceReferenceDate: 0) }
 
-    assertResponse(
-      to: SUBMIT_CONTACT_FORM_MUTATION,
-      withVariables: ["input": .dictionary([
-        "lang": "es",
-        "name": "Pablo Smith",
-        "email": "pablo@mexico.gov",
-        "subject": "other",
-        "message": "hola",
-      ])],
-      .containsKeyValuePairs(["success": true])
+    let _ = try await SubmitContactForm.resolve(
+      with: .init(
+        lang: .es,
+        name: "Pablo Smith",
+        email: "pablo@mexico.gov",
+        subject: .other,
+        message: "hola"
+      ),
+      in: .mock
     )
 
     let email = sent.emails.first

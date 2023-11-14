@@ -20,7 +20,7 @@ const createPagesStatefully: GatsbyNode['createPagesStatefully'] = async ({
         component: FriendPage,
         context: {
           slug: friend.slug,
-          relatedDocumentIds: friend.relatedDocuments.map((rd) => rd.document.id),
+          relatedDocumentIds: friend.relatedDocuments.map((rd) => rd.documentId),
         },
       });
 

@@ -53,18 +53,18 @@ enum PrintJobs {
     return try await Current.luluClient.createPrintJob(payload)
   }
 
-  struct ExploratoryItem {
+  struct ExploratoryItem: Equatable, Codable {
     let volumes: NonEmpty<[Int]>
     let printSize: PrintSize
     let quantity: Int
   }
 
-  struct ExploratoryMetadata: Encodable {
-    let shippingLevel: Order.ShippingLevel
-    let shipping: Cents<Int>
-    let taxes: Cents<Int>
-    let fees: Cents<Int>
-    let creditCardFeeOffset: Cents<Int>
+  struct ExploratoryMetadata: Codable, Sendable, Equatable {
+    var shippingLevel: Order.ShippingLevel
+    var shipping: Cents<Int>
+    var taxes: Cents<Int>
+    var fees: Cents<Int>
+    var creditCardFeeOffset: Cents<Int>
   }
 
   static func getExploratoryMetadata(

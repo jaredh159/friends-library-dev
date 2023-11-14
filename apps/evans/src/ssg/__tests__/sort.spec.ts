@@ -1,6 +1,5 @@
 import { describe, it, expect } from 'vitest';
 import type { Friend } from '../types';
-import { EditionType } from '../../graphql/globalTypes';
 import { sortDocuments, sortFriends } from '../query';
 
 describe(`sortFriends()`, () => {
@@ -11,16 +10,14 @@ describe(`sortFriends()`, () => {
       documents: [],
       residences: [
         {
-          __typename: `FriendResidence`,
           city: `Aberdeen`,
           region: `Scotland`,
-          durations: [{ __typename: `FriendResidenceDuration`, start: 1700, end: 1710 }],
+          durations: [{ start: 1700, end: 1710 }],
         },
         {
-          __typename: `FriendResidence`,
           city: `London`,
           region: `England`,
-          durations: [{ __typename: `FriendResidenceDuration`, start: 1690, end: 1700 }],
+          durations: [{ start: 1690, end: 1700 }],
         },
       ],
     } as Pick<Friend, 'residences' | 'quotes' | 'documents' | 'relatedDocuments'>;
@@ -36,8 +33,8 @@ describe(`sortDocuments()`, () => {
 
   it(`prefers updated edition`, () => {
     docs = [
-      { primaryEdition: { type: EditionType.original }, title: `aaa` },
-      { primaryEdition: { type: EditionType.updated }, title: `zzz` },
+      { primaryEdition: { type: `original` }, title: `aaa` },
+      { primaryEdition: { type: `updated` }, title: `zzz` },
     ];
 
     docs.sort(sortDocuments);
@@ -47,8 +44,8 @@ describe(`sortDocuments()`, () => {
 
   it(`sorts by title if editions equal`, () => {
     docs = [
-      { primaryEdition: { type: EditionType.original }, title: `zzz` },
-      { primaryEdition: { type: EditionType.original }, title: `aaa` },
+      { primaryEdition: { type: `original` }, title: `zzz` },
+      { primaryEdition: { type: `original` }, title: `aaa` },
     ];
 
     docs.sort(sortDocuments);

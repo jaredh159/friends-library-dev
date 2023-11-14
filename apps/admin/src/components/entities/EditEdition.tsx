@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import cx from 'classnames';
 import { PlusCircleIcon } from '@heroicons/react/solid';
-import type { ReducerReplace, EditableEdition } from '../../types';
-import { EditionType, Lang, PrintSize } from '../../graphql/globalTypes';
+import type { Lang } from '@friends-library/types';
+import type { ReducerReplace } from '../../types';
+import { type T } from '../../api-client';
 import LabeledSelect from '../LabeledSelect';
 import LabeledToggle from '../LabeledToggle';
 import TextInput from '../TextInput';
@@ -12,7 +13,7 @@ import * as nonEmptyIntArray from './non-empty-int-array';
 import { EditAudio } from './EditAudio';
 
 interface Props {
-  edition: EditableEdition;
+  edition: T.EditableEdition;
   replace: ReducerReplace;
   lang: Lang;
 }
@@ -41,9 +42,9 @@ const EditEdition: React.FC<Props> = ({ edition, replace, lang }) => {
           selected={edition.type}
           setSelected={replace(`type`)}
           options={[
-            [EditionType.updated, EditionType.updated],
-            [EditionType.modernized, EditionType.modernized],
-            [EditionType.original, EditionType.original],
+            [`updated`, `updated`],
+            [`modernized`, `modernized`],
+            [`original`, `original`],
           ]}
         />
 
@@ -52,7 +53,7 @@ const EditEdition: React.FC<Props> = ({ edition, replace, lang }) => {
           label="ISBN:"
           className={cx(`w-[42.5%]`, !edition.isbn && `opacity-0`)}
           disabled
-          value={edition.isbn?.code ?? ``}
+          value={edition.isbn ?? ``}
           onChange={() => {}}
         />
       </div>
@@ -61,7 +62,7 @@ const EditEdition: React.FC<Props> = ({ edition, replace, lang }) => {
           type="text"
           label="Editor:"
           className="flex-grow"
-          disabled={edition.type !== EditionType.updated || lang === Lang.es}
+          disabled={edition.type !== `updated` || lang === `es`}
           value={edition.editor ?? ``}
           onChange={replace(`editor`, (ed) => (ed === `` ? null : ed))}
         />
@@ -74,9 +75,9 @@ const EditEdition: React.FC<Props> = ({ edition, replace, lang }) => {
           )}
           options={[
             [``, `(not set)`],
-            [PrintSize.s, `small`],
-            [PrintSize.m, `medium`],
-            [PrintSize.xl, `large`],
+            [`s`, `small`],
+            [`m`, `medium`],
+            [`xl`, `large`],
           ]}
         />
         <TextInput

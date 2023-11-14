@@ -3,9 +3,8 @@ import type Cart from '../../models/Cart';
 import { cartPlusData } from '../../models/__tests__/fixtures';
 import CheckoutService from '../CheckoutService';
 import CheckoutApi from '../CheckoutApi';
-import { ShippingLevel } from '../../../../graphql/globalTypes';
 
-const { endpoint, origin } = urls();
+const { origin } = urls();
 
 describe(`CheckoutService()`, () => {
   let service: CheckoutService;
@@ -16,7 +15,7 @@ describe(`CheckoutService()`, () => {
 
   beforeEach(() => {
     cart = getCart();
-    api = new CheckoutApi(endpoint);
+    api = new CheckoutApi();
     service = new CheckoutService(cart, api);
   });
 
@@ -28,11 +27,11 @@ describe(`CheckoutService()`, () => {
       err = await service.getExploratoryMetadata();
       expect(err).toBeUndefined();
       expect(service.metadata).toEqual({ shipping: 399, taxes: 0, ccFeeOffset: 42 });
-      expect(service.shippingLevel).toBe(ShippingLevel.mail);
+      expect(service.shippingLevel).toBe(`mail`);
       expect(service.orderId).toBe(``);
     } else {
       service.metadata = { fees: 0, shipping: 399, taxes: 0, ccFeeOffset: 42 };
-      service.shippingLevel = ShippingLevel.mail;
+      service.shippingLevel = `mail`;
     }
 
     // step 2, create payment intent

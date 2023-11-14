@@ -7,7 +7,7 @@ import Progress from './Progress';
 import Button from './Button';
 
 interface Props {
-  getEntities<T extends EditableEntity>(): [T, T?];
+  getEntities(): [EditableEntity, EditableEntity];
   disabled: boolean;
   entityName: string;
 }
@@ -20,7 +20,9 @@ const SaveChangesBar: React.FC<Props> = ({ getEntities, disabled, entityName }) 
   if (error) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-gray-200/80 z-10">
-        <div className="text-red-700 bg-white p-8 rounded-lg mx-16">{error}</div>
+        <div className="text-red-700 bg-white p-8 rounded-lg mx-16">
+          {error.includes(`PairQL routing error`) ? <pre>{error}</pre> : error}
+        </div>
       </div>
     );
   }
@@ -60,7 +62,7 @@ const SaveChangesBar: React.FC<Props> = ({ getEntities, disabled, entityName }) 
         <CloudUploadIcon className="w-[16px] h-[16px] -translate-x-2" />
         Save {entityName}
       </Button>
-      {!isClientGeneratedId(current?.id) && (
+      {!isClientGeneratedId(current?.entity.id) && (
         <Button
           type="button"
           className="hover:text-red-700"

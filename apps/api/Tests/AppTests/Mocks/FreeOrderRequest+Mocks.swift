@@ -1,7 +1,3 @@
-// auto-generated, do not edit
-import DuetMock
-import GraphQL
-
 @testable import App
 
 extension FreeOrderRequest {
@@ -51,24 +47,5 @@ extension FreeOrderRequest {
       addressCountry: "@random".random,
       source: "@random".random
     )
-  }
-
-  func gqlMap(omitting: Set<String> = []) -> GraphQL.Map {
-    var map: GraphQL.Map = .dictionary([
-      "id": .string(id.lowercased),
-      "name": .string(name),
-      "email": .string(email.rawValue),
-      "requestedBooks": .string(requestedBooks),
-      "aboutRequester": .string(aboutRequester),
-      "addressStreet": .string(addressStreet),
-      "addressStreet2": addressStreet2 != nil ? .string(addressStreet2!) : .null,
-      "addressCity": .string(addressCity),
-      "addressState": .string(addressState),
-      "addressZip": .string(addressZip),
-      "addressCountry": .string(addressCountry),
-      "source": .string(source),
-    ])
-    omitting.forEach { try? map.remove($0) }
-    return map
   }
 }

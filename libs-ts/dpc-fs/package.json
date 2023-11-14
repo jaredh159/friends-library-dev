@@ -4,7 +4,6 @@
   "description": "DocPrecursor from the filesystem",
   "main": "./src/index.ts",
   "scripts": {
-    "graphql:codegen": "flp-gql-codegen",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -12,10 +11,9 @@
     "format:check": "just prettier-check"
   },
   "dependencies": {
-    "@friends-library/db": "workspace:*",
     "@friends-library/env": "workspace:*",
+    "@friends-library/pairql": "workspace:*",
     "@friends-library/types": "workspace:*",
-    "cross-fetch": "^3.1.5",
     "glob": "^7.1.4"
   },
   "devDependencies": {

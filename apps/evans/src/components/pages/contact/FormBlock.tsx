@@ -1,7 +1,6 @@
 import React from 'react';
 import { t } from '@friends-library/locale';
 import type { FluidBgImageObject } from '../../../types';
-import type { Subject as ContactFormSubject } from '../../../graphql/globalTypes';
 import Dual from '../../Dual';
 import Stack from '../../layout/Stack';
 import { bgLayer } from '../../lib/color';
@@ -13,7 +12,7 @@ interface Props {
     name: string,
     email: string,
     message: string,
-    subject: ContactFormSubject,
+    subject: 'tech' | 'other',
   ) => Promise<boolean>;
   bgImg: FluidBgImageObject;
 }
