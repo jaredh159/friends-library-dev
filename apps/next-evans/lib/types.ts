@@ -14,7 +14,7 @@ export interface Friend {
   quotes: Array<{ quote: string; cite: string }>;
   born: number | null;
   died: number | null;
-  createdAt: ISODateString;
+  createdAt: ISODateString; // gatsby didn't use this...
   residences: Residence[];
   documents: FriendDocument[];
 }
@@ -46,7 +46,7 @@ interface FriendDocument {
   customCSS: string | null;
   customHTML: string | null;
   createdAt: ISODateString;
-  isbn: string;
+  isbn: string; // todo: wierd, should be on edition
   isComplete: boolean;
   originalTitle: string | null;
 }
