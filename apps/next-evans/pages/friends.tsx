@@ -16,10 +16,10 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 };
 
 interface Friend {
-  born?: number;
-  died?: number;
   name: string;
   slug: string;
+  born?: number;
+  died?: number;
   numBooks: number;
   gender: 'male' | 'female' | 'mixed';
   primaryResidence: { city: string; region: string };

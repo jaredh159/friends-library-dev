@@ -1,10 +1,10 @@
 import React from 'react';
+import Client, { type T } from '@friends-library/pairql/next-evans-build';
 import invariant from 'tiny-invariant';
 import cx from 'classnames';
 import { t, translateOptional as trans } from '@friends-library/locale';
-import { htmlShortTitle } from '@friends-library/adoc-utils';
 import type { GetStaticPaths, GetStaticProps } from 'next';
-import { Friend } from '@/lib/types';
+import type { EditionType, PrintSize } from '@/../../libs-ts/types/src';
 import { LANG } from '@/lib/env';
 import FriendBlock from '@/components/pages/friend/FriendBlock';
 import FeaturedQuoteBlock from '@/components/pages/friend/FeaturedQuoteBlock';
@@ -12,46 +12,66 @@ import BookByFriend from '@/components/pages/friend/BookByFriend';
 import TestimonialsBlock from '@/components/pages/friend/TestimonialsBlock';
 import MapBlock from '@/components/pages/friend/MapBlock';
 import getResidences from '@/lib/residences';
-import { getDocumentUrl, isCompilations } from '@/lib/friend';
-import getFriend, { getAllFriends } from '@/lib/db/friends';
-import { editionTypes } from '@/lib/document';
-import { bookSize } from '@/lib/book-sizes';
+import { getDocumentUrl } from '@/lib/friend';
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const friends = await getAllFriends();
-  const paths = Object.values(friends).map((friend) => ({
-    params: {
-      friend_slug: friend.slug,
-    },
-  }));
-
-  return { paths, fallback: false };
+  const slugs = await Client.node(process).publishedFriendSlugs(LANG);
+  return {
+    paths: slugs.map((friend_slug) => ({ params: { friend_slug } })),
+    fallback: false,
+  };
 };
 
 export const getStaticProps: GetStaticProps<Props> = async (context) => {
   invariant(typeof context.params?.friend_slug === `string`);
-  const friend = await getFriend(context.params.friend_slug);
-  invariant(friend);
-  return {
-    props: friend,
-  };
+  const friend = await Client.node(process).friendPage({
+    lang: LANG,
+    slug: context.params.friend_slug,
+  });
+  return { props: friend };
 };
 
-type Props = Pick<
-  Friend,
-  | 'born'
-  | 'died'
-  | 'name'
-  | 'slug'
-  | 'gender'
-  | 'quotes'
-  | 'documents'
-  | 'residences'
-  | 'description'
->;
+type Props = {
+  born?: number;
+  died?: number;
+  name: string;
+  slug: string;
+  description: string;
+  gender: 'male' | 'female' | 'mixed';
+  isCompilations: boolean;
+  residences: Array<{
+    city: string;
+    region: string;
+    durations?: Array<{ start: number; end: number }>;
+  }>;
+  quotes: Array<{
+    source: string;
+    text: string;
+  }>;
+  documents: Array<{
+    id: UUID;
+    title: string;
+    htmlShortTitle: string;
+    shortDescription: string;
+    editionTypes: EditionType[];
+    primaryEdition: {
+      isbn: string;
+      customCss?: string;
+      customHtml?: string;
+      numPages: number[];
+      size: PrintSize;
+      type: EditionType;
+    };
+    slug: string;
+    numDownloads: number;
+    tags: T.DocumentTag[];
+    hasAudio: boolean;
+  }>;
+};
 
 const Friend: React.FC<Props> = ({
   name,
+  isCompilations,
   gender,
   slug,
   description,
@@ -64,7 +84,7 @@ const Friend: React.FC<Props> = ({
   const onlyOneBook = documents.length === 1;
   const mapData = getResidences(residences);
   let mapBlock;
-  if (!isCompilations(name)) {
+  if (isCompilations) {
     invariant(mapData[0] !== undefined);
     mapBlock = (
       <MapBlock
@@ -95,7 +115,7 @@ const Friend: React.FC<Props> = ({
   return (
     <div>
       <FriendBlock name={name} gender={gender} blurb={description} />
-      {quotes[0] && <FeaturedQuoteBlock cite={quotes[0].cite} quote={quotes[0].quote} />}
+      {quotes[0] && <FeaturedQuoteBlock cite={quotes[0].source} quote={quotes[0].text} />}
       <div className="bg-flgray-100 px-8 pt-12 pb-4 lg:px-8">
         <h2 className="text-xl font-sans text-center tracking-wider font-bold mb-8">
           {name === `Compilations`
@@ -109,10 +129,10 @@ const Friend: React.FC<Props> = ({
         >
           {documents
             .sort((doc) => {
-              if (editionTypes(doc.editions).includes(`updated`)) {
+              if (doc.editionTypes.includes(`updated`)) {
                 return -1;
               }
-              if (editionTypes(doc.editions).includes(`modernized`)) {
+              if (doc.editionTypes.includes(`modernized`)) {
                 return 0;
               }
               return 1;
@@ -120,25 +140,24 @@ const Friend: React.FC<Props> = ({
             .map((doc) => (
               <BookByFriend
                 key={doc.id}
-                htmlShortTitle={htmlShortTitle(doc.title)}
+                htmlShortTitle={doc.htmlShortTitle}
                 isAlone={onlyOneBook}
                 className="mb-8 lg:mb-12"
                 tags={doc.tags}
                 hasAudio={doc.hasAudio}
                 bookUrl={getDocumentUrl(slug, doc.slug)}
                 numDownloads={doc.numDownloads}
-                pages={doc.mostModernEdition.numPages}
+                pages={doc.primaryEdition.numPages}
                 description={doc.shortDescription}
                 lang={LANG}
                 title={doc.title}
-                blurb={``} // never see the back of a book in this component
-                isCompilation={isCompilations(name)}
+                isCompilation={isCompilations}
                 author={name}
-                size={bookSize(doc.mostModernEdition.size)}
-                edition={doc.mostModernEdition.type}
-                isbn={doc.isbn}
-                customCss={doc.customCSS || ``}
-                customHtml={doc.customHTML || ``}
+                size={doc.primaryEdition.size}
+                edition={doc.primaryEdition.type}
+                isbn={doc.primaryEdition.isbn}
+                customCss={doc.primaryEdition.customCss || ``}
+                customHtml={doc.primaryEdition.customHtml || ``}
               />
             ))}
         </div>

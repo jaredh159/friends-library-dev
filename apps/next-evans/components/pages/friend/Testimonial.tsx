@@ -2,16 +2,16 @@ import React from 'react';
 import cx from 'classnames';
 
 export interface Props {
-  quote: string;
-  cite: string;
+  text: string;
+  source: string;
   color: 'green' | 'blue' | 'maroon' | 'gold';
   className?: string;
   isFullWidth?: boolean;
 }
 
 const Testimonial: React.FC<Props> = ({
-  quote,
-  cite,
+  text,
+  source,
   color,
   className,
   isFullWidth = false,
@@ -37,11 +37,11 @@ const Testimonial: React.FC<Props> = ({
     >
       <p
         dangerouslySetInnerHTML={{
-          __html: `&ldquo;${quote.replace(/“/g, `‘`).replace(/”/g, `’`)}&rdquo;`,
+          __html: `&ldquo;${text.replace(/“/g, `‘`).replace(/”/g, `’`)}&rdquo;`,
         }}
       />
       <cite className="not-italic font-sans mt-4 block font-bold tracking-tight">
-        &mdash; {cite}
+        &mdash; {source}
       </cite>
     </div>
   </blockquote>
