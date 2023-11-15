@@ -1,5 +1,7 @@
 name: ci-typescript
 
+# here is a comment
+
 on:
   pull_request:
     types: [opened, synchronize]
