@@ -1,13 +1,13 @@
 import React from 'react';
 import cx from 'classnames';
 import { ThreeD } from '@friends-library/cover-component';
-import type { CoverProps } from '@friends-library/types';
+import { toCoverProps, type CoverData } from '@/lib/cover';
 import Rotate from '@/components/custom-icons/Rotate';
 
 type Perspective = 'back' | 'front' | 'spine' | 'angle-front' | 'angle-back';
 
 interface Props {
-  coverProps: CoverProps;
+  coverData: CoverData;
   className?: string;
 }
 
@@ -51,15 +51,25 @@ export default class RotatableCover extends React.Component<Props, State> {
   }
 
   public override render(): JSX.Element {
-    const { className, coverProps } = this.props;
+    const { className, coverData } = this.props;
     const { perspective, shouldRotate, showBackTimeout, backToFrontTimeout } = this.state;
     return (
       <div className={cx(className, `flex flex-col items-center`)}>
         <div className="hidden xl:block">
-          <ThreeD {...coverProps} perspective={perspective} scaler={4 / 5} scope="4-5" />
+          <ThreeD
+            {...toCoverProps(coverData)}
+            perspective={perspective}
+            scaler={4 / 5}
+            scope="4-5"
+          />
         </div>
         <div className="xl:hidden">
-          <ThreeD {...coverProps} perspective={perspective} scaler={3 / 5} scope="3-5" />
+          <ThreeD
+            {...toCoverProps(coverData)}
+            perspective={perspective}
+            scaler={3 / 5}
+            scope="3-5"
+          />
         </div>
         <button
           className={cx(

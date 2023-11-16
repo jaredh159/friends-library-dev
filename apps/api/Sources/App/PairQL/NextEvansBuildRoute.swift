@@ -20,11 +20,17 @@ enum NextEvansBuildRoute: PairRoute {
 }
 
 enum AuthedNextEvansBuildRoute: PairRoute {
+  case documentPage(DocumentPage.Input)
   case friendPage(FriendPage.Input)
   case friendsPage(Lang)
+  case publishedDocumentSlugs(PublishedDocumentSlugs.Input)
   case publishedFriendSlugs(Lang)
 
   static let router: AnyParserPrinter<URLRequestData, AuthedNextEvansBuildRoute> = OneOf {
+    Route(/Self.documentPage) {
+      Operation(DocumentPage.self)
+      Body(.input(DocumentPage.self))
+    }
     Route(/Self.friendPage) {
       Operation(FriendPage.self)
       Body(.input(FriendPage.self))
@@ -32,6 +38,10 @@ enum AuthedNextEvansBuildRoute: PairRoute {
     Route(/Self.friendsPage) {
       Operation(FriendsPage.self)
       Body(.input(FriendsPage.self))
+    }
+    Route(/Self.publishedDocumentSlugs) {
+      Operation(PublishedDocumentSlugs.self)
+      Body(.input(PublishedDocumentSlugs.self))
     }
     Route(/Self.publishedFriendSlugs) {
       Operation(PublishedFriendSlugs.self)
@@ -48,6 +58,9 @@ extension NextEvansBuildRoute: RouteResponder {
       let token = try await Token.query().where(.value == token).first()
       let authed = AuthedContext(requestId: context.requestId, scopes: try await token.scopes())
       switch authedRoute {
+      case .documentPage(let input):
+        let output = try await DocumentPage.resolve(with: input, in: authed)
+        return try respond(with: output)
       case .friendPage(let input):
         let output = try await FriendPage.resolve(with: input, in: authed)
         return try respond(with: output)
@@ -56,6 +69,9 @@ extension NextEvansBuildRoute: RouteResponder {
         return try respond(with: output)
       case .publishedFriendSlugs(let lang):
         let output = try await PublishedFriendSlugs.resolve(with: lang, in: authed)
+        return try respond(with: output)
+      case .publishedDocumentSlugs(let input):
+        let output = try await PublishedDocumentSlugs.resolve(with: input, in: authed)
         return try respond(with: output)
       }
     }

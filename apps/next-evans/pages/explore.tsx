@@ -17,7 +17,6 @@ import { mostModernEditionType } from '@/lib/editions';
 import SearchBlock from '@/components/pages/explore/SearchBlock';
 import { getAllDocuments, getNumDocuments } from '@/lib/db/documents';
 import { editionTypes } from '@/lib/document';
-import { newestFirst } from '@/lib/dates';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const documents = Object.values(await getAllDocuments());
@@ -83,12 +82,7 @@ const ExploreBooks: React.FC<Props> = ({ numBooks, numBooksInAltLang, books }) =
     />
     <GettingStartedLinkBlock />
     <AudioBooksBlock books={books.filter((book) => book.hasAudio)} />
-    <NewBooksBlock
-      books={books
-        .sort(newestFirst)
-        .slice(0, 4)
-        .map((book) => ({ ...book, audioDuration: undefined }))}
-    />
+    <NewBooksBlock books={[] /* todo, sorted newestFirst and .slice(0, 4) */} />
     {LANG === `en` && (
       <ExploreRegionsBlock
         books={books.map((book) => ({

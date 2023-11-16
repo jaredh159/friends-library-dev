@@ -4,38 +4,32 @@ import { Front } from '@friends-library/cover-component';
 import { htmlTitle } from '@friends-library/adoc-utils';
 import { t } from '@friends-library/locale';
 import Link from 'next/link';
-import type { Document } from '@/lib/types';
 import AudioDuration from './AudioDuration';
+import { toCoverProps, type CoverData } from '@/lib/cover';
 import Album from '@/components/core/Album';
-import { LANG } from '@/lib/env';
-import { isCompilations } from '@/lib/friend';
 import Button from '@/components/core/Button';
-import { mostModernEditionType } from '@/lib/editions';
+import { LANG } from '@/lib/env';
 
-export type Props = Pick<
-  Document,
-  'isbn' | 'title' | 'editions' | 'customCSS' | 'authorName' | 'customHTML'
-> & {
+export type Props = Omit<CoverData, 'printSize'> & {
+  className?: string;
   audioDuration?: string;
   htmlShortTitle: string;
   documentUrl: string;
   authorUrl: string;
-  description: string;
   badgeText?: string;
-  className?: string;
 };
 
-const BookTeaserCard: React.FC<Props> = (props) => {
-  const {
-    htmlShortTitle,
-    authorName,
-    audioDuration,
-    className,
-    authorUrl,
-    description,
-    badgeText,
-  } = props;
+const BookTeaserCard: React.FC<Props> = ({
+  className,
+  audioDuration,
+  htmlShortTitle,
+  documentUrl,
+  authorUrl,
+  badgeText,
+  ...props
+}) => {
   const isAudio = typeof audioDuration === `string`;
+  const coverProps = toCoverProps({ ...props, printSize: `m` });
   return (
     <div
       className={cx(
@@ -57,36 +51,13 @@ const BookTeaserCard: React.FC<Props> = (props) => {
         <div className="relative">
           {badgeText && <Badge>{badgeText}</Badge>}
           {isAudio && (
-            <Link href={`${props.documentUrl}#audiobook`}>
-              <Album
-                author={authorName}
-                edition={mostModernEditionType(props.editions)}
-                customCss={``}
-                customHtml={``}
-                {...props}
-                lang={LANG}
-                isCompilation={isCompilations(props.authorName)}
-                isbn={props.isbn}
-              />
+            <Link href={`${documentUrl}#audiobook`}>
+              <Album {...coverProps} />
             </Link>
           )}
           {!isAudio && (
-            <Link href={props.documentUrl}>
-              <Front
-                author={authorName}
-                edition={mostModernEditionType(props.editions)}
-                customCss={props.customCSS || ``}
-                customHtml={props.customHTML || ``}
-                {...props}
-                className=""
-                size="m"
-                scaler={1 / 3}
-                scope="1-3"
-                shadow
-                lang={LANG}
-                isCompilation={isCompilations(props.authorName)}
-                isbn={props.isbn}
-              />
+            <Link href={documentUrl}>
+              <Front {...coverProps} scaler={1 / 3} scope="1-3" shadow />
             </Link>
           )}
         </div>
@@ -99,23 +70,23 @@ const BookTeaserCard: React.FC<Props> = (props) => {
       >
         <h3 className="mb-4 text-base text-flgray-900 md:mb-2 md:pb-1">
           <Link
-            href={props.documentUrl}
+            href={documentUrl}
             className="hover:underline"
             dangerouslySetInnerHTML={{ __html: htmlTitle(htmlShortTitle) }}
           />
         </h3>
         <Link href={authorUrl} className="fl-underline text-sm text-flprimary">
-          {authorName}
+          {props.authorName}
         </Link>
         {isAudio && (
           <AudioDuration className="mt-8 md:justify-start">{audioDuration}</AudioDuration>
         )}
         <p className={cx(`body-text text-left mt-6`, !isAudio && `md:pb-10`)}>
-          {description}
+          {props.description}
         </p>
         {isAudio && (
           <Button
-            to={`${props.documentUrl}#audiobook`}
+            to={`${documentUrl}#audiobook`}
             className="mx-auto md:mx-0 mt-6 max-w-full"
           >
             {t`Listen`}

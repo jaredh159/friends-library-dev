@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { t } from '@friends-library/locale';
-import Client from '@friends-library/pairql/next-evans-build';
+import Client, { type T as Api } from '@friends-library/pairql/next-evans-build';
 import type { GetStaticProps } from 'next';
 import FriendsPageHero from '@/components/pages/friends/FriendsPageHero';
 import FriendCard from '@/components/pages/friends/FriendCard';
@@ -10,29 +10,19 @@ import { getFriendUrl } from '@/lib/friend';
 import { newestFirst } from '@/lib/dates';
 import { LANG } from '@/lib/env';
 
+type Friend = Api.FriendsPage.Output[number];
+
+interface Props {
+  friends: Friend[];
+}
+
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const friends = await Client.node(process).friendsPage(LANG);
   return { props: { friends } };
 };
 
-interface Friend {
-  name: string;
-  slug: string;
-  born?: number;
-  died?: number;
-  numBooks: number;
-  gender: 'male' | 'female' | 'mixed';
-  primaryResidence: { city: string; region: string };
-  createdAt: ISODateString;
-}
-
-interface Props {
-  friends: Array<Friend>;
-}
-
 const Friends: React.FC<Props> = ({ friends }) => {
   const mostRecentFriends = friends.sort(newestFirst).slice(0, 2);
-
   const [searchQuery, setSearchQuery] = useState<string>(``);
   const [sortOption, setSortOption] = useState<string>(`First Name`);
   const filteredFriends = friends

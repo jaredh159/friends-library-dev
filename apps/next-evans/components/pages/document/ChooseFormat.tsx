@@ -8,7 +8,7 @@ import Pdf from '@/components/custom-icons/Pdf';
 import { LANG } from '@/lib/env';
 
 interface Props {
-  onChoose: (choice: 'ebook' | 'web_pdf' | 'speech') => any;
+  onChoose: (choice: 'ebook' | 'pdf' | 'speech') => any;
 }
 const ChooseFormat: React.FC<Props> = ({ onChoose }) => (
   <ChoiceStep title={t`Choose Download Format`}>
@@ -23,7 +23,7 @@ const ChooseFormat: React.FC<Props> = ({ onChoose }) => (
       label="PDF"
       description={t`Best for printing out your own copy.`}
       Icon={Pdf}
-      onChoose={() => onChoose(`web_pdf`)}
+      onChoose={() => onChoose(`pdf`)}
     />
     <ChoiceItem
       label={LANG === `es` ? `Texto Sin Formato` : `Plain Text`}

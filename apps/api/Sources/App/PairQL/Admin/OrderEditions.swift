@@ -1,4 +1,5 @@
 import DuetSQL
+import NonEmpty
 import PairQL
 import TaggedMoney
 
@@ -14,7 +15,7 @@ struct OrderEditions: Pair {
     let lang: Lang
     let priceInCents: Cents<Int>
     let paperbackSize: PrintSize
-    let paperbackVolumes: [Int]
+    let paperbackVolumes: NonEmpty<[Int]>
     let smallImgUrl: String
     let largeImgUrl: String
   }
@@ -43,7 +44,7 @@ extension OrderEditions: NoInputResolver {
         lang: friend.lang,
         priceInCents: impression.paperbackPrice,
         paperbackSize: impression.paperbackSize,
-        paperbackVolumes: Array(impression.paperbackVolumes),
+        paperbackVolumes: impression.paperbackVolumes,
         smallImgUrl: edition.images.threeD.w55.url.absoluteString,
         largeImgUrl: edition.images.threeD.w110.url.absoluteString
       )

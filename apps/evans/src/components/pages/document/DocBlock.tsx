@@ -36,7 +36,7 @@ type Props = Omit<CoverProps, 'pages'> & {
     title: string;
     type: EditionType;
     printSize: PrintSize;
-    numPages: number[];
+    numPages: [number, ...number[]];
     downloadUrl: {
       web_pdf: string;
       mobi: string;

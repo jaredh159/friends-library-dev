@@ -11,11 +11,11 @@ const onCreateDevServer: GatsbyNode['onCreateDevServer'] = async ({
     }
     app.get(`/${edition.audio.podcastSourcePathHq}`, async (req: any, res: any) => {
       res.type(`application/xml`);
-      res.send(await podcast(edition, document, friend, `HQ`));
+      res.send(await podcast(edition, document, friend, `hq`));
     });
     app.get(`/${edition.audio.podcastSourcePathLq}`, async (req: any, res: any) => {
       res.type(`application/xml`);
-      res.send(await podcast(edition, document, friend, `LQ`));
+      res.send(await podcast(edition, document, friend, `lq`));
     });
   });
 };

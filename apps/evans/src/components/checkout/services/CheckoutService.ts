@@ -1,6 +1,6 @@
 import { type T } from '@friends-library/pairql/order';
 import type Cart from '../models/Cart';
-import type { Lang, PrintSize } from '@friends-library/types';
+import type { Lang } from '@friends-library/types';
 import type CheckoutApi from './CheckoutApi';
 import { LANG } from '../../env';
 
@@ -38,7 +38,7 @@ export default class CheckoutService {
       .filter((i) => i.quantity > 0)
       .map((item) => ({
         volumes: item.numPages,
-        printSize: item.printSize as PrintSize,
+        printSize: item.printSize,
         quantity: item.quantity,
       }));
 

@@ -1,17 +1,24 @@
 import React from 'react';
 import cx from 'classnames';
-import type { Doc } from '@/lib/types';
-import BookTeaserCard from '../../core/BookTeaserCard';
-import { getDocumentUrl, getFriendUrl } from '@/lib/friend';
+import type { CoverData } from '@/lib/cover';
+import BookTeaserCard from './BookTeaserCard';
 
-interface Props {
+export interface Props {
   className?: string;
   id?: string;
   title: string;
-  titleEl: 'h1' | 'h2' | 'h3' | 'h4';
+  titleEl: 'h2' | 'h3' | 'h4';
   bgColor: string;
   titleTextColor: string;
-  books: Array<Doc<'editions' | 'createdAt' | 'authorGender' | 'shortDescription'>>;
+  books: Array<
+    Omit<CoverData, 'printSize'> & {
+      audioDuration?: string;
+      htmlShortTitle: string;
+      documentUrl: string;
+      authorUrl: string;
+      createdAt: ISODateString;
+    }
+  >;
   withDateBadges?: boolean;
 }
 
@@ -48,26 +55,18 @@ const BookTeaserCards: React.FC<Props> = ({
       <div className="flex justify-center flex-wrap">
         {books.map((book) => (
           <BookTeaserCard
+            key={book.documentUrl}
             className="pt-16 md:pt-0 md:mb-16 xl:mx-6"
-            key={getDocumentUrl(book)}
-            title={book.title}
-            editions={book.editions}
-            customCSS={book.customCSS}
-            customHTML={book.customHTML}
-            authorName={book.authorName}
-            htmlShortTitle={book.title}
-            documentUrl={getDocumentUrl(book)}
-            authorUrl={getFriendUrl(book.authorSlug, book.authorGender)}
-            description={book.shortDescription}
+            {...book}
             badgeText={
               withDateBadges
-                ? new Date(book.createdAt).toLocaleDateString(`en-US`, {
+                ? // todo: this seems wrong for spanish
+                  new Date(book.createdAt).toLocaleDateString(`en-US`, {
                     month: `short`,
                     day: `numeric`,
                   })
                 : undefined
             }
-            isbn={book.isbn}
           />
         ))}
       </div>

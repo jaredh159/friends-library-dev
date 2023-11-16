@@ -23,6 +23,11 @@ export default class NextEvansBuildClient extends Client {
     return Client.inferWeb(NextEvansBuildClient, href, getToken);
   }
 
+  public async documentPage(input: P.DocumentPage.Input): Promise<P.DocumentPage.Output> {
+    const result = await this.query<P.DocumentPage.Output>(input, `DocumentPage`);
+    return result.unwrap();
+  }
+
   public async friendPage(input: P.FriendPage.Input): Promise<P.FriendPage.Output> {
     const result = await this.query<P.FriendPage.Output>(input, `FriendPage`);
     return result.unwrap();
@@ -30,6 +35,16 @@ export default class NextEvansBuildClient extends Client {
 
   public async friendsPage(input: P.FriendsPage.Input): Promise<P.FriendsPage.Output> {
     const result = await this.query<P.FriendsPage.Output>(input, `FriendsPage`);
+    return result.unwrap();
+  }
+
+  public async publishedDocumentSlugs(
+    input: P.PublishedDocumentSlugs.Input,
+  ): Promise<P.PublishedDocumentSlugs.Output> {
+    const result = await this.query<P.PublishedDocumentSlugs.Output>(
+      input,
+      `PublishedDocumentSlugs`,
+    );
     return result.unwrap();
   }
 
@@ -43,6 +58,12 @@ export default class NextEvansBuildClient extends Client {
     return result.unwrap();
   }
 
+  public documentPageResult(
+    input: P.DocumentPage.Input,
+  ): Promise<Result<P.DocumentPage.Output>> {
+    return this.query<P.DocumentPage.Output>(input, `DocumentPage`);
+  }
+
   public friendPageResult(
     input: P.FriendPage.Input,
   ): Promise<Result<P.FriendPage.Output>> {
@@ -53,6 +74,12 @@ export default class NextEvansBuildClient extends Client {
     input: P.FriendsPage.Input,
   ): Promise<Result<P.FriendsPage.Output>> {
     return this.query<P.FriendsPage.Output>(input, `FriendsPage`);
+  }
+
+  public publishedDocumentSlugsResult(
+    input: P.PublishedDocumentSlugs.Input,
+  ): Promise<Result<P.PublishedDocumentSlugs.Output>> {
+    return this.query<P.PublishedDocumentSlugs.Output>(input, `PublishedDocumentSlugs`);
   }
 
   public publishedFriendSlugsResult(

@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { AudioQuality } from '@friends-library/types';
-import type { BookSortMethod, EbookColorScheme } from '../types';
+import type { BookSortMethod, EbookColorScheme, AudioQuality } from '../types';
 
 export interface PreferencesState {
   audioQuality: AudioQuality;

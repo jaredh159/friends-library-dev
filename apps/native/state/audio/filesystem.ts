@@ -1,8 +1,7 @@
 import pLimit from 'p-limit';
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import type { AudioQuality } from '@friends-library/types';
-import type { EditionId } from '../../types';
+import type { AudioQuality, EditionId } from '../../types';
 import type { Thunk, Dispatch, State } from '..';
 import type { FsPath } from '../../lib/models';
 import { canDownloadNow } from '../network';

@@ -39,6 +39,8 @@ struct FriendPage: Pair {
         let numPages: [Int]
         let size: PrintSize
         let type: EditionType
+        let customCss: String?
+        let customHtml: String?
       }
     }
 
@@ -97,36 +99,25 @@ extension FriendPage: Resolver {
       isCompilations: friend.isCompilations,
       documents: try await documents.concurrentMap { document in
         let editions = try await document.editions()
-        guard let primaryEdition = document.primaryEdition else {
-          throw context.error(id: "6683c1b7", type: .serverError)
-        }
-        guard let impression = try await primaryEdition.impression() else {
-          throw context.error(id: "ca1acb64", type: .serverError)
-        }
-        guard let isbn = try await primaryEdition.isbn() else {
-          throw context.error(id: "4990721a", type: .serverError)
-        }
-        let numDownloads = try await Current.db.customQuery(
-          EditionDownloads.self,
-          withBindings: editions.map(\.id).map(Postgres.Data.uuid)
-        )
-        guard numDownloads.count == 1 else {
-          throw context.error(id: "f7d62b87", type: .serverError)
-        }
+        let primaryEdition = try expect(document.primaryEdition)
+        let impression = try expect(await primaryEdition.impression())
+        let isbn = try expect(await primaryEdition.isbn())
         return .init(
           id: document.id,
           title: document.title,
           htmlShortTitle: document.htmlShortTitle,
           shortDescription: document.partialDescription,
           slug: document.slug,
-          numDownloads: numDownloads[0].total,
+          numDownloads: try await document.numDownloads(),
           tags: (try await document.tags()).map(\.type),
           hasAudio: try await primaryEdition.audio() != nil,
           primaryEdition: .init(
             isbn: isbn.code,
             numPages: Array(impression.paperbackVolumes),
             size: impression.paperbackSize,
-            type: primaryEdition.type
+            type: primaryEdition.type,
+            customCss: nil,
+            customHtml: nil
           ),
           editionTypes: editions.map(\.type)
         )
@@ -142,20 +133,4 @@ extension FriendPage: Resolver {
       quotes: quotes.map { .init(text: $0.text, source: $0.source) }
     )
   }
-}
-
-struct EditionDownloads: CustomQueryable {
-  static func query(numBindings: Int) -> String {
-    let bindings = (1 ... numBindings).map { "$\($0)" }.joined(separator: ", ")
-    return """
-      SELECT SUM(edition_downloads) AS total
-      FROM (
-        SELECT COUNT(*)::INTEGER AS edition_downloads
-        FROM \(Download.M1.tableName)
-        WHERE \(Download.M10.editionId) IN (\(bindings))
-      ) AS subquery;
-    """
-  }
-
-  let total: Int
 }

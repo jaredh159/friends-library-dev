@@ -89,7 +89,7 @@ export interface OrderItem {
   unitPrice: number;
   quantity: number;
   printSize: PrintSize;
-  volumes: number[];
+  volumes: [number, ...number[]];
 }
 
 export interface OrderAddress {

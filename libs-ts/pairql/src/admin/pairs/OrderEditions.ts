@@ -12,7 +12,7 @@ export namespace OrderEditions {
     lang: 'en' | 'es';
     priceInCents: number;
     paperbackSize: 's' | 'm' | 'xl';
-    paperbackVolumes: number[];
+    paperbackVolumes: [number, ...number[]];
     smallImgUrl: string;
     largeImgUrl: string;
   }>;

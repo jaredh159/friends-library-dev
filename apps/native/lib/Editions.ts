@@ -1,6 +1,11 @@
 import { isNotNull } from 'x-ts-utils';
-import type { AudioQuality } from '@friends-library/types';
-import type { EditionId, EditionResource, Audio, AudioPart } from '../types';
+import type {
+  EditionId,
+  EditionResource,
+  Audio,
+  AudioPart,
+  AudioQuality,
+} from '../types';
 import type { DocumentEntityInterface } from './models';
 
 type EditionMap = Record<EditionId, EditionResource>;

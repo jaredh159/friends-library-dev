@@ -6,7 +6,7 @@ import Dual from '@/components/core/Dual';
 
 interface Props {
   quality: AudioQuality;
-  onChange: (quality: AudioQuality) => any;
+  onChange(quality: AudioQuality): unknown;
   className?: string;
 }
 
@@ -14,24 +14,24 @@ const QualitySwitch: React.FC<Props> = ({ className, quality, onChange }) => (
   <Dual.Frag>
     <Switch
       className={className}
-      checked={quality === `HQ`}
+      checked={quality === `hq`}
       width={106}
       height={36}
       offColor="#5f8c9e"
       onColor="#6c3142"
-      onChange={(isLq) => onChange(isLq ? `HQ` : `LQ`)}
+      onChange={(isLq) => onChange(isLq ? `hq` : `lq`)}
       uncheckedIcon={<Label className="pl-0 -ml-2 w-16">LO-FI</Label>}
       checkedIcon={<Label className="pl-6 w-16">HI-FI</Label>}
       aria-label="Audio download quality"
     />
     <Switch
       className={className}
-      checked={quality === `HQ`}
+      checked={quality === `hq`}
       width={138}
       height={36}
       offColor="#5f8c9e"
       onColor="#6c3142"
-      onChange={(isLq) => onChange(isLq ? `HQ` : `LQ`)}
+      onChange={(isLq) => onChange(isLq ? `hq` : `lq`)}
       uncheckedIcon={<Label className="pl-1 -ml-12 w-24">Baja Calidad</Label>}
       checkedIcon={<Label className="pl-3 w-24">&nbsp;Alta Calidad</Label>}
       aria-label="Audio download quality"

@@ -32,7 +32,7 @@ const DownloadLinks: React.FC<Props> = (props) => {
     m4bSize: props.m4bFilesizeHq,
     podcast: props.podcastUrlHq,
   };
-  if (props.quality === `LQ`) {
+  if (props.quality === `lq`) {
     links = {
       mp3Zip: props.mp3ZipUrlLq,
       zipSize: props.mp3ZipFilesizeLq,
@@ -150,7 +150,7 @@ const DownloadLinks: React.FC<Props> = (props) => {
         <QualitySwitch key="switch" quality={props.quality} onChange={props.setQuality} />
         <p key="text" className="text-flgray-500 text-base antialiased tracking-wider">
           (
-          {props.quality === `HQ`
+          {props.quality === `hq`
             ? t`Higher quality, larger file size`
             : t`Lower quality, faster download`}
           )

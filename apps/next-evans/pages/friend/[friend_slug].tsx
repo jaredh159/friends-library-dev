@@ -4,7 +4,6 @@ import invariant from 'tiny-invariant';
 import cx from 'classnames';
 import { t, translateOptional as trans } from '@friends-library/locale';
 import type { GetStaticPaths, GetStaticProps } from 'next';
-import type { EditionType, PrintSize } from '@/../../libs-ts/types/src';
 import { LANG } from '@/lib/env';
 import FriendBlock from '@/components/pages/friend/FriendBlock';
 import FeaturedQuoteBlock from '@/components/pages/friend/FeaturedQuoteBlock';
@@ -13,6 +12,8 @@ import TestimonialsBlock from '@/components/pages/friend/TestimonialsBlock';
 import MapBlock from '@/components/pages/friend/MapBlock';
 import getResidences from '@/lib/residences';
 import { getDocumentUrl } from '@/lib/friend';
+
+type Props = T.FriendPage.Output;
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const slugs = await Client.node(process).publishedFriendSlugs(LANG);
@@ -29,44 +30,6 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
     slug: context.params.friend_slug,
   });
   return { props: friend };
-};
-
-type Props = {
-  born?: number;
-  died?: number;
-  name: string;
-  slug: string;
-  description: string;
-  gender: 'male' | 'female' | 'mixed';
-  isCompilations: boolean;
-  residences: Array<{
-    city: string;
-    region: string;
-    durations?: Array<{ start: number; end: number }>;
-  }>;
-  quotes: Array<{
-    source: string;
-    text: string;
-  }>;
-  documents: Array<{
-    id: UUID;
-    title: string;
-    htmlShortTitle: string;
-    shortDescription: string;
-    editionTypes: EditionType[];
-    primaryEdition: {
-      isbn: string;
-      customCss?: string;
-      customHtml?: string;
-      numPages: number[];
-      size: PrintSize;
-      type: EditionType;
-    };
-    slug: string;
-    numDownloads: number;
-    tags: T.DocumentTag[];
-    hasAudio: boolean;
-  }>;
 };
 
 const Friend: React.FC<Props> = ({

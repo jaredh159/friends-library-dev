@@ -29,6 +29,8 @@ export namespace FriendPage {
         numPages: number[];
         size: 's' | 'm' | 'xl';
         type: 'updated' | 'original' | 'modernized';
+        customCss?: string;
+        customHtml?: string;
       };
       editionTypes: Array<'updated' | 'original' | 'modernized'>;
     }>;

@@ -4,7 +4,7 @@ import type { ShippingAddress } from '../shared';
 export namespace GetPrintJobExploratoryMetadata {
   export interface Input {
     items: Array<{
-      volumes: number[];
+      volumes: [number, ...number[]];
       printSize: 's' | 'm' | 'xl';
       quantity: number;
     }>;

@@ -4,8 +4,8 @@ import { bookDims } from '@friends-library/lulu';
 import { t } from '@friends-library/locale';
 import Link from 'next/link';
 import { htmlTitle } from '@friends-library/adoc-utils';
-import type { PrintSize } from '@friends-library/types';
-import type { Doc } from '@/lib/types';
+import type { EditionType, PrintSize } from '@friends-library/types';
+import type { EditionCoverData } from '@/lib/cover';
 import DownloadWizard from './DownloadWizard';
 import RotatableCover from './RotatableCover';
 import DocActions from './DocActions';
@@ -13,22 +13,39 @@ import Dual from '@/components/core/Dual';
 import { LANG } from '@/lib/env';
 import { makeScroller } from '@/lib/scroll';
 import SpanishFreeBooksNote from '@/components/core/SpanishFreeBooksNote';
-import { getFriendUrl, isCompilations } from '@/lib/friend';
-import { downloadUrl } from '@/lib/download';
-import { bookSize } from '@/lib/book-sizes';
+import { getFriendUrl } from '@/lib/friend';
 
-type Props = Doc<
-  | 'editions'
-  | 'authorName'
-  | 'blurb'
-  | 'mostModernEdition'
-  | 'authorGender'
-  | 'authorSlug'
-  | 'hasAudio'
-  | 'isComplete'
-  | 'originalTitle'
-  | 'numDownloads'
-> & { price: number; alternateLanguageSlug: string | null };
+export interface Props {
+  authorName: string;
+  authorSlug: string;
+  authorGender: 'male' | 'female' | 'mixed';
+  title: string;
+  originalTitle?: string;
+  isComplete: boolean;
+  priceInCents: number;
+  description: string;
+  hasAudio: boolean;
+  numDownloads: number;
+  isCompilation: boolean;
+  customCss?: string;
+  customHtml?: string;
+  editions: Array<{
+    type: EditionType;
+    loggedDownloadUrls: {
+      pdf: string;
+      epub: string;
+      mobi: string;
+      speech: string;
+    };
+  }>;
+  alternateLanguageDoc?: {
+    authorSlug: string;
+    slug: string;
+  };
+  primaryEdition: EditionCoverData & {
+    numChapters: number;
+  };
+}
 
 const DocBlock: React.FC<Props> = (props) => {
   const wrap = useRef<HTMLDivElement | null>(null);
@@ -108,7 +125,7 @@ const DocBlock: React.FC<Props> = (props) => {
                 setWizardOffset({ top: -9999, left: -9999 });
               }, 4000);
               const referer = `${window.location.origin}${window.location.pathname}`;
-              window.location.href = downloadUrl(format, edition.id, referer);
+              window.location.href = `${edition.loggedDownloadUrls[format]}?referer=${referer}`;
             }
           }}
           editions={props.editions.map((e) => e.type)}
@@ -117,26 +134,14 @@ const DocBlock: React.FC<Props> = (props) => {
       <div className="xl:max-w-[80rem] md:flex">
         <RotatableCover
           className="order-1"
-          coverProps={{
-            lang: LANG,
-            title: props.title,
-            isCompilation: isCompilations(props.authorSlug),
-            pages: props.mostModernEdition.numPages[0] || 70,
-            isbn: props.isbn,
-            blurb: props.blurb,
-            customCss: props.customCSS || ``,
-            customHtml: props.customHTML || ``,
-            author: props.authorName,
-            size: bookSize(props.mostModernEdition.size),
-            edition: props.mostModernEdition.type,
-          }}
+          coverData={{ ...props, ...props.primaryEdition }}
         />
         <div className="mb-8 md:px-12 bg-white md:mr-6 xl:mr-10">
           <h1
             className="font-sans text-3xl md:text-2-5xl font-bold leading-snug mt-8 tracking-wider mb-6"
             dangerouslySetInnerHTML={{ __html: titleHtml(props) }}
           />
-          {!isCompilations(props.authorSlug) && (
+          {!props.isCompilation && (
             <h2 className="font-sans text-1-5xl md:text-xl subpixel-antialiased leading-loose mb-8">
               <i className="font-serif tracking-widest pr-1">{t`by`}:</i>
               {` `}
@@ -166,8 +171,10 @@ const DocBlock: React.FC<Props> = (props) => {
             className="font-serif text-xl md:text-lg antialiased leading-relaxed"
             dangerouslySetInnerHTML={{
               __html: props.originalTitle
-                ? `${props.blurb} (${t`Original title`}: <em>${props.originalTitle}</em>)`
-                : props.blurb,
+                ? `${props.description} (${t`Original title`}: <em>${
+                    props.originalTitle
+                  }</em>)`
+                : props.description,
             }}
           />
           <LinksAndMeta
@@ -209,27 +216,29 @@ const LinksAndMeta: React.FC<LinksAndMetaProps> = (props) => (
       addToCart={props.onClickAddToCart}
       gotoAudio={makeScroller(`#audiobook`)}
       className="mb-8 flex flex-col md:flex-row items-center md:items-start lg:mx-24 xl:mx-0"
-      price={props.price}
+      price={props.priceInCents}
       hasAudio={props.hasAudio}
     />
     <div className="DocMeta flex flex-col items-center">
       <ul className="diamonds text-sans text-gray-600 leading-loose antialiased">
         <li>{props.authorName}</li>
         {LANG === `en` && (
-          <li className="capitalize">{props.mostModernEdition.type} Edition</li>
+          <li className="capitalize">{props.primaryEdition.editionType} Edition</li>
         )}
         <li>
           {dimensions(
-            bookSize(props.mostModernEdition.size),
-            props.mostModernEdition.numPages,
+            props.primaryEdition.printSize,
+            props.primaryEdition.paperbackVolumes,
           )}
         </li>
         <li>
-          {props.mostModernEdition.numChapters > 1
-            ? t`${props.mostModernEdition.numChapters} chapters`
+          {props.primaryEdition.numChapters > 1
+            ? t`${props.primaryEdition.numChapters} chapters`
             : t`1 chapter`}
         </li>
-        <li>{props.mostModernEdition.numPages.map((p) => t`${p} pages`).join(`, `)}</li>
+        <li>
+          {props.primaryEdition.paperbackVolumes.map((p) => t`${p} pages`).join(`, `)}
+        </li>
         {props.numDownloads > 10 && (
           <li>
             <Dual.Frag>
@@ -244,12 +253,14 @@ const LinksAndMeta: React.FC<LinksAndMetaProps> = (props) => (
             <>Idioma: Español</>
           </Dual.Frag>
         </li>
-        {props.alternateLanguageSlug && (
+        {props.alternateLanguageDoc && (
           <li>
             <Dual.A
               href={`https://${
                 LANG === `en` ? `bibliotecadelosamigos.org` : `friendslibrary.com`
-              }/${props.authorSlug}/${props.alternateLanguageSlug}`}
+              }/${props.alternateLanguageDoc.authorSlug}/${
+                props.alternateLanguageDoc.slug
+              }`}
             >
               <>Spanish Version</>
               <>Versión en inglés</>
