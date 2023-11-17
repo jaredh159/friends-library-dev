@@ -72,13 +72,13 @@ enum PrintJobs {
     shippedTo address: ShippingAddress
   ) async throws -> ExploratoryMetadata {
     try await withThrowingTaskGroup(of: (
-      Lulu.Api.PrintJobCostCalculationResponse?,
+      Lulu.Api.PrintJobCostCalculationsResponse?,
       Order.ShippingLevel
     ).self) { group -> ExploratoryMetadata in
       for level in Order.ShippingLevel.allCases {
         group.addTask {
-          (
-            try? await Current.luluClient.createPrintJobCostCalculation(
+          do {
+            let output = try await Current.luluClient.createPrintJobCostCalculation(
               address.lulu,
               level.lulu,
               items.flatMap { item in
@@ -90,15 +90,39 @@ enum PrintJobs {
                   )
                 }
               }
-            ),
-            level
-          )
+            )
+            return (output, level)
+          } catch {
+            let errorString = String(describing: error)
+            if !errorString.contains("No shipping option found") {
+              await slackError("""
+                Unexpected error from print job ExploratoryMetadata:
+
+                ```
+                \(errorString)
+                ```
+
+                Items:
+
+                ```
+                "\(JSON.encode(items, .pretty) ?? String(describing: items))"
+                ```
+
+                Address:
+
+                ```
+                "\(JSON.encode(address, .pretty) ?? String(describing: address))"
+                ```
+              """)
+            }
+            return (nil, level)
+          }
         }
       }
 
-      var results: [(Lulu.Api.PrintJobCostCalculationResponse, Order.ShippingLevel)] = []
+      var results: [(Lulu.Api.PrintJobCostCalculationsResponse, Order.ShippingLevel)] = []
       for try await (res, level) in group {
-        if let res = res {
+        if let res {
           results.append((res, level))
         }
       }
@@ -122,10 +146,7 @@ enum PrintJobs {
         shippingLevel: level,
         shipping: toCents(cheapest.shippingCost.totalCostExclTax),
         taxes: toCents(cheapest.totalTax),
-        fees: cheapest.fees
-          .reduce(Cents<Int>(rawValue: 0)) { sum, fee in
-            sum + (try toCents(fee.totalCostExclTax))
-          },
+        fees: toCents(cheapest.fulfillmentCost.totalCostExclTax),
         creditCardFeeOffset: creditCardFeeOffset(toCents(cheapest.totalCostInclTax))
       )
     }

@@ -43,12 +43,12 @@ extension Lulu.Api.PrintJobCostCalculationsBody.LineItem {
   )
 }
 
-extension Lulu.Api.PrintJobCostCalculationResponse {
+extension Lulu.Api.PrintJobCostCalculationsResponse {
   static let mock: Self = .init(
     totalCostInclTax: "0.00",
     totalTax: "0.00",
     shippingCost: .init(totalCostExclTax: "0.00"),
-    fees: [.init(totalCostExclTax: "0.0")]
+    fulfillmentCost: .init(totalCostExclTax: "0.0")
   )
 
   init(shipping: String, tax: String, total: String, fee: String) {
@@ -56,6 +56,6 @@ extension Lulu.Api.PrintJobCostCalculationResponse {
     shippingCost.totalCostExclTax = shipping
     totalTax = tax
     totalCostInclTax = total
-    fees = [.init(totalCostExclTax: fee)]
+    fulfillmentCost = .init(totalCostExclTax: fee)
   }
 }

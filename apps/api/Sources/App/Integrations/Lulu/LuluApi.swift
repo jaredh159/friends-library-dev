@@ -39,19 +39,15 @@ extension Lulu.Api {
     let shippingOption: ShippingOptionLevel
   }
 
-  struct PrintJobCostCalculationResponse: Decodable {
-    struct ShippingCost: Decodable {
-      var totalCostExclTax: String
-    }
-
-    struct Fee: Decodable {
+  struct PrintJobCostCalculationsResponse: Decodable {
+    struct Cost: Decodable {
       var totalCostExclTax: String
     }
 
     var totalCostInclTax: String
     var totalTax: String
-    var shippingCost: ShippingCost
-    var fees: [Fee]
+    var shippingCost: Cost
+    var fulfillmentCost: Cost
   }
 
   struct CreatePrintJobBody: Encodable, Equatable {
