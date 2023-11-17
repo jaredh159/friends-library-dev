@@ -12,7 +12,7 @@ extension Lulu.Api {
       ShippingAddress,
       ShippingOptionLevel,
       [PrintJobCostCalculationsBody.LineItem]
-    ) async throws -> PrintJobCostCalculationResponse
+    ) async throws -> PrintJobCostCalculationsResponse
   }
 }
 
@@ -35,7 +35,7 @@ extension Lulu.Api.Client {
         totalCostInclTax: "0.00",
         totalTax: "0.00",
         shippingCost: .init(totalCostExclTax: "0.00"),
-        fees: [.init(totalCostExclTax: "0.00")]
+        fulfillmentCost: .init(totalCostExclTax: "0.00")
       )
     }
   )
@@ -73,7 +73,7 @@ private func printJobCost(
   address: Lulu.Api.ShippingAddress,
   shippingLevel: Lulu.Api.ShippingOptionLevel,
   items: [Lulu.Api.PrintJobCostCalculationsBody.LineItem]
-) async throws -> Lulu.Api.PrintJobCostCalculationResponse {
+) async throws -> Lulu.Api.PrintJobCostCalculationsResponse {
   try await postJson(
     Lulu.Api.PrintJobCostCalculationsBody(
       lineItems: items,
@@ -81,7 +81,7 @@ private func printJobCost(
       shippingOption: shippingLevel
     ),
     to: "print-job-cost-calculations/",
-    decoding: Lulu.Api.PrintJobCostCalculationResponse.self
+    decoding: Lulu.Api.PrintJobCostCalculationsResponse.self
   )
 }
 

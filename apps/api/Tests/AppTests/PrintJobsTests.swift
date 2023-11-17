@@ -196,13 +196,13 @@ final class PrintJobsTests: AppTestCase {
 }
 
 private actor Responses {
-  var responses: [Lulu.Api.PrintJobCostCalculationResponse]
+  var responses: [Lulu.Api.PrintJobCostCalculationsResponse]
 
-  init(_ responses: [Lulu.Api.PrintJobCostCalculationResponse]) {
+  init(_ responses: [Lulu.Api.PrintJobCostCalculationsResponse]) {
     self.responses = responses
   }
 
-  func next() -> Lulu.Api.PrintJobCostCalculationResponse {
+  func next() -> Lulu.Api.PrintJobCostCalculationsResponse {
     if responses.count == 1 { return responses[0] }
     return responses.removeFirst()
   }
