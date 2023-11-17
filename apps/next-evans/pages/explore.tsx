@@ -19,10 +19,17 @@ import { getDocumentUrl, getFriendUrl } from '@/lib/friend';
 import { newestFirst } from '@/lib/dates';
 import { documentRegion, publishedYear } from '@/lib/document';
 
-type Props = Api.ExplorePage.Output;
+type Props = {
+  books: Api.ExplorePageBooks.Output;
+  numTotalBooks: Api.TotalPublished.Output;
+};
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const props = await Client.node(process).explorePage(LANG);
+  const client = Client.node(process);
+  const props = await Promise.all([
+    client.explorePageBooks(LANG),
+    client.totalPublished(),
+  ]).then(([books, numTotalBooks]) => ({ books, numTotalBooks }));
   return { props };
 };
 

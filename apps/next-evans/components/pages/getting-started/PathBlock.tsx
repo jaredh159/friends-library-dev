@@ -4,24 +4,32 @@ import { Front } from '@friends-library/cover-component';
 import { t } from '@friends-library/locale';
 import Link from 'next/link';
 import { CloudArrowDownIcon, SpeakerWaveIcon } from '@heroicons/react/24/outline';
-import type { CoverProps } from '@friends-library/types';
+import type { EditionType } from '@friends-library/types';
 import WaveBottomBlock from './WaveBottomBlock';
 import Button from '@/components/core/Button';
 import { LANG } from '@/lib/env';
 import ArrowRight from '@/public/images/arrow-right.png';
 import ArrowBent from '@/public/images/arrow-bend.png';
+import { toCoverProps } from '@/lib/cover';
 
-interface Props {
+export interface Props {
   slug: 'history' | 'doctrinal' | 'spiritual-life' | 'journal';
   color: 'blue' | 'gold' | 'maroon' | 'green';
   title: string;
   children: React.ReactNode;
-  books: (CoverProps & {
-    hasAudio: boolean;
-    documentUrl: string;
+  books: Array<{
+    editionType: EditionType;
+    isbn: string;
+    title: string;
+    customCss?: string;
+    customHtml?: string;
+    isCompilation: boolean;
+    authorName: string;
     authorUrl: string;
+    documentUrl: string;
     htmlShortTitle: string;
-  })[];
+    hasAudio: boolean;
+  }>;
 }
 
 const PAGE_SIZE = 4;
@@ -87,12 +95,22 @@ const PathBlock: React.FC<Props> = ({ slug, books, title, color, children }) => 
                   className="inline-block text-center strong-link text-sm mb-10"
                   href={book.authorUrl}
                 >
-                  {book.author}
+                  {book.authorName}
                 </Link>
               </p>
               <div className="flex flex-col items-center mt-auto">
                 <Link href={book.documentUrl}>
-                  <Front {...book} shadow={true} scaler={1 / 3} scope="1-3" />
+                  <Front
+                    {...toCoverProps({
+                      ...book,
+                      printSize: `s`,
+                      description: ``,
+                      paperbackVolumes: [7],
+                    })}
+                    shadow={true}
+                    scaler={1 / 3}
+                    scope="1-3"
+                  />
                 </Link>
                 <div
                   className={cx(

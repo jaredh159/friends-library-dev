@@ -1,9 +1,10 @@
 import React from 'react';
 import cx from 'classnames';
+import Client, { type T as Api } from '@friends-library/pairql/next-evans-build';
 import { t } from '@friends-library/locale';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import type { GetStaticProps } from 'next';
-import type { Document } from '@/lib/types';
+import { type Props as PathBlockProps } from '@/components/pages/getting-started/PathBlock';
 import Dual from '@/components/core/Dual';
 import Heading from '@/components/core/Heading';
 import BackgroundImage from '@/components/core/BackgroundImage';
@@ -13,42 +14,33 @@ import EmbeddedAudio from '@/components/core/EmbeddedAudio';
 import { LANG } from '@/lib/env';
 import { makeScroller } from '@/lib/scroll';
 import GettingStartedPaths from '@/components/pages/getting-started/GettingStartedPaths';
-import recommendedBooks from '@/lib/recommended-books';
-import { getAllDocuments } from '@/lib/db/documents';
+import recommended from '@/lib/recommended-books';
+import { getDocumentUrl, getFriendUrl } from '@/lib/friend';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const documents = Object.values(await getAllDocuments());
+  const client = Client.node(process);
+  const props = await Promise.all([
+    client.gettingStartedBooks({ lang: LANG, slugs: recommended.history[LANG] }),
+    client.gettingStartedBooks({ lang: LANG, slugs: recommended.doctrine[LANG] }),
+    client.gettingStartedBooks({ lang: LANG, slugs: recommended.spiritualLife[LANG] }),
+    client.gettingStartedBooks({ lang: LANG, slugs: recommended.journals[LANG] }),
+    client.totalPublished(),
+  ]).then(([history, doctrine, spiritualLife, journals, totals]) => ({
+    books: { history, doctrine, spiritualLife, journals },
+    numBooks: totals[LANG],
+  }));
 
-  const organizedBooks = {
-    history: filterBooks(documents, `history`),
-    doctrine: filterBooks(documents, `doctrine`),
-    spiritualLife: filterBooks(documents, `spiritualLife`),
-    journals: filterBooks(documents, `journals`),
-  };
-
-  return { props: { books: organizedBooks, numBooks: documents.length } };
+  return { props: props };
 };
 
-export type GettingStartedCoverProps = Pick<
-  Document,
-  | 'id'
-  | 'slug'
-  | 'title'
-  | 'editions'
-  | 'hasAudio'
-  | 'customCss'
-  | 'authorName'
-  | 'authorSlug'
-  | 'customHtml'
-  | 'authorGender'
->;
+type Book = Api.GettingStartedBooks.Output[number];
 
 interface Props {
   books: {
-    history: Array<GettingStartedCoverProps>;
-    doctrine: Array<GettingStartedCoverProps>;
-    spiritualLife: Array<GettingStartedCoverProps>;
-    journals: Array<GettingStartedCoverProps>;
+    history: Book[];
+    doctrine: Book[];
+    spiritualLife: Book[];
+    journals: Book[];
   };
   numBooks: number;
 }
@@ -160,7 +152,12 @@ const GettingStarted: React.FC<Props> = ({ books, numBooks }) => (
     </div>
     <GettingStartedPaths
       {...{ HistoryBlurb, DoctrineBlurb, DevotionalBlurb, JournalsBlurb }}
-      books={books}
+      books={{
+        history: toPathBlock(books.history),
+        doctrine: toPathBlock(books.doctrine),
+        spiritualLife: toPathBlock(books.spiritualLife),
+        journals: toPathBlock(books.journals),
+      }}
     />
   </div>
 );
@@ -280,25 +277,10 @@ export const HistoryBlurb: React.FC = () => (
   </Dual.Frag>
 );
 
-function filterBooks(
-  books: Array<GettingStartedCoverProps>,
-  category: 'history' | 'doctrine' | 'spiritualLife' | 'journals',
-): Array<GettingStartedCoverProps> {
-  return books
-    .filter((book) =>
-      recommendedBooks[category][LANG].some(
-        (recommendedBook) =>
-          recommendedBook.author === book.authorSlug &&
-          recommendedBook.title === book.slug,
-      ),
-    )
-    .sort(
-      (a, b) =>
-        recommendedBooks[category][LANG].findIndex(
-          (book) => book.title === a.slug && book.author === a.authorSlug,
-        ) -
-        recommendedBooks[category][LANG].findIndex(
-          (book) => book.title === b.slug && book.author === b.authorSlug,
-        ),
-    );
+function toPathBlock(books: Array<Book>): PathBlockProps['books'] {
+  return books.map((book) => ({
+    ...book,
+    authorUrl: getFriendUrl(book.authorSlug, book.authorGender),
+    documentUrl: getDocumentUrl(book),
+  }));
 }

@@ -21,20 +21,22 @@ enum NextEvansBuildRoute: PairRoute {
 
 enum AuthedNextEvansBuildRoute: PairRoute {
   case documentPage(DocumentPage.Input)
-  case explorePage(Lang)
+  case explorePageBooks(Lang)
   case friendPage(FriendPage.Input)
   case friendsPage(Lang)
+  case gettingStartedBooks(GettingStartedBooks.Input)
   case publishedDocumentSlugs(PublishedDocumentSlugs.Input)
   case publishedFriendSlugs(Lang)
+  case totalPublished
 
   static let router: AnyParserPrinter<URLRequestData, AuthedNextEvansBuildRoute> = OneOf {
     Route(/Self.documentPage) {
       Operation(DocumentPage.self)
       Body(.input(DocumentPage.self))
     }
-    Route(/Self.explorePage) {
-      Operation(ExplorePage.self)
-      Body(.input(ExplorePage.self))
+    Route(/Self.explorePageBooks) {
+      Operation(ExplorePageBooks.self)
+      Body(.input(ExplorePageBooks.self))
     }
     Route(/Self.friendPage) {
       Operation(FriendPage.self)
@@ -44,6 +46,10 @@ enum AuthedNextEvansBuildRoute: PairRoute {
       Operation(FriendsPage.self)
       Body(.input(FriendsPage.self))
     }
+    Route(/Self.gettingStartedBooks) {
+      Operation(GettingStartedBooks.self)
+      Body(.input(GettingStartedBooks.self))
+    }
     Route(/Self.publishedDocumentSlugs) {
       Operation(PublishedDocumentSlugs.self)
       Body(.input(PublishedDocumentSlugs.self))
@@ -51,6 +57,9 @@ enum AuthedNextEvansBuildRoute: PairRoute {
     Route(/Self.publishedFriendSlugs) {
       Operation(PublishedFriendSlugs.self)
       Body(.input(PublishedFriendSlugs.self))
+    }
+    Route(/Self.totalPublished) {
+      Operation(TotalPublished.self)
     }
   }
   .eraseToAnyParserPrinter()
@@ -66,8 +75,8 @@ extension NextEvansBuildRoute: RouteResponder {
       case .documentPage(let input):
         let output = try await DocumentPage.resolve(with: input, in: authed)
         return try respond(with: output)
-      case .explorePage(let lang):
-        let output = try await ExplorePage.resolve(with: lang, in: authed)
+      case .explorePageBooks(let lang):
+        let output = try await ExplorePageBooks.resolve(with: lang, in: authed)
         return try respond(with: output)
       case .friendPage(let input):
         let output = try await FriendPage.resolve(with: input, in: authed)
@@ -75,11 +84,17 @@ extension NextEvansBuildRoute: RouteResponder {
       case .friendsPage(let lang):
         let output = try await FriendsPage.resolve(with: lang, in: authed)
         return try respond(with: output)
+      case .gettingStartedBooks(let input):
+        let output = try await GettingStartedBooks.resolve(with: input, in: authed)
+        return try respond(with: output)
       case .publishedFriendSlugs(let lang):
         let output = try await PublishedFriendSlugs.resolve(with: lang, in: authed)
         return try respond(with: output)
       case .publishedDocumentSlugs(let input):
         let output = try await PublishedDocumentSlugs.resolve(with: input, in: authed)
+        return try respond(with: output)
+      case .totalPublished:
+        let output = try await TotalPublished.resolve(in: authed)
         return try respond(with: output)
       }
     }

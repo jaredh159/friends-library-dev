@@ -1,72 +1,201 @@
 const recommendedBooks = {
   history: {
     en: [
-      { title: `primitive-christianity-revived`, author: `william-penn` },
-      { title: `history-of-quakers`, author: `william-sewel` },
-      { title: `lives-of-primitive-quakers`, author: `mary-ann-kelty` },
-      { title: `history-of-the-quakers-v1`, author: `john-gough` },
+      {
+        documentSlug: `primitive-christianity-revived`,
+        friendSlug: `william-penn`,
+      },
+      {
+        documentSlug: `history-of-quakers`,
+        friendSlug: `william-sewel`,
+      },
+      {
+        documentSlug: `lives-of-primitive-quakers`,
+        friendSlug: `mary-ann-kelty`,
+      },
+      {
+        documentSlug: `history-of-the-quakers-v1`,
+        friendSlug: `john-gough`,
+      },
     ],
     es: [
-      { title: `restauracion-del-cristianismo-primitivo`, author: `william-penn` },
-      { title: `historia-de-los-cuaqueros`, author: `william-sewel` },
+      {
+        documentSlug: `restauracion-del-cristianismo-primitivo`,
+        friendSlug: `william-penn`,
+      },
+      {
+        documentSlug: `historia-de-los-cuaqueros`,
+        friendSlug: `william-sewel`,
+      },
     ],
   },
   doctrine: {
     en: [
-      { title: `saved-to-the-uttermost`, author: `robert-barclay` },
-      { title: `original-and-present-state-of-man`, author: `joseph-phipps` },
-      { title: `writings-volume-1`, author: `isaac-penington` },
-      { title: `writings-volume-2`, author: `isaac-penington` },
-      { title: `waiting-upon-the-lord`, author: `robert-barclay` },
-      { title: `journal`, author: `thomas-story` },
+      {
+        documentSlug: `saved-to-the-uttermost`,
+        friendSlug: `robert-barclay`,
+      },
+      {
+        documentSlug: `original-and-present-state-of-man`,
+        friendSlug: `joseph-phipps`,
+      },
+      {
+        documentSlug: `writings-volume-1`,
+        friendSlug: `isaac-penington`,
+      },
+      {
+        documentSlug: `writings-volume-2`,
+        friendSlug: `isaac-penington`,
+      },
+      {
+        documentSlug: `waiting-upon-the-lord`,
+        friendSlug: `robert-barclay`,
+      },
+      {
+        documentSlug: `journal`,
+        friendSlug: `thomas-story`,
+      },
     ],
     es: [
-      { title: `esta-grande-salvacion`, author: `robert-barclay` },
-      { title: `estado-original-y-presente-del-hombre`, author: `joseph-phipps` },
-      { title: `escritos-volumen-1`, author: `isaac-penington` },
-      { title: `escritos-volumen-2`, author: `isaac-penington` },
-      { title: `esperando-en-el-senor`, author: `robert-barclay` },
+      {
+        documentSlug: `esta-grande-salvacion`,
+        friendSlug: `robert-barclay`,
+      },
+      {
+        documentSlug: `estado-original-y-presente-del-hombre`,
+        friendSlug: `joseph-phipps`,
+      },
+      {
+        documentSlug: `escritos-volumen-1`,
+        friendSlug: `isaac-penington`,
+      },
+      {
+        documentSlug: `escritos-volumen-2`,
+        friendSlug: `isaac-penington`,
+      },
+      {
+        documentSlug: `esperando-en-el-senor`,
+        friendSlug: `robert-barclay`,
+      },
     ],
   },
   spiritualLife: {
     en: [
-      { title: `walk-in-the-spirit`, author: `hugh-turford` },
-      { title: `writings-volume-1`, author: `isaac-penington` },
-      { title: `writings-volume-2`, author: `isaac-penington` },
-      { title: `no-cross-no-crown`, author: `william-penn` },
-      { title: `plain-pathway`, author: `stephen-crisp` },
-      { title: `mysteries-of-gods-kingdom-declared`, author: `francis-howgill` },
-      { title: `meditations-experiences`, author: `william-shewen` },
-      { title: `piety-promoted-v1`, author: `compilations` },
+      {
+        documentSlug: `walk-in-the-spirit`,
+        friendSlug: `hugh-turford`,
+      },
+      {
+        documentSlug: `writings-volume-1`,
+        friendSlug: `isaac-penington`,
+      },
+      {
+        documentSlug: `writings-volume-2`,
+        friendSlug: `isaac-penington`,
+      },
+      {
+        documentSlug: `no-cross-no-crown`,
+        friendSlug: `william-penn`,
+      },
+      {
+        documentSlug: `plain-pathway`,
+        friendSlug: `stephen-crisp`,
+      },
+      {
+        documentSlug: `mysteries-of-gods-kingdom-declared`,
+        friendSlug: `francis-howgill`,
+      },
+      {
+        documentSlug: `meditations-experiences`,
+        friendSlug: `william-shewen`,
+      },
+      {
+        documentSlug: `piety-promoted-v1`,
+        friendSlug: `compilations`,
+      },
     ],
     es: [
-      { title: `escritos-volumen-1`, author: `isaac-penington` },
-      { title: `escritos-volumen-2`, author: `isaac-penington` },
-      { title: `no-cruz-no-corona`, author: `william-penn` },
-      { title: `algunos-de-los-misterios-del-reino`, author: `francis-howgill` },
-      { title: `camino-simple`, author: `stephen-crisp` },
-      { title: `babilonia-hasta-bet-el`, author: `stephen-crisp` },
+      {
+        documentSlug: `escritos-volumen-1`,
+        friendSlug: `isaac-penington`,
+      },
+      {
+        documentSlug: `escritos-volumen-2`,
+        friendSlug: `isaac-penington`,
+      },
+      {
+        documentSlug: `no-cruz-no-corona`,
+        friendSlug: `william-penn`,
+      },
+      {
+        documentSlug: `algunos-de-los-misterios-del-reino`,
+        friendSlug: `francis-howgill`,
+      },
+      {
+        documentSlug: `camino-simple`,
+        friendSlug: `stephen-crisp`,
+      },
+      {
+        documentSlug: `babilonia-hasta-bet-el`,
+        friendSlug: `stephen-crisp`,
+      },
     ],
   },
   journals: {
     en: [
-      { title: `truth-in-the-inward-parts-v1`, author: `compilations` },
-      { title: `truth-in-the-inward-parts-v2`, author: `compilations` },
-      { title: `truth-in-the-inward-parts-v3`, author: `compilations` },
-      { title: `journal`, author: `john-richardson` },
-      { title: `life`, author: `jane-pearson` },
-      { title: `journal`, author: `john-gratton` },
-      { title: `journal`, author: `john-conran` },
-      { title: `journal`, author: `thomas-story` },
-      { title: `life`, author: `james-parnell` },
-      { title: `journal`, author: `william-edmundson` },
-      { title: `journal`, author: `isaac-martin` },
+      {
+        documentSlug: `truth-in-the-inward-parts-v1`,
+        friendSlug: `compilations`,
+      },
+      {
+        documentSlug: `truth-in-the-inward-parts-v2`,
+        friendSlug: `compilations`,
+      },
+      {
+        documentSlug: `truth-in-the-inward-parts-v3`,
+        friendSlug: `compilations`,
+      },
+      {
+        documentSlug: `journal`,
+        friendSlug: `john-richardson`,
+      },
+      {
+        documentSlug: `life`,
+        friendSlug: `jane-pearson`,
+      },
+      {
+        documentSlug: `journal`,
+        friendSlug: `john-gratton`,
+      },
+      {
+        documentSlug: `journal`,
+        friendSlug: `john-conran`,
+      },
+      {
+        documentSlug: `journal`,
+        friendSlug: `thomas-story`,
+      },
+      {
+        documentSlug: `life`,
+        friendSlug: `james-parnell`,
+      },
+      {
+        documentSlug: `journal`,
+        friendSlug: `william-edmundson`,
+      },
+      {
+        documentSlug: `journal`,
+        friendSlug: `isaac-martin`,
+      },
     ],
     es: [
-      { title: `vida`, author: `james-parnell` },
       {
-        title: `sufrimientos-de-catharine-evans-sarah-cheevers`,
-        author: `william-sewel`,
+        documentSlug: `vida`,
+        friendSlug: `james-parnell`,
+      },
+      {
+        documentSlug: `sufrimientos-de-catharine-evans-sarah-cheevers`,
+        friendSlug: `william-sewel`,
       },
     ],
   },
