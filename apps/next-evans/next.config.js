@@ -5,7 +5,6 @@ const LANG = process.env.NEXT_PUBLIC_LANG || `en`;
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: false,
   transpilePackages: [`@friends-library`, `x-syntax`],
   rewrites: async function () {
     return {
@@ -37,6 +36,21 @@ const nextConfig = {
       {
         source: `/static/:path*`,
         destination: `/:path*`,
+        permanent: true,
+      },
+      {
+        source: `/friend/compilations`,
+        destination: `/compilations`,
+        permanent: true,
+      },
+      {
+        source: `/amiga/compilaciones`,
+        destination: `/compilaciones`,
+        permanent: true,
+      },
+      {
+        source: `/amigo/compilaciones`,
+        destination: `/compilaciones`,
         permanent: true,
       },
     ];

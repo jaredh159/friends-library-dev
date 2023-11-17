@@ -26,7 +26,7 @@ export namespace FriendPage {
       hasAudio: boolean;
       primaryEdition: {
         isbn: string;
-        numPages: number[];
+        numPages: [number, ...number[]];
         size: 's' | 'm' | 'xl';
         type: 'updated' | 'original' | 'modernized';
         customCss?: string;

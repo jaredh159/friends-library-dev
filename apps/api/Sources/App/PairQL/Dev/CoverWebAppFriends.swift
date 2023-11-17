@@ -23,7 +23,7 @@ struct CoverWebAppFriends: Pair {
         let path: String
         let isDraft: Bool
         let type: EditionType
-        let pages: [Int]?
+        let pages: NonEmpty<[Int]>?
         let size: PrintSize?
         let isbn: ISBN?
         let audioPartTitles: [String]?
@@ -62,7 +62,7 @@ extension CoverWebAppFriends: NoInputResolver {
                 path: edition.directoryPath,
                 isDraft: edition.isDraft,
                 type: edition.type,
-                pages: impression.map { Array($0.paperbackVolumes) },
+                pages: impression.map(\.paperbackVolumes),
                 size: impression?.paperbackSize,
                 isbn: isbn?.code,
                 audioPartTitles: audioPartTitles

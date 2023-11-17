@@ -18,7 +18,7 @@ export namespace CoverWebAppFriends {
         path: string;
         isDraft: boolean;
         type: 'updated' | 'original' | 'modernized';
-        pages?: number[];
+        pages?: [number, ...number[]];
         size?: 's' | 'm' | 'xl';
         isbn?: string;
         audioPartTitles?: string[];

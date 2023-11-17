@@ -1,5 +1,6 @@
 import DuetSQL
 import Foundation
+import NonEmpty
 import PairQL
 
 struct FriendPage: Pair {
@@ -36,7 +37,7 @@ struct FriendPage: Pair {
 
       struct PrimaryEdition: PairNestable {
         let isbn: ISBN
-        let numPages: [Int]
+        let numPages: NonEmpty<[Int]>
         let size: PrintSize
         let type: EditionType
         let customCss: String?
@@ -113,7 +114,7 @@ extension FriendPage: Resolver {
           hasAudio: primaryEdition.audio.require() != nil,
           primaryEdition: .init(
             isbn: isbn.code,
-            numPages: Array(impression.paperbackVolumes),
+            numPages: impression.paperbackVolumes,
             size: impression.paperbackSize,
             type: primaryEdition.type,
             customCss: nil,

@@ -1,4 +1,4 @@
-import type { Region } from './types';
+import type { EditionType, Region } from './types';
 
 // todo: logic is wrong, search old evans for 'james parnell case'
 export function publishedYear(
@@ -42,4 +42,22 @@ export function documentRegion(document: {
     default:
       throw new Error(`Error inferring explore region for friend: ${region}`);
   }
+}
+
+type SortableDoc = {
+  primaryEdition: { type: EditionType };
+  title: string;
+};
+
+export function sortDocuments(a: SortableDoc, b: SortableDoc): number {
+  if (a.primaryEdition?.type !== b.primaryEdition?.type) {
+    if (a.primaryEdition?.type === `updated`) {
+      return -1;
+    }
+    if (a.primaryEdition?.type === `modernized`) {
+      return b.primaryEdition?.type === `updated` ? 1 : -1;
+    }
+    return 1;
+  }
+  return a.title < b.title ? -1 : 1;
 }

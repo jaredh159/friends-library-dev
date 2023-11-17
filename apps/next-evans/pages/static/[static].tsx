@@ -30,9 +30,7 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
   const slug = context.params?.static;
   invariant(typeof slug === `string`);
   const totals = await Client.node(process).totalPublished();
-
   const source = replacePlaceholders(mdx.source(slug, LANG), totals);
-
   const { content, data: frontmatter } = matter(source);
   invariant(mdx.verifyFrontmatter(frontmatter));
   frontmatter.description = replacePlaceholders(frontmatter.description, totals);

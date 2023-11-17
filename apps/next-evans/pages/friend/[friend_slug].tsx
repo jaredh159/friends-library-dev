@@ -12,15 +12,14 @@ import TestimonialsBlock from '@/components/pages/friend/TestimonialsBlock';
 import MapBlock from '@/components/pages/friend/MapBlock';
 import getResidences from '@/lib/residences';
 import { getDocumentUrl } from '@/lib/friend';
+import { sortDocuments } from '@/lib/document';
 
 type Props = T.FriendPage.Output;
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const slugs = await Client.node(process).publishedFriendSlugs(LANG);
   return {
-    paths: slugs
-      .filter((slug) => !slug.startsWith(`compila`)) // todo: temp
-      .map((friend_slug) => ({ params: { friend_slug } })),
+    paths: slugs.map((friend_slug) => ({ params: { friend_slug } })),
     fallback: false,
   };
 };
@@ -31,6 +30,7 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
     lang: LANG,
     slug: context.params.friend_slug,
   });
+  friend.documents.sort(sortDocuments);
   return { props: friend };
 };
 
@@ -49,7 +49,7 @@ const Friend: React.FC<Props> = ({
   const onlyOneBook = documents.length === 1;
   const mapData = getResidences(residences);
   let mapBlock;
-  if (isCompilations) {
+  if (!isCompilations) {
     invariant(mapData[0] !== undefined);
     mapBlock = (
       <MapBlock
@@ -92,39 +92,29 @@ const Friend: React.FC<Props> = ({
             'lg:flex-row lg:justify-between lg:flex-wrap lg:items-stretch': !onlyOneBook,
           })}
         >
-          {documents
-            .sort((doc) => {
-              if (doc.editionTypes.includes(`updated`)) {
-                return -1;
-              }
-              if (doc.editionTypes.includes(`modernized`)) {
-                return 0;
-              }
-              return 1;
-            })
-            .map((doc) => (
-              <BookByFriend
-                key={doc.id}
-                htmlShortTitle={doc.htmlShortTitle}
-                isAlone={onlyOneBook}
-                className="mb-8 lg:mb-12"
-                tags={doc.tags}
-                hasAudio={doc.hasAudio}
-                bookUrl={getDocumentUrl(slug, doc.slug)}
-                numDownloads={doc.numDownloads}
-                pages={doc.primaryEdition.numPages}
-                description={doc.shortDescription}
-                lang={LANG}
-                title={doc.title}
-                isCompilation={isCompilations}
-                author={name}
-                size={doc.primaryEdition.size}
-                edition={doc.primaryEdition.type}
-                isbn={doc.primaryEdition.isbn}
-                customCss={doc.primaryEdition.customCss || ``}
-                customHtml={doc.primaryEdition.customHtml || ``}
-              />
-            ))}
+          {documents.map((doc) => (
+            <BookByFriend
+              key={doc.id}
+              htmlShortTitle={doc.htmlShortTitle}
+              isAlone={onlyOneBook}
+              className="mb-8 lg:mb-12"
+              tags={doc.tags}
+              hasAudio={doc.hasAudio}
+              bookUrl={getDocumentUrl(slug, doc.slug)}
+              numDownloads={doc.numDownloads}
+              pages={doc.primaryEdition.numPages}
+              description={doc.shortDescription}
+              lang={LANG}
+              title={doc.title}
+              isCompilation={isCompilations}
+              author={name}
+              size={doc.primaryEdition.size}
+              edition={doc.primaryEdition.type}
+              isbn={doc.primaryEdition.isbn}
+              customCss={doc.primaryEdition.customCss || ``}
+              customHtml={doc.primaryEdition.customHtml || ``}
+            />
+          ))}
         </div>
       </div>
       {mapBlock}

@@ -48,7 +48,8 @@ const BookByFriend: React.FC<Props> = (props) => {
         scope={isAlone ? `1-2` : `1-3`}
         className={isAlone ? `-mt-20 md:mt-4 md:-ml-32` : `mt-4 md:-ml-24`}
         pages={pages[0]}
-        blurb="" // back not visible in this component
+        blurb=""
+        onlyFront
         shadow={true}
       />
       <div className="lg:mr-[5%] mt-6 md:pl-6 md:py-6 lg:pl-2 lg:py-2 self-start flex flex-col">
