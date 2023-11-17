@@ -55,6 +55,23 @@ export default class NextEvansBuildClient extends Client {
     return result.unwrap();
   }
 
+  public async homepageFeaturedBooks(
+    input: P.HomepageFeaturedBooks.Input,
+  ): Promise<P.HomepageFeaturedBooks.Output> {
+    const result = await this.query<P.HomepageFeaturedBooks.Output>(
+      input,
+      `HomepageFeaturedBooks`,
+    );
+    return result.unwrap();
+  }
+
+  public async newsFeedItems(
+    input: P.NewsFeedItems.Input,
+  ): Promise<P.NewsFeedItems.Output> {
+    const result = await this.query<P.NewsFeedItems.Output>(input, `NewsFeedItems`);
+    return result.unwrap();
+  }
+
   public async publishedDocumentSlugs(
     input: P.PublishedDocumentSlugs.Input,
   ): Promise<P.PublishedDocumentSlugs.Output> {
@@ -110,6 +127,18 @@ export default class NextEvansBuildClient extends Client {
     input: P.GettingStartedBooks.Input,
   ): Promise<Result<P.GettingStartedBooks.Output>> {
     return this.query<P.GettingStartedBooks.Output>(input, `GettingStartedBooks`);
+  }
+
+  public homepageFeaturedBooksResult(
+    input: P.HomepageFeaturedBooks.Input,
+  ): Promise<Result<P.HomepageFeaturedBooks.Output>> {
+    return this.query<P.HomepageFeaturedBooks.Output>(input, `HomepageFeaturedBooks`);
+  }
+
+  public newsFeedItemsResult(
+    input: P.NewsFeedItems.Input,
+  ): Promise<Result<P.NewsFeedItems.Output>> {
+    return this.query<P.NewsFeedItems.Output>(input, `NewsFeedItems`);
   }
 
   public publishedDocumentSlugsResult(

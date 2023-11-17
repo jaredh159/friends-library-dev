@@ -4,14 +4,25 @@ import cx from 'classnames';
 import { ThreeD as Front } from '@friends-library/cover-component';
 import { t } from '@friends-library/locale';
 import { htmlTitle } from '@friends-library/adoc-utils';
-import type { Doc } from '@/lib/types';
 import { LANG } from '@/lib/env';
 import Button from '@/components/core/Button';
 import { getDocumentUrl, getFriendUrl, isCompilations } from '@/lib/friend';
+import { toCoverProps } from '@/lib/cover';
 
-export type Props = Doc<
-  'authorGender' | 'shortDescription' | 'mostModernEdition' | 'featuredDescription'
-> & { isCurrent: boolean };
+interface Props {
+  isbn: string;
+  title: string;
+  paperbackVolumes: [number, ...number[]];
+  customCss?: string;
+  customHtml?: string;
+  isCompilation: boolean;
+  authorName: string;
+  authorSlug: string;
+  authorGender: 'male' | 'female' | 'mixed';
+  documentSlug: string;
+  featuredDescription: string;
+  isCurrent: boolean;
+}
 
 const Book: React.FC<Props> = (props) => (
   <div
@@ -23,38 +34,28 @@ const Book: React.FC<Props> = (props) => (
     <div className="flex flex-col items-center md:items-end md:w-2/5 md:mr-16">
       <div className="mb-8 md:hidden">
         <Front
-          lang={LANG}
-          isCompilation={isCompilations(props.authorSlug)}
-          author={props.authorName}
-          pages={props.mostModernEdition.numPages[0] ?? 80}
-          edition={props.mostModernEdition.type}
-          isbn={props.isbn}
-          blurb={``}
-          customCss={props.customCss ?? ``}
-          customHtml={props.customHtml ?? ``}
-          size="m"
+          {...toCoverProps({
+            ...props,
+            description: ``,
+            printSize: `m`,
+            editionType: `updated`,
+          })}
           onlyFront
           scope="1-2"
           scaler={1 / 2}
-          title={props.title}
         />
       </div>
       <div className="hidden md:block">
         <Front
-          lang={LANG}
-          isCompilation={isCompilations(props.authorSlug)}
-          author={props.authorName}
-          pages={props.mostModernEdition.numPages[0] ?? 80}
-          edition={props.mostModernEdition.type}
-          isbn={props.isbn}
-          blurb={``}
-          customCss={props.customCss ?? ``}
-          customHtml={props.customHtml ?? ``}
-          size="m"
+          {...toCoverProps({
+            ...props,
+            description: ``,
+            printSize: `m`,
+            editionType: `updated`,
+          })}
           onlyFront
           scope="3-5"
           scaler={3 / 5}
-          title={props.title}
         />
       </div>
     </div>
@@ -70,9 +71,7 @@ const Book: React.FC<Props> = (props) => (
       )}
       <p
         className="font-serif text-lg md:text-xl opacity-75 leading-relaxed max-w-2xl"
-        dangerouslySetInnerHTML={{
-          __html: props.featuredDescription ?? props.shortDescription,
-        }}
+        dangerouslySetInnerHTML={{ __html: props.featuredDescription }}
       />
       {!isCompilations(props.authorSlug) && (
         <p className="mb-10 md:mb-0 my-6">
@@ -88,7 +87,7 @@ const Book: React.FC<Props> = (props) => (
       )}
       <Button
         bg="green"
-        to={getDocumentUrl(props)}
+        to={getDocumentUrl(props.authorSlug, props.documentSlug)}
         className={cx(`mx-auto md:mx-0`, {
           'mt-12': isCompilations(props.authorSlug),
           'sm:mt-0 md:mt-10': !isCompilations(props.authorSlug),

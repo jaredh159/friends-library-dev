@@ -5,6 +5,8 @@ export * from './ExplorePageBooks';
 export * from './FriendPage';
 export * from './FriendsPage';
 export * from './GettingStartedBooks';
+export * from './HomepageFeaturedBooks';
+export * from './NewsFeedItems';
 export * from './PublishedDocumentSlugs';
 export * from './PublishedFriendSlugs';
 export * from './TotalPublished';

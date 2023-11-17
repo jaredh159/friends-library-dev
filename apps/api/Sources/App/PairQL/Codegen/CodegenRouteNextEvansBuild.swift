@@ -12,6 +12,8 @@ extension CodegenRoute.NextEvansBuild: CodegenRouteHandler {
       FriendPage.self,
       FriendsPage.self,
       GettingStartedBooks.self,
+      HomepageFeaturedBooks.self,
+      NewsFeedItems.self,
       PublishedDocumentSlugs.self,
       PublishedFriendSlugs.self,
       TotalPublished.self,

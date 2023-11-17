@@ -1,18 +1,20 @@
 import DuetSQL
 import PairQL
 
+struct SelectedDocuments: PairInput {
+  let lang: Lang
+  let slugs: [Slugs]
+
+  struct Slugs: PairNestable {
+    let friendSlug: String
+    let documentSlug: String
+  }
+}
+
 struct GettingStartedBooks: Pair {
   static var auth: Scope = .queryEntities
 
-  struct Input: PairInput {
-    let lang: Lang
-    let slugs: [Slugs]
-
-    struct Slugs: PairNestable {
-      let friendSlug: String
-      let documentSlug: String
-    }
-  }
+  typealias Input = SelectedDocuments
 
   struct DocumentOutput: PairOutput {
     let title: String
@@ -35,22 +37,13 @@ struct GettingStartedBooks: Pair {
 extension GettingStartedBooks: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    var output: Output = []
 
-    let documents = try await Document.query()
-      .where(.slug |=| input.slugs.map { .string($0.documentSlug) })
-      .all()
+    let documents = try await input.resolve()
 
-    for slug in input.slugs {
-      let document = try expect(documents.filter { document in
-        guard document.slug == slug.documentSlug else { return false }
-        let friend = document.friend.require()
-        return friend.slug == slug.friendSlug && friend.lang == input.lang
-      }.first)
-
+    return try documents.map { document in
       let friend = try expect(document.friend.require())
       let edition = try expect(document.primaryEdition)
-      output.append(.init(
+      return .init(
         title: document.title,
         slug: document.slug,
         editionType: edition.type,
@@ -63,9 +56,26 @@ extension GettingStartedBooks: Resolver {
         authorGender: friend.gender,
         htmlShortTitle: document.htmlShortTitle,
         hasAudio: edition.audio.require() != nil
-      ))
+      )
     }
+  }
+}
 
-    return output
+extension SelectedDocuments {
+  func resolve() async throws -> [Document] {
+    let allDocuments = try await Document.query()
+      .where(.slug |=| slugs.map { .string($0.documentSlug) })
+      .all()
+
+    var documents: [Document] = []
+    for slug in slugs {
+      let matchedDocument = allDocuments.filter { document in
+        guard document.slug == slug.documentSlug else { return false }
+        let friend = document.friend.require()
+        return friend.slug == slug.friendSlug && friend.lang == lang
+      }.first
+      documents.append(try expect(matchedDocument))
+    }
+    return documents
   }
 }
