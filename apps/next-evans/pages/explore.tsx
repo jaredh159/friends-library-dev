@@ -21,7 +21,7 @@ import { documentRegion, publishedYear } from '@/lib/document';
 
 type Props = {
   books: Api.ExplorePageBooks.Output;
-  numTotalBooks: Api.TotalPublished.Output;
+  totalPublished: Api.TotalPublished.Output;
 };
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
@@ -29,11 +29,11 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   const props = await Promise.all([
     client.explorePageBooks(LANG),
     client.totalPublished(),
-  ]).then(([books, numTotalBooks]) => ({ books, numTotalBooks }));
+  ]).then(([books, totalPublished]) => ({ books, totalPublished }));
   return { props };
 };
 
-const ExploreBooks: React.FC<Props> = ({ numTotalBooks, books }) => (
+const ExploreBooks: React.FC<Props> = ({ totalPublished, books }) => (
   <div>
     <BackgroundImage src={HeroImg} fineTuneImageStyles={{ objectFit: `cover` }}>
       <div className="p-8 sm:p-16 lg:p-24 bg-black/60 lg:backdrop-blur-sm">
@@ -44,13 +44,13 @@ const ExploreBooks: React.FC<Props> = ({ numTotalBooks, books }) => (
           </Dual.H1>
           <Dual.P className="body-text">
             <>
-              We currently have {numTotalBooks[LANG]} books freely available on this site.
-              Overwhelmed? On this page you can browse all the titles by edition, region,
-              time period, tags, and more&mdash;or search the full library to find exactly
-              what you’re looking for.
+              We currently have {totalPublished.books[LANG]} books freely available on
+              this site. Overwhelmed? On this page you can browse all the titles by
+              edition, region, time period, tags, and more&mdash;or search the full
+              library to find exactly what you’re looking for.
             </>
             <>
-              Actualmente tenemos {numTotalBooks[LANG]} libros disponibles de forma
+              Actualmente tenemos {totalPublished.books[LANG]} libros disponibles de forma
               gratuita en este sitio, y más están siendo traducidos y añadidos
               regularmente. En nuestra página de “Explorar” puedes navegar por todos
               nuestros libros y audiolibros, o buscar libros en la categoría particular
@@ -150,7 +150,7 @@ const ExploreBooks: React.FC<Props> = ({ numTotalBooks, books }) => (
       />
     )}
     <AltSiteBlock
-      numBooks={numTotalBooks[LANG === `en` ? `es` : `en`]}
+      numBooks={totalPublished.books[LANG === `en` ? `es` : `en`]}
       url={
         LANG === `en` ? `https://bibliotecadelosamigos.org` : `https://friendslibrary.com`
       }

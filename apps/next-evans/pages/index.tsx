@@ -22,7 +22,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   ]).then(([featuredBooks, newsFeedItems, totalPublished]) => ({
     featuredBooks,
     newsFeedItems: getNewsFeedItems(newsFeedItems),
-    numTotalBooks: totalPublished[LANG],
+    numTotalBooks: totalPublished.books[LANG],
   }));
   return { props };
 };

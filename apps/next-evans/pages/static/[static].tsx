@@ -4,6 +4,7 @@ import { MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import invariant from 'tiny-invariant';
 import { type MDXRemoteSerializeResult } from 'next-mdx-remote';
+import Client, { type T as Api } from '@friends-library/pairql/next-evans-build';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import type { MdxPageFrontmatter } from '@/lib/types';
 import { WhiteOverlay } from '../explore';
@@ -11,43 +12,30 @@ import HeroImg from '@/public/images/explore-books.jpg';
 import * as mdx from '@/lib/mdx';
 import { LANG } from '@/lib/env';
 import BackgroundImage from '@/components/core/BackgroundImage';
-import { getAllDocuments } from '@/lib/db/documents';
+
+interface Props {
+  source: MDXRemoteSerializeResult;
+  frontmatter: MdxPageFrontmatter;
+}
 
 export const getStaticPaths: GetStaticPaths = async () => ({
-  // paths: mdx
-  //   .fileData()
-  //   .filter((file) => file.lang === LANG)
-  //   .map(({ slug }) => ({ params: { static: slug } })),
-  paths: [],
+  paths: mdx
+    .fileData()
+    .filter((file) => file.lang === LANG)
+    .map(({ slug }) => ({ params: { static: slug } })),
   fallback: false,
 });
 
 export const getStaticProps: GetStaticProps<Props> = async (context) => {
   const slug = context.params?.static;
   invariant(typeof slug === `string`);
+  const totals = await Client.node(process).totalPublished();
 
-  const englishBooks = Object.values(await getAllDocuments(`en`));
-  const spanishBooks = Object.values(await getAllDocuments(`es`));
-  const numAudiobooks =
-    LANG === `en`
-      ? englishBooks.filter((book) => book.hasAudio).length
-      : spanishBooks.filter((book) => book.hasAudio).length;
-
-  const source = replacePlaceholders(
-    mdx.source(slug, LANG),
-    englishBooks.length,
-    spanishBooks.length,
-    numAudiobooks,
-  );
+  const source = replacePlaceholders(mdx.source(slug, LANG), totals);
 
   const { content, data: frontmatter } = matter(source);
   invariant(mdx.verifyFrontmatter(frontmatter));
-  frontmatter.description = replacePlaceholders(
-    frontmatter.description,
-    englishBooks.length,
-    spanishBooks.length,
-    numAudiobooks,
-  );
+  frontmatter.description = replacePlaceholders(frontmatter.description, totals);
   const mdxSource = await serialize(content, { scope: frontmatter });
 
   return {
@@ -118,11 +106,6 @@ const components: React.ComponentProps<typeof MDXRemote>['components'] = {
   ),
 };
 
-interface Props {
-  source: MDXRemoteSerializeResult;
-  frontmatter: MdxPageFrontmatter;
-}
-
 const StaticPage: React.FC<Props> = ({ source, frontmatter }) => (
   <div>
     <BackgroundImage src={HeroImg} fineTuneImageStyles={{ objectFit: `cover` }}>
@@ -144,13 +127,11 @@ export default StaticPage;
 
 function replacePlaceholders(
   content: string,
-  numEnglishBooks: number,
-  numSpanishBooks: number,
-  numAudiobooks: number,
+  totalPublished: Api.TotalPublished.Output,
 ): string {
   return content
-    .replace(/%NUM_AUDIOBOOKS%/g, String(numAudiobooks))
-    .replace(/%NUM_SPANISH_BOOKS%/g, String(numSpanishBooks))
-    .replace(/%NUM_ENGLISH_BOOKS%/g, String(numEnglishBooks))
+    .replace(/%NUM_AUDIOBOOKS%/g, String(totalPublished.audiobooks[LANG]))
+    .replace(/%NUM_SPANISH_BOOKS%/g, String(totalPublished.books.es))
+    .replace(/%NUM_ENGLISH_BOOKS%/g, String(totalPublished.books.en))
     .replace(/ -- /g, ` — `);
 }

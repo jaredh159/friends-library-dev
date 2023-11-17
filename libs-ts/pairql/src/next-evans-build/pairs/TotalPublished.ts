@@ -2,8 +2,15 @@
 
 export namespace TotalPublished {
   export type Input = void;
+
   export interface Output {
-    en: number;
-    es: number;
+    books: {
+      en: number;
+      es: number;
+    };
+    audiobooks: {
+      en: number;
+      es: number;
+    };
   }
 }

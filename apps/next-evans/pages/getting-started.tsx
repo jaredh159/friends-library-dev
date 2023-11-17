@@ -25,9 +25,9 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     client.gettingStartedBooks({ lang: LANG, slugs: recommended.spiritualLife[LANG] }),
     client.gettingStartedBooks({ lang: LANG, slugs: recommended.journals[LANG] }),
     client.totalPublished(),
-  ]).then(([history, doctrine, spiritualLife, journals, totals]) => ({
+  ]).then(([history, doctrine, spiritualLife, journals, totalPublished]) => ({
     books: { history, doctrine, spiritualLife, journals },
-    numBooks: totals[LANG],
+    numBooks: totalPublished.books[LANG],
   }));
 
   return { props: props };
