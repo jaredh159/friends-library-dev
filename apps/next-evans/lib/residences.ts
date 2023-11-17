@@ -1,6 +1,5 @@
 import invariant from 'tiny-invariant';
 import type { friend_residences as FriendResidence } from '@prisma/client';
-import type { Residence } from './types';
 
 type Map = 'UK' | 'US' | 'Europe';
 
@@ -42,29 +41,6 @@ function deriveMap(positions: Position[]): 'UK' | 'US' | 'Europe' {
   arrays.sort((a, b) => (a.length < b.length ? 1 : -1));
   invariant(arrays[0] !== undefined && arrays[0][0] !== undefined);
   return arrays[0][0];
-}
-
-export function primaryResidence(residences: Residence[]): Residence | null {
-  return residences.reduce<Residence | null>((acc, residence) => {
-    if (acc === null) return residence;
-    if (
-      residence.durations.reduce((longest, dur) => {
-        if (Number(dur.end) - Number(dur.start) > longest) {
-          return Number(dur.end) - Number(dur.start);
-        }
-        return longest;
-      }, 0) >
-      acc.durations.reduce((longest, dur) => {
-        if (Number(dur.end) - Number(dur.start) > longest) {
-          return Number(dur.end) - Number(dur.start);
-        }
-        return longest;
-      }, 0)
-    ) {
-      return residence;
-    }
-    return acc;
-  }, null);
 }
 
 function getPosition(residence: Pick<FriendResidence, 'city' | 'region'>): Position {

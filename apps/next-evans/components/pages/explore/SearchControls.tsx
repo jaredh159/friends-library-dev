@@ -18,7 +18,7 @@ interface Group {
 }
 
 interface BookMeta {
-  edition: EditionType;
+  editionType: EditionType;
   tags: string[];
   period: Period;
   region: Region;
@@ -79,7 +79,7 @@ function groupify(
 
     switch (type) {
       case `edition`:
-        groups.edition.filters.push(makeItem((b) => b.edition === value));
+        groups.edition.filters.push(makeItem((b) => b.editionType === value));
         break;
       case `tag`:
         groups.tag.filters.push(makeItem((b) => b.tags.includes(value)));

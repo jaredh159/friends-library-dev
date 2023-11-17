@@ -1,7 +1,7 @@
 import type { Lang } from '@friends-library/types';
 import type { Document } from '../types';
 import { LANG } from '../env';
-import { publishedYear, publicationRegion } from '../document';
+// import { publishedYear } from '../document';
 import { getAllFriends } from './friends';
 
 export async function getAllDocuments(
@@ -13,8 +13,8 @@ export async function getAllDocuments(
     friend.documents.forEach((doc) => {
       documents[`${friend.slug}/${doc.slug}`] = {
         ...doc,
-        publishedRegion: publicationRegion(friend.residences),
-        publishedYear: publishedYear(friend.residences, friend.born, friend.died),
+        publishedRegion: `Other`, // publicationRegion(friend.residences),
+        publishedYear: null, // publishedYear(friend.residences, friend.born, friend.died),
         authorGender: friend.gender,
         authorName: friend.name,
         authorSlug: friend.slug,

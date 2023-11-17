@@ -52,7 +52,7 @@ const BookTeaserCard: React.FC<Props> = ({
           {badgeText && <Badge>{badgeText}</Badge>}
           {isAudio && (
             <Link href={`${documentUrl}#audiobook`}>
-              <Album {...coverProps} />
+              <Album {...props} />
             </Link>
           )}
           {!isAudio && (

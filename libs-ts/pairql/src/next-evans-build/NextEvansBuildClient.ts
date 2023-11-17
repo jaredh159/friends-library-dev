@@ -28,6 +28,11 @@ export default class NextEvansBuildClient extends Client {
     return result.unwrap();
   }
 
+  public async explorePage(input: P.ExplorePage.Input): Promise<P.ExplorePage.Output> {
+    const result = await this.query<P.ExplorePage.Output>(input, `ExplorePage`);
+    return result.unwrap();
+  }
+
   public async friendPage(input: P.FriendPage.Input): Promise<P.FriendPage.Output> {
     const result = await this.query<P.FriendPage.Output>(input, `FriendPage`);
     return result.unwrap();
@@ -62,6 +67,12 @@ export default class NextEvansBuildClient extends Client {
     input: P.DocumentPage.Input,
   ): Promise<Result<P.DocumentPage.Output>> {
     return this.query<P.DocumentPage.Output>(input, `DocumentPage`);
+  }
+
+  public explorePageResult(
+    input: P.ExplorePage.Input,
+  ): Promise<Result<P.ExplorePage.Output>> {
+    return this.query<P.ExplorePage.Output>(input, `ExplorePage`);
   }
 
   public friendPageResult(

@@ -1,26 +1,24 @@
-import type { Edition, EditionType, Region, Residence } from './types';
-import { primaryResidence } from './residences';
+import type { Region } from './types';
 
+// todo: logic is wrong, search old evans for 'james parnell case'
 export function publishedYear(
-  authorResidences: Residence[],
-  authorBirthDate: number | null,
-  authorDeathDate: number | null,
+  residenceDurations?: Array<{ start?: number; end?: number }>,
+  authorBirthDate?: number,
+  authorDeathDate?: number,
 ): number | null {
-  const residence = primaryResidence(authorResidences);
-  const firstStay = residence?.durations[0];
+  const firstStay = residenceDurations?.[0];
   const publicationDate = firstStay ? firstStay.start ?? firstStay.end : null;
   return publicationDate ?? authorDeathDate ?? authorBirthDate ?? null;
 }
 
-export function publicationRegion(authorResidences: Residence[]): Region {
-  const primaryResidenceRegion = primaryResidence(authorResidences)?.region;
-  if (!primaryResidenceRegion) {
+export function documentRegion(document: {
+  isCompilation: boolean;
+  friendPrimaryResidence?: { region: string };
+}): Region {
+  if (document.isCompilation) {
     return `Other`;
   }
-  return documentRegion(primaryResidenceRegion);
-}
-
-export function documentRegion(region: string): Region {
+  const region = document.friendPrimaryResidence?.region;
   switch (region) {
     case `Ireland`:
       return `Ireland`;
@@ -44,8 +42,4 @@ export function documentRegion(region: string): Region {
     default:
       throw new Error(`Error inferring explore region for friend: ${region}`);
   }
-}
-
-export function editionTypes(editions: Edition[]): EditionType[] {
-  return editions.map(({ type }) => type);
 }

@@ -2,16 +2,24 @@ import React from 'react';
 import cx from 'classnames';
 import { t } from '@friends-library/locale';
 import Link from 'next/link';
-import type { Doc } from '@/lib/types';
+import type { EditionType } from '@/lib/types';
 import AudiobooksHero from './AudiobooksHero';
 import Album from '@/components/core/Album';
 import Button from '@/components/core/Button';
-import { LANG } from '@/lib/env';
-import { getDocumentUrl, isCompilations } from '@/lib/friend';
-import { mostModernEditionType } from '@/lib/editions';
 
 interface Props {
-  books: Array<Doc<'editions'>>;
+  books: Array<{
+    url: string;
+    isCompilation: boolean;
+    editionType: EditionType;
+    isbn: string;
+    title: string;
+    htmlShortTitle: string;
+    authorName: string;
+    authorSlug: string;
+    customCss?: string;
+    customHtml?: string;
+  }>;
 }
 
 const AudioBooksBlock: React.FC<Props> = ({ books }) => (
@@ -26,27 +34,27 @@ const AudioBooksBlock: React.FC<Props> = ({ books }) => (
     >
       {books.slice(0, 4).map((book) => (
         <Link
-          href={`${getDocumentUrl(book)}#audiobook`}
+          href={`${book.url}#audiobook`}
           className={cx(
             `flex flex-col items-center mb-10 group`,
             `md:w-64 md:mx-12`,
             `lg:mx-4 lg:w-56`,
           )}
-          key={getDocumentUrl(book)}
+          key={book.url}
         >
           <Album
-            author={book.authorName}
-            edition={mostModernEditionType(book.editions)}
-            customCss={book.customCSS ?? ``}
-            customHtml={book.customHTML ?? ``}
-            lang={LANG}
-            isCompilation={isCompilations(book.authorSlug)}
             className="mb-8"
-            {...book}
+            title={book.title}
+            isbn={book.isbn}
+            authorName={book.authorName}
+            editionType={book.editionType}
+            customCss={book.customCss ?? ``}
+            customHtml={book.customHtml ?? ``}
+            isCompilation={book.isCompilation}
           />
           <h4
             className="font-sans text-flgray-900 text-base tracking-wider group-hover:underline"
-            dangerouslySetInnerHTML={{ __html: book.title }}
+            dangerouslySetInnerHTML={{ __html: book.htmlShortTitle }}
           />
         </Link>
       ))}

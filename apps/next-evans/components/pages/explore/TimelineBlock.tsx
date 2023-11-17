@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import cx from 'classnames';
-import type { Doc } from '@/lib/types';
+import type { EditionType } from '@/lib/types';
 import BgWordBlock from './BgWordBlock';
 import BookSlider from './BookSlider';
 import TimePicker from './TimePicker';
@@ -13,11 +13,18 @@ import PillDropdownItem from '@/components/core/PillDropdownItem';
 import CastleBgImage from '@/public/images/castle.jpg';
 
 interface Props {
-  books: Array<
-    Doc<'editions' | 'authorGender' | 'publishedYear' | 'publishedRegion'> & {
-      date: number;
-    }
-  >;
+  books: Array<{
+    url: string;
+    title: string;
+    isbn: string;
+    authorName: string;
+    authorUrl: string;
+    isCompilation: boolean;
+    editionType: EditionType;
+    customCss?: string;
+    customHtml?: string;
+    date: number;
+  }>;
 }
 
 const TimelineBlock: React.FC<Props> = ({ books }) => {

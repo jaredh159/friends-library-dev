@@ -1,22 +1,35 @@
 import React from 'react';
 import { Front } from '@friends-library/cover-component';
 import Link from 'next/link';
-import type { Doc, EditionType } from '@/lib/types';
+import type { EditionType } from '@/lib/types';
 import { getDocumentUrl, isCompilations } from '@/lib/friend';
 import { LANG } from '@/lib/env';
 
-const SearchResult: React.FC<Doc & { edition: EditionType }> = (book) => (
-  <Link href={getDocumentUrl(book)}>
+interface Props {
+  authorName: string;
+  authorSlug: string;
+  documentSlug: string;
+  documentTitle: string;
+  editionType: EditionType;
+  isbn: string;
+  customCss?: string;
+  customHtml?: string;
+}
+
+const SearchResult: React.FC<Props> = (book) => (
+  <Link href={getDocumentUrl(book.authorSlug, book.documentSlug)}>
     <Front
       lang={LANG}
       isCompilation={isCompilations(book.authorName)}
+      edition={book.editionType}
       author={book.authorName}
-      customCss={book.customCSS ?? ``}
-      customHtml={book.customHTML ?? ``}
+      customCss={book.customCss ?? ``}
+      customHtml={book.customHtml ?? ``}
+      title={book.documentTitle}
+      isbn={book.isbn}
       className="mx-1"
       scaler={1 / 3}
       scope="1-3"
-      {...book}
       size="m"
     />
   </Link>

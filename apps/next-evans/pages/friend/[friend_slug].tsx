@@ -18,7 +18,9 @@ type Props = T.FriendPage.Output;
 export const getStaticPaths: GetStaticPaths = async () => {
   const slugs = await Client.node(process).publishedFriendSlugs(LANG);
   return {
-    paths: slugs.map((friend_slug) => ({ params: { friend_slug } })),
+    paths: slugs
+      .filter((slug) => !slug.startsWith(`compila`)) // todo: temp
+      .map((friend_slug) => ({ params: { friend_slug } })),
     fallback: false,
   };
 };

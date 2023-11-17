@@ -21,6 +21,7 @@ enum NextEvansBuildRoute: PairRoute {
 
 enum AuthedNextEvansBuildRoute: PairRoute {
   case documentPage(DocumentPage.Input)
+  case explorePage(Lang)
   case friendPage(FriendPage.Input)
   case friendsPage(Lang)
   case publishedDocumentSlugs(PublishedDocumentSlugs.Input)
@@ -30,6 +31,10 @@ enum AuthedNextEvansBuildRoute: PairRoute {
     Route(/Self.documentPage) {
       Operation(DocumentPage.self)
       Body(.input(DocumentPage.self))
+    }
+    Route(/Self.explorePage) {
+      Operation(ExplorePage.self)
+      Body(.input(ExplorePage.self))
     }
     Route(/Self.friendPage) {
       Operation(FriendPage.self)
@@ -60,6 +65,9 @@ extension NextEvansBuildRoute: RouteResponder {
       switch authedRoute {
       case .documentPage(let input):
         let output = try await DocumentPage.resolve(with: input, in: authed)
+        return try respond(with: output)
+      case .explorePage(let lang):
+        let output = try await ExplorePage.resolve(with: lang, in: authed)
         return try respond(with: output)
       case .friendPage(let input):
         let output = try await FriendPage.resolve(with: input, in: authed)

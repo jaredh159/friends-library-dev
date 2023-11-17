@@ -14,10 +14,11 @@ import BackgroundImage from '@/components/core/BackgroundImage';
 import { getAllDocuments } from '@/lib/db/documents';
 
 export const getStaticPaths: GetStaticPaths = async () => ({
-  paths: mdx
-    .fileData()
-    .filter((file) => file.lang === LANG)
-    .map(({ slug }) => ({ params: { static: slug } })),
+  // paths: mdx
+  //   .fileData()
+  //   .filter((file) => file.lang === LANG)
+  //   .map(({ slug }) => ({ params: { static: slug } })),
+  paths: [],
   fallback: false,
 });
 

@@ -93,32 +93,32 @@ struct DocumentPage: Pair {
 extension DocumentPage: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
-    let allDocuments = try await Document.query().all()
-    let numTotalBooks = allDocuments
+    async let allDocuments = Document.query().all()
+    async let matchingDocuments = Document.query()
+      .where(.slug == input.documentSlug)
+      .all()
+
+    let numTotalBooks = try await allDocuments
       .filter(\.hasNonDraftEdition)
       .filter { $0.lang == input.lang }
       .count
 
-    let documents = try await Document.query()
-      .where(.slug == input.documentSlug)
-      .all()
-
-    let document = documents
+    let document = try await matchingDocuments
       .first { $0.lang == input.lang && $0.friend.require().slug == input.friendSlug }
 
     guard let document else {
       throw Abort(.notFound)
     }
 
-    let friend = try await document.friend()
-    let editions = try await document.editions()
+    let friend = document.friend.require()
+    let editions = document.editions.require()
     let primaryEdition = try expect(document.primaryEdition)
-    let primaryEditionImpression = try expect(await primaryEdition.impression())
-    let isbn = try expect(await primaryEdition.isbn())
+    let primaryEditionImpression = try expect(primaryEdition.impression.require())
+    let isbn = try expect(primaryEdition.isbn.require())
 
     var audiobook: PrimaryEdition.Audiobook?
-    if let audio = try await primaryEdition.audio() {
-      let audioParts = try await audio.parts()
+    if let audio = primaryEdition.audio.require() {
+      let audioParts = audio.parts.require()
       guard let firstAudioPart = audioParts.first else {
         throw context.error(id: "08cfb2ed", type: .serverError)
       }
@@ -170,8 +170,8 @@ extension DocumentPage: Resolver {
         description: document.description,
         numDownloads: try await document.numDownloads(),
         isCompilation: friend.isCompilations,
-        editions: try await editions.concurrentMap { edition in
-          let impression = try expect(await edition.impression())
+        editions: try editions.filter { !$0.isDraft }.map { edition in
+          let impression = try expect(edition.impression.require())
           return .init(
             type: edition.type,
             loggedDownloadUrls: .init(
@@ -190,21 +190,21 @@ extension DocumentPage: Resolver {
           printSize: primaryEditionImpression.paperbackSize,
           paperbackVolumes: primaryEditionImpression.paperbackVolumes,
           isbn: isbn.code,
-          numChapters: (try await primaryEdition.chapters()).count,
+          numChapters: primaryEdition.chapters.require().count,
           audiobook: audiobook
         )
       ),
-      otherBooksByAuthor: try await friend.documents()
+      otherBooksByAuthor: try friend.documents.require().filter(\.hasNonDraftEdition)
         .filter { $0.slug != input.documentSlug }
-        .concurrentMap { otherDoc in
+        .map { otherDoc in
           let edition = try expect(otherDoc.primaryEdition)
           return .init(
             title: otherDoc.title,
             editionType: edition.type,
             description: otherDoc.description,
-            paperbackVolumes: try expect(await edition.impression()).paperbackVolumes,
-            isbn: try expect(await edition.isbn()).code,
-            audioDuration: (try await edition.audio()).map(\.humanDurationClock),
+            paperbackVolumes: try expect(edition.impression.require()).paperbackVolumes,
+            isbn: try expect(edition.isbn.require()).code,
+            audioDuration: (edition.audio.require()).map(\.humanDurationClock),
             htmlShortTitle: otherDoc.htmlShortTitle,
             documentSlug: otherDoc.slug,
             createdAt: otherDoc.createdAt

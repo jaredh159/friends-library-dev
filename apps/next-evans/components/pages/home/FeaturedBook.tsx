@@ -30,8 +30,8 @@ const Book: React.FC<Props> = (props) => (
           edition={props.mostModernEdition.type}
           isbn={props.isbn}
           blurb={``}
-          customCss={props.customCSS ?? ``}
-          customHtml={props.customHTML ?? ``}
+          customCss={props.customCss ?? ``}
+          customHtml={props.customHtml ?? ``}
           size="m"
           onlyFront
           scope="1-2"
@@ -48,8 +48,8 @@ const Book: React.FC<Props> = (props) => (
           edition={props.mostModernEdition.type}
           isbn={props.isbn}
           blurb={``}
-          customCss={props.customCSS ?? ``}
-          customHtml={props.customHTML ?? ``}
+          customCss={props.customCss ?? ``}
+          customHtml={props.customHtml ?? ``}
           size="m"
           onlyFront
           scope="3-5"

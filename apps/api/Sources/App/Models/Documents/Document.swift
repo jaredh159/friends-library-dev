@@ -28,7 +28,7 @@ final class Document: Codable {
   }
 
   var primaryEdition: Edition? {
-    let allEditions = editions.require()
+    let allEditions = editions.require().filter { $0.isDraft == false }
     return allEditions.first { $0.type == .updated } ??
       allEditions.first { $0.type == .modernized } ??
       allEditions.first

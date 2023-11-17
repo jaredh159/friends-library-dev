@@ -1,22 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { t } from '@friends-library/locale';
-import type { Doc, EditionType, Period, Region } from '@/lib/types';
+import type { EditionType, Period, Region } from '@/lib/types';
 import SearchControls from './SearchControls';
 import SearchResult from './SearchResult';
-import { getDocumentUrl } from '@/lib/friend';
 import BackgroundImage from '@/components/core/BackgroundImage';
 import RiverPath from '@/public/images/water-path.jpg';
 
 interface Props {
   initialFilters?: string[];
   initialUsed?: boolean;
-  books: Array<
-    Doc<'id' | 'tags'> & {
-      period: Period;
-      region: Region;
-      edition: EditionType;
-    }
-  >;
+  books: Array<{
+    tags: string[];
+    isbn: string;
+    customCss?: string;
+    customHtml?: string;
+    authorName: string;
+    authorSlug: string;
+    documentSlug: string;
+    documentTitle: string;
+    editionType: EditionType;
+    period: Period;
+    region: Region;
+  }>;
 }
 
 const SearchBlock: React.FC<Props> = ({ books, initialFilters, initialUsed }) => {
@@ -24,7 +29,6 @@ const SearchBlock: React.FC<Props> = ({ books, initialFilters, initialUsed }) =>
   const [used, setUsed] = useState<boolean>(initialUsed || false);
   const [query, setQuery] = useState<string>(``);
   const matches = match(books, filters, query.toLowerCase().trim());
-
   useEffect(() => {
     if (!used && userHasInteractedWithSearch(query, filters, initialFilters)) {
       setUsed(true);
@@ -43,7 +47,10 @@ const SearchBlock: React.FC<Props> = ({ books, initialFilters, initialUsed }) =>
       {matches.length > 0 && (
         <div className="flex flex-wrap justify-center py-8 bg-flgray-100">
           {matches.map((book) => (
-            <SearchResult key={`${getDocumentUrl(book)}/${book.edition}`} {...book} />
+            <SearchResult
+              key={`${book.authorSlug}/${book.documentSlug}/${book.editionType}`}
+              {...book}
+            />
           ))}
         </div>
       )}
@@ -72,7 +79,7 @@ function match(books: Props['books'], filters: string[], search: string): Props[
   return books.filter((book) => {
     if (search && search.length > 1) {
       if (
-        !book.title.toLowerCase().includes(search) &&
+        !book.documentTitle.toLowerCase().includes(search) &&
         !book.authorName.toLowerCase().includes(search)
       ) {
         return false;
@@ -81,7 +88,7 @@ function match(books: Props['books'], filters: string[], search: string): Props[
 
     for (const filter of filters) {
       const [type = ``, value = ``] = filter.split(`.`);
-      if (type === `edition` && book.edition !== value) {
+      if (type === `edition` && book.editionType !== value) {
         return false;
       }
       if (type === `period` && book.period !== value) {

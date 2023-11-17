@@ -81,11 +81,11 @@ extension FriendPage: Resolver {
 
     let quotes = try await friend.quotes()
     let residences = try await friend.residences()
-    guard !residences.isEmpty else {
+    guard friend.isCompilations || !residences.isEmpty else {
       throw context.error(
         id: "01c3e020",
         type: .serverError,
-        detail: "friend `\(input.lang)/\(input.slug)` has no residences"
+        detail: "non-compilations friend `\(input.lang)/\(input.slug)` has no residences"
       )
     }
 
@@ -98,10 +98,10 @@ extension FriendPage: Resolver {
       gender: friend.gender,
       isCompilations: friend.isCompilations,
       documents: try await documents.concurrentMap { document in
-        let editions = try await document.editions()
+        let editions = document.editions.require()
         let primaryEdition = try expect(document.primaryEdition)
-        let impression = try expect(await primaryEdition.impression())
-        let isbn = try expect(await primaryEdition.isbn())
+        let impression = try expect(primaryEdition.impression.require())
+        let isbn = try expect(primaryEdition.isbn.require())
         return .init(
           id: document.id,
           title: document.title,
@@ -109,8 +109,8 @@ extension FriendPage: Resolver {
           shortDescription: document.partialDescription,
           slug: document.slug,
           numDownloads: try await document.numDownloads(),
-          tags: (try await document.tags()).map(\.type),
-          hasAudio: try await primaryEdition.audio() != nil,
+          tags: document.tags.require().map(\.type),
+          hasAudio: primaryEdition.audio.require() != nil,
           primaryEdition: .init(
             isbn: isbn.code,
             numPages: Array(impression.paperbackVolumes),

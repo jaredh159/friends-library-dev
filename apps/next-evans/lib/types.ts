@@ -43,8 +43,8 @@ interface FriendDocument {
   hasAudio: boolean;
   tags: Array<string>;
   numDownloads: number;
-  customCSS: string | null;
-  customHTML: string | null;
+  customCss?: string;
+  customHtml?: string;
   createdAt: ISODateString;
   isbn: string; // todo: wierd, should be on edition
   isComplete: boolean;
@@ -53,7 +53,7 @@ interface FriendDocument {
 
 export type Doc<T extends keyof Document = never> = Pick<
   Document,
-  'isbn' | 'title' | 'slug' | 'customCSS' | 'customHTML' | 'authorName' | 'authorSlug' | T
+  'isbn' | 'title' | 'slug' | 'customCss' | 'customHtml' | 'authorName' | 'authorSlug' | T
 >;
 
 export interface Document extends FriendDocument {

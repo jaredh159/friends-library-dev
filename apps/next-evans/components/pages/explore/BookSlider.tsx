@@ -5,17 +5,25 @@ import { Front } from '@friends-library/cover-component';
 import Link from 'next/link';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
 import { htmlShortTitle } from '@friends-library/adoc-utils';
-import type { Doc } from '@/lib/types';
+import type { EditionType } from '@/lib/types';
 import { useWindowWidth } from '@/lib/hooks/window-width';
 import { SCREEN_LG, SCREEN_MD, SCREEN_XL } from '@/lib/constants';
 import { LANG } from '@/lib/env';
 import Button from '@/components/core/Button';
-import { getDocumentUrl, getFriendUrl, isCompilations } from '@/lib/friend';
-import { mostModernEditionType } from '@/lib/editions';
 
 interface Props {
-  books: Array<Doc<'editions' | 'authorGender'>>;
   className?: string;
+  books: Array<{
+    url: string;
+    title: string;
+    isbn: string;
+    authorName: string;
+    authorUrl: string;
+    isCompilation: boolean;
+    editionType: EditionType;
+    customCss?: string;
+    customHtml?: string;
+  }>;
 }
 
 const BookSlider: React.FC<Props> = ({ books, className }) => {
@@ -70,36 +78,34 @@ const BookSlider: React.FC<Props> = ({ books, className }) => {
       >
         {books.map((book, idx) => (
           <div
-            key={getDocumentUrl(book)}
+            key={book.url}
             className={cx(
               idx < vertCutoff ? `flex` : `hidden md:flex`,
               `BookSlider__Book max-w-xs flex-col items-center mb-12 px-10 text-center`,
               `md:px-6 md:mb-0 md:min-w-[224px] md:min-w-[224px]`,
             )}
           >
-            <Link href={getDocumentUrl(book)}>
+            <Link href={book.url}>
               <Front
                 author={book.authorName}
-                edition={mostModernEditionType(book.editions)}
-                customCss={book.customCSS ?? ``}
-                customHtml={book.customHTML ?? ``}
-                isCompilation={isCompilations(book.authorSlug)}
+                edition={book.editionType}
+                customCss={book.customCss ?? ``}
+                customHtml={book.customHtml ?? ``}
+                isCompilation={book.isCompilation}
+                title={book.title}
+                isbn={book.isbn}
                 lang={LANG}
                 scaler={1 / 4}
                 scope="1-4"
+                size="m"
                 shadow
-                {...book}
-                size={`m`}
               />
             </Link>
             <h3
               className="my-4 tracking-wider text-base text-flgray-900 md:mb-2 md:pb-1"
               dangerouslySetInnerHTML={{ __html: htmlShortTitle(book.title) }}
             />
-            <Link
-              href={getFriendUrl(book.authorSlug, book.authorGender)}
-              className="fl-underline text-sm text-flprimary"
-            >
+            <Link href={book.authorUrl} className="fl-underline text-sm text-flprimary">
               {book.authorName}
             </Link>
           </div>

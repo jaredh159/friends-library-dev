@@ -8,6 +8,7 @@ extension CodegenRoute.NextEvansBuild: CodegenRouteHandler {
   static var pairqlPairs: [any Pair.Type] {
     [
       DocumentPage.self,
+      ExplorePage.self,
       FriendPage.self,
       FriendsPage.self,
       PublishedDocumentSlugs.self,
