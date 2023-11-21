@@ -16,22 +16,8 @@ import { makeScroller } from '@/lib/scroll';
 import GettingStartedPaths from '@/components/pages/getting-started/GettingStartedPaths';
 import recommended from '@/lib/recommended-books';
 import { getDocumentUrl, getFriendUrl } from '@/lib/friend';
-
-export const getStaticProps: GetStaticProps<Props> = async () => {
-  const client = Client.node(process);
-  const props = await Promise.all([
-    client.gettingStartedBooks({ lang: LANG, slugs: recommended.history[LANG] }),
-    client.gettingStartedBooks({ lang: LANG, slugs: recommended.doctrine[LANG] }),
-    client.gettingStartedBooks({ lang: LANG, slugs: recommended.spiritualLife[LANG] }),
-    client.gettingStartedBooks({ lang: LANG, slugs: recommended.journals[LANG] }),
-    client.totalPublished(),
-  ]).then(([history, doctrine, spiritualLife, journals, totalPublished]) => ({
-    books: { history, doctrine, spiritualLife, journals },
-    numBooks: totalPublished.books[LANG],
-  }));
-
-  return { props: props };
-};
+import * as custom from '@/lib/ssg/custom-code';
+import { type CustomCodeMap } from '@/lib/ssg/custom-code';
 
 type Book = Api.GettingStartedBooks.Output[number];
 
@@ -44,6 +30,28 @@ interface Props {
   };
   numBooks: number;
 }
+
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  const client = Client.node(process);
+  const props = await Promise.all([
+    client.gettingStartedBooks({ lang: LANG, slugs: recommended.history[LANG] }),
+    client.gettingStartedBooks({ lang: LANG, slugs: recommended.doctrine[LANG] }),
+    client.gettingStartedBooks({ lang: LANG, slugs: recommended.spiritualLife[LANG] }),
+    client.gettingStartedBooks({ lang: LANG, slugs: recommended.journals[LANG] }),
+    client.totalPublished(),
+    custom.some(customCodeSlugs()),
+  ]).then(([history, doctrine, spiritualLife, journals, totalPublished, customCode]) => ({
+    books: {
+      history: merge(history, customCode),
+      doctrine: merge(doctrine, customCode),
+      spiritualLife: merge(spiritualLife, customCode),
+      journals: merge(journals, customCode),
+    },
+    numBooks: totalPublished.books[LANG],
+  }));
+
+  return { props: props };
+};
 
 const GettingStarted: React.FC<Props> = ({ books, numBooks }) => (
   <div>
@@ -277,10 +285,30 @@ export const HistoryBlurb: React.FC = () => (
   </Dual.Frag>
 );
 
+// helpers
+
 function toPathBlock(books: Array<Book>): PathBlockProps['books'] {
   return books.map((book) => ({
     ...book,
     authorUrl: getFriendUrl(book.authorSlug, book.authorGender),
     documentUrl: getDocumentUrl(book),
   }));
+}
+
+function customCodeSlugs(): Array<{ friendSlug: string; documentSlug: string }> {
+  let slugs: Array<{ friendSlug: string; documentSlug: string }> = [];
+  for (const category of [`history`, `doctrine`, `spiritualLife`, `journals`] as const) {
+    slugs = [...slugs, ...recommended[category][LANG]];
+  }
+  return slugs;
+}
+
+function merge(
+  books: Array<Api.GettingStartedBooks.Output[number]>,
+  customCode: CustomCodeMap,
+): Array<Api.GettingStartedBooks.Output[number]> {
+  return books.map((book) => {
+    const docCode = customCode[`${book.authorSlug}/${book.slug}`];
+    return docCode ? custom.merge(book, docCode) : book;
+  });
 }

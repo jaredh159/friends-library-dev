@@ -13,6 +13,7 @@ import MapBlock from '@/components/pages/friend/MapBlock';
 import getResidences from '@/lib/residences';
 import { getDocumentUrl } from '@/lib/friend';
 import { sortDocuments } from '@/lib/document';
+import * as custom from '@/lib/ssg/custom-code';
 
 type Props = T.FriendPage.Output;
 
@@ -29,6 +30,16 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
   const friend = await Client.node(process).friendPage({
     lang: LANG,
     slug: context.params.friend_slug,
+  });
+  const customCode = await custom.some(
+    friend.documents.map(({ slug }) => ({
+      friendSlug: friend.slug,
+      documentSlug: slug,
+    })),
+  );
+  friend.documents = friend.documents.map((doc) => {
+    const docCode = customCode[`${friend.slug}/${doc.slug}`];
+    return docCode ? custom.merge(doc, docCode) : doc;
   });
   friend.documents.sort(sortDocuments);
   return { props: friend };
@@ -111,8 +122,8 @@ const Friend: React.FC<Props> = ({
               size={doc.primaryEdition.size}
               edition={doc.primaryEdition.type}
               isbn={doc.primaryEdition.isbn}
-              customCss={doc.primaryEdition.customCss || ``}
-              customHtml={doc.primaryEdition.customHtml || ``}
+              customCss={doc.customCss || ``}
+              customHtml={doc.customHtml || ``}
             />
           ))}
         </div>

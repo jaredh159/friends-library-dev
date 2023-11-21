@@ -13,80 +13,82 @@ struct DocumentPage: Pair {
   static var auth: Scope = .queryEntities
 
   struct Input: PairInput {
-    let lang: Lang
-    let friendSlug: String
-    let documentSlug: String
+    var lang: Lang
+    var friendSlug: String
+    var documentSlug: String
   }
 
   struct DocumentOutput: PairNestable {
-    let authorName: String
-    let authorSlug: String
-    let authorGender: Friend.Gender
-    let title: String
-    let originalTitle: String?
-    let isComplete: Bool
-    let priceInCents: Int
-    let description: String
-    let numDownloads: Int
-    let isCompilation: Bool
-    let editions: [EditionOutput]
-    let alternateLanguageDoc: AlternateLanguageDoc?
-    let primaryEdition: PrimaryEdition
+    var authorName: String
+    var authorSlug: String
+    var authorGender: Friend.Gender
+    var title: String
+    var originalTitle: String?
+    var isComplete: Bool
+    var priceInCents: Int
+    var description: String
+    var numDownloads: Int
+    var isCompilation: Bool
+    var editions: [EditionOutput]
+    var alternateLanguageDoc: AlternateLanguageDoc?
+    var primaryEdition: PrimaryEdition
+    var customCss: String?
+    var customCssUrl: String?
 
     struct AlternateLanguageDoc: PairNestable {
-      let authorSlug: String
-      let slug: String
+      var authorSlug: String
+      var slug: String
     }
   }
 
   struct PrimaryEdition: PairNestable {
-    let editionType: EditionType
-    let printSize: PrintSize
-    let paperbackVolumes: NonEmpty<[Int]>
-    let isbn: ISBN
-    let numChapters: Int
-    let audiobook: Audiobook?
+    var editionType: EditionType
+    var printSize: PrintSize
+    var paperbackVolumes: NonEmpty<[Int]>
+    var isbn: ISBN
+    var numChapters: Int
+    var audiobook: Audiobook?
 
     struct Audiobook: PairNestable {
-      let isIncomplete: Bool
-      let numAudioParts: Int
-      let m4bFilesize: AudioQualities<Bytes>
-      let mp3ZipFilesize: AudioQualities<Bytes>
-      let m4bLoggedDownloadUrl: AudioQualities<String>
-      let mp3ZipLoggedDownloadUrl: AudioQualities<String>
-      let podcastLoggedDownloadUrl: AudioQualities<String>
-      let embedId: AudioQualities<Int64>
+      var isIncomplete: Bool
+      var numAudioParts: Int
+      var m4bFilesize: AudioQualities<Bytes>
+      var mp3ZipFilesize: AudioQualities<Bytes>
+      var m4bLoggedDownloadUrl: AudioQualities<String>
+      var mp3ZipLoggedDownloadUrl: AudioQualities<String>
+      var podcastLoggedDownloadUrl: AudioQualities<String>
+      var embedId: AudioQualities<Int64>
     }
   }
 
   struct OtherBookByAuthor: PairNestable {
-    let title: String
-    let editionType: EditionType
-    let description: String
-    let paperbackVolumes: NonEmpty<[Int]>
-    let isbn: ISBN
-    let audioDuration: String?
-    let htmlShortTitle: String
-    let documentSlug: String
-    let createdAt: Date
+    var title: String
+    var editionType: EditionType
+    var description: String
+    var paperbackVolumes: NonEmpty<[Int]>
+    var isbn: ISBN
+    var audioDuration: String?
+    var htmlShortTitle: String
+    var documentSlug: String
+    var createdAt: Date
   }
 
   struct EditionOutput: PairNestable {
-    let type: EditionType
-    let loggedDownloadUrls: LoggedDownloadUrls
+    var type: EditionType
+    var loggedDownloadUrls: LoggedDownloadUrls
 
     struct LoggedDownloadUrls: PairNestable {
-      let epub: String
-      let mobi: String
-      let pdf: String
-      let speech: String
+      var epub: String
+      var mobi: String
+      var pdf: String
+      var speech: String
     }
   }
 
   struct Output: PairOutput {
-    let document: DocumentOutput
-    let otherBooksByAuthor: [OtherBookByAuthor]
-    let numTotalBooks: Int
+    var document: DocumentOutput
+    var otherBooksByAuthor: [OtherBookByAuthor]
+    var numTotalBooks: Int
   }
 }
 

@@ -29,10 +29,10 @@ export namespace FriendPage {
         numPages: [number, ...number[]];
         size: 's' | 'm' | 'xl';
         type: 'updated' | 'original' | 'modernized';
-        customCss?: string;
-        customHtml?: string;
       };
       editionTypes: Array<'updated' | 'original' | 'modernized'>;
+      customCss?: string;
+      customHtml?: string;
     }>;
     residences: Array<{
       city: string;

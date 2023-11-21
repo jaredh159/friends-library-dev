@@ -79,8 +79,6 @@ extension ExplorePageBooks: Resolver {
         hasAudio: primaryEdition.audio.require() !== nil,
         publishedYear: document.published,
         tags: document.tags.require().map(\.type),
-        customCss: nil,
-        customHtml: nil,
         htmlShortTitle: document.htmlShortTitle,
         friendGender: friend.gender,
         friendName: friend.name,

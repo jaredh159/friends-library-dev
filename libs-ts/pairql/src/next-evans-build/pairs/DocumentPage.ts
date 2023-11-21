@@ -67,6 +67,8 @@ export namespace DocumentPage {
           };
         };
       };
+      customCss?: string;
+      customCssUrl?: string;
     };
     otherBooksByAuthor: Array<{
       title: string;

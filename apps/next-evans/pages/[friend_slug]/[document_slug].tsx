@@ -9,6 +9,7 @@ import ExploreBooksBlock from '@/components/pages/home/ExploreBooksBlock';
 import BookTeaserCards from '@/components/core/BookTeaserCards';
 import DocBlock from '@/components/pages/document/DocBlock';
 import ListenBlock from '@/components/pages/document/ListenBlock';
+import * as code from '@/lib/ssg/custom-code';
 
 type Props = T.DocumentPage.Output;
 
@@ -28,8 +29,16 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
   invariant(typeof friendSlug === `string`);
   invariant(typeof documentSlug === `string`);
   const input = { lang: LANG, friendSlug, documentSlug } as const;
-  const output = await Client.node(process).documentPage(input);
-  return { props: output };
+  const [props, customCode] = await Promise.all([
+    Client.node(process).documentPage(input),
+    code.document(friendSlug, documentSlug),
+  ]);
+  return {
+    props: {
+      ...props,
+      document: code.merge(props.document, customCode),
+    },
+  };
 };
 
 const DocumentPage: React.FC<Props> = ({

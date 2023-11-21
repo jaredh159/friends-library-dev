@@ -18,6 +18,7 @@ import SearchBlock from '@/components/pages/explore/SearchBlock';
 import { getDocumentUrl, getFriendUrl } from '@/lib/friend';
 import { newestFirst } from '@/lib/dates';
 import { documentDate, documentRegion } from '@/lib/document';
+import * as custom from '@/lib/ssg/custom-code';
 
 type Props = {
   books: Api.ExplorePageBooks.Output;
@@ -29,7 +30,14 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   const props = await Promise.all([
     client.explorePageBooks(LANG),
     client.totalPublished(),
-  ]).then(([books, totalPublished]) => ({ books, totalPublished }));
+    custom.all(),
+  ]).then(([books, totalPublished, allCustomCode]) => ({
+    books: books.map((book) => {
+      const customCode = allCustomCode[`${book.friendSlug}/${book.slug}`];
+      return customCode ? custom.merge(book, customCode) : book;
+    }),
+    totalPublished,
+  }));
   return { props };
 };
 
@@ -157,6 +165,8 @@ const ExploreBooks: React.FC<Props> = ({ totalPublished, books }) => (
           tags: book.tags,
           authorName: book.friendName,
           authorSlug: book.friendSlug,
+          customCss: book.customCss,
+          customHtml: book.customHtml,
           documentTitle: book.title,
           documentSlug: book.slug,
           region: documentRegion(book),

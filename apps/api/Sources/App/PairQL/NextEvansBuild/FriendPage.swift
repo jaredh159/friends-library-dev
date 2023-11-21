@@ -7,57 +7,57 @@ struct FriendPage: Pair {
   static var auth: Scope = .queryEntities
 
   struct Input: PairInput {
-    let slug: String
-    let lang: Lang
+    var slug: String
+    var lang: Lang
   }
 
   struct Output: PairOutput {
-    let born: Int?
-    let died: Int?
-    let name: String
-    let slug: String
-    let description: String
-    let gender: Friend.Gender
-    let isCompilations: Bool
-    let documents: [Document]
-    let residences: [Residence]
-    let quotes: [Quote]
+    var born: Int?
+    var died: Int?
+    var name: String
+    var slug: String
+    var description: String
+    var gender: Friend.Gender
+    var isCompilations: Bool
+    var documents: [Document]
+    var residences: [Residence]
+    var quotes: [Quote]
 
     struct Document: PairNestable {
-      let id: App.Document.Id
-      let title: String
-      let htmlShortTitle: String
-      let shortDescription: String
-      let slug: String
-      let numDownloads: Int
-      let tags: [DocumentTag.TagType]
-      let hasAudio: Bool
-      let primaryEdition: PrimaryEdition
-      let editionTypes: [EditionType]
+      var id: App.Document.Id
+      var title: String
+      var htmlShortTitle: String
+      var shortDescription: String
+      var slug: String
+      var numDownloads: Int
+      var tags: [DocumentTag.TagType]
+      var hasAudio: Bool
+      var primaryEdition: PrimaryEdition
+      var editionTypes: [EditionType]
+      var customCss: String?
+      var customHtml: String?
 
       struct PrimaryEdition: PairNestable {
-        let isbn: ISBN
-        let numPages: NonEmpty<[Int]>
-        let size: PrintSize
-        let type: EditionType
-        let customCss: String?
-        let customHtml: String?
+        var isbn: ISBN
+        var numPages: NonEmpty<[Int]>
+        var size: PrintSize
+        var type: EditionType
       }
     }
 
     struct Quote: PairNestable {
-      let text: String
-      let source: String
+      var text: String
+      var source: String
     }
 
     struct Residence: PairNestable {
-      let city: String
-      let region: String
-      let durations: [Duration]
+      var city: String
+      var region: String
+      var durations: [Duration]
 
       struct Duration: PairNestable {
-        let start: Int
-        let end: Int
+        var start: Int
+        var end: Int
       }
     }
   }
@@ -116,9 +116,7 @@ extension FriendPage: Resolver {
             isbn: isbn.code,
             numPages: impression.paperbackVolumes,
             size: impression.paperbackSize,
-            type: primaryEdition.type,
-            customCss: nil,
-            customHtml: nil
+            type: primaryEdition.type
           ),
           editionTypes: editions.map(\.type)
         )
