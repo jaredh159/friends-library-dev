@@ -14,6 +14,7 @@ import ExploreBooksBlock from '@/components/pages/home/ExploreBooksBlock';
 import NewsFeedBlock from '@/components/pages/home/news-feed/NewsFeedBlock';
 import { LANG } from '@/lib/env';
 import Seo, { pageMetaDesc } from '@/components/core/Seo';
+import * as custom from '@/lib/ssg/custom-code';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const client = Client.node(process);
@@ -21,8 +22,12 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     client.homepageFeaturedBooks({ lang: LANG, slugs: featuredBooks[LANG] }),
     client.newsFeedItems(LANG),
     client.totalPublished(),
-  ]).then(([featuredBooks, newsFeedItems, totalPublished]) => ({
-    featuredBooks,
+    custom.some(featuredBooks[LANG]),
+  ]).then(([featuredBooks, newsFeedItems, totalPublished, customCode]) => ({
+    featuredBooks: featuredBooks.map((book) => {
+      const coverCode = customCode[`${book.authorSlug}/${book.documentSlug}`];
+      return coverCode ? custom.merge(book, coverCode) : book;
+    }),
     newsFeedItems: getNewsFeedItems(newsFeedItems),
     numTotalBooks: totalPublished.books[LANG],
   }));
