@@ -1,14 +1,37 @@
 import type { EditionType, Region } from './types';
 
-// todo: logic is wrong, search old evans for 'james parnell case'
-export function publishedYear(
-  residenceDurations?: Array<{ start?: number; end?: number }>,
-  authorBirthDate?: number,
-  authorDeathDate?: number,
-): number | null {
-  const firstStay = residenceDurations?.[0];
-  const publicationDate = firstStay ? firstStay.start ?? firstStay.end : null;
-  return publicationDate ?? authorDeathDate ?? authorBirthDate ?? null;
+export function documentDate(doc: {
+  isCompilation: boolean;
+  publishedYear?: number;
+  friendBorn?: number;
+  friendDied?: number;
+  slug: string;
+}): number {
+  const { friendBorn, friendDied, isCompilation, publishedYear } = doc;
+  if (publishedYear) {
+    return publishedYear;
+  }
+
+  // the James Parnell case
+  if (friendBorn && friendDied && friendDied - friendBorn < 31) {
+    return friendDied;
+  }
+
+  if (friendDied && !friendBorn) {
+    return friendDied - 10;
+  }
+
+  if (friendBorn && friendDied) {
+    return Math.floor(friendBorn + 0.75 * (friendDied - friendBorn));
+  }
+
+  if (!isCompilation) {
+    throw new Error(`Unexpected failure to determine document date: ${doc.slug}`);
+  }
+
+  // compilations don't need a date, this will cause them
+  // to not show up on the /explore page timeline picker
+  return -1;
 }
 
 export function documentRegion(document: {

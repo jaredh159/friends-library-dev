@@ -17,7 +17,7 @@ import AltSiteBlock from '@/components/pages/explore/AltSiteBlock';
 import SearchBlock from '@/components/pages/explore/SearchBlock';
 import { getDocumentUrl, getFriendUrl } from '@/lib/friend';
 import { newestFirst } from '@/lib/dates';
-import { documentRegion, publishedYear } from '@/lib/document';
+import { documentDate, documentRegion } from '@/lib/document';
 
 type Props = {
   books: Api.ExplorePageBooks.Output;
@@ -138,14 +138,7 @@ const ExploreBooks: React.FC<Props> = ({ totalPublished, books }) => (
           url: getDocumentUrl(book.friendSlug, book.slug),
           authorUrl: getFriendUrl(book.friendSlug, book.friendGender),
           isCompilation: book.isCompilation,
-          date:
-            book.publishedYear ??
-            publishedYear(
-              book.friendPrimaryResidence?.durations,
-              book.friendBorn,
-              book.friendDied,
-            ) ??
-            1650,
+          date: documentDate(book),
         }))}
       />
     )}
