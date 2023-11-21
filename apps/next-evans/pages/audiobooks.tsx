@@ -12,6 +12,7 @@ import Audiobook from '@/components/pages/audiobooks/Audiobook';
 import { LANG } from '@/lib/env';
 import { newestFirst, shortDate } from '@/lib/dates';
 import * as custom from '@/lib/ssg/custom-code';
+import Seo, { pageMetaDesc } from '@/components/core/Seo';
 
 interface Props {
   audiobooks: Array<{
@@ -60,6 +61,10 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 
 const AudioBooks: React.FC<Props> = ({ audiobooks }) => (
   <div>
+    <Seo
+      title={t`Audio Books`}
+      description={pageMetaDesc(`audiobooks`, { numAudiobooks: audiobooks.length })}
+    />
     <AudiobooksHero numBooks={audiobooks.length} className="pb-52" />
     <div className="bg-flgray-200 py-12 xl:pb-6">
       <Dual.H2 className="sans-wider text-center text-2xl md:text-3xl mb-12 px-10">

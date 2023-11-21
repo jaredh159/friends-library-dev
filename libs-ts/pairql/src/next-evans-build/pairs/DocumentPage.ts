@@ -19,6 +19,7 @@ export namespace DocumentPage {
       description: string;
       numDownloads: number;
       isCompilation: boolean;
+      ogImageUrl: string;
       editions: Array<{
         type: 'updated' | 'original' | 'modernized';
         loggedDownloadUrls: {

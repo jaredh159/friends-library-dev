@@ -9,6 +9,7 @@ import CompilationsBlock from '@/components/pages/friends/CompilationsBlock';
 import { getFriendUrl } from '@/lib/friend';
 import { newestFirst } from '@/lib/dates';
 import { LANG } from '@/lib/env';
+import Seo, { pageMetaDesc } from '@/components/core/Seo';
 
 type Friend = Api.FriendsPage.Output[number];
 
@@ -31,6 +32,10 @@ const Friends: React.FC<Props> = ({ friends }) => {
 
   return (
     <div>
+      <Seo
+        title={t`All Friends`}
+        description={pageMetaDesc(`friends`, { numFriends: friends.length })}
+      />
       <FriendsPageHero numFriends={friends.length} />
       <section className="sm:px-16 py-16">
         <h2 className="text-center pb-8 sans-wider text-2xl px-8">{t`Recently Added Authors`}</h2>

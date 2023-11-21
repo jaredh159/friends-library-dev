@@ -1,4 +1,5 @@
 import React from 'react';
+import { t } from '@friends-library/locale';
 import Client, { type T as Api } from '@friends-library/pairql/next-evans-build';
 import type { GetStaticProps } from 'next';
 import type { Period } from '@/lib/types';
@@ -19,6 +20,7 @@ import { getDocumentUrl, getFriendUrl } from '@/lib/friend';
 import { newestFirst } from '@/lib/dates';
 import { documentDate, documentRegion } from '@/lib/document';
 import * as custom from '@/lib/ssg/custom-code';
+import Seo, { pageMetaDesc } from '@/components/core/Seo';
 
 type Props = {
   books: Api.ExplorePageBooks.Output;
@@ -43,6 +45,16 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 
 const ExploreBooks: React.FC<Props> = ({ totalPublished, books }) => (
   <div>
+    <Seo
+      title={t`Explore Books`}
+      description={pageMetaDesc(`explore`, {
+        numBooks: totalPublished.books[LANG],
+        numAudiobooks: totalPublished.audiobooks[LANG],
+        numUpdatedEditions: books
+          .map((book) => book.primaryEdition.type)
+          .filter((type) => type === `updated`).length,
+      })}
+    />
     <BackgroundImage src={HeroImg} fineTuneImageStyles={{ objectFit: `cover` }}>
       <div className="p-8 sm:p-16 lg:p-24 bg-black/60 lg:backdrop-blur-sm">
         <WhiteOverlay>

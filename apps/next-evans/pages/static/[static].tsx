@@ -12,6 +12,7 @@ import HeroImg from '@/public/images/explore-books.jpg';
 import * as mdx from '@/lib/mdx';
 import { LANG } from '@/lib/env';
 import BackgroundImage from '@/components/core/BackgroundImage';
+import Seo from '@/components/core/Seo';
 
 interface Props {
   source: MDXRemoteSerializeResult;
@@ -106,6 +107,7 @@ const components: React.ComponentProps<typeof MDXRemote>['components'] = {
 
 const StaticPage: React.FC<Props> = ({ source, frontmatter }) => (
   <div>
+    <Seo title={frontmatter.title} description={frontmatter.description} />
     <BackgroundImage src={HeroImg} fineTuneImageStyles={{ objectFit: `cover` }}>
       <div className="p-8 sm:p-16 lg:p-24 bg-black/60 lg:backdrop-blur-sm">
         <WhiteOverlay>

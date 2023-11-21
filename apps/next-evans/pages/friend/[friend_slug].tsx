@@ -14,6 +14,8 @@ import getResidences from '@/lib/residences';
 import { getDocumentUrl } from '@/lib/friend';
 import { sortDocuments } from '@/lib/document';
 import * as custom from '@/lib/ssg/custom-code';
+import Seo from '@/components/core/Seo';
+import { friendPageMetaDesc } from '@/lib/seo';
 
 type Props = T.FriendPage.Output;
 
@@ -90,6 +92,16 @@ const Friend: React.FC<Props> = ({
 
   return (
     <div>
+      <Seo
+        title={name}
+        description={friendPageMetaDesc(
+          name,
+          description,
+          documents.map((doc) => doc.title),
+          documents.filter((doc) => doc.hasAudio).length,
+          isCompilations,
+        )}
+      />
       <FriendBlock name={name} gender={gender} blurb={description} />
       {quotes[0] && <FeaturedQuoteBlock cite={quotes[0].source} quote={quotes[0].text} />}
       <div className="bg-flgray-100 px-8 pt-12 pb-4 lg:px-8">

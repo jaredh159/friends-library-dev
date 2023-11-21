@@ -10,6 +10,8 @@ import BookTeaserCards from '@/components/core/BookTeaserCards';
 import DocBlock from '@/components/pages/document/DocBlock';
 import ListenBlock from '@/components/pages/document/ListenBlock';
 import * as code from '@/lib/ssg/custom-code';
+import Seo from '@/components/core/Seo';
+import { bookPageMetaDesc } from '@/lib/seo';
 
 type Props = T.DocumentPage.Output;
 
@@ -47,6 +49,17 @@ const DocumentPage: React.FC<Props> = ({
   document,
 }) => (
   <div>
+    <Seo
+      title={document.title}
+      ogImage={document.ogImageUrl}
+      description={bookPageMetaDesc(
+        document.authorName,
+        document.description,
+        document.title,
+        document.primaryEdition.audiobook !== undefined,
+        document.isCompilation,
+      )}
+    />
     <DocBlock {...document} hasAudio={!!document.primaryEdition.audiobook} />
     {document.primaryEdition.audiobook && (
       <ListenBlock {...document.primaryEdition.audiobook} title={document.title} />

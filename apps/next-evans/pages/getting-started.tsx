@@ -18,6 +18,7 @@ import recommended from '@/lib/recommended-books';
 import { getDocumentUrl, getFriendUrl } from '@/lib/friend';
 import * as custom from '@/lib/ssg/custom-code';
 import { type CustomCodeMap } from '@/lib/ssg/custom-code';
+import Seo, { pageMetaDesc } from '@/components/core/Seo';
 
 type Book = Api.GettingStartedBooks.Output[number];
 
@@ -55,6 +56,10 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 
 const GettingStarted: React.FC<Props> = ({ books, numBooks }) => (
   <div>
+    <Seo
+      title={t`Getting Started`}
+      description={pageMetaDesc(`getting-started`, { numBooks })}
+    />
     <BackgroundImage src={BooksGrid} className="" fit={`cover`} position={`center`}>
       <div className="flex flex-col items-center justify-center py-16 md:py-36 px-8 sm:px-12 md:px-20 lg:px-36 [background:radial-gradient(rgb(0_0_0/0.65),rgb(0_0_0/0.85),rgb(0_0_0/0.95))]">
         <Heading darkBg className="text-white">

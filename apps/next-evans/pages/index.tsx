@@ -1,4 +1,5 @@
 import React from 'react';
+import { t } from '@friends-library/locale';
 import Client, { type T as Api } from '@friends-library/pairql/next-evans-build';
 import type { GetStaticProps } from 'next';
 import type { FeedItem } from '@/components/pages/home/news-feed/news-feed';
@@ -12,6 +13,7 @@ import FormatsBlock from '@/components/pages/home/FormatsBlock';
 import ExploreBooksBlock from '@/components/pages/home/ExploreBooksBlock';
 import NewsFeedBlock from '@/components/pages/home/news-feed/NewsFeedBlock';
 import { LANG } from '@/lib/env';
+import Seo, { pageMetaDesc } from '@/components/core/Seo';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const client = Client.node(process);
@@ -35,8 +37,12 @@ interface Props {
 
 const Home: React.FC<Props> = ({ featuredBooks, newsFeedItems, numTotalBooks }) => (
   <main className="overflow-hidden">
+    <Seo
+      title={t`Friends Library`}
+      description={pageMetaDesc(`home`, { numBooks: numTotalBooks })}
+    />
     <HeroBlock />
-    <SubHeroBlock numTotalBooks={0} />
+    <SubHeroBlock numTotalBooks={numTotalBooks} />
     <NewsFeedBlock items={newsFeedItems} />
     <FeaturedBooksBlock books={featuredBooks} />
     <GettingStartedBlock />

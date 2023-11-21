@@ -29,6 +29,7 @@ struct DocumentPage: Pair {
     var description: String
     var numDownloads: Int
     var isCompilation: Bool
+    var ogImageUrl: String
     var editions: [EditionOutput]
     var alternateLanguageDoc: AlternateLanguageDoc?
     var primaryEdition: PrimaryEdition
@@ -172,6 +173,7 @@ extension DocumentPage: Resolver {
         description: document.description,
         numDownloads: try await document.numDownloads(),
         isCompilation: friend.isCompilations,
+        ogImageUrl: primaryEdition.images.threeD.w700.url.absoluteString,
         editions: try editions.filter { !$0.isDraft }.map { edition in
           let impression = try expect(edition.impression.require())
           return .init(
