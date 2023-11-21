@@ -23,6 +23,13 @@ export default class NextEvansBuildClient extends Client {
     return Client.inferWeb(NextEvansBuildClient, href, getToken);
   }
 
+  public async audiobooksPage(
+    input: P.AudiobooksPage.Input,
+  ): Promise<P.AudiobooksPage.Output> {
+    const result = await this.query<P.AudiobooksPage.Output>(input, `AudiobooksPage`);
+    return result.unwrap();
+  }
+
   public async documentPage(input: P.DocumentPage.Input): Promise<P.DocumentPage.Output> {
     const result = await this.query<P.DocumentPage.Output>(input, `DocumentPage`);
     return result.unwrap();
@@ -97,6 +104,12 @@ export default class NextEvansBuildClient extends Client {
   ): Promise<P.TotalPublished.Output> {
     const result = await this.query<P.TotalPublished.Output>(input, `TotalPublished`);
     return result.unwrap();
+  }
+
+  public audiobooksPageResult(
+    input: P.AudiobooksPage.Input,
+  ): Promise<Result<P.AudiobooksPage.Output>> {
+    return this.query<P.AudiobooksPage.Output>(input, `AudiobooksPage`);
   }
 
   public documentPageResult(

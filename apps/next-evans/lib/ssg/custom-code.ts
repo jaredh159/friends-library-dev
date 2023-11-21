@@ -52,6 +52,13 @@ export function merge<T>(obj: T, customCode: CustomCode): WithCustomCode<T> {
   return merged;
 }
 
+export function documentSlugs(input: { authorSlug: string; slug: string }): {
+  friendSlug: string;
+  documentSlug: string;
+} {
+  return { friendSlug: input.authorSlug, documentSlug: input.slug };
+}
+
 // helpers
 
 const _cache: Map<`${string}/${string}`, Promise<CustomCode>> = new Map();

@@ -52,7 +52,7 @@ const BookTeaserCard: React.FC<Props> = ({
           {badgeText && <Badge>{badgeText}</Badge>}
           {isAudio && (
             <Link href={`${documentUrl}#audiobook`}>
-              <Album {...props} />
+              <Album className="md:-ml-12" {...props} />
             </Link>
           )}
           {!isAudio && (
@@ -87,7 +87,7 @@ const BookTeaserCard: React.FC<Props> = ({
         {isAudio && (
           <Button
             to={`${documentUrl}#audiobook`}
-            className="mx-auto md:mx-0 mt-6 max-w-full"
+            className="mx-auto md:mx-0 md:mb-10 mt-6 max-w-full"
           >
             {t`Listen`}
           </Button>

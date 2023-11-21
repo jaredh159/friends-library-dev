@@ -2,7 +2,7 @@ import { t } from '@friends-library/locale';
 import { type T as Api } from '@friends-library/pairql/next-evans-build';
 import type { Lang } from '@friends-library/types';
 import type { NewsFeedType } from '@/lib/types';
-import { newestFirst } from '@/lib/dates';
+import { newestFirst, spanishShortMonth } from '@/lib/dates';
 import { LANG } from '@/lib/env';
 import { getDocumentUrl } from '@/lib/friend';
 
@@ -448,20 +448,6 @@ function dateFields(
     day: String(date.getDate()),
     createdAt: dateStr,
   };
-}
-
-export function spanishShortMonth(short: string): string {
-  switch (short.toLowerCase()) {
-    case `jan`:
-      return `Ene`;
-    case `apr`:
-      return `Abr`;
-    case `aug`:
-      return `Ago`;
-    case `dec`:
-      return `Dic`;
-  }
-  return short;
 }
 
 export const COLOR_MAP: { [k in NewsFeedType]: string } = {

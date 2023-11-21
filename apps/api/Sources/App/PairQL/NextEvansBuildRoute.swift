@@ -20,6 +20,7 @@ enum NextEvansBuildRoute: PairRoute {
 }
 
 enum AuthedNextEvansBuildRoute: PairRoute {
+  case audiobooksPage(Lang)
   case documentPage(DocumentPage.Input)
   case explorePageBooks(Lang)
   case friendPage(FriendPage.Input)
@@ -32,6 +33,10 @@ enum AuthedNextEvansBuildRoute: PairRoute {
   case totalPublished
 
   static let router: AnyParserPrinter<URLRequestData, AuthedNextEvansBuildRoute> = OneOf {
+    Route(/Self.audiobooksPage) {
+      Operation(AudiobooksPage.self)
+      Body(.input(AudiobooksPage.self))
+    }
     Route(/Self.documentPage) {
       Operation(DocumentPage.self)
       Body(.input(DocumentPage.self))
@@ -82,6 +87,9 @@ extension NextEvansBuildRoute: RouteResponder {
       let token = try await Token.query().where(.value == token).first()
       let authed = AuthedContext(requestId: context.requestId, scopes: try await token.scopes())
       switch authedRoute {
+      case .audiobooksPage(let lang):
+        let output = try await AudiobooksPage.resolve(with: lang, in: authed)
+        return try respond(with: output)
       case .documentPage(let input):
         let output = try await DocumentPage.resolve(with: input, in: authed)
         return try respond(with: output)
