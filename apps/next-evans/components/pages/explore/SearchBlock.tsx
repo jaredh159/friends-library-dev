@@ -18,6 +18,7 @@ interface Props {
     authorSlug: string;
     documentSlug: string;
     documentTitle: string;
+    isCompilation: boolean;
     editionType: EditionType;
     period: Period;
     region: Region;

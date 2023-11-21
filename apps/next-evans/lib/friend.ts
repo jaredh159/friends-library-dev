@@ -1,7 +1,9 @@
-import type { gender as Gender } from '@prisma/client';
 import { LANG } from '@/lib/env';
 
-export function getFriendUrl(friendSlug: string, gender: Gender): string {
+export function getFriendUrl(
+  friendSlug: string,
+  gender: 'male' | 'female' | 'mixed',
+): string {
   if (gender === `mixed`) return `/${friendSlug}`;
   let firstPart = `friend`;
   if (LANG === `es`) {
@@ -24,8 +26,4 @@ export function getDocumentUrl(
     return `/${arg1}/${arg2}`;
   }
   return `/${arg1.authorSlug}/${arg1.slug}`;
-}
-
-export function isCompilations(friendNameOrSlug: string): boolean {
-  return friendNameOrSlug.toLowerCase().startsWith(`compila`);
 }

@@ -6,7 +6,7 @@ import { t } from '@friends-library/locale';
 import { htmlTitle } from '@friends-library/adoc-utils';
 import { LANG } from '@/lib/env';
 import Button from '@/components/core/Button';
-import { getDocumentUrl, getFriendUrl, isCompilations } from '@/lib/friend';
+import { getDocumentUrl, getFriendUrl } from '@/lib/friend';
 import { toCoverProps } from '@/lib/cover';
 
 interface Props {
@@ -73,7 +73,7 @@ const Book: React.FC<Props> = (props) => (
         className="font-serif text-lg md:text-xl opacity-75 leading-relaxed max-w-2xl"
         dangerouslySetInnerHTML={{ __html: props.featuredDescription }}
       />
-      {!isCompilations(props.authorSlug) && (
+      {!props.isCompilation && (
         <p className="mb-10 md:mb-0 my-6">
           <em className="font-serif font-black text-lg antialiased pr-2">{t`by`}:</em>
           {` `}
@@ -89,8 +89,8 @@ const Book: React.FC<Props> = (props) => (
         bg="green"
         to={getDocumentUrl(props.authorSlug, props.documentSlug)}
         className={cx(`mx-auto md:mx-0`, {
-          'mt-12': isCompilations(props.authorSlug),
-          'sm:mt-0 md:mt-10': !isCompilations(props.authorSlug),
+          'mt-12': props.isCompilation,
+          'sm:mt-0 md:mt-10': !props.isCompilation,
         })}
       >
         {t`Download`} &rarr;

@@ -167,6 +167,7 @@ const ExploreBooks: React.FC<Props> = ({ totalPublished, books }) => (
           authorSlug: book.friendSlug,
           customCss: book.customCss,
           customHtml: book.customHtml,
+          isCompilation: book.isCompilation,
           documentTitle: book.title,
           documentSlug: book.slug,
           region: documentRegion(book),

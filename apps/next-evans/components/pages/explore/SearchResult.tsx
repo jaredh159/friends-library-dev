@@ -2,7 +2,7 @@ import React from 'react';
 import { Front } from '@friends-library/cover-component';
 import Link from 'next/link';
 import type { EditionType } from '@/lib/types';
-import { getDocumentUrl, isCompilations } from '@/lib/friend';
+import { getDocumentUrl } from '@/lib/friend';
 import { LANG } from '@/lib/env';
 
 interface Props {
@@ -10,6 +10,7 @@ interface Props {
   authorSlug: string;
   documentSlug: string;
   documentTitle: string;
+  isCompilation: boolean;
   editionType: EditionType;
   isbn: string;
   customCss?: string;
@@ -20,7 +21,7 @@ const SearchResult: React.FC<Props> = (book) => (
   <Link href={getDocumentUrl(book.authorSlug, book.documentSlug)}>
     <Front
       lang={LANG}
-      isCompilation={isCompilations(book.authorName)}
+      isCompilation={book.isCompilation}
       edition={book.editionType}
       author={book.authorName}
       customCss={book.customCss ?? ``}

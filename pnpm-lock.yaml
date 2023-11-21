@@ -877,7 +877,6 @@ importers:
       '@friends-library/types': workspace:*
       '@headlessui/react': ^1.4.3
       '@heroicons/react': 2.0.17
-      '@prisma/client': 4.13.0
       '@reach/accordion': ^0.11.2
       '@types/lodash.throttle': 4.1.7
       '@types/node': 18.15.11
@@ -933,7 +932,6 @@ importers:
       '@friends-library/lulu': link:../../libs-ts/lulu
       '@friends-library/theme': link:../../libs-ts/theme
       '@friends-library/types': link:../../libs-ts/types
-      '@prisma/client': 4.13.0_prisma@4.13.0
       '@types/lodash.throttle': 4.1.7
       '@types/react-instantsearch-dom': 6.12.3
       classnames: 2.3.2
@@ -8864,24 +8862,6 @@ packages:
     dependencies:
       '@pnpm/network.ca-file': 1.0.2
       config-chain: 1.1.13
-    dev: true
-
-  /@prisma/client/4.13.0_prisma@4.13.0:
-    resolution: {integrity: sha512-YaiiICcRB2hatxsbnfB66uWXjcRw3jsZdlAVxmx0cFcTc/Ad/sKdHCcWSnqyDX47vAewkjRFwiLwrOUjswVvmA==}
-    engines: {node: '>=14.17'}
-    requiresBuild: true
-    peerDependencies:
-      prisma: '*'
-    peerDependenciesMeta:
-      prisma:
-        optional: true
-    dependencies:
-      '@prisma/engines-version': 4.13.0-50.1e7af066ee9cb95cf3a403c78d9aab3e6b04f37a
-      prisma: 4.13.0
-    dev: true
-
-  /@prisma/engines-version/4.13.0-50.1e7af066ee9cb95cf3a403c78d9aab3e6b04f37a:
-    resolution: {integrity: sha512-fsQlbkhPJf08JOzKoyoD9atdUijuGBekwoOPZC3YOygXEml1MTtgXVpnUNchQlRSY82OQ6pSGQ9PxUe4arcSLQ==}
     dev: true
 
   /@prisma/engines/4.13.0:

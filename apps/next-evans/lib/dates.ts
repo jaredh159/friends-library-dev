@@ -1,34 +1,3 @@
-export const months = {
-  en: [
-    `January`,
-    `February`,
-    `March`,
-    `April`,
-    `May`,
-    `June`,
-    `July`,
-    `August`,
-    `September`,
-    `October`,
-    `November`,
-    `December`,
-  ],
-  es: [
-    `enero`,
-    `febrero`,
-    `marzo`,
-    `abril`,
-    `mayo`,
-    `junio`,
-    `julio`,
-    `agosto`,
-    `setiembre`,
-    `octubre`,
-    `noviembre`,
-    `diciembre`,
-  ],
-};
-
 export function newestFirst(a: number, b: number): number;
 export function newestFirst(a: ISODateString, b: ISODateString): number;
 export function newestFirst<T extends { createdAt: ISODateString }>(a: T, b: T): number;
