@@ -8,7 +8,10 @@ import LabledCheckbox from '../LabledCheckbox';
 import reducer from '../../lib/reducer';
 import SaveChangesBar from '../SaveChangesBar';
 import * as empty from '../../lib/empty';
-import { isClientGeneratedId } from '../../lib/api/entities/helpers';
+import {
+  isClientGeneratedId,
+  removeClientGeneratedIdPrefix,
+} from '../../lib/api/entities/helpers';
 import api, { type T } from '../../api-client';
 
 interface Props {
@@ -92,7 +95,9 @@ export const EditToken: React.FC<Props> = ({ token: initialToken }) => {
                   if (initialIndex !== -1) {
                     scopes.splice(initialIndex, 0, initialToken.scopes[initialIndex]!);
                   } else {
-                    scopes.push(empty.tokenScope(token.id, scope));
+                    scopes.push(
+                      empty.tokenScope(removeClientGeneratedIdPrefix(token.id), scope),
+                    );
                   }
                 } else {
                   const index = scopes.findIndex((s) => s.scope === scope);

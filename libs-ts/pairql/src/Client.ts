@@ -22,7 +22,7 @@ export default abstract class Client {
     if (
       href.includes(`https://deploy-preview-`) ||
       (href.startsWith(`https://`) && href.includes(`--staging`)) ||
-      process.env.GATSBY_NETLIFY_CONTEXT === `preview`
+      (!href.includes(`localhost:`) && process.env.GATSBY_NETLIFY_CONTEXT === `preview`)
     ) {
       env = `staging`;
     } else if (href.startsWith(`http://`)) {
