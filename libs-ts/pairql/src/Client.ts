@@ -42,6 +42,7 @@ export default abstract class Client {
     if (
       process.argv.includes(`--api-staging`) ||
       process.env.API_STAGING ||
+      process.env.VERCEL_ENV === `preview` ||
       process.env.GATSBY_NETLIFY_CONTEXT === `preview`
     ) {
       env = `staging`;
