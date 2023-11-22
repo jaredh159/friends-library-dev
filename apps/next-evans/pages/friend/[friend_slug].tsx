@@ -1,5 +1,4 @@
 import React from 'react';
-import Client, { type T } from '@friends-library/pairql/next-evans-build';
 import invariant from 'tiny-invariant';
 import cx from 'classnames';
 import { t, translateOptional as trans } from '@friends-library/locale';
@@ -16,11 +15,12 @@ import { sortDocuments } from '@/lib/document';
 import * as custom from '@/lib/ssg/custom-code';
 import Seo from '@/components/core/Seo';
 import { friendPageMetaDesc } from '@/lib/seo';
+import api, { type Api } from '@/lib/ssg/api-client';
 
-type Props = T.FriendPage.Output;
+type Props = Api.FriendPage.Output;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const slugs = await Client.node(process).publishedFriendSlugs(LANG);
+  const slugs = await api.publishedFriendSlugs(LANG);
   return {
     paths: slugs.map((friend_slug) => ({ params: { friend_slug } })),
     fallback: false,
@@ -29,10 +29,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps<Props> = async (context) => {
   invariant(typeof context.params?.friend_slug === `string`);
-  const friend = await Client.node(process).friendPage({
-    lang: LANG,
-    slug: context.params.friend_slug,
-  });
+  const slug = context.params.friend_slug;
+  const friend = await api.friendPage({ lang: LANG, slug });
   const customCode = await custom.some(
     friend.documents.map(({ slug }) => ({
       friendSlug: friend.slug,

@@ -1,7 +1,6 @@
 import React from 'react';
 import invariant from 'tiny-invariant';
 import { t } from '@friends-library/locale';
-import Client, { type T } from '@friends-library/pairql/next-evans-build';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import { LANG } from '@/lib/env';
 import { getDocumentUrl, getFriendUrl } from '@/lib/friend';
@@ -12,11 +11,12 @@ import ListenBlock from '@/components/pages/document/ListenBlock';
 import * as code from '@/lib/ssg/custom-code';
 import Seo from '@/components/core/Seo';
 import { bookPageMetaDesc } from '@/lib/seo';
+import api, { type Api } from '@/lib/ssg/api-client';
 
-type Props = T.DocumentPage.Output;
+type Props = Api.DocumentPage.Output;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const output = await Client.node(process).publishedDocumentSlugs(LANG);
+  const output = await api.publishedDocumentSlugs(LANG);
   return {
     paths: output.map(({ friendSlug, documentSlug }) => ({
       params: { friend_slug: friendSlug, document_slug: documentSlug },
@@ -32,7 +32,7 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
   invariant(typeof documentSlug === `string`);
   const input = { lang: LANG, friendSlug, documentSlug } as const;
   const [props, customCode] = await Promise.all([
-    Client.node(process).documentPage(input),
+    api.documentPage(input),
     code.document(friendSlug, documentSlug),
   ]);
   return {

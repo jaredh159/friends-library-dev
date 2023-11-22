@@ -113,13 +113,29 @@ extension DocumentPage: Resolver {
       throw Abort(.notFound)
     }
 
+    return try .init(
+      document,
+      downloads: [document.urlPath: try await document.numDownloads()],
+      numTotalBooks: numTotalBooks,
+      in: context
+    )
+  }
+}
+
+extension DocumentPage.Output {
+  init(
+    _ document: Document,
+    downloads: [String: Int],
+    numTotalBooks: Int,
+    in context: AuthedContext
+  ) throws {
     let friend = document.friend.require()
     let editions = document.editions.require()
     let primaryEdition = try expect(document.primaryEdition)
     let primaryEditionImpression = try expect(primaryEdition.impression.require())
     let isbn = try expect(primaryEdition.isbn.require())
 
-    var audiobook: PrimaryEdition.Audiobook?
+    var audiobook: DocumentPage.PrimaryEdition.Audiobook?
     if let audio = primaryEdition.audio.require() {
       let audioParts = audio.parts.require()
       guard let firstAudioPart = audioParts.first else {
@@ -161,7 +177,7 @@ extension DocumentPage: Resolver {
       )
     }
 
-    return .init(
+    self = .init(
       document: .init(
         friendName: friend.name,
         friendSlug: friend.slug,
@@ -171,7 +187,7 @@ extension DocumentPage: Resolver {
         isComplete: !document.incomplete,
         priceInCents: primaryEditionImpression.paperbackPrice.rawValue,
         description: document.description,
-        numDownloads: try await document.numDownloads(),
+        numDownloads: try expect(downloads[document.urlPath]),
         isCompilation: friend.isCompilations,
         ogImageUrl: primaryEdition.images.threeD.w700.url.absoluteString,
         editions: try editions.filter { !$0.isDraft }.map { edition in
@@ -186,7 +202,7 @@ extension DocumentPage: Resolver {
             )
           )
         },
-        alternateLanguageDoc: (try await document.altLanguageDocument()).map {
+        alternateLanguageDoc: document.altLanguageDocument.require().map {
           .init(friendSlug: friend.slug, slug: $0.slug)
         },
         primaryEdition: .init(
@@ -199,7 +215,7 @@ extension DocumentPage: Resolver {
         )
       ),
       otherBooksByFriend: try friend.documents.require().filter(\.hasNonDraftEdition)
-        .filter { $0.slug != input.documentSlug }
+        .filter { $0.slug != document.slug }
         .map { otherDoc in
           let edition = try expect(otherDoc.primaryEdition)
           return .init(
@@ -229,4 +245,10 @@ func expect<T>(_ value: T?, file: StaticString = #file, line: UInt = #line) thro
     )
   }
   return value
+}
+
+extension Document {
+  var urlPath: String {
+    "\(friend.require().slug)/\(slug)"
+  }
 }

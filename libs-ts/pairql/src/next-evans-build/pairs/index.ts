@@ -1,5 +1,7 @@
 // auto-generated, do not edit
 export * from '../shared';
+export * from './AllDocumentPages';
+export * from './AllFriendPages';
 export * from './AudiobooksPage';
 export * from './DocumentPage';
 export * from './ExplorePageBooks';

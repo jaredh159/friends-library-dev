@@ -1,6 +1,5 @@
 import React from 'react';
 import cx from 'classnames';
-import Client, { type T as Api } from '@friends-library/pairql/next-evans-build';
 import { t } from '@friends-library/locale';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import type { GetStaticProps } from 'next';
@@ -19,6 +18,7 @@ import { getDocumentUrl, getFriendUrl } from '@/lib/friend';
 import * as custom from '@/lib/ssg/custom-code';
 import { type CustomCodeMap } from '@/lib/ssg/custom-code';
 import Seo, { pageMetaDesc } from '@/components/core/Seo';
+import api, { type Api } from '@/lib/ssg/api-client';
 
 type Book = Api.GettingStartedBooks.Output[number];
 
@@ -33,13 +33,12 @@ interface Props {
 }
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const client = Client.node(process);
   const props = await Promise.all([
-    client.gettingStartedBooks({ lang: LANG, slugs: recommended.history[LANG] }),
-    client.gettingStartedBooks({ lang: LANG, slugs: recommended.doctrine[LANG] }),
-    client.gettingStartedBooks({ lang: LANG, slugs: recommended.spiritualLife[LANG] }),
-    client.gettingStartedBooks({ lang: LANG, slugs: recommended.journals[LANG] }),
-    client.totalPublished(),
+    api.gettingStartedBooks({ lang: LANG, slugs: recommended.history[LANG] }),
+    api.gettingStartedBooks({ lang: LANG, slugs: recommended.doctrine[LANG] }),
+    api.gettingStartedBooks({ lang: LANG, slugs: recommended.spiritualLife[LANG] }),
+    api.gettingStartedBooks({ lang: LANG, slugs: recommended.journals[LANG] }),
+    api.totalPublished(),
     custom.some(customCodeSlugs()),
   ]).then(([history, doctrine, spiritualLife, journals, totalPublished, customCode]) => ({
     books: {

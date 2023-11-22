@@ -1,9 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
-import Client from '@friends-library/pairql/next-evans-build';
 import { t } from '@friends-library/locale';
 import type { GetStaticProps } from 'next';
 import type { EditionType } from '@/lib/types';
+import api from '@/lib/ssg/api-client';
 import AudiobooksHero from '@/components/pages/explore/AudiobooksHero';
 import Dual from '@/components/core/Dual';
 import BookTeaserCard from '@/components/core/BookTeaserCard';
@@ -34,7 +34,7 @@ interface Props {
 }
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const output = await Client.node(process).audiobooksPage(LANG);
+  const output = await api.audiobooksPage(LANG);
   output.sort(newestFirst);
   const customCode = await custom.some(output.map(custom.documentSlugs));
   const audiobooks = output

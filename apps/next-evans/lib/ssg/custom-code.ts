@@ -1,13 +1,13 @@
 import pLimit from 'p-limit';
-import Client from '@friends-library/pairql/next-evans-build';
 import { LANG } from '../env';
+import api from '@/lib/ssg/api-client';
 
 export type CustomCode = { customCss?: string; customHtml?: string };
 export type WithCustomCode<T> = T & CustomCode;
 export type CustomCodeMap = Record<`${string}/${string}`, CustomCode>;
 
 export async function all(): Promise<CustomCodeMap> {
-  return some(await Client.node(process).publishedDocumentSlugs(LANG));
+  return some(await api.publishedDocumentSlugs(LANG));
 }
 
 export async function some(

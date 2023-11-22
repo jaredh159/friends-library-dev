@@ -23,6 +23,32 @@ export default class NextEvansBuildClient extends Client {
     return Client.inferWeb(NextEvansBuildClient, href, getToken);
   }
 
+  public allDocumentPagesResult(
+    input: P.AllDocumentPages.Input,
+  ): Promise<Result<P.AllDocumentPages.Output>> {
+    return this.query<P.AllDocumentPages.Output>(input, `AllDocumentPages`);
+  }
+
+  public allFriendPagesResult(
+    input: P.AllFriendPages.Input,
+  ): Promise<Result<P.AllFriendPages.Output>> {
+    return this.query<P.AllFriendPages.Output>(input, `AllFriendPages`);
+  }
+
+  public async allDocumentPages(
+    input: P.AllDocumentPages.Input,
+  ): Promise<P.AllDocumentPages.Output> {
+    const result = await this.query<P.AllDocumentPages.Output>(input, `AllDocumentPages`);
+    return result.unwrap();
+  }
+
+  public async allFriendPages(
+    input: P.AllFriendPages.Input,
+  ): Promise<P.AllFriendPages.Output> {
+    const result = await this.query<P.AllFriendPages.Output>(input, `AllFriendPages`);
+    return result.unwrap();
+  }
+
   public async audiobooksPage(
     input: P.AudiobooksPage.Input,
   ): Promise<P.AudiobooksPage.Output> {

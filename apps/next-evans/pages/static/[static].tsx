@@ -4,10 +4,10 @@ import { MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import invariant from 'tiny-invariant';
 import { type MDXRemoteSerializeResult } from 'next-mdx-remote';
-import Client, { type T as Api } from '@friends-library/pairql/next-evans-build';
 import type { GetStaticPaths, GetStaticProps } from 'next';
 import type { MdxPageFrontmatter } from '@/lib/types';
 import { WhiteOverlay } from '../explore';
+import api, { type Api } from '@/lib/ssg/api-client';
 import HeroImg from '@/public/images/explore-books.jpg';
 import * as mdx from '@/lib/mdx';
 import { LANG } from '@/lib/env';
@@ -30,7 +30,7 @@ export const getStaticPaths: GetStaticPaths = async () => ({
 export const getStaticProps: GetStaticProps<Props> = async (context) => {
   const slug = context.params?.static;
   invariant(typeof slug === `string`);
-  const totals = await Client.node(process).totalPublished();
+  const totals = await api.totalPublished();
   const source = replacePlaceholders(mdx.source(slug, LANG), totals);
   const { content, data: frontmatter } = matter(source);
   invariant(mdx.verifyFrontmatter(frontmatter));

@@ -63,6 +63,8 @@ struct FriendPage: Pair {
   }
 }
 
+// resolver
+
 extension FriendPage: Resolver {
   static func resolve(with input: Input, in context: AuthedContext) async throws -> Output {
     try context.verify(Self.auth)
@@ -71,26 +73,38 @@ extension FriendPage: Resolver {
       .where(.slug == input.slug)
       .first()
 
-    let documents = (try await friend.documents()).filter(\.hasNonDraftEdition)
+    let downloads = try await Current.db.customQuery(
+      AllDocumentDownloads.self,
+      withBindings: [.enum(input.lang), .uuid(friend.id)]
+    ).urlPathDict
+
+    return try .init(friend, downloads: downloads, in: context)
+  }
+}
+
+// extensions
+
+extension FriendPage.Output {
+  init(_ friend: Friend, downloads: [String: Int], in context: AuthedContext) throws {
+    let documents = friend.documents.require().filter(\.hasNonDraftEdition)
     guard !documents.isEmpty else {
       throw context.error(
         id: "0e8ded83",
         type: .badRequest,
-        detail: "friend `\(input.lang)/\(input.slug)` has no published documents"
+        detail: "friend `\(friend.lang)/\(friend.slug)` has no published documents"
       )
     }
 
-    let quotes = try await friend.quotes()
-    let residences = try await friend.residences()
+    let quotes = friend.quotes.require()
+    let residences = friend.residences.require()
     guard friend.isCompilations || !residences.isEmpty else {
       throw context.error(
         id: "01c3e020",
         type: .serverError,
-        detail: "non-compilations friend `\(input.lang)/\(input.slug)` has no residences"
+        detail: "non-compilations friend `\(friend.lang)/\(friend.slug)` has no residences"
       )
     }
-
-    return .init(
+    self = .init(
       born: friend.born,
       died: friend.died,
       name: friend.name,
@@ -98,7 +112,7 @@ extension FriendPage: Resolver {
       description: friend.description,
       gender: friend.gender,
       isCompilations: friend.isCompilations,
-      documents: try await documents.concurrentMap { document in
+      documents: try documents.map { document in
         let editions = document.editions.require()
         let primaryEdition = try expect(document.primaryEdition)
         let impression = try expect(primaryEdition.impression.require())
@@ -109,7 +123,7 @@ extension FriendPage: Resolver {
           htmlShortTitle: document.htmlShortTitle,
           shortDescription: document.partialDescription,
           slug: document.slug,
-          numDownloads: try await document.numDownloads(),
+          numDownloads: try expect(downloads[document.urlPath]),
           tags: document.tags.require().map(\.type),
           hasAudio: primaryEdition.audio.require() != nil,
           primaryEdition: .init(
@@ -121,8 +135,8 @@ extension FriendPage: Resolver {
           editionTypes: editions.map(\.type)
         )
       },
-      residences: try await residences.concurrentMap { residence in
-        let durations = try await residence.durations()
+      residences: residences.map { residence in
+        let durations = residence.durations.require()
         return .init(
           city: residence.city,
           region: residence.region,

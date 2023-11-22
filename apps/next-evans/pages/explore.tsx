@@ -1,6 +1,5 @@
 import React from 'react';
 import { t } from '@friends-library/locale';
-import Client, { type T as Api } from '@friends-library/pairql/next-evans-build';
 import type { GetStaticProps } from 'next';
 import type { Period } from '@/lib/types';
 import { LANG } from '@/lib/env';
@@ -21,6 +20,7 @@ import { newestFirst } from '@/lib/dates';
 import { documentDate, documentRegion } from '@/lib/document';
 import * as custom from '@/lib/ssg/custom-code';
 import Seo, { pageMetaDesc } from '@/components/core/Seo';
+import api, { type Api } from '@/lib/ssg/api-client';
 
 type Props = {
   books: Api.ExplorePageBooks.Output;
@@ -28,10 +28,9 @@ type Props = {
 };
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const client = Client.node(process);
   const props = await Promise.all([
-    client.explorePageBooks(LANG),
-    client.totalPublished(),
+    api.explorePageBooks(LANG),
+    api.totalPublished(),
     custom.all(),
   ]).then(([books, totalPublished, allCustomCode]) => ({
     books: books.map((book) => {

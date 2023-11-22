@@ -1,6 +1,5 @@
 import React from 'react';
 import { t } from '@friends-library/locale';
-import Client, { type T as Api } from '@friends-library/pairql/next-evans-build';
 import type { GetStaticProps } from 'next';
 import type { FeedItem } from '@/components/pages/home/news-feed/news-feed';
 import { getNewsFeedItems } from '@/components/pages/home/news-feed/news-feed';
@@ -15,13 +14,13 @@ import NewsFeedBlock from '@/components/pages/home/news-feed/NewsFeedBlock';
 import { LANG } from '@/lib/env';
 import Seo, { pageMetaDesc } from '@/components/core/Seo';
 import * as custom from '@/lib/ssg/custom-code';
+import api, { type Api } from '@/lib/ssg/api-client';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const client = Client.node(process);
   const props = await Promise.all([
-    client.homepageFeaturedBooks({ lang: LANG, slugs: featuredBooks[LANG] }),
-    client.newsFeedItems(LANG),
-    client.totalPublished(),
+    api.homepageFeaturedBooks({ lang: LANG, slugs: featuredBooks[LANG] }),
+    api.newsFeedItems(LANG),
+    api.totalPublished(),
     custom.some(featuredBooks[LANG]),
   ]).then(([featuredBooks, newsFeedItems, totalPublished, customCode]) => ({
     featuredBooks: featuredBooks.map((book) => {

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { t } from '@friends-library/locale';
-import Client, { type T as Api } from '@friends-library/pairql/next-evans-build';
 import type { GetStaticProps } from 'next';
 import FriendsPageHero from '@/components/pages/friends/FriendsPageHero';
 import FriendCard from '@/components/pages/friends/FriendCard';
@@ -10,6 +9,7 @@ import { getFriendUrl } from '@/lib/friend';
 import { newestFirst } from '@/lib/dates';
 import { LANG } from '@/lib/env';
 import Seo, { pageMetaDesc } from '@/components/core/Seo';
+import api, { type Api } from '@/lib/ssg/api-client';
 
 type Friend = Api.FriendsPage.Output[number];
 
@@ -18,7 +18,7 @@ interface Props {
 }
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const friends = await Client.node(process).friendsPage(LANG);
+  const friends = await api.friendsPage(LANG);
   return { props: { friends } };
 };
 
