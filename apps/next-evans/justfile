@@ -23,4 +23,4 @@ test:
 
 [private]
 write-cover-css:
-  @pnpm ts-node ./lib/cover-static-css.ts
+  @pnpm ts-node ./lib/ssg/cover-static-css.ts

@@ -2,6 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 import type { CoverData } from '@/lib/cover';
 import BookTeaserCard from './BookTeaserCard';
+import { shortDate } from '@/lib/dates';
 
 export interface Props {
   className?: string;
@@ -58,15 +59,7 @@ const BookTeaserCards: React.FC<Props> = ({
             key={book.documentUrl}
             className="pt-16 md:pt-0 md:mb-16 xl:mx-6"
             {...book}
-            badgeText={
-              withDateBadges
-                ? // todo: this seems wrong for spanish
-                  new Date(book.createdAt).toLocaleDateString(`en-US`, {
-                    month: `short`,
-                    day: `numeric`,
-                  })
-                : undefined
-            }
+            badgeText={withDateBadges ? shortDate(book.createdAt) : undefined}
           />
         ))}
       </div>

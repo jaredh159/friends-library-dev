@@ -47,8 +47,8 @@ const Friends: React.FC<Props> = ({ friends }) => {
               region={`${friend.primaryResidence.city}, ${friend.primaryResidence.region}`}
               numBooks={friend.numBooks}
               featured
-              born={friend.born || undefined}
-              died={friend.died || undefined}
+              born={friend.born}
+              died={friend.died}
               url={getFriendUrl(friend.slug, friend.gender)}
               color={i === 0 ? `blue` : `green`}
               className="xl:w-1/2 xl:max-w-screen-sm"
@@ -73,8 +73,8 @@ const Friends: React.FC<Props> = ({ friends }) => {
             region={`${friend.primaryResidence.city}, ${friend.primaryResidence.region}`}
             numBooks={friend.numBooks}
             url={getFriendUrl(friend.slug, friend.gender)}
-            born={friend.born || undefined}
-            died={friend.died || undefined}
+            born={friend.born}
+            died={friend.died}
             color={(() => {
               switch (i % 4) {
                 case 0:
