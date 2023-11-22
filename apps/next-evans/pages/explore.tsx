@@ -87,13 +87,13 @@ const ExploreBooks: React.FC<Props> = ({ totalPublished, books }) => (
         .sort(newestFirst)
         .map((book) => ({
           url: getDocumentUrl(book.friendSlug, book.slug),
-          authorUrl: getFriendUrl(book.friendSlug, book.friendGender),
+          friendUrl: getFriendUrl(book.friendSlug, book.friendGender),
           isCompilation: book.isCompilation,
           editionType: book.primaryEdition.type,
           isbn: book.primaryEdition.isbn,
           title: book.title,
-          authorName: book.friendName,
-          authorSlug: book.friendSlug,
+          friendName: book.friendName,
+          friendSlug: book.friendSlug,
           customCss: book.customCss,
           customHtml: book.customHtml,
         }))}
@@ -110,8 +110,8 @@ const ExploreBooks: React.FC<Props> = ({ totalPublished, books }) => (
           isbn: book.primaryEdition.isbn,
           title: book.title,
           htmlShortTitle: book.htmlShortTitle,
-          authorName: book.friendName,
-          authorSlug: book.friendSlug,
+          friendName: book.friendName,
+          friendSlug: book.friendSlug,
           customCss: book.customCss,
           customHtml: book.customHtml,
         }))}
@@ -124,14 +124,14 @@ const ExploreBooks: React.FC<Props> = ({ totalPublished, books }) => (
           title: book.title,
           createdAt: book.createdAt,
           isCompilation: book.isCompilation,
-          authorName: book.friendName,
+          friendName: book.friendName,
           editionType: book.primaryEdition.type,
           paperbackVolumes: book.primaryEdition.paperbackVolumes,
           isbn: book.primaryEdition.isbn,
           description: book.shortDescription,
           htmlShortTitle: book.htmlShortTitle,
           documentUrl: getDocumentUrl(book.friendSlug, book.slug),
-          authorUrl: getFriendUrl(book.friendSlug, book.friendGender),
+          friendUrl: getFriendUrl(book.friendSlug, book.friendGender),
         }))}
     />
     {LANG === `en` && (
@@ -139,11 +139,11 @@ const ExploreBooks: React.FC<Props> = ({ totalPublished, books }) => (
         books={books.map((book) => ({
           title: book.title,
           isCompilation: book.isCompilation,
-          authorName: book.friendName,
+          friendName: book.friendName,
           editionType: book.primaryEdition.type,
           isbn: book.primaryEdition.isbn,
           url: getDocumentUrl(book.friendSlug, book.slug),
-          authorUrl: getFriendUrl(book.friendSlug, book.friendGender),
+          friendUrl: getFriendUrl(book.friendSlug, book.friendGender),
           region: documentRegion(book),
         }))}
       />
@@ -152,11 +152,11 @@ const ExploreBooks: React.FC<Props> = ({ totalPublished, books }) => (
       <TimelineBlock
         books={books.map((book) => ({
           title: book.title,
-          authorName: book.friendName,
+          friendName: book.friendName,
           editionType: book.primaryEdition.type,
           isbn: book.primaryEdition.isbn,
           url: getDocumentUrl(book.friendSlug, book.slug),
-          authorUrl: getFriendUrl(book.friendSlug, book.friendGender),
+          friendUrl: getFriendUrl(book.friendSlug, book.friendGender),
           isCompilation: book.isCompilation,
           date: documentDate(book),
         }))}

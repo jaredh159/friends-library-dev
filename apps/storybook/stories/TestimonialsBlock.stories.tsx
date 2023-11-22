@@ -13,8 +13,8 @@ type Story = StoryObj<typeof meta>;
 export const One: Story = props({
   testimonials: [
     {
-      cite: `John Doe`,
-      quote: MEDIUM_LOREM,
+      source: `John Doe`,
+      text: MEDIUM_LOREM,
     },
   ],
 });
@@ -23,8 +23,8 @@ export const Two: Story = props({
   testimonials: [
     ...One.args.testimonials,
     {
-      cite: `Jane Doe`,
-      quote: MEDIUM_LOREM,
+      source: `Jane Doe`,
+      text: MEDIUM_LOREM,
     },
   ],
 });
@@ -33,8 +33,8 @@ export const Three: Story = props({
   testimonials: [
     ...Two.args.testimonials,
     {
-      cite: `Joe Doe`,
-      quote: MEDIUM_LOREM,
+      source: `Joe Doe`,
+      text: MEDIUM_LOREM,
     },
   ],
 });
@@ -43,8 +43,8 @@ export const Four: Story = props({
   testimonials: [
     ...Three.args.testimonials,
     {
-      cite: `Jim Doe`,
-      quote: MEDIUM_LOREM,
+      source: `Jim Doe`,
+      text: MEDIUM_LOREM,
     },
   ],
 });

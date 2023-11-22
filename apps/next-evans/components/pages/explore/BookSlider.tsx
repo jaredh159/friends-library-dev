@@ -17,8 +17,8 @@ interface Props {
     url: string;
     title: string;
     isbn: string;
-    authorName: string;
-    authorUrl: string;
+    friendName: string;
+    friendUrl: string;
     isCompilation: boolean;
     editionType: EditionType;
     customCss?: string;
@@ -87,7 +87,7 @@ const BookSlider: React.FC<Props> = ({ books, className }) => {
           >
             <Link href={book.url}>
               <Front
-                author={book.authorName}
+                author={book.friendName}
                 edition={book.editionType}
                 customCss={book.customCss ?? ``}
                 customHtml={book.customHtml ?? ``}
@@ -105,8 +105,8 @@ const BookSlider: React.FC<Props> = ({ books, className }) => {
               className="my-4 tracking-wider text-base text-flgray-900 md:mb-2 md:pb-1"
               dangerouslySetInnerHTML={{ __html: htmlShortTitle(book.title) }}
             />
-            <Link href={book.authorUrl} className="fl-underline text-sm text-flprimary">
-              {book.authorName}
+            <Link href={book.friendUrl} className="fl-underline text-sm text-flprimary">
+              {book.friendName}
             </Link>
           </div>
         ))}

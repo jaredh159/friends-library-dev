@@ -9,9 +9,9 @@ export namespace DocumentPage {
 
   export interface Output {
     document: {
-      authorName: string;
-      authorSlug: string;
-      authorGender: 'male' | 'female' | 'mixed';
+      friendName: string;
+      friendSlug: string;
+      friendGender: 'male' | 'female' | 'mixed';
       title: string;
       originalTitle?: string;
       isComplete: boolean;
@@ -30,7 +30,7 @@ export namespace DocumentPage {
         };
       }>;
       alternateLanguageDoc?: {
-        authorSlug: string;
+        friendSlug: string;
         slug: string;
       };
       primaryEdition: {
@@ -71,7 +71,7 @@ export namespace DocumentPage {
       customCss?: string;
       customCssUrl?: string;
     };
-    otherBooksByAuthor: Array<{
+    otherBooksByFriend: Array<{
       title: string;
       editionType: 'updated' | 'original' | 'modernized';
       description: string;

@@ -16,14 +16,14 @@ export function getFriendUrl(
   return `/${firstPart}/${friendSlug}`;
 }
 
-export function getDocumentUrl(doc: { authorSlug: string; slug: string }): string;
+export function getDocumentUrl(doc: { friendSlug: string; slug: string }): string;
 export function getDocumentUrl(friendSlug: string, documentSlug: string): string;
 export function getDocumentUrl(
-  arg1: { authorSlug: string; slug: string } | string,
+  arg1: { friendSlug: string; slug: string } | string,
   arg2?: string,
 ): string {
   if (typeof arg1 === `string`) {
     return `/${arg1}/${arg2}`;
   }
-  return `/${arg1.authorSlug}/${arg1.slug}`;
+  return `/${arg1.friendSlug}/${arg1.slug}`;
 }

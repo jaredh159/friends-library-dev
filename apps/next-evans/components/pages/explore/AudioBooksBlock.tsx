@@ -15,8 +15,8 @@ interface Props {
     isbn: string;
     title: string;
     htmlShortTitle: string;
-    authorName: string;
-    authorSlug: string;
+    friendName: string;
+    friendSlug: string;
     customCss?: string;
     customHtml?: string;
   }>;
@@ -46,7 +46,7 @@ const AudioBooksBlock: React.FC<Props> = ({ books }) => (
             className="mb-8"
             title={book.title}
             isbn={book.isbn}
-            authorName={book.authorName}
+            friendName={book.friendName}
             editionType={book.editionType}
             customCss={book.customCss ?? ``}
             customHtml={book.customHtml ?? ``}

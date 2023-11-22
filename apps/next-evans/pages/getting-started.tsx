@@ -295,7 +295,7 @@ export const HistoryBlurb: React.FC = () => (
 function toPathBlock(books: Array<Book>): PathBlockProps['books'] {
   return books.map((book) => ({
     ...book,
-    authorUrl: getFriendUrl(book.authorSlug, book.authorGender),
+    friendUrl: getFriendUrl(book.friendSlug, book.friendGender),
     documentUrl: getDocumentUrl(book),
   }));
 }
@@ -313,7 +313,7 @@ function merge(
   customCode: CustomCodeMap,
 ): Array<Api.GettingStartedBooks.Output[number]> {
   return books.map((book) => {
-    const docCode = customCode[`${book.authorSlug}/${book.slug}`];
+    const docCode = customCode[`${book.friendSlug}/${book.slug}`];
     return docCode ? custom.merge(book, docCode) : book;
   });
 }

@@ -17,7 +17,7 @@ interface Props {
   customCss?: string;
   customHtml?: string;
   isCompilation: boolean;
-  authorName: string;
+  friendName: string;
   duration: string;
   friendUrl: string;
   documentUrl: string;
@@ -50,7 +50,7 @@ const Audiobook: React.FC<Props> = ({
       />
       <h4 className="-mt-3" key="author">
         <Link href={documentUrl} className="fl-underline">
-          {props.authorName}
+          {props.friendName}
         </Link>
       </h4>
       <AudioDuration textColor="white" key="duration">

@@ -16,9 +16,9 @@ interface Props {
   customCss?: string;
   customHtml?: string;
   isCompilation: boolean;
-  authorName: string;
-  authorSlug: string;
-  authorGender: 'male' | 'female' | 'mixed';
+  friendName: string;
+  friendSlug: string;
+  friendGender: 'male' | 'female' | 'mixed';
   documentSlug: string;
   featuredDescription: string;
   isCurrent: boolean;
@@ -78,16 +78,16 @@ const Book: React.FC<Props> = (props) => (
           <em className="font-serif font-black text-lg antialiased pr-2">{t`by`}:</em>
           {` `}
           <Link
-            href={getFriendUrl(props.authorSlug, props.authorGender)}
+            href={getFriendUrl(props.friendSlug, props.friendGender)}
             className="font-serif uppercase text-lg antialiased font-bold text-flblue bracketed"
           >
-            {props.authorName}
+            {props.friendName}
           </Link>
         </p>
       )}
       <Button
         bg="green"
-        to={getDocumentUrl(props.authorSlug, props.documentSlug)}
+        to={getDocumentUrl(props.friendSlug, props.documentSlug)}
         className={cx(`mx-auto md:mx-0`, {
           'mt-12': props.isCompilation,
           'sm:mt-0 md:mt-10': !props.isCompilation,

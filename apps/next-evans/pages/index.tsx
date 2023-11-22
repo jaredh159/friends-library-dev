@@ -25,7 +25,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     custom.some(featuredBooks[LANG]),
   ]).then(([featuredBooks, newsFeedItems, totalPublished, customCode]) => ({
     featuredBooks: featuredBooks.map((book) => {
-      const coverCode = customCode[`${book.authorSlug}/${book.documentSlug}`];
+      const coverCode = customCode[`${book.friendSlug}/${book.documentSlug}`];
       return coverCode ? custom.merge(book, coverCode) : book;
     }),
     newsFeedItems: getNewsFeedItems(newsFeedItems),

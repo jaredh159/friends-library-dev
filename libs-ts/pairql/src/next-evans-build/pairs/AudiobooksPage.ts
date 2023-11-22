@@ -12,9 +12,9 @@ export namespace AudiobooksPage {
     customCss?: string;
     customHtml?: string;
     isCompilation: boolean;
-    authorName: string;
-    authorSlug: string;
-    authorGender: 'male' | 'female' | 'mixed';
+    friendName: string;
+    friendSlug: string;
+    friendGender: 'male' | 'female' | 'mixed';
     duration: string;
     shortDescription: string;
     createdAt: ISODateString;

@@ -1,10 +1,10 @@
 import DocBlock from '@evans/pages/document/DocBlock';
-import type { Meta, StoryObj } from '@storybook/react';
-import { props } from './helpers';
 import WebCoverStyles from 'decorators/CoverStyles';
+import type { Meta, StoryObj } from '@storybook/react';
+import { MEDIUM_LOREM, props } from './helpers';
 
 const meta = {
-  title: 'Document/DocBlock',
+  title: 'Document/DocBlock', // eslint-disable-line
   component: DocBlock,
   parameters: {
     layout: `fullscreen`,
@@ -15,26 +15,37 @@ const meta = {
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = props({
-  authorSlug: 'john-doe',
-  authorName: 'John Doe',
-  authorGender: 'male',
-  title: 'The Life and Letters of John Doe',
-  blurb: `Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt veniam modi, sed distinctio quam ratione praesentium qui vero soluta labore, saepe assumenda officiis voluptatum, iure numquam id dicta maiores ipsum? Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt veniam modi, sed distinctio quam ratione praesentium qui vero soluta labore, saepe assumenda officiis voluptatum, iure numquam id dicta maiores ipsum?`,
-  numPages: [300],
-  editions: [],
+  friendSlug: `john-doe`,
+  friendName: `John Doe`,
+  friendGender: `male`,
+  title: `The Life and Letters of John Doe`,
+  description: MEDIUM_LOREM,
   isComplete: true,
-  numDownloads: 300,
+  priceInCents: 300,
   hasAudio: true,
-  price: 300,
-  alternateLanguageSlug: null,
-  mostModernEdition: {
-    type: `modernized`,
-    id: `abc123`,
-    numPages: [300],
+  numDownloads: 300,
+  isCompilation: false,
+  editions: [
+    {
+      type: `updated`,
+      loggedDownloadUrls: {
+        pdf: `/`,
+        epub: `/`,
+        mobi: `/`,
+        speech: `/`,
+      },
+    },
+  ],
+  primaryEdition: {
     numChapters: 10,
-    size: 'm',
-    audioBook: null,
-    impressionCreatedAt: `2021-01-01`,
+    editionType: `updated`,
+    printSize: `m`,
+    paperbackVolumes: [300],
+    isbn: `1234567890`,
+    title: `The Life and Letters of John Doe`,
+    description: MEDIUM_LOREM,
+    isCompilation: false,
+    friendName: `John Doe`,
   },
 });
 

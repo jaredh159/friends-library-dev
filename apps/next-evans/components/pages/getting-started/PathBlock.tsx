@@ -24,8 +24,8 @@ export interface Props {
     customCss?: string;
     customHtml?: string;
     isCompilation: boolean;
-    authorName: string;
-    authorUrl: string;
+    friendName: string;
+    friendUrl: string;
     documentUrl: string;
     htmlShortTitle: string;
     hasAudio: boolean;
@@ -93,9 +93,9 @@ const PathBlock: React.FC<Props> = ({ slug, books, title, color, children }) => 
               <p className="text-center">
                 <Link
                   className="inline-block text-center strong-link text-sm mb-10"
-                  href={book.authorUrl}
+                  href={book.friendUrl}
                 >
-                  {book.authorName}
+                  {book.friendName}
                 </Link>
               </p>
               <div className="flex flex-col items-center mt-auto">

@@ -17,7 +17,7 @@ export interface DocumentCoverData {
 
 export interface FriendCoverData {
   isCompilation: boolean;
-  authorName: string;
+  friendName: string;
 }
 
 export type CoverData = EditionCoverData & DocumentCoverData & FriendCoverData;
@@ -27,7 +27,7 @@ export function toCoverProps(data: CoverData): CoverProps {
     lang: LANG,
     title: data.title,
     isCompilation: data.isCompilation,
-    author: data.authorName,
+    author: data.friendName,
     size: data.printSize,
     pages: data.paperbackVolumes[0],
     edition: data.editionType,

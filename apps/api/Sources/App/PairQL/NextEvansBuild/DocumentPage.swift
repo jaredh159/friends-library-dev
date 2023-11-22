@@ -19,9 +19,9 @@ struct DocumentPage: Pair {
   }
 
   struct DocumentOutput: PairNestable {
-    var authorName: String
-    var authorSlug: String
-    var authorGender: Friend.Gender
+    var friendName: String
+    var friendSlug: String
+    var friendGender: Friend.Gender
     var title: String
     var originalTitle: String?
     var isComplete: Bool
@@ -37,7 +37,7 @@ struct DocumentPage: Pair {
     var customCssUrl: String?
 
     struct AlternateLanguageDoc: PairNestable {
-      var authorSlug: String
+      var friendSlug: String
       var slug: String
     }
   }
@@ -62,7 +62,7 @@ struct DocumentPage: Pair {
     }
   }
 
-  struct OtherBookByAuthor: PairNestable {
+  struct OtherBookByFriend: PairNestable {
     var title: String
     var editionType: EditionType
     var description: String
@@ -88,7 +88,7 @@ struct DocumentPage: Pair {
 
   struct Output: PairOutput {
     var document: DocumentOutput
-    var otherBooksByAuthor: [OtherBookByAuthor]
+    var otherBooksByFriend: [OtherBookByFriend]
     var numTotalBooks: Int
   }
 }
@@ -163,9 +163,9 @@ extension DocumentPage: Resolver {
 
     return .init(
       document: .init(
-        authorName: friend.name,
-        authorSlug: friend.slug,
-        authorGender: friend.gender,
+        friendName: friend.name,
+        friendSlug: friend.slug,
+        friendGender: friend.gender,
         title: document.title,
         originalTitle: document.originalTitle,
         isComplete: !document.incomplete,
@@ -187,7 +187,7 @@ extension DocumentPage: Resolver {
           )
         },
         alternateLanguageDoc: (try await document.altLanguageDocument()).map {
-          .init(authorSlug: friend.slug, slug: $0.slug)
+          .init(friendSlug: friend.slug, slug: $0.slug)
         },
         primaryEdition: .init(
           editionType: primaryEdition.type,
@@ -198,7 +198,7 @@ extension DocumentPage: Resolver {
           audiobook: audiobook
         )
       ),
-      otherBooksByAuthor: try friend.documents.require().filter(\.hasNonDraftEdition)
+      otherBooksByFriend: try friend.documents.require().filter(\.hasNonDraftEdition)
         .filter { $0.slug != input.documentSlug }
         .map { otherDoc in
           let edition = try expect(otherDoc.primaryEdition)

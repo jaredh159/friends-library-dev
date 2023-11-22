@@ -24,9 +24,9 @@ interface Props {
     customCss?: string;
     customHtml?: string;
     isCompilation: boolean;
-    authorName: string;
-    authorSlug: string;
-    authorGender: 'male' | 'female' | 'mixed';
+    friendName: string;
+    friendSlug: string;
+    friendGender: 'male' | 'female' | 'mixed';
     duration: string;
     badgeText?: string;
     shortDescription: string;
@@ -45,15 +45,15 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
       editionType: audio.editionType,
       isbn: audio.isbn,
       isCompilation: audio.isCompilation,
-      authorName: audio.authorName,
-      authorSlug: audio.authorSlug,
-      authorGender: audio.authorGender,
+      friendName: audio.friendName,
+      friendSlug: audio.friendSlug,
+      friendGender: audio.friendGender,
       duration: audio.duration,
       shortDescription: audio.shortDescription,
       ...(index < 2 ? { badgeText: shortDate(audio.createdAt) } : {}),
     }))
     .map((audio) => {
-      const coverCode = customCode[`${audio.authorSlug}/${audio.slug}`];
+      const coverCode = customCode[`${audio.friendSlug}/${audio.slug}`];
       return coverCode ? custom.merge(audio, coverCode) : audio;
     });
   return { props: { audiobooks } };
@@ -76,8 +76,8 @@ const AudioBooks: React.FC<Props> = ({ audiobooks }) => (
           <BookTeaserCard
             {...audiobook}
             className="xl:-ml-8"
-            documentUrl={getDocumentUrl(audiobook.authorSlug, audiobook.slug)}
-            authorUrl={getFriendUrl(audiobook.authorSlug, audiobook.authorGender)}
+            documentUrl={getDocumentUrl(audiobook.friendSlug, audiobook.slug)}
+            friendUrl={getFriendUrl(audiobook.friendSlug, audiobook.friendGender)}
             audioDuration={audiobook.duration}
             paperbackVolumes={[222]}
             description={audiobook.shortDescription}
@@ -121,9 +121,9 @@ const AudioBooks: React.FC<Props> = ({ audiobooks }) => (
           return (
             <Audiobook
               {...audiobook}
-              key={getDocumentUrl(audiobook.authorSlug, audiobook.slug)}
-              documentUrl={getDocumentUrl(audiobook.authorSlug, audiobook.slug)}
-              friendUrl={getFriendUrl(audiobook.authorSlug, audiobook.authorGender)}
+              key={getDocumentUrl(audiobook.friendSlug, audiobook.slug)}
+              documentUrl={getDocumentUrl(audiobook.friendSlug, audiobook.slug)}
+              friendUrl={getFriendUrl(audiobook.friendSlug, audiobook.friendGender)}
               description={audiobook.shortDescription}
               bgColor={bgColor}
             />

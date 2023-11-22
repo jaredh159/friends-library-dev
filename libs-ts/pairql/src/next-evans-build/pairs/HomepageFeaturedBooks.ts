@@ -16,9 +16,9 @@ export namespace HomepageFeaturedBooks {
     customCss?: string;
     customHtml?: string;
     isCompilation: boolean;
-    authorName: string;
-    authorSlug: string;
-    authorGender: 'male' | 'female' | 'mixed';
+    friendName: string;
+    friendSlug: string;
+    friendGender: 'male' | 'female' | 'mixed';
     documentSlug: string;
     featuredDescription: string;
   }>;

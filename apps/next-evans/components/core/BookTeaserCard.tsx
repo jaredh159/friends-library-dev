@@ -15,7 +15,7 @@ export type Props = Omit<CoverData, 'printSize'> & {
   audioDuration?: string;
   htmlShortTitle: string;
   documentUrl: string;
-  authorUrl: string;
+  friendUrl: string;
   badgeText?: string;
 };
 
@@ -24,7 +24,7 @@ const BookTeaserCard: React.FC<Props> = ({
   audioDuration,
   htmlShortTitle,
   documentUrl,
-  authorUrl,
+  friendUrl,
   badgeText,
   ...props
 }) => {
@@ -75,8 +75,8 @@ const BookTeaserCard: React.FC<Props> = ({
             dangerouslySetInnerHTML={{ __html: htmlTitle(htmlShortTitle) }}
           />
         </h3>
-        <Link href={authorUrl} className="fl-underline text-sm text-flprimary">
-          {props.authorName}
+        <Link href={friendUrl} className="fl-underline text-sm text-flprimary">
+          {props.friendName}
         </Link>
         {isAudio && (
           <AudioDuration className="mt-8 md:justify-start">{audioDuration}</AudioDuration>

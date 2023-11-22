@@ -17,9 +17,9 @@ export namespace GettingStartedBooks {
     customCss?: string;
     customHtml?: string;
     isCompilation: boolean;
-    authorName: string;
-    authorSlug: string;
-    authorGender: 'male' | 'female' | 'mixed';
+    friendName: string;
+    friendSlug: string;
+    friendGender: 'male' | 'female' | 'mixed';
     htmlShortTitle: string;
     hasAudio: boolean;
   }>;

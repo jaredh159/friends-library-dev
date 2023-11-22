@@ -24,9 +24,9 @@ struct GettingStartedBooks: Pair {
     let customCss: String?
     let customHtml: String?
     let isCompilation: Bool
-    let authorName: String
-    let authorSlug: String
-    let authorGender: Friend.Gender
+    let friendName: String
+    let friendSlug: String
+    let friendGender: Friend.Gender
     let htmlShortTitle: String
     let hasAudio: Bool
   }
@@ -51,9 +51,9 @@ extension GettingStartedBooks: Resolver {
         customCss: nil,
         customHtml: nil,
         isCompilation: friend.isCompilations,
-        authorName: friend.name,
-        authorSlug: friend.slug,
-        authorGender: friend.gender,
+        friendName: friend.name,
+        friendSlug: friend.slug,
+        friendGender: friend.gender,
         htmlShortTitle: document.htmlShortTitle,
         hasAudio: edition.audio.require() != nil
       )

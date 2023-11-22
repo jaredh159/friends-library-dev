@@ -16,9 +16,9 @@ import SpanishFreeBooksNote from '@/components/core/SpanishFreeBooksNote';
 import { getFriendUrl } from '@/lib/friend';
 
 export interface Props {
-  authorName: string;
-  authorSlug: string;
-  authorGender: 'male' | 'female' | 'mixed';
+  friendName: string;
+  friendSlug: string;
+  friendGender: 'male' | 'female' | 'mixed';
   title: string;
   originalTitle?: string;
   isComplete: boolean;
@@ -39,7 +39,7 @@ export interface Props {
     };
   }>;
   alternateLanguageDoc?: {
-    authorSlug: string;
+    friendSlug: string;
     slug: string;
   };
   primaryEdition: EditionCoverData & {
@@ -147,9 +147,9 @@ const DocBlock: React.FC<Props> = (props) => {
               {` `}
               <Link
                 className="strong-link"
-                href={getFriendUrl(props.authorSlug, props.authorGender)}
+                href={getFriendUrl(props.friendSlug, props.friendGender)}
               >
-                {props.authorName}
+                {props.friendName}
               </Link>
             </h2>
           )}
@@ -221,7 +221,7 @@ const LinksAndMeta: React.FC<LinksAndMetaProps> = (props) => (
     />
     <div className="DocMeta flex flex-col items-center">
       <ul className="diamonds text-sans text-gray-600 leading-loose antialiased">
-        <li>{props.authorName}</li>
+        <li>{props.friendName}</li>
         {LANG === `en` && (
           <li className="capitalize">{props.primaryEdition.editionType} Edition</li>
         )}
@@ -258,7 +258,7 @@ const LinksAndMeta: React.FC<LinksAndMetaProps> = (props) => (
             <Dual.A
               href={`https://${
                 LANG === `en` ? `bibliotecadelosamigos.org` : `friendslibrary.com`
-              }/${props.alternateLanguageDoc.authorSlug}/${
+              }/${props.alternateLanguageDoc.friendSlug}/${
                 props.alternateLanguageDoc.slug
               }`}
             >

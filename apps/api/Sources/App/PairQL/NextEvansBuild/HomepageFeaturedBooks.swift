@@ -13,9 +13,9 @@ struct HomepageFeaturedBooks: Pair {
     let customCss: String?
     let customHtml: String?
     let isCompilation: Bool
-    let authorName: String
-    let authorSlug: String
-    let authorGender: Friend.Gender
+    let friendName: String
+    let friendSlug: String
+    let friendGender: Friend.Gender
     let documentSlug: String
     let featuredDescription: String
   }
@@ -39,9 +39,9 @@ extension HomepageFeaturedBooks: Resolver {
         customCss: nil,
         customHtml: nil,
         isCompilation: friend.isCompilations,
-        authorName: friend.name,
-        authorSlug: friend.slug,
-        authorGender: friend.gender,
+        friendName: friend.name,
+        friendSlug: friend.slug,
+        friendGender: friend.gender,
         documentSlug: document.slug,
         featuredDescription: try expect(document.featuredDescription)
       )

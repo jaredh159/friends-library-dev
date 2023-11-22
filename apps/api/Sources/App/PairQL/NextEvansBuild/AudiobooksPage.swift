@@ -15,9 +15,9 @@ struct AudiobooksPage: Pair {
     var customCss: String?
     var customHtml: String?
     var isCompilation: Bool
-    var authorName: String
-    var authorSlug: String
-    var authorGender: Friend.Gender
+    var friendName: String
+    var friendSlug: String
+    var friendGender: Friend.Gender
     var duration: String
     var shortDescription: String
     var createdAt: Date
@@ -48,9 +48,9 @@ extension AudiobooksPage: Resolver {
         editionType: edition.type,
         isbn: try expect(edition.isbn.require()).code,
         isCompilation: friend.isCompilations,
-        authorName: friend.name,
-        authorSlug: friend.slug,
-        authorGender: friend.gender,
+        friendName: friend.name,
+        friendSlug: friend.slug,
+        friendGender: friend.gender,
         duration: audiobook.humanDurationClock,
         shortDescription: document.partialDescription,
         createdAt: audiobook.createdAt

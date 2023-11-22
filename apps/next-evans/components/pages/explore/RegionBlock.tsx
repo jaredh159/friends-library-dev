@@ -9,8 +9,8 @@ interface Props {
     url: string;
     title: string;
     isbn: string;
-    authorName: string;
-    authorUrl: string;
+    friendName: string;
+    friendUrl: string;
     isCompilation: boolean;
     editionType: EditionType;
     customCss?: string;

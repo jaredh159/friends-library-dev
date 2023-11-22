@@ -44,7 +44,7 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
 };
 
 const DocumentPage: React.FC<Props> = ({
-  otherBooksByAuthor,
+  otherBooksByFriend,
   numTotalBooks,
   document,
 }) => (
@@ -53,7 +53,7 @@ const DocumentPage: React.FC<Props> = ({
       title={document.title}
       ogImage={document.ogImageUrl}
       description={bookPageMetaDesc(
-        document.authorName,
+        document.friendName,
         document.description,
         document.title,
         document.primaryEdition.audiobook !== undefined,
@@ -71,15 +71,15 @@ const DocumentPage: React.FC<Props> = ({
       titleEl="h2"
       bgColor="flgray-100"
       titleTextColor="flblack"
-      books={otherBooksByAuthor.map((book) => ({
+      books={otherBooksByFriend.map((book) => ({
         ...book,
-        authorName: document.authorName,
+        friendName: document.friendName,
         isCompilation: document.isCompilation,
-        documentUrl: getDocumentUrl(document.authorSlug, book.documentSlug),
-        authorUrl: getFriendUrl(document.authorSlug, document.authorGender),
+        documentUrl: getDocumentUrl(document.friendSlug, book.documentSlug),
+        friendUrl: getFriendUrl(document.friendSlug, document.friendGender),
       }))}
     />
-    {(!document.primaryEdition.audiobook || otherBooksByAuthor.length === 0) && (
+    {(!document.primaryEdition.audiobook || otherBooksByFriend.length === 0) && (
       <ExploreBooksBlock numTotalBooks={numTotalBooks} />
     )}
   </div>

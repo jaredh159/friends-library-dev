@@ -15,7 +15,7 @@ export interface Props {
       audioDuration?: string;
       htmlShortTitle: string;
       documentUrl: string;
-      authorUrl: string;
+      friendUrl: string;
       createdAt: ISODateString;
     }
   >;

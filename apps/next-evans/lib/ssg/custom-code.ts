@@ -52,11 +52,11 @@ export function merge<T>(obj: T, customCode: CustomCode): WithCustomCode<T> {
   return merged;
 }
 
-export function documentSlugs(input: { authorSlug: string; slug: string }): {
+export function documentSlugs(input: { friendSlug: string; slug: string }): {
   friendSlug: string;
   documentSlug: string;
 } {
-  return { friendSlug: input.authorSlug, documentSlug: input.slug };
+  return { friendSlug: input.friendSlug, documentSlug: input.slug };
 }
 
 // helpers
