@@ -88,7 +88,12 @@ export default abstract class Client {
 
     try {
       const res = await fetch(this.endpoint(operation), init);
-      const json = await res.json();
+      const text = await res.text();
+      try {
+        var json = JSON.parse(text);
+      } catch (error) {
+        return this.errorResult(`JSON parse error, body=${text}`, 500);
+      }
       if (res.status >= 300) {
         return this.errorResult(json, res.status);
       } else {
