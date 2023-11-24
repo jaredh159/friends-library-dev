@@ -376,7 +376,7 @@ async function saveEditionImpression(
     (i) => i.cloudFiles,
     async (err) => {
       await rollbackSaveEditionImpression(impression);
-      throw new Error(`failed to save EditionImpression, error=${err}`);
+      throw new Error(`failed to save EditionImpression, error=${JSON.stringify(err)}`);
     },
   );
 }
@@ -398,7 +398,7 @@ async function rollbackSaveEditionImpression(
     }
     logAction(`rolled back save EditionImpression successfully`);
   } catch (err) {
-    logError(`error rolling back save EditionImpression, error=${err}`);
+    logError(`error rolling back save EditionImpression, error=${JSON.stringify(err)}`);
   }
 }
 
