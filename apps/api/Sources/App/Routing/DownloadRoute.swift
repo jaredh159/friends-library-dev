@@ -50,71 +50,78 @@ enum DownloadRoute: RouteHandler {
       break
     }
 
-    guard let device = Current.userAgentParser.parse(userAgent) else {
-      await slackError("Failed to parse user agent `\(userAgent)` into device data")
-      return response
-    }
-
-    if !isAppUserAgent, device.isBot == true {
-      await slackDebug("Bot download: `\(userAgent)`")
-      return response
-    }
-
-    guard let downloadFormat = file.format.downloadFormat else {
-      await slackError("Unexpected download format: \(file.format)")
-      return response
-    }
-
-    // prevent duplicate podcast downloads
-    if downloadFormat == .podcast, let ipAddress = ipAddress {
-      let dupe = try? await Current.db.query(Download.self)
-        .where(.ip == .string(ipAddress))
-        .where(.format == .enum(Download.Format.podcast))
-        .where(.editionId == file.edition.id)
-        .first()
-
-      if dupe != nil {
-        await slackDebug(
-          "Duplicate podcast download, edition: `\(file.edition.id.lowercased)`, ip: `\(ipAddress)`"
-        )
-        return response
+    // do all db/api/logging work in background task to return response faster
+    let bgWork = Task { [source] in
+      guard let device = Current.userAgentParser.parse(userAgent) else {
+        await slackError("Failed to parse user agent `\(userAgent)` into device data")
+        return
       }
-    }
 
-    let download = Download(
-      editionId: file.edition.id,
-      format: downloadFormat,
-      source: source,
-      isMobile: device.isMobile,
-      audioQuality: file.format.audioQuality,
-      audioPartNumber: file.format.audioPartNumber,
-      userAgent: userAgent.isEmpty ? nil : userAgent,
-      os: device.os,
-      browser: device.browser,
-      platform: device.platform,
-      referrer: referrer,
-      ip: ipAddress
-    )
+      if !isAppUserAgent, device.isBot == true {
+        await slackDebug("Bot download: `\(userAgent)`")
+        return
+      }
 
-    var location: IpApi.Response?
-    if let ip = ipAddress, ip != "127.0.0.1" {
+      guard let downloadFormat = file.format.downloadFormat else {
+        await slackError("Unexpected download format: \(file.format)")
+        return
+      }
+
+      // prevent duplicate podcast downloads
+      if downloadFormat == .podcast, let ipAddress = ipAddress {
+        let dupe = try? await Current.db.query(Download.self)
+          .where(.ip == .string(ipAddress))
+          .where(.format == .enum(Download.Format.podcast))
+          .where(.editionId == file.edition.id)
+          .first()
+
+        if dupe != nil {
+          await slackDebug(
+            "Duplicate podcast download, edition: `\(file.edition.id.lowercased)`, ip: `\(ipAddress)`"
+          )
+          return
+        }
+      }
+
+      let download = Download(
+        editionId: file.edition.id,
+        format: downloadFormat,
+        source: source,
+        isMobile: device.isMobile,
+        audioQuality: file.format.audioQuality,
+        audioPartNumber: file.format.audioPartNumber,
+        userAgent: userAgent.isEmpty ? nil : userAgent,
+        os: device.os,
+        browser: device.browser,
+        platform: device.platform,
+        referrer: referrer,
+        ip: ipAddress
+      )
+
+      var location: IpApi.Response?
+      if let ip = ipAddress, ip != "127.0.0.1" {
+        do {
+          location = try await Current.ipApiClient.getIpData(ip)
+          download.city = location?.city
+          download.region = location?.region
+          download.postalCode = location?.postal
+          download.latitude = location?.latitude.map { String($0) }
+          download.longitude = location?.longitude.map { String($0) }
+        } catch {
+          await slackError("Error fetching download location data: \(error)")
+        }
+      }
+
       do {
-        location = try await Current.ipApiClient.getIpData(ip)
-        download.city = location?.city
-        download.region = location?.region
-        download.postalCode = location?.postal
-        download.latitude = location?.latitude.map { String($0) }
-        download.longitude = location?.longitude.map { String($0) }
+        try await Current.db.create(download)
+        await slackDownload(file: file, location: location, device: device, referrer: referrer)
       } catch {
-        await slackError("Error fetching download location data: \(error)")
+        await slackError("Error creating download: \(error)")
       }
     }
 
-    do {
-      try await Current.db.create(download)
-      await slackDownload(file: file, location: location, device: device, referrer: referrer)
-    } catch {
-      await slackError("Error creating download: \(error)")
+    if Env.mode == .test {
+      await bgWork.value
     }
 
     return response
