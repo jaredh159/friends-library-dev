@@ -12,9 +12,9 @@ async function main(): Promise<void> {
     });
     const json = await res.json();
     const count = validateOutput(json);
-    log.debug(`:white_check_mark: _FLP_ *Api Status Check* success \`${count}\``);
+    await log.debug(`:white_check_mark: _FLP_ *Api Status Check* success \`${count}\``);
   } catch (error: unknown) {
-    log.error(`_FLP_ *Api Status Check* failed`, { error: String(error) });
+    await log.error(`_FLP_ *Api Status Check* failed`, { error: String(error) });
   }
 
   try {
@@ -22,9 +22,11 @@ async function main(): Promise<void> {
     const res = await fetch(`${endpoint}/releases`);
     const json = await res.json();
     const data = JSON.stringify(json[0].version);
-    log.debug(`:white_check_mark: _Gertrude_ *Api Status Check* success \`${data}\``);
+    await log.debug(
+      `:white_check_mark: _Gertrude_ *Api Status Check* success \`${data}\``,
+    );
   } catch (error: unknown) {
-    log.error(`_Gertrude_ *Api Status Check* failed`, { error: String(error) });
+    await log.error(`_Gertrude_ *Api Status Check* failed`, { error: String(error) });
   }
 }
 
