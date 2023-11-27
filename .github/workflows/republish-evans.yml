@@ -17,7 +17,7 @@ jobs:
         uses: friends-library/dev/actions/ts-pack/actions/should-republish-evans@master
         with:
           flp_api_token: ${{ secrets.FLP_API_TOKEN_PROD }}
-          flp_api_endpoint: ${{ secrets.FLP_GRAPHQL_API_ENDPOINT_PROD }}
+          flp_api_endpoint: ${{ secrets.FLP_API_ENDPOINT_PROD }}
 
   republish_en:
     name: republish-en
