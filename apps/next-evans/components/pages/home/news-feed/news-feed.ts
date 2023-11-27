@@ -3,7 +3,7 @@ import { type T as Api } from '@friends-library/pairql/next-evans-build';
 import type { Lang } from '@friends-library/types';
 import type { NewsFeedType } from '@/lib/types';
 import { newestFirst, spanishShortMonth } from '@/lib/dates';
-import { LANG } from '@/lib/env';
+import { APP_ALT_URL, LANG } from '@/lib/env';
 import { getDocumentUrl } from '@/lib/friend';
 
 export interface FeedItem {
@@ -59,10 +59,7 @@ function mapApiItem(
       return {
         title: `${item.htmlShortTitle} &mdash; (Spanish)`,
         type: `spanish_translation`,
-        url: `https://bibliotecadelosamigos.org/${getDocumentUrl(
-          item.friendSlug,
-          item.documentSlug,
-        )}`,
+        url: `${APP_ALT_URL}/${getDocumentUrl(item.friendSlug, item.documentSlug)}`,
         description: isCompilation
           ? `<em>${englishHtmlShortTitle}</em> now translated and available on the Spanish site.`
           : `${friendName}&rsquo;s <em>${englishHtmlShortTitle}</em> now translated and available on the Spanish site.`,

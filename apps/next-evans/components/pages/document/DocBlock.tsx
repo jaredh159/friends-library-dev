@@ -10,10 +10,10 @@ import DownloadWizard from './DownloadWizard';
 import RotatableCover from './RotatableCover';
 import DocActions from './DocActions';
 import Dual from '@/components/core/Dual';
-import { LANG } from '@/lib/env';
+import { APP_ALT_URL, LANG } from '@/lib/env';
 import { makeScroller } from '@/lib/scroll';
 import SpanishFreeBooksNote from '@/components/core/SpanishFreeBooksNote';
-import { getFriendUrl } from '@/lib/friend';
+import { getFriendUrl, getDocumentUrl } from '@/lib/friend';
 
 export interface Props {
   friendName: string;
@@ -255,13 +255,7 @@ const LinksAndMeta: React.FC<LinksAndMetaProps> = (props) => (
         </li>
         {props.alternateLanguageDoc && (
           <li>
-            <Dual.A
-              href={`https://${
-                LANG === `en` ? `bibliotecadelosamigos.org` : `friendslibrary.com`
-              }/${props.alternateLanguageDoc.friendSlug}/${
-                props.alternateLanguageDoc.slug
-              }`}
-            >
+            <Dual.A href={`${APP_ALT_URL}/${getDocumentUrl(props.alternateLanguageDoc)}`}>
               <>Spanish Version</>
               <>Versión en inglés</>
             </Dual.A>

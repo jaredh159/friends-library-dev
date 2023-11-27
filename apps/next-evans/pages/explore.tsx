@@ -2,7 +2,7 @@ import React from 'react';
 import { t } from '@friends-library/locale';
 import type { GetStaticProps } from 'next';
 import type { Period } from '@/lib/types';
-import { LANG } from '@/lib/env';
+import { APP_ALT_URL, LANG } from '@/lib/env';
 import BackgroundImage from '@/components/core/BackgroundImage';
 import Dual from '@/components/core/Dual';
 import HeroImg from '@/public/images/explore-books.jpg';
@@ -163,9 +163,7 @@ const ExploreBooks: React.FC<Props> = ({ totalPublished, books }) => (
     )}
     <AltSiteBlock
       numBooks={totalPublished.books[LANG === `en` ? `es` : `en`]}
-      url={
-        LANG === `en` ? `https://bibliotecadelosamigos.org` : `https://friendslibrary.com`
-      }
+      url={APP_ALT_URL}
     />
     <SearchBlock
       books={books
