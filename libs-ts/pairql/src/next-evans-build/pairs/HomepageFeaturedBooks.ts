@@ -12,6 +12,7 @@ export namespace HomepageFeaturedBooks {
   export type Output = Array<{
     isbn: string;
     title: string;
+    htmlShortTitle: string;
     paperbackVolumes: [number, ...number[]];
     customCss?: string;
     customHtml?: string;

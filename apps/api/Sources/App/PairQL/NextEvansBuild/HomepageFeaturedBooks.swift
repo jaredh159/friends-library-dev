@@ -9,6 +9,7 @@ struct HomepageFeaturedBooks: Pair {
   struct FeaturedBook: PairOutput {
     let isbn: ISBN
     let title: String
+    let htmlShortTitle: String
     let paperbackVolumes: NonEmpty<[Int]>
     let customCss: String?
     let customHtml: String?
@@ -35,6 +36,7 @@ extension HomepageFeaturedBooks: Resolver {
       return .init(
         isbn: try expect(edition.isbn.require()).code,
         title: document.title,
+        htmlShortTitle: document.htmlShortTitle,
         paperbackVolumes: try expect(edition.impression.require()).paperbackVolumes,
         customCss: nil,
         customHtml: nil,

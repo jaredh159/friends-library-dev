@@ -3,7 +3,6 @@ import cx from 'classnames';
 import { bookDims } from '@friends-library/lulu';
 import { t } from '@friends-library/locale';
 import Link from 'next/link';
-import { htmlTitle } from '@friends-library/adoc-utils';
 import type { EditionType, PrintSize } from '@friends-library/types';
 import type { EditionCoverData } from '@/lib/cover';
 import DownloadWizard from './DownloadWizard';
@@ -20,6 +19,7 @@ export interface Props {
   friendSlug: string;
   friendGender: 'male' | 'female' | 'mixed';
   title: string;
+  htmlTitle: string;
   originalTitle?: string;
   isComplete: boolean;
   priceInCents: number;
@@ -296,8 +296,8 @@ function ensureWizardInViewport(): void {
   }
 }
 
-function titleHtml({ title, isComplete }: Props): string {
-  let html = htmlTitle(title);
+function titleHtml({ htmlTitle, isComplete }: Props): string {
+  let html = htmlTitle;
   if (!isComplete) {
     html += `<sup class="text-flprimary-800">*</sup>`;
   }

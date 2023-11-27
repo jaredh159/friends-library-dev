@@ -10,6 +10,7 @@ export interface Props {
   books: Array<{
     isbn: string;
     title: string;
+    htmlShortTitle: string;
     paperbackVolumes: [number, ...number[]];
     customCss?: string;
     customHtml?: string;

@@ -8,6 +8,7 @@ interface Props {
   books: Array<{
     url: string;
     title: string;
+    htmlShortTitle: string;
     isbn: string;
     friendName: string;
     friendUrl: string;

@@ -23,6 +23,7 @@ struct DocumentPage: Pair {
     var friendSlug: String
     var friendGender: Friend.Gender
     var title: String
+    var htmlTitle: String
     var originalTitle: String?
     var isComplete: Bool
     var priceInCents: Int
@@ -183,6 +184,7 @@ extension DocumentPage.Output {
         friendSlug: friend.slug,
         friendGender: friend.gender,
         title: document.title,
+        htmlTitle: document.htmlTitle,
         originalTitle: document.originalTitle,
         isComplete: !document.incomplete,
         priceInCents: primaryEditionImpression.paperbackPrice.rawValue,

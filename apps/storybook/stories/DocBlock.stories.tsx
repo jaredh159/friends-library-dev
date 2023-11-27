@@ -19,6 +19,7 @@ export const Default: Story = props({
   friendName: `John Doe`,
   friendGender: `male`,
   title: `The Life and Letters of John Doe`,
+  htmlTitle: `The Life and Letters of John Doe`,
   description: MEDIUM_LOREM,
   isComplete: true,
   priceInCents: 300,

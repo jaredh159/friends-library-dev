@@ -4,7 +4,6 @@ import { Swipeable } from 'react-swipeable';
 import { Front } from '@friends-library/cover-component';
 import Link from 'next/link';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
-import { htmlShortTitle } from '@friends-library/adoc-utils';
 import type { EditionType } from '@/lib/types';
 import { useWindowWidth } from '@/lib/hooks/window-width';
 import { SCREEN_LG, SCREEN_MD, SCREEN_XL } from '@/lib/constants';
@@ -16,6 +15,7 @@ interface Props {
   books: Array<{
     url: string;
     title: string;
+    htmlShortTitle: string;
     isbn: string;
     friendName: string;
     friendUrl: string;
@@ -103,7 +103,7 @@ const BookSlider: React.FC<Props> = ({ books, className }) => {
             </Link>
             <h3
               className="my-4 tracking-wider text-base text-flgray-900 md:mb-2 md:pb-1"
-              dangerouslySetInnerHTML={{ __html: htmlShortTitle(book.title) }}
+              dangerouslySetInnerHTML={{ __html: book.htmlShortTitle }}
             />
             <Link href={book.friendUrl} className="fl-underline text-sm text-flprimary">
               {book.friendName}

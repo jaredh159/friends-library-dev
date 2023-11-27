@@ -1,7 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
 import { Front } from '@friends-library/cover-component';
-import { htmlTitle } from '@friends-library/adoc-utils';
 import { t } from '@friends-library/locale';
 import Link from 'next/link';
 import AudioDuration from './AudioDuration';
@@ -72,7 +71,7 @@ const BookTeaserCard: React.FC<Props> = ({
           <Link
             href={documentUrl}
             className="hover:underline"
-            dangerouslySetInnerHTML={{ __html: htmlTitle(htmlShortTitle) }}
+            dangerouslySetInnerHTML={{ __html: htmlShortTitle }}
           />
         </h3>
         <Link href={friendUrl} className="fl-underline text-sm text-flprimary">

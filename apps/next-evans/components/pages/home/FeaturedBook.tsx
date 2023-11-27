@@ -3,7 +3,6 @@ import Link from 'next/link';
 import cx from 'classnames';
 import { ThreeD as Front } from '@friends-library/cover-component';
 import { t } from '@friends-library/locale';
-import { htmlTitle } from '@friends-library/adoc-utils';
 import { LANG } from '@/lib/env';
 import Button from '@/components/core/Button';
 import { getDocumentUrl, getFriendUrl } from '@/lib/friend';
@@ -12,6 +11,7 @@ import { toCoverProps } from '@/lib/cover';
 interface Props {
   isbn: string;
   title: string;
+  htmlShortTitle: string;
   paperbackVolumes: [number, ...number[]];
   customCss?: string;
   customHtml?: string;
@@ -62,7 +62,7 @@ const Book: React.FC<Props> = (props) => (
     <div className="Text md:w-3/5 flex-grow flex flex-col justify-start">
       <h2
         className="font-sans text-gray-800 text-2xl mb-4 md:mb-6 leading-relaxed tracking-wider font-bold"
-        dangerouslySetInnerHTML={{ __html: htmlTitle(props.title) }}
+        dangerouslySetInnerHTML={{ __html: props.htmlShortTitle }}
       />
       {LANG === `en` && (
         <p className="hidden sm:block font-sans uppercase text-gray-800 text-lg tracking-widest font-black mb-6">

@@ -91,6 +91,7 @@ const ExploreBooks: React.FC<Props> = ({ totalPublished, books }) => (
           editionType: book.primaryEdition.type,
           isbn: book.primaryEdition.isbn,
           title: book.title,
+          htmlShortTitle: book.htmlShortTitle,
           friendName: book.friendName,
           friendSlug: book.friendSlug,
           customCss: book.customCss,
@@ -137,6 +138,7 @@ const ExploreBooks: React.FC<Props> = ({ totalPublished, books }) => (
       <ExploreRegionsBlock
         books={books.map((book) => ({
           title: book.title,
+          htmlShortTitle: book.htmlShortTitle,
           isCompilation: book.isCompilation,
           friendName: book.friendName,
           editionType: book.primaryEdition.type,
@@ -151,6 +153,7 @@ const ExploreBooks: React.FC<Props> = ({ totalPublished, books }) => (
       <TimelineBlock
         books={books.map((book) => ({
           title: book.title,
+          htmlShortTitle: book.htmlShortTitle,
           friendName: book.friendName,
           editionType: book.primaryEdition.type,
           isbn: book.primaryEdition.isbn,

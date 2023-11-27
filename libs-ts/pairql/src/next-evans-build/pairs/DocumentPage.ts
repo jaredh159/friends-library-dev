@@ -13,6 +13,7 @@ export namespace DocumentPage {
       friendSlug: string;
       friendGender: 'male' | 'female' | 'mixed';
       title: string;
+      htmlTitle: string;
       originalTitle?: string;
       isComplete: boolean;
       priceInCents: number;
