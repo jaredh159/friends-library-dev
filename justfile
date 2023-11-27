@@ -27,6 +27,9 @@ covers:
 next:
   @cd apps/next-evans && just
 
+bundle-actions:
+  @cd actions/ts-pack && pnpm bundle all
+
 # code quality
 
 check:
