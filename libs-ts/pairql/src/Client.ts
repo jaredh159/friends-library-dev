@@ -30,6 +30,12 @@ export default abstract class Client {
     } else {
       env = `prod`;
     }
+
+    if (env !== `prod`) {
+      // eslint-disable-next-line no-console
+      console.log(`[,] FLP PairQL client configured for env: ${env.toUpperCase()}`);
+    }
+
     return new Domain(env, getToken);
   }
 
@@ -65,6 +71,9 @@ export default abstract class Client {
       const key = pattern.replace(placeholder, envFrag);
       token = requireEnvVar(key, process.env);
     }
+
+    // eslint-disable-next-line no-console
+    console.log(`\n[,] FLP PairQL client configured for env: ${env.toUpperCase()}\n`);
 
     return new Domain(env, () => token);
   }
