@@ -42,10 +42,7 @@ const BookTeaserCard: React.FC<Props> = ({
       )}
     >
       <div
-        className={cx(
-          `CoverWrap flex justify-center md:pt-12 md:pl-10`,
-          isAudio && `md:-ml-10`,
-        )}
+        className={cx(`flex justify-center md:pt-12 md:pl-10`, isAudio && `md:-ml-10`)}
       >
         <div className="relative">
           {badgeText && <Badge>{badgeText}</Badge>}

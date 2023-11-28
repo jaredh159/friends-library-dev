@@ -14,6 +14,7 @@ export namespace DocumentPage {
       friendGender: 'male' | 'female' | 'mixed';
       title: string;
       htmlTitle: string;
+      htmlShortTitle: string;
       originalTitle?: string;
       isComplete: boolean;
       priceInCents: number;
@@ -22,7 +23,11 @@ export namespace DocumentPage {
       isCompilation: boolean;
       ogImageUrl: string;
       editions: Array<{
+        id: UUID;
         type: 'updated' | 'original' | 'modernized';
+        isbn: string;
+        printSize: 's' | 'm' | 'xl';
+        numPages: [number, ...number[]];
         loggedDownloadUrls: {
           epub: string;
           mobi: string;

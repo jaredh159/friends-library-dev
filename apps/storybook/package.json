@@ -28,6 +28,8 @@
     "@storybook/blocks": "^7.5.3",
     "@storybook/nextjs": "7.5.3",
     "@storybook/react": "^7.5.3",
+    "@types/react-stripe-elements": "6.0.4",
+    "react-stripe-elements": "6.1.2",
     "storybook": "^7.5.3"
   }
 }

@@ -19,6 +19,7 @@ export const Default: Story = props({
   friendName: `John Doe`,
   friendGender: `male`,
   title: `The Life and Letters of John Doe`,
+  htmlShortTitle: `The Life and Letters of John Doe`,
   htmlTitle: `The Life and Letters of John Doe`,
   description: MEDIUM_LOREM,
   isComplete: true,
@@ -28,7 +29,11 @@ export const Default: Story = props({
   isCompilation: false,
   editions: [
     {
+      id: `123`,
       type: `updated`,
+      numPages: [300],
+      isbn: `1234567890`,
+      printSize: `m`,
       loggedDownloadUrls: {
         pdf: `/`,
         epub: `/`,

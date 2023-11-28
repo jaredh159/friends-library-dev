@@ -4,8 +4,11 @@ invariant(process.env.NEXT_PUBLIC_LANG, `process.env.NEXT_PUBLIC_LANG is not def
 
 export const LANG = process.env.NEXT_PUBLIC_LANG === `es` ? `es` : `en`;
 
+export const NODE_ENV =
+  process.env.NODE_ENV === `production` ? `production` : `development`;
+
 export const APP_URL: string = (() => {
-  if (process.env.NODE_ENV === `development`) {
+  if (NODE_ENV === `development`) {
     return `http://localhost:${LANG === `en` ? 7222 : 7333}`;
   }
 
@@ -17,7 +20,7 @@ export const APP_URL: string = (() => {
 })();
 
 export const APP_ALT_URL: string = (() => {
-  if (process.env.NODE_ENV === `development`) {
+  if (NODE_ENV === `development`) {
     return `http://localhost:${LANG === `en` ? 7333 : 7222}`;
   }
 

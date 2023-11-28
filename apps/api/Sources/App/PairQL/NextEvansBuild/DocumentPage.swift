@@ -24,6 +24,7 @@ struct DocumentPage: Pair {
     var friendGender: Friend.Gender
     var title: String
     var htmlTitle: String
+    var htmlShortTitle: String
     var originalTitle: String?
     var isComplete: Bool
     var priceInCents: Int
@@ -76,7 +77,11 @@ struct DocumentPage: Pair {
   }
 
   struct EditionOutput: PairNestable {
+    var id: Edition.Id
     var type: EditionType
+    var isbn: ISBN
+    var printSize: PrintSize
+    var numPages: NonEmpty<[Int]>
     var loggedDownloadUrls: LoggedDownloadUrls
 
     struct LoggedDownloadUrls: PairNestable {
@@ -185,6 +190,7 @@ extension DocumentPage.Output {
         friendGender: friend.gender,
         title: document.title,
         htmlTitle: document.htmlTitle,
+        htmlShortTitle: document.htmlShortTitle,
         originalTitle: document.originalTitle,
         isComplete: !document.incomplete,
         priceInCents: primaryEditionImpression.paperbackPrice.rawValue,
@@ -195,7 +201,11 @@ extension DocumentPage.Output {
         editions: try editions.filter { !$0.isDraft }.map { edition in
           let impression = try expect(edition.impression.require())
           return .init(
+            id: edition.id,
             type: edition.type,
+            isbn: try expect(edition.isbn.require()).code,
+            printSize: impression.paperbackSize,
+            numPages: impression.paperbackVolumes,
             loggedDownloadUrls: .init(
               epub: impression.files.ebook.epub.logUrl.absoluteString,
               mobi: impression.files.ebook.mobi.logUrl.absoluteString,

@@ -153,7 +153,7 @@ const DownloadLinks: React.FC<Props> = ({
       >
         <span className="fl-underline">{t`Need Help?`}</span>
         {` `}
-        <i className="fa fa-life-ring opacity-75 pl-1" />
+        <i aria-hidden className="fa fa-life-ring opacity-75 pl-1" />
       </Link>
     </div>
   </div>

@@ -9,12 +9,12 @@ import {
 import MultiPill from '@/components/core/MultiPill';
 
 interface Props {
+  className?: string;
   price: number;
   hasAudio: boolean;
-  addToCart: () => void;
-  download: () => any;
-  gotoAudio: () => any;
-  className?: string;
+  addToCart(): unknown;
+  download(): unknown;
+  gotoAudio(): unknown;
 }
 
 const DocActions: React.FC<Props> = ({

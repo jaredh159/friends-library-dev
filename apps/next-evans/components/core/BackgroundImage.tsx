@@ -8,6 +8,7 @@ type Props = {
   src: string | StaticImageData;
   fit?: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down';
   position?: string;
+  priority?: boolean;
   children?: React.ReactNode;
   className?: string;
   fineTuneImageStyles?: CSSProperties;
@@ -26,6 +27,7 @@ const BackgroundImage: React.FC<Props> = ({
   className,
   children,
   fit,
+  priority,
   position,
   fineTuneImageStyles,
 }) => (
@@ -35,6 +37,7 @@ const BackgroundImage: React.FC<Props> = ({
       width={1000}
       height={1000}
       alt=""
+      priority={priority}
       role="presentation"
       className={cx(fit && fitMap[fit], position, `absolute top-0 left-0`)}
       style={{ width: `100%`, height: `100%`, ...fineTuneImageStyles }}

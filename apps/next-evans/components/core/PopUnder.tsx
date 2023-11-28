@@ -2,7 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 
 interface Props {
-  tailwindBgColor?: string;
+  bgColor: 'flblue' | 'flprimary';
   className?: string;
   style?: Record<string, string | number>;
   alignRight?: boolean;
@@ -14,17 +14,19 @@ const PopUnder: React.FC<Props> = ({
   children,
   alignRight,
   style,
-  tailwindBgColor = `white`,
+  bgColor,
 }) => (
   <div
     {...(style ? { style } : {})}
     className={cx(
+      // bg-blue bg-flprimary text-blue text-flprimary
+      // after:bg-flblue after:bg-flprimary
       className,
-      `bg-${tailwindBgColor}`,
-      `text-${tailwindBgColor}`,
+      `bg-${bgColor}`,
+      `text-${bgColor}`,
       `rounded-lg shadow-direct relative flex flex-col`,
-      alignRight && `align-right`,
-      `after:w-6 after:h-6 after:bg-flblue after:absolute after:-top-2 after:rotate-45 z-10 after:left-[calc(50%-10px)]`,
+      alignRight ? `after:right-[18px]` : `after:left-[calc(50%-10px)]`,
+      `after:w-6 after:h-6 after:bg-${bgColor} after:absolute after:-top-2 after:rotate-45 z-10`,
     )}
   >
     {children}

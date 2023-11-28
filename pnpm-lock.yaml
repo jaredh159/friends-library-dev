@@ -877,16 +877,19 @@ importers:
       '@headlessui/react': ^1.4.3
       '@heroicons/react': 2.0.17
       '@reach/accordion': ^0.11.2
+      '@types/js-cookie': ^2.2.6
       '@types/lodash.throttle': 4.1.7
       '@types/node': 18.15.11
       '@types/react': 18.0.33
       '@types/react-dom': 18.0.11
       '@types/react-instantsearch-dom': ^6.3.0
+      '@types/react-stripe-elements': 6.0.4
       algoliasearch: ^4.5.1
       autoprefixer: 10.4.14
       classnames: 2.3.2
       dotenv: 16.0.3
       gray-matter: 4.0.3
+      js-cookie: ^2.2.1
       lodash.throttle: 4.1.1
       next: 13.4.12
       next-mdx-remote: 4.4.1
@@ -896,8 +899,10 @@ importers:
       react-dom: 18.2.0
       react-focus-lock: ^2.0.0
       react-instantsearch-dom: ^6.7.0
+      react-stripe-elements: 6.1.2
       react-swipeable: ^5.5.1
       react-switch: ^5.0.1
+      really-small-events: ^1.1.0
       tailwindcss: 3.3.1
       tiny-invariant: 1.3.1
       typescript: 5.0.2
@@ -912,14 +917,17 @@ importers:
       '@types/react-dom': 18.0.11
       algoliasearch: 4.15.0
       autoprefixer: 10.4.14_postcss@8.4.21
+      js-cookie: 2.2.1
       next: 13.4.12_biqbaboplfbrettd7655fr4n2y
       postcss: 8.4.21
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-focus-lock: 2.9.4_pofolu2o2erjq4lhyzl3hqovzq
       react-instantsearch-dom: 6.39.0_jmf63fejdqsy6olssod66bzdge
+      react-stripe-elements: 6.1.2_biqbaboplfbrettd7655fr4n2y
       react-swipeable: 5.5.1_react@18.2.0
       react-switch: 5.0.1_biqbaboplfbrettd7655fr4n2y
+      really-small-events: 1.1.0
       tailwindcss: 3.3.1_postcss@8.4.21
       tiny-invariant: 1.3.1
       typescript: 5.0.2
@@ -929,8 +937,10 @@ importers:
       '@friends-library/lulu': link:../../libs-ts/lulu
       '@friends-library/theme': link:../../libs-ts/theme
       '@friends-library/types': link:../../libs-ts/types
+      '@types/js-cookie': 2.2.7
       '@types/lodash.throttle': 4.1.7
       '@types/react-instantsearch-dom': 6.12.3
+      '@types/react-stripe-elements': 6.0.4
       classnames: 2.3.2
       dotenv: 16.0.3
       gray-matter: 4.0.3
@@ -988,11 +998,13 @@ importers:
       '@types/node': 18.15.11
       '@types/react': 18.0.33
       '@types/react-dom': 18.0.11
+      '@types/react-stripe-elements': 6.0.4
       autoprefixer: 10.4.14
       next: 13.3.0
       postcss: 8.4.21
       react: 18.2.0
       react-dom: 18.2.0
+      react-stripe-elements: 6.1.2
       storybook: ^7.5.3
       tailwindcss: 3.3.1
       typescript: 5.0.2
@@ -1016,6 +1028,8 @@ importers:
       '@storybook/blocks': 7.5.3_ddal5w4bzhvnvvplv3twufcima
       '@storybook/nextjs': 7.5.3_qrjthtvecu46g64qnoxvgh7cce
       '@storybook/react': 7.5.3_grokbpfbuuosdhrkscgthnz2vm
+      '@types/react-stripe-elements': 6.0.4
+      react-stripe-elements: 6.1.2_biqbaboplfbrettd7655fr4n2y
       storybook: 7.5.3
 
   apps/storybook-web:
@@ -15280,6 +15294,13 @@ packages:
       '@types/react': 18.0.33
     dev: true
 
+  /@types/react-stripe-elements/6.0.4:
+    resolution: {integrity: sha512-EzEeBiOwQJ0fPzZhtg9zqyy5GJbEbi0sFNFCowFXmRwraRcMRyZ4p2UK8nylzfCR2KtMPZ2fgUVH9xD/VL/StQ==}
+    dependencies:
+      '@types/react': 18.0.33
+      '@types/stripe-v3': 3.1.27
+    dev: true
+
   /@types/react-stripe-elements/6.0.6:
     resolution: {integrity: sha512-LrLQ4f0tvUww5WxTYRiWedVp8HijKUall4KrKO5wbp2RrAmGV2WDhzfhhmdUGYOY2mAAUId1su82aIrkSkzz1A==}
     dependencies:
@@ -26330,7 +26351,6 @@ packages:
 
   /js-cookie/2.2.1:
     resolution: {integrity: sha512-HvdH2LzI/EAZcUwA8+0nKNtWHqS+ZmijLA30RwZA0bo7ToCckjK5MkGhjED9KoRcXO6BaGI3I9UIzSA1FKFPOQ==}
-    dev: true
 
   /js-sdsl/4.3.0:
     resolution: {integrity: sha512-mifzlm2+5nZ+lEcLJMoBK0/IH/bDg8XnJfd/Wq6IP+xoCjLZsTOnV2QpxlVbX9bMnkl5PdEjNtBJ9Cj1NjifhQ==}
@@ -32548,7 +32568,6 @@ packages:
       prop-types: 15.7.2
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-    dev: false
 
   /react-stripe-elements/6.1.2_wcqkhtmu7mswc6yz4uyexck3ty:
     resolution: {integrity: sha512-gYbYhVVJm3Woc84TgmuiqUj44rI/BZGUVUTTmS0U6kZyZa5fYMPlKKIsVZdQZufQ7Ab4BXLO2LSxBlGY0s2jew==}
@@ -32826,7 +32845,6 @@ packages:
 
   /really-small-events/1.1.0:
     resolution: {integrity: sha512-iyh4pULyDYBMecekEYcP3ToJD3ZUdIPfZV9nx1C1lJfMguElkDAZvEMJegy8uE7eIROCuLsqh5r44fVro9nKFg==}
-    dev: true
 
   /recast/0.21.5:
     resolution: {integrity: sha512-hjMmLaUXAm1hIuTqOdeYObMslq/q+Xff6QE3Y2P+uoHAg2nmVlLBps2hzh1UJDdMtDTMXOFewK6ky51JQIeECg==}

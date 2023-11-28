@@ -8,11 +8,14 @@ import type { EditionCoverData } from '@/lib/cover';
 import DownloadWizard from './DownloadWizard';
 import RotatableCover from './RotatableCover';
 import DocActions from './DocActions';
+import AddToCartWizard from './AddToCartWizard';
 import Dual from '@/components/core/Dual';
 import { APP_ALT_URL, LANG } from '@/lib/env';
 import { makeScroller } from '@/lib/scroll';
 import SpanishFreeBooksNote from '@/components/core/SpanishFreeBooksNote';
 import { getFriendUrl, getDocumentUrl } from '@/lib/friend';
+import CartStore from '@/components/checkout/services/CartStore';
+import CartItem from '@/components/checkout/models/CartItem';
 
 export interface Props {
   friendName: string;
@@ -20,6 +23,7 @@ export interface Props {
   friendGender: 'male' | 'female' | 'mixed';
   title: string;
   htmlTitle: string;
+  htmlShortTitle: string;
   originalTitle?: string;
   isComplete: boolean;
   priceInCents: number;
@@ -30,7 +34,11 @@ export interface Props {
   customCss?: string;
   customHtml?: string;
   editions: Array<{
+    id: UUID;
     type: EditionType;
+    isbn: string;
+    printSize: PrintSize;
+    numPages: [number, ...number[]];
     loggedDownloadUrls: {
       pdf: string;
       epub: string;
@@ -49,6 +57,7 @@ export interface Props {
 
 const DocBlock: React.FC<Props> = (props) => {
   const wrap = useRef<HTMLDivElement | null>(null);
+  const store = CartStore.getSingleton();
   const [downloading, setDownloading] = useState<boolean>(false);
   const [addingToCart, setAddingToCart] = useState<boolean>(false);
   const [wizardOffset, setWizardOffset] = useState<{ top: number; left: number }>({
@@ -105,15 +114,61 @@ const DocBlock: React.FC<Props> = (props) => {
     return () => window.removeEventListener(`keydown`, escape);
   }, [downloading, addingToCart]);
 
+  const addToCart = (editionType: EditionType): void => {
+    const edition = props.editions.find((e) => e.type === editionType);
+    if (!edition) throw new Error(`Error selecting edition: ${editionType}`);
+    store.cart.addItem(
+      new CartItem({
+        displayTitle: props.htmlShortTitle,
+        title: props.title,
+        editionId: edition.id,
+        edition: edition.type,
+        quantity: 1,
+        printSize: edition.printSize,
+        numPages: edition.numPages,
+        author: props.friendName,
+        isbn: edition.isbn,
+        isCompilation: props.isCompilation,
+        customHtml: props.customHtml,
+        customCss: props.customCss,
+      }),
+    );
+  };
+
+  const clickHandlers = {
+    onClickAddToCart: () => {
+      if (props.editions.length === 1) {
+        return addToCart(props.editions[0]?.type ?? `updated`);
+      }
+      setAddingToCart(!addingToCart);
+      setDownloading(false);
+    },
+    onClickDownload: () => {
+      setDownloading(!downloading);
+      setAddingToCart(false);
+    },
+  };
+
   return (
     <section
       ref={wrap}
       className={cx(
-        `DocBlock [background-image:linear-gradient(transparent_0%,transparent_105px,rgb(240,240,240)_105px,rgb(240,240,240)_375px,transparent_375px)] [&_a:link]:cursor-pointer [&_a:link]:[border-bottom:1px_dashed_currentColor] relative bg-white pt-8 pb-12 px-10 md:px-12 lg:pb-24 xl:flex xl:flex-col xl:items-center`,
+        `DocBlock [background-image:linear-gradient(transparent_0%,transparent_105px,rgb(240,240,240)_105px,rgb(240,240,240)_375px,transparent_375px)] [&_a:link]:cursor-pointer relative bg-white pt-8 pb-12 px-10 md:px-12 lg:pb-24 xl:flex xl:flex-col xl:items-center`,
         `md:[&_ul]:w-full md:[&_ul]:py-0 md:[&_ul]:px-[5em] md:[&_ul]:[column-count:3] md:[&_ul]:[column-width:20vw] md:[&_ul]:[column-gap:20px] md:[&_li]:[break-inside:avoid-column]`,
         `xl:[background-image:linear-gradient(transparent_0%,transparent_105px,rgb(240,240,240)_105px,rgb(240, 240, 240)_510px,transparent_510px)] xl:[&_ul]:[padding:0_0_0_1.5em] xl:[&_ul]:[column-width:10vw]`,
       )}
     >
+      {addingToCart && (
+        <AddToCartWizard
+          {...wizardOffset}
+          editions={props.editions.map((e) => e.type)}
+          onSelect={(editionType) => {
+            addToCart(editionType);
+            setAddingToCart(false);
+            setWizardOffset({ top: -9999, left: -9999 });
+          }}
+        />
+      )}
       {downloading && (
         <DownloadWizard
           {...wizardOffset}
@@ -179,24 +234,12 @@ const DocBlock: React.FC<Props> = (props) => {
           />
           <LinksAndMeta
             className="hidden xl:block xl:mt-10"
-            onClickAddToCart={() => {}}
-            onClickDownload={() => {
-              setDownloading(!downloading);
-              setAddingToCart(false);
-            }}
+            {...clickHandlers}
             {...props}
           />
         </div>
       </div>
-      <LinksAndMeta
-        className="xl:hidden mt-6"
-        onClickAddToCart={() => {}}
-        onClickDownload={() => {
-          setDownloading(!downloading);
-          setAddingToCart(false);
-        }}
-        {...props}
-      />
+      <LinksAndMeta className="xl:hidden mt-6" {...clickHandlers} {...props} />
     </section>
   );
 };
@@ -205,8 +248,8 @@ export default DocBlock;
 
 type LinksAndMetaProps = Props & {
   className: string;
-  onClickDownload: () => any;
-  onClickAddToCart: () => any;
+  onClickDownload(): unknown;
+  onClickAddToCart(): unknown;
 };
 
 const LinksAndMeta: React.FC<LinksAndMetaProps> = (props) => (
@@ -263,7 +306,10 @@ const LinksAndMeta: React.FC<LinksAndMetaProps> = (props) => (
         )}
       </ul>
     </div>
-    <SpanishFreeBooksNote className="body-text mt-8 md:mt-10 sm:px-8 md:px-16 mx-auto max-w-screen-md opacity-75" />
+    <SpanishFreeBooksNote
+      bookTitle={`${props.htmlShortTitle} — ${props.friendName}`}
+      className="body-text mt-8 md:mt-10 sm:px-8 md:px-16 mx-auto max-w-screen-md opacity-75"
+    />
   </div>
 );
 
