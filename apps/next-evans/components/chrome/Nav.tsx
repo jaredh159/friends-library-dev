@@ -43,7 +43,7 @@ const Nav: React.FC<Props> = ({
     <nav
       className={cx(
         `h-[70px] pr-[10px] flex bg-white border-gray-300 border-b`,
-        `min-[340px]:pr-[32px] fixed top-0 z-20 w-screen`,
+        `min-[340px]:pr-[32px] fixed top-0 z-[49] w-screen`,
         searching &&
           (LANG === `en`
             ? `[&_input]:bg-[rgb(108,49,66,0.05)]`
