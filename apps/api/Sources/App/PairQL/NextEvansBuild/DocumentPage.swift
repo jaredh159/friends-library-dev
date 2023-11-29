@@ -195,7 +195,7 @@ extension DocumentPage.Output {
         isComplete: !document.incomplete,
         priceInCents: primaryEditionImpression.paperbackPrice.rawValue,
         description: document.description,
-        numDownloads: try expect(downloads[document.urlPath]),
+        numDownloads: downloads[document.urlPath] ?? 0,
         isCompilation: friend.isCompilations,
         ogImageUrl: primaryEdition.images.threeD.w700.url.absoluteString,
         editions: try editions.filter { !$0.isDraft }.map { edition in

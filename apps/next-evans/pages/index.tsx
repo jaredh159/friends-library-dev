@@ -15,6 +15,7 @@ import { LANG } from '@/lib/env';
 import Seo, { pageMetaDesc } from '@/components/core/Seo';
 import * as custom from '@/lib/ssg/custom-code';
 import api, { type Api } from '@/lib/ssg/api-client';
+import sendSearchDataToAlgolia from '@/lib/ssg/algolia';
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const props = await Promise.all([
@@ -30,6 +31,9 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     newsFeedItems: getNewsFeedItems(newsFeedItems),
     numTotalBooks: totalPublished.books[LANG],
   }));
+  if (process.env.VERCEc_ENV === `production`) {
+    await sendSearchDataToAlgolia();
+  }
   return { props };
 };
 

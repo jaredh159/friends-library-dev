@@ -125,7 +125,7 @@ const StaticPage: React.FC<Props> = ({ source, frontmatter }) => (
 
 export default StaticPage;
 
-function replacePlaceholders(
+export function replacePlaceholders(
   content: string,
   totalPublished: Api.TotalPublished.Output,
 ): string {

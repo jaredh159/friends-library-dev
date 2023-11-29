@@ -123,7 +123,7 @@ extension FriendPage.Output {
           htmlShortTitle: document.htmlShortTitle,
           shortDescription: document.partialDescription,
           slug: document.slug,
-          numDownloads: try expect(downloads[document.urlPath]),
+          numDownloads: downloads[document.urlPath] ?? 0,
           tags: document.tags.require().map(\.type),
           hasAudio: primaryEdition.audio.require() != nil,
           primaryEdition: .init(
