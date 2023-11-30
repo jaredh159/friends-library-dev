@@ -23,6 +23,12 @@
   );
 }
 
+/* algolia search highlight */
+mark {
+  @apply bg-flprimary-400 text-white;
+  padding: 0 1px;
+}
+
 .body-text i,
 .body-text em,
 .MDX blockquote.italic p {

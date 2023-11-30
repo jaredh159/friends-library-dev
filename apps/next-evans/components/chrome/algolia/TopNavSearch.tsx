@@ -11,7 +11,7 @@ const searchClient = getClient();
 
 interface Props {
   searching: boolean;
-  setSearching: (newValue: boolean) => any;
+  setSearching(newValue: boolean): unknown;
   className?: string;
 }
 

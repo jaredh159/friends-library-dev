@@ -81,7 +81,7 @@ function documentRecord(
     objectID: `document--${document.ogImageUrl}`,
     title: convertEntities(document.htmlShortTitle),
     authorName: document.friendName,
-    url,
+    url: `/${url}`,
     originalTitle: document.originalTitle,
     description: document.description,
   };
@@ -97,8 +97,8 @@ function mdxRecords(counts: Api.TotalPublished.Output): Record<string, string | 
     const content = fs.readFileSync(filepath).toString();
     const slugs = pages.find(([pageSlug]) => pageSlug === slug);
     invariant(slugs);
-    const url = LANG === `en` ? slugs[0] : slugs[1];
-    if (!url) return []; // no spanish page for this english page
+    const localizedSlug = LANG === `en` ? slugs[0] : slugs[1];
+    if (!localizedSlug) return []; // no spanish page for this english page
     const [, yaml, text] = content.split(/---\n/m);
     invariant(typeof yaml === `string`);
     invariant(typeof text === `string`);
@@ -107,7 +107,7 @@ function mdxRecords(counts: Api.TotalPublished.Output): Record<string, string | 
     const records: Record<string, string | null>[] = [
       {
         title: frontmatter.title,
-        url,
+        url: `/${localizedSlug}`,
         text: convertEntities(replacePlaceholders(frontmatter.description, counts)),
       },
     ];
@@ -125,7 +125,7 @@ function mdxRecords(counts: Api.TotalPublished.Output): Record<string, string | 
         continue;
       }
       records.push({
-        url,
+        url: `/${localizedSlug}`,
         title: frontmatter.title,
         subtitle: currentSubtitle,
         text: para,
