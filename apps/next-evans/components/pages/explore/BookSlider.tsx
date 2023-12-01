@@ -102,7 +102,7 @@ const BookSlider: React.FC<Props> = ({ books, className }) => {
               />
             </Link>
             <h3
-              className="my-4 tracking-wider text-base text-flgray-900 md:mb-2 md:pb-1"
+              className="my-4 tracking-wider text-base text-flgray-900 md:mb-2 md:pb-1 line-clamp-3"
               dangerouslySetInnerHTML={{ __html: book.htmlShortTitle }}
             />
             <Link href={book.friendUrl} className="fl-underline text-sm text-flprimary">

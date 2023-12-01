@@ -43,7 +43,7 @@ const SubHeroBlock: React.FC<Props> = ({ numTotalBooks }) => (
     <ul className="flex flex-wrap font-sans text-white uppercase tracking-wider mt-8 mb-12 justify-center antialiased md:justify-start md:max-w-xl lg:max-w-none">
       <li
         style={{ backgroundImage: `url(${HeadphonesIcon.src})` }}
-        className="bg-no-repeat [background-size:30px] pl-[40px] [line-height:34px] h-[34px] mr-[30px] mb-[15px] center Format--audio"
+        className="bg-no-repeat [background-size:30px] pl-[38px] [line-height:34px] h-[34px] mr-[30px] mb-[15px] center"
       >
         <Link
           className="hover:underline cursor-pointer"
@@ -52,11 +52,11 @@ const SubHeroBlock: React.FC<Props> = ({ numTotalBooks }) => (
       </li>
       <li
         style={{ backgroundImage: `url(${BookIcon.src})` }}
-        className="bg-no-repeat [background-size:34px] pl-[40px] [line-height:34px] h-[34px] mr-[30px] mb-[15px] center Format--paperback"
+        className="bg-no-repeat [background-size:34px] pl-[36px] [line-height:34px] h-[34px] mr-[30px] mb-[15px] center"
       >{t`Paperbacks`}</li>
       <li
         style={{ backgroundImage: `url(${PhoneIcon.src})` }}
-        className="bg-no-repeat [background-size:34px] pl-[34px] [line-height:34px] h-[34px] mr-0 mb-[15px] center Format--ebook"
+        className="bg-no-repeat [background-size:34px] pl-[32px] [line-height:34px] h-[34px] mr-0 mb-[15px] center"
       >{t`E-Books`}</li>
     </ul>
     <Image

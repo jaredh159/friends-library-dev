@@ -65,7 +65,7 @@ const AudioBooks: React.FC<Props> = ({ audiobooks }) => (
       title={t`Audio Books`}
       description={pageMetaDesc(`audiobooks`, { numAudiobooks: audiobooks.length })}
     />
-    <AudiobooksHero numBooks={audiobooks.length} className="pb-52" />
+    <AudiobooksHero numBooks={audiobooks.length} />
     <div className="bg-flgray-200 py-12 xl:pb-6">
       <Dual.H2 className="sans-wider text-center text-2xl md:text-3xl mb-12 px-10">
         <>Recently Added Audio Books</>

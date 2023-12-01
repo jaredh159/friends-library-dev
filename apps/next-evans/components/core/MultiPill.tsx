@@ -32,13 +32,13 @@ const MultiPill: React.FC<Props> = ({ buttons, className }) => (
           `bg-fl${LANG === `en` ? `maroon` : `gold`}-${[600, 500, 400][idx]}`,
           // purgeCSS: z-30 z-20 z-10
           `z-${[30, 20, 10][idx]}`,
+          `text-center`,
           {
             'mb-2': idx < buttons.length - 1,
-            'md:pl-[70px]': idx > 0,
-            'md:pl-16': idx === 0,
+            'md:pl-6': idx > 0,
           },
           `w-full relative after:opacity-0 after:inset-0 after:bg-gray-200 after:rounded-full after:block after:absolute after:transition-opacity after:duration-200 after:ease-in-out after:hover:opacity-[0.085]`,
-          `flex items-center justify-center md:justify-start`,
+          `flex items-center justify-center *md:justify-start`,
         )}
       >
         {button.icon && <button.icon className="h-6 pr-3" />}

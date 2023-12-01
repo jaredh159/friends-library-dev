@@ -37,7 +37,7 @@ const Friends: React.FC<Props> = ({ friends }) => {
         description={pageMetaDesc(`friends`, { numFriends: friends.length })}
       />
       <FriendsPageHero numFriends={friends.length} />
-      <section className="sm:px-16 py-16">
+      <section className="pt-10 pb-20 sm:px-24 md:px-16 lg:px-32 xl:px-0 xl:pt-20 xl:pb-24">
         <h2 className="text-center pb-8 sans-wider text-2xl px-8">{t`Recently Added Authors`}</h2>
         <div className="flex flex-col xl:flex-row justify-center xl:items-center space-y-16 xl:space-y-0 xl:space-x-12">
           {mostRecentFriends.map((friend, i) => (
@@ -67,7 +67,7 @@ const Friends: React.FC<Props> = ({ friends }) => {
         {filteredFriends.map((friend, i) => (
           <FriendCard
             key={friend.slug}
-            className="m-8 xl:m-12"
+            className="w-lg mb-12 mx-4 xl:mx-10"
             gender={friend.gender === `mixed` ? `male` : friend.gender}
             name={friend.name}
             region={`${friend.primaryResidence.city}, ${friend.primaryResidence.region}`}

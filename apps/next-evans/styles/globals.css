@@ -12,6 +12,15 @@
 .strong-link {
   @apply text-flprimary font-bold antialiased tracking-wider fl-underline font-sans;
 }
+.sans-wide {
+  @apply font-sans tracking-wide;
+}
+.sans-wider {
+  @apply font-sans tracking-wider;
+}
+.sans-widest {
+  @apply font-sans tracking-widest;
+}
 
 .fl-underline {
   padding-bottom: 0.33em;
@@ -41,6 +50,11 @@ mark {
 .subtle-link {
   @apply text-flprimary;
   border-bottom: 1px dotted currentColor;
+}
+
+.subtle-focus:focus {
+  @apply outline-none;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.25);
 }
 
 .bracketed::before {

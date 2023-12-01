@@ -136,17 +136,19 @@ const ExploreBooks: React.FC<Props> = ({ totalPublished, books }) => (
     />
     {LANG === `en` && (
       <ExploreRegionsBlock
-        books={books.map((book) => ({
-          title: book.title,
-          htmlShortTitle: book.htmlShortTitle,
-          isCompilation: book.isCompilation,
-          friendName: book.friendName,
-          editionType: book.primaryEdition.type,
-          isbn: book.primaryEdition.isbn,
-          url: getDocumentUrl(book.friendSlug, book.slug),
-          friendUrl: getFriendUrl(book.friendSlug, book.friendGender),
-          region: documentRegion(book),
-        }))}
+        books={books
+          .sort((a, b) => (a.friendName < b.friendName ? -1 : 1))
+          .map((book) => ({
+            title: book.title,
+            htmlShortTitle: book.htmlShortTitle,
+            isCompilation: book.isCompilation,
+            friendName: book.friendName,
+            editionType: book.primaryEdition.type,
+            isbn: book.primaryEdition.isbn,
+            url: getDocumentUrl(book.friendSlug, book.slug),
+            friendUrl: getFriendUrl(book.friendSlug, book.friendGender),
+            region: documentRegion(book),
+          }))}
       />
     )}
     {LANG === `en` && (

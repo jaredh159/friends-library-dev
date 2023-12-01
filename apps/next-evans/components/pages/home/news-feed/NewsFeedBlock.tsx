@@ -11,7 +11,7 @@ interface Props {
 const NewsFeedBlock: React.FC<Props> = ({ items }) => (
   <BackgroundImage src={BgImage} fit="cover">
     <div className="[background:linear-gradient(rgba(0,0,0,0.8),rgba(0,0,0,0.8))] pt-8 pb-6 sm:p-8 md:p-10 lg:p-12 flex flex-col items-center backdrop-blur-sm">
-      <Dual.H1 className="sans-widest text-3xl font-bold mb-6 antialiased text-white text-center px-6">
+      <Dual.H1 className="font-sans tracking-widest text-3xl font-bold mb-6 antialiased text-white text-center px-6">
         <>What&rsquo;s New</>
         <>Añadidos Recientemente</>
       </Dual.H1>

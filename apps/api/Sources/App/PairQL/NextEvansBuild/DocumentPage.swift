@@ -233,7 +233,7 @@ extension DocumentPage.Output {
           return .init(
             title: otherDoc.title,
             editionType: edition.type,
-            description: otherDoc.description,
+            description: otherDoc.partialDescription,
             paperbackVolumes: try expect(edition.impression.require()).paperbackVolumes,
             isbn: try expect(edition.isbn.require()).code,
             audioDuration: (edition.audio.require()).map(\.humanDurationClock),

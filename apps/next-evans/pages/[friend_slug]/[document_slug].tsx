@@ -71,8 +71,14 @@ const DocumentPage: React.FC<Props> = ({
       titleEl="h2"
       bgColor="flgray-100"
       titleTextColor="flblack"
-      books={otherBooksByFriend.map((book) => ({
-        ...book,
+      books={otherBooksByFriend.sort(sortDocuments).map((book) => ({
+        title: book.title,
+        description: book.description,
+        paperbackVolumes: book.paperbackVolumes,
+        htmlShortTitle: book.htmlShortTitle,
+        isbn: book.isbn,
+        createdAt: book.createdAt,
+        editionType: book.editionType,
         friendName: document.friendName,
         isCompilation: document.isCompilation,
         documentUrl: getDocumentUrl(document.friendSlug, book.documentSlug),
@@ -86,3 +92,19 @@ const DocumentPage: React.FC<Props> = ({
 );
 
 export default DocumentPage;
+
+function sortDocuments(
+  a: Api.DocumentPage.Output['otherBooksByFriend'][number],
+  b: Api.DocumentPage.Output['otherBooksByFriend'][number],
+): number {
+  if (a.editionType !== b.editionType) {
+    if (a.editionType === `updated`) {
+      return -1;
+    }
+    if (a.editionType === `modernized`) {
+      return b.editionType === `updated` ? 1 : -1;
+    }
+    return 1;
+  }
+  return a.title < b.title ? -1 : 1;
+}

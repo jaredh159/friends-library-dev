@@ -13,21 +13,19 @@ interface Props {
 
 const AudiobooksHero: React.FC<Props> = ({ className, numBooks }) => (
   <BackgroundImage
-    className={cx(className, `text-center p-0`)}
+    className={cx(className, `text-center p-16 pb-48 md:pb-56`)}
     src={HeadphonesImage}
     fit="cover"
   >
-    <div className="relative p-10">
-      <h2 className="font-sans text-4xl tracking-wider text-white mb-6">{t`Audio Books`}</h2>
-      <Dual.P className="body-text text-white text-lg">
-        <>We currently have {numBooks} titles recorded as audiobooks.</>
-        <>Actualmente tenemos {numBooks} títulos grabados como audiolibros.</>
-      </Dual.P>
-      <div
-        className="h-48 absolute w-full left-0 -bottom-[164px]"
-        style={{ backgroundImage: `url(${WaveformSVG.src})`, backgroundSize: `cover` }}
-      ></div>
-    </div>
+    <h2 className="font-sans text-4xl tracking-wider text-white mb-6">{t`Audio Books`}</h2>
+    <Dual.P className="body-text text-white text-lg">
+      <>We currently have {numBooks} titles recorded as audiobooks.</>
+      <>Actualmente tenemos {numBooks} títulos grabados como audiolibros.</>
+    </Dual.P>
+    <div
+      className="h-48 absolute w-screen -mx-16 left-0 -bottom-[164px] bg-no-repeat bg-center"
+      style={{ backgroundImage: `url(${WaveformSVG.src})`, backgroundSize: `1500px` }}
+    />
   </BackgroundImage>
 );
 

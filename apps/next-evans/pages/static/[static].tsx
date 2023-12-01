@@ -61,7 +61,9 @@ const components: React.ComponentProps<typeof MDXRemote>['components'] = {
   ),
 
   p: ({ children }) => (
-    <p className="mb-6 pb-1 text-base sm:text-lg leading-loose">{children}</p>
+    <p className="mb-6 pb-1 last:mb-0 last:pb-0 text-base sm:text-lg leading-loose">
+      {children}
+    </p>
   ),
 
   li: ({ children }) => <li className="py-2">{children}</li>,

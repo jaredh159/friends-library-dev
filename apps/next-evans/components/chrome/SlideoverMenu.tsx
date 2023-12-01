@@ -6,10 +6,12 @@ import type { Lang } from '@friends-library/types';
 import FriendsLogo from '../core/LogoFriends';
 import AmigosLogo from '../core/LogoAmigos';
 import GetAppLink from '../core/GetAppLink';
+import { useCartTotalQuantity } from '../checkout/hooks';
 import { LANG } from '@/lib/env';
 
 const SlideoverMenu: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const Logo = LANG === `en` ? FriendsLogo : AmigosLogo;
+  const [cartQty, , store] = useCartTotalQuantity();
   return (
     <nav
       className={cx(
@@ -61,8 +63,13 @@ const SlideoverMenu: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             [t`/ebook-help`, t`E-Book Help`],
             [t`/contact`, t`Contact Us`],
             () => (
-              <button onClick={() => {}}>
-                {t`Cart`} ({4})
+              <button
+                onClick={() => {
+                  onClose();
+                  store.open();
+                }}
+              >
+                {t`Cart`} ({cartQty})
               </button>
             ),
           ]}
