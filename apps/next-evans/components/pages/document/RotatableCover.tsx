@@ -73,7 +73,7 @@ export default class RotatableCover extends React.Component<Props, State> {
         </div>
         <button
           className={cx(
-            `transition-transform duration-100 active:scale-95`,
+            `transition-transform duration-100 active:scale-95 focus:outline-none pt-1`,
             !shouldRotate && `hidden`,
           )}
           onClick={() => {

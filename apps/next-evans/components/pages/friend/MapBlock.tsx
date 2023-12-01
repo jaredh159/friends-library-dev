@@ -49,8 +49,6 @@ const MapBlock: React.FC<Props> = ({ friendName, markers, residences, map }) => 
             ))}
           {map === `UK` && (
             <Image
-              width={800}
-              height={800}
               src={Uk}
               alt={LANG === `en` ? `Map of U.K.` : `Mapa de Reino Unido.`}
               className="xl:max-w-[700px]"
@@ -58,8 +56,6 @@ const MapBlock: React.FC<Props> = ({ friendName, markers, residences, map }) => 
           )}
           {map === `US` && (
             <Image
-              width={800}
-              height={800}
               src={Us}
               alt={LANG === `en` ? `Map of U.S.` : `Mapa, de, estados unidos de américa.`}
               className="xl:max-w-[700px]"
@@ -67,8 +63,6 @@ const MapBlock: React.FC<Props> = ({ friendName, markers, residences, map }) => 
           )}
           {map === `Europe` && (
             <Image
-              width={800}
-              height={800}
               src={Europe}
               alt={LANG === `en` ? `Map of Europe.` : `Mapa de europa.`}
               className="xl:max-w-[700px]"

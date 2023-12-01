@@ -6,12 +6,19 @@ import { LANG } from '@/lib/env';
 
 interface Props {
   className?: string;
+  inFooter?: boolean;
 }
 
-const GetAppLink: React.FC<Props> = ({ className }) => (
+const GetAppLink: React.FC<Props> = ({ className, inFooter }) => (
   <Link className={cx(`relative flex items-center`, className)} href={t`/app`}>
     {LANG === `en` ? `Get the app` : `Aplicación`}
-    <i aria-hidden className="fa fa-mobile text-xl ml-1.5 opacity-70" />
+    <i
+      aria-hidden
+      className={cx(
+        `fa fa-mobile text-md opacity-70 ml-2`,
+        inFooter ? `scale-125 -translate-y-px` : `translate-y-px`,
+      )}
+    />
   </Link>
 );
 

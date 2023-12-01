@@ -36,16 +36,16 @@ const Audiobook: React.FC<Props> = ({
   <div
     className={cx(
       className,
-      `Audiobook flex flex-col items-center max-w-[380px] px-6 sm:px-8 py-8 rounded-lg`,
+      `Audiobook flex flex-col items-center px-6 sm:px-8 py-8 sm:w-4/5 md:w-2/5`,
       // purgeCSS: bg-flblue bg-flmaroon bg-flgold bg-flgreen
       `bg-fl${bgColor} text-white`,
     )}
   >
-    <Album className="-mt-32" {...props} />
-    <div className="flex flex-col justify-center items-center gap-6 flex-grow mt-4">
+    <Album className="-mt-[7rem]" {...props} />
+    <div className="flex flex-col justify-center items-center gap-8 flex-grow px-4 my-4 antialiased">
       <h3
         key="title"
-        className="text-lg sans-wider text-center"
+        className="text-lg sans-wider text-center mt-4"
         dangerouslySetInnerHTML={{ __html: htmlShortTitle }}
       />
       <h4 className="-mt-3" key="author">

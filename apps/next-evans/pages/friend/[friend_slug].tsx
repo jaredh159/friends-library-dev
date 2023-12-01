@@ -118,7 +118,10 @@ const Friend: React.FC<Props> = ({
               key={doc.id}
               htmlShortTitle={doc.htmlShortTitle}
               isAlone={onlyOneBook}
-              className="mb-8 lg:mb-12"
+              className={cx(
+                `mb-8 lg:mb-12 [&_p]:min-[1100px]:pr-0`,
+                doc.primaryEdition.size !== `s` && `[&_p]:lg:pr-6`,
+              )}
               tags={doc.tags}
               hasAudio={doc.hasAudio}
               bookUrl={getDocumentUrl(slug, doc.slug)}

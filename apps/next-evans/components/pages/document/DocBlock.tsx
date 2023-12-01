@@ -298,7 +298,10 @@ const LinksAndMeta: React.FC<LinksAndMetaProps> = (props) => (
         </li>
         {props.alternateLanguageDoc && (
           <li>
-            <Dual.A href={`${APP_ALT_URL}/${getDocumentUrl(props.alternateLanguageDoc)}`}>
+            <Dual.A
+              className="border-b border-dashed border-current"
+              href={`${APP_ALT_URL}/${getDocumentUrl(props.alternateLanguageDoc)}`}
+            >
               <>Spanish Version</>
               <>Versión en inglés</>
             </Dual.A>

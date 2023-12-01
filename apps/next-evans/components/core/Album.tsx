@@ -25,7 +25,7 @@ const Album: React.FC<Props> = ({ className, scaler, scope, ...coverData }) => (
       iconColor="white"
       friendsColor="white"
       libraryColor="white"
-      className="absolute z-50 h-3 bottom-0 right-0 opacity-50 m-1"
+      className="absolute z-[48] h-3 bottom-0 right-0 opacity-50 m-1"
     />
     <Front
       {...toCoverProps({

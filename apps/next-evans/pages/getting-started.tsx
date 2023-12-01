@@ -60,7 +60,7 @@ const GettingStarted: React.FC<Props> = ({ books, numBooks }) => (
       description={pageMetaDesc(`getting-started`, { numBooks })}
     />
     <BackgroundImage src={BooksGrid} className="" fit={`cover`} position={`center`}>
-      <div className="flex flex-col items-center justify-center py-16 md:py-36 px-8 sm:px-12 md:px-20 lg:px-36 [background:radial-gradient(rgb(0_0_0/0.65),rgb(0_0_0/0.85),rgb(0_0_0/0.95))]">
+      <div className="flex flex-col items-center justify-center py-20 sm:py-32 px-10 sm:px-16 [background:radial-gradient(rgb(0_0_0/0.65),rgb(0_0_0/0.85),rgb(0_0_0/0.95))]">
         <Heading darkBg className="text-white">
           <Dual.Frag>
             <>Not sure where to get started?</>

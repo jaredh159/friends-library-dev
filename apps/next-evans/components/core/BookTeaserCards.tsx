@@ -48,7 +48,7 @@ const BookTeaserCards: React.FC<Props> = ({
       <TitleEl
         className={cx(
           `text-${titleTextColor}`,
-          `sans-wider px-6 text-2xl text-center mt-10 md:-mt-2 md:mb-12 xl:w-full`,
+          `sans-wider px-6 text-2xl text-center pt-10 md:-pt-2 md:mb-12 xl:w-full`,
         )}
       >
         {title}
