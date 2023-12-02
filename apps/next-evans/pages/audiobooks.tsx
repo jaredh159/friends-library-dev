@@ -52,10 +52,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
       shortDescription: audio.shortDescription,
       ...(index < 2 ? { badgeText: shortDate(audio.createdAt) } : {}),
     }))
-    .map((audio) => {
-      const coverCode = customCode[`${audio.friendSlug}/${audio.slug}`];
-      return coverCode ? custom.merge(audio, coverCode) : audio;
-    });
+    .map(custom.merging(customCode, (audio) => [audio.friendSlug, audio.slug]));
   return { props: { audiobooks } };
 };
 

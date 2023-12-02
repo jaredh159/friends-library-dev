@@ -66,6 +66,7 @@ struct DocumentPage: Pair {
 
   struct OtherBookByFriend: PairNestable {
     var title: String
+    var slug: String
     var editionType: EditionType
     var description: String
     var paperbackVolumes: NonEmpty<[Int]>
@@ -73,6 +74,8 @@ struct DocumentPage: Pair {
     var audioDuration: String?
     var htmlShortTitle: String
     var documentSlug: String
+    var customCss: String?
+    var customHtml: String?
     var createdAt: Date
   }
 
@@ -232,6 +235,7 @@ extension DocumentPage.Output {
           let edition = try expect(otherDoc.primaryEdition)
           return .init(
             title: otherDoc.title,
+            slug: otherDoc.slug,
             editionType: edition.type,
             description: otherDoc.partialDescription,
             paperbackVolumes: try expect(edition.impression.require()).paperbackVolumes,

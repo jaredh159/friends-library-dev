@@ -24,10 +24,9 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     api.totalPublished(),
     custom.some(featuredBooks[LANG]),
   ]).then(([featuredBooks, newsFeedItems, totalPublished, customCode]) => ({
-    featuredBooks: featuredBooks.map((book) => {
-      const coverCode = customCode[`${book.friendSlug}/${book.documentSlug}`];
-      return coverCode ? custom.merge(book, coverCode) : book;
-    }),
+    featuredBooks: featuredBooks.map(
+      custom.merging(customCode, (book) => [book.friendSlug, book.documentSlug]),
+    ),
     newsFeedItems: getNewsFeedItems(newsFeedItems),
     numTotalBooks: totalPublished.books[LANG],
   }));

@@ -31,14 +31,23 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
   invariant(typeof friendSlug === `string`);
   invariant(typeof documentSlug === `string`);
   const input = { lang: LANG, friendSlug, documentSlug } as const;
-  const [props, customCode] = await Promise.all([
+  const [props, docCustomCode] = await Promise.all([
     api.documentPage(input),
     code.document(friendSlug, documentSlug),
   ]);
+  const otherCode = await code.some(
+    props.otherBooksByFriend.map((document) => ({
+      friendSlug,
+      documentSlug: document.slug,
+    })),
+  );
   return {
     props: {
-      ...props,
-      document: code.merge(props.document, customCode),
+      otherBooksByFriend: props.otherBooksByFriend.map(
+        code.merging(otherCode, (doc) => [friendSlug, doc.slug]),
+      ),
+      numTotalBooks: props.numTotalBooks,
+      document: code.merge(props.document, docCustomCode),
     },
   };
 };
@@ -79,6 +88,8 @@ const DocumentPage: React.FC<Props> = ({
         isbn: book.isbn,
         createdAt: book.createdAt,
         editionType: book.editionType,
+        customCss: book.customCss,
+        customHtml: book.customHtml,
         friendName: document.friendName,
         isCompilation: document.isCompilation,
         documentUrl: getDocumentUrl(document.friendSlug, book.documentSlug),

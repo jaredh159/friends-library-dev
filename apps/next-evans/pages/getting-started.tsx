@@ -16,7 +16,6 @@ import GettingStartedPaths from '@/components/pages/getting-started/GettingStart
 import recommended from '@/lib/recommended-books';
 import { getDocumentUrl, getFriendUrl } from '@/lib/friend';
 import * as custom from '@/lib/ssg/custom-code';
-import { type CustomCodeMap } from '@/lib/ssg/custom-code';
 import Seo, { pageMetaDesc } from '@/components/core/Seo';
 import api, { type Api } from '@/lib/ssg/api-client';
 
@@ -40,15 +39,18 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     api.gettingStartedBooks({ lang: LANG, slugs: recommended.journals[LANG] }),
     api.totalPublished(),
     custom.some(customCodeSlugs()),
-  ]).then(([history, doctrine, spiritualLife, journals, totalPublished, customCode]) => ({
-    books: {
-      history: merge(history, customCode),
-      doctrine: merge(doctrine, customCode),
-      spiritualLife: merge(spiritualLife, customCode),
-      journals: merge(journals, customCode),
-    },
-    numBooks: totalPublished.books[LANG],
-  }));
+  ]).then(([history, doctrine, spiritualLife, journals, totalPublished, customCode]) => {
+    const merging = custom.merging<Book>(customCode, (d) => [d.friendSlug, d.slug]);
+    return {
+      books: {
+        history: history.map(merging),
+        doctrine: doctrine.map(merging),
+        spiritualLife: spiritualLife.map(merging),
+        journals: journals.map(merging),
+      },
+      numBooks: totalPublished.books[LANG],
+    };
+  });
 
   return { props: props };
 };
@@ -305,14 +307,4 @@ function customCodeSlugs(): Array<{ friendSlug: string; documentSlug: string }> 
     slugs = [...slugs, ...recommended[category][LANG]];
   }
   return slugs;
-}
-
-function merge(
-  books: Array<Api.GettingStartedBooks.Output[number]>,
-  customCode: CustomCodeMap,
-): Array<Api.GettingStartedBooks.Output[number]> {
-  return books.map((book) => {
-    const docCode = customCode[`${book.friendSlug}/${book.slug}`];
-    return docCode ? custom.merge(book, docCode) : book;
-  });
 }

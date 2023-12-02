@@ -52,6 +52,17 @@ export function merge<T>(obj: T, customCode: CustomCode): WithCustomCode<T> {
   return merged;
 }
 
+export function merging<T>(
+  code: CustomCodeMap,
+  slugs: (obj: T) => [friendSlug: string, documentSlug: string],
+): (obj: T) => WithCustomCode<T> {
+  return (obj: T) => {
+    const [friendSlug, documentSlug] = slugs(obj);
+    const coverCode = code[`${friendSlug}/${documentSlug}`];
+    return merge(obj, coverCode ?? {});
+  };
+}
+
 export function documentSlugs(input: { friendSlug: string; slug: string }): {
   friendSlug: string;
   documentSlug: string;

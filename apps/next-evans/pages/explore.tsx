@@ -32,11 +32,8 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     api.explorePageBooks(LANG),
     api.totalPublished(),
     custom.all(),
-  ]).then(([books, totalPublished, allCustomCode]) => ({
-    books: books.map((book) => {
-      const customCode = allCustomCode[`${book.friendSlug}/${book.slug}`];
-      return customCode ? custom.merge(book, customCode) : book;
-    }),
+  ]).then(([books, totalPublished, customCode]) => ({
+    books: books.map(custom.merging(customCode, (b) => [b.friendSlug, b.slug])),
     totalPublished,
   }));
   return { props };

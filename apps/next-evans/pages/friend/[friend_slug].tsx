@@ -37,10 +37,9 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
       documentSlug: slug,
     })),
   );
-  friend.documents = friend.documents.map((doc) => {
-    const docCode = customCode[`${friend.slug}/${doc.slug}`];
-    return docCode ? custom.merge(doc, docCode) : doc;
-  });
+  friend.documents = friend.documents.map(
+    custom.merging(customCode, (doc) => [friend.slug, doc.slug]),
+  );
   friend.documents.sort(sortDocuments);
   return { props: friend };
 };

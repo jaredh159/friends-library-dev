@@ -79,6 +79,7 @@ export namespace DocumentPage {
     };
     otherBooksByFriend: Array<{
       title: string;
+      slug: string;
       editionType: 'updated' | 'original' | 'modernized';
       description: string;
       paperbackVolumes: [number, ...number[]];
@@ -86,6 +87,8 @@ export namespace DocumentPage {
       audioDuration?: string;
       htmlShortTitle: string;
       documentSlug: string;
+      customCss?: string;
+      customHtml?: string;
       createdAt: ISODateString;
     }>;
     numTotalBooks: number;
