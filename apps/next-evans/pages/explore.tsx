@@ -52,7 +52,7 @@ const ExploreBooks: React.FC<Props> = ({ totalPublished, books }) => (
       })}
     />
     <BackgroundImage src={HeroImg} fineTuneImageStyles={{ objectFit: `cover` }}>
-      <div className="p-8 sm:p-16 lg:p-24 bg-black/60 lg:backdrop-blur-sm">
+      <div className="px-10 py-20 sm:px-16 sm:py-32 lg:px-24 lg:py-[7.3rem] bg-black/60 xl:backdrop-blur-sm">
         <WhiteOverlay>
           <Dual.H1 className="sans-wider text-3xl mb-6">
             <>Explore Books</>

@@ -111,7 +111,7 @@ const StaticPage: React.FC<Props> = ({ source, frontmatter }) => (
   <div>
     <Seo title={frontmatter.title} description={frontmatter.description} />
     <BackgroundImage src={HeroImg} fineTuneImageStyles={{ objectFit: `cover` }}>
-      <div className="p-8 sm:p-16 lg:p-24 bg-black/60 lg:backdrop-blur-sm">
+      <div className="px-10 py-20 sm:px-16 sm:py-32 lg:px-24 lg:py-[7.3rem] bg-black/60 xl:backdrop-blur-sm">
         <WhiteOverlay>
           <h1 className="heading-text text-2xl sm:text-4xl bracketed text-flprimary">
             {frontmatter.title}
