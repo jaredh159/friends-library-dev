@@ -44,6 +44,22 @@ export namespace AllFriendPages {
         text: string;
         source: string;
       }>;
+      relatedDocuments: Array<{
+        title: string;
+        htmlShortTitle: string;
+        slug: string;
+        description: string;
+        isCompilation: boolean;
+        friendName: string;
+        friendSlug: string;
+        friendGender: 'male' | 'female' | 'mixed';
+        editionType: 'updated' | 'original' | 'modernized';
+        paperbackVolumes: [number, ...number[]];
+        isbn: string;
+        customCss?: string;
+        customHtml?: string;
+        createdAt: ISODateString;
+      }>;
     };
   };
 }

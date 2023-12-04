@@ -22,6 +22,7 @@ struct FriendPage: Pair {
     var documents: [Document]
     var residences: [Residence]
     var quotes: [Quote]
+    var relatedDocuments: [RelatedDocument]
 
     struct Document: PairNestable {
       var id: App.Document.Id
@@ -60,6 +61,23 @@ struct FriendPage: Pair {
         var end: Int
       }
     }
+
+    struct RelatedDocument: PairNestable {
+      var title: String
+      var htmlShortTitle: String
+      var slug: String
+      var description: String
+      var isCompilation: Bool
+      var friendName: String
+      var friendSlug: String
+      var friendGender: Friend.Gender
+      var editionType: EditionType
+      var paperbackVolumes: NonEmpty<[Int]>
+      var isbn: ISBN
+      var customCss: String?
+      var customHtml: String?
+      var createdAt: Date
+    }
   }
 }
 
@@ -95,6 +113,11 @@ extension FriendPage.Output {
       )
     }
 
+    let relatedDocs = documents
+      .flatMap { $0.relatedDocuments.require() }
+      .map { $0.document.require() }
+      .filter(\.hasNonDraftEdition)
+
     let quotes = friend.quotes.require()
     let residences = friend.residences.require()
     guard friend.isCompilations || !residences.isEmpty else {
@@ -104,6 +127,7 @@ extension FriendPage.Output {
         detail: "non-compilations friend `\(friend.lang)/\(friend.slug)` has no residences"
       )
     }
+
     self = .init(
       born: friend.born,
       died: friend.died,
@@ -143,7 +167,25 @@ extension FriendPage.Output {
           durations: durations.map { .init(start: $0.start, end: $0.end) }
         )
       },
-      quotes: quotes.map { .init(text: $0.text, source: $0.source) }
+      quotes: quotes.map { .init(text: $0.text, source: $0.source) },
+      relatedDocuments: try relatedDocs.map { doc in
+        let friend = doc.friend.require()
+        let edition = try expect(doc.primaryEdition)
+        return .init(
+          title: doc.title,
+          htmlShortTitle: doc.htmlShortTitle,
+          slug: doc.slug,
+          description: doc.partialDescription,
+          isCompilation: friend.isCompilations,
+          friendName: friend.name,
+          friendSlug: friend.slug,
+          friendGender: friend.gender,
+          editionType: edition.type,
+          paperbackVolumes: try expect(edition.impression.require()).paperbackVolumes,
+          isbn: try expect(edition.isbn.require()).code,
+          createdAt: doc.createdAt
+        )
+      }
     )
   }
 }
