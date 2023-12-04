@@ -2,8 +2,8 @@ import algoliasearch from 'algoliasearch/lite';
 
 export function getClient(): ReturnType<typeof algoliasearch> {
   const baseClient = algoliasearch(
-    String(process.env.NEXT_PUBLIC_ALGOLIA_APP_ID),
-    String(process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_ONLY_KEY),
+    process.env.NEXT_PUBLIC_ALGOLIA_APP_ID ?? ``,
+    process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_ONLY_KEY ?? ``,
   );
 
   return {

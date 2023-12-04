@@ -11,7 +11,7 @@ export async function podcast(
   qualityType: AudioQuality,
 ): Promise<string> {
   const audio = edition.audio!;
-  const quality = qualityType === `HQ` ? `hq` : `lq`;
+  const quality = qualityType === `hq` ? `hq` : `lq`;
   const launchDate = moment(`2020-03-27`);
   const imageUrl = edition.podcastImageUrl;
   const podcastUrl = quality === `hq` ? audio.podcastLogUrlHq : audio.podcastLogUrlLq;

@@ -1,33 +1,4 @@
-export const months = {
-  en: [
-    `January`,
-    `February`,
-    `March`,
-    `April`,
-    `May`,
-    `June`,
-    `July`,
-    `August`,
-    `September`,
-    `October`,
-    `November`,
-    `December`,
-  ],
-  es: [
-    `enero`,
-    `febrero`,
-    `marzo`,
-    `abril`,
-    `mayo`,
-    `junio`,
-    `julio`,
-    `agosto`,
-    `setiembre`,
-    `octubre`,
-    `noviembre`,
-    `diciembre`,
-  ],
-};
+import { LANG } from './env';
 
 export function newestFirst(a: number, b: number): number;
 export function newestFirst(a: ISODateString, b: ISODateString): number;
@@ -44,4 +15,28 @@ export function newestFirst<
     return new Date(b).getTime() - new Date(a).getTime();
   }
   throw new Error(`unreachable`);
+}
+
+export function shortDate(dateStr: ISODateString): string {
+  const date = new Date(dateStr);
+  const formatter = new Intl.DateTimeFormat(`en-US`, { month: `short` });
+  let month = formatter.format(date);
+  if (LANG === `es`) {
+    month = spanishShortMonth(month);
+  }
+  return `${month} ${date.getDate()}`;
+}
+
+export function spanishShortMonth(short: string): string {
+  switch (short.toLowerCase()) {
+    case `jan`:
+      return `Ene`;
+    case `apr`:
+      return `Abr`;
+    case `aug`:
+      return `Ago`;
+    case `dec`:
+      return `Dic`;
+  }
+  return short;
 }

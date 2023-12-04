@@ -18,12 +18,12 @@ export interface AudioFsData {
   hash: string;
   hashedBasename: string;
   m4bs: {
-    HQ: FileFsData;
-    LQ: FileFsData;
+    hq: FileFsData;
+    lq: FileFsData;
   };
   mp3Zips: {
-    HQ: FileFsData;
-    LQ: FileFsData;
+    hq: FileFsData;
+    lq: FileFsData;
   };
   parts: Array<{
     hashedBasename: string;
@@ -34,8 +34,8 @@ export interface AudioFsData {
     srcHash: string;
     cachedDataPath: string;
     mp3s: {
-      HQ: FileFsData;
-      LQ: FileFsData;
+      hq: FileFsData;
+      lq: FileFsData;
     };
   }>;
 }

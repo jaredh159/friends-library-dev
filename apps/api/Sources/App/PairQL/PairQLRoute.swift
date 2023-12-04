@@ -9,6 +9,7 @@ enum PairQLRoute: RouteHandler, RouteResponder, Equatable {
   case order(OrderRoute)
   case evans(EvansRoute)
   case evansBuild(EvansBuildRoute)
+  case nextEvansBuild(NextEvansBuildRoute)
 
   static func respond(to route: Self, in context: Context) async throws -> Response {
     switch route {
@@ -22,6 +23,8 @@ enum PairQLRoute: RouteHandler, RouteResponder, Equatable {
       return try await EvansRoute.respond(to: evansRoute, in: context)
     case .evansBuild(let evansBuildRoute):
       return try await EvansBuildRoute.respond(to: evansBuildRoute, in: context)
+    case .nextEvansBuild(let nextEvansBuildRoute):
+      return try await NextEvansBuildRoute.respond(to: nextEvansBuildRoute, in: context)
     }
   }
 
@@ -51,6 +54,11 @@ enum PairQLRoute: RouteHandler, RouteResponder, Equatable {
       Path { "evans-build" }
       EvansBuildRoute.router
     }
+    Route(.case(PairQLRoute.nextEvansBuild)) {
+      Method.post
+      Path { "next-evans-build" }
+      NextEvansBuildRoute.router
+    }
   }
 
   static func handler(_ request: Request) async throws -> Response {
@@ -62,8 +70,10 @@ enum PairQLRoute: RouteHandler, RouteResponder, Equatable {
     let context = Context(requestId: request.id)
     do {
       let route = try PairQLRoute.router.parse(requestData)
-      logOperation(route, request)
-      return try await PairQLRoute.respond(to: route, in: context)
+      let start = Date()
+      let output = try await PairQLRoute.respond(to: route, in: context)
+      logOperation(route, request, Date().timeIntervalSince(start))
+      return output
     } catch {
       if "\(type(of: error))" == "ParsingError" {
         if Env.mode == .dev { print("PairQL routing \(error)") }
@@ -87,23 +97,33 @@ enum PairQLRoute: RouteHandler, RouteResponder, Equatable {
 
 // helpers
 
-private func logOperation(_ route: PairQLRoute, _ request: Request) {
-  let operation = request.parameters.get("operation") ?? ""
+private func logOperation(_ route: PairQLRoute, _ request: Request, _ duration: TimeInterval) {
+  let operation = "\(request.parameters.get("operation") ?? "")".yellow
+  var elapsed = ""
+  switch duration {
+  case 0.0 ..< 1.0:
+    elapsed = "(\(Int(duration * 1000)) ms)".dim
+  default:
+    elapsed = "(\(String(format: "%.2f", duration)) sec)".red
+  }
   switch route {
   case .dev:
     Current.logger
-      .notice("PairQL request: \("Dev".magenta) \(operation.yellow)")
+      .notice("PairQL request: \("Dev".magenta) \(operation) \(elapsed)")
   case .admin:
     Current.logger
-      .notice("PairQL request: \("Admin".cyan) \(operation.yellow)")
+      .notice("PairQL request: \("Admin".cyan) \(operation) \(elapsed)")
   case .order:
     Current.logger
-      .notice("PairQL request: \("Order".red) \(operation.yellow)")
+      .notice("PairQL request: \("Order".red) \(operation) \(elapsed)")
   case .evans:
     Current.logger
-      .notice("PairQL request: \("Evans".lightBlue) \(operation.yellow)")
+      .notice("PairQL request: \("Evans".lightBlue) \(operation) \(elapsed)")
   case .evansBuild:
     Current.logger
-      .notice("PairQL request: \("EvansBuild".green) \(operation.yellow)")
+      .notice("PairQL request: \("EvansBuild".green) \(operation) \(elapsed)")
+  case .nextEvansBuild:
+    Current.logger
+      .notice("PairQL request: \("NextEvansBuild".green) \(operation) \(elapsed)")
   }
 }

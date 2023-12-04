@@ -2,7 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 
 interface Props {
-  onClick: () => any;
+  onClick(): unknown;
   className?: string;
 }
 

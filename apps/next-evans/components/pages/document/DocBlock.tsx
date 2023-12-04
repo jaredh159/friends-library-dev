@@ -3,35 +3,61 @@ import cx from 'classnames';
 import { bookDims } from '@friends-library/lulu';
 import { t } from '@friends-library/locale';
 import Link from 'next/link';
-import { htmlTitle } from '@friends-library/adoc-utils';
-import type { PrintSize } from '@friends-library/types';
-import type { Doc } from '@/lib/types';
+import type { EditionType, PrintSize } from '@friends-library/types';
+import type { EditionCoverData } from '@/lib/cover';
 import DownloadWizard from './DownloadWizard';
 import RotatableCover from './RotatableCover';
 import DocActions from './DocActions';
+import AddToCartWizard from './AddToCartWizard';
 import Dual from '@/components/core/Dual';
-import { LANG } from '@/lib/env';
+import { APP_ALT_URL, LANG } from '@/lib/env';
 import { makeScroller } from '@/lib/scroll';
 import SpanishFreeBooksNote from '@/components/core/SpanishFreeBooksNote';
-import { getFriendUrl, isCompilations } from '@/lib/friend';
-import { downloadUrl } from '@/lib/download';
-import { bookSize } from '@/lib/book-sizes';
+import { getFriendUrl, getDocumentUrl } from '@/lib/friend';
+import CartStore from '@/components/checkout/services/CartStore';
+import CartItem from '@/components/checkout/models/CartItem';
 
-type Props = Doc<
-  | 'editions'
-  | 'authorName'
-  | 'blurb'
-  | 'mostModernEdition'
-  | 'authorGender'
-  | 'authorSlug'
-  | 'hasAudio'
-  | 'isComplete'
-  | 'originalTitle'
-  | 'numDownloads'
-> & { price: number; alternateLanguageSlug: string | null };
+export interface Props {
+  friendName: string;
+  friendSlug: string;
+  friendGender: 'male' | 'female' | 'mixed';
+  title: string;
+  htmlTitle: string;
+  htmlShortTitle: string;
+  originalTitle?: string;
+  isComplete: boolean;
+  priceInCents: number;
+  description: string;
+  hasAudio: boolean;
+  numDownloads: number;
+  isCompilation: boolean;
+  customCss?: string;
+  customHtml?: string;
+  editions: Array<{
+    id: UUID;
+    type: EditionType;
+    isbn: string;
+    printSize: PrintSize;
+    numPages: [number, ...number[]];
+    loggedDownloadUrls: {
+      pdf: string;
+      epub: string;
+      mobi: string;
+      speech: string;
+    };
+  }>;
+  alternateLanguageDoc?: {
+    friendSlug: string;
+    slug: string;
+  };
+  primaryEdition: EditionCoverData & {
+    numChapters: number;
+  };
+}
 
 const DocBlock: React.FC<Props> = (props) => {
   const wrap = useRef<HTMLDivElement | null>(null);
+  const store = CartStore.getSingleton();
   const [downloading, setDownloading] = useState<boolean>(false);
   const [addingToCart, setAddingToCart] = useState<boolean>(false);
   const [wizardOffset, setWizardOffset] = useState<{ top: number; left: number }>({
@@ -88,15 +114,61 @@ const DocBlock: React.FC<Props> = (props) => {
     return () => window.removeEventListener(`keydown`, escape);
   }, [downloading, addingToCart]);
 
+  const addToCart = (editionType: EditionType): void => {
+    const edition = props.editions.find((e) => e.type === editionType);
+    if (!edition) throw new Error(`Error selecting edition: ${editionType}`);
+    store.cart.addItem(
+      new CartItem({
+        displayTitle: props.htmlShortTitle,
+        title: props.title,
+        editionId: edition.id,
+        edition: edition.type,
+        quantity: 1,
+        printSize: edition.printSize,
+        numPages: edition.numPages,
+        author: props.friendName,
+        isbn: edition.isbn,
+        isCompilation: props.isCompilation,
+        customHtml: props.customHtml,
+        customCss: props.customCss,
+      }),
+    );
+  };
+
+  const clickHandlers = {
+    onClickAddToCart: () => {
+      if (props.editions.length === 1) {
+        return addToCart(props.editions[0]?.type ?? `updated`);
+      }
+      setAddingToCart(!addingToCart);
+      setDownloading(false);
+    },
+    onClickDownload: () => {
+      setDownloading(!downloading);
+      setAddingToCart(false);
+    },
+  };
+
   return (
     <section
       ref={wrap}
       className={cx(
-        `DocBlock [background-image:linear-gradient(transparent_0%,transparent_105px,rgb(240,240,240)_105px,rgb(240,240,240)_375px,transparent_375px)] [&_a:link]:cursor-pointer [&_a:link]:[border-bottom:1px_dashed_currentColor] relative bg-white pt-8 pb-12 px-10 md:px-12 lg:pb-24 xl:flex xl:flex-col xl:items-center`,
+        `DocBlock [background-image:linear-gradient(transparent_0%,transparent_105px,rgb(240,240,240)_105px,rgb(240,240,240)_375px,transparent_375px)] [&_a:link]:cursor-pointer relative bg-white pt-8 pb-12 px-10 md:px-12 lg:pb-24 xl:flex xl:flex-col xl:items-center`,
         `md:[&_ul]:w-full md:[&_ul]:py-0 md:[&_ul]:px-[5em] md:[&_ul]:[column-count:3] md:[&_ul]:[column-width:20vw] md:[&_ul]:[column-gap:20px] md:[&_li]:[break-inside:avoid-column]`,
         `xl:[background-image:linear-gradient(transparent_0%,transparent_105px,rgb(240,240,240)_105px,rgb(240, 240, 240)_510px,transparent_510px)] xl:[&_ul]:[padding:0_0_0_1.5em] xl:[&_ul]:[column-width:10vw]`,
       )}
     >
+      {addingToCart && (
+        <AddToCartWizard
+          {...wizardOffset}
+          editions={props.editions.map((e) => e.type)}
+          onSelect={(editionType) => {
+            addToCart(editionType);
+            setAddingToCart(false);
+            setWizardOffset({ top: -9999, left: -9999 });
+          }}
+        />
+      )}
       {downloading && (
         <DownloadWizard
           {...wizardOffset}
@@ -108,7 +180,7 @@ const DocBlock: React.FC<Props> = (props) => {
                 setWizardOffset({ top: -9999, left: -9999 });
               }, 4000);
               const referer = `${window.location.origin}${window.location.pathname}`;
-              window.location.href = downloadUrl(format, edition.id, referer);
+              window.location.href = `${edition.loggedDownloadUrls[format]}?referer=${referer}`;
             }
           }}
           editions={props.editions.map((e) => e.type)}
@@ -117,34 +189,22 @@ const DocBlock: React.FC<Props> = (props) => {
       <div className="xl:max-w-[80rem] md:flex">
         <RotatableCover
           className="order-1"
-          coverProps={{
-            lang: LANG,
-            title: props.title,
-            isCompilation: isCompilations(props.authorSlug),
-            pages: props.mostModernEdition.numPages[0] || 70,
-            isbn: props.isbn,
-            blurb: props.blurb,
-            customCss: props.customCSS || ``,
-            customHtml: props.customHTML || ``,
-            author: props.authorName,
-            size: bookSize(props.mostModernEdition.size),
-            edition: props.mostModernEdition.type,
-          }}
+          coverData={{ ...props, ...props.primaryEdition }}
         />
         <div className="mb-8 md:px-12 bg-white md:mr-6 xl:mr-10">
           <h1
             className="font-sans text-3xl md:text-2-5xl font-bold leading-snug mt-8 tracking-wider mb-6"
             dangerouslySetInnerHTML={{ __html: titleHtml(props) }}
           />
-          {!isCompilations(props.authorSlug) && (
+          {!props.isCompilation && (
             <h2 className="font-sans text-1-5xl md:text-xl subpixel-antialiased leading-loose mb-8">
               <i className="font-serif tracking-widest pr-1">{t`by`}:</i>
               {` `}
               <Link
                 className="strong-link"
-                href={getFriendUrl(props.authorSlug, props.authorGender)}
+                href={getFriendUrl(props.friendSlug, props.friendGender)}
               >
-                {props.authorName}
+                {props.friendName}
               </Link>
             </h2>
           )}
@@ -166,30 +226,20 @@ const DocBlock: React.FC<Props> = (props) => {
             className="font-serif text-xl md:text-lg antialiased leading-relaxed"
             dangerouslySetInnerHTML={{
               __html: props.originalTitle
-                ? `${props.blurb} (${t`Original title`}: <em>${props.originalTitle}</em>)`
-                : props.blurb,
+                ? `${props.description} (${t`Original title`}: <em>${
+                    props.originalTitle
+                  }</em>)`
+                : props.description,
             }}
           />
           <LinksAndMeta
             className="hidden xl:block xl:mt-10"
-            onClickAddToCart={() => {}}
-            onClickDownload={() => {
-              setDownloading(!downloading);
-              setAddingToCart(false);
-            }}
+            {...clickHandlers}
             {...props}
           />
         </div>
       </div>
-      <LinksAndMeta
-        className="xl:hidden mt-6"
-        onClickAddToCart={() => {}}
-        onClickDownload={() => {
-          setDownloading(!downloading);
-          setAddingToCart(false);
-        }}
-        {...props}
-      />
+      <LinksAndMeta className="xl:hidden mt-6" {...clickHandlers} {...props} />
     </section>
   );
 };
@@ -198,8 +248,8 @@ export default DocBlock;
 
 type LinksAndMetaProps = Props & {
   className: string;
-  onClickDownload: () => any;
-  onClickAddToCart: () => any;
+  onClickDownload(): unknown;
+  onClickAddToCart(): unknown;
 };
 
 const LinksAndMeta: React.FC<LinksAndMetaProps> = (props) => (
@@ -209,27 +259,29 @@ const LinksAndMeta: React.FC<LinksAndMetaProps> = (props) => (
       addToCart={props.onClickAddToCart}
       gotoAudio={makeScroller(`#audiobook`)}
       className="mb-8 flex flex-col md:flex-row items-center md:items-start lg:mx-24 xl:mx-0"
-      price={props.price}
+      price={props.priceInCents}
       hasAudio={props.hasAudio}
     />
     <div className="DocMeta flex flex-col items-center">
       <ul className="diamonds text-sans text-gray-600 leading-loose antialiased">
-        <li>{props.authorName}</li>
+        <li>{props.friendName}</li>
         {LANG === `en` && (
-          <li className="capitalize">{props.mostModernEdition.type} Edition</li>
+          <li className="capitalize">{props.primaryEdition.editionType} Edition</li>
         )}
         <li>
           {dimensions(
-            bookSize(props.mostModernEdition.size),
-            props.mostModernEdition.numPages,
+            props.primaryEdition.printSize,
+            props.primaryEdition.paperbackVolumes,
           )}
         </li>
         <li>
-          {props.mostModernEdition.numChapters > 1
-            ? t`${props.mostModernEdition.numChapters} chapters`
+          {props.primaryEdition.numChapters > 1
+            ? t`${props.primaryEdition.numChapters} chapters`
             : t`1 chapter`}
         </li>
-        <li>{props.mostModernEdition.numPages.map((p) => t`${p} pages`).join(`, `)}</li>
+        <li>
+          {props.primaryEdition.paperbackVolumes.map((p) => t`${p} pages`).join(`, `)}
+        </li>
         {props.numDownloads > 10 && (
           <li>
             <Dual.Frag>
@@ -244,12 +296,11 @@ const LinksAndMeta: React.FC<LinksAndMetaProps> = (props) => (
             <>Idioma: Español</>
           </Dual.Frag>
         </li>
-        {props.alternateLanguageSlug && (
+        {props.alternateLanguageDoc && (
           <li>
             <Dual.A
-              href={`https://${
-                LANG === `en` ? `bibliotecadelosamigos.org` : `friendslibrary.com`
-              }/${props.authorSlug}/${props.alternateLanguageSlug}`}
+              className="border-b border-dashed border-current"
+              href={`${APP_ALT_URL}/${getDocumentUrl(props.alternateLanguageDoc)}`}
             >
               <>Spanish Version</>
               <>Versión en inglés</>
@@ -258,7 +309,10 @@ const LinksAndMeta: React.FC<LinksAndMetaProps> = (props) => (
         )}
       </ul>
     </div>
-    <SpanishFreeBooksNote className="body-text mt-8 md:mt-10 sm:px-8 md:px-16 mx-auto max-w-screen-md opacity-75" />
+    <SpanishFreeBooksNote
+      bookTitle={`${props.htmlShortTitle} — ${props.friendName}`}
+      className="body-text mt-8 md:mt-10 sm:px-8 md:px-16 mx-auto max-w-screen-md opacity-75"
+    />
   </div>
 );
 
@@ -291,8 +345,8 @@ function ensureWizardInViewport(): void {
   }
 }
 
-function titleHtml({ title, isComplete }: Props): string {
-  let html = htmlTitle(title);
+function titleHtml({ htmlTitle, isComplete }: Props): string {
+  let html = htmlTitle;
   if (!isComplete) {
     html += `<sup class="text-flprimary-800">*</sup>`;
   }

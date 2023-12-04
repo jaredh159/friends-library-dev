@@ -8,7 +8,7 @@ export interface CartItemData {
   edition: EditionType;
   quantity: number;
   printSize: PrintSize;
-  numPages: number[];
+  numPages: [number, ...number[]];
   author: string;
 }
 
@@ -19,7 +19,7 @@ export default class CartItem {
   public edition: EditionType;
   public quantity: number;
   public printSize: PrintSize;
-  public numPages: number[];
+  public numPages: [number, ...number[]];
   public author: string;
 
   public constructor(config: CartItemData) {

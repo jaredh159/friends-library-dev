@@ -106,8 +106,8 @@ const AudioPartQualityCachedData = t.union([
 ]);
 
 const AudioPartCachedData = t.partial({
-  HQ: AudioPartQualityCachedData,
-  LQ: AudioPartQualityCachedData,
+  hq: AudioPartQualityCachedData,
+  lq: AudioPartQualityCachedData,
 });
 
 type AudioPartCachedData = t.TypeOf<typeof AudioPartCachedData>;
@@ -123,8 +123,8 @@ const AudioQualityCachedData = t.union([
 ]);
 
 const AudioCachedData = t.partial({
-  HQ: AudioQualityCachedData,
-  LQ: AudioQualityCachedData,
+  hq: AudioQualityCachedData,
+  lq: AudioQualityCachedData,
 });
 
 type AudioCachedData = t.TypeOf<typeof AudioCachedData>;

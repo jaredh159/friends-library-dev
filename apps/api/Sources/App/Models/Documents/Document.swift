@@ -28,7 +28,7 @@ final class Document: Codable {
   }
 
   var primaryEdition: Edition? {
-    let allEditions = editions.require()
+    let allEditions = editions.require().filter { $0.isDraft == false }
     return allEditions.first { $0.type == .updated } ??
       allEditions.first { $0.type == .modernized } ??
       allEditions.first
@@ -130,4 +130,30 @@ extension Document {
         .first()
     })
   }
+
+  func numDownloads() async throws -> Int {
+    let editions = try await editions()
+    let rows = try await Current.db.customQuery(
+      DocumentDownloads.self,
+      withBindings: editions.map { .uuid($0.id) }
+    )
+    assert(rows.count == 1)
+    return rows.first?.total ?? 0
+  }
+}
+
+private struct DocumentDownloads: CustomQueryable {
+  static func query(numBindings: Int) -> String {
+    let bindings = (1 ... numBindings).map { "$\($0)" }.joined(separator: ", ")
+    return """
+      SELECT SUM(document_downloads) AS total
+      FROM (
+        SELECT COUNT(*)::INTEGER AS document_downloads
+        FROM \(Download.tableName)
+        WHERE \(Download.columnName(.editionId)) IN (\(bindings))
+      ) AS subquery;
+    """
+  }
+
+  let total: Int
 }

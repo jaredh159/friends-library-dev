@@ -62,7 +62,7 @@ export const ChooseEdition_ = () => (
 );
 
 export const DownloadAudiobook_ = setBg(`#f1f1f1`, () => {
-  const [quality, setQuality] = useState<AudioQuality>(`HQ`);
+  const [quality, setQuality] = useState<AudioQuality>(`hq`);
   return (
     <DownloadAudiobook
       complete={true}
@@ -137,7 +137,7 @@ export const DocBlock_ = fullscreen(
 );
 
 const StatefulSwitch: React.FC = () => {
-  const [quality, setQuality] = useState<AudioQuality>(`HQ`);
+  const [quality, setQuality] = useState<AudioQuality>(`hq`);
   return <QualitySwitch quality={quality} onChange={setQuality} />;
 };
 

@@ -1,10 +1,11 @@
 import React from 'react';
 import { t } from '@friends-library/locale';
-import type { Doc } from '@/lib/types';
-import BookTeaserCards from './BookTeaserCards';
+import BookTeaserCards, {
+  type Props as BookTeaserCardsProps,
+} from '@/components/core/BookTeaserCards';
 
 interface Props {
-  books: Array<Doc<'editions' | 'createdAt' | 'authorGender' | 'shortDescription'>>;
+  books: BookTeaserCardsProps['books'];
 }
 
 const NewBooksBlock: React.FC<Props> = ({ books }) => (

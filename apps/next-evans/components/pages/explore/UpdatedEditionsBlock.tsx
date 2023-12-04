@@ -1,20 +1,31 @@
 import React from 'react';
 import Link from 'next/link';
 import { t } from '@friends-library/locale';
-import type { Doc } from '@/lib/types';
+import type { EditionType } from '@/lib/types';
 import BgWordBlock from './BgWordBlock';
 import BookSlider from './BookSlider';
 import { LANG } from '@/lib/env';
 import Dual from '@/components/core/Dual';
 
 interface Props {
-  books: Array<Doc<'editions' | 'authorGender'>>;
+  books: Array<{
+    url: string;
+    title: string;
+    htmlShortTitle: string;
+    isbn: string;
+    friendName: string;
+    friendUrl: string;
+    isCompilation: boolean;
+    editionType: EditionType;
+    customCss?: string;
+    customHtml?: string;
+  }>;
 }
 
 const UpdatedEditionsBlock: React.FC<Props> = ({ books }) => (
   <BgWordBlock
     id="UpdatedEditionsBlock"
-    className="UpdatedEditionsBlock p-10 flex flex-col items-center md:py-16 md:after:pt-[5.5rem]"
+    className="UpdatedEditionsBlock p-10 flex flex-col items-center md:py-16 [&_.BackgroundWord]:md:pt-[5.5rem]"
     word={LANG === `en` ? `Updated` : `Libros`}
     title={LANG === `en` ? `Updated Editions` : `Libros`}
   >

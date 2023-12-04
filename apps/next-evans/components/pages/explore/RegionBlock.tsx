@@ -1,15 +1,23 @@
 import React, { useState } from 'react';
-import type { Doc, Region } from '@/lib/types';
+import type { EditionType, Region } from '@/lib/types';
 import BgWordBlock from './BgWordBlock';
 import BookSlider from './BookSlider';
 import MapSlider from './MapSlider';
 
 interface Props {
-  books: Array<
-    Doc<'editions' | 'authorGender'> & {
-      region: Region;
-    }
-  >;
+  books: Array<{
+    url: string;
+    title: string;
+    htmlShortTitle: string;
+    isbn: string;
+    friendName: string;
+    friendUrl: string;
+    isCompilation: boolean;
+    editionType: EditionType;
+    customCss?: string;
+    customHtml?: string;
+    region: Region;
+  }>;
 }
 
 const ExploreRegionsBlock: React.FC<Props> = ({ books }) => {

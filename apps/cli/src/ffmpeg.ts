@@ -61,7 +61,7 @@ export function createMp3(
     `-metadata:s:v comment="Cover (front)"`, // cover image, continued
     `-codec:a libmp3lame`, // specify audio codec
     getTagArgs(audio, partIndex), // mp3 tags
-    quality === `LQ`
+    quality === `lq`
       ? `-b:a 40k` // 40kb CBR encoding
       : `-qscale:a 5`, // VBR quality 5 encoding
     `${basename(destPath)}`, // output file

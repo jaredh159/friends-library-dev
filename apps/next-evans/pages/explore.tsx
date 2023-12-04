@@ -1,60 +1,58 @@
 import React from 'react';
+import { t } from '@friends-library/locale';
 import type { GetStaticProps } from 'next';
-import type { Doc, Period } from '@/lib/types';
+import type { Period } from '@/lib/types';
+import { APP_ALT_URL, LANG } from '@/lib/env';
 import BackgroundImage from '@/components/core/BackgroundImage';
 import Dual from '@/components/core/Dual';
 import HeroImg from '@/public/images/explore-books.jpg';
 import NavBlock from '@/components/pages/explore/NavBlock';
 import UpdatedEditionsBlock from '@/components/pages/explore/UpdatedEditionsBlock';
-import { LANG } from '@/lib/env';
 import GettingStartedLinkBlock from '@/components/pages/explore/GettingStartedLinkBlock';
 import AudioBooksBlock from '@/components/pages/explore/AudioBooksBlock';
 import NewBooksBlock from '@/components/pages/explore/NewBooksBlock';
 import ExploreRegionsBlock from '@/components/pages/explore/RegionBlock';
 import TimelineBlock from '@/components/pages/explore/TimelineBlock';
 import AltSiteBlock from '@/components/pages/explore/AltSiteBlock';
-import { mostModernEditionType } from '@/lib/editions';
 import SearchBlock from '@/components/pages/explore/SearchBlock';
-import { getAllDocuments, getNumDocuments } from '@/lib/db/documents';
-import { editionTypes } from '@/lib/document';
+import { getDocumentUrl, getFriendUrl } from '@/lib/friend';
 import { newestFirst } from '@/lib/dates';
+import { documentDate, documentRegion } from '@/lib/document';
+import * as custom from '@/lib/ssg/custom-code';
+import Seo, { pageMetaDesc } from '@/components/core/Seo';
+import api, { type Api } from '@/lib/ssg/api-client';
 
-export const getStaticProps: GetStaticProps<Props> = async () => {
-  const documents = Object.values(await getAllDocuments());
-  const numBooksInAltLang = await getNumDocuments(LANG === `en` ? `es` : `en`);
-  return {
-    props: {
-      books: documents,
-      numBooks: documents.length,
-      numBooksInAltLang,
-    },
-  };
+type Props = {
+  books: Api.ExplorePageBooks.Output;
+  totalPublished: Api.TotalPublished.Output;
 };
 
-interface Props {
-  numBooks: number;
-  numBooksInAltLang: number;
-  books: Array<
-    Doc<
-      | 'id'
-      | 'tags'
-      | 'editions'
-      | 'hasAudio'
-      | 'createdAt'
-      | 'authorGender'
-      | 'numDownloads'
-      | 'publishedYear'
-      | 'publishedRegion'
-      | 'shortDescription'
-      | 'mostModernEdition'
-    >
-  >;
-}
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  const props = await Promise.all([
+    api.explorePageBooks(LANG),
+    api.totalPublished(),
+    custom.all(),
+  ]).then(([books, totalPublished, customCode]) => ({
+    books: books.map(custom.merging(customCode, (b) => [b.friendSlug, b.slug])),
+    totalPublished,
+  }));
+  return { props };
+};
 
-const ExploreBooks: React.FC<Props> = ({ numBooks, numBooksInAltLang, books }) => (
+const ExploreBooks: React.FC<Props> = ({ totalPublished, books }) => (
   <div>
+    <Seo
+      title={t`Explore Books`}
+      description={pageMetaDesc(`explore`, {
+        numBooks: totalPublished.books[LANG],
+        numAudiobooks: totalPublished.audiobooks[LANG],
+        numUpdatedEditions: books
+          .map((book) => book.primaryEdition.type)
+          .filter((type) => type === `updated`).length,
+      })}
+    />
     <BackgroundImage src={HeroImg} fineTuneImageStyles={{ objectFit: `cover` }}>
-      <div className="p-8 sm:p-16 lg:p-24 bg-black/60 lg:backdrop-blur-sm">
+      <div className="px-10 py-20 sm:px-16 sm:py-32 lg:px-24 lg:py-[7.3rem] bg-black/60 xl:backdrop-blur-sm">
         <WhiteOverlay>
           <Dual.H1 className="sans-wider text-3xl mb-6">
             <>Explore Books</>
@@ -62,16 +60,17 @@ const ExploreBooks: React.FC<Props> = ({ numBooks, numBooksInAltLang, books }) =
           </Dual.H1>
           <Dual.P className="body-text">
             <>
-              We currently have {numBooks} books freely available on this site.
-              Overwhelmed? On this page you can browse all the titles by edition, region,
-              time period, tags, and more&mdash;or search the full library to find exactly
-              what you’re looking for.
+              We currently have {totalPublished.books[LANG]} books freely available on
+              this site. Overwhelmed? On this page you can browse all the titles by
+              edition, region, time period, tags, and more&mdash;or search the full
+              library to find exactly what you’re looking for.
             </>
             <>
-              Actualmente tenemos {numBooks} libros disponibles de forma gratuita en este
-              sitio, y más están siendo traducidos y añadidos regularmente. En nuestra
-              página de “Explorar” puedes navegar por todos nuestros libros y audiolibros,
-              o buscar libros en la categoría particular que más te interese.
+              Actualmente tenemos {totalPublished.books[LANG]} libros disponibles de forma
+              gratuita en este sitio, y más están siendo traducidos y añadidos
+              regularmente. En nuestra página de “Explorar” puedes navegar por todos
+              nuestros libros y audiolibros, o buscar libros en la categoría particular
+              que más te interese.
             </>
           </Dual.P>
         </WhiteOverlay>
@@ -79,50 +78,111 @@ const ExploreBooks: React.FC<Props> = ({ numBooks, numBooksInAltLang, books }) =
     </BackgroundImage>
     <NavBlock />
     <UpdatedEditionsBlock
-      books={books.filter((book) => mostModernEditionType(book.editions) === `updated`)}
+      books={books
+        .filter((book) => book.primaryEdition.type === `updated`)
+        .sort(newestFirst)
+        .map((book) => ({
+          url: getDocumentUrl(book.friendSlug, book.slug),
+          friendUrl: getFriendUrl(book.friendSlug, book.friendGender),
+          isCompilation: book.isCompilation,
+          editionType: book.primaryEdition.type,
+          isbn: book.primaryEdition.isbn,
+          title: book.title,
+          htmlShortTitle: book.htmlShortTitle,
+          friendName: book.friendName,
+          friendSlug: book.friendSlug,
+          customCss: book.customCss,
+          customHtml: book.customHtml,
+        }))}
     />
     <GettingStartedLinkBlock />
-    <AudioBooksBlock books={books.filter((book) => book.hasAudio)} />
+    <AudioBooksBlock
+      books={books
+        .filter((book) => book.hasAudio)
+        .sort(newestFirst)
+        .map((book) => ({
+          url: getDocumentUrl(book.friendSlug, book.slug),
+          isCompilation: book.isCompilation,
+          editionType: book.primaryEdition.type,
+          isbn: book.primaryEdition.isbn,
+          title: book.title,
+          htmlShortTitle: book.htmlShortTitle,
+          friendName: book.friendName,
+          friendSlug: book.friendSlug,
+          customCss: book.customCss,
+          customHtml: book.customHtml,
+        }))}
+    />
     <NewBooksBlock
       books={books
         .sort(newestFirst)
         .slice(0, 4)
-        .map((book) => ({ ...book, audioDuration: undefined }))}
+        .map((book) => ({
+          title: book.title,
+          createdAt: book.createdAt,
+          isCompilation: book.isCompilation,
+          friendName: book.friendName,
+          editionType: book.primaryEdition.type,
+          paperbackVolumes: book.primaryEdition.paperbackVolumes,
+          isbn: book.primaryEdition.isbn,
+          description: book.shortDescription,
+          htmlShortTitle: book.htmlShortTitle,
+          documentUrl: getDocumentUrl(book.friendSlug, book.slug),
+          friendUrl: getFriendUrl(book.friendSlug, book.friendGender),
+        }))}
     />
     {LANG === `en` && (
       <ExploreRegionsBlock
-        books={books.map((book) => ({
-          ...book,
-          region: book.publishedRegion,
-        }))}
+        books={books
+          .sort((a, b) => (a.friendName < b.friendName ? -1 : 1))
+          .map((book) => ({
+            title: book.title,
+            htmlShortTitle: book.htmlShortTitle,
+            isCompilation: book.isCompilation,
+            friendName: book.friendName,
+            editionType: book.primaryEdition.type,
+            isbn: book.primaryEdition.isbn,
+            url: getDocumentUrl(book.friendSlug, book.slug),
+            friendUrl: getFriendUrl(book.friendSlug, book.friendGender),
+            region: documentRegion(book),
+          }))}
       />
     )}
     {LANG === `en` && (
       <TimelineBlock
-        books={books
-          .filter((book) => book.publishedYear)
-          .map((book) => ({ ...book, date: book.publishedYear ?? 1650 }))}
+        books={books.map((book) => ({
+          title: book.title,
+          htmlShortTitle: book.htmlShortTitle,
+          friendName: book.friendName,
+          editionType: book.primaryEdition.type,
+          isbn: book.primaryEdition.isbn,
+          url: getDocumentUrl(book.friendSlug, book.slug),
+          friendUrl: getFriendUrl(book.friendSlug, book.friendGender),
+          isCompilation: book.isCompilation,
+          date: documentDate(book),
+        }))}
       />
     )}
     <AltSiteBlock
-      numBooks={numBooksInAltLang}
-      url={
-        LANG === `en` ? `https://bibliotecadelosamigos.org` : `https://friendslibrary.com`
-      }
+      numBooks={totalPublished.books[LANG === `en` ? `es` : `en`]}
+      url={APP_ALT_URL}
     />
     <SearchBlock
       books={books
-        .flatMap((book) =>
-          editionTypes(book.editions).map((editionType) => ({
-            ...book,
-            edition: editionType,
-          })),
-        )
-        .map((book) => ({
-          ...book,
-          edition: book.edition,
-          region: book.publishedRegion,
-          period: book.publishedYear ? getPeriod(book.publishedYear) : `early`,
+        .flatMap((book) => book.editions.map((edition) => ({ book, edition })))
+        .map(({ book, edition }) => ({
+          isbn: edition.isbn,
+          editionType: edition.type,
+          tags: book.tags,
+          authorName: book.friendName,
+          authorSlug: book.friendSlug,
+          customCss: book.customCss,
+          customHtml: book.customHtml,
+          isCompilation: book.isCompilation,
+          documentTitle: book.title,
+          documentSlug: book.slug,
+          region: documentRegion(book),
+          period: getPeriod(book.publishedYear),
         }))}
     />
   </div>
@@ -136,7 +196,8 @@ export const WhiteOverlay: React.FC<{ children: React.ReactNode }> = ({ children
   </div>
 );
 
-function getPeriod(date: number): Period {
+function getPeriod(date?: number): Period {
+  if (!date) return `early`;
   if (date < 1725) return `early`;
   if (date < 1815) return `mid`;
   return `late`;

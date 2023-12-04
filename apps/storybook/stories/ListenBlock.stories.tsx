@@ -13,24 +13,15 @@ const meta = {
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = props({
-  title: 'Cool book',
-  trackIdLq: 1406554699,
-  trackIdHq: 1406554699,
+  title: `Cool book`,
+  isIncomplete: false,
   numAudioParts: 1,
-  className: '',
-  complete: true,
-  m4bFilesizeLq: '',
-  m4bFilesizeHq: '44 MB',
-  mp3ZipFilesizeLq: '',
-  mp3ZipFilesizeHq: '12 MB',
-  m4bUrlLq: '',
-  m4bUrlHq: '',
-  mp3ZipUrlLq: '',
-  mp3ZipUrlHq: '',
-  podcastUrlLq: '',
-  podcastUrlHq: '',
-  quality: 'HQ',
-  setQuality: () => {},
+  m4bFilesize: { hq: 109234783, lq: 40698958 },
+  mp3ZipFilesize: { hq: 54304578, lq: 30735831 },
+  m4bLoggedDownloadUrl: { hq: ``, lq: `` },
+  mp3ZipLoggedDownloadUrl: { hq: ``, lq: `` },
+  podcastLoggedDownloadUrl: { hq: ``, lq: `` },
+  embedId: { hq: 3, lq: 4 },
 });
 
 export default meta;

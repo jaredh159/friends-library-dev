@@ -12,7 +12,7 @@ export function playlistAttrs(
   const document = audio.document;
   const friend = audio.friend;
   const lang = friend.lang;
-  const trackIdProp = quality === `HQ` ? `externalIdHq` : `externalIdLq`;
+  const trackIdProp = quality === `hq` ? `externalIdHq` : `externalIdLq`;
   return {
     ...COMMON_ATTRS,
     permalink: permalink(audio, quality),
@@ -30,7 +30,7 @@ function permalink(audio: Audio, quality: AudioQuality, suffix?: string): string
   const editionSuffix = edition.type !== `updated` ? `-${edition.type}` : ``;
   const friend = audio.friend;
   let permalink = `${friend.slug}-${document.slug}${editionSuffix}${suffix ?? ``}`;
-  if (quality === `LQ`) {
+  if (quality === `lq`) {
     permalink += `-lq`;
   }
   return permalink;

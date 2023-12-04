@@ -7,32 +7,20 @@ dev-en: write-cover-css
 dev-es: write-cover-css
   @NEXT_PUBLIC_LANG=es pnpm next dev --port 7333
 
-build-en: prisma-generate write-cover-css
+build-en: write-cover-css
   @NEXT_PUBLIC_LANG=en pnpm next build
 
-build-es: prisma-generate write-cover-css
+build-es: write-cover-css
   @NEXT_PUBLIC_LANG=es pnpm next build
 
 storybook:
   @cd ../../ && pnpm --filter storybook storybook
 
-prisma-generate: pre-prisma && post-prisma
-  @pnpm prisma generate
-
-prisma-db-pull: pre-prisma && post-prisma
-  @pnpm prisma db pull --force
+test:
+  @pnpm vitest . --watch
 
 # helpers
 
 [private]
-pre-prisma:
-  @test -e ../../.env || cp ../../.env.example ../../.env
-  @cp ../../.env ./.env
-
-[private]
-post-prisma:
-  @rm ./.env
-
-[private]
 write-cover-css:
-  @pnpm ts-node ./lib/cover-static-css.ts
+  @pnpm ts-node ./lib/ssg/cover-static-css.ts

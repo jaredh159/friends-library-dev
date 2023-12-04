@@ -6,17 +6,23 @@ import TreeRootsImage from '@/public/images/tree-roots.webp';
 import { LANG } from '@/lib/env';
 
 const HeroBlock: React.FC = () => {
-  const backgroundOverlay =
+  const smallBg = `[background:linear-gradient(rgba(45,42,41,0.75),rgba(45,42,41,0.75))]`;
+  const largeBg =
     LANG === `en`
       ? `[background:linear-gradient(rgba(108,49,66,0.5),rgba(108,49,66,0.5))]`
       : `[background:linear-gradient(rgba(195,142,97,0.5),rgba(195,142,97,0.5))]`;
   return (
     <section className="HeroBlock flex w-full">
-      <BackgroundImage src={TreeRootsImage} className="md:w-2/3 xl:w-3/5" fit="cover">
+      <BackgroundImage
+        priority
+        src={TreeRootsImage}
+        className="md:w-2/3 xl:w-3/5"
+        fit="cover"
+      >
         <div
           className={cx(
             `md:[background-image:none] md:bg-white px-12 sm:px-16 py-12 sm:py-20 md:px-20 lg:p-24 text-white md:text-gray-900`,
-            backgroundOverlay,
+            smallBg,
           )}
         >
           <Dual.H1 className="font-sans text-2xl sm:text-3xl mb-8 md:mb-6 font-bold tracking-wider">
@@ -47,10 +53,11 @@ const HeroBlock: React.FC = () => {
       </BackgroundImage>
       <BackgroundImage
         src={TreeRootsImage}
+        priority
         className="md:w-1/3 xl:w-2/5 hidden md:block"
         fit="cover"
       >
-        <div className={cx(`w-full h-full`, backgroundOverlay)} />
+        <div className={cx(`w-full h-full`, largeBg)} />
       </BackgroundImage>
     </section>
   );

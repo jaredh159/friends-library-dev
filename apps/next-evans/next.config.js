@@ -1,11 +1,11 @@
 // @ts-check
+const { readFileSync } = require(`node:fs`);
 // load env from monorepo root
 require(`dotenv`).config({ path: `../../.env` });
 const LANG = process.env.NEXT_PUBLIC_LANG || `en`;
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: false,
   transpilePackages: [`@friends-library`, `x-syntax`],
   rewrites: async function () {
     return {
@@ -29,6 +29,22 @@ const nextConfig = {
           source: `/compilations`,
           destination: `/friend/compilations`,
         },
+        {
+          source: `/comenzar`,
+          destination: `/getting-started`,
+        },
+        {
+          source: `/explorar`,
+          destination: `/explore`,
+        },
+        {
+          source: `/audiolibros`,
+          destination: `/audiobooks`,
+        },
+        {
+          source: `/amigos`,
+          destination: `/friends`,
+        },
       ],
     };
   },
@@ -39,6 +55,21 @@ const nextConfig = {
         destination: `/:path*`,
         permanent: true,
       },
+      {
+        source: `/friend/compilations`,
+        destination: `/compilations`,
+        permanent: true,
+      },
+      {
+        source: `/amiga/compilaciones`,
+        destination: `/compilaciones`,
+        permanent: true,
+      },
+      {
+        source: `/amigo/compilaciones`,
+        destination: `/compilaciones`,
+        permanent: true,
+      },
     ];
   },
 };
@@ -46,32 +77,21 @@ const nextConfig = {
 module.exports = nextConfig;
 
 function staticFiles() {
+  /** @type {Array<[string, string | null]>} */
+  const pages = JSON.parse(readFileSync(`${__dirname}/static-pages.json`, `utf8`));
   if (LANG === `en`) {
-    return [
-      `about`,
-      `app-privacy`,
-      `audio-help`,
-      `ebook-help`,
-      `modernization`,
-      `editions`,
-      `plain-text-format`,
-      `quakers`,
-      `spanish-translations`,
-    ].map((slug) => ({
-      source: `/${slug}`,
-      destination: `/static/${slug}`,
-    }));
+    return pages
+      .map(([en]) => en)
+      .map((slug) => ({
+        source: `/${slug}`,
+        destination: `/static/${slug}`,
+      }));
+  } else {
+    return pages
+      .filter(([, es]) => es !== null)
+      .map(([en, es]) => ({
+        source: `/${es}`,
+        destination: `/static/${en}`,
+      }));
   }
-  return [
-    [`about`, `acerca-de-este-sitio`],
-    [`app-privacy`, `app-privacidad`],
-    [`audio-help`, `audio-ayuda`],
-    [`ebook-help`, `ebook-ayuda`],
-    [`plain-text-format`, `descargar-texto-sin-formato`],
-    [`quakers`, `cuaqeros`],
-    [`spanish-translations`, `nuestras-traducciones`],
-  ].map(([en, es]) => ({
-    source: `/${es}`,
-    destination: `/static/${en}`,
-  }));
 }

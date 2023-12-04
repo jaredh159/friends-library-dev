@@ -13,7 +13,7 @@ import type { CoverProps } from '@friends-library/types';
 import Dual from '../../core/Dual';
 import Button from '../../core/Button';
 
-type Props = Omit<CoverProps, 'pages'> & {
+type Props = Omit<CoverProps, 'pages' | 'blurb'> & {
   htmlShortTitle: string;
   tags: string[];
   numDownloads: number;
@@ -48,6 +48,8 @@ const BookByFriend: React.FC<Props> = (props) => {
         scope={isAlone ? `1-2` : `1-3`}
         className={isAlone ? `-mt-20 md:mt-4 md:-ml-32` : `mt-4 md:-ml-24`}
         pages={pages[0]}
+        blurb=""
+        onlyFront
         shadow={true}
       />
       <div className="lg:mr-[5%] mt-6 md:pl-6 md:py-6 lg:pl-2 lg:py-2 self-start flex flex-col">

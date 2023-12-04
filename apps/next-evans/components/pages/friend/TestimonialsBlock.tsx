@@ -26,10 +26,10 @@ const TestimonialsBlock: React.FC<Props> = ({ testimonials }) => {
             'md:w-1/2': num !== 3 || idx !== 0,
           })}
           isFullWidth={(idx === 0 && num === 3) || num === 1}
-          key={t.cite}
+          key={t.source}
           color={color(idx)}
-          quote={t.quote}
-          cite={t.cite}
+          text={t.text}
+          source={t.source}
         />
       ))}
     </div>

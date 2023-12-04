@@ -15,7 +15,7 @@ const PillDropdown: React.FC<Props> = ({
   children,
   autoHide = false,
 }) => {
-  const ref = useRef<HTMLButtonElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
   useEffect(() => {
@@ -39,7 +39,7 @@ const PillDropdown: React.FC<Props> = ({
   }, [dropdownVisible, autoHide]);
 
   return (
-    <button
+    <div
       ref={ref}
       className={cx(
         className,
@@ -65,7 +65,7 @@ const PillDropdown: React.FC<Props> = ({
         />
       </div>
       {dropdownVisible && children}
-    </button>
+    </div>
   );
 };
 

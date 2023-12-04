@@ -28,6 +28,8 @@ enum CodegenRoute: RouteHandler {
       return try await CodegenRoute.Evans.handler(request)
     case "evans-build":
       return try await CodegenRoute.EvansBuild.handler(request)
+    case "next-evans-build":
+      return try await CodegenRoute.NextEvansBuild.handler(request)
     default:
       throw Abort(.notFound, reason: "invalid pairql domain")
     }
@@ -42,6 +44,7 @@ extension CodegenRoute {
   enum Admin {}
   enum Evans {}
   enum EvansBuild {}
+  enum NextEvansBuild {}
 }
 
 // extensions

@@ -2,12 +2,25 @@ import React, { useState, useEffect } from 'react';
 import cx from 'classnames';
 import { Swipeable } from 'react-swipeable';
 import { t } from '@friends-library/locale';
-import FeaturedBook, { type Props as FeaturedBookProps } from './FeaturedBook';
+import FeaturedBook from './FeaturedBook';
 import Heading from '@/components/core/Heading';
 import WoodgrainSVG from '@/public/images/woodgrain.svg';
 
 export interface Props {
-  books: Array<Omit<FeaturedBookProps, 'isCurrent'>>;
+  books: Array<{
+    isbn: string;
+    title: string;
+    htmlShortTitle: string;
+    paperbackVolumes: [number, ...number[]];
+    customCss?: string;
+    customHtml?: string;
+    isCompilation: boolean;
+    friendName: string;
+    friendSlug: string;
+    friendGender: 'male' | 'female' | 'mixed';
+    documentSlug: string;
+    featuredDescription: string;
+  }>;
 }
 
 const FeaturedBooksBlock: React.FC<Props> = ({ books }) => {

@@ -3,7 +3,7 @@ import cx from 'classnames';
 import SlideoverMenu from './SlideoverMenu';
 
 interface Props {
-  close: () => void;
+  close(): unknown;
   isOpen: boolean;
 }
 

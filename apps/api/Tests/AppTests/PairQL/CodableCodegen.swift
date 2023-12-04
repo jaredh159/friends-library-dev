@@ -19,6 +19,7 @@ struct ApiTypeScriptEnumsCodableGenerator: AggregateCodeGenerator {
       types: [
         (DeleteEntities.Input.self, false),
         (AdminRoute.Upsert.self, false),
+        (NewsFeedItems.NewsFeedItem.Kind.self, false),
       ],
       imports: [
         "Tagged": "Tagged",

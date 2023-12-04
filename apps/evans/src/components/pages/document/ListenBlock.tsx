@@ -28,14 +28,14 @@ interface Props {
 }
 
 const ListenBlock: React.FC<Props> = (props) => {
-  const [quality, setQuality] = useState<AudioQuality>(`HQ`);
+  const [quality, setQuality] = useState<AudioQuality>(`hq`);
   const { trackIdLq, trackIdHq, numAudioParts, playlistIdLq, playlistIdHq, title } =
     props;
 
   useEffect(() => {
     // @ts-ignore
     if (window.navigator?.connection?.downlink < 1.5) {
-      setQuality(`LQ`);
+      setQuality(`lq`);
     }
   }, []);
 
@@ -72,8 +72,8 @@ const ListenBlock: React.FC<Props> = (props) => {
         </h3>
         <div className="flex flex-col items-center shadow-xl mt-8 mx-6 sm:mb-8 lg:ml-0">
           <EmbeddedAudio
-            trackId={quality === `HQ` ? trackIdHq : trackIdLq}
-            playlistId={quality === `HQ` ? playlistIdHq : playlistIdLq}
+            trackId={quality === `hq` ? trackIdHq : trackIdLq}
+            playlistId={quality === `hq` ? playlistIdHq : playlistIdLq}
             height={
               playlistIdLq
                 ? SC_MAIN_SECTION_HEIGHT +

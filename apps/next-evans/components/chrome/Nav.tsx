@@ -11,8 +11,8 @@ import { LANG } from '@/lib/env';
 
 interface Props {
   showCartBadge: boolean;
-  onCartBadgeClick: () => void;
-  onHamburgerClick: () => void;
+  onCartBadgeClick(): unknown;
+  onHamburgerClick(): unknown;
   initialSearching?: boolean;
 }
 
@@ -42,8 +42,8 @@ const Nav: React.FC<Props> = ({
   return (
     <nav
       className={cx(
-        `h-[70px] pr-[10px] flex bg-white border-gray-300 border-b`,
-        `min-[340px]:pr-[20px] fixed top-0 z-20 w-screen`,
+        `h-[70px] pr-[20px] flex bg-white border-gray-300 border-b`,
+        `fixed top-0 z-[49] w-screen`,
         searching &&
           (LANG === `en`
             ? `[&_input]:bg-[rgb(108,49,66,0.05)]`
@@ -79,13 +79,10 @@ const Nav: React.FC<Props> = ({
       <TopNavSearch className="flex" searching={searching} setSearching={setSearching} />
       {showCartBadge && (
         <div
-          className={cx(
-            `ml-2 flex-col justify-center items-end flex-growx sm:flex-grow-0`,
-            {
-              'hidden sm:flex': searching,
-              flex: !searching,
-            },
-          )}
+          className={cx(`ml-2 flex-col justify-center items-end sm:flex-grow-0`, {
+            'hidden sm:flex': searching,
+            flex: !searching,
+          })}
         >
           <CartBadge onClick={onCartBadgeClick} />
         </div>

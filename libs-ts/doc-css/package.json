@@ -15,7 +15,7 @@
     "@friends-library/lulu": "workspace:*",
     "@friends-library/types": "workspace:*",
     "lodash.mapvalues": "^4.6.0",
-    "x-syntax": "^1.0.0"
+    "x-syntax": "^2.0.0"
   },
   "devDependencies": {
     "@types/lodash.mapvalues": "^4.6.6",

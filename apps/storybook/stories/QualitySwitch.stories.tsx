@@ -6,8 +6,8 @@ const meta = {
   title: 'Document/QualitySwitch', // eslint-disable-line
   component: () => (
     <div className="flex flex-col gap-4">
-      <QualitySwitch quality="HQ" onChange={() => {}} />
-      <QualitySwitch quality="LQ" onChange={() => {}} />
+      <QualitySwitch quality="hq" onChange={() => {}} />
+      <QualitySwitch quality="lq" onChange={() => {}} />
     </div>
   ),
   parameters: {

@@ -13,7 +13,7 @@ const Heading: React.FC<{
     className={cx(
       className,
       `mb-[2.5rem] font-sans uppercase text-center text-2xl mb-5 sm:text-3xl tracking-wider font-black`,
-      `after:block after:mt-[2rem] after:w-[200px] after:ml-auto after:mr-auto after:h-[2px]`,
+      `after:block after:mt-[1rem] after:w-[200px] after:ml-auto after:mr-auto after:h-[2px]`,
       `sm:mb-[3rem] sm:after:mt-[2rem]`,
       {
         'after:bg-white': darkBg,

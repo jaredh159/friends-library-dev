@@ -17,8 +17,9 @@ export type PrintSizeVariant = (typeof PRINT_SIZE_VARIANTS)[number];
 export const DB_PRINT_SIZE_VARIANTS = [`s`, `m`, `xl`, `xlCondensed`] as const;
 export type DbPrintSizeVariant = (typeof DB_PRINT_SIZE_VARIANTS)[number];
 
-export const AUDIO_QUALITIES = [`HQ`, `LQ`] as const;
+export const AUDIO_QUALITIES = [`hq`, `lq`] as const;
 export type AudioQuality = (typeof AUDIO_QUALITIES)[number];
+export type AudioQualities<T> = { [K in AudioQuality]: T };
 
 export interface CoverProps {
   lang: Lang;

@@ -7,6 +7,14 @@ export type BookSortMethod = 'duration' | 'published' | 'author' | 'title';
 export type EbookColorScheme = 'white' | 'black' | 'sepia';
 
 /**
+ * While refactoring evans to nextjs/pairql, I changed the
+ * monorepo `AudioQuality` type to be lowercase, but it was
+ * too risky to quickly change it here, without a careful
+ * migration, so native now has it's own legacy type.
+ */
+export type AudioQuality = 'HQ' | 'LQ';
+
+/**
  * string in format: `"<document-id>--<EditionType>"`
  * eg `"f413cec8-c609-4d58-9721-4ad552cb27ae--modernized"`
  */

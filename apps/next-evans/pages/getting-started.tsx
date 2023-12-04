@@ -3,7 +3,7 @@ import cx from 'classnames';
 import { t } from '@friends-library/locale';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import type { GetStaticProps } from 'next';
-import type { Document } from '@/lib/types';
+import { type Props as PathBlockProps } from '@/components/pages/getting-started/PathBlock';
 import Dual from '@/components/core/Dual';
 import Heading from '@/components/core/Heading';
 import BackgroundImage from '@/components/core/BackgroundImage';
@@ -13,50 +13,56 @@ import EmbeddedAudio from '@/components/core/EmbeddedAudio';
 import { LANG } from '@/lib/env';
 import { makeScroller } from '@/lib/scroll';
 import GettingStartedPaths from '@/components/pages/getting-started/GettingStartedPaths';
-import recommendedBooks from '@/lib/recommended-books';
-import { getAllDocuments } from '@/lib/db/documents';
+import recommended from '@/lib/recommended-books';
+import { getDocumentUrl, getFriendUrl } from '@/lib/friend';
+import * as custom from '@/lib/ssg/custom-code';
+import Seo, { pageMetaDesc } from '@/components/core/Seo';
+import api, { type Api } from '@/lib/ssg/api-client';
 
-export const getStaticProps: GetStaticProps<Props> = async () => {
-  const documents = Object.values(await getAllDocuments());
-
-  const organizedBooks = {
-    history: filterBooks(documents, `history`),
-    doctrine: filterBooks(documents, `doctrine`),
-    spiritualLife: filterBooks(documents, `spiritualLife`),
-    journals: filterBooks(documents, `journals`),
-  };
-
-  return { props: { books: organizedBooks, numBooks: documents.length } };
-};
-
-export type GettingStartedCoverProps = Pick<
-  Document,
-  | 'id'
-  | 'slug'
-  | 'title'
-  | 'editions'
-  | 'hasAudio'
-  | 'customCSS'
-  | 'authorName'
-  | 'authorSlug'
-  | 'customHTML'
-  | 'authorGender'
->;
+type Book = Api.GettingStartedBooks.Output[number];
 
 interface Props {
   books: {
-    history: Array<GettingStartedCoverProps>;
-    doctrine: Array<GettingStartedCoverProps>;
-    spiritualLife: Array<GettingStartedCoverProps>;
-    journals: Array<GettingStartedCoverProps>;
+    history: Book[];
+    doctrine: Book[];
+    spiritualLife: Book[];
+    journals: Book[];
   };
   numBooks: number;
 }
 
+export const getStaticProps: GetStaticProps<Props> = async () => {
+  const props = await Promise.all([
+    api.gettingStartedBooks({ lang: LANG, slugs: recommended.history[LANG] }),
+    api.gettingStartedBooks({ lang: LANG, slugs: recommended.doctrine[LANG] }),
+    api.gettingStartedBooks({ lang: LANG, slugs: recommended.spiritualLife[LANG] }),
+    api.gettingStartedBooks({ lang: LANG, slugs: recommended.journals[LANG] }),
+    api.totalPublished(),
+    custom.some(customCodeSlugs()),
+  ]).then(([history, doctrine, spiritualLife, journals, totalPublished, customCode]) => {
+    const merging = custom.merging<Book>(customCode, (d) => [d.friendSlug, d.slug]);
+    return {
+      books: {
+        history: history.map(merging),
+        doctrine: doctrine.map(merging),
+        spiritualLife: spiritualLife.map(merging),
+        journals: journals.map(merging),
+      },
+      numBooks: totalPublished.books[LANG],
+    };
+  });
+
+  return { props: props };
+};
+
 const GettingStarted: React.FC<Props> = ({ books, numBooks }) => (
   <div>
+    <Seo
+      title={t`Getting Started`}
+      description={pageMetaDesc(`getting-started`, { numBooks })}
+    />
     <BackgroundImage src={BooksGrid} className="" fit={`cover`} position={`center`}>
-      <div className="flex flex-col items-center justify-center py-16 md:py-36 px-8 sm:px-12 md:px-20 lg:px-36 [background:radial-gradient(rgb(0_0_0/0.65),rgb(0_0_0/0.85),rgb(0_0_0/0.95))]">
+      <div className="flex flex-col items-center justify-center py-20 sm:py-32 px-10 sm:px-16 [background:radial-gradient(rgb(0_0_0/0.65),rgb(0_0_0/0.85),rgb(0_0_0/0.95))]">
         <Heading darkBg className="text-white">
           <Dual.Frag>
             <>Not sure where to get started?</>
@@ -160,7 +166,12 @@ const GettingStarted: React.FC<Props> = ({ books, numBooks }) => (
     </div>
     <GettingStartedPaths
       {...{ HistoryBlurb, DoctrineBlurb, DevotionalBlurb, JournalsBlurb }}
-      books={books}
+      books={{
+        history: toPathBlock(books.history),
+        doctrine: toPathBlock(books.doctrine),
+        spiritualLife: toPathBlock(books.spiritualLife),
+        journals: toPathBlock(books.journals),
+      }}
     />
   </div>
 );
@@ -280,25 +291,20 @@ export const HistoryBlurb: React.FC = () => (
   </Dual.Frag>
 );
 
-function filterBooks(
-  books: Array<GettingStartedCoverProps>,
-  category: 'history' | 'doctrine' | 'spiritualLife' | 'journals',
-): Array<GettingStartedCoverProps> {
-  return books
-    .filter((book) =>
-      recommendedBooks[category][LANG].some(
-        (recommendedBook) =>
-          recommendedBook.author === book.authorSlug &&
-          recommendedBook.title === book.slug,
-      ),
-    )
-    .sort(
-      (a, b) =>
-        recommendedBooks[category][LANG].findIndex(
-          (book) => book.title === a.slug && book.author === a.authorSlug,
-        ) -
-        recommendedBooks[category][LANG].findIndex(
-          (book) => book.title === b.slug && book.author === b.authorSlug,
-        ),
-    );
+// helpers
+
+function toPathBlock(books: Array<Book>): PathBlockProps['books'] {
+  return books.map((book) => ({
+    ...book,
+    friendUrl: getFriendUrl(book.friendSlug, book.friendGender),
+    documentUrl: getDocumentUrl(book),
+  }));
+}
+
+function customCodeSlugs(): Array<{ friendSlug: string; documentSlug: string }> {
+  let slugs: Array<{ friendSlug: string; documentSlug: string }> = [];
+  for (const category of [`history`, `doctrine`, `spiritualLife`, `journals`] as const) {
+    slugs = [...slugs, ...recommended[category][LANG]];
+  }
+  return slugs;
 }

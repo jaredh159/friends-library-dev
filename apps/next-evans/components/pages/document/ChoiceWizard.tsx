@@ -17,7 +17,7 @@ const ChoiceWizard: React.FC<Props> = ({ top, left, children }) => (
       top: top || 0,
       left: left || 0,
     }}
-    tailwindBgColor="flblue"
+    bgColor="flblue"
   >
     {children}
   </PopUnder>

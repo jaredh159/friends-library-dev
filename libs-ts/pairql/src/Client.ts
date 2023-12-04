@@ -30,6 +30,12 @@ export default abstract class Client {
     } else {
       env = `prod`;
     }
+
+    if (env !== `prod`) {
+      // eslint-disable-next-line no-console
+      console.log(`[,] FLP PairQL client configured for env: ${env.toUpperCase()}`);
+    }
+
     return new Domain(env, getToken);
   }
 
@@ -42,6 +48,7 @@ export default abstract class Client {
     if (
       process.argv.includes(`--api-staging`) ||
       process.env.API_STAGING ||
+      process.env.VERCEL_ENV === `preview` ||
       process.env.GATSBY_NETLIFY_CONTEXT === `preview`
     ) {
       env = `staging`;
@@ -65,6 +72,9 @@ export default abstract class Client {
       token = requireEnvVar(key, process.env);
     }
 
+    // eslint-disable-next-line no-console
+    console.log(`\n[,] FLP PairQL client configured for env: ${env.toUpperCase()}\n`);
+
     return new Domain(env, () => token);
   }
 
@@ -87,7 +97,12 @@ export default abstract class Client {
 
     try {
       const res = await fetch(this.endpoint(operation), init);
-      const json = await res.json();
+      const text = await res.text();
+      try {
+        var json = JSON.parse(text);
+      } catch (error) {
+        return this.errorResult(`JSON parse error, body=${text}`, 500);
+      }
       if (res.status >= 300) {
         return this.errorResult(json, res.status);
       } else {

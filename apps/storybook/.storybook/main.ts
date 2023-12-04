@@ -1,22 +1,9 @@
-import { mergeConfig } from 'vite';
-import type { StorybookConfig } from '@storybook/react-vite';
-import tsConfigPaths from 'vite-tsconfig-paths';
+import type { StorybookConfig } from '@storybook/nextjs';
 
 const config: StorybookConfig = {
-  async viteFinal(config, { configType }) {
-    return mergeConfig(config, {
-      define: {
-        'process.env': {
-          NEXT_PUBLIC_LANG: `en`,
-        },
-      },
-      resolve: {
-        alias: {
-          '@evans': '../../next-evans/components',
-        },
-      },
-      plugins: [tsConfigPaths()],
-    });
+  env: {
+    NEXT_PUBLIC_LANG: 'en',
+    NEXT_PUBLIC_TEST_STRIPE_PUBLISHABLE_KEY: `pk_test_51H`,
   },
   stories: ['../stories/**/*.stories.tsx'],
   addons: [
@@ -24,7 +11,10 @@ const config: StorybookConfig = {
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
   ],
-  framework: '@storybook/react-vite',
+  framework: {
+    name: '@storybook/nextjs',
+    options: {},
+  },
   docs: {
     autodocs: 'tag',
   },

@@ -171,11 +171,11 @@ class MockClient: Client {
     return updated
   }
 
-  func queryJoined<J: SQLJoined>(
-    _ Joined: J.Type,
+  func customQuery<T: CustomQueryable>(
+    _: T.Type,
     withBindings: [Postgres.Data]?
-  ) async throws -> [J] {
-    fatalError("queryJoined (MockDatabase) not implemented")
+  ) async throws -> [T] {
+    fatalError("customQuery (MockDatabase) not implemented")
   }
 
   func count<M>(

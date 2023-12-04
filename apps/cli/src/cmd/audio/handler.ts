@@ -203,8 +203,8 @@ async function syncM4bs(audio: Audio, fsData: AudioFsData): Promise<void> {
 
 async function updateEntities(audio: Audio, fsData: AudioFsData): Promise<void> {
   const cached = cache.get(fsData);
-  const hqCache = ensureCache(cached.HQ);
-  const lqCache = ensureCache(cached.LQ);
+  const hqCache = ensureCache(cached.hq);
+  const lqCache = ensureCache(cached.lq);
 
   const existingAudio: T.UpdateAudio.Input = {
     id: audio.id,
@@ -251,8 +251,8 @@ async function updateEntities(audio: Audio, fsData: AudioFsData): Promise<void> 
 
     const updatedPart: T.UpdateAudioPart.Input = {
       ...existingPart,
-      mp3SizeHq: assertDefined(cache.getPart(fsData, index).HQ?.mp3Size),
-      mp3SizeLq: assertDefined(cache.getPart(fsData, index).LQ?.mp3Size),
+      mp3SizeHq: assertDefined(cache.getPart(fsData, index).hq?.mp3Size),
+      mp3SizeLq: assertDefined(cache.getPart(fsData, index).lq?.mp3Size),
       duration: ffmpeg.getDuration(assertDefined(fsData.parts[index]?.srcLocalPath))[1],
     };
 

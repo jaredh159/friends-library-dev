@@ -21,7 +21,7 @@ const NewsFeed: React.FC<Props> = ({ items, className }) => {
       ))}
       {showing < items.length && (
         <button
-          className="flex subtle-focus items-center justify-center text-white text-center m-2 mb-0 py-0 px-4 rounded-lg uppercase sans-widest text-sm"
+          className="flex subtle-focus items-center justify-center text-white text-center m-2 mb-0 py-0 px-4 rounded-lg uppercase font-sans tracking-widest text-sm"
           onClick={() => setShowing(showing + 5)}
         >
           <Dual.Span>

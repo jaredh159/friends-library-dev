@@ -54,6 +54,7 @@ const Footer: React.FC = () => {
                 [t`/friends`, t`All Friends`],
                 () => (
                   <GetAppLink
+                    inFooter
                     className={cx(
                       `inline-block md:transform-none`,
                       LANG === `en` ? `translate-x-[3em]` : `translate-x-[3.6em]`,

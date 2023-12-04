@@ -69,7 +69,7 @@ export async function create(
     `"${relWorkDir}"`,
     `--audio-channels=1`,
     `--audio-samplerate=48000`,
-    `--audio-bitrate=${quality === `HQ` ? `128k` : `48k`}`,
+    `--audio-bitrate=${quality === `hq` ? `128k` : `48k`}`,
     `--output-file="merged.m4b"`,
     `--name="${shortTitle}"`,
     `--sortname="${suffixThe(shortTitle)}"`,
@@ -82,7 +82,7 @@ export async function create(
   ];
 
   exec.exit(`${dockerArgs.join(` `)} ${m4bToolArgs.join(` `)}`);
-  const filename = `${src.hashedBasename}${quality === `LQ` ? `--lq` : ``}.m4b`;
+  const filename = `${src.hashedBasename}${quality === `lq` ? `--lq` : ``}.m4b`;
   exec.exit(`mv ${m4bDir}/merged.m4b ${src.derivedPath}/${filename}`);
 }
 

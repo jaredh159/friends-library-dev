@@ -1,41 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import cx from 'classnames';
 import { t } from '@friends-library/locale';
-import type { AudioQuality } from '@friends-library/types';
+import type { AudioQuality, AudioQualities } from '@friends-library/types';
 import WaveBottomBlock from '../getting-started/WaveBottomBlock';
 import DownloadAudiobook from './DownloadAudiobook';
 import { LANG } from '@/lib/env';
 import EmbeddedAudio from '@/components/core/EmbeddedAudio';
 
-interface Props {
-  complete: boolean;
-  m4bFilesizeLq: string;
-  m4bFilesizeHq: string;
-  mp3ZipFilesizeLq: string;
-  mp3ZipFilesizeHq: string;
-  m4bUrlLq: string;
-  m4bUrlHq: string;
-  mp3ZipUrlLq: string;
-  mp3ZipUrlHq: string;
-  podcastUrlLq: string;
-  podcastUrlHq: string;
+export interface Props {
   title: string;
-  trackIdLq: number;
-  trackIdHq: number;
+  isIncomplete: boolean;
   numAudioParts: number;
-  playlistIdLq?: number | null;
-  playlistIdHq?: number | null;
+  m4bFilesize: AudioQualities<number>;
+  mp3ZipFilesize: AudioQualities<number>;
+  m4bLoggedDownloadUrl: AudioQualities<string>;
+  mp3ZipLoggedDownloadUrl: AudioQualities<string>;
+  podcastLoggedDownloadUrl: AudioQualities<string>;
+  embedId: AudioQualities<number>;
 }
 
-const ListenBlock: React.FC<Props> = (props) => {
-  const [quality, setQuality] = useState<AudioQuality>(`HQ`);
-  const { trackIdLq, trackIdHq, numAudioParts, playlistIdLq, playlistIdHq, title } =
-    props;
+const ListenBlock: React.FC<Props> = ({ title, numAudioParts, embedId, ...props }) => {
+  const [quality, setQuality] = useState<AudioQuality>(`hq`);
 
   useEffect(() => {
     // @ts-ignore
     if (window.navigator?.connection?.downlink < 1.5) {
-      setQuality(`LQ`);
+      setQuality(`lq`);
     }
   }, []);
 
@@ -59,10 +49,7 @@ const ListenBlock: React.FC<Props> = (props) => {
             `text-2xl tracking-wide text-center my-6`,
             `sm:mb-16 sm:text-black`,
             `lg:mb-0 lg:text-left xl:pt-6`,
-            {
-              'text-white': !playlistIdLq,
-              'text-black': !!playlistIdLq,
-            },
+            numAudioParts > 1 ? `text-black` : `text-white`,
           )}
         >
           {LANG === `en` && (
@@ -72,10 +59,10 @@ const ListenBlock: React.FC<Props> = (props) => {
         </h3>
         <div className="flex flex-col items-center shadow-xl mt-8 mx-6 sm:mb-8 lg:ml-0">
           <EmbeddedAudio
-            trackId={quality === `HQ` ? trackIdHq : trackIdLq}
-            playlistId={quality === `HQ` ? playlistIdHq : playlistIdLq}
+            trackId={embedId[quality]}
+            playlistId={numAudioParts > 1 ? embedId[quality] : undefined}
             height={
-              playlistIdLq
+              numAudioParts > 1
                 ? SC_MAIN_SECTION_HEIGHT +
                   SC_FOOTER_HEIGHT +
                   SC_TRACK_HEIGHT * numAudioParts

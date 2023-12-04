@@ -14,7 +14,7 @@
   "dependencies": {
     "@friends-library/pairql": "workspace:*",
     "@friends-library/types": "workspace:*",
-    "x-syntax": "^1.0.0"
+    "x-syntax": "^2.0.0"
   },
   "devDependencies": {
     "@babel/plugin-transform-typescript": "^7.11.0",

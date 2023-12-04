@@ -47,13 +47,13 @@ export default async function getSrcFsData(audio: Audio): Promise<AudioFsData> {
         srcLocalFileExists: fs.existsSync(srcLocalPath),
         srcHash,
         mp3s: {
-          HQ: {
+          hq: {
             localFilename: `${hashedBasename}.mp3`,
             localPath: `${data.derivedPath}/${hashedBasename}.mp3`,
             cloudFilename: `${partBasename}.mp3`,
             cloudPath: `${data.relPath}/${partBasename}.mp3`,
           },
-          LQ: {
+          lq: {
             localFilename: `${hashedBasename}--lq.mp3`,
             localPath: `${data.derivedPath}/${hashedBasename}--lq.mp3`,
             cloudFilename: `${partBasename}--lq.mp3`,
@@ -77,13 +77,13 @@ export default async function getSrcFsData(audio: Audio): Promise<AudioFsData> {
   return {
     ...data,
     m4bs: {
-      HQ: {
+      hq: {
         localFilename: `${data.hashedBasename}.m4b`,
         localPath: `${data.derivedPath}/${data.hashedBasename}.m4b`,
         cloudFilename: `${data.basename}.m4b`,
         cloudPath: `${data.relPath}/${data.basename}.m4b`,
       },
-      LQ: {
+      lq: {
         localFilename: `${data.hashedBasename}--lq.m4b`,
         localPath: `${data.derivedPath}/${data.hashedBasename}--lq.m4b`,
         cloudFilename: `${data.basename}--lq.m4b`,
@@ -91,13 +91,13 @@ export default async function getSrcFsData(audio: Audio): Promise<AudioFsData> {
       },
     },
     mp3Zips: {
-      HQ: {
+      hq: {
         localFilename: `${data.hashedBasename}--mp3s.zip`,
         localPath: `${data.derivedPath}/${data.hashedBasename}--mp3s.zip`,
         cloudFilename: `${data.basename}--mp3s.zip`,
         cloudPath: `${data.relPath}/${data.basename}--mp3s.zip`,
       },
-      LQ: {
+      lq: {
         localFilename: `${data.hashedBasename}--mp3s--lq.zip`,
         localPath: `${data.derivedPath}/${data.hashedBasename}--mp3s--lq.zip`,
         cloudFilename: `${data.basename}--mp3s--lq.zip`,

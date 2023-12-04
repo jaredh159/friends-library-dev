@@ -8,13 +8,14 @@
  * these conventions--how to create/assemble/dissemble these conventional strings--lives.
  */
 import { PixelRatio } from 'react-native';
-import type { AudioQuality, EditionType } from '@friends-library/types';
+import type { EditionType } from '@friends-library/types';
 import type {
   EditionId,
   DocumentId,
   EditionResource,
   SquareCoverImageSize,
   ThreeDCoverImageWidth,
+  AudioQuality,
 } from '../types';
 import { THREE_D_COVER_IMAGE_WIDTHS } from '../types';
 import { SQUARE_COVER_IMAGE_SIZES } from '../types';

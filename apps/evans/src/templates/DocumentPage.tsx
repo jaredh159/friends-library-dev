@@ -54,7 +54,7 @@ interface Props {
         numChapters: number;
         description: string | null;
         printSize: PrintSize;
-        pages: number[];
+        pages: [number, ...number[]];
         audio: null | {
           reader: string;
           complete: boolean;
