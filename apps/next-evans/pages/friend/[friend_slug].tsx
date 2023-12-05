@@ -10,12 +10,13 @@ import BookByFriend from '@/components/pages/friend/BookByFriend';
 import TestimonialsBlock from '@/components/pages/friend/TestimonialsBlock';
 import MapBlock from '@/components/pages/friend/MapBlock';
 import getResidences from '@/lib/residences';
-import { getDocumentUrl } from '@/lib/friend';
+import { getDocumentUrl, getFriendUrl } from '@/lib/friend';
 import { sortDocuments } from '@/lib/document';
 import * as custom from '@/lib/ssg/custom-code';
 import Seo from '@/components/core/Seo';
 import { friendPageMetaDesc } from '@/lib/seo';
 import api, { type Api } from '@/lib/ssg/api-client';
+import BookTeaserCards from '@/components/core/BookTeaserCards';
 
 type Props = Api.FriendPage.Output;
 
@@ -31,14 +32,21 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
   invariant(typeof context.params?.friend_slug === `string`);
   const slug = context.params.friend_slug;
   const friend = await api.friendPage({ lang: LANG, slug });
-  const customCode = await custom.some(
-    friend.documents.map(({ slug }) => ({
+  const customCode = await custom.some([
+    ...friend.documents.map(({ slug }) => ({
       friendSlug: friend.slug,
       documentSlug: slug,
     })),
-  );
+    ...friend.relatedDocuments.map((related) => ({
+      friendSlug: related.friendSlug,
+      documentSlug: related.slug,
+    })),
+  ]);
   friend.documents = friend.documents.map(
     custom.merging(customCode, (doc) => [friend.slug, doc.slug]),
+  );
+  friend.relatedDocuments = friend.relatedDocuments.map(
+    custom.merging(customCode, (doc) => [doc.friendSlug, doc.slug]),
   );
   friend.documents.sort(sortDocuments);
   return { props: friend };
@@ -55,6 +63,7 @@ const Friend: React.FC<Props> = ({
   residences,
   born,
   died,
+  relatedDocuments,
 }) => {
   const onlyOneBook = documents.length === 1;
   const mapData = getResidences(residences);
@@ -142,6 +151,27 @@ const Friend: React.FC<Props> = ({
       </div>
       {mapBlock}
       <TestimonialsBlock testimonials={quotes.slice(1, quotes.length)} />
+      <BookTeaserCards
+        bgColor="flgray-100"
+        titleTextColor="flblack"
+        title={t`Related Books`}
+        titleEl="h3"
+        books={relatedDocuments.map((book) => ({
+          title: book.title,
+          description: book.description,
+          paperbackVolumes: book.paperbackVolumes,
+          htmlShortTitle: book.htmlShortTitle,
+          isbn: book.isbn,
+          createdAt: book.createdAt,
+          editionType: book.editionType,
+          customCss: book.customCss,
+          customHtml: book.customHtml,
+          friendName: book.friendName,
+          isCompilation: book.isCompilation,
+          documentUrl: getDocumentUrl(book),
+          friendUrl: getFriendUrl(book.friendSlug, book.friendGender),
+        }))}
+      />
     </div>
   );
 };
